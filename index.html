@@ -17,7 +17,7 @@
   .brand { font-weight:700; font-size:15px; margin-right:4px; white-space:nowrap; }
   .search { display:flex; align-items:center; gap:4px; background:var(--bg); border:1px solid var(--border); border-radius:20px; padding:4px 10px; }
   .search.collapsed input { display:none; }
-  .search.expanded input { display:block; width:160px; }
+  .search.expanded input { display:block; width:160px; background:var(--surface); color:var(--ink); border:1px solid var(--border); border-radius:16px; padding:4px 10px; outline:none; }
   .fab-btn { width:40px; height:40px; border-radius:50%; border:1px solid var(--border); background:var(--surface); color:var(--ink); cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow); }
   .fab-btn svg { width:20px; height:20px; display:block; }
   .freshness { background:#fff7ed; color:#9a3412; font-size:12px; padding:6px 12px; border-bottom:1px solid var(--border); text-align:center; }
@@ -89,15 +89,15 @@
 </head>
 <body>
   <nav class="nav">
-    <a href="#" class="active">Market</a><a href="#">Screener</a><a href="#">Research</a><a href="#">Industry</a><a href="#">Watchlist</a>
+    <a href="index.html" class="active">Market</a><a href="mklab-stock-screener.html">Screener</a><a href="mklab-stock-research.html">Research</a><a href="mklab-stock-industry.html">Industry</a><a href="mklab-stock-watchlist.html">Watchlist</a>
   </nav>
   <div class="utilbar">
     <span class="brand">mklab-stock</span>
-    <div class="search collapsed" id="searchBox"><input id="q" placeholder="搜尋代號，如 2330" onkeydown="if(event.key==='Enter')doSearch()" style="display:none"><button class="fab-btn" style="width:32px;height:32px" onclick="toggleSearch()" title="搜尋">🔍</button></div>
     <span class="spacer"></span>
-    <button class="fab-btn" onclick="openDrawer()" title="設定"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <div class="search collapsed" id="searchBox"><input id="q" placeholder="搜尋代號，如 2330" onkeydown="if(event.key==='Enter')doSearch()" style="display:none"><button class="fab-btn" style="width:32px;height:32px" onclick="toggleSearch()" title="搜尋">🔍</button></div>
     <button class="fab-btn" onclick="toggleDark()" title="主題"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
-    <a class="fab-btn" href="https://github.com/evanhsia-git/mklab-stock" target="_blank" title="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-1-2.6c3-.3 6-1.5 6-6.5a5 5 0 0 0-1.4-3.5 4.7 4.7 0 0 0-.1-3.5s-1.1-.3-3.5 1.3a12 12 0 0 0-6.3 0C6.5 1.3 5.4 1.6 5.4 1.6a4.7 4.7 0 0 0-.1 3.5A5 5 0 0 0 4 8.6c0 5 3 6.2 6 6.5a3.4 3.4 0 0 0-1 2.6V22"/></svg></a>
+    <a class="fab-btn" href="https://github.com/evanhsia-git/mklab-stock" target="_blank" title="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-1-2.6c3-.3 6-1.5 6-6.5a5 5 0 0 0-1.4-3.5a4.7 4.7 0 0 0-.1-3.5s-1.1-.3-3.5 1.3a12 12 0 0 0-6.3 0C6.5 1.3 5.4 1.6 5.4 1.6a4.7 4.7 0 0 0-.1 3.5A5 5 0 0 0 4 8.6c0 5 3 6.2 6 6.5a3.4 3.4 0 0 0-1 2.6V22"/></svg></a>
+    <button class="fab-btn" onclick="openDrawer()" title="設定"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
   </div>
   <div class="freshness">資料以 2026-07-13 收盤為準（前一日，非即時）</div>
   <div class="drawer-mask" onclick="closeDrawer()"></div>
@@ -115,7 +115,8 @@
     <div class="row"><span>深色主題</span><button class="switch on" id="swDark" onclick="toggleDark()"></button></div>
     <div class="row"><span>語言</span><div class="seg"><button id="langZh" class="on" onclick="setLang('zh')">中文</button><button id="langEn" onclick="setLang('en')">EN</button></div></div>
     <h4>說明</h4>
-    <div class="row"><a href="https://github.com/evanhsia-git/mklab-stock#readme" target="_blank" rel="noopener">使用說明 ↗</a></div>
+    <div class="row"><a href="mklab-stock-help.html">功能說明（使用/資料源/評分標準）↗</a></div>
+    <div class="row"><a href="https://github.com/evanhsia-git/mklab-stock#readme" target="_blank" rel="noopener">GitHub README ↗</a></div>
     <h4>System</h4>
     <div class="sys-note">版本：dashboard v3.0<br>資料源：TWSE/TPEX/Yahoo/Stooq<br>最後更新：2026-07-14 08:30<br>狀態：<span class="up">●</span> 正常運作</div>
   </aside>
@@ -156,18 +157,11 @@
     <div class="section-title">我的自選（設定中最多 5 支）</div>
     <div class="cards" id="watch5"></div>
 
-    <!-- 版塊 6：股票產業 TOP10 -->
-    <div class="section-title">股票產業 TOP 10</div>
-    <div class="toolbar">
-      <label>排序</label>
-      <select id="sortSel" onchange="setSort(this.value)">
-        <option value="rank">綜合評分</option><option value="price">價格</option><option value="chg">漲跌%</option>
-        <option value="pe">PE</option><option value="pb">PB</option><option value="eps">EPS</option><option value="roe">ROE</option><option value="roa">ROA</option>
-      </select>
-    </div>
+    <!-- 版塊 6：綜合評分 TOP 10 -->
+    <div class="section-title">綜合評分 TOP 10（值得推薦的 10 支，點標題排序切換升/降）<span id="indCount"></span></div>
     <div class="table-wrap">
-      <table>
-        <thead><tr><th onclick="setSort('sym')">代號</th><th onclick="setSort('price')">價格</th><th onclick="setSort('chg')">漲跌%</th><th onclick="setSort('rank')">綜合評分</th><th onclick="setSort('pe')">PE</th><th onclick="setSort('pb')">PB</th><th onclick="setSort('eps')">EPS</th><th onclick="setSort('roe')">ROE</th><th onclick="setSort('roa')">ROA</th><th onclick="setSort('spct')">趨勢</th><th onclick="setSort('ind')">產業</th></tr></thead>
+      <table id="indTable">
+        <thead><tr><th data-k="sym" onclick="setSort('sym')">代號</th><th data-k="price" onclick="setSort('price')">價格</th><th data-k="chg" onclick="setSort('chg')">漲跌%</th><th data-k="rank" onclick="setSort('rank')">綜合評分 ▼</th><th data-k="pe" onclick="setSort('pe')">PE</th><th data-k="pb" onclick="setSort('pb')">PB</th><th data-k="eps" onclick="setSort('eps')">EPS</th><th data-k="roe" onclick="setSort('roe')">ROE</th><th data-k="roa" onclick="setSort('roa')">ROA</th><th data-k="spct" onclick="setSort('spct')">趨勢</th><th data-k="ind" onclick="setSort('ind')">產業</th></tr></thead>
         <tbody id="indBody"></tbody>
       </table>
     </div>
@@ -253,16 +247,47 @@
     }).catch(()=>{ /* 保留 fallback 示意資料 */ });
   }
   let sortKey="rank";
+  // 前端即時綜合評分（後端 rank 尚未計算，此處依欄位加權；ROE 權重最高）
+  function calcRank(s){
+    const roe=s.roe, pe=s.pe, pb=s.pb, eps=s.eps, chg=s.chg;
+    if([roe,pe,pb,eps,chg].some(v=>v==null||isNaN(v))) return -1; // 資料不全不列入推薦
+    let score=0;
+    score += Math.max(0, Math.min(40, roe*1.2));        // ROE 最高 40 分
+    score += Math.max(0, Math.min(20, (30-pe)*1.0));     // PE 越低越好，最高 20
+    score += Math.max(0, Math.min(15, (8-pb)*2.0));      // PB 越低越好，最高 15
+    score += Math.max(0, Math.min(10, eps*0.3));         // EPS 越高越好，最高 10
+    score += Math.max(0, Math.min(15, chg*1.0));         // 漲跌% 越高越好，最高 15
+    return Math.round(Math.max(0, Math.min(100, score)));
+  }
   function renderInd(){
-    const arr=[...industry].sort((a,b)=> sortKey==="rank"?b.rank-a.rank:(b[sortKey]??-1e9)-(a[sortKey]??-1e9));
+    // 計算綜合評分並過濾資料不全者
+    const scored = industry.map(s=>({...s, rank: calcRank(s)})).filter(s=>s.rank>0);
+    const dir = sortDir==='asc'?1:-1;
+    const arr=scored.sort((a,b)=>{
+      let va=a[sortKey]??-1e9, vb=b[sortKey]??-1e9;
+      if(typeof va==='string'){ return va.localeCompare(vb)*dir; }
+      return (vb-va)*dir;
+    }).slice(0,10); // 只顯示 TOP 10 推薦股
+    // 更新 th 箭頭
+    document.querySelectorAll('#indTable th').forEach(th=>{
+      const k=th.getAttribute('data-k');
+      th.textContent = th.textContent.replace(/ [▼▲]$/,'');
+      if(k===sortKey) th.textContent += sortDir==='asc'?' ▲':' ▼';
+    });
     document.getElementById("indBody").innerHTML=arr.map(s=>{
       const col=s.chg>=0?"#dc2626":"#16a34a";
       const txt=`20d: ${s.spct>=0?'+':''}${s.spct}% ${s.spct>=0?'▲':'▼'}`;
-      const sc=s.spct!=null?+s.spct.toFixed(2):0;
-      return `<tr><td class="sym">${s.sym}<small>${s.name}</small></td><td>${s.price}</td><td class="${s.chg>=0?'up':'down'}">${(s.chg>0?'+':'')}${s.chg}%</td><td><b>${s.rank}</b></td><td>${s.pe}</td><td>${s.pb}</td><td>${s.eps}</td><td>${s.roe}</td><td>${s.roa}</td><td class="spark-cell" onmouseenter="tipIn(this,'${txt}')" onmouseleave="untipIn(this)">${spark(gen(s.price,20),col,180,34)}<div class="tip"></div></td><td>${s.ind}</td></tr>`;
+      const roeDisp = s.roe!=null ? (+s.roe).toFixed(1) : '-';
+      return `<tr><td class="sym">${s.sym}<small>${s.name}</small></td><td>${s.price}</td><td class="${s.chg>=0?'up':'down'}">${(s.chg>0?'+':'')}${s.chg}%</td><td><b>${s.rank}</b></td><td>${s.pe}</td><td>${s.pb}</td><td>${s.eps}</td><td>${roeDisp}</td><td>${s.roa}</td><td class="spark-cell" onmouseenter="tipIn(this,'${txt}')" onmouseleave="untipIn(this)">${spark(gen(s.price,20),col,180,34)}<div class="tip"></div></td><td>${s.ind}</td></tr>`;
     }).join("");
+    const cnt=document.getElementById("indCount"); if(cnt) cnt.textContent=arr.length;
   }
-  function setSort(k){ sortKey=k; renderInd(); }
+  let sortDir='desc';
+  function setSort(k){
+    if(sortKey===k){ sortDir = sortDir==='asc'?'desc':'asc'; }
+    else { sortKey=k; sortDir='desc'; }
+    renderInd();
+  }
 
   function openDrawer(){ document.getElementById("drawer").classList.add("open"); document.querySelector(".drawer-mask").classList.add("open"); renderWatch(); }
   function closeDrawer(){ document.getElementById("drawer").classList.remove("open"); document.querySelector(".drawer-mask").classList.remove("open"); }
@@ -286,10 +311,14 @@
   }
   function klInit(){
     if(klInited||typeof klinecharts==='undefined') return;
-    klChart=klinecharts.init(document.getElementById('tv_chart'), { data: genKData(250, 23000) });
-    klChart.createIndicator('MACD', true, { id:'candle_pane' });
-    klChart.createIndicator('KDJ', false, { id:'kd_pane' });
+    const el=document.getElementById('tv_chart');
+    if(!el) return;
+    klChart=klinecharts.init(el, { data: genKData(250, 23000) });
+    try { klChart.createIndicator('MACD', true, { id:'candle_pane' }); } catch(e){ console.warn('MACD',e); }
+    try { klChart.createIndicator('KDJ', false, { id:'kd_pane' }); } catch(e){ console.warn('KDJ',e); }
     klInited=true;
+    // 確保容器有尺寸後重繪（避免寬度 0 導致空白）
+    requestAnimationFrame(()=>{ if(klChart&&klChart.resize) klChart.resize(); });
   }
   function klAddIndicator(name){ if(!klChart) return; klChart.createIndicator(name, false, { id:name.toLowerCase()+'_pane' }); }
   function klDraw(type){ if(!klChart) return; klChart.createOverlay({ name:type }); }

@@ -17,7 +17,7 @@
   .brand { font-weight:700; font-size:15px; margin-right:4px; white-space:nowrap; }
   .search { display:flex; align-items:center; gap:4px; background:var(--bg); border:1px solid var(--border); border-radius:20px; padding:4px 10px; }
   .search.collapsed input { display:none; }
-  .search.expanded input { display:block; width:160px; }
+  .search.expanded input { display:block; width:160px; background:var(--surface); color:var(--ink); border:1px solid var(--border); border-radius:16px; padding:4px 10px; outline:none; }
   .fab-btn { width:40px; height:40px; border-radius:50%; border:1px solid var(--border); background:var(--surface); color:var(--ink); cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow); }
   .fab-btn svg { width:20px; height:20px; display:block; }
   .freshness { background:#fff7ed; color:#9a3412; font-size:12px; padding:6px 12px; border-bottom:1px solid var(--border); text-align:center; }
@@ -78,7 +78,7 @@
 </head>
 <body>
   <nav class="nav">
-    <a href="#">Market</a><a href="#">Screener</a><a href="#" class="active">Research</a><a href="#">Industry</a><a href="#">Watchlist</a>
+    <a href="index.html">Market</a><a href="mklab-stock-screener.html">Screener</a><a href="mklab-stock-research.html" class="active">Research</a><a href="mklab-stock-industry.html">Industry</a><a href="mklab-stock-watchlist.html">Watchlist</a><a href="mklab-stock-help.html">說明</a>
   </nav>
   <div class="utilbar">
     <span class="brand">mklab-stock</span>
@@ -86,7 +86,7 @@
     <span class="spacer"></span>
     <button class="fab-btn" onclick="openDrawer()" title="設定"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
     <button class="fab-btn" onclick="toggleDark()" title="主題"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
-    <a class="fab-btn" href="https://github.com/evanhsia-git/mklab-stock-stock" target="_blank" title="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-1-2.6c3-.3 6-1.5 6-6.5a5 5 0 0 0-1.4-3.5 4.7 4.7 0 0 0-.1-3.5s-1.1-.3-3.5 1.3a12 12 0 0 0-6.3 0C6.5 1.3 5.4 1.6 5.4 1.6a4.7 4.7 0 0 0-.1 3.5A5 5 0 0 0 4 8.6c0 5 3 6.2 6 6.5a3.4 3.4 0 0 0-1 2.6V22"/></svg></a>
+    <a class="fab-btn" href="https://github.com/evanhsia-git/mklab-stock" target="_blank" title="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-1-2.6c3-.3 6-1.5 6-6.5a5 5 0 0 0-1.4-3.5 4.7 4.7 0 0 0-.1-3.5s-1.1-.3-3.5 1.3a12 12 0 0 0-6.3 0C6.5 1.3 5.4 1.6 5.4 1.6a4.7 4.7 0 0 0-.1 3.5A5 5 0 0 0 4 8.6c0 5 3 6.2 6 6.5a3.4 3.4 0 0 0-1 2.6V22"/></svg></a>
   </div>
   <div class="freshness">資料以 2026-07-13 收盤為準（前一日，非即時）</div>
   <div class="drawer-mask" onclick="closeDrawer()"></div>
@@ -97,7 +97,8 @@
     <div class="row"><span>深色主題</span><button class="switch on" id="swDark" onclick="toggleDark()"></button></div>
     <div class="row"><span>語言</span><div class="seg"><button id="langZh" class="on" onclick="setLang('zh')">中文</button><button id="langEn" onclick="setLang('en')">EN</button></div></div>
     <h4>說明</h4>
-    <div class="row"><a href="https://github.com/evanhsia-git/mklab-stock-stock#readme" target="_blank" rel="noopener">使用說明 ↗</a></div>
+    <div class="row"><a href="mklab-stock-help.html">功能說明（使用/資料源/評分標準）↗</a></div>
+    <div class="row"><a href="https://github.com/evanhsia-git/mklab-stock#readme" target="_blank" rel="noopener">使用說明 ↗</a></div>
     <h4>System</h4>
     <div class="sys-note">版本：v11<br>更新：2026-07-14 08:30<br>狀態：<span class="up">●</span> 正常</div>
   </aside>
