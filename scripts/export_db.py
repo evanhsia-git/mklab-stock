@@ -29,8 +29,24 @@ def get_db():
         sys.exit(f"[ERROR] 本機 DB 不存在: {DB}")
     return sqlite3.connect(DB)
 
+def load_codes():
+    """官方 33 產業代碼對照（臺證所 114.06.09 要點）"""
+    path = os.path.join(OUT, "industry-codes.json")
+    if not os.path.exists(path):
+        return {}, "其他等"
+    d = json.load(open(path, encoding="utf-8"))
+    return d.get("codes", {}), d.get("fallback", "其他等")
+
+def ind_name(codes, fallback, raw):
+    """數字代碼 -> 33 官方名稱；非 01-33 或空值 -> 其他等"""
+    if not raw:
+        return fallback
+    nm = codes.get(str(raw).zfill(2)) or codes.get(str(raw))
+    return nm if nm else fallback
+
 def load_overview(conn):
-    """stock_overview: 代號 -> 基本資料（產業/roe/eps/市值等）"""
+    """stock_overview: 代號 -> 基本資料（產業名稱/roe/eps/市值等）"""
+    codes, fallback = load_codes()
     cur = conn.execute(
         "SELECT stock_id,stock_name,industry,roe,eps,market_cap,shares_outstanding "
         "FROM stock_overview"
@@ -39,7 +55,7 @@ def load_overview(conn):
     for sid, name, ind, roe, eps, mcap, shares in cur.fetchall():
         ov[sid] = {
             "name": name or sid,
-            "industry": ind or "未分類",
+            "industry": ind_name(codes, fallback, ind),
             "roe": roe,
             "eps": eps,
             "market_cap": mcap,
@@ -111,18 +127,20 @@ def latest_prev_day(conn, today):
     return dates[-1] if dates else None
 
 def export_industry(conn, ov, trade_date):
-    """聚合 33 產業（來自 stock_overview.industry）"""
+    """聚合 33 產業（依臺證所 114.06.09 要點官方 33 類框架，空類也列出 cnt=0）"""
+    codes, fallback = load_codes()
+    code_map = codes  # {"01":"水泥工業",...}
+    # 初始化 33 類骨架
+    ind = {nm: {"cnt": 0, "chg_sum": 0.0, "top": None, "top_sym": None} for nm in code_map.values()}
     cur = conn.execute("SELECT stock_id,close FROM daily_prices").fetchall()
     price_map = {r[0]: r[1] for r in cur}
-    # 產業 chg：用最新一日切片 vs 前一日
     prev = latest_prev_day(conn, trade_date)
     prev_map = {}
     if prev:
         prev_map = {r[0]: r[1] for r in conn.execute(
             f"SELECT stock_id,close FROM daily_prices_{prev}").fetchall()}
-    ind = {}
     for sid, base in ov.items():
-        nm = base.get("industry") or "未分類"
+        nm = base.get("industry") or fallback
         if nm not in ind:
             ind[nm] = {"cnt": 0, "chg_sum": 0.0, "top": None, "top_sym": None}
         rec = ind[nm]
@@ -139,11 +157,14 @@ def export_industry(conn, ov, trade_date):
         avg = round(rec["chg_sum"] / rec["cnt"], 2) if rec["cnt"] else 0.0
         out.append({"nm": nm, "chg": avg, "cnt": rec["cnt"],
                     "top": rec["top"] if rec["top"] is not None else 0.0})
-    out.sort(key=lambda x: x["chg"], reverse=True)
-    meta = {"as_of": trade_date, "schema_version": SCHEMA_VERSION, "count": len(out)}
+    # 依官方 33 類順序排序（用 code_map 值順序）
+    order = list(code_map.values())
+    out.sort(key=lambda x: order.index(x["nm"]) if x["nm"] in order else 999)
+    meta = {"as_of": trade_date, "schema_version": SCHEMA_VERSION,
+            "count": len(out), "source": "twse-33-industry(114.06.09)"}
     with open(os.path.join(OUT, "industry.json"), "w", encoding="utf-8") as f:
         json.dump({"meta": meta, "industry": out}, f, ensure_ascii=False)
-    print(f"[industry] 匯出 {len(out)} 產業 → data/industry.json")
+    print(f"[industry] 匯出 {len(out)} 產業（官方 33 框架，含空類）→ data/industry.json")
 
 def export_history(conn, ov):
     """259 天每日切片 → data/history/YYYYMMDD.json
