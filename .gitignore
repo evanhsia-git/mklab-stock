@@ -1,0 +1,15 @@
+# 不進版本控制
+.DS_Store
+*.log
+node_modules/
+.obsidian/
+.vscode/
+
+# 原始日線資料（保留外部，不進 repo）
+data/raw/
+data/daily-*.csv
+
+# 私有/環境
+.env
+.env.*
+secrets.*
