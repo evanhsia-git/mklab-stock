@@ -1,0 +1,15 @@
+{
+  "mode": "daily",
+  "success": true,
+  "error": null,
+  "fetched": 1369,
+  "written": 1369,
+  "skipped": false,
+  "details": {
+    "trade_date": "2026-07-13",
+    "history_file": "20260713.json"
+  },
+  "end": "2026-07-15 01:57:56",
+  "duration_sec": 0.5,
+  "start": "2026-07-15 01:57:55"
+}

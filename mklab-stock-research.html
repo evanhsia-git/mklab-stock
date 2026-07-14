@@ -154,17 +154,16 @@
   function sel(s){
     document.querySelectorAll('#symlist div').forEach(d=>d.classList.toggle('on',d.dataset.s===s));
     const m=STOCKS[s];
-    document.getElementById('infoCard').innerHTML=`<h3>${s} ${m.name} <span class="${m.chg>=0?'up':'down'}">${(m.chg>0?'+':''}${m.chg}%</span></h3>
-      <div class="kv">
-        <div><div class="k">價格</div><div class="v">${m.price}</div></div>
-        <div><div class="k">PE</div><div class="v">${m.pe}</div></div>
-        <div><div class="k">PB</div><div class="v">${m.pb}</div></div>
-        <div><div class="k">ROE</div><div class="v">${m.roe}%</div></div>
-        <div><div class="k">EPS</div><div class="v">${m.eps}</div></div>
-        <div><div class="k">殖利率</div><div class="v">${m.div}%</div></div>
-        <div><div class="k">市值</div><div class="v">${m.mc}</div></div>
-        <div><div class="k">產業</div><div class="v" style="font-size:13px">${m.sector}</div></div>
-      </div>`;
+    const chgCls = m.chg>=0 ? 'up' : 'down';
+    const chgTxt = (m.chg>0?'+':'') + m.chg + '%';
+    const kv = (k,v)=>'<div><div class="k">'+k+'</div><div class="v">'+v+'</div></div>';
+    document.getElementById('infoCard').innerHTML =
+      '<h3>'+s+' '+m.name+' <span class="'+chgCls+'">'+chgTxt+'</span></h3>' +
+      '<div class="kv">'+
+        kv('價格', m.price)+kv('PE', m.pe)+kv('PB', m.pb)+
+        kv('ROE', m.roe+'%')+kv('EPS', m.eps)+kv('殖利率', m.div+'%')+
+        kv('市值', m.mc)+kv('產業', '<span style="font-size:13px">'+m.sector+'</span>')+
+      '</div>';
     document.getElementById('peChart').innerHTML=spark(gen(m.pe,60),"#3b82f6",600,160);
     klRender(s);
     document.getElementById('finTable').innerHTML=`<tr><th>年度</th><th>EPS</th><th>ROE%</th><th>殖利率%</th></tr>`+m.fin.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join("");
@@ -177,20 +176,21 @@
   function closeDrawer(){ document.getElementById("drawer").classList.remove("open"); document.querySelector(".drawer-mask").classList.remove("open"); }
   function setLang(l){ document.getElementById("langZh").classList.toggle("on",l==="zh"); document.getElementById("langEn").classList.toggle("on",l==="en"); }
   // ===== KLineChart 自託管（個股 K線 + MACD + KDJ + 畫圖）=====
-  let rChart=null, rInited=false;
+  let rChart=null, rSeries=null, rInited=false;
   function genKData(n,seed){ const o=[]; let p=seed; const base=new Date(2025,6,14);
     for(let i=0;i<n;i++){ base.setDate(base.getDate()+1);
       const open=p; const close=+(p+(Math.random()-0.48)*seed*0.03).toFixed(1);
       const high=+(Math.max(open,close)+(Math.random()*seed*0.015)).toFixed(1);
       const low=+(Math.min(open,close)-(Math.random()*seed*0.015)).toFixed(1);
-      o.push({ timestamp:base.getTime(), open, high, low, close, volume:+(Math.random()*1e6).toFixed(0) }); p=close;
+      const y=base.getFullYear(), m=String(base.getMonth()+1).padStart(2,'0'), d=String(base.getDate()).padStart(2,'0');
+      o.push({ time:`${y}-${m}-${d}`, open, high, low, close }); p=close;
     } return o;
   }
-  function klInit(s){ if(rInited||typeof klinecharts==='undefined') return; rChart=klinecharts.init(document.getElementById('priceChart'), { data: genKData(250, STOCKS[s]?STOCKS[s].price:100) }); rInited=true; }
-  function klRender(s){ if(rChart){ try{ klinecharts.dispose('priceChart'); }catch(e){} rInited=false; rChart=null; } klInit(s); if(!rChart) return; rChart.createIndicator('MACD', true, { id:'candle_pane' }); }
-  function klAddIndicator(name){ if(!rChart) return; rChart.createIndicator(name, false, { id:name.toLowerCase()+'_pane' }); }
-  function klDraw(type){ if(!rChart) return; rChart.createOverlay({ name:type }); }
-  function klRemoveAll(){ if(!rChart) return; rChart.removeOverlay(); }
+  function klInit(s){ if(rInited||typeof LightweightCharts==='undefined') return; const el=document.getElementById('priceChart'); rChart=LightweightCharts.createChart(el, { layout:{background:{type:'solid',color:'transparent'},textColor:'#94a3b8'}, grid:{vertLines:{color:'rgba(148,163,184,0.1)'},horzLines:{color:'rgba(148,163,184,0.1)'}}, rightPriceScale:{borderColor:'rgba(148,163,184,0.2)'}, timeScale:{borderColor:'rgba(148,163,184,0.2)',timeVisible:false}, width:el.clientWidth, height:360 }); rSeries=rChart.addCandlestickSeries({ upColor:'#ef4444', downColor:'#22c55e', borderUpColor:'#ef4444', borderDownColor:'#22c55e', wickUpColor:'#ef4444', wickDownColor:'#22c55e' }); try{ rSeries.setData(genKData(250, STOCKS[s]?STOCKS[s].price:100)); }catch(e){ console.warn('setData',e); } rInited=true; }
+  function klRender(s){ if(rChart){ try{ rChart.remove(); }catch(e){} rInited=false; rChart=null; rSeries=null; } klInit(s); }
+  function klAddIndicator(name){ /* lightweight-charts v4 免費版指標需手動實作，暫保留介面 */ }
+  function klDraw(type){ /* 畫線工具需 overlay 插件，暫保留介面 */ }
+  function klRemoveAll(){ if(rChart) rChart.remove(); rChart=null; rSeries=null; rInited=false; }
   window.addEventListener('load', ()=>klRender('2330'));
   renderList(); sel("2330");
   // 接收來自搜尋跳轉的 ?sym= 參數，自動選股

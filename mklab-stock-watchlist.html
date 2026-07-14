@@ -38,7 +38,25 @@
   .alert { font-size:11px; padding:2px 6px; border-radius:6px; background:var(--warn); color:#000; }
   .del { color:var(--muted); cursor:pointer; font-size:12px; }
   .disclaimer { font-size:11px; color:var(--muted); text-align:center; padding:16px 12px; }
-</style>
+  .drawer-mask { position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:40; display:none; }
+  .drawer-mask.open { display:block; }
+  .drawer { position:fixed; top:0; right:0; height:100%; width:300px; max-width:85vw; background:var(--surface); border-left:1px solid var(--border); z-index:50; transform:translateX(100%); transition:transform .25s ease; padding:16px; overflow-y:auto; box-shadow:var(--shadow); }
+  .drawer.open { transform:translateX(0); }
+  .drawer h3 { font-size:15px; margin-bottom:12px; }
+  .drawer h4 { font-size:13px; color:var(--muted); margin:16px 0 8px; }
+  .row { display:flex; align-items:center; justify-content:space-between; padding:8px 0; font-size:14px; }
+  .row input { width:90px; padding:4px 6px; border:1px solid var(--border); border-radius:6px; background:var(--bg); color:var(--ink); }
+  .switch { width:44px; height:24px; border-radius:12px; background:var(--border); position:relative; cursor:pointer; border:none; }
+  .switch.on { background:var(--accent); }
+  .switch::after { content:""; position:absolute; top:2px; left:2px; width:20px; height:20px; border-radius:50%; background:#fff; transition:left .2s; }
+  .switch.on::after { left:22px; }
+  .seg { display:flex; border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+  .seg button { flex:1; padding:6px; background:var(--surface); color:var(--ink); border:none; font-size:13px; }
+  .seg button.on { background:var(--accent); color:#fff; }
+  .close-x { float:right; background:none; border:none; font-size:20px; color:var(--muted); cursor:pointer; }
+  .drawer a { color:var(--accent); text-decoration:none; }
+  .sys-note { font-size:12px; color:var(--muted); line-height:1.6; }
+
 </head>
 <body>
   <nav class="nav">

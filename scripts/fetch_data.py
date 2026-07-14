@@ -27,11 +27,76 @@ OUT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data"))
 os.makedirs(OUT, exist_ok=True)
 os.makedirs(os.path.join(OUT, "history"), exist_ok=True)
 
+# ===== 結構化 Log 系統（供 GitHub Actions 留存 + 使用者確認抓取成功）=====
+class RunLogger:
+    """收集本輪抓取的結構化記錄，最後輸出總結並寫入 data/fetch-log.{json,txt}。"""
+    def __init__(self, mode):
+        self.mode = mode
+        self.start = dt.datetime.now(dt.timezone(dt.timedelta(hours=8)))
+        self.entries = []  # (level, msg)
+        self.stats = {"mode": mode, "success": False, "error": None,
+                      "fetched": 0, "written": 0, "skipped": False,
+                      "details": {}}
+
+    def log(self, level, msg):
+        ts = dt.datetime.now(dt.timezone(dt.timedelta(hours=8))).strftime("%H:%M:%S")
+        line = f"[{ts}] {level} {msg}"
+        self.entries.append((level, msg))
+        print(line, flush=True)
+
+    def info(self, msg):  self.log("INFO", msg)
+    def warn(self, msg):  self.log("WARN", msg)
+    def error(self, msg): self.log("ERROR", msg)
+
+    def finish(self, success, error=None):
+        self.stats["success"] = success
+        self.stats["error"] = error
+        self.stats["end"] = dt.datetime.now(dt.timezone(dt.timedelta(hours=8))).strftime("%Y-%m-%d %H:%M:%S")
+        self.stats["duration_sec"] = round((dt.datetime.now(dt.timezone(dt.timedelta(hours=8))) - self.start).total_seconds(), 1)
+        self.stats["start"] = self.start.strftime("%Y-%m-%d %H:%M:%S")
+        # 總結報告
+        print("", flush=True)
+        print("=" * 56, flush=True)
+        if success:
+            print(f"  ✅ 抓取成功 | 模式={self.mode}", flush=True)
+        else:
+            print(f"  ❌ 抓取失敗 | 模式={self.mode}", flush=True)
+        print(f"  開始: {self.stats['start']}", flush=True)
+        print(f"  結束: {self.stats['end']} (耗時 {self.stats['duration_sec']}s)", flush=True)
+        print(f"  抓取筆數: {self.stats['fetched']}", flush=True)
+        print(f"  寫入筆數: {self.stats['written']}", flush=True)
+        if self.stats.get("skipped"):
+            print(f"  狀態: 跳過（休市/無資料）", flush=True)
+        if error:
+            print(f"  錯誤: {error}", flush=True)
+        for k, v in self.stats.get("details", {}).items():
+            print(f"  - {k}: {v}", flush=True)
+        print("=" * 56, flush=True)
+        self._write_files()
+
+    def _write_files(self):
+        # 機器可讀
+        with open(os.path.join(OUT, "fetch-log.json"), "w", encoding="utf-8") as f:
+            json.dump(self.stats, f, ensure_ascii=False, indent=2)
+        # 人讀（含過程條目）
+        lines = [f"mklab-stock 資料抓取 Log | 模式={self.mode}",
+                 f"開始: {self.stats['start']}  結束: {self.stats['end']}  耗時: {self.stats['duration_sec']}s",
+                 f"成功: {self.stats['success']}  跳過: {self.stats.get('skipped', False)}",
+                 f"抓取筆數: {self.stats['fetched']}  寫入筆數: {self.stats['written']}",
+                 "-" * 50]
+        lines += [f"[{l}] {m}" for l, m in self.entries]
+        if self.stats.get("error"):
+            lines.append(f"ERROR: {self.stats['error']}")
+        with open(os.path.join(OUT, "fetch-log.txt"), "w", encoding="utf-8") as f:
+            f.write("\n".join(lines) + "\n")
+
+
 # 主源：TWSE STOCK_DAY_ALL（每日收盤，官方上市清單，回傳 ~1369 筆含股票+ETF）
 TWSE_DAILY = "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL"
 SCHEMA_VERSION = "1.0.0"
 SAFE_MAX = 2000  # 安全閥：超過即視為異常，中止避免資料爆炸
 MODE = sys.argv[1] if len(sys.argv) > 1 else "daily"
+LOG = RunLogger(MODE)
 
 
 def keep_record(code):
@@ -122,29 +187,34 @@ def fetch_yfinance_roe(sym_list):
 def run_daily():
     codes, fallback = load_codes()
     stamp = dt.datetime.now(dt.timezone(dt.timedelta(hours=8))).strftime("%Y-%m-%d")
-    print(f"[daily] Actions 基準日 {stamp}")
+    LOG.info(f"Actions 基準日 {stamp}")
 
     try:
         raw = fetch_twse_json(TWSE_DAILY)
     except Exception as e:
-        print(f"[daily] ❌ TWSE 抓取失敗：{e}（可能休市/網路異常，不寫入）")
+        LOG.error(f"TWSE 抓取失敗：{e}（可能休市/網路異常，不寫入）")
+        LOG.finish(False, error=f"TWSE 抓取失敗：{e}")
         return
 
     if not raw:
-        print("[daily] ❌ TWSE 回傳空，可能休市，跳過")
+        LOG.warn("TWSE 回傳空，可能休市，跳過")
+        LOG.stats["skipped"] = True
+        LOG.finish(False, error="TWSE 回傳空（休市）")
         return
 
     # 過濾機制：只留上市/ETF（排除期貨/指數等非數字開頭、異常長度）
     filtered = [r for r in raw if keep_record(r.get("Code", ""))]
+    LOG.stats["fetched"] = len(filtered)
     if len(filtered) > SAFE_MAX:
-        print(f"[daily] ❌ 筆數 {len(filtered)} 超過安全閥 {SAFE_MAX}，疑似來源異常，中止寫入")
+        LOG.error(f"筆數 {len(filtered)} 超過安全閥 {SAFE_MAX}，疑似來源異常，中止寫入")
+        LOG.finish(False, error=f"筆數超過安全閥 {SAFE_MAX}")
         return
     if len(filtered) < 500:
-        print(f"[daily] ⚠️ 筆數 {len(filtered)} 異常偏低（可能休市/部分資料），仍寫入但標註")
+        LOG.warn(f"筆數 {len(filtered)} 異常偏低（可能休市/部分資料），仍寫入但標註")
     raw = filtered
 
     trade_date = parse_date(raw[0]["Date"])
-    print(f"[daily] trade_date={trade_date}, 過濾後筆數={len(raw)}")
+    LOG.info(f"trade_date={trade_date}, 過濾後筆數={len(raw)}")
 
     # 保留既有 ROE/ROA/eps/market_cap（這些由 weekly 模式更新，daily 不覆寫）
     existing = load_existing_stocks()
@@ -226,20 +296,25 @@ def run_daily():
         json.dump({"schema_version": SCHEMA_VERSION, "generated_at": stamp,
                    "generator": "scripts/fetch_data.py (GitHub Actions, daily)"}, f, ensure_ascii=False, indent=2)
 
-    print(f"[daily] ✅ 完成 → data/ (stocks={len(stocks)}, history={trade_date})")
+    LOG.stats["written"] = len(stocks)
+    LOG.stats["details"]["trade_date"] = trade_date
+    LOG.stats["details"]["history_file"] = os.path.basename(hpath)
+    LOG.info(f"完成 → data/ (stocks={len(stocks)}, history={trade_date})")
+    LOG.finish(True)
 
 
 def run_weekly():
     """每週六：yfinance 補 ROE/ROA，合併進 stocks.json（不動收盤價）"""
-    print("[weekly] 開始補 ROE/ROA（yfinance 免 key，sleep 3s 防 ban）")
+    LOG.info("開始補 ROE/ROA（yfinance 免 key，sleep 3s 防 ban）")
     p = os.path.join(OUT, "stocks.json")
     if not os.path.exists(p):
-        print("[weekly] stocks.json 不存在，先跑 daily 再補")
+        LOG.warn("stocks.json 不存在，先跑 daily 再補")
         run_daily()
     data = json.load(open(p, encoding="utf-8"))
     stocks = data.get("stocks", [])
     syms = [s["sym"] for s in stocks]
-    print(f"[weekly] 待補 {len(syms)} 檔")
+    LOG.stats["fetched"] = len(syms)
+    LOG.info(f"待補 {len(syms)} 檔")
     roe_map = fetch_yfinance_roe(syms)
     for s in stocks:
         if s["sym"] in roe_map:
@@ -248,7 +323,10 @@ def run_weekly():
     data["meta"]["roe_source"] = "yfinance (免 key, 每週六更新)"
     with open(p, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False)
-    print(f"[weekly] ✅ ROE/ROA 補齊 {len(roe_map)} 檔")
+    LOG.stats["written"] = len(roe_map)
+    LOG.stats["details"]["roe_updated"] = len(roe_map)
+    LOG.info(f"ROE/ROA 補齊 {len(roe_map)} 檔")
+    LOG.finish(True)
 
 
 if __name__ == "__main__":

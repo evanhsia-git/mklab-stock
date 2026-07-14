@@ -297,32 +297,38 @@
   renderWatch(); renderInd(); loadStocks();
 
   // ===== 版塊 2：KLineChart 自託管（K線 + MACD + KDJ + 畫圖工具）=====
-  let klChart=null, klInited=false;
-  function genKData(n,seed){ // 生成示意日 K 線
+  let klChart=null, klSeries=null, klInited=false;
+  function genKData(n,seed){ // 生成示意日 K 線（lightweight-charts 格式：time=YYYY-MM-DD）
     const o=[]; let p=seed; const base=new Date(2025,6,14);
     for(let i=0;i<n;i++){ base.setDate(base.getDate()+1);
       const open=p; const close=+(p+(Math.random()-0.48)*seed*0.03).toFixed(1);
       const high=+(Math.max(open,close)+(Math.random()*seed*0.015)).toFixed(1);
       const low=+(Math.min(open,close)-(Math.random()*seed*0.015)).toFixed(1);
-      const vol=+(Math.random()*1e6).toFixed(0);
-      o.push({ timestamp:base.getTime(), open, high, low, close, volume:vol });
+      const y=base.getFullYear(), m=String(base.getMonth()+1).padStart(2,'0'), d=String(base.getDate()).padStart(2,'0');
+      o.push({ time:`${y}-${m}-${d}`, open, high, low, close });
       p=close;
     } return o;
   }
   function klInit(){
-    if(klInited||typeof klinecharts==='undefined') return;
+    if(klInited||typeof LightweightCharts==='undefined') return;
     const el=document.getElementById('tv_chart');
     if(!el) return;
-    klChart=klinecharts.init(el, { data: genKData(250, 23000) });
-    try { klChart.createIndicator('MACD', true, { id:'candle_pane' }); } catch(e){ console.warn('MACD',e); }
-    try { klChart.createIndicator('KDJ', false, { id:'kd_pane' }); } catch(e){ console.warn('KDJ',e); }
+    klChart=LightweightCharts.createChart(el, {
+      layout:{ background:{type:'solid', color:'transparent'}, textColor:'#94a3b8' },
+      grid:{ vertLines:{color:'rgba(148,163,184,0.1)'}, horzLines:{color:'rgba(148,163,184,0.1)'} },
+      rightPriceScale:{ borderColor:'rgba(148,163,184,0.2)' },
+      timeScale:{ borderColor:'rgba(148,163,184,0.2)', timeVisible:false },
+      crosshair:{ mode: LightweightCharts.CrosshairMode.Normal },
+      width: el.clientWidth, height: 460
+    });
+    klSeries=klChart.addCandlestickSeries({ upColor:'#ef4444', downColor:'#22c55e', borderUpColor:'#ef4444', borderDownColor:'#22c55e', wickUpColor:'#ef4444', wickDownColor:'#22c55e' });
+    try { klSeries.setData(genKData(250, 23000)); } catch(e){ console.warn('setData',e); }
     klInited=true;
-    // 確保容器有尺寸後重繪（避免寬度 0 導致空白）
-    requestAnimationFrame(()=>{ if(klChart&&klChart.resize) klChart.resize(); });
+    requestAnimationFrame(()=>{ if(klChart&&klChart.resize) klChart.resize(el.clientWidth, 460); });
   }
-  function klAddIndicator(name){ if(!klChart) return; klChart.createIndicator(name, false, { id:name.toLowerCase()+'_pane' }); }
-  function klDraw(type){ if(!klChart) return; klChart.createOverlay({ name:type }); }
-  function klRemoveAll(){ if(!klChart) return; klChart.removeOverlay(); klChart.removeIndicator({ paneId:'MACD' }); }
+  function klAddIndicator(name){ /* lightweight-charts v4 免費版指標需手動實作，暫保留介面 */ }
+  function klDraw(type){ /* 畫線工具需 overlay 插件，暫保留介面 */ }
+  function klRemoveAll(){ if(klChart) klChart.remove(); klChart=null; klSeries=null; klInited=false; }
   window.addEventListener('load', klInit);
 </script>
 </body></html>
