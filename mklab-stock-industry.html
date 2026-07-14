@@ -91,6 +91,13 @@
   <div class="wrap">
     <div class="section-title">台灣 33 產業動態（漲跌績效 · 點擊產業看成分股）</div>
     <div class="grid" id="igrid"></div>
+    <div class="section-title">全產業列表（區間績效 %）</div>
+    <div class="table-wrap">
+      <table id="indPerfTable">
+        <thead><tr><th onclick="sortPerf('nm')">產業</th><th onclick="sortPerf('chg')">漲跌%</th><th onclick="sortPerf('w1')">1週</th><th onclick="sortPerf('m1')">1月</th><th onclick="sortPerf('m3')">3月</th><th onclick="sortPerf('m6')">6月</th><th onclick="sortPerf('ytd')">YTD</th><th onclick="sortPerf('y1')">1年</th><th onclick="sortPerf('y5')">5年</th><th onclick="sortPerf('cnt')">檔數</th></tr></thead>
+        <tbody id="indPerfBody"></tbody>
+      </table>
+    </div>
     <div class="section-title" id="detailTitle" style="display:none"></div>
     <div class="table-wrap" id="detailWrap" style="display:none">
       <table>
@@ -108,12 +115,12 @@
   function spark(data,color,w,h){ const min=Math.min(...data),max=Math.max(...data),r=(max-min)||1; const p=data.map((d,i)=>`${(i/(data.length-1)*w).toFixed(1)},${(h-((d-min)/r*h)).toFixed(1)}`).join(" "); return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><polyline points="${p}" fill="none" stroke="${color}" stroke-width="1.5"/></svg>`; }
   function gen(seed,n){ const o=[]; let p=seed; for(let i=0;i<n;i++){ p+=(Math.random()-0.45)*seed*0.02; o.push(+p.toFixed(2)); } return o; }
   // 生成產業資料（預設示意 fallback；載入 data/industry.json 後以真實資料覆寫）
-  let data=INDUSTRIES.map((nm,i)=>{ const chg=+((Math.random()-0.45)*6).toFixed(2); const cnt=+(8+Math.random()*40).toFixed(0); const top=+((Math.random()-0.45)*5).toFixed(2); return {nm,chg,cnt,top,seed:+(20+i*37)}; });
+  let data=INDUSTRIES.map((nm,i)=>{ const chg=+((Math.random()-0.45)*6).toFixed(2); const cnt=+(8+Math.random()*40).toFixed(0); const top=+((Math.random()-0.45)*5).toFixed(2); const genp=()=>+((Math.random()-0.45)*10).toFixed(2); return {nm,chg,cnt,top,seed:+(20+i*37),w1:genp(),m1:genp(),m3:genp(),m6:genp(),ytd:genp(),y1:genp(),y5:genp()}; });
   function loadIndustry(){
     fetch('data/industry.json').then(r=>{ if(!r.ok) throw new Error('no'); return r.json(); }).then(d=>{
       if(d && Array.isArray(d.industry) && d.industry.length){
-        data=d.industry.map((x,i)=>({nm:x.nm,chg:x.chg,cnt:x.cnt,top:x.top,seed:+(20+i*37)}));
-        renderGrid();
+        data=d.industry.map((x,i)=>({nm:x.nm,chg:x.chg,cnt:x.cnt,top:x.top,seed:+(20+i*37),w1:x.w1,m1:x.m1,m3:x.m3,m6:x.m6,ytd:x.ytd,y1:x.y1,y5:x.y5}));
+        renderGrid(); renderPerf();
         const asof=d.meta&&d.meta.as_of;
         if(asof){ const f=document.querySelector('.freshness'); if(f) f.textContent='資料以 '+asof+' 收盤為準（Build-Time 自動更新）'; }
       }
@@ -131,6 +138,20 @@
       </div>`;
     }).join("");
   }
+  let perfSortKey='chg', perfSortDir=-1;
+  function fmt(v){ return v==null ? '-' : (v>0?'+':'')+v+'%'; }
+  function cls(v){ return v==null?'':(v>=0?'up':'down'); }
+  function renderPerf(){
+    const arr=[...data].sort((a,b)=>{
+      let va=a[perfSortKey], vb=b[perfSortKey];
+      if(perfSortKey==='nm'){ return (va||'').localeCompare(vb||'')*perfSortDir; }
+      va=va==null?-1e9:va; vb=vb==null?-1e9:vb;
+      return (vb-va)*perfSortDir;
+    });
+    document.getElementById('indPerfBody').innerHTML=arr.map(d=>`<tr><td>${d.nm}</td><td class="${cls(d.chg)}">${fmt(d.chg)}</td><td class="${cls(d.w1)}">${fmt(d.w1)}</td><td class="${cls(d.m1)}">${fmt(d.m1)}</td><td class="${cls(d.m3)}">${fmt(d.m3)}</td><td class="${cls(d.m6)}">${fmt(d.m6)}</td><td class="${cls(d.ytd)}">${fmt(d.ytd)}</td><td class="${cls(d.y1)}">${fmt(d.y1)}</td><td class="${cls(d.y5)}">${fmt(d.y5)}</td><td>${d.cnt}</td></tr>`).join("");
+  }
+  function sortPerf(k){ if(perfSortKey===k){ perfSortDir*=-1; } else { perfSortKey=k; perfSortDir=-1; } renderPerf(); }
+
   function selInd(i){
     activeInd=i; renderGrid();
     const d=data[i];
@@ -150,6 +171,6 @@
   function openDrawer(){ document.getElementById("drawer").classList.add("open"); document.querySelector(".drawer-mask").classList.add("open"); }
   function closeDrawer(){ document.getElementById("drawer").classList.remove("open"); document.querySelector(".drawer-mask").classList.remove("open"); }
   function setLang(l){ document.getElementById("langZh").classList.toggle("on",l==="zh"); document.getElementById("langEn").classList.toggle("on",l==="en"); }
-  renderGrid(); loadIndustry();
+  renderGrid(); renderPerf(); loadIndustry();
   </script>
 </body></html>

@@ -247,16 +247,15 @@
     }).catch(()=>{ /* 保留 fallback 示意資料 */ });
   }
   let sortKey="rank";
-  // 前端即時綜合評分（後端 rank 尚未計算，此處依欄位加權；ROE 權重最高）
+  // 前端即時綜合評分（後端 rank 尚未計算，此處依欄位加權；欄位缺失則不計該項，不整檔排除）
   function calcRank(s){
-    const roe=s.roe, pe=s.pe, pb=s.pb, eps=s.eps, chg=s.chg;
-    if([roe,pe,pb,eps,chg].some(v=>v==null||isNaN(v))) return -1; // 資料不全不列入推薦
-    let score=0;
-    score += Math.max(0, Math.min(40, roe*1.2));        // ROE 最高 40 分
-    score += Math.max(0, Math.min(20, (30-pe)*1.0));     // PE 越低越好，最高 20
-    score += Math.max(0, Math.min(15, (8-pb)*2.0));      // PB 越低越好，最高 15
-    score += Math.max(0, Math.min(10, eps*0.3));         // EPS 越高越好，最高 10
-    score += Math.max(0, Math.min(15, chg*1.0));         // 漲跌% 越高越好，最高 15
+    let score=0, any=false;
+    if(s.roe!=null && !isNaN(s.roe)){ score += Math.max(0, Math.min(40, s.roe*1.2)); any=true; }
+    if(s.pe!=null && !isNaN(s.pe)){ score += Math.max(0, Math.min(20, (30-s.pe)*1.0)); any=true; }
+    if(s.pb!=null && !isNaN(s.pb)){ score += Math.max(0, Math.min(15, (8-s.pb)*2.0)); any=true; }
+    if(s.eps!=null && !isNaN(s.eps)){ score += Math.max(0, Math.min(10, s.eps*0.3)); any=true; }
+    if(s.chg!=null && !isNaN(s.chg)){ score += Math.max(0, Math.min(15, s.chg*1.0)); any=true; }
+    if(!any) return -1;
     return Math.round(Math.max(0, Math.min(100, score)));
   }
   function renderInd(){
@@ -266,7 +265,7 @@
     const arr=scored.sort((a,b)=>{
       let va=a[sortKey]??-1e9, vb=b[sortKey]??-1e9;
       if(typeof va==='string'){ return va.localeCompare(vb)*dir; }
-      return (vb-va)*dir;
+      return (va-vb)*dir;   // asc: 小→大; desc: 大→小（推薦股 rank 高在前）
     }).slice(0,10); // 只顯示 TOP 10 推薦股
     // 更新 th 箭頭
     document.querySelectorAll('#indTable th').forEach(th=>{
@@ -278,7 +277,8 @@
       const col=s.chg>=0?"#dc2626":"#16a34a";
       const txt=`20d: ${s.spct>=0?'+':''}${s.spct}% ${s.spct>=0?'▲':'▼'}`;
       const roeDisp = s.roe!=null ? (+s.roe).toFixed(1) : '-';
-      return `<tr><td class="sym">${s.sym}<small>${s.name}</small></td><td>${s.price}</td><td class="${s.chg>=0?'up':'down'}">${(s.chg>0?'+':'')}${s.chg}%</td><td><b>${s.rank}</b></td><td>${s.pe}</td><td>${s.pb}</td><td>${s.eps}</td><td>${roeDisp}</td><td>${s.roa}</td><td class="spark-cell" onmouseenter="tipIn(this,'${txt}')" onmouseleave="untipIn(this)">${spark(gen(s.price,20),col,180,34)}<div class="tip"></div></td><td>${s.ind}</td></tr>`;
+      const roaDisp = s.roa!=null ? (+s.roa).toFixed(1) : '-';
+      return `<tr><td class="sym">${s.sym}<small>${s.name}</small></td><td>${s.price}</td><td class="${s.chg>=0?'up':'down'}">${(s.chg>0?'+':'')}${s.chg}%</td><td><b>${s.rank}</b></td><td>${s.pe}</td><td>${s.pb}</td><td>${s.eps}</td><td>${roeDisp}</td><td>${roaDisp}</td><td class="spark-cell" onmouseenter="tipIn(this,'${txt}')" onmouseleave="untipIn(this)">${spark(gen(s.price,20),col,180,34)}<div class="tip"></div></td><td>${s.ind}</td></tr>`;
     }).join("");
     const cnt=document.getElementById("indCount"); if(cnt) cnt.textContent=arr.length;
   }

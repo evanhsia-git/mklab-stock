@@ -127,7 +127,9 @@ def latest_prev_day(conn, today):
     return dates[-1] if dates else None
 
 def export_industry(conn, ov, trade_date):
-    """聚合 33 產業（依臺證所 114.06.09 要點官方 33 類框架，空類也列出 cnt=0）"""
+    """聚合 33 產業（依臺證所 114.06.09 要點官方 33 類框架，空類也列出 cnt=0）
+    並計算各區間績效（1週/1月/3月/6月/YTD/1年/5年）基於產業成分股平均收盤的區間報酬。
+    """
     codes, fallback = load_codes()
     code_map = codes  # {"01":"水泥工業",...}
     # 初始化 33 類骨架
@@ -152,11 +154,58 @@ def export_industry(conn, ov, trade_date):
             rec["chg_sum"] += c
             if rec["top"] is None or c > rec["top"]:
                 rec["top"] = round(c, 2); rec["top_sym"] = sid
+    # ---- 區間績效：從 history 切片算每產業平均收盤的區間報酬 ----
+    hist_files = sorted(
+        [f for f in os.listdir(os.path.join(OUT, "history")) if f.endswith(".json")],
+        key=lambda x: x.replace(".json", ""),
+    )
+    # 建立 產業 -> {日期: 平均收盤} 映射（用最新一日前的切片）
+    ind_series = {}  # nm -> {date: avg_close}
+    ytd_date = None
+    for hf in hist_files:
+        dstr = hf.replace(".json", "")
+        dd = json.load(open(os.path.join(OUT, "history", hf), encoding="utf-8"))
+        stocks = dd.get("stocks", [])
+        # 依產業聚合收盤
+        tmp = {}
+        for s in stocks:
+            nm = s.get("industry") or fallback
+            c = s.get("close")
+            if c is None:
+                continue
+            tmp.setdefault(nm, []).append(c)
+        for nm, vals in tmp.items():
+            ind_series.setdefault(nm, {})[dstr] = sum(vals) / len(vals)
+        # YTD：取每年第一個交易日（年份開頭）
+        if ytd_date is None or dstr[:4] != ytd_date[:4]:
+            if dstr[:4] == trade_date[:4] if trade_date else True:
+                ytd_date = dstr
+    # 計算各區間報酬
+    def perf(nm, offset, target_date=None):
+        series = ind_series.get(nm, {})
+        dates = sorted(series.keys())
+        if not dates:
+            return None
+        latest = dates[-1]
+        if target_date and target_date in series:
+            base_v = series[target_date]
+        else:
+            idx = max(0, len(dates) - 1 - offset)
+            base_v = series[dates[idx]]
+        cur_v = series[latest]
+        if base_v and base_v != 0:
+            return round((cur_v - base_v) / base_v * 100, 2)
+        return None
     out = []
     for nm, rec in ind.items():
         avg = round(rec["chg_sum"] / rec["cnt"], 2) if rec["cnt"] else 0.0
-        out.append({"nm": nm, "chg": avg, "cnt": rec["cnt"],
-                    "top": rec["top"] if rec["top"] is not None else 0.0})
+        out.append({
+            "nm": nm, "chg": avg, "cnt": rec["cnt"],
+            "top": rec["top"] if rec["top"] is not None else 0.0,
+            "w1": perf(nm, 5), "m1": perf(nm, 21), "m3": perf(nm, 63),
+            "m6": perf(nm, 126), "ytd": perf(nm, 0, ytd_date),
+            "y1": perf(nm, 252), "y5": perf(nm, len(ind_series.get(nm, {})) - 1) if ind_series.get(nm) else None,
+        })
     # 依官方 33 類順序排序（用 code_map 值順序）
     order = list(code_map.values())
     out.sort(key=lambda x: order.index(x["nm"]) if x["nm"] in order else 999)
@@ -164,7 +213,7 @@ def export_industry(conn, ov, trade_date):
             "count": len(out), "source": "twse-33-industry(114.06.09)"}
     with open(os.path.join(OUT, "industry.json"), "w", encoding="utf-8") as f:
         json.dump({"meta": meta, "industry": out}, f, ensure_ascii=False)
-    print(f"[industry] 匯出 {len(out)} 產業（官方 33 框架，含空類）→ data/industry.json")
+    print(f"[industry] 匯出 {len(out)} 產業（含區間績效）→ data/industry.json")
 
 def export_history(conn, ov):
     """259 天每日切片 → data/history/YYYYMMDD.json
