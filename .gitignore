@@ -9,6 +9,11 @@ node_modules/
 data/raw/
 data/daily-*.csv
 
+# 但 Build-Time 生成的 JSON（含 history 切片）要進 repo（Static-First / Fork-First）
+!data/*.json
+!data/history/
+!data/history/*.json
+
 # 私有/環境
 .env
 .env.*
