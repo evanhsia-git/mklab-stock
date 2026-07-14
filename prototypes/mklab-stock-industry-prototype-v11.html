@@ -105,8 +105,18 @@
   function rnd(seed){ let s=seed; return ()=>{ s=(s*1103515245+12345)&0x7fffffff; return s/0x7fffffff; }; }
   function spark(data,color,w,h){ const min=Math.min(...data),max=Math.max(...data),r=(max-min)||1; const p=data.map((d,i)=>`${(i/(data.length-1)*w).toFixed(1)},${(h-((d-min)/r*h)).toFixed(1)}`).join(" "); return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><polyline points="${p}" fill="none" stroke="${color}" stroke-width="1.5"/></svg>`; }
   function gen(seed,n){ const o=[]; let p=seed; for(let i=0;i<n;i++){ p+=(Math.random()-0.45)*seed*0.02; o.push(+p.toFixed(2)); } return o; }
-  // 生成產業資料
-  const data=INDUSTRIES.map((nm,i)=>{ const chg=+((Math.random()-0.45)*6).toFixed(2); const cnt=+(8+Math.random()*40).toFixed(0); const top=+((Math.random()-0.45)*5).toFixed(2); return {nm,chg,cnt,top,seed:+(20+i*37)}; });
+  // 生成產業資料（預設示意 fallback；載入 data/industry.json 後以真實資料覆寫）
+  let data=INDUSTRIES.map((nm,i)=>{ const chg=+((Math.random()-0.45)*6).toFixed(2); const cnt=+(8+Math.random()*40).toFixed(0); const top=+((Math.random()-0.45)*5).toFixed(2); return {nm,chg,cnt,top,seed:+(20+i*37)}; });
+  function loadIndustry(){
+    fetch('data/industry.json').then(r=>{ if(!r.ok) throw new Error('no'); return r.json(); }).then(d=>{
+      if(d && Array.isArray(d.industry) && d.industry.length){
+        data=d.industry.map((x,i)=>({nm:x.nm,chg:x.chg,cnt:x.cnt,top:x.top,seed:+(20+i*37)}));
+        renderGrid();
+        const asof=d.meta&&d.meta.as_of;
+        if(asof){ const f=document.querySelector('.freshness'); if(f) f.textContent='資料以 '+asof+' 收盤為準（Build-Time 自動更新）'; }
+      }
+    }).catch(()=>{});
+  }
   let activeInd=null;
   function renderGrid(){
     document.getElementById('igrid').innerHTML=data.map((d,i)=>{
@@ -138,6 +148,6 @@
   function openDrawer(){ document.getElementById("drawer").classList.add("open"); document.querySelector(".drawer-mask").classList.add("open"); }
   function closeDrawer(){ document.getElementById("drawer").classList.remove("open"); document.querySelector(".drawer-mask").classList.remove("open"); }
   function setLang(l){ document.getElementById("langZh").classList.toggle("on",l==="zh"); document.getElementById("langEn").classList.toggle("on",l==="en"); }
-  renderGrid();
-</script>
+  renderGrid(); loadIndustry();
+
 </body></html>

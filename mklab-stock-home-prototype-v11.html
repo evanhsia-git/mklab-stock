@@ -228,8 +228,8 @@
     }).join("")||`<div class="card-sm" style="grid-column:1/-1;text-align:center;color:var(--muted)">尚未設定自選股（於設定抽屜填入）</div>`;
   }
 
-  // 版塊 6：產業 TOP10
-  const industry=[
+  // 版塊 6：產業 TOP10（預設為示意 fallback，載入 data/stocks.json 後以真實資料覆寫）
+  let industry=[
     {ind:"半導體",sym:"2330",name:"台積電",price:1050,chg:+1.2,pe:24.1,pb:5.2,eps:43.6,roe:28.1,roa:15.3,rank:92,spct:+3.4},
     {ind:"電子代工",sym:"2317",name:"鴻海",price:215,chg:+0.9,pe:18.3,pb:2.1,eps:11.7,roe:14.2,roa:6.8,rank:84,spct:+2.0},
     {ind:"IC設計",sym:"2454",name:"聯發科",price:1280,chg:-0.5,pe:30.2,pb:4.8,roe:22.5,roa:14.0,rank:81,spct:-1.3},
@@ -241,12 +241,24 @@
     {ind:"半導體",sym:"2303",name:"聯電",price:52,chg:-0.3,pe:13.5,pb:1.6,eps:3.8,roe:12.1,roa:7.0,rank:74,spct:-0.5},
     {ind:"電子零組件",sym:"3008",name:"大立光",price:2280,chg:+0.6,pe:16.0,pb:2.0,eps:142,roe:13.0,roa:10.0,rank:78,spct:+1.0},
   ];
+  // Build-Time 真實資料載入（GitHub Pages / 本地 server 可讀；file:// 會失敗則保留 fallback）
+  function loadStocks(){
+    fetch('data/stocks.json').then(r=>{ if(!r.ok) throw new Error('no data'); return r.json(); }).then(d=>{
+      if(d && Array.isArray(d.stocks) && d.stocks.length){
+        industry=d.stocks.map(s=>({ind:s.ind,sym:s.sym,name:s.name,price:s.price,chg:s.chg,pe:s.pe,pb:s.pb,eps:s.eps,roe:s.roe,roa:s.roa,rank:s.rank,spct:s.spct}));
+        renderInd();
+        const asof=d.meta&&d.meta.as_of;
+        if(asof){ const f=document.querySelector('.freshness'); if(f) f.textContent='資料以 '+asof+' 收盤為準（Build-Time 自動更新）'; }
+      }
+    }).catch(()=>{ /* 保留 fallback 示意資料 */ });
+  }
   let sortKey="rank";
   function renderInd(){
     const arr=[...industry].sort((a,b)=> sortKey==="rank"?b.rank-a.rank:(b[sortKey]??-1e9)-(a[sortKey]??-1e9));
     document.getElementById("indBody").innerHTML=arr.map(s=>{
       const col=s.chg>=0?"#dc2626":"#16a34a";
       const txt=`20d: ${s.spct>=0?'+':''}${s.spct}% ${s.spct>=0?'▲':'▼'}`;
+      const sc=s.spct!=null?+s.spct.toFixed(2):0;
       return `<tr><td class="sym">${s.sym}<small>${s.name}</small></td><td>${s.price}</td><td class="${s.chg>=0?'up':'down'}">${(s.chg>0?'+':'')}${s.chg}%</td><td><b>${s.rank}</b></td><td>${s.pe}</td><td>${s.pb}</td><td>${s.eps}</td><td>${s.roe}</td><td>${s.roa}</td><td class="spark-cell" onmouseenter="tipIn(this,'${txt}')" onmouseleave="untipIn(this)">${spark(gen(s.price,20),col,180,34)}<div class="tip"></div></td><td>${s.ind}</td></tr>`;
     }).join("");
   }
@@ -257,7 +269,7 @@
   function toggle(id){ document.getElementById(id).classList.toggle("on"); }
   function setLang(l){ document.getElementById("langZh").classList.toggle("on",l==="zh"); document.getElementById("langEn").classList.toggle("on",l==="en"); }
   function toggleDark(){ const sw=document.getElementById("swDark"); const on=document.documentElement.getAttribute('data-theme')==='dark'; document.documentElement.setAttribute('data-theme', on?'light':'dark'); if(sw) sw.classList.toggle("on", !on); }
-  renderWatch(); renderInd();
+  renderWatch(); renderInd(); loadStocks();
 
   // ===== 版塊 2：KLineChart 自託管（K線 + MACD + KDJ + 畫圖工具）=====
   let klChart=null, klInited=false;

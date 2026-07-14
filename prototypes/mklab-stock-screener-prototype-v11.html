@@ -164,6 +164,16 @@
   const TPLS={ value:{f_pe:20,f_pb:5,f_div:3,f_roe:0,f_roa:0,f_eg:0,f_rsi:0,f_chg:0,f_cap:0}, quality:{f_pe:99,f_pb:99,f_div:0,f_roe:15,f_roa:8,f_eg:0,f_rsi:0,f_chg:0,f_cap:0}, growth:{f_pe:99,f_pb:99,f_div:0,f_roe:0,f_roa:0,f_eg:20,f_rsi:0,f_chg:0,f_cap:0}, momentum:{f_pe:99,f_pb:99,f_div:0,f_roe:0,f_roa:0,f_eg:0,f_rsi:70,f_chg:1,f_cap:0}, dividend:{f_pe:99,f_pb:99,f_div:5,f_roe:0,f_roa:0,f_eg:0,f_rsi:0,f_chg:0,f_cap:0} };
   function tpl(name){ const t=TPLS[name]; if(!t)return; for(const k in t){ const el=document.getElementById(k); if(el){ el.value=t[k]; const span=document.getElementById('v_'+k.slice(2)); if(span) span.textContent=t[k]; } } apply(); }
   let current=TOP100.slice();
+  function loadScreener(){
+    fetch('data/stocks.json').then(r=>{ if(!r.ok) throw new Error('no'); return r.json(); }).then(d=>{
+      if(d && Array.isArray(d.stocks) && d.stocks.length){
+        current=d.stocks.map(s=>({sym:s.sym,name:s.name,price:s.price,chg:s.chg,pe:s.pe,pb:s.pb,roe:s.roe,roa:s.roa,eg:(s.eps||0),rsi:50,ma5:s.chg>=0,ma10:s.chg>=0,ma30:s.chg>=0,cap:5000,div:(s.div||0)}));
+        apply();
+        const asof=d.meta&&d.meta.as_of;
+        if(asof){ const f=document.querySelector('.freshness'); if(f) f.textContent='資料以 '+asof+' 收盤為準（Build-Time 自動更新）'; }
+      }
+    }).catch(()=>{});
+  }
   const PER=10; let page=1;
   function loadSymbol(){ const v=document.getElementById('symInput').value.trim(); if(!v) return; if(!current.find(x=>String(x.sym)===v)){ current.unshift({sym:v,name:"自載"+v,price:+(50+Math.random()*500).toFixed(1),chg:+(Math.random()*6-2).toFixed(2),pe:+(10+Math.random()*30).toFixed(1),pb:+(1+Math.random()*5).toFixed(2),roe:+(5+Math.random()*30).toFixed(1),roa:+(2+Math.random()*15).toFixed(1),eg:+(0+Math.random()*20).toFixed(1),rsi:+(30+Math.random()*50).toFixed(0),ma5:Math.random()>0.4,ma10:Math.random()>0.45,ma30:Math.random()>0.5,cap:+(300+Math.random()*5000).toFixed(0),div:+(0+Math.random()*5).toFixed(1)}); } apply(); }
   function apply(){ const g=id=>parseFloat(document.getElementById(id).value)||0; const pe=g('f_pe'),pb=g('f_pb'),div=g('f_div'),roe=g('f_roe'),roa=g('f_roa'),eg=g('f_eg'),rsi=g('f_rsi'),chg=g('f_chg'),cap=g('f_cap'); const ma=document.getElementById('f_ma').value; const rows=current.filter(s=> s.pe<=pe&&s.pb<=pb&&s.div>=div&&s.roe>=roe&&s.roa>=roa&&s.eg>=eg&&s.rsi>=rsi&&s.chg>=chg&&s.cap>=cap&&(ma==='any'||(ma==='ma5'&&s.ma5)||(ma==='ma10'&&s.ma10)||(ma==='ma30'&&s.ma30))); const pages=Math.max(1,Math.ceil(rows.length/PER)); if(page>pages)page=pages; document.getElementById('count').textContent=`符合：${rows.length} / ${current.length} 檔`; const slice=rows.slice((page-1)*PER,page*PER); document.getElementById('resBody').innerHTML=slice.map(s=>`<tr><td class="sym">${s.sym}</td><td>${s.name}</td><td>${s.price}</td><td class="${s.chg>=0?'up':'down'}">${s.chg>0?'+':''}${s.chg}%</td><td>${s.pe}</td><td>${s.pb}</td><td>${s.roe}</td><td>${s.rsi}</td><td>${s.cap}</td></tr>`).join("")||`<tr><td colspan="9" style="text-align:center;color:var(--muted)">無符合條件</td></tr>`; renderPager(pages); }
@@ -175,6 +185,6 @@
   function openDrawer(){ document.getElementById("drawer").classList.add("open"); document.querySelector(".drawer-mask").classList.add("open"); }
   function closeDrawer(){ document.getElementById("drawer").classList.remove("open"); document.querySelector(".drawer-mask").classList.remove("open"); }
   function setLang(l){ document.getElementById("langZh").classList.toggle("on",l==="zh"); document.getElementById("langEn").classList.toggle("on",l==="en"); }
-  apply();
-</script>
+  apply(); loadScreener();
+
 </body></html>
