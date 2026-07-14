@@ -42,7 +42,7 @@
 </head>
 <body>
   <nav class="nav">
-    <a href="index.html">Market</a><a href="mklab-stock-screener.html">Screener</a><a href="mklab-stock-research.html">Research</a><a href="mklab-stock-industry.html">Industry</a><a href="mklab-stock-watchlist.html" class="active">Watchlist</a><a href="mklab-stock-help.html">說明</a>
+    <a href="index.html">Market</a><a href="mklab-stock-screener.html">Screener</a><a href="mklab-stock-research.html">Research</a><a href="mklab-stock-industry.html">Industry</a><a href="mklab-stock-watchlist.html" class="active">Watchlist</a>
   </nav>
   <div class="utilbar">
     <span class="brand">mklab-stock</span>
@@ -64,7 +64,7 @@
     <div class="row"><a href="mklab-stock-help.html">功能說明（使用/資料源/評分標準）↗</a></div>
     <div class="row"><a href="https://github.com/evanhsia-git/mklab-stock#readme" target="_blank" rel="noopener">使用說明 ↗</a></div>
     <h4>System</h4>
-    <div class="sys-note">版本：v11<br>更新：2026-07-14 08:30<br>狀態：<span class="up">●</span> 正常</div>
+    <div class="sys-note">版本：dashboard v3.0<br>資料源：TWSE/TPEX/Yahoo/Stooq<br>最後更新：2026-07-14 08:30<br>狀態：<span class="up">●</span> 正常運作</div>
   </aside>
   <div class="wrap">
     <div class="row-input">
@@ -95,7 +95,7 @@
   function closeDrawer(){ document.getElementById("drawer").classList.remove("open"); document.querySelector(".drawer-mask").classList.remove("open"); }
   function setLang(l){ document.getElementById("langZh").classList.toggle("on",l==="zh"); document.getElementById("langEn").classList.toggle("on",l==="en"); }
   function toggleSearch(){ const b=document.getElementById("searchBox"); const inp=b.querySelector("input"); const exp=b.classList.toggle("expanded"); b.classList.toggle("collapsed",!exp); if(exp){ inp.style.display="block"; inp.focus(); } else { inp.style.display="none"; } }
-  function doSearch(){ const v=document.getElementById("q").value.trim(); if(v) alert("將跳轉 "+v+" 至 Research 頁（React 階段實作）"); }
+  function doSearch(){ const v=document.getElementById('q').value.trim(); if(v){ window.location.href='mklab-stock-research.html?sym='+encodeURIComponent(v); } }
   render();
 </script>
 </body></html>

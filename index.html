@@ -174,7 +174,7 @@
   function tipIn(el,t){ const x=el.querySelector('.tip'); if(x){x.textContent=t;x.style.display='block';} }
   function untipIn(el){ const x=el.querySelector('.tip'); if(x)x.style.display='none'; }
   function toggleSearch(){ const b=document.getElementById('searchBox'); const inp=b.querySelector('input'); const exp=b.classList.toggle('expanded'); b.classList.toggle('collapsed',!exp); if(exp){ inp.style.display='block'; inp.focus(); } else { inp.style.display='none'; } }
-  function doSearch(){ const v=document.getElementById('q').value.trim(); if(v) alert('將跳轉 '+v+' 至 Research 頁（React 階段實作）'); }
+  function doSearch(){ const v=document.getElementById('q').value.trim(); if(v){ window.location.href='mklab-stock-research.html?sym='+encodeURIComponent(v); } }
 
   // 版塊 1：五國股市
   const indices5=[

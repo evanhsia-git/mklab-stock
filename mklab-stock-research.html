@@ -78,15 +78,15 @@
 </head>
 <body>
   <nav class="nav">
-    <a href="index.html">Market</a><a href="mklab-stock-screener.html">Screener</a><a href="mklab-stock-research.html" class="active">Research</a><a href="mklab-stock-industry.html">Industry</a><a href="mklab-stock-watchlist.html">Watchlist</a><a href="mklab-stock-help.html">說明</a>
+    <a href="index.html">Market</a><a href="mklab-stock-screener.html">Screener</a><a href="mklab-stock-research.html" class="active">Research</a><a href="mklab-stock-industry.html">Industry</a><a href="mklab-stock-watchlist.html">Watchlist</a>
   </nav>
   <div class="utilbar">
     <span class="brand">mklab-stock</span>
-    <div class="search collapsed" id="searchBox"><input id="q" placeholder="搜尋代號，如 2330" onkeydown="if(event.key==='Enter')doSearch()" style="display:none"><button class="fab-btn" style="width:32px;height:32px" onclick="toggleSearch()" title="搜尋">🔍</button></div>
     <span class="spacer"></span>
-    <button class="fab-btn" onclick="openDrawer()" title="設定"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <div class="search collapsed" id="searchBox"><input id="q" placeholder="搜尋代號，如 2330" onkeydown="if(event.key==='Enter')doSearch()" style="display:none"><button class="fab-btn" style="width:32px;height:32px" onclick="toggleSearch()" title="搜尋">🔍</button></div>
     <button class="fab-btn" onclick="toggleDark()" title="主題"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
-    <a class="fab-btn" href="https://github.com/evanhsia-git/mklab-stock" target="_blank" title="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-1-2.6c3-.3 6-1.5 6-6.5a5 5 0 0 0-1.4-3.5 4.7 4.7 0 0 0-.1-3.5s-1.1-.3-3.5 1.3a12 12 0 0 0-6.3 0C6.5 1.3 5.4 1.6 5.4 1.6a4.7 4.7 0 0 0-.1 3.5A5 5 0 0 0 4 8.6c0 5 3 6.2 6 6.5a3.4 3.4 0 0 0-1 2.6V22"/></svg></a>
+    <a class="fab-btn" href="https://github.com/evanhsia-git/mklab-stock" target="_blank" title="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-1-2.6c3-.3 6-1.5 6-6.5a5 5 0 0 0-1.4-3.5a4.7 4.7 0 0 0-.1-3.5s-1.1-.3-3.5 1.3a12 12 0 0 0-6.3 0C6.5 1.3 5.4 1.6 5.4 1.6a4.7 4.7 0 0 0-.1 3.5A5 5 0 0 0 4 8.6c0 5 3 6.2 6 6.5a3.4 3.4 0 0 0-1 2.6V22"/></svg></a>
+    <button class="fab-btn" onclick="openDrawer()" title="設定"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
   </div>
   <div class="freshness">資料以 2026-07-13 收盤為準（前一日，非即時）</div>
   <div class="drawer-mask" onclick="closeDrawer()"></div>
@@ -100,7 +100,7 @@
     <div class="row"><a href="mklab-stock-help.html">功能說明（使用/資料源/評分標準）↗</a></div>
     <div class="row"><a href="https://github.com/evanhsia-git/mklab-stock#readme" target="_blank" rel="noopener">使用說明 ↗</a></div>
     <h4>System</h4>
-    <div class="sys-note">版本：v11<br>更新：2026-07-14 08:30<br>狀態：<span class="up">●</span> 正常</div>
+    <div class="sys-note">版本：dashboard v3.0<br>資料源：TWSE/TPEX/Yahoo/Stooq<br>最後更新：2026-07-14 08:30<br>狀態：<span class="up">●</span> 正常運作</div>
   </aside>
   <div class="wrap">
     <div class="layout">
@@ -171,7 +171,7 @@
   }
   function search(){ const v=document.getElementById('q2').value.trim(); if(STOCKS[v]) sel(v); }
   function toggleSearch(){ const b=document.getElementById('searchBox'); const inp=b.querySelector('input'); const exp=b.classList.toggle('expanded'); b.classList.toggle('collapsed',!exp); if(exp){ inp.style.display='block'; inp.focus(); } else { inp.style.display='none'; } }
-  function doSearch(){ const v=document.getElementById('q').value.trim(); if(v) alert('將跳轉 '+v+' 至 Research 頁（React 階段實作）'); }
+  function doSearch(){ const v=document.getElementById('q').value.trim(); if(v){ window.location.href='mklab-stock-research.html?sym='+encodeURIComponent(v); } }
   function toggleDark(){ const sw=document.getElementById("swDark"); const on=document.documentElement.getAttribute('data-theme')==='dark'; document.documentElement.setAttribute('data-theme', on?'light':'dark'); if(sw) sw.classList.toggle("on", !on); }
   function openDrawer(){ document.getElementById("drawer").classList.add("open"); document.querySelector(".drawer-mask").classList.add("open"); }
   function closeDrawer(){ document.getElementById("drawer").classList.remove("open"); document.querySelector(".drawer-mask").classList.remove("open"); }
@@ -193,5 +193,11 @@
   function klRemoveAll(){ if(!rChart) return; rChart.removeOverlay(); }
   window.addEventListener('load', ()=>klRender('2330'));
   renderList(); sel("2330");
+  // 接收來自搜尋跳轉的 ?sym= 參數，自動選股
+  (function(){
+    const p=new URLSearchParams(location.search).get('sym');
+    if(p && STOCKS[p]){ document.getElementById('q2').value=p; sel(p); }
+    else if(p){ document.getElementById('q2').value=p; }
+  })();
 </script>
 </body></html>
