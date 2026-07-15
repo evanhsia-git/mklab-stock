@@ -9,10 +9,10 @@
   [data-theme="light"] { --bg:#f7f8fa; --surface:#fff; --ink:#1a1d21; --muted:#6b7280; --border:#e5e7eb; --accent:#2563eb; --up:#dc2626; --down:#16a34a; --shadow:0 1px 3px rgba(0,0,0,.08); }
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:-apple-system,"Segoe UI","PingFang TC","Microsoft JhengHei",sans-serif; background:var(--bg); color:var(--ink); line-height:1.5; }
-  .nav { position:sticky; top:0; z-index:25; background:var(--surface); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:4px; padding:10px 12px; }
+  .nav { position:sticky; top:0; z-index:26; background:var(--surface); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:4px; padding:10px 12px; }
   .nav a { color:var(--ink); text-decoration:none; font-size:14px; padding:6px 10px; border-radius:8px; white-space:nowrap; }
   .nav a.active { background:var(--accent); color:#fff; }
-  .utilbar { position:sticky; top:49px; z-index:24; background:var(--surface); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; padding:8px 12px; }
+  .utilbar { position:sticky; top:49px; z-index:25; background:var(--surface); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; padding:8px 12px; }
   .utilbar .spacer { flex:1; }
   .brand { font-weight:700; font-size:15px; margin-right:4px; white-space:nowrap; }
   .search { display:flex; align-items:center; gap:4px; background:var(--bg); border:1px solid var(--border); border-radius:20px; padding:4px 10px; }
@@ -35,6 +35,10 @@
   .symlist div { padding:8px; border-radius:8px; cursor:pointer; font-size:13px; }
   .symlist div:hover { background:var(--row-hover); }
   .symlist .on { background:var(--accent); color:#fff; }
+  .pager { display:flex; gap:6px; justify-content:center; margin:12px 0; flex-wrap:wrap; }
+  .pager button { padding:6px 11px; border:1px solid var(--border); border-radius:8px; background:var(--surface); color:var(--ink); cursor:pointer; font-size:13px; }
+  .pager button:hover { background:var(--row-hover); }
+  .pager button.on { background:var(--accent); color:#fff; border-color:var(--accent); }
   .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:14px; box-shadow:var(--shadow); margin-bottom:12px; }
   .card h3 { font-size:15px; margin-bottom:8px; }
   .kv { display:grid; grid-template-columns:repeat(auto-fit,minmax(110px,1fr)); gap:10px; }
@@ -77,7 +81,8 @@
 <script src="vendor/klinecharts.min.js"></script>
 </head>
 <body>
-  <div id="utilbar" class="utilbar"><span class="brand" id="brand"></span><nav id="mainNav" class="nav"></nav><span class="spacer"></span></div>
+  <nav id="mainNav" class="nav"></nav>
+  <div id="utilbar" class="utilbar"><span class="brand" id="brand"></span><span class="spacer"></span></div>
   <div class="freshness">資料以 2026-07-13 收盤為準（前一日，非即時）</div>
   <div class="drawer-mask" onclick="MKLAB.Drawer.close()"></div>
   <aside class="drawer" id="drawer">

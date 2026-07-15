@@ -9,11 +9,11 @@
   [data-theme="light"] { --bg:#f7f8fa; --surface:#fff; --ink:#1a1d21; --muted:#6b7280; --border:#e5e7eb; --accent:#2563eb; --up:#dc2626; --down:#16a34a; --warn:#d97706; --shadow:0 1px 3px rgba(0,0,0,.08); }
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:-apple-system,"Segoe UI","PingFang TC","Microsoft JhengHei",sans-serif; background:var(--bg); color:var(--ink); line-height:1.5; }
-  .nav { position:sticky; top:0; z-index:25; background:var(--surface); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:4px; padding:10px 12px; }
+  .nav { position:sticky; top:0; z-index:26; background:var(--surface); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:4px; padding:10px 12px; }
   .nav .brand { font-weight:700; font-size:15px; margin-right:12px; white-space:nowrap; }
   .nav a { color:var(--ink); text-decoration:none; font-size:14px; padding:6px 10px; border-radius:8px; white-space:nowrap; }
   .nav a.active { background:var(--accent); color:#fff; }
-  .utilbar { position:sticky; top:49px; z-index:24; background:var(--surface); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; padding:8px 12px; }
+  .utilbar { position:sticky; top:49px; z-index:25; background:var(--surface); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; padding:8px 12px; }
   .utilbar .spacer { flex:1; }
   .fab-btn { width:40px; height:40px; border-radius:50%; border:1px solid var(--border); background:var(--surface); color:var(--ink); cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow); }
   .fab-btn svg { width:20px; height:20px; display:block; }
@@ -28,6 +28,10 @@
   .row-input input { flex:1; padding:8px; border:1px solid var(--border); border-radius:8px; background:var(--bg); color:var(--ink); }
   .row-input button { padding:8px 12px; background:var(--accent); color:#fff; border:none; border-radius:8px; cursor:pointer; }
   .table-wrap { background:var(--surface); border-radius:var(--radius); box-shadow:var(--shadow); overflow-x:auto; }
+  .pager { display:flex; gap:6px; justify-content:center; margin:12px 0; flex-wrap:wrap; }
+  .pager button { padding:6px 11px; border:1px solid var(--border); border-radius:8px; background:var(--surface); color:var(--ink); cursor:pointer; font-size:13px; }
+  .pager button:hover { background:var(--row-hover); }
+  .pager button.on { background:var(--accent); color:#fff; border-color:var(--accent); }
   table { width:100%; border-collapse:collapse; }
   th,td { padding:10px 8px; text-align:right; font-size:13px; border-bottom:1px solid var(--border); white-space:nowrap; }
   th:first-child,td:first-child { text-align:left; }
@@ -63,7 +67,8 @@
 </style>
 </head>
 <body>
-  <div id="utilbar" class="utilbar"><span class="brand" id="brand"></span><nav id="mainNav" class="nav"></nav><span class="spacer"></span></div>
+  <nav id="mainNav" class="nav"></nav>
+  <div id="utilbar" class="utilbar"><span class="brand" id="brand"></span><span class="spacer"></span></div>
   <div class="freshness">資料以 2026-07-13 收盤為準（前一日，非即時）</div>
   <div class="drawer-mask" onclick="MKLAB.Drawer.close()"></div>
   <aside class="drawer" id="drawer">

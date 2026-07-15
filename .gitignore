@@ -14,6 +14,11 @@ data/daily-*.csv
 !data/history/
 !data/history/*.json
 
+# Python 快取 / 本地 QA 輸出
+__pycache__/
+*.pyc
+qa-result.json
+
 # 私有/環境
 .env
 .env.*

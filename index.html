@@ -9,10 +9,10 @@
   [data-theme="dark"] { --bg:#0f1115; --surface:#171a21; --ink:#e8eaed; --muted:#9aa0a6; --border:#2a2f3a; --accent:#3b82f6; --up:#f87171; --down:#4ade80; --row-hover:#1e2a3a; --shadow:0 1px 3px rgba(0,0,0,.4); }
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:-apple-system,"Segoe UI","PingFang TC","Microsoft JhengHei",sans-serif; background:var(--bg); color:var(--ink); line-height:1.5; padding-bottom:20px; }
-  .nav { position:sticky; top:0; z-index:25; background:var(--surface); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:4px; padding:10px 12px; }
+  .nav { position:sticky; top:0; z-index:26; background:var(--surface); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:4px; padding:10px 12px; }
   .nav a { color:var(--ink); text-decoration:none; font-size:14px; padding:6px 10px; border-radius:8px; white-space:nowrap; }
   .nav a.active { background:var(--accent); color:#fff; }
-  .utilbar { position:sticky; top:49px; z-index:24; background:var(--surface); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; padding:8px 12px; }
+  .utilbar { position:sticky; top:49px; z-index:25; background:var(--surface); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; padding:8px 12px; }
   .utilbar .spacer { flex:1; }
   .brand { font-weight:700; font-size:15px; margin-right:4px; white-space:nowrap; }
   .search { display:flex; align-items:center; gap:4px; background:var(--bg); border:1px solid var(--border); border-radius:20px; padding:4px 10px; }
@@ -49,6 +49,10 @@
   .disclaimer { font-size:11px; color:var(--muted); text-align:center; padding:20px 12px; }
   /* table (zebra + hover) */
   .table-wrap { background:var(--surface); border-radius:var(--radius); box-shadow:var(--shadow); overflow-x:auto; }
+  .pager { display:flex; gap:6px; justify-content:center; margin:12px 0; flex-wrap:wrap; }
+  .pager button { padding:6px 11px; border:1px solid var(--border); border-radius:8px; background:var(--surface); color:var(--ink); cursor:pointer; font-size:13px; }
+  .pager button:hover { background:var(--row-hover); }
+  .pager button.on { background:var(--accent); color:#fff; border-color:var(--accent); }
   table { width:100%; border-collapse:collapse; }
   th,td { padding:10px 8px; text-align:right; font-size:13px; border-bottom:1px solid var(--border); white-space:nowrap; }
   th:first-child,td:first-child { text-align:left; }
@@ -89,7 +93,8 @@
 <script src="data/twii_kdata.js"></script>
 </head>
 <body>
-  <div id="utilbar" class="utilbar"><span class="brand" id="brand"></span><nav id="mainNav" class="nav"></nav><span class="spacer"></span></div>
+  <nav id="mainNav" class="nav"></nav>
+  <div id="utilbar" class="utilbar"><span class="brand" id="brand"></span><span class="spacer"></span></div>
   <div class="freshness">資料以 2026-07-13 收盤為準（前一日，非即時）</div>
   <div class="drawer-mask" onclick="MKLAB.Drawer.close()"></div>
   <aside class="drawer" id="drawer">
@@ -125,7 +130,7 @@
     <div class="cards" id="watch5"></div>
 
     <!-- 版塊 6：綜合評分 TOP 10 -->
-    <div class="section-title">綜合評分 TOP 10（值得推薦的 10 支，點標題排序切換升/降）<span id="indCount"></span></div>
+    <div class="section-title">綜合評分 TOP 10 (點標題排序切換升/降排序) 總共 <span id="indCount"></span> 檔</div>
     <div class="table-wrap">
       <table id="indTable">
         <thead></thead>
@@ -277,7 +282,7 @@
       .filter(s=>s.score>0 && (s.pe!=null||s.pb!=null||s.roe!=null||s.eps!=null));
     if(!indTable){
       indTable = MKLAB.DataTable('indTable', {
-        cols: ['sym','price','chg','score','pe','pb','eps','roe','roa','trend','ind'],
+        cols: ['sym','price','chg','score','pe','pb','eps','roe','trend','ind'],
         rows: scored,
         pageSize: 10,
         pagerId: 'indPager',
