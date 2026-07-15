@@ -9,19 +9,18 @@ update_overview.py — 本機 DB 補齊 ROE / ROA（寫回 tw_stock_all.db）
      - taiwan_stock_balance_sheet → 權益總計 / 資產總額
      - taiwan_stock_financial_statement → 本期淨利
      - 計算：ROE = 淨利 / 權益總計 * 100；ROA = 淨利 / 資產總額 * 100
-     - 免 key（FinMind 匿名登入），台股專用
   2. [備援] yfinance（免 key）
      - 2330.TW 等，讀 balance_sheet / income_stmt 算 ROE/ROA
   3. [預留] TWSE OpenAPI / MOPS 財報端點
      - 本環境直接呼叫回傳空/redirect（需 session/cookie），暫不啟用
-     - 端點註解見 fetch_twse_financials()
 
 計算公式（計算式解決方案）：
   ROE (%) = NetIncome / StockholdersEquity * 100
   ROA (%) = NetIncome / TotalAssets        * 100
 
-⚠️ 注意：FinMind 財報為「單季」資料，若需年度 ROE/ROA 應取 TTM（近四季加總淨利）
-        或年度財報。本腳本預設取「最新一季」計算，後續可加 --annual 參數擴充。
+⚠️ FinMind 現狀（2026-07-15 實測）：匿名模式被 IP rate-limit（每 3-4 檔鎖）；
+   環境變數 FINMIND_TOKEN 過期（Token is illegal）。故當前實際只用 yfinance。
+   腳本會自動偵測 FinMind 連續失敗並降級到 yfinance，無需手動指定。
 
 ================================================================================
 寫入目標
@@ -32,17 +31,30 @@ update_overview.py — 本機 DB 補齊 ROE / ROA（寫回 tw_stock_all.db）
     - roa  欄：ADD COLUMN roa（本表原無此欄，經 PRAGMA 證實）
 
 ================================================================================
-用法
+用法（手動一次補完）
 ================================================================================
-  python3 scripts/update_overview.py            # 全量更新（1369 檔，慢）
-  python3 scripts/update_overview.py --limit 20 # 只跑前 20 檔（測試）
-  python3 scripts/update_overview.py --force    # 強制覆寫既有 roe/roa
+  python3 scripts/update_overview.py                 # 全量補齊（缺失的才抓）
+  python3 scripts/update_overview.py --force         # 強制覆寫所有 roe/roa
+  python3 scripts/update_overview.py --skip-finmind  # 跳過 FinMind（純 yfinance）
+
+================================================================================
+用法（cron 自動化 / 每日排程）
+================================================================================
+  # 每日增量：只補「還沒值」的檔，跑完即退（適合系統 crontab / Hermes cron）
+  python3 scripts/update_overview.py --cron
+
+  # 每日限量分批：每天最多抓 200 檔（避免 yfinance 被 ban，慢慢補到滿）
+  python3 scripts/update_overview.py --cron --daily-limit 200
+
+  # 排程範例（每週六 03:00 跑，與雲端 weekly-roe 同頻率）：
+  # 0 3 * * 6 cd /root/Documents/mklab-stock && python3 scripts/update_overview.py --cron >> /var/log/mklab_roa.log 2>&1
 
 注意：本腳本只更新「財務衍生欄位(roe/roa)」，不動收盤價/產業/市值等。
       執行後需再跑 export_db.py 匯出 stocks.json 才會反映到前端。
 """
 
 import argparse
+import json
 import os
 import sqlite3
 import sys
@@ -50,7 +62,7 @@ import time
 import datetime as dt
 
 DB = "/root/Documents/database/tw_stock_all.db"
-SLEEP = 0.5  # FinMind 較快，間隔縮短；yfinance 備援時用 1s
+SLEEP = 1.0  # yfinance 備援時每檔間隔（防 ban）
 
 
 def conn_db():
@@ -72,21 +84,34 @@ def ensure_columns(conn):
     conn.commit()
 
 
-def get_symbols(conn):
-    """從 stock_overview 取出所有代號（數字開頭，台股）"""
-    cur = conn.execute("SELECT stock_id FROM stock_overview")
+def get_symbols(conn, incremental=False, daily_limit=0, skip_etf=True):
+    """
+    從 stock_overview 取出候選代號。
+    - incremental: 只取「roe 或 roa 為 null」的（cron 模式預設）
+    - skip_etf: 排除 yfinance 無財報的類型（含字母尾碼如 00400A、末碼 T/B/D 等）
+    - daily_limit: 限制回傳數量（分批用）
+    """
+    if incremental:
+        cur = conn.execute(
+            "SELECT stock_id FROM stock_overview WHERE roe IS NULL OR roa IS NULL"
+        )
+    else:
+        cur = conn.execute("SELECT stock_id FROM stock_overview")
     syms = [r[0] for r in cur.fetchall() if r[0] and r[0][0].isdigit()]
+
+    if skip_etf:
+        # ETF 代號特徵：第 5-6 碼含字母（00400A）、末碼 T/B/D（平衡/債券 ETF）
+        def is_etf(s):
+            return any(c.isalpha() for c in s[4:]) or s[-1] in ("T", "B", "D")
+        syms = [s for s in syms if not is_etf(s)]
+
+    if daily_limit:
+        syms = syms[:daily_limit]
     return syms
 
 
 def fetch_twse_financials(sym):
-    """
-    [預留] TWSE/MOPS 財報端點（目前本環境無法直接呼叫，保留擴充）。
-    回傳 (net_income, equity, total_assets) 或 None。
-    未來啟用方式：
-      - TWSE: https://openapi.twse.com.tw/v1/company/BalanceSheet/{sym}?year=&season=
-      - MOPS: https://mops.twse.com.tw/mops/web/t146sb05 (POST form)
-    """
+    """[預留] TWSE/MOPS 財報端點（目前本環境無法直接呼叫，保留擴充）。"""
     return None
 
 
@@ -161,7 +186,6 @@ def update_one(conn, sym, force=False, use_finmind=True):
     if not force and has_roe and has_roa:
         return False  # 已有，跳過
 
-    # 優先順序：FinMind → yfinance → TWSE(預留)
     rec = fetch_finmind(sym) if use_finmind else None
     if rec is None:
         rec = fetch_yfinance(sym)
@@ -182,23 +206,31 @@ def main():
     ap.add_argument("--limit", type=int, default=0, help="只跑前 N 檔（測試）")
     ap.add_argument("--force", action="store_true", help="強制覆寫既有 roe/roa")
     ap.add_argument("--skip-finmind", action="store_true", help="跳過 FinMind（當 IP 被 limit 時用 yfinance）")
+    ap.add_argument("--cron", action="store_true", help="cron 模式：增量補齊 + JSON log + exit code")
+    ap.add_argument("--daily-limit", type=int, default=0, help="每日限量（cron 分批用，0=不限制）")
+    ap.add_argument("--no-skip-etf", action="store_true", help="不排除 ETF（預設排除，因 yfinance 無 ETF 財報）")
     args = ap.parse_args()
+
+    incremental = args.cron  # cron 模式預設增量
+    skip_etf = not args.no_skip_etf
 
     conn = conn_db()
     ensure_columns(conn)
-    syms = get_symbols(conn)
+    syms = get_symbols(conn, incremental=incremental, daily_limit=args.daily_limit, skip_etf=skip_etf)
     if args.limit:
         syms = syms[: args.limit]
     use_finmind = not args.skip_finmind
     if not use_finmind:
         print("[mode] 跳過 FinMind，純 yfinance 備援")
-    print(f"[start] 共 {len(syms)} 檔，force={args.force}，finmind={'on' if use_finmind else 'off'}")
+    mode_desc = "cron增量" if incremental else "全量"
+    print(f"[start] 模式={mode_desc} 共 {len(syms)} 檔，force={args.force}，finmind={'on' if use_finmind else 'off'}")
 
     updated = 0
+    skipped_existing = 0
+    failed = 0
     finmind_fail_streak = 0
     for i, sym in enumerate(syms):
         try:
-            # FinMind 連續失敗 3 次 → 暫時停用（IP 被 limit，避免每檔浪費時間）
             if use_finmind and finmind_fail_streak >= 3:
                 use_finmind = False
                 print(f"  [warn] FinMind 連續失敗，改用 yfinance 備援")
@@ -207,18 +239,34 @@ def main():
                 updated += 1
                 finmind_fail_streak = 0
             else:
-                finmind_fail_streak += 1
+                skipped_existing += 1
         except Exception as e:
             print(f"  [skip] {sym}: {e}")
-            finmind_fail_streak += 1
+            failed += 1
         if (i + 1) % 50 == 0:
             print(f"  [progress] {i + 1}/{len(syms)} 已更新 {updated}")
         time.sleep(SLEEP)
 
     conn.commit()
     conn.close()
-    print(f"[done] 更新 {updated} 檔 ROE/ROA → {DB}")
-    print(f"[next] 執行 python3 scripts/export_db.py 匯出 stocks.json 反映前端")
+
+    result = {
+        "mode": mode_desc,
+        "total": len(syms),
+        "updated": updated,
+        "skipped_existing": skipped_existing,
+        "failed": failed,
+        "finmind_used": use_finmind,
+        "timestamp": dt.datetime.now().isoformat(),
+    }
+    if args.cron:
+        print(json.dumps(result, ensure_ascii=False))
+    else:
+        print(f"[done] 更新 {updated} 檔 ROE/ROA → {DB}")
+        print(f"[next] 執行 python3 scripts/export_db.py 匯出 stocks.json 反映前端")
+
+    # exit code: 0=成功（含跳過已有）, 1=有失敗需檢查
+    sys.exit(1 if failed else 0)
 
 
 if __name__ == "__main__":

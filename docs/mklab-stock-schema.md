@@ -349,27 +349,36 @@ MKLAB.DataTable(tableId, {
 - **跳過邏輯**：`--skip-finmind` 直接不呼叫 FinMind；未加此參數時，FinMind 連續失敗 3 次自動停用（避免每檔浪費 ~1s 在 limit 錯誤）
 - **全量一次跑**：`python3 scripts/update_overview.py --skip-finmind`（背景跑 ~70min，補滿 roe 剩 444 + roa 全 1486）
 - **未來 FinMind 解鎖後**：去掉 `--skip-finmind` 重跑（FinMind 主源覆蓋 yfinance 年度值，改抓季度更精準）
-- **注意**：ETF（代號含字母尾如 00400A）yfinance 無財報，會自動跳過（roe/roa 保持 null）；這是正常的，前端顯示 `-`
+### 7.6 分批補齊策略（cron 友善）
+- **改善版腳本**（2026-07-15 重寫）支援 cron 自動化：
+  - `--cron`：增量模式，只補「roe 或 roa 為 null」的檔，跑完即退（適合排程）
+  - `--daily-limit N`：每日限量分批（避免 yfinance 被 ban）
+  - `--skip-etf`（預設開啟）：自動排除 ETF（含字母尾碼/末碼 T/B/D），因 yfinance 無 ETF 財報
+  - `--skip-finmind`：跳過被鎖的 FinMind，純 yfinance
+  - 輸出 JSON log + exit code（0=成功, 1=有失敗）
+- **全量一次補完**：`python3 scripts/update_overview.py --skip-finmind`（背景跑 ~60min）
+- **未來 FinMind 解鎖後**：去掉 `--skip-finmind` 重跑（FinMind 主源，季度更精準）
 
-### 7.7 補齊後續步驟
-1. 跑完 `update_overview.py` → DB 的 stock_overview.roe/roa 填滿
-2. `python3 scripts/export_db.py` → 匯出 stocks.json（前端才會顯示 roa 欄）
-3. 雲端 CI 的 `weekly-roe` job 每週六也會用 yfinance 補（但本機 DB 不依賴雲端，需手動跑本腳本）
-
-### 7.8 mklab-stock 能否「每日自動抓取 roa」？
+### 7.8 mklab-stock 能否「自動抓取 roa」？
 **分兩層（2026-07-15 釐清）：**
 | 層級 | 能否自動抓 roa | 機制 |
 |------|---------------|------|
 | **雲端 GitHub Pages（stocks.json）** | ✅ 已會 | `daily-update.yml` 的 `weekly-roe` job：**每週六 18:00 台灣時間**自動跑 `fetch_data.py weekly`，yfinance 補 ROE/ROA |
-| **本機 DB（tw_stock_all.db）** | ❌ 不會 | `update_overview.py` 是手動腳本，無設 cron/定時任務 |
+| **本機 DB（tw_stock_all.db）** | ✅ 可設（原為手動） | 改善版 `update_overview.py` 支援 `--cron` 增量模式，設系統 crontab / Hermes cron 即可自動補 |
+
+**本機自動化設定（推薦）**：
+```bash
+# 每週六 03:00 跑（與雲端 weekly-roe 同頻率，避免重複打 yfinance）
+0 3 * * 6 cd /root/Documents/mklab-stock && python3 scripts/update_overview.py --cron --skip-finmind >> /var/log/mklab_roa.log 2>&1
+```
+- `--cron` 增量：只補缺失檔，平時幾秒跑完；若某次補齊後有新上市股，下次自動補
+- 若 FinMind 未來有有效 token：去掉 `--skip-finmind`（FinMind 主源，季度更精準）
 
 **關鍵認知**：
 - ROE/ROA 是**季度/年度**資料（非每日變動），「每日抓」意義不大 → 每週六補一次即可
 - 真正的「每日」資料是收盤價/漲跌（已由 `daily` 模式處理）
-- **建議**：本機 DB 設**每週六** Hermes cron 或系統 crontab 跑 `update_overview.py --skip-finmind`（與雲端同頻率），保持 DB 與雲端一致
-- 若 FinMind 未來有有效 token：改為不加 `--skip-finmind`（FinMind 主源，季度更精準）
 
-### 7.9 本輪實作問題與解決（2026-07-15）
+
 | # | 問題 | 根因 | 解決 |
 |---|------|------|------|
 | 1 | `update_overview.py` 的 `--skip-finmind` 無效 | patch 被中斷，main() 殘留重複舊迴圈（無 skip 判斷） | 重寫 main()，移除重複迴圈，skip 參數生效 |
