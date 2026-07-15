@@ -82,3 +82,27 @@ jobs:
             git commit -m "data: 全球指數/ETF 更新 $(date +%Y-%m-%d) [skip ci]"
             git push
           fi
+
+  twii-kline:
+    if: github.event.schedule == '30 9 * * 1-5'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install yfinance
+        run: pip install yfinance
+      - name: Fetch TWII 加權指數 K 線 (yfinance ^TWII, 260 日窗口)
+        run: python scripts/fetch_data.py twii
+      - name: Commit & push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if git diff --cached --quiet; then
+            echo "no changes"
+          else
+            git commit -m "data: TWII 加權指數 K 線更新 $(date +%Y-%m-%d) [skip ci]"
+            git push
+          fi

@@ -1,120 +1,98 @@
-# mklab-stock handoff（工作交接狀態）
+# mklab-stock Handoff（2026-07-15）
 
-最後更新：2026-07-15
-狀態：未完成上線，有一個 blocker 待修。
+> 本檔記錄當前進度與待修項目。新 session 接手時先讀此檔 + 執行導航（SCHEMA/policy/index/log）。
 
-## 目標
-把 mklab-stock 儀表板的「表格顯示」與「頂部工具列 + 設定抽屜」都收成共用模組（單一來源維護），5 頁一致，最後驗證上線。
+## 當前 Git 狀態
+- Branch: `master`（推送到 `origin/main`）
+- 最新 commit: `d023442` (fix: export_db.py 漏匯出 roa + 全量補齊 ROE/ROA)
+- 工作區可能有未提交修改（Research 頁重構中，見下方待修）
 
-## 已完成
-1. `assets/mklab-core.js` 單一模組檔，含 4 個子模組：
-   - `MKLAB.DataTable`：22 欄 COLUMNS 註冊表 + 表格類（排序/格式化/分頁/箭頭）
-   - `MKLAB.Drawer`：設定抽屜（外觀/語言/說明/System）
-   - `MKLAB.Watch`：共用自選清單（localStorage，首頁與 watchlist 共用同一份）
-   - `MKLAB.Shell`：頂部工具列（搜尋鍵/深色按鈕/GitHub 跳轉/設定鍵/導覽列）
-2. 5 頁工具列已遷移（你本輪要求）：
-   - index.html / mklab-stock-screener.html / mklab-stock-research.html / mklab-stock-industry.html / mklab-stock-watchlist.html
-   - 舊的 nav+utilbar 硬寫 HTML 刪除，改為 `<div id="utilbar"></div>` + `MKLAB.Shell.mount({active:'market'|'screener'|'research'|'industry'|'watchlist'})`
-   - 各頁舊的 `toggleSearch/doSearch/toggleDark/setLang` 重複函式已刪除
-   - 瀏覽器實測 index：工具列渲染正常（品牌+5導覽+搜尋+主題+GitHub+設定），設定抽屜內容（外觀/語言/說明/System）全頁一致 ✓
-3. 抽屜 bug 已修：核心模組缺 `MKLAB.initDrawer` 別名 → 已加，抽屜現可正常注入與開關
+## 一、已完成事項
 
-## 未解 blocker（必須修，否則「點擊排序」承諾未達成）
-**DataTable 點擊表頭不排序。** → ✅ **已修（2026-07-15，session A）**
+### 1. ROE/ROA 全量補齊 ✅
+- 腳本 `scripts/update_overview.py` 改善：新增 `--cron` 增量模式、`--daily-limit N`、`--skip-etf`（自動排除 ETF，因 yfinance 無 ETF 財報）、`--skip-finmind`、`JSON log + exit code`
+- 全量跑完（proc_52b495f58a7c）：更新 1084 檔
+- **DB 現狀**：`/root/Documents/database/tw_stock_all.db` 的 stock_overview：
+  - roa 有值 **1085/1486**（ETF 無財報跳過，正常）
+  - roe 有值 **1088/1486**
+- **匯出後** `data/stocks.json`：roa=1085、roe=1088（已修 export_db.py 漏匯出 roa 的 bug）
+- 範例 2330：roe=31.7 / roa=21.4 / eps=22.08
 
-### 修法（已採用方案 A：document 級事件委託，根治脫鉤）
-- `mklab-core.js`：`_build` 內對 `this.table` 綁 click 的邏輯移除；改在 `DataTable.prototype._register` 裡對 `document` 綁一次委託：
-  ```js
-  document.addEventListener('click', function(e){
-    const th = e.target.closest('thead th');
-    if(!th) return;
-    const tbl = th.closest('table');
-    const inst = _byTable[tbl.id];   // 實例按 tableId 註冊於 _byTable
-    if(inst) inst.toggleSort(th.getAttribute('data-k'));
-  });
+### 2. 本機自動化抓 roa ✅
+- 系統 crontab 已設定（cron 服務 active）：
   ```
-- 實例建構時新增 `this.tableId`，並在 `_register` 註冊進 `_byTable[tableId]`。永遠不依賴「建構時捕獲的 DOM 引用」，徹底消除脫鉤。
-- 各頁（screener/industry/watchlist）共用同一 DataTable，修法一次性解決，無需各頁改。
-
-### 瀏覽器實測（已驗證，非推測）
-- 真實 `browser_click` 點擊「代號」th → console 出現 `[DT doc-click] indTable sym` + `[DT.toggleSort] sym ... dir=-1 rows=10`
-- 表格順序由「綜合評分降冪」(00715L=5, 00640L=3, ...) 正確重排為「代號字串降冪」(00715L, 00640L, 00642U, 006207, 00633L, 00636, 00645, 00655L, 00657, 00661)
-- cache-busting URL 已用，排除 browser cache 誤判。排序 bug 確認根治。
-
-### 已定位事實（用瀏覽器實測確認，非推測）
-- 手動呼叫 `indTable.toggleSort('sym')` → 排序完全正常（A→Z 重排成功）
-- `indTable` 實例存在、`_clickBound=true`、綁在 `#indTable` 上
-- 但點擊 th 時 click listener 完全不觸發（無 `[DT click]` log；對 th 手動 dispatch click 也不觸發）
-- 對同一 `#indTable` 另加的測試 listener 卻收到 click（count=1）
-  → 證明事件能到達 table，但 DataTable 綁的那個 listener 綁在「一個不同的 table 實例/DOM 引用」上
-
-### 根因推論
-DataTable 建構時 `this.table = document.getElementById(tableId)` 取得的元素，與後來實際渲染的 `#indTable` 不是同一個節點。index 初次同步 `renderInd()` 建立 indTable 並 `_build` 綁定 click；後來 `loadStocks().then` 二次 `renderInd()` → `setRows` → `render()` 路徑中，table 元素引用可能漂移（或初次建立時 DOM 狀態與二次不一致），導致綁定事件的 DOM 與可見渲染的 table 脫鉤。
-
-### 建議修法（二選一，推薦 A）
-- **A. document 級事件委託（最穩健）**：不要在 `_build` 裡對 `this.table` 綁 click，改在 `MKLAB.DataTable` 首次呼叫時對 `document` 綁一次：
-  ```js
-  document.addEventListener('click', function(e){
-    const th = e.target.closest('thead th');
-    if(!th) return;
-    const tbl = th.closest('table');
-    const inst = _instances[tbl.id];   // 需要把實例按 tableId 存進 _instances
-    if(inst) inst.toggleSort(th.getAttribute('data-k'));
-  });
+  0 3 * * 6 cd /root/Documents/mklab-stock && python3 scripts/update_overview.py --cron --skip-finmind >> /var/log/mklab_roa.log 2>&1
   ```
-  關鍵：實例要能從 `tableId` 找回（`_instances[tableId] = this`，建構時註冊）。這樣永遠不依賴「建構時捕獲的 DOM 引用」，徹底消除脫鉤類錯誤。
-- **B. render() 末尾重綁**：每次 `render()` 用 `document.getElementById(this.tableId)` 重新取元素並確保 listener 綁定（去掉 `this._clickBound` 一次性防護，或改在 render 裡判斷）。
+- 雲端：GitHub Actions `daily-update.yml` 的 `weekly-roe` job 每週六 18:00 台灣時間跑 fetch_data.py weekly
+- FinMind 當前不可用（匿名模式 IP rate-limit + FINMIND_TOKEN 環境變數過期），暫用 yfinance 備援
 
-### 其他頁排序同理
-screener / industry / watchlist 的 DataTable 也用同一套 `_build` + click 綁定，修 A 後一併解決，無需各頁改。
+### 3. README 目錄 tree ✅
+- 已擴寫完整 `data/` 結構 + 資料源頭說明（bedf439）
 
-## 還沒做（待續）
-~~1. 修上面排序 bug~~ ✅ 已完成並上線（2026-07-15）
-~~2. 逐頁瀏覽器驗證~~ ✅ 已完成（index/screener/research/industry/watchlist 全部實測，含工具列/抽屜/表格排序/NaN% 修復）
-~~3. 首頁自選卡讀共用自選~~ ✅ 共用機制正常（watchlist 頁實測：MKLAB.Watch 跨市場標的取不到資料顯示 -，行為合理）
-~~4. 定位首頁 js_error~~ ⚠️ 已知未處理（推測 KLineChart 庫初始化產生的空 message exception，不阻擋上線，功能正常）
-~~5. commit + push 到 main~~ ✅ 已完成（ba5c6e4 → origin/main，本地分支名 master 但與 origin/main 同基）
-~~6. 確認 qa-gate CI 綠~~ ✅ 已完成（push 觸發 qa-gate/html-health/pages-build 全 success）
+### 4. Wiki ✅
+- `Obsidian Vault/finance/mklab-stock/mklab-stock-schema.md` §7.1 修正 FinMind 錯標、§7.5 抓取上限實測、§7.6 cron 友善、§7.8 本機自動化、§7.9 問題解決記錄
+- 已同步到 Quartz + repo docs/
 
-### 本次（2026-07-15）額外修復（handoff 原未記載，實測發現）
-1. **QA 靜態掃描 BLOCK**：5 頁遷移 JS 注入工具列後，HTMLParser 看不到 `<nav>`/`.utilbar` → 全紅。修法：5 頁加靜態殼（utilbar/nav/brand），Shell.mount 改填充。→ qa-gate 轉 🟢 ALLOW
-2. **research 頁腳本中斷**：3 連 bug（sel 在 STOCKS 空時報錯、let rChart TDZ、loadAll 未 return promise）。修法：變數提升 + sel 防護 + initDrawer 提前 + loadAll return + 移除重複呼叫。→ 工具列/個股卡/財報/K線 全渲染
-3. **core.js NaN% 格式化 bug**：COLUMNS 的 w1/m1/m3/m6/ytd/y1 用裸 `fmt:cellPct`，但 render() 傳整個 row → `Number(row)=NaN` → `NaN%`。修法：改箭頭函式 `r=>cellPct(r.w1)` 等。→ industry 頁 4 個缺值產業正確顯示 `-` 而非 NaN%
+## 二、待修項目（重要，下次優先處理）
 
-### 多市場資料表預留（用戶 2026-07-15 指示）
-- 用戶要求預留 **US / CN / HK / JP / KR** 市場資料表結構，實際股價留待未來開發填入（不做假數據上線）。
-- 已建立 `data/markets.json`：僅含市場元資料（id/name/symbol_format/symbol_regex/timezone/data_source/status）+ 共用 `stock_schema`（欄位清單）。**不含任何假股價**。
-- Watch 模組目前 DEFAULT_WATCH 含跨市場標的（AAPL/600519/00700.HK），但 stocks.json 僅 TW 有值 → 這些顯示 `-` 是預期行為，未來各市場 JSON 就緒後會自動補值。
-- 未來 Build-Time 腳本可為每市場產出 `data/<market>.json`（結構同 stocks.json 的 stocks[]），前端依 `market` 欄位路由。
+### 🔴 待修 A：Research 頁 MACD/KD 指標（mklab-stock-research.html）
+**現狀（確認 line 221-225 真實狀態）**：
+- `klRender` line 221 有**錯誤字串**需修正：
+  ```js
+  // 錯誤（當前）：
+  function klRender(s){ ... klInit(s); if(rSeries) { klineData=genKData('TWII_FAKE'); } }
+  // 應改為：
+  function klRender(s){ ... klInit(s); if(rSeries) { klineData=genKData(250, STOCKS[s]?STOCKS[s].price:100); } }
+  ```
+- `klAddIndicator` line 222 用 `rSeries.getData()` 在 LightweightCharts v4.1.3 **不存在** → 指標永遠加不上：
+  ```js
+  // 錯誤（當前）：
+  function klAddIndicator(name){ if(!rChart||!rSeries) return; const d=rSeries.getData?rSeries.getData():[]; if(!d.length) return;
+  // 應改為（用全域 klineData 變數，已在 line 194 宣告 let klineData=[]）：
+  function klAddIndicator(name){ if(!rChart||!klineData.length) return; const d=klineData;
+  ```
+- `klineData` 全域變數已在 line 194 宣告，klInit line 217 已正確寫入 `klineData=genKData(250,...)`
 
-## 狀態總結（2026-07-15 收工）
-- 核心 blocker（排序）✅ 根治並上線
-- 5 頁工具列/抽屜/表格 ✅ 全驗證通過
-- QA + CI ✅ 全綠，GitHub Pages 已重新部署（線上實測排序生效）
-- 待未來：① 多市場真實資料整合 ② 首頁 KLineChart js_error 來源定位（不阻擋）③ watchlist 跨市場標的補值（依 markets.json 就緒後）
+**已完成的部分**（瀏覽器實測確認）：
+- ✅ 區塊順序：個股摘要 → 歷史價格圖 → 財報摘要（PE Band 區塊已移除）
+- ✅ 財報摘要讀真實資料（stocks.json），表格顯示 ROE%/ROA%/EPS/殖利率%/PE/PB 真實值
+- ✅ K 線蠟燭圖渲染成功（LightweightCharts v4.1.3，掛在 window.LightweightCharts）
+- ⚠️ 圖表庫真相：`vendor/lightweight-charts.min.js`（原誤命名 klinecharts.min.js，已於 2026-07-15 修正）實為 **LightweightCharts v4.1.3**（結尾 `window.LightweightCharts=Oe`）
 
+**修法**：
+1. 修正 line 221 的 `genKData('TWII_FAKE')` → `genKData(250, STOCKS[s]?STOCKS[s].price:100)`
+2. 修正 line 222 的 `rSeries.getData()` → 改用 `klineData`
+3. 瀏覽器實測：點 MACD/KD 按鈕 → 確認 rMacd/rKD 變 true + 圖表出現指標線
+4. 畫線功能（畫線/水平線/費波那契）：LightweightCharts v4 免費版無 overlay，klDraw 目前只 console.info 提示（可接受，或換 klinecharts 庫）
 
-## 本地環境
-- repo: /root/Documents/mklab-stock （git，branch main，未提交修改）
-- 本地預覽 server: `python3 -m http.server 8765 --bind 127.0.0.1`（背景 proc_5510a1ce2bbc，若不在用 `terminal(background=true)` 重起）
-- 瀏覽器驗證加 cache-busting: `?nocache=數字`
-- GitHub owner: evanhsia-git（非 ivanhsia）；gh token 缺 Administration/actions:write scope，建 repo/開 Pages/手動觸 workflow 需你手動做
+### 🔴 待修 B：index.html Market Health 大圖表（標題1年但空白）
+**根因**：line 342 `klSeries.setData(TWII_KDATA)` 中 `TWII_KDATA` **從未定義** → 圖表空白
+**解決方案（未動工）**：
+- 用 `data/history/*.json` 的 **006204 永豐臺灣加權**（追蹤加權指數，261 天真實收盤）拼出 1 年 TWII K 線
+- 改 `export_db.py` 新增匯出 `data/twii-kline.json`（約 250 日 K 線）
+- 前端 `index.html` 讀真實資料，標題「近 1 年」才名實相符
+- 注意：本機 DB 無 TWII 加權指數本身日線，只有 ETF 006204 等代理
 
-## 檔案結構（已上線相關）
-- index.html（首頁，含 TOP10 表 + 自選卡片）
-- mklab-stock-screener.html / -research.html / -industry.html / -watchlist.html
-- assets/mklab-core.js（核心模組，本次重點）
-- mklab-stock-help.html（功能說明頁）
-- data/（stocks.json / industry.json / history/）
-- vendor/（klinecharts.min.js）
-- .github/workflows/daily-update.yml + qa-gate.yml
+### 🟡 待確認 C：commit/push Research 頁
+- Research 頁重構修改尚未 commit（工作區有未提交變更）
+- 修完待修 A 後，瀏覽器實測通過再 commit + push
 
-## 設計決策（用戶已確認）
-- 首頁「設定首頁顯示股票」專屬設定已放棄；所有頁抽屜內容完全一致（外觀/語言/說明/System）
-- 表格：單一 DataTable 模組，各頁只選要顯示的欄位（cols 陣列），22 欄一次定義於 COLUMNS
-- 自選：首頁與 watchlist 共用同一份 localStorage（MKLAB.Watch）
-- 零外部依賴原則：GitHub Pages 直接開 index.html 可載（開發用本地 server 是因為 fetch 需 http 協議）
+## 三、關鍵事實（防踩坑）
+1. **FinMind 不可用**：匿名模式 IP rate-limit（每 3-4 檔鎖）、FINMIND_TOKEN 過期。別再浪費時間測 FinMind，直接用 yfinance。
+2. **vendor/lightweight-charts.min.js 實為 LightweightCharts v4.1.3**（原檔名 klinecharts.min.js 已於 2026-07-15 修正）：全局變數是 `LightweightCharts`，不是 `klinecharts`。別用 `klinecharts.init()`。
+3. **LightweightCharts v4 無 `series.getData()`**：要存 K 線資料用全域變數。
+4. **history JSON 一行 minified 是有意設計**（你決定保持，效能優先）。檢視用 `python3 -m json.tool data/history/YYYYMMDD.json`。
+5. **本機 DB 是權威源**：`/root/Documents/database/tw_stock_all.db`（38MB），`data/*.json` 是 export_db.py 匯出產物。
+6. **local server**：`python3 -m http.server 8765`（背景 proc_f7c0115624f5 可能還在跑）。
 
-## 下一步建議（拆解，別一輪全做）
-- session A：「修 DataTable 排序點擊（用 document 委託），execute_code 驗證邏輯，最小瀏覽器確認 index 一頁」
-- session B：「逐頁瀏覽器驗證 4 頁 + 定位 js_error + commit/push + 確認 qa-gate 綠」
+## 四、上次 session 已修復的 bug（避免重複）
+- export_db.py 漏匯出 roa（已修，SELECT 加 roa + stocks 組裝加 roa）
+- sel() 裡 `getElementById('peChart')` 在 peChart div 移除後報錯（已移除該行）
+- update_overview.py 重複舊迴圈導致 --skip-finmind 無效（已重寫 main）
+
+## 五、用戶偏好/決策
+- Wiki：所有遇到的問題+解決方法都要寫進 Wiki（先查類似頁面併入，不開新頁）
+- 資料源原則：TWSE/TPEX 優先，yfinance 備援，FinMind 待有效 token
+- history JSON 保持 minified（執行效率）
+- ROE/ROA 是季度/年度資料，每週六補一次即可（非每日）
+- Research 頁區塊順序：個股摘要 → 歷史價格圖 → 財報摘要 → 個股選擇（左側）

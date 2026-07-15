@@ -1,15 +1,15 @@
 {
-  "mode": "indices",
+  "mode": "twii",
   "success": true,
   "error": null,
-  "fetched": 21,
-  "written": 21,
+  "fetched": 0,
+  "written": 260,
   "skipped": false,
   "details": {
-    "index_count": 15,
-    "etf_count": 6
+    "twii_days": 260,
+    "twii_range": "2025-06-19~2026-07-15"
   },
-  "end": "2026-07-15 15:47:29",
-  "duration_sec": 3.4,
-  "start": "2026-07-15 15:47:26"
+  "end": "2026-07-15 22:18:41",
+  "duration_sec": 1.5,
+  "start": "2026-07-15 22:18:40"
 }

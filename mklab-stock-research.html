@@ -78,7 +78,7 @@
   .drawer a { color:var(--accent); text-decoration:none; }
   .sys-note { font-size:12px; color:var(--muted); line-height:1.6; }
 </style>
-<script src="vendor/klinecharts.min.js"></script>
+<script src="vendor/lightweight-charts.min.js"></script>
 </head>
 <body>
   <nav id="mainNav" class="nav"></nav>
@@ -100,7 +100,9 @@
         <div class="pager" id="symPager"></div>
       </div>
       <div>
+        <!-- 區塊 1：個股摘要 -->
         <div class="card" id="infoCard"></div>
+        <!-- 區塊 2：歷史價格圖（K線 + MACD + KD + 畫線） -->
         <div class="card">
           <h3>歷史價格圖（K線 + MACD + KD，自託管 KLineChart）</h3>
           <div class="kline-toolbar">
@@ -113,16 +115,11 @@
           </div>
           <div id="priceChart" style="height:42vh;min-height:300px"></div>
         </div>
+        <!-- 區塊 3：財報摘要（真實資料，來自 stocks.json） -->
         <div class="card">
-          <h3>PE Band（本益比區間）</h3>
-          <div class="chartbox" id="peChart" onmouseenter="tip('peChart','PE: 24.1x（中位 22x）')" onmouseleave="untip('peChart')"></div>
-        </div>
-        <div class="card">
-          <h3>財報摘要（年度）</h3>
+          <h3>財報摘要（最新年度，來源 stocks.json）</h3>
           <table id="finTable"></table>
-      <div class="pager" id="finPager"></div>
         </div>
-        <div class="disclaimer">個股研究中心原型（示意資料）。生產環境：公司資訊/財報/估值由 Build-Time 計算，歷史圖用 lightweight-charts。</div>
       </div>
     </div>
   </div>
@@ -175,9 +172,17 @@
         kv('ROE', (m.roe!=null?m.roe.toFixed(1):'-')+'%')+kv('EPS', m.eps!=null?m.eps:'-')+kv('殖利率', (m.div!=null?m.div:'-')+'%')+
         kv('市值', m.mc)+kv('產業', '<span style="font-size:13px">'+m.sector+'</span>')+
       '</div>';
-    document.getElementById('peChart').innerHTML=spark(gen(m.pe,60),"#3b82f6",600,160);
     klRender(s);
-    document.getElementById('finTable').innerHTML=`<tr><th>年度</th><th>EPS</th><th>ROE%</th><th>殖利率%</th></tr>`+m.fin.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join("");
+    // 財報摘要：讀真實資料（stocks.json 的 roe/roa/eps/div 為最新年度）
+    const fin = [
+      ["ROE%", m.roe!=null ? m.roe.toFixed(1) : '-'],
+      ["ROA%", m.roa!=null ? m.roa.toFixed(1) : '-'],
+      ["EPS", m.eps!=null ? m.eps : '-'],
+      ["殖利率%", m.div!=null ? m.div.toFixed(1) : '-'],
+      ["PE", m.pe!=null ? m.pe : '-'],
+      ["PB", m.pb!=null ? m.pb : '-'],
+    ];
+    document.getElementById('finTable').innerHTML=`<tr><th>指標</th><th>值</th></tr>`+fin.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join("");
   }
   function search(){ const v=document.getElementById('q2').value.trim().toLowerCase(); if(!v){ renderList(); return; } const hits=Object.keys(STOCKS).filter(k=>k.toLowerCase().includes(v)||(STOCKS[k].name||'').toLowerCase().includes(v)).slice(0,12); document.getElementById('symlist').innerHTML=hits.map(k=>`<div data-s="${k}" onclick="sel('${k}')">${k} ${STOCKS[k].name}</div>`).join('')||`<div style="color:var(--muted);padding:8px">無符合代號</div>`; if(hits.length===1 && STOCKS[hits[0]]) sel(hits[0]); }
   function openDrawer(){ MKLAB.Drawer.open(); }
@@ -205,13 +210,20 @@
     for(let i=0;i<c.length;i++){ const lo=Math.min(...l.slice(Math.max(0,i-8),i+1)), hi=Math.max(...h.slice(Math.max(0,i-8),i+1)); const rsv=hi===lo?50:((c[i]-lo)/(hi-lo)*100); pk=pk+2/3*(rsv-pk); pd=pd+2/3*(pk-pd); K.push(+pk.toFixed(2)); D.push(+pd.toFixed(2)); }
     return data.map((d,i)=>({ time:d.time, k:K[i], d:D[i] }));
   }
-  function klInit(s){ if(rInited||typeof LightweightCharts==='undefined') return; const el=document.getElementById('priceChart'); const h=el.clientHeight||360; rChart=LightweightCharts.createChart(el, { layout:{background:{type:'solid',color:'transparent'},textColor:'#94a3b8'}, grid:{vertLines:{color:'rgba(148,163,184,0.1)'},horzLines:{color:'rgba(148,163,184,0.1)'}}, rightPriceScale:{borderColor:'rgba(148,163,184,0.2)'}, timeScale:{borderColor:'rgba(148,163,184,0.2)',timeVisible:false}, width:el.clientWidth, height:h }); rSeries=rChart.addCandlestickSeries({ upColor:'#ef4444', downColor:'#22c55e', borderUpColor:'#ef4444', borderDownColor:'#22c55e', wickUpColor:'#ef4444', wickDownColor:'#22c55e' }); try{ rSeries.setData(genKData(250, STOCKS[s]?STOCKS[s].price:100)); }catch(e){ console.warn('setData',e); } rInited=true; window.addEventListener('resize', ()=>{ if(rChart) rChart.resize(el.clientWidth, el.clientHeight||360); }); }
-  function klRender(s){ if(rChart){ try{ rChart.remove(); }catch(e){} rInited=false; rChart=null; rSeries=null; rMacd=false; rKD=false; } klInit(s); if(rSeries) rSeries.setData(genKData(250, STOCKS[s]?STOCKS[s].price:100)); }
-  function klAddIndicator(name){ if(!rChart||!rSeries) return; const d=rSeries.getData?rSeries.getData():[]; if(!d.length) return;
+  function klInit(s){ if(rInited||typeof LightweightCharts==='undefined') return; const el=document.getElementById('priceChart'); if(!el) return; const h=el.clientHeight||360;
+    rChart=LightweightCharts.createChart(el, { layout:{background:{type:'solid',color:'transparent'},textColor:'#94a3b8'}, grid:{vertLines:{color:'rgba(148,163,184,0.1)'},horzLines:{color:'rgba(148,163,184,0.1)'}}, rightPriceScale:{borderColor:'rgba(148,163,184,0.2)'}, timeScale:{borderColor:'rgba(148,163,184,0.2)',timeVisible:false}, width:el.clientWidth, height:h });
+    rSeries=rChart.addCandlestickSeries({ upColor:'#ef4444', downColor:'#22c55e', borderUpColor:'#ef4444', borderDownColor:'#22c55e', wickUpColor:'#ef4444', wickDownColor:'#22c55e' });
+    try{ klineData=genKData(250, STOCKS[s]?STOCKS[s].price:100); rSeries.setData(klineData); }catch(e){ console.warn('setData',e); }
+    rInited=true;
+    window.addEventListener('resize', ()=>{ if(rChart) rChart.resize(el.clientWidth, el.clientHeight||360); });
+  }
+  function klRender(s){ if(rChart){ try{ rChart.remove(); }catch(e){} rInited=false; rChart=null; rSeries=null; rMacd=false; rKD=false; klineData=[]; } klInit(s); }
+  function klAddIndicator(name){ if(!rChart||!klineData.length) return; const d=klineData; if(!d.length) return;
     if(name==='MACD'){ if(rMacd) return; const m=calcMACD(d); const s1=rChart.addLineSeries({color:'#3b82f6',lineWidth:1}); s1.setData(m.map(x=>({time:x.time,value:x.dif}))); const s2=rChart.addLineSeries({color:'#f59e0b',lineWidth:1}); s2.setData(m.map(x=>({time:x.time,value:x.dea}))); const s3=rChart.addHistogramSeries({color:'#64748b',priceScaleId:''}); s3.setData(m.map(x=>({time:x.time,value:x.hist,color:x.hist>=0?'#ef4444':'#22c55e'}))); rMacd=true; }
     else if(name==='KDJ'||name==='KD'){ if(rKD) return; const k=calcKD(d); const s4=rChart.addLineSeries({color:'#a855f7',lineWidth:1}); s4.setData(k.map(x=>({time:x.time,value:x.k}))); const s5=rChart.addLineSeries({color:'#14b8a',lineWidth:1}); s5.setData(k.map(x=>({time:x.time,value:x.d}))); rKD=true; }
   }
-  function klDraw(type){ /* lightweight-charts v4 standalone 免費版無 overlay 繪圖工具，暫保留介面 */ }
+  // 畫線功能：LightweightCharts v4 免費版無原生 overlay 繪圖工具，保留按鈕介面但提示
+  function klDraw(type){ console.info('畫線功能需 LightweightCharts 付費版或 klinecharts 庫，當前 v4.1.3 免費版不支援'); }
   function klRemoveAll(){ if(rChart) rChart.remove(); rChart=null; rSeries=null; rMacd=false; rKD=false; rInited=false; }
   function _initRWhenReady(){ if(document.readyState!=='loading'){ klRender('2330'); } else { document.addEventListener('DOMContentLoaded', ()=>klRender('2330')); } }
   _initRWhenReady();

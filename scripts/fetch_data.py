@@ -484,10 +484,73 @@ def run_indices():
     LOG.finish(True)
 
 
+def fetch_twii_kline(days=260, out_path=None):
+    """抓取台灣加權股價指數 (^TWII, yfinance 免 key) 最近 days 個交易日的 OHLC，
+    寫入 data/twii_kdata.js (const TWII_KDATA=[...]，前端 index.html 直接吃，零改動)。
+
+    來源說明（誠實標註）：yfinance 的 ^TWII 為 Yahoo 版台灣加權股價指數，
+    與臺證所官方即時公告 (MI_INDEX) 收盤值可能存在小幅編製口徑差異
+    （Yahoo 可能含股息報酬或追蹤口徑不同），但 OHLC 形態與趨勢真實可用。
+    TWSE MI_INDEX 僅提供收盤指數、無開高低，故 K 線 OHLC 採 yfinance 單源。
+
+    Graceful Degradation：yfinance 未裝或抓取失敗 → 回傳 False，不中斷呼叫方。
+    """
+    try:
+        import yfinance as yf
+    except ImportError:
+        LOG.warn("yfinance 未安裝，跳過 TWII K 線（twii 模式需先 pip install yfinance）")
+        return False
+    try:
+        t = yf.Ticker("^TWII")
+        # 抓 days+20 天緩衝，dropna 後取最後 days 筆（對齊最新交易日窗口）
+        h = t.history(period=f"{days + 20}d", interval="1d")
+        if h is None or h.empty:
+            LOG.warn("^TWII 回傳空，跳過 TWII K 線")
+            return False
+        valid = h.dropna(subset=["Open", "High", "Low", "Close"])
+        if valid.empty:
+            LOG.warn("^TWII 全為 NaN，跳過 TWII K 線")
+            return False
+        rows = []
+        for ts, r in valid.iterrows():
+            rows.append({
+                "time": ts.date().isoformat(),
+                "open": round(float(r["Open"]), 2),
+                "high": round(float(r["High"]), 2),
+                "low": round(float(r["Low"]), 2),
+                "close": round(float(r["Close"]), 2),
+            })
+        rows = rows[-days:]  # 滑動窗口：保留最近 days 天
+        if out_path is None:
+            out_path = os.path.join(OUT, "twii_kdata.js")
+        with open(out_path, "w", encoding="utf-8") as f:
+            f.write("const TWII_KDATA=" + json.dumps(rows, ensure_ascii=False, separators=(",", ":")) + ";\n")
+        LOG.stats["written"] = len(rows)
+        LOG.stats["details"]["twii_days"] = len(rows)
+        LOG.stats["details"]["twii_range"] = f"{rows[0]['time']}~{rows[-1]['time']}"
+        LOG.info(f"TWII K 線寫入 {len(rows)} 天 → {os.path.basename(out_path)} ({rows[0]['time']}~{rows[-1]['time']})")
+        return True
+    except Exception as e:
+        LOG.warn(f"TWII K 線抓取失敗：{e}")
+        return False
+
+
+def run_twii():
+    """每日：yfinance 抓台灣加權指數 K 線 (260 交易日窗口) → data/twii_kdata.js"""
+    LOG.info("開始抓取 TWII 加權指數 K 線 (yfinance ^TWII, 260 日窗口)")
+    ok = fetch_twii_kline(days=260)
+    if ok:
+        LOG.finish(True)
+    else:
+        LOG.finish(False, error="TWII K 線未取得")
+
+
 if __name__ == "__main__":
     if MODE == "weekly":
         run_weekly()
     elif MODE == "indices":
         run_indices()
+    elif MODE == "twii":
+        run_twii()
     else:
         run_daily()

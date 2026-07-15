@@ -1,28 +1,7 @@
-mklab-stock 資料抓取 Log | 模式=indices
-開始: 2026-07-15 15:47:26  結束: 2026-07-15 15:47:29  耗時: 3.4s
+mklab-stock 資料抓取 Log | 模式=twii
+開始: 2026-07-15 22:18:40  結束: 2026-07-15 22:18:41  耗時: 1.5s
 成功: True  跳過: False
-抓取筆數: 21  寫入筆數: 21
+抓取筆數: 0  寫入筆數: 260
 --------------------------------------------------
-[INFO] indices 模式基準日 2026-07-15，市場數=10
-[INFO]   ^TWII 加權股價指數 (TAIEX): 45631.59 (0.55%, as_of=2026-07-15)
-[INFO]   ^GSPC S&P 500: 7515.34 (-0.79%, as_of=2026-07-13)
-[INFO]   ^IXIC Nasdaq Composite: 25873.18 (-1.55%, as_of=2026-07-13)
-[INFO]   ^DJI Dow Jones Industrial Average: 52498.64 (-0.26%, as_of=2026-07-13)
-[INFO]   ^N225 Nikkei 225: 68751.51 (2.24%, as_of=2026-07-15)
-[INFO]   1306.T TOPIX: 425.6 (1.02%, as_of=2026-07-15)
-[INFO]   ^KS11 KOSPI: 7284.41 (7.01%, as_of=2026-07-15)
-[INFO]   ^HSI Hang Seng Index: 24648.23 (1.79%, as_of=2026-07-15)
-[INFO]   000001.SS Shanghai Composite: 3955.58 (1.07%, as_of=2026-07-15)
-[INFO]   000300.SS CSI 300: 4786.78 (0.13%, as_of=2026-07-15)
-[INFO]   399001.SZ Shenzhen Component: 14779.4 (1.77%, as_of=2026-07-15)
-[INFO]   ^FTSE FTSE 100: 10447.26 (-0.49%, as_of=2026-07-15)
-[INFO]   ^GDAXI DAX: 24860.26 (-1.01%, as_of=2026-07-15)
-[INFO]   ^FCHI CAC 40: 8325.37 (-0.47%, as_of=2026-07-15)
-[INFO]   ^STOXX50E STOXX 50: 6265.52 (-0.09%, as_of=2026-07-15)
-[INFO]   0050.TW 元大台灣50: 106.3 (1.82%, as_of=2026-07-15)
-[INFO]   SPY SPDR S&P 500 ETF (SPY): 749.17 (-0.77%, as_of=2026-07-13)
-[INFO]   1321.T NEXT FUNDS Nikkei 225 ETF: 71140.0 (1.56%, as_of=2026-07-15)
-[INFO]   069500.KS KODEX 200 ETF: 116735.0 (6.39%, as_of=2026-07-15)
-[INFO]   2800.HK Tracker Fund of Hong Kong: 25.12 (1.13%, as_of=2026-07-15)
-[INFO]   510300.SS ChinaAMC CSI300 ETF: 4.84 (0.02%, as_of=2026-07-15)
-[INFO] 完成 → data/indices.json (indices=15, etfs=6)
+[INFO] 開始抓取 TWII 加權指數 K 線 (yfinance ^TWII, 260 日窗口)
+[INFO] TWII K 線寫入 260 天 → twii_kdata.js (2025-06-19~2026-07-15)
