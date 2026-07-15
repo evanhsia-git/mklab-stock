@@ -76,31 +76,44 @@ mklab-stock/
 ├── index.html                    # Market 首頁
 ├── mklab-stock-screener.html     # Screener 篩選
 ├── mklab-stock-research.html     # Research 研究
-├── mklab-stock-industry.html     # Industry 產業
-├── mklab-stock-watchlist.html    # Watchlist 自選
-├── mklab-stock-help.html         # 功能說明網頁
+├── mklab-stock-industry.html      # Industry 產業
+├── mklab-stock-watchlist.html     # Watchlist 自選
+├── mklab-stock-help.html          # 功能說明網頁
 ├── assets/
 │   └── mklab-core.js             # 全站共用表格/抽屜/工具列模組
-├── data/                         # Build-Time 生成的 JSON
-│   ├── stocks.json               # 全市場個股最新一日
-│   ├── industry.json             # 33 產業聚合
-│   ├── indices.json              # 全球指數/ETF
-│   ├── history/                  # 每日切片
-│   └── schema-version.json       # schema 版號
+├── data/                         # Build-Time 生成的 JSON（前端只讀這裡）
+│   ├── stocks.json               # ★ 全市場個股最新一日（最完整，1369 檔全欄位，~359K）
+│   ├── industry.json             # 33 產業聚合績效（~5K）
+│   ├── indices.json              # 全球指數/ETF 收盤（15 指數+6 ETF，~5.4K）
+│   ├── indices-config.json       # 指數/ETF 靜態配置（市場/符號/來源）
+│   ├── industry-codes.json       # 臺證所 33 產業代碼對照表
+│   ├── markets.json              # 多市場預留結構（US/CN/HK/JP/KR 元數據）
+│   ├── market.json               # 五國大盤概覽（首頁五卡）
+│   ├── schema-version.json       # schema 版號
+│   └── history/                  # 每日股價切片（261 個交易日，各 ~289K）
+│       ├── 20250714.json         #   最早一日
+│       ├── ...                   #   （每日一檔，含 OHLCV+PE/PB/DY）
+│       └── 20260714.json         #   最新一日
 ├── docs/                         # 設計依據 / 資源 / 規範
 │   ├── design.md
 │   ├── resource.md
 │   ├── SKILL.md
 │   └── mklab-stock-schema.md     # 規範與架構手冊
 ├── skills/
-│   └── mklab-stock-lint/         # 品質門禁 Skill
+│   └── mklab-stock-lint/         # 品質門禁 Skill（fetch_data.py + qa_gate.py）
 ├── scripts/                      # 抓取/匯出/QA 腳本
-│   ├── fetch_data.py             # 雲端每日抓取
-│   ├── export_db.py              # 本機 DB 匯出
-│   ├── update_overview.py        # ROE/ROA 補齊
+│   ├── fetch_data.py             # 雲端每日抓取（TWSE + yfinance ROE/ROA）
+│   ├── export_db.py              # 本機 DB 匯出 stocks.json
+│   ├── update_overview.py        # ROE/ROA 補齊（cron 友善，本機 DB）
 │   └── qa_gate.py                # CI 質量門禁
 └── .github/workflows/            # CI/CD
+    ├── daily-update.yml          # 每日收盤 + 每週六 ROE/ROA
+    └── qa-gate.yml               # 質量門禁
 ```
+
+> **資料源頭**：本機 `/root/Documents/database/tw_stock_all.db`（38MB SQLite）是權威來源；`scripts/export_db.py` 將其匯出為上方 `data/*.json` 推上 GitHub Pages。雲端 `fetch_data.py` 每日增量更新收盤價，每週六補 ROE/ROA。
+
+
 
 ## 本地預覽
 ```bash
