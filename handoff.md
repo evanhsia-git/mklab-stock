@@ -69,12 +69,30 @@ DataTable 建構時 `this.table = document.getElementById(tableId)` 取得的元
 screener / industry / watchlist 的 DataTable 也用同一套 `_build` + click 綁定，修 A 後一併解決，無需各頁改。
 
 ## 還沒做（待續）
-1. 修上面排序 bug（用 execute_code 分析 + 改 core.js，完成後用最小瀏覽器驗證 index 一頁即可，勿逐頁狂點）
-2. 逐頁瀏覽器驗證 screener / research / industry / watchlist 的表格渲染 + 工具列 + 抽屜（建議開新 session 專做，避免爆呼叫）
-3. 確認首頁「我的自選」卡片改讀共用自選 + stocks.json 真實價格正常（watchlist 頁已用 MKLAB.Watch.decorate(priceMap)）
-4. 定位首頁 js_error 來源（載入時 1-2 筆空 message exception，推測來自 KLineChart 圖表庫初始化，功能不受影響；若確認是圖表庫則加容錯或 defer，不阻擋上線）
-5. commit + push 到 evanhsia-git/mklab-stock main
-6. 確認 qa-gate CI 綠（已有 .github/workflows/qa-gate.yml，require 檢查）
+~~1. 修上面排序 bug~~ ✅ 已完成並上線（2026-07-15）
+~~2. 逐頁瀏覽器驗證~~ ✅ 已完成（index/screener/research/industry/watchlist 全部實測，含工具列/抽屜/表格排序/NaN% 修復）
+~~3. 首頁自選卡讀共用自選~~ ✅ 共用機制正常（watchlist 頁實測：MKLAB.Watch 跨市場標的取不到資料顯示 -，行為合理）
+~~4. 定位首頁 js_error~~ ⚠️ 已知未處理（推測 KLineChart 庫初始化產生的空 message exception，不阻擋上線，功能正常）
+~~5. commit + push 到 main~~ ✅ 已完成（ba5c6e4 → origin/main，本地分支名 master 但與 origin/main 同基）
+~~6. 確認 qa-gate CI 綠~~ ✅ 已完成（push 觸發 qa-gate/html-health/pages-build 全 success）
+
+### 本次（2026-07-15）額外修復（handoff 原未記載，實測發現）
+1. **QA 靜態掃描 BLOCK**：5 頁遷移 JS 注入工具列後，HTMLParser 看不到 `<nav>`/`.utilbar` → 全紅。修法：5 頁加靜態殼（utilbar/nav/brand），Shell.mount 改填充。→ qa-gate 轉 🟢 ALLOW
+2. **research 頁腳本中斷**：3 連 bug（sel 在 STOCKS 空時報錯、let rChart TDZ、loadAll 未 return promise）。修法：變數提升 + sel 防護 + initDrawer 提前 + loadAll return + 移除重複呼叫。→ 工具列/個股卡/財報/K線 全渲染
+3. **core.js NaN% 格式化 bug**：COLUMNS 的 w1/m1/m3/m6/ytd/y1 用裸 `fmt:cellPct`，但 render() 傳整個 row → `Number(row)=NaN` → `NaN%`。修法：改箭頭函式 `r=>cellPct(r.w1)` 等。→ industry 頁 4 個缺值產業正確顯示 `-` 而非 NaN%
+
+### 多市場資料表預留（用戶 2026-07-15 指示）
+- 用戶要求預留 **US / CN / HK / JP / KR** 市場資料表結構，實際股價留待未來開發填入（不做假數據上線）。
+- 已建立 `data/markets.json`：僅含市場元資料（id/name/symbol_format/symbol_regex/timezone/data_source/status）+ 共用 `stock_schema`（欄位清單）。**不含任何假股價**。
+- Watch 模組目前 DEFAULT_WATCH 含跨市場標的（AAPL/600519/00700.HK），但 stocks.json 僅 TW 有值 → 這些顯示 `-` 是預期行為，未來各市場 JSON 就緒後會自動補值。
+- 未來 Build-Time 腳本可為每市場產出 `data/<market>.json`（結構同 stocks.json 的 stocks[]），前端依 `market` 欄位路由。
+
+## 狀態總結（2026-07-15 收工）
+- 核心 blocker（排序）✅ 根治並上線
+- 5 頁工具列/抽屜/表格 ✅ 全驗證通過
+- QA + CI ✅ 全綠，GitHub Pages 已重新部署（線上實測排序生效）
+- 待未來：① 多市場真實資料整合 ② 首頁 KLineChart js_error 來源定位（不阻擋）③ watchlist 跨市場標的補值（依 markets.json 就緒後）
+
 
 ## 本地環境
 - repo: /root/Documents/mklab-stock （git，branch main，未提交修改）

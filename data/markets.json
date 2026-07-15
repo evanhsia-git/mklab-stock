@@ -1,0 +1,71 @@
+{
+  "meta": {
+    "schema_version": "0.1.0-reserved",
+    "note": "多市場資料表預留（schema 層）。目前僅 TW 有真實資料（data/stocks.json）。US/CN/HK/JP/KR 的股價資料留待未來開發由 Build-Time 腳本填入，本檔不含量化股價，僅定義市場元資料與共用欄位結構。",
+    "as_of": null,
+    "generated_by": "manual-reservation"
+  },
+  "markets": [
+    {
+      "id": "TW",
+      "name": "台灣",
+      "symbol_format": "4-6 位數字（ETF 可帶字母尾碼，如 006208 / 00400A）",
+      "symbol_regex": "^[0-9]{4,6}[A-Za-z]?$",
+      "timezone": "Asia/Taipei",
+      "data_source": "TWSE / TPEX（已上線，本機 DB /data/tw_stock_all.db）",
+      "status": "active"
+    },
+    {
+      "id": "US",
+      "name": "美股",
+      "symbol_format": "字母代號（如 AAPL、TSLA）",
+      "symbol_regex": "^[A-Z]{1,5}$",
+      "timezone": "America/New_York",
+      "data_source": "yfinance / Stooq（規劃中，尚未整合）",
+      "status": "planned"
+    },
+    {
+      "id": "CN",
+      "name": "陸股（A股）",
+      "symbol_format": "6 位數字（如 600519 貴州茅台、000001）",
+      "symbol_regex": "^[0-9]{6}$",
+      "timezone": "Asia/Shanghai",
+      "data_source": "規劃中（滬深交易所 / 東財 / akshare）",
+      "status": "planned"
+    },
+    {
+      "id": "HK",
+      "name": "港股",
+      "symbol_format": "5 位數字，可帶 .HK 尾碼（如 00700.HK 騰訊）",
+      "symbol_regex": "^[0-9]{4,5}(\\.HK)?$",
+      "timezone": "Asia/Hong_Kong",
+      "data_source": "規劃中（HKEX / yfinance）",
+      "status": "planned"
+    },
+    {
+      "id": "JP",
+      "name": "日股",
+      "symbol_format": "4 位數字（如 7203 豐田、6758 索尼）",
+      "symbol_regex": "^[0-9]{4}$",
+      "timezone": "Asia/Tokyo",
+      "data_source": "規劃中（Tokyo SExchange / yfinance）",
+      "status": "planned"
+    },
+    {
+      "id": "KR",
+      "name": "韓股",
+      "symbol_format": "6 位數字（如 005930 三星電子）",
+      "symbol_regex": "^[0-9]{6}$",
+      "timezone": "Asia/Seoul",
+      "data_source": "規劃中（KRX / yfinance）",
+      "status": "planned"
+    }
+  ],
+  "stock_schema": {
+    "fields": [
+      "sym", "name", "market", "price", "chg", "pe", "pb", "eps",
+      "roe", "roa", "market_cap", "ind", "div", "rank", "spct", "alert"
+    ],
+    "note": "各市場共用同一欄位結構。跨市場標的以 market 欄位（TW/US/CN/HK/JP/KR）區分；symbol 格式依各市場 symbol_regex 驗證。未來 Build-Time 腳本可為每個 active/planned 市場產出 data/<market>.json（結構同 stocks.json 的 stocks[] 陣列），前端 DataTable 與 Watch 模組依 market 欄位路由。"
+  }
+}
