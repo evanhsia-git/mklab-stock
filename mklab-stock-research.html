@@ -124,7 +124,7 @@
             <button onclick="klDraw('fibonacciLine')">費波那契</button>
             <button onclick="klRemoveAll()">清除</button>
           </div>
-          <div id="priceChart" style="height:360px"></div>
+          <div id="priceChart" style="height:42vh;min-height:300px"></div>
         </div>
         <div class="card">
           <h3>PE Band（本益比區間）</h3>
@@ -176,7 +176,7 @@
   function closeDrawer(){ document.getElementById("drawer").classList.remove("open"); document.querySelector(".drawer-mask").classList.remove("open"); }
   function setLang(l){ document.getElementById("langZh").classList.toggle("on",l==="zh"); document.getElementById("langEn").classList.toggle("on",l==="en"); }
   // ===== KLineChart 自託管（個股 K線 + MACD + KDJ + 畫圖）=====
-  let rChart=null, rSeries=null, rInited=false;
+  let rChart=null, rSeries=null, rMacd=false, rKD=false, rInited=false;
   function genKData(n,seed){ const o=[]; let p=seed; const base=new Date(2025,6,14);
     for(let i=0;i<n;i++){ base.setDate(base.getDate()+1);
       const open=p; const close=+(p+(Math.random()-0.48)*seed*0.03).toFixed(1);
@@ -186,12 +186,25 @@
       o.push({ time:`${y}-${m}-${d}`, open, high, low, close }); p=close;
     } return o;
   }
-  function klInit(s){ if(rInited||typeof LightweightCharts==='undefined') return; const el=document.getElementById('priceChart'); rChart=LightweightCharts.createChart(el, { layout:{background:{type:'solid',color:'transparent'},textColor:'#94a3b8'}, grid:{vertLines:{color:'rgba(148,163,184,0.1)'},horzLines:{color:'rgba(148,163,184,0.1)'}}, rightPriceScale:{borderColor:'rgba(148,163,184,0.2)'}, timeScale:{borderColor:'rgba(148,163,184,0.2)',timeVisible:false}, width:el.clientWidth, height:360 }); rSeries=rChart.addCandlestickSeries({ upColor:'#ef4444', downColor:'#22c55e', borderUpColor:'#ef4444', borderDownColor:'#22c55e', wickUpColor:'#ef4444', wickDownColor:'#22c55e' }); try{ rSeries.setData(genKData(250, STOCKS[s]?STOCKS[s].price:100)); }catch(e){ console.warn('setData',e); } rInited=true; }
-  function klRender(s){ if(rChart){ try{ rChart.remove(); }catch(e){} rInited=false; rChart=null; rSeries=null; } klInit(s); }
-  function klAddIndicator(name){ /* lightweight-charts v4 免費版指標需手動實作，暫保留介面 */ }
-  function klDraw(type){ /* 畫線工具需 overlay 插件，暫保留介面 */ }
-  function klRemoveAll(){ if(rChart) rChart.remove(); rChart=null; rSeries=null; rInited=false; }
-  window.addEventListener('load', ()=>klRender('2330'));
+  function calcMACD(data){ const c=data.map(d=>d.close); const ema=(p,arr)=>{ const k=2/(p+1); let prev=arr[0]; const out=[prev]; for(let i=1;i<arr.length;i++){ prev=arr[i]*k+prev*(1-k); out.push(prev);} return out; };
+    const e12=ema(12,c), e26=ema(26,c); const dif=e12.map((v,i)=>v-e26[i]); const dea=ema(9,dif);
+    const hist=dif.map((v,i)=>+(v-dea[i]).toFixed(2)); const difR=dif.map(v=>+v.toFixed(2)); const deaR=dea.map(v=>+v.toFixed(2));
+    return data.map((d,i)=>({ time:d.time, dif:difR[i], dea:deaR[i], hist:+hist[i] }));
+  }
+  function calcKD(data){ const c=data.map(d=>d.close), h=data.map(d=>d.high), l=data.map(d=>d.low); const K=[],D=[]; let pk=50,pd=50;
+    for(let i=0;i<c.length;i++){ const lo=Math.min(...l.slice(Math.max(0,i-8),i+1)), hi=Math.max(...h.slice(Math.max(0,i-8),i+1)); const rsv=hi===lo?50:((c[i]-lo)/(hi-lo)*100); pk=pk+2/3*(rsv-pk); pd=pd+2/3*(pk-pd); K.push(+pk.toFixed(2)); D.push(+pd.toFixed(2)); }
+    return data.map((d,i)=>({ time:d.time, k:K[i], d:D[i] }));
+  }
+  function klInit(s){ if(rInited||typeof LightweightCharts==='undefined') return; const el=document.getElementById('priceChart'); const h=el.clientHeight||360; rChart=LightweightCharts.createChart(el, { layout:{background:{type:'solid',color:'transparent'},textColor:'#94a3b8'}, grid:{vertLines:{color:'rgba(148,163,184,0.1)'},horzLines:{color:'rgba(148,163,184,0.1)'}}, rightPriceScale:{borderColor:'rgba(148,163,184,0.2)'}, timeScale:{borderColor:'rgba(148,163,184,0.2)',timeVisible:false}, width:el.clientWidth, height:h }); rSeries=rChart.addCandlestickSeries({ upColor:'#ef4444', downColor:'#22c55e', borderUpColor:'#ef4444', borderDownColor:'#22c55e', wickUpColor:'#ef4444', wickDownColor:'#22c55e' }); try{ rSeries.setData(genKData(250, STOCKS[s]?STOCKS[s].price:100)); }catch(e){ console.warn('setData',e); } rInited=true; window.addEventListener('resize', ()=>{ if(rChart) rChart.resize(el.clientWidth, el.clientHeight||360); }); }
+  function klRender(s){ if(rChart){ try{ rChart.remove(); }catch(e){} rInited=false; rChart=null; rSeries=null; rMacd=false; rKD=false; } klInit(s); if(rSeries) rSeries.setData(genKData(250, STOCKS[s]?STOCKS[s].price:100)); }
+  function klAddIndicator(name){ if(!rChart||!rSeries) return; const d=rSeries.getData?rSeries.getData():[]; if(!d.length) return;
+    if(name==='MACD'){ if(rMacd) return; const m=calcMACD(d); const s1=rChart.addLineSeries({color:'#3b82f6',lineWidth:1}); s1.setData(m.map(x=>({time:x.time,value:x.dif}))); const s2=rChart.addLineSeries({color:'#f59e0b',lineWidth:1}); s2.setData(m.map(x=>({time:x.time,value:x.dea}))); const s3=rChart.addHistogramSeries({color:'#64748b',priceScaleId:''}); s3.setData(m.map(x=>({time:x.time,value:x.hist,color:x.hist>=0?'#ef4444':'#22c55e'}))); rMacd=true; }
+    else if(name==='KDJ'||name==='KD'){ if(rKD) return; const k=calcKD(d); const s4=rChart.addLineSeries({color:'#a855f7',lineWidth:1}); s4.setData(k.map(x=>({time:x.time,value:x.k}))); const s5=rChart.addLineSeries({color:'#14b8a',lineWidth:1}); s5.setData(k.map(x=>({time:x.time,value:x.d}))); rKD=true; }
+  }
+  function klDraw(type){ /* lightweight-charts v4 standalone 免費版無 overlay 繪圖工具，暫保留介面 */ }
+  function klRemoveAll(){ if(rChart) rChart.remove(); rChart=null; rSeries=null; rMacd=false; rKD=false; rInited=false; }
+  function _initRWhenReady(){ if(document.readyState!=='loading'){ klRender('2330'); } else { document.addEventListener('DOMContentLoaded', ()=>klRender('2330')); } }
+  _initRWhenReady();
   renderList(); sel("2330");
   // 接收來自搜尋跳轉的 ?sym= 參數，自動選股
   (function(){
