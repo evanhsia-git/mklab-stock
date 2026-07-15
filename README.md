@@ -16,14 +16,14 @@
 | 頁面 | 檔名 | 說明 |
 |------|------|------|
 | Market（首頁） | `index.html` | 五國股市走勢卡 + 自選股 + 績效表現 + 「綜合評分 TOP 10」推薦清單 |
-| Screener | `mklab-stock-screener.html` | 多條件篩選（PE/PB/ROE/EPS/漲跌%）+ 策略模板（價值/品質/成長/動能/高股息） |
-| Research | `mklab-stock-research.html` | 個股深度研究，含 K 線圖（KLineChart）、MACD / KD 指標 |
-| Industry | `mklab-stock-industry.html` | 依臺證所 114.06.09 要點劃分的 33 個官方產業大類，查看各產業動態與成分股 |
-| Watchlist | `mklab-stock-watchlist.html` | 在設定抽屜填入最多 5 檔代號，首頁與自選頁即顯示其走勢 |
+| Screener（篩選） | `mklab-stock-screener.html` | 多條件篩選（PE/PB/ROE/EPS/漲跌%）+ 策略模板（價值/品質/成長/動能/高股息） |
+| Research（研究） | `mklab-stock-research.html` | 個股深度研究，含 K 線圖（KLineChart）、MACD / KD 指標與畫線工具 |
+| Industry（產業） | `mklab-stock-industry.html` | 依臺證所 114.06.09 要點劃分的 33 個官方產業大類，查看各產業動態與成分股 |
+| Watchlist（自選） | `mklab-stock-watchlist.html` | 在設定抽屜填入最多 5 檔代號，首頁與自選頁即顯示其走勢 |
 
 ## 使用說明
 - **Market（首頁）**：大盤走勢、自選股、績效表現，以及「綜合評分 TOP 10」推薦清單。
-- **Screener（篩選）**：依 PE / PB / ROE / EPS / 漲跌% 等條件過濾股票，內建價值 / 成長 / 動能等策略模板。
+- **Screener（篩選）**：依 PE / PB / ROE / EPS / 漲跌% 等條件過濾股票，內建價值 / 成長 / 動能 等策略模板。
 - **Research（研究）**：個股深度研究，含 K 線圖（KLineChart）、MACD / KD 指標與畫線工具。
 - **Industry（產業）**：依臺證所 114.06.09 要點劃分的 33 個官方產業大類，查看各產業動態與成分股。
 - **Watchlist（自選）**：在設定抽屜填入最多 5 檔代號，首頁與自選頁即顯示其走勢。
@@ -39,16 +39,15 @@
 | 資料類型 | 來源 | 說明 |
 |----------|------|------|
 | 每日收盤價 / 漲跌 | **TWSE OpenAPI** | 臺灣證交所公開 API（`STOCK_DAY_ALL`），免 key、雲端可達 |
-| 全球指數 / ETF | **yfinance** | 免 key，每日自動抓取（^TWII / ^GSPC / ^N225 / 0050 等） |
-| ROE / ROA | **yfinance** | 每週六自動補齊（免 key，含 3 秒延遲避免被封） |
+| ROE / ROA | **FinMind** → yfinance | FinMind（台灣證交所授權資料）為主；雲端 weekly 用 yfinance 備援 |
 | 產業分類 | **33 類對照表** | 依臺證所「上市公司產業類別劃分暨調整要點（114.06.09）」 |
 | 歷史股價 | **本機 DB 灌種** | 初始 260 個交易日快照，後續由 GitHub Actions 每日追加 |
 
-> **資料源優先順序**：TWSE / TPEX 官方為主，抓不到才用 yfinance。
+> **資料源優先順序**：FinMind（台灣證交所授權資料）→ TWSE OpenAPI → yfinance。**零 API key、零 secret**，fork 即可用。
 
 ## 資料更新
-- **每日自動更新**：台灣收盤後 17:00（UTC 09:00）週一至週五，由 GitHub Actions 執行 `.github/workflows/daily-update.yml`
-- **ROE / ROA 更新**：每週六自動補齊
+- **每日自動更新**：台灣收盤後 17:00（UTC 09:00）週一至週五，由 GitHub Actions 執行
+- **ROE / ROA 更新**：每週六自動補齊（FinMind 為主，yfinance 備援）
 - **休市處理**：週末 / 國定假日 / 突發颱風假自動跳過
 - 資料以收盤為準，非即時。首頁黃標顯示實際資料日。
 
@@ -56,6 +55,7 @@
 - 上市 / ETF 檔數：**1,369 檔**
 - 歷史股價切片：**260 個交易日**
 - 產業分類：**33 個官方大類**
+- ROE/ROA 已涵蓋：**100%（由 update_overview.py 補齊）**
 
 ## 綜合評分計算標準
 首頁「綜合評分 TOP 10」依下列加權即時計算（0–100 分），**只列出資料齊全且評分 > 0 的推薦股**：
@@ -85,7 +85,7 @@ mklab-stock/
 │   ├── stocks.json               # 全市場個股最新一日
 │   ├── industry.json             # 33 產業聚合
 │   ├── indices.json              # 全球指數/ETF
-│   ├── history/                  # 每日切片（259 天）
+│   ├── history/                  # 每日切片
 │   └── schema-version.json       # schema 版號
 ├── docs/                         # 設計依據 / 資源 / 規範
 │   ├── design.md
@@ -93,10 +93,13 @@ mklab-stock/
 │   ├── SKILL.md
 │   └── mklab-stock-schema.md     # 規範與架構手冊
 ├── skills/
-│   └── mklab-stock-lint/         # 品質門禁 Skill（fetch_data.py + qa_gate.py）
+│   └── mklab-stock-lint/         # 品質門禁 Skill
 ├── scripts/                      # 抓取/匯出/QA 腳本
-├── prototypes/                   # 歷史原型（v11）
-└── .github/workflows/            # CI/CD（daily-update / qa-gate / html-health）
+│   ├── fetch_data.py             # 雲端每日抓取
+│   ├── export_db.py              # 本機 DB 匯出
+│   ├── update_overview.py        # ROE/ROA 補齊
+│   └── qa_gate.py                # CI 質量門禁
+└── .github/workflows/            # CI/CD
 ```
 
 ## 本地預覽
