@@ -287,6 +287,11 @@ def run_daily():
         # 繼承既有 ROE/ROA/eps/market_cap/ind；PE/PB/div 來自 BWIBBU
         ex = existing.get(sid, {})
         bb = bwibbu.get(sid, {})
+        # 當日無成交/停牌：TWSE 回傳 ClosingPrice=0 或空 → OHLC 全設 None（前端顯示 '-'），
+        # 避免髒值 price<=0 進入資料；volume 保留供參考
+        no_trade = (close is None or close <= 0)
+        if no_trade:
+            open_p = high = low = close = None
         stocks.append({
             "sym": sid,
             "name": name,

@@ -160,12 +160,15 @@ def run():
         # 髒值掃描
         # 必填欄位規則：
         #  - pe/pb/div/roe/eps/rank 可為 null（ETF/外股常缺）→ 不計
-        #  - OHLC 欄位：全部為 null = 資料源未涵蓋（ETF 等）→ WARNING（非阻擋）
+        #  - OHLC 欄位（open/high/low/price/volume）：全部為 null = 資料源未涵蓋（ETF 等）→ WARNING
         #                 部分為 null（其他有值）= 腐化/匯出錯誤 → ERROR（阻擋）
-        #  - 其他必填（sym/name/price/volume/market_cap/ind/chg）null = ERROR
+        #  - market_cap：雲端來源（TWSE STOCK_DAY_ALL/BWIBBU）不回傳，前端顯示 '-'，
+        #                null 僅 WARNING（非阻擋）；若為非數值/負數才 ERROR
+        #  - 其他必填（sym/name/price/volume/ind/chg）null = ERROR
         REQUIRED = {"sym", "name", "price", "open", "high", "low",
-                    "volume", "market_cap", "ind", "chg"}
-        OHLC = {"open", "high", "low", "price", "volume", "market_cap"}
+                    "volume", "ind", "chg"}
+        OHLC = {"open", "high", "low", "price", "volume"}
+        MARKET_CAP = "market_cap"
         import re as _re
         def _etf_suffix(sym):
             # 帶字母尾碼的 ETF（如 00400A、00625K）：TWSE 日收盤表不含其 OHLC，視為已知資料源缺口
@@ -182,6 +185,11 @@ def run():
                         dirty_warn.append(f"{sym}.{k}=null(ETF/資料源未涵蓋)")
                     else:
                         dirty_err.append(f"{sym}.{k}=null")
+                elif k == MARKET_CAP:
+                    if v is None:
+                        dirty_warn.append(f"{sym}.market_cap=null(雲端未涵蓋)")
+                    elif isinstance(v, (int, float)) and (v != v or v < 0):
+                        dirty_err.append(f"{sym}.market_cap=非法值")
                 elif isinstance(v, float) and (v != v):
                     dirty_err.append(f"{sym}.{k}=NaN")
                 elif v == "" or v == "-":
