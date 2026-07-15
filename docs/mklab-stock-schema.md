@@ -356,6 +356,28 @@ MKLAB.DataTable(tableId, {
 2. `python3 scripts/export_db.py` → 匯出 stocks.json（前端才會顯示 roa 欄）
 3. 雲端 CI 的 `weekly-roe` job 每週六也會用 yfinance 補（但本機 DB 不依賴雲端，需手動跑本腳本）
 
+### 7.8 mklab-stock 能否「每日自動抓取 roa」？
+**分兩層（2026-07-15 釐清）：**
+| 層級 | 能否自動抓 roa | 機制 |
+|------|---------------|------|
+| **雲端 GitHub Pages（stocks.json）** | ✅ 已會 | `daily-update.yml` 的 `weekly-roe` job：**每週六 18:00 台灣時間**自動跑 `fetch_data.py weekly`，yfinance 補 ROE/ROA |
+| **本機 DB（tw_stock_all.db）** | ❌ 不會 | `update_overview.py` 是手動腳本，無設 cron/定時任務 |
+
+**關鍵認知**：
+- ROE/ROA 是**季度/年度**資料（非每日變動），「每日抓」意義不大 → 每週六補一次即可
+- 真正的「每日」資料是收盤價/漲跌（已由 `daily` 模式處理）
+- **建議**：本機 DB 設**每週六** Hermes cron 或系統 crontab 跑 `update_overview.py --skip-finmind`（與雲端同頻率），保持 DB 與雲端一致
+- 若 FinMind 未來有有效 token：改為不加 `--skip-finmind`（FinMind 主源，季度更精準）
+
+### 7.9 本輪實作問題與解決（2026-07-15）
+| # | 問題 | 根因 | 解決 |
+|---|------|------|------|
+| 1 | `update_overview.py` 的 `--skip-finmind` 無效 | patch 被中斷，main() 殘留重複舊迴圈（無 skip 判斷） | 重寫 main()，移除重複迴圈，skip 參數生效 |
+| 2 | FinMind 每檔先試都 limit，全量跑極慢 | 匿名模式被 IP rate-limit（每 3-4 檔鎖） | `--skip-finmind` 直接跳過；或未加參數時連續失敗 3 次自動停用 |
+| 3 | yfinance 對 ETF 無財報（回空） | ETF 不發行資產負債表 | 自動跳過（roe/roa 保持 null），前端顯示 `-`，正常 |
+| 4 | `FINMIND_TOKEN` 環境變數過期 | token 回 `Token is illegal` | 標記 Wiki；暫用 yfinance 備援，待有效 token |
+| 5 | Wiki §7.1 錯標 FinMind「✅ 可用」 | 早期測試單檔成功，未測批量 limit | 修正為「❌ 當前不可用」+ 新增 §7.5 抓取上限實測 |
+
 ### 7.2 計算公式（計算式解決方案）
 ```
 ROE (%) = NetIncome / StockholdersEquity * 100
