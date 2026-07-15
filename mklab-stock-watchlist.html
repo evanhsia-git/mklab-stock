@@ -56,6 +56,10 @@
   .close-x { float:right; background:none; border:none; font-size:20px; color:var(--muted); cursor:pointer; }
   .drawer a { color:var(--accent); text-decoration:none; }
   .sys-note { font-size:12px; color:var(--muted); line-height:1.6; }
+  .section-title { font-weight:700; font-size:15px; margin:4px 0 10px; display:flex; align-items:baseline; gap:8px; }
+  .section-title .hint { font-weight:400; font-size:11px; color:var(--muted); }
+  .freshness { background:#fff7ed; color:#9a3412; font-size:12px; padding:6px 12px; border-bottom:1px solid var(--border); text-align:center; }
+  [data-theme="dark"] .freshness { background:#2a1d12; color:#fdba74; }
 </style>
 </head>
 <body>
@@ -85,7 +89,7 @@
     <div class="sys-note">版本：dashboard v3.0<br>資料源：TWSE/TPEX/Yahoo/Stooq<br>最後更新：2026-07-14 08:30<br>狀態：<span class="up">●</span> 正常運作</div>
   </aside>
   <div class="wrap">
-    <div class="section-title">我的自選股（最多 5 檔）</div>
+    <div class="section-title">我的自選股（最多 5 檔）<span class="hint">點表頭可排序</span></div>
     <div class="row-input">
       <input id="addSym" placeholder="新增自選股代號，如 2330">
       <button onclick="addSym()">加入</button>
