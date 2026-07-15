@@ -12,6 +12,7 @@ tags: [mklab-stock, schema, 規範, 運維, 文檔]
 > 3. 前端資產（`assets/mklab-core.js`）元件契約
 > 4. 已記錄的故障排除（Troubleshooting）
 > 5. 維護協議（誰可以改什麼、如何上線）
+> 6. 資料源調查與 ROE/ROA 解決方案
 
 ---
 
@@ -20,7 +21,7 @@ tags: [mklab-stock, schema, 規範, 運維, 文檔]
 | 原則 | 說明 |
 |------|------|
 | **GitHub-Native / Fork-First** | 零外部依賴、零 secret，fork 即跑 |
-| **資料源優先順序** | TWSE / TPEX 官方為主 → 抓不到才用 yfinance |
+| **資料源優先順序** | TWSE / TPEX 官方為主 → 抓不到才用 FinMind → 再 yfinance |
 | **Build-Time 預算** | 資料在 build 時生成進 repo，前端不即時打 API |
 | **Graceful Degradation** | 單檔失敗不中斷整批，缺值給 `null`（前端顯示 `-`） |
 | **上傳前先核對** | schema / 命名 / 法規類易錯項，先確認來源與格式再 commit |
@@ -33,7 +34,7 @@ tags: [mklab-stock, schema, 規範, 運維, 文檔]
 ┌─────────────────────────────────────────────────────────────┐
 │  本機 VPS (DB 源頭)                                          │
 │  /root/Documents/database/tw_stock_all.db                    │
-│    └─ stock_overview (roe/eps/market_cap/industry...)        │
+│    └─ stock_overview (roe/eps/market_cap/industry/roa)       │
 │    └─ daily_prices_YYYYMMDD (OHLCV+pe/pb/div)                │
 │         │                                                    │
 │         ▼ scripts/export_db.py (一次性灌種)                  │
@@ -67,22 +68,31 @@ tags: [mklab-stock, schema, 規範, 運維, 文檔]
 - `export_latest()`：找最新 `daily_prices_YYYYMMDD` 表 → 產 `stocks.json`
 - `export_industry()`：33 產業聚合（依 `industry-codes.json` 官方 33 類）
 - `export_history()`：259 天切片 → `history/YYYYMMDD.json`
-- ⚠️ **已知限制**：本機 DB 的 `stock_overview` **無 `roa` 欄位**（經 PRAGMA 證實），故匯出 stocks.json 的 `roa` 為 `null`。ROA 目前只靠雲端 `weekly` 模式補。
+- ⚠️ **已知限制（已解決）**：本機 DB 的 `stock_overview` 原無 `roa` 欄位，已由 `scripts/update_overview.py` 補齊（見 §7）
 
-### 1.3 `scripts/qa_gate.py`（489 行）
+### 1.3 `scripts/update_overview.py`（ROE/ROA 補齊，新增）
+**職責**：本機 DB 補齊財務衍生欄位 roe/roa，寫回 `tw_stock_all.db`。
+- **優先順序**：FinMind（主源，台灣證交所授權資料）→ yfinance（備援）→ TWSE/MOPS（預留擴充）
+- 計算公式：`ROE = NetIncome/StockholdersEquity*100`；`ROA = NetIncome/TotalAssets*100`
+- 寫入：`ALTER TABLE stock_overview ADD COLUMN roa`（若不存在）+ UPDATE roe/roa
+- 用法：`python3 scripts/update_overview.py [--limit N] [--force]`
+- 詳見 §7
+
+### 1.4 `scripts/qa_gate.py`（489 行）
 **職責**：CI 質量門禁（`.github/workflows/qa-gate.yml`）。
 - 掃描 5 頁 HTML 靜態結構（head/body 完整性、JS 語法、表格殼）
 - 輸出 `data/qa-report.md` + JSON
 - 判定 `ALLOW DEPLOY` / `BLOCK DEPLOY`（任一 Critical 未過即 BLOCK）
 
-### 1.4 `scripts/check_html_health.py`（166 行）
+### 1.5 `scripts/check_html_health.py`（166 行）
 **職責**：本地 HTML 健康檢查（標籤配對、關鍵元素存在）。
 
-### 1.5 維護協議
+### 1.6 維護協議
 | 腳本 | 誰改 | 測試方式 |
 |------|------|----------|
 | fetch_data.py | 雲端管線變更需先本地 `python fetch_data.py daily` 實跑 | 看 `data/fetch-log.json` 輸出 |
 | export_db.py | 本機 DB schema 變動才改 | `python export_db.py` 後 diff data/*.json |
+| update_overview.py | ROE/ROA 來源變更才改 | `python update_overview.py --limit 3 --force` |
 | qa_gate.py | 僅當檢查規則需調整 | `python qa_gate.py --json qa-result.json` |
 | mklab-core.js | 前端共用元件變更 | 本地 server + 瀏覽器實測（截圖+console） |
 
@@ -98,7 +108,7 @@ tags: [mklab-stock, schema, 規範, 運維, 文檔]
     "source": "TWSE OpenAPI STOCK_DAY_ALL (免 key, 雲端)",
     "schema_version": "1.0.0",
     "count": 1369,
-    "note": "收盤/漲跌每日更新；ROE/ROA 由 weekly 模式補齊；ETF 含於上市清單"
+    "note": "收盤/漲跌每日更新；ROE/ROA 由 update_overview.py 補齊；ETF 含於上市清單"
   },
   "stocks": [
     {
@@ -110,7 +120,8 @@ tags: [mklab-stock, schema, 規範, 運維, 文檔]
       "pe": 18.5,               // 本益比（null=缺）
       "pb": 4.2,                // 淨值比
       "div": 2.1,               // 殖利率 %
-      "roe": 38.89,             // 股東權益報酬率 %（weekly 補）
+      "roe": 38.89,             // 股東權益報酬率 %（update_overview.py 補）
+      "roa": 12.5,              // 總資產報酬率 %（update_overview.py 補，原 DB 無此欄）
       "eps": 22.08,
       "market_cap": 5812345000000,  // 市值（元）
       "ind": "半導體業",         // 33 類產業名
@@ -120,7 +131,6 @@ tags: [mklab-stock, schema, 規範, 運維, 文檔]
   ]
 }
 ```
-⚠️ **roa 欄位現狀**：schema 預留但值為 `null`（DB 無來源 + weekly 未完整跑）。前端 index 頁已**暫隱藏 ROA 欄**直到有資料。
 
 ### 2.2 `data/industry.json`（33 產業聚合）
 ```json
@@ -187,18 +197,20 @@ tags: [mklab-stock, schema, 規範, 運維, 文檔]
 ### 3.1 共用 DataTable 模組
 ```js
 MKLAB.DataTable(tableId, {
-  cols: ['sym','price','chg','score','pe','pb','eps','roe','trend','ind'],
+  cols: ['sym','price','chg','score','pe','pb','eps','roe','roa','trend','ind'],
   rows: [...],
   pageSize: 10,           // 每頁上限（用戶規格：最多 10）
-  pagerId: 'indPager',    // 分頁容器 id（對應 HTML <div class="pager" id="...">)
+  pagerId: 'indPager',    // 分頁容器 id（對應 HTML <div class="pager" id="...">）
   defaultSort: 'score',
 })
 ```
 - **COLUMNS 定義**（格式化契約）：
+  - `sym` → `代號<small>名稱</small>`（代號緊接名稱，再價格）
   - `pe/pb/eps/roe/roa` → `.toFixed(2)`（用戶規格：最多 2 位小數）
   - `cap` → `market_cap/1e8` 轉億 + `.toFixed(2)`
   - `chg` → 漲跌 %（紅綠著色）
 - **事件委派**：document-level delegate（修復排序點擊失效）
+- **industry 明細表**：已改用此共用模組（原手工 innerHTML 導致 pb 超過 2 位，見 §4.7）
 
 ### 3.2 頭部二元固定佈局（2026-07-15 規格）
 ```html
@@ -225,6 +237,7 @@ MKLAB.DataTable(tableId, {
 ### 3.4 Watch 模組
 - `DEFAULT_WATCH = ['2330','2454','2308','2317','3711']`（台股市值前 5，確保圖表有值）
 - `renderWatch()`：若自選含無資料跨市場標的，自動以台股市值前 5 替換
+- 卡片名稱顯示：`代號<small>名稱</small>`（與表格統一，見 §3.1）
 
 ---
 
@@ -245,16 +258,42 @@ MKLAB.DataTable(tableId, {
 - **根因**：index.html 缺 `.pager` CSS（其他頁有）
 - **修復**：5 頁統一加 `.pager` CSS（surface 底 + accent 高亮）
 
-### 4.4 ROA 欄位無資料
+### 4.4 ROA 欄位無資料（已解決）
 - **症狀**：ROA 顯示 `-` 或全部隱藏
-- **根因**：本機 DB `stock_overview` 無 `roa` 欄位；雲端 weekly 未完整跑
-- **暫時處理**：index 頁隱藏 ROA 欄
-- **待辦**：修正本機 DB 抓取 ROA（用戶指示：TWSE/TPEX 為主，yfinance 為輔；需記錄來源於腳本）
+- **根因**：本機 DB `stock_overview` 原無 `roa` 欄位；雲端 weekly 未完整跑
+- **解決**：新增 `scripts/update_overview.py`（FinMind 主源 + yfinance 備援），`ALTER TABLE stock_overview ADD COLUMN roa` 並寫入；跑完 `export_db.py` 匯出即反映
 
-### 4.5 自選卡片圖表缺失
+### 4.5 自選卡片圖表缺失（已修復）
 - **症狀**：AAPL/00700.HK/600519 無 sparkline
 - **根因**：跨市場標的不在 stocks.json（僅台股）
 - **修復**：`DEFAULT_WATCH` 改台股市值前 5
+
+### 4.6 深色主題切換鍵無反應（已修復）
+- **症狀**：設定抽屜的深色開關點了沒反應（頁面不切換淺色）
+- **根因**：誤將呼叫改成 `MKLAB.Shell.toggleDark()`，但 `toggleDark` 定義在 `Drawer` 物件（core.js），`MKLAB.Shell.toggleDark` 為 `undefined` → onclick 報錯
+- **修復**：恢復為 `MKLAB.Drawer.toggleDark()`（設定抽屜開關 + 工具列主題鍵皆改回 Drawer 命名空間）
+- **教訓**：改 core.js 方法呼叫前，先用 console 確認 `typeof MKLAB.X.method === 'function'`，勿憑記憶猜命名空間
+
+### 4.7 industry 成分股明細表 pb 超過 2 位小數（已修復）
+- **症狀**：點產業展開明細表，PB 顯示 3+ 位（如 5.2345）
+- **根因**：`selInd()` 手工 `innerHTML` 寫表格，pb 未做 `.toFixed(2)`
+- **修復**：明細表改用共用 `MKLAB.DataTable`（cols: `['sym','price','chg','pe','pb','roe']`），pb 欄自動 2 位小數
+
+### 4.8 表格代號/名稱分離（已修復）
+- **症狀**：代號與名稱分兩欄，不符合「代號緊接名稱再價格」需求
+- **根因**：`COLUMNS.sym` fmt 只顯代號；watchlist 還有獨立 `name` 欄
+- **修復**：`sym` fmt 改 `代號<small>名稱</small>`（代號+名稱合一）；watchlist cols 移除獨立 name 欄
+
+### 4.9 本機 DB 無 ROA 欄位（已修復腳本）
+- **症狀**：`stock_overview` 無 `roa`，stocks.json 的 roa 全 null
+- **根因**：原建庫腳本未抓 ROA；PRAGMA 證實無此欄
+- **修復**：新增 `scripts/update_overview.py`（FinMind 主源 + yfinance 備援），`ALTER TABLE stock_overview ADD COLUMN roa` 並寫入
+
+### 4.10 ROE 來源不明（已釐清）
+- **症狀**：DB 的 roe（2330=38.89）與 yfinance 算的（31.7）不一致，不知來源
+- **根因**：DB roe 是「歷史建庫腳本」用 `淨利/權益` 算式寫入的（非 TWSE API 直給、非 yfinance）；TWSE OpenAPI 本身不提供 ROE
+- **解決**：統一改用 `update_overview.py`（FinMind 主源）重新計算並寫回，來源記錄於腳本 header
+- 詳見 §7 資料源調查
 
 ---
 
@@ -283,4 +322,74 @@ MKLAB.DataTable(tableId, {
 
 ---
 
-*最後更新：2026-07-15 — 新增 §1.5 維護協議、§4 故障排除、§2 schema 完整定義*
+## 7. 資料源調查與 ROE/ROA 解決方案
+
+### 7.1 現狀調查（2026-07-15 實測）
+| 資料源 | 台股 ROE/ROA 可用性 | 測試結果 |
+|--------|---------------------|----------|
+| **TWSE OpenAPI** (`openapi.twse.com.tw/v1/company/BalanceSheet`) | 財報端點 | ❌ 本環境直接呼叫回傳空（端點格式/權限問題） |
+| **MOPS 公開觀測站** (`mops.twse.com.tw/mops/web/t146sb05`) | 財報 | ❌ 回傳 JS redirect（需 session/cookie，複雜） |
+| **FinMind** (`FinMind.data.DataLoader`) | 資產負債表/財務報表 | ❌ **當前不可用**：匿名模式被 IP rate-limit（每 3-4 檔即 `Requests reach the upper limit`）；環境變數 `FINMIND_TOKEN` 經測試回傳 `Token is illegal`（過期）。FinMind 程式碼可呼叫，但本環境帳號層級被鎖 |
+| **yfinance** (`yfinance.Ticker('2330.TW')`) | balance_sheet/income_stmt | ✅ **唯一可用**：每檔 ~3s（含 sleep），1369 檔全量 ≈ 70 分鐘；給「年度」財報（非季度）。ETF 無財報（回空） |
+
+> ⚠️ **FinMind 標記更正**：先前標註「✅ 可用（匿名登入）」為**錯誤**。實測匿名模式被 IP 級 rate-limit，必須有有效 `FINMIND_TOKEN` 才能穩定使用（目前 token 已過期）。
+
+### 7.5 抓取上限實測（2026-07-15）
+| 項目 | 實測值 |
+|------|--------|
+| FinMind 匿名模式 | 每 3-4 檔觸發 `Requests reach the upper limit`（IP 級，90s+15s 間隔仍鎖） |
+| FinMind token | 環境變數 `FINMIND_TOKEN` 回 `Token is illegal`（過期無效） |
+| yfinance 單檔耗時 | ~3s（含 `time.sleep(3)` 防 ban） |
+| yfinance 全量 1369 檔 | ≈ 70 分鐘（但 ETF 約 117 檔無財報，實際有效約 1252 檔 ≈ 63 分鐘） |
+| yfinance 資料性質 | 年度財報（非季度）；ROE/ROA 為最近一年度值 |
+| DB 現狀（補齊前） | roe 有值 1042/1486（缺 444）、roa 有值 0/1486（全缺） |
+
+### 7.6 分批補齊策略（慢慢補足）
+- **現有腳本**：`scripts/update_overview.py --skip-finmind`（純 yfinance，跳過被鎖的 FinMind）
+- **跳過邏輯**：`--skip-finmind` 直接不呼叫 FinMind；未加此參數時，FinMind 連續失敗 3 次自動停用（避免每檔浪費 ~1s 在 limit 錯誤）
+- **全量一次跑**：`python3 scripts/update_overview.py --skip-finmind`（背景跑 ~70min，補滿 roe 剩 444 + roa 全 1486）
+- **未來 FinMind 解鎖後**：去掉 `--skip-finmind` 重跑（FinMind 主源覆蓋 yfinance 年度值，改抓季度更精準）
+- **注意**：ETF（代號含字母尾如 00400A）yfinance 無財報，會自動跳過（roe/roa 保持 null）；這是正常的，前端顯示 `-`
+
+### 7.7 補齊後續步驟
+1. 跑完 `update_overview.py` → DB 的 stock_overview.roe/roa 填滿
+2. `python3 scripts/export_db.py` → 匯出 stocks.json（前端才會顯示 roa 欄）
+3. 雲端 CI 的 `weekly-roe` job 每週六也會用 yfinance 補（但本機 DB 不依賴雲端，需手動跑本腳本）
+
+### 7.2 計算公式（計算式解決方案）
+```
+ROE (%) = NetIncome / StockholdersEquity * 100
+ROA (%) = NetIncome / TotalAssets        * 100
+```
+- FinMind 財報為「單季」資料 → 若需年度 ROE/ROA 應取 TTM（近四季加總淨利）或年度財報（腳本預設取最新一季，未來可加 `--annual`）
+
+### 7.3 解決腳本：`scripts/update_overview.py`
+- **優先順序**：FinMind（主源，台灣證交所授權資料）→ yfinance（備援）→ TWSE/MOPS（預留擴充）
+- **寫入**：`tw_stock_all.db` 的 `stock_overview` 表（ADD COLUMN roe/roa 若不存在）
+- **用法**：
+  ```bash
+  python3 scripts/update_overview.py            # 全量（1369 檔，慢）
+  python3 scripts/update_overview.py --limit 20 # 測試前 20 檔
+  python3 scripts/update_overview.py --force    # 強制覆寫既有
+  ```
+- **後續**：跑完需 `python3 scripts/export_db.py` 匯出 stocks.json 才反映前端
+- **來源記錄**：腳本 header 明載優先順序與公式（符合用戶「記錄在腳本裡」要求）
+
+### 7.4 股市資料儲存位置（完整鏈）
+```
+本機 VPS: /root/Documents/database/tw_stock_all.db
+  ├─ stock_overview    (roe/eps/market_cap/industry/roa)
+  └─ daily_prices_YYYYMMDD (OHLCV + pe/pb/div)
+        │ export_db.py
+        ▼
+mklab-stock/data/stocks.json  (推上 GitHub → GitHub Pages)
+        │ fetch_data.py (雲端每日 TWSE + 每週 yfinance roe/roa)
+        ▼
+GitHub Pages: https://evanhsia-git.github.io/mklab-stock/
+```
+- **前端只讀 `data/*.json`**（Static-First，不直連 DB/API）
+- **本機 DB 是 Build-Time 源頭**；雲端 GitHub Actions 是每日增量源頭
+
+---
+
+*最後更新：2026-07-15 — 新增 §1.3 update_overview.py、§4.6-4.10 故障排除、§7 資料源調查與 ROE/ROA 解決方案、§2.1 roa 欄位說明*

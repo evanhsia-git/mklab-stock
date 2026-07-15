@@ -153,7 +153,7 @@ def fetch_yfinance(sym):
         return None
 
 
-def update_one(conn, sym, force=False):
+def update_one(conn, sym, force=False, use_finmind=True):
     """單檔更新：FinMind 主源 → yfinance 備援 → TWSE 預留。回傳 bool 是否更新"""
     cur = conn.execute("SELECT roe, roa FROM stock_overview WHERE stock_id=?", (sym,))
     row = cur.fetchone()
@@ -162,7 +162,7 @@ def update_one(conn, sym, force=False):
         return False  # 已有，跳過
 
     # 優先順序：FinMind → yfinance → TWSE(預留)
-    rec = fetch_finmind(sym)
+    rec = fetch_finmind(sym) if use_finmind else None
     if rec is None:
         rec = fetch_yfinance(sym)
     if rec is None:
@@ -181,6 +181,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--limit", type=int, default=0, help="只跑前 N 檔（測試）")
     ap.add_argument("--force", action="store_true", help="強制覆寫既有 roe/roa")
+    ap.add_argument("--skip-finmind", action="store_true", help="跳過 FinMind（當 IP 被 limit 時用 yfinance）")
     args = ap.parse_args()
 
     conn = conn_db()
@@ -188,17 +189,30 @@ def main():
     syms = get_symbols(conn)
     if args.limit:
         syms = syms[: args.limit]
-    print(f"[start] 共 {len(syms)} 檔，force={args.force}，主源=FinMind 備援=yfinance")
+    use_finmind = not args.skip_finmind
+    if not use_finmind:
+        print("[mode] 跳過 FinMind，純 yfinance 備援")
+    print(f"[start] 共 {len(syms)} 檔，force={args.force}，finmind={'on' if use_finmind else 'off'}")
 
     updated = 0
+    finmind_fail_streak = 0
     for i, sym in enumerate(syms):
         try:
-            if update_one(conn, sym, force=args.force):
+            # FinMind 連續失敗 3 次 → 暫時停用（IP 被 limit，避免每檔浪費時間）
+            if use_finmind and finmind_fail_streak >= 3:
+                use_finmind = False
+                print(f"  [warn] FinMind 連續失敗，改用 yfinance 備援")
+            did = update_one(conn, sym, force=args.force, use_finmind=use_finmind)
+            if did:
                 updated += 1
+                finmind_fail_streak = 0
+            else:
+                finmind_fail_streak += 1
         except Exception as e:
             print(f"  [skip] {sym}: {e}")
+            finmind_fail_streak += 1
         if (i + 1) % 50 == 0:
-            print(f"  [progress] {i+1}/{len(syms)} 已更新 {updated}")
+            print(f"  [progress] {i + 1}/{len(syms)} 已更新 {updated}")
         time.sleep(SLEEP)
 
     conn.commit()
