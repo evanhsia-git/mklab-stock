@@ -319,7 +319,7 @@
   //   價格/漲跌優先從 stocks.json 取真實值（caller 傳入 map）
   // ============================================================
   const WATCH_KEY = 'mk_watch';
-  const DEFAULT_WATCH = ['2330','AAPL','2317','00700.HK','600519'];
+  const DEFAULT_WATCH = ['2330','2454','2308','2317','3711'];
 
   const Watch = {
     list(){

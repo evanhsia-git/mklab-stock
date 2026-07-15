@@ -182,8 +182,28 @@
 
   // 版塊 5：我的自選（與 watchlist 共用同一份 localStorage 清單，價格取自 stocks.json 真實值）
   let priceMap = {};
+  // 台股市值最大前 5（資料載入後計算，作為自選 fallback 保底）
+  function top5ByCap(){
+    if(!priceMap || !Object.keys(priceMap).length) return ['2330','2454','2308','2317','3711'];
+    const arr = Object.entries(priceMap)
+      .map(([sym,p])=>({sym, cap:p.market_cap||0}))
+      .filter(x=>x.cap>0)
+      .sort((a,b)=>b.cap-a.cap)
+      .slice(0,5)
+      .map(x=>x.sym);
+    return arr.length?arr:['2330','2454','2308','2317','3711'];
+  }
   function renderWatch(){
-    const items = MKLAB.Watch.decorate(priceMap);
+    let items = MKLAB.Watch.decorate(priceMap);
+    // 自動清理：跨市場標的若 stocks.json 無資料（price/chg 皆 null），以台股市值前5替換，確保 5 張圖表都有值
+    if(priceMap && Object.keys(priceMap).length){
+      const valid = items.filter(d=>d.price!=null || d.chg!=null);
+      if(valid.length < 5){
+        const need = 5 - valid.length;
+        const fill = top5ByCap().filter(s=>!items.some(x=>x.sym===s)).slice(0,need);
+        items = valid.concat(fill.map(sym=>({sym, name:'', price:priceMap[sym]?priceMap[sym].price:null, chg:priceMap[sym]?priceMap[sym].chg:null, pe:priceMap[sym]?priceMap[sym].pe:null, roe:priceMap[sym]?priceMap[sym].roe:null, alert:''})));
+      }
+    }
     document.getElementById("watch5").innerHTML = items.map((d)=>{
       const price = d.price, chg = d.chg;
       if(price==null && chg==null) return `<div class="card-sm"><div class="name">${d.sym}</div><div class="val">-</div><div class="chg">-</div></div>`;
@@ -233,7 +253,7 @@
           };
         });
         priceMap = {};
-        d.stocks.forEach(s=>{ priceMap[s.sym] = {price:s.price, chg:s.chg, pe:s.pe, roe:s.roe, alert:null}; });
+        d.stocks.forEach(s=>{ priceMap[s.sym] = {price:s.price, chg:s.chg, pe:s.pe, roe:s.roe, market_cap:s.market_cap, alert:null}; });
         renderWatch();
         renderInd();
         const asof=d.meta&&d.meta.as_of;
