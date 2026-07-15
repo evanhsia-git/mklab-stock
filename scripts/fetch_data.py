@@ -132,6 +132,38 @@ def fetch_twse_json(url, timeout=60):
         return json.loads(r.read().decode("utf-8"))
 
 
+# 本益比/淨值比/殖利率（TWSE OpenAPI 官方，免 key，回傳 list of dict）
+TWSE_BWIBBU = "https://openapi.twse.com.tw/v1/exchangeReport/BWIBBU_ALL"
+
+
+def fetch_bwibbu():
+    """抓 TWSE 本益比/淨值比/殖利率，回傳 {sid: {pe, pb, div}}。失敗回傳空 dict（graceful）。"""
+    try:
+        raw = fetch_twse_json(TWSE_BWIBBU, timeout=60)
+        if not isinstance(raw, list):
+            return {}
+        out = {}
+        for r in raw:
+            sid = str(r.get("Code", "")).strip()
+            if not sid:
+                continue
+            def _f(k):
+                v = r.get(k)
+                if v in (None, "", "-"):
+                    return None
+                try:
+                    return float(v)
+                except (ValueError, TypeError):
+                    return None
+            out[sid] = {"pe": _f("PEratio"), "pb": _f("PBratio"),
+                        "div": _f("DividendYield")}
+        return out
+    except Exception as e:
+        LOG.warn(f"BWIBBU 抓取失敗（PE/PB 留空，不中斷）：{e}")
+        return {}
+
+
+
 def parse_date(roc_str):
     roc = int(roc_str[:3])
     y = roc + 1911
@@ -216,6 +248,10 @@ def run_daily():
     trade_date = parse_date(raw[0]["Date"])
     LOG.info(f"trade_date={trade_date}, 過濾後筆數={len(raw)}")
 
+    # 抓本益比/淨值比/殖利率（TWSE BWIBBU，免 key）
+    bwibbu = fetch_bwibbu()
+    LOG.info(f"BWIBBU 取得 {len(bwibbu)} 檔 PE/PB/殖利率")
+
     # 保留既有 ROE/ROA/eps/market_cap（這些由 weekly 模式更新，daily 不覆寫）
     existing = load_existing_stocks()
 
@@ -248,14 +284,15 @@ def run_daily():
         except ValueError:
             chg = None
         # 漲跌%：TWSE Change 是絕對值差，需昨收推算；這裡直接存 chg（元），前端可換算
-        # 繼承既有 ROE/ROA/eps/market_cap/ind
+        # 繼承既有 ROE/ROA/eps/market_cap/ind；PE/PB/div 來自 BWIBBU
         ex = existing.get(sid, {})
+        bb = bwibbu.get(sid, {})
         stocks.append({
             "sym": sid,
             "name": name,
             "price": close,
             "open": open_p, "high": high, "low": low, "volume": volume,
-            "pe": None, "pb": None, "div": None,
+            "pe": bb.get("pe"), "pb": bb.get("pb"), "div": bb.get("div"),
             "roe": ex.get("roe"), "eps": ex.get("eps"), "market_cap": ex.get("market_cap"),
             "ind": ex.get("ind"),
             "chg": chg,
@@ -272,11 +309,11 @@ def run_daily():
     with open(os.path.join(OUT, "stocks.json"), "w", encoding="utf-8") as f:
         json.dump({"meta": meta, "stocks": stocks}, f, ensure_ascii=False)
 
-    # 當日 history 切片（收盤價）
+    # 當日 history 切片（收盤價 + PE/PB/殖利率）
     hist = [{
         "stock_id": s["sym"], "stock_name": s["name"], "close": s["price"],
         "open": s["open"], "high": s["high"], "low": s["low"], "volume": s["volume"],
-        "pe_ratio": None, "pb_ratio": None, "dividend_yield": None,
+        "pe_ratio": s["pe"], "pb_ratio": s["pb"], "dividend_yield": s["div"],
         "industry": s["ind"],
     } for s in stocks]
     hpath = os.path.join(OUT, "history", f"{trade_date.replace('-', '')}.json")
