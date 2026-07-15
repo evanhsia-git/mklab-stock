@@ -67,13 +67,29 @@ def industry_of(ov, sid):
     return (ov.get(sid) or {}).get("industry", "未分類")
 
 def export_latest(conn, ov):
-    """最新一日 = daily_prices 表（總表，最新交易日）"""
-    row = conn.execute("SELECT trade_date FROM daily_prices LIMIT 1").fetchone()
-    trade_date = row[0] if row else None
-    print(f"[latest] trade_date={trade_date}")
+    """最新一日 = 動態找最大日期的 daily_prices_YYYYMMDD 表（07-13 已旋轉出 daily_prices 總表）"""
+    # 找最新日表：daily_prices_2* 中最大日期
+    tbls = [t[0] for t in conn.execute(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name LIKE 'daily_prices_2%'").fetchall()]
+    dates = sorted(t.replace("daily_prices_", "") for t in tbls)
+    latest_tbl = None
+    trade_date = None
+    if dates:
+        latest_tbl = f"daily_prices_{dates[-1]}"
+        trade_date = dates[-1]
+    else:
+        # fallback 到 daily_prices 總表
+        row = conn.execute("SELECT trade_date FROM daily_prices LIMIT 1").fetchone()
+        trade_date = row[0] if row else None
+        if trade_date:
+            latest_tbl = "daily_prices"
+    print(f"[latest] 來源表={latest_tbl} trade_date={trade_date}")
+    if not latest_tbl:
+        print("[latest] 找不到最新日表，跳過")
+        return None, []
     cur = conn.execute(
-        "SELECT stock_id,stock_name,close,volume,pe_ratio,pb_ratio,dividend_yield,open,high,low "
-        "FROM daily_prices"
+        f"SELECT stock_id,stock_name,close,volume,pe_ratio,pb_ratio,dividend_yield,open,high,low "
+        f"FROM {latest_tbl}"
     )
     stocks = []
     for sid, name, close, vol, pe, pb, div, o, h, l in cur.fetchall():
