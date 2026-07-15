@@ -1,98 +1,105 @@
-# mklab-stock Handoff（2026-07-15）
+# mklab-stock Handoff（2026-07-15 更新 — Web Components 開發輪）
 
-> 本檔記錄當前進度與待修項目。新 session 接手時先讀此檔 + 執行導航（SCHEMA/policy/index/log）。
+> 新 session 接手時：先讀此檔 + 執行導航（SCHEMA/policy/index/log）+ 讀 `docs/mklab-stock-dav.md`（完整開發指引）。
+> 上一輪（待修 A/B + 圖表庫修正 + push）已完成並合併 master，內容已清空，不再贅述。
 
-## 當前 Git 狀態
-- Branch: `master`（推送到 `origin/main`）
-- 最新 commit: `d023442` (fix: export_db.py 漏匯出 roa + 全量補齊 ROE/ROA)
-- 工作區可能有未提交修改（Research 頁重構中，見下方待修）
-
-## 一、已完成事項
-
-### 1. ROE/ROA 全量補齊 ✅
-- 腳本 `scripts/update_overview.py` 改善：新增 `--cron` 增量模式、`--daily-limit N`、`--skip-etf`（自動排除 ETF，因 yfinance 無 ETF 財報）、`--skip-finmind`、`JSON log + exit code`
-- 全量跑完（proc_52b495f58a7c）：更新 1084 檔
-- **DB 現狀**：`/root/Documents/database/tw_stock_all.db` 的 stock_overview：
-  - roa 有值 **1085/1486**（ETF 無財報跳過，正常）
-  - roe 有值 **1088/1486**
-- **匯出後** `data/stocks.json`：roa=1085、roe=1088（已修 export_db.py 漏匯出 roa 的 bug）
-- 範例 2330：roe=31.7 / roa=21.4 / eps=22.08
-
-### 2. 本機自動化抓 roa ✅
-- 系統 crontab 已設定（cron 服務 active）：
+## 當前 Git 狀態（重要）
+- **當前分支**：`dev/web-components`（開發分支，未提交變更）
+- **備份分支**：`backup/static-2026-07-15`（靜態頁備份，主要上線版安全保留）
+- **master 最新 commit**：`30cc767`（含 DAV 分析文件）
+- **未提交變更**（本輪開發，待 commit）：
   ```
-  0 3 * * 6 cd /root/Documents/mklab-stock && python3 scripts/update_overview.py --cron --skip-finmind >> /var/log/mklab_roa.log 2>&1
+   M data/fetch-log.json
+   M data/fetch-log.txt
+   M data/twii_kdata.js        ← 重產（含 window.TWII_KDATA 掛載）
+   M docs/mklab-stock-dav.md   ← 重寫為 Web Components 版
+   M scripts/fetch_data.py     ← 改 twii 產出格式
+  ?? assets/mklab-wc.js        ← 新增：Web Components 元件庫
+  ?? prototypes/wc-demo.html   ← 新增：元件測試頁
   ```
-- 雲端：GitHub Actions `daily-update.yml` 的 `weekly-roe` job 每週六 18:00 台灣時間跑 fetch_data.py weekly
-- FinMind 當前不可用（匿名模式 IP rate-limit + FINMIND_TOKEN 環境變數過期），暫用 yfinance 備援
 
-### 3. README 目錄 tree ✅
-- 已擴寫完整 `data/` 結構 + 資料源頭說明（bedf439）
+## 一、本輪決策（用戶指令）
+1. **備份當前靜態網頁** → 建 `backup/static-2026-07-15`（靜態頁為主要上線版，不動）
+2. **分支開發** → `dev/web-components`
+3. **選 2 路線**：放棄 React 化（需 Node/npm/Vite，違反「不依賴外部軟體」），改採**原生 Web Components / ES Modules 元件化**，守零依賴 / fork 即維護
+4. 開發完畢用 **superpowers 執行檢查與驗證**（verification-before-completion + qa_gate）
+5. 最後**自動上線**（dev → main merge + push → GitHub Pages 自動部署）
 
-### 4. Wiki ✅
-- `Obsidian Vault/finance/mklab-stock/mklab-stock-schema.md` §7.1 修正 FinMind 錯標、§7.5 抓取上限實測、§7.6 cron 友善、§7.8 本機自動化、§7.9 問題解決記錄
-- 已同步到 Quartz + repo docs/
+## 二、已完成事項（本輪）
 
-## 二、待修項目（重要，下次優先處理）
+### ✅ 1. 分支策略建立
+- `backup/static-2026-07-15`：從 master@30cc767 分出（靜態頁安全備份）
+- `dev/web-components`：開發分支（當前所在）
 
-### 🔴 待修 A：Research 頁 MACD/KD 指標（mklab-stock-research.html）
-**現狀（確認 line 221-225 真實狀態）**：
-- `klRender` line 221 有**錯誤字串**需修正：
-  ```js
-  // 錯誤（當前）：
-  function klRender(s){ ... klInit(s); if(rSeries) { klineData=genKData('TWII_FAKE'); } }
-  // 應改為：
-  function klRender(s){ ... klInit(s); if(rSeries) { klineData=genKData(250, STOCKS[s]?STOCKS[s].price:100); } }
-  ```
-- `klAddIndicator` line 222 用 `rSeries.getData()` 在 LightweightCharts v4.1.3 **不存在** → 指標永遠加不上：
-  ```js
-  // 錯誤（當前）：
-  function klAddIndicator(name){ if(!rChart||!rSeries) return; const d=rSeries.getData?rSeries.getData():[]; if(!d.length) return;
-  // 應改為（用全域 klineData 變數，已在 line 194 宣告 let klineData=[]）：
-  function klAddIndicator(name){ if(!rChart||!klineData.length) return; const d=klineData;
-  ```
-- `klineData` 全域變數已在 line 194 宣告，klInit line 217 已正確寫入 `klineData=genKData(250,...)`
+### ✅ 2. DAV 重寫為 Web Components 版
+- `docs/mklab-stock-dav.md` + `Obsidian Vault/finance/mklab-stock/mklab-stock-dav.md` 已重寫
+- 含：現狀事實、決策轉向、差異比對、12 項待開發（推薦度/難易度）、最高原則符合性、風險緩解
 
-**已完成的部分**（瀏覽器實測確認）：
-- ✅ 區塊順序：個股摘要 → 歷史價格圖 → 財報摘要（PE Band 區塊已移除）
-- ✅ 財報摘要讀真實資料（stocks.json），表格顯示 ROE%/ROA%/EPS/殖利率%/PE/PB 真實值
-- ✅ K 線蠟燭圖渲染成功（LightweightCharts v4.1.3，掛在 window.LightweightCharts）
-- ⚠️ 圖表庫真相：`vendor/lightweight-charts.min.js`（原誤命名 klinecharts.min.js，已於 2026-07-15 修正）實為 **LightweightCharts v4.1.3**（結尾 `window.LightweightCharts=Oe`）
+### ✅ 3. WC 基礎 + 第一元件 `<mklab-kline>`
+- 新增 `assets/mklab-wc.js`（plain script，classic 註冊，**零依賴**，不破壞現有 `MKLAB.*`）
+- 實作 `<mklab-kline>` Custom Element，封裝 LightweightCharts v4.1.3：
+  - `connectedCallback`：檢查 `window.LightweightCharts` 是否存在（不存在靜默退出）
+  - `data-symbol="TWII"` 屬性驅動：讀 `window[sym+'_KDATA']` 全域
+  - `setData(arr)` 方法：程式化餵資料
+  - `loadGlobal(name)` / `addLine(opts)` 方法
+  - `disconnectedCallback`：清理 chart + resize listener（防記憶體漏）
+  - resize 自適應（監聽 window resize）
 
-**修法**：
-1. 修正 line 221 的 `genKData('TWII_FAKE')` → `genKData(250, STOCKS[s]?STOCKS[s].price:100)`
-2. 修正 line 222 的 `rSeries.getData()` → 改用 `klineData`
-3. 瀏覽器實測：點 MACD/KD 按鈕 → 確認 rMacd/rKD 變 true + 圖表出現指標線
-4. 畫線功能（畫線/水平線/費波那契）：LightweightCharts v4 免費版無 overlay，klDraw 目前只 console.info 提示（可接受，或換 klinecharts 庫）
+### ✅ 4. demo 頁 + 瀏覽器實測驗證
+- 新增 `prototypes/wc-demo.html`（測試頁，不動正式頁）
+- **實測驗證通過**（browser 實際載入 + console + vision）：
+  - 測試 1（屬性驅動 `data-symbol="TWII"`）→ 渲染 260 天台灣加權指數 K 線 ✅（console 確認 `windowTwii:true, len:260, canvases:7`）
+  - 測試 2（程式化 `setData(15筆)`）→ 渲染蠟燭圖 ✅
+- **解決的 bug（本輪實測發現）**：
+  1. **路徑錯誤**：demo 在 `prototypes/` 子目錄，script src 用根相對路徑 → 404。改絕對路徑 `/vendor/...` `/data/...` `/assets/...`
+  2. **const 不掛 window**：`twii_kdata.js` 用 `const TWII_KDATA`，瀏覽器頂層 const **不掛 window 物件** → `window.TWII_KDATA` 為 undefined → 元件讀不到。修法：`fetch_data.py` 產出加 `if(typeof window!=='undefined')window.TWII_KDATA=TWII_KDATA;`，並重產本機 `data/twii_kdata.js`
+  3. **瀏覽器快取**：script 子資源不被 `?nocache` 影響 → demo 加 `?v=` cache-bust
+  4. **時序競爭**：第二個測試 `setData` inline script 與元素升級時序不穩 → 用 `customElements.whenDefined('mklab-kline').then(...)` 包裝
 
-### 🔴 待修 B：index.html Market Health 大圖表（標題1年但空白）
-**根因**：line 342 `klSeries.setData(TWII_KDATA)` 中 `TWII_KDATA` **從未定義** → 圖表空白
-**解決方案（未動工）**：
-- 用 `data/history/*.json` 的 **006204 永豐臺灣加權**（追蹤加權指數，261 天真實收盤）拼出 1 年 TWII K 線
-- 改 `export_db.py` 新增匯出 `data/twii-kline.json`（約 250 日 K 線）
-- 前端 `index.html` 讀真實資料，標題「近 1 年」才名實相符
-- 注意：本機 DB 無 TWII 加權指數本身日線，只有 ETF 006204 等代理
+## 三、未完成事項（待續）
 
-### 🟡 待確認 C：commit/push Research 頁
-- Research 頁重構修改尚未 commit（工作區有未提交變更）
-- 修完待修 A 後，瀏覽器實測通過再 commit + push
+| # | 項目 | 狀態 | 備註 |
+|---|------|------|------|
+| 7 | `data-client.js` 統一資料層 | 待做 | 取代各頁散落 fetch；IIFE 或 classic |
+| 8 | `<mklab-datatable>` 表格元件 | 待做 | 從 `MKLAB.DataTable` 轉 Custom Element |
+| 9 | `<mklab-drawer>` 抽屜/主題/語言 | 待做 | 從 `MKLAB.Drawer/Shell` 轉 |
+| 10 | SPA 路由（History API） | 待做 | 無 React Router |
+| 11 | 逐頁接入 WC 元件 | 待做 | 並行過渡，不破壞靜態主要 |
+| 12 | superpowers 驗證 | 待做 | verification-before-completion + qa_gate |
+| 13 | 合併 dev → main + push | 待做 | GitHub Pages 自動上線 |
 
-## 三、關鍵事實（防踩坑）
-1. **FinMind 不可用**：匿名模式 IP rate-limit（每 3-4 檔鎖）、FINMIND_TOKEN 過期。別再浪費時間測 FinMind，直接用 yfinance。
-2. **vendor/lightweight-charts.min.js 實為 LightweightCharts v4.1.3**（原檔名 klinecharts.min.js 已於 2026-07-15 修正）：全局變數是 `LightweightCharts`，不是 `klinecharts`。別用 `klinecharts.init()`。
-3. **LightweightCharts v4 無 `series.getData()`**：要存 K 線資料用全域變數。
-4. **history JSON 一行 minified 是有意設計**（你決定保持，效能優先）。檢視用 `python3 -m json.tool data/history/YYYYMMDD.json`。
-5. **本機 DB 是權威源**：`/root/Documents/database/tw_stock_all.db`（38MB），`data/*.json` 是 export_db.py 匯出產物。
-6. **local server**：`python3 -m http.server 8765`（背景 proc_f7c0115624f5 可能還在跑）。
+## 四、中斷接手部分（新 session 必讀）
 
-## 四、上次 session 已修復的 bug（避免重複）
-- export_db.py 漏匯出 roa（已修，SELECT 加 roa + stocks 組裝加 roa）
-- sel() 裡 `getElementById('peChart')` 在 peChart div 移除後報錯（已移除該行）
-- update_overview.py 重複舊迴圈導致 --skip-finmind 無效（已重寫 main）
+### 🔴 當前中斷點
+- **分支 `dev/web-components` 有大量未提交變更**（見上方 Git 狀態）
+- 本輪開發**尚未 commit**（用戶指示「開發完畢用 superpowers 驗證後」才上線，故中途不 commit）
+- 下一個應做：**#7 `data-client.js` 統一資料層**
 
-## 五、用戶偏好/決策
-- Wiki：所有遇到的問題+解決方法都要寫進 Wiki（先查類似頁面併入，不開新頁）
-- 資料源原則：TWSE/TPEX 優先，yfinance 備援，FinMind 待有效 token
-- history JSON 保持 minified（執行效率）
-- ROE/ROA 是季度/年度資料，每週六補一次即可（非每日）
-- Research 頁區塊順序：個股摘要 → 歷史價格圖 → 財報摘要 → 個股選擇（左側）
+### ⚠️ 接手注意事項（踩坑記錄）
+1. **元件註冊用 classic script，非 ES module**：`mklab-wc.js` 是 IIFE + `customElements.define`，刻意不用 `type="module"`（因 `mklab-core.js` 支援 file:// 直接開，module 有 CORS 限制）。若改用 ES module 需同步改預覽方式（http.server 而非 file://）
+2. **`window.TWII_KDATA` 已修**：`fetch_data.py` 現產出 `const TWII_KDATA=[...]; if(typeof window!=='undefined')window.TWII_KDATA=TWII_KDATA;`。未來其他資料 JS 若也要給 `<mklab-*>` 讀，需同樣掛 window
+3. **Custom Element 時序**：呼叫元件方法（setData 等）必須等 `customElements.whenDefined('mklab-kline')` 後，否則 `_series` 未建
+4. **demo 頁在 prototypes/**：script src 用絕對路徑 `/vendor/...`（`/data/...`/`/assets/...`），勿改回相對路徑
+5. **LightweightCharts v4 限制**（沿用上輪）：無 `series.getData()`、無 overlay 繪圖工具（畫線/費波那契不生效）
+6. **local server**：`python3 -m http.server 8765`（背景 proc 可能還在跑）。新 session 先確認 `curl -s -o /dev/null -w "%{http_code}" http://localhost:8765/index.html`
+
+### 📋 接手第一步建議
+```
+cd /root/Documents/mklab-stock
+git branch --show-current          # 確認在 dev/web-components
+git status --short                 # 確認未提交變更還在
+# 接續 #7：寫 assets/data-client.js（統一 fetch data/*.json）
+```
+
+## 五、關鍵事實（防踩坑，沿用+更新）
+1. **圖表庫**：`vendor/lightweight-charts.min.js` 實為 **LightweightCharts v4.1.3**（全局變數 `LightweightCharts`）。`<mklab-kline>` 已封裝它
+2. **FinMind 不可用**：直接用 yfinance（TWII K 線來源）
+3. **本機 DB 權威源**：`/root/Documents/database/tw_stock_all.db`
+4. **零依賴原則**：選 2 路線核心，新增檔案不得引入 npm/Node/Vite。元件用 plain script + Custom Elements
+5. **靜態頁為主要**：`index.html` + 4 個 `mklab-stock-*.html` 現役上線版，開發期不動；WC 元件先經 `prototypes/wc-demo.html` 驗證再考慮接入
+
+## 六、用戶偏好/決策（本輪）
+- 決策：放棄 React（違零依賴），選 Web Components 元件化
+- 靜態網頁繼續使用且為主要上線版；分支開發新專案
+- 開發完畢用 superpowers 檢查驗證 → 最後自動上線
+- Wiki：問題+解法寫進 Wiki（先查類似頁併入，不開新頁）
