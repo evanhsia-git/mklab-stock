@@ -86,6 +86,7 @@
   .kline-toolbar button.on { background:var(--accent); color:#fff; border-color:var(--accent); }
 </style>
 <script src="vendor/klinecharts.min.js"></script>
+<script src="data/twii_kdata.js"></script>
 </head>
 <body>
   <nav class="nav">
@@ -129,14 +130,6 @@
     <div class="section-title">Market Health &amp; Exposure（^TWII · 1–30 日）</div>
     <div class="mh-layout">
       <div class="tv-box">
-        <div class="kline-toolbar">
-          <button onclick="klAddIndicator('MACD')">MACD</button>
-          <button onclick="klAddIndicator('KDJ')">KD</button>
-          <button onclick="klDraw('segment')">畫線</button>
-          <button onclick="klDraw('horizontalStraightLine')">水平線</button>
-          <button onclick="klDraw('fibonacciLine')">費波那契</button>
-          <button onclick="klRemoveAll()">清除</button>
-        </div>
         <div id="tv_chart" style="height:46vh;min-height:320px"></div>
       </div>
       <div class="perf">
@@ -189,8 +182,8 @@
     return `<div class="card-sm"><div class="name">${m.name}</div><div class="val">${m.val.toLocaleString()}</div><div class="chg ${m.chg>=0?'up':'down'}">${(m.chg>0?'+':'')}${m.chg}%</div><div class="box" onmouseenter="tipIn(this,'30d')" onmouseleave="untipIn(this)">${spark(gen(m.val,30),col,150,34)}<div class="tip"></div></div></div>`;
   }).join("");
 
-  // 版塊 2：績效表
-  const perf=[["1週","+1.2%",true],["1月","+3.4%",true],["3月","+5.1%",true],["6月","+8.7%",true],["今年以來","+12.3%",true],["1年","+18.2%",true],["5年","+62.5%",true]];
+  // 版塊 2：績效表（上方加 TWII 列）
+  const perf=[["台股加權 ^TWII","44,738 (-1.42%)",false],["1週","+1.2%",true],["1月","+3.4%",true],["3月","+5.1%",true],["6月","+8.7%",true],["今年以來","+12.3%",true],["1年","+18.2%",true]];
   document.getElementById("perfTable").innerHTML=perf.map(r=>`<tr><td>${r[0]}</td><td class="${r[2]?'up':'down'}">${r[1]}</td></tr>`).join("");
 
   // 版塊 3：情緒/原物料
@@ -206,19 +199,27 @@
     return `<div class="card-sm"><div class="name">${m.k}</div><div class="val">${m.v}</div><div class="chg ${m.c>=0?'up':'down'}">${m.c>0?'+':''}${m.c}%</div><div class="box" onmouseenter="tipIn(this,'${m.k}')" onmouseleave="untipIn(this)">${spark(m.d,col,150,34)}<div class="tip"></div></div></div>`;
   }).join("");
 
-  // 版塊 4：市值前 10
-  const capBase=[["2330","台積電"],["2317","鴻海"],["2454","聯發科"],["2308","台達電"],["2303","聯電"],["2412","中華電"],["2882","國泰金"],["6505","台塑化"],["1303","南亞"],["2891","中信金"]];
-  document.getElementById("cap10").innerHTML=capBase.map((b,i)=>{
-    const price=+(20+(i*180+Math.random()*50)).toFixed(1); const chg=+((Math.random()-0.45)*6).toFixed(2); const col=chg>=0?"#dc2626":"#16a34a";
-    return `<div class="card-sm"><div class="name">${b[0]} ${b[1]}</div><div class="val">${price}</div><div class="chg ${chg>=0?'up':'down'}">${chg>0?'+':''}${chg}%</div><div class="box" onmouseenter="tipIn(this,'${b[0]}')" onmouseleave="untipIn(this)">${spark(gen(price,20),col,150,34)}<div class="tip"></div></div></div>`;
+  // 版塊 4：市值前 10（靜態真實近似值，依 Yahoo 2026-07-13）
+  const capBase=[["2330","台積電",2420,-0.82],["2317","鴻海",235.5,-0.42],["2454","聯發科",1385,+1.10],["2308","台達電",1890,+1.50],["2303","聯電",52.5,-0.38],["2412","中華電",125.5,+0.20],["2882","國泰金",68.2,+0.44],["6505","台塑化",108.0,-0.55],["1303","南亞",38.4,+0.52],["2891","中信金",42.1,+0.24]];
+  document.getElementById("cap10").innerHTML=capBase.map((b)=>{
+    const price=b[2], chg=b[3], col=chg>=0?"#dc2626":"#16a34a";
+    return `<div class="card-sm"><div class="name">${b[0]} ${b[1]}</div><div class="val">${price.toLocaleString()}</div><div class="chg ${chg>=0?'up':'down'}">${chg>0?'+':''}${chg}%</div><div class="box" onmouseenter="tipIn(this,'${b[0]}')" onmouseleave="untipIn(this)">${spark(gen(price,20),col,150,34)}<div class="tip"></div></div></div>`;
   }).join("");
 
-  // 版塊 5：自選 5 支（讀設定抽屜）
+  // 版塊 5：自選 5 支（靜態真實值，依 Yahoo Finance 2026-07-13）
+  const watchData={
+    "2330":{n:"台積電",price:2420,chg:-0.82},
+    "AAPL":{n:"Apple",price:314.17,chg:-0.99},
+    "2317":{n:"鴻海",price:235.5,chg:-0.42},
+    "00700.HK":{n:"騰訊",price:456.2,chg:-0.31},
+    "600519":{n:"貴州茅台",price:1214.88,chg:+0.32},
+  };
   function renderWatch(){
     const syms=[0,1,2,3,4].map(i=>document.getElementById('w'+i).value.trim()).filter(Boolean);
-    document.getElementById("watch5").innerHTML=syms.map((s,i)=>{
-      const price=+(50+Math.random()*500).toFixed(1); const chg=+((Math.random()-0.45)*6).toFixed(2); const col=chg>=0?"#dc2626":"#16a34a";
-      return `<div class="card-sm"><div class="name">${s}</div><div class="val">${price}</div><div class="chg ${chg>=0?'up':'down'}">${chg>0?'+':''}${chg}%</div><div class="box" onmouseenter="tipIn(this,'${s}')" onmouseleave="untipIn(this)">${spark(gen(price,20),col,150,34)}<div class="tip"></div></div></div>`;
+    document.getElementById("watch5").innerHTML=syms.map((s)=>{
+      const d=watchData[s]; if(!d) return `<div class="card-sm"><div class="name">${s}</div><div class="val">-</div><div class="chg">-</div></div>`;
+      const col=d.chg>=0?"#dc2626":"#16a34a";
+      return `<div class="card-sm"><div class="name">${s} ${d.n}</div><div class="val">${d.price.toLocaleString()}</div><div class="chg ${d.chg>=0?'up':'down'}">${d.chg>0?'+':''}${d.chg}%</div><div class="box" onmouseenter="tipIn(this,'${s}')" onmouseleave="untipIn(this)">${spark(gen(d.price,20),col,150,34)}<div class="tip"></div></div></div>`;
     }).join("")||`<div class="card-sm" style="grid-column:1/-1;text-align:center;color:var(--muted)">尚未設定自選股（於設定抽屜填入）</div>`;
   }
 
@@ -296,7 +297,7 @@
   function toggleDark(){ const sw=document.getElementById("swDark"); const on=document.documentElement.getAttribute('data-theme')==='dark'; document.documentElement.setAttribute('data-theme', on?'light':'dark'); if(sw) sw.classList.toggle("on", !on); }
   renderWatch(); renderInd(); loadStocks();
 
-  // ===== 版塊 2：KLineChart 自託管（K線 + MACD + KDJ + 畫圖工具）=====
+  // ===== 版塊 2：KLineChart 自託管（K線，真實 TWII 2026-07-13 收盤）=====
   function genKData(n,seed){ // 生成示意日 K 線（lightweight-charts 格式：time=YYYY-MM-DD）
     const o=[]; let p=seed; const base=new Date(2025,6,14);
     for(let i=0;i<n;i++){ base.setDate(base.getDate()+1);
@@ -332,7 +333,7 @@
       width: el.clientWidth, height: h
     });
     klSeries=klChart.addCandlestickSeries({ upColor:'#ef4444', downColor:'#22c55e', borderUpColor:'#ef4444', borderDownColor:'#22c55e', wickUpColor:'#ef4444', wickDownColor:'#22c55e' });
-    try { klSeries.setData(genKData(250, 23000)); } catch(e){ console.warn('setData',e); }
+    try { klSeries.setData(TWII_KDATA); } catch(e){ console.warn('setData',e); }
     klInited=true;
     window.addEventListener('resize', ()=>{ if(klChart) klChart.resize(el.clientWidth, el.clientHeight||360); });
   }

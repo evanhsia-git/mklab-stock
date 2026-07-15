@@ -94,7 +94,7 @@
     <div class="section-title">全產業列表（區間績效 %）</div>
     <div class="table-wrap">
       <table id="indPerfTable">
-        <thead><tr><th onclick="sortPerf('nm')">產業</th><th onclick="sortPerf('chg')">漲跌%</th><th onclick="sortPerf('w1')">1週</th><th onclick="sortPerf('m1')">1月</th><th onclick="sortPerf('m3')">3月</th><th onclick="sortPerf('m6')">6月</th><th onclick="sortPerf('ytd')">YTD</th><th onclick="sortPerf('y1')">1年</th><th onclick="sortPerf('y5')">5年</th><th onclick="sortPerf('cnt')">檔數</th></tr></thead>
+        <thead><tr><th onclick="sortPerf('nm')">產業</th><th onclick="sortPerf('chg')">漲跌%</th><th onclick="sortPerf('w1')">1週</th><th onclick="sortPerf('m1')">1月</th><th onclick="sortPerf('m3')">3月</th><th onclick="sortPerf('m6')">6月</th><th onclick="sortPerf('ytd')">YTD</th><th onclick="sortPerf('y1')">1年</th><th onclick="sortPerf('cnt')">檔數</th></tr></thead>
         <tbody id="indPerfBody"></tbody>
       </table>
     </div>
@@ -148,7 +148,7 @@
       va=va==null?-1e9:va; vb=vb==null?-1e9:vb;
       return (vb-va)*perfSortDir;
     });
-    document.getElementById('indPerfBody').innerHTML=arr.map(d=>`<tr><td>${d.nm}</td><td class="${cls(d.chg)}">${fmt(d.chg)}</td><td class="${cls(d.w1)}">${fmt(d.w1)}</td><td class="${cls(d.m1)}">${fmt(d.m1)}</td><td class="${cls(d.m3)}">${fmt(d.m3)}</td><td class="${cls(d.m6)}">${fmt(d.m6)}</td><td class="${cls(d.ytd)}">${fmt(d.ytd)}</td><td class="${cls(d.y1)}">${fmt(d.y1)}</td><td class="${cls(d.y5)}">${fmt(d.y5)}</td><td>${d.cnt}</td></tr>`).join("");
+    document.getElementById('indPerfBody').innerHTML=arr.map(d=>`<tr><td>${d.nm}</td><td class="${cls(d.chg)}">${fmt(d.chg)}</td><td class="${cls(d.w1)}">${fmt(d.w1)}</td><td class="${cls(d.m1)}">${fmt(d.m1)}</td><td class="${cls(d.m3)}">${fmt(d.m3)}</td><td class="${cls(d.m6)}">${fmt(d.m6)}</td><td class="${cls(d.ytd)}">${fmt(d.ytd)}</td><td class="${cls(d.y1)}">${fmt(d.y1)}</td><td>${d.cnt}</td></tr>`).join("");
   }
   function sortPerf(k){ if(perfSortKey===k){ perfSortDir*=-1; } else { perfSortKey=k; perfSortDir=-1; } renderPerf(); }
 

@@ -171,19 +171,25 @@
   function sync(id){ const v=document.getElementById(id).value; const span=document.getElementById('v_'+id.slice(2)); if(span) span.textContent=v; }
   const TPLS={ value:{f_pe:20,f_pb:5,f_div:3,f_roe:0,f_roa:0,f_eg:0,f_rsi:0,f_chg:0,f_cap:0}, quality:{f_pe:99,f_pb:99,f_div:0,f_roe:15,f_roa:8,f_eg:0,f_rsi:0,f_chg:0,f_cap:0}, growth:{f_pe:99,f_pb:99,f_div:0,f_roe:0,f_roa:0,f_eg:20,f_rsi:0,f_chg:0,f_cap:0}, momentum:{f_pe:99,f_pb:99,f_div:0,f_roe:0,f_roa:0,f_eg:0,f_rsi:70,f_chg:1,f_cap:0}, dividend:{f_pe:99,f_pb:99,f_div:5,f_roe:0,f_roa:0,f_eg:0,f_rsi:0,f_chg:0,f_cap:0} };
   function tpl(name){ const t=TPLS[name]; if(!t)return; for(const k in t){ const el=document.getElementById(k); if(el){ el.value=t[k]; const span=document.getElementById('v_'+k.slice(2)); if(span) span.textContent=t[k]; } } apply(); }
-  let current=TOP100.slice();
+  let current=[];
   function loadScreener(){
     fetch('data/stocks.json').then(r=>{ if(!r.ok) throw new Error('no'); return r.json(); }).then(d=>{
       if(d && Array.isArray(d.stocks) && d.stocks.length){
-        current=d.stocks.map(s=>({sym:s.sym,name:s.name,price:s.price,chg:s.chg,pe:s.pe,pb:s.pb,roe:s.roe,roa:s.roa,eg:(s.eps||0),rsi:50,ma5:s.chg>=0,ma10:s.chg>=0,ma30:s.chg>=0,cap:5000,div:(s.div||0)}));
+        current=d.stocks.map(s=>({sym:s.sym,name:s.name,price:s.price,chg:s.chg,pe:s.pe,pb:s.pb,roe:s.roe,roa:s.roa,eg:(s.eps||0),rsi:(s.rsi!=null?s.rsi:50),ma5:s.chg>=0,ma10:s.chg>=0,ma30:s.chg>=0,cap:(s.market_cap!=null?(s.market_cap/1e8):0),div:(s.div||0)}));
         apply(); updateSortArrows();
         const asof=d.meta&&d.meta.as_of;
         if(asof){ const f=document.querySelector('.freshness'); if(f) f.textContent='資料以 '+asof+' 收盤為準（Build-Time 自動更新）'; }
       }
-    }).catch(()=>{});
+    }).catch(()=>{ const c=document.getElementById('count'); if(c) c.textContent='資料載入失敗（stocks.json 不存在或格式錯誤）'; });
   }
   const PER=10; let page=1;
-  function loadSymbol(){ const v=document.getElementById('symInput').value.trim(); if(!v) return; if(!current.find(x=>String(x.sym)===v)){ current.unshift({sym:v,name:"自載"+v,price:+(50+Math.random()*500).toFixed(1),chg:+(Math.random()*6-2).toFixed(2),pe:+(10+Math.random()*30).toFixed(1),pb:+(1+Math.random()*5).toFixed(2),roe:+(5+Math.random()*30).toFixed(1),roa:+(2+Math.random()*15).toFixed(1),eg:+(0+Math.random()*20).toFixed(1),rsi:+(30+Math.random()*50).toFixed(0),ma5:Math.random()>0.4,ma10:Math.random()>0.45,ma30:Math.random()>0.5,cap:+(300+Math.random()*5000).toFixed(0),div:+(0+Math.random()*5).toFixed(1)}); } apply(); }
+  function loadSymbol(){
+    const v=document.getElementById('symInput').value.trim(); if(!v) return;
+    const hit=current.find(x=>String(x.sym)===v);
+    if(hit){ if(!current.slice(0,200).includes(hit)) current.unshift(hit); }
+    else { window.location.href='mklab-stock-research.html?sym='+encodeURIComponent(v); return; }
+    apply();
+  }
   let sortKey='roe', sortDir=-1; // 預設 ROE 高→低
   function sortBy(k){ if(sortKey===k){ sortDir*=-1; } else { sortKey=k; sortDir=-1; } updateSortArrows(); apply(); }
   function updateSortArrows(){ document.querySelectorAll('#resBody').forEach(()=>{}); const ths=document.querySelectorAll('thead th'); const map={sym:0,name:1,price:2,chg:3,pe:4,pb:5,roe:6,rsi:7,cap:8}; ths.forEach((th,i)=>{ const base=th.textContent.replace(/[ ▲▼]/g,''); th.textContent=base; }); if(map[sortKey]!=null && ths[map[sortKey]]){ const arrow=sortDir===-1?' ▼':' ▲'; const base=ths[map[sortKey]].textContent; ths[map[sortKey]].textContent=base+arrow; } }
