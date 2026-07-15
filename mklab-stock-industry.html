@@ -64,29 +64,11 @@
 </style>
 </head>
 <body>
-  <nav class="nav">
-    <a href="index.html">Market</a><a href="mklab-stock-screener.html">Screener</a><a href="mklab-stock-research.html">Research</a><a href="mklab-stock-industry.html" class="active">Industry</a><a href="mklab-stock-watchlist.html">Watchlist</a>
-  </nav>
-  <div class="utilbar">
-    <span class="brand">mklab-stock</span>
-    <span class="spacer"></span>
-    <div class="search collapsed" id="searchBox"><input id="q" placeholder="搜尋代號，如 2330" onkeydown="if(event.key==='Enter')doSearch()" style="display:none"><button class="fab-btn" style="width:32px;height:32px" onclick="toggleSearch()" title="搜尋">🔍</button></div>
-    <button class="fab-btn" onclick="toggleDark()" title="主題"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
-    <a class="fab-btn" href="https://github.com/evanhsia-git/mklab-stock" target="_blank" title="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-1-2.6c3-.3 6-1.5 6-6.5a5 5 0 0 0-1.4-3.5a4.7 4.7 0 0 0-.1-3.5s-1.1-.3-3.5 1.3a12 12 0 0 0-6.3 0C6.5 1.3 5.4 1.6 5.4 1.6a4.7 4.7 0 0 0-.1 3.5A5 5 0 0 0 4 8.6c0 5 3 6.2 6 6.5a3.4 3.4 0 0 0-1 2.6V22"/></svg></a>
-    <button class="fab-btn" onclick="openDrawer()" title="設定"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
-  </div>
+  <div id="utilbar" class="utilbar"><span class="brand" id="brand"></span><nav id="mainNav" class="nav"></nav><span class="spacer"></span></div>
   <div class="freshness">資料以 2026-07-13 收盤為準（前一日，非即時）</div>
-  <div class="drawer-mask" onclick="closeDrawer()"></div>
+  <div class="drawer-mask" onclick="MKLAB.Drawer.close()"></div>
   <aside class="drawer" id="drawer">
-    <button class="close-x" onclick="closeDrawer()">×</button>
-    <h3>設定</h3>
-    <h4>外觀</h4>
-    <div class="row"><span>深色主題</span><button class="switch on" id="swDark" onclick="toggleDark()"></button></div>
-    <div class="row"><span>語言</span><div class="seg"><button id="langZh" class="on" onclick="setLang('zh')">中文</button><button id="langEn" onclick="setLang('en')">EN</button></div></div>
-        <h4>說明</h4>
-    <div class="row"><a href="mklab-stock-help.html">功能說明（使用/資料源/評分標準）↗</a></div>
-    <h4>System</h4>
-    <div class="sys-note">版本：dashboard v3.0<br>資料源：TWSE/TPEX/Yahoo/Stooq<br>最後更新：2026-07-14 08:30<br>狀態：<span class="up">●</span> 正常運作</div>
+    <button class="close-x" onclick="MKLAB.Drawer.close()">×</button>
   </aside>
   <div class="wrap">
     <div class="section-title">台灣 33 產業動態（漲跌績效 · 點擊產業看成分股）</div>
@@ -94,7 +76,7 @@
     <div class="section-title">全產業列表（區間績效 %）</div>
     <div class="table-wrap">
       <table id="indPerfTable">
-        <thead><tr><th onclick="sortPerf('nm')">產業</th><th onclick="sortPerf('chg')">漲跌%</th><th onclick="sortPerf('w1')">1週</th><th onclick="sortPerf('m1')">1月</th><th onclick="sortPerf('m3')">3月</th><th onclick="sortPerf('m6')">6月</th><th onclick="sortPerf('ytd')">YTD</th><th onclick="sortPerf('y1')">1年</th><th onclick="sortPerf('cnt')">檔數</th></tr></thead>
+        <thead></thead>
         <tbody id="indPerfBody"></tbody>
       </table>
     </div>
@@ -107,6 +89,7 @@
     </div>
     <div class="disclaimer">產業分類參考台灣證交所 33 個法定產業（示意資料）。生產環境由 Build-Time 計算各產業漲跌與成分股績效。</div>
   </div>
+<script src="assets/mklab-core.js"></script>
 <script>
   // 台灣 33 個法定產業（依用戶提供清單）
   const INDUSTRIES=["水泥工業","食品工業","塑膠工業","紡織纖維","電機機械","電器電纜","化學工業","生技醫療業","玻璃陶瓷","造紙工業","鋼鐵工業","橡膠工業","汽車工業","半導體業","電腦及週邊設備業","光電業","通訊網路業","電子零組件業","電子通路業","資訊服務業","其他電子業","建材營造","航運業","觀光餐旅","金融保險","貿易百貨","油電燃氣業","綜合","綠能環保","數位雲端","運動休閒","居家生活","其他等"];
@@ -140,20 +123,20 @@
       </div>`;
     }).join("");
   }
-  let perfSortKey='chg', perfSortDir=-1;
-  function fmt(v){ return v==null ? '-' : (v>0?'+':'')+v+'%'; }
-  function cls(v){ return v==null?'':(v>=0?'up':'down'); }
+  let perfTable=null;
   function renderPerf(){
-    const arr=[...data].sort((a,b)=>{
-      let va=a[perfSortKey], vb=b[perfSortKey];
-      if(perfSortKey==='nm'){ return (va||'').localeCompare(vb||'')*perfSortDir; }
-      va=va==null?-1e9:va; vb=vb==null?-1e9:vb;
-      return (vb-va)*perfSortDir;
-    });
-    document.getElementById('indPerfBody').innerHTML=arr.map(d=>`<tr><td>${d.nm}</td><td class="${cls(d.chg)}">${fmt(d.chg)}</td><td class="${cls(d.w1)}">${fmt(d.w1)}</td><td class="${cls(d.m1)}">${fmt(d.m1)}</td><td class="${cls(d.m3)}">${fmt(d.m3)}</td><td class="${cls(d.m6)}">${fmt(d.m6)}</td><td class="${cls(d.ytd)}">${fmt(d.ytd)}</td><td class="${cls(d.y1)}">${fmt(d.y1)}</td><td>${d.cnt}</td></tr>`).join("");
+    if(!perfTable){
+      perfTable = MKLAB.DataTable('indPerfTable', {
+        cols:['ind','chg','w1','m1','m3','m6','ytd','y1','cnt'],
+        rows:data,
+        pageSize:0,
+        fieldMap:{ ind:'nm' },
+        defaultSort:'chg',
+      });
+    } else {
+      perfTable.setRows(data);
+    }
   }
-  function sortPerf(k){ if(perfSortKey===k){ perfSortDir*=-1; } else { perfSortKey=k; perfSortDir=-1; } renderPerf(); }
-
   function selInd(i){
     activeInd=i; renderGrid();
     const d=data[i];
@@ -168,12 +151,10 @@
     }).join("")||`<tr><td colspan="7" style="text-align:center;color:var(--muted)">該產業暫無成分股資料</td></tr>`;
     document.getElementById('detailBody').innerHTML=stocks;
   }
-  function toggleSearch(){ const b=document.getElementById('searchBox'); const inp=b.querySelector('input'); const exp=b.classList.toggle('expanded'); b.classList.toggle('collapsed',!exp); if(exp){ inp.style.display='block'; inp.focus(); } else { inp.style.display='none'; } }
-  function doSearch(){ const v=document.getElementById('q').value.trim(); if(v){ window.location.href='mklab-stock-research.html?sym='+encodeURIComponent(v); } }
-  function toggleDark(){ const sw=document.getElementById("swDark"); const on=document.documentElement.getAttribute('data-theme')==='dark'; document.documentElement.setAttribute('data-theme', on?'light':'dark'); if(sw) sw.classList.toggle("on", !on); }
-  function openDrawer(){ document.getElementById("drawer").classList.add("open"); document.querySelector(".drawer-mask").classList.add("open"); }
-  function closeDrawer(){ document.getElementById("drawer").classList.remove("open"); document.querySelector(".drawer-mask").classList.remove("open"); }
-  function setLang(l){ document.getElementById("langZh").classList.toggle("on",l==="zh"); document.getElementById("langEn").classList.toggle("on",l==="en"); }
+  function openDrawer(){ MKLAB.Drawer.open(); }
+  function closeDrawer(){ MKLAB.Drawer.close(); }
   renderGrid(); renderPerf(); loadIndustry();
+  MKLAB.initDrawer();
+  MKLAB.Shell.mount({ active:'industry' });
   </script>
 </body></html>

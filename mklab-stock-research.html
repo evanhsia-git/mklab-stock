@@ -77,30 +77,11 @@
 <script src="vendor/klinecharts.min.js"></script>
 </head>
 <body>
-  <nav class="nav">
-    <a href="index.html">Market</a><a href="mklab-stock-screener.html">Screener</a><a href="mklab-stock-research.html" class="active">Research</a><a href="mklab-stock-industry.html">Industry</a><a href="mklab-stock-watchlist.html">Watchlist</a>
-  </nav>
-  <div class="utilbar">
-    <span class="brand">mklab-stock</span>
-    <span class="spacer"></span>
-    <div class="search collapsed" id="searchBox"><input id="q" placeholder="搜尋代號，如 2330" onkeydown="if(event.key==='Enter')doSearch()" style="display:none"><button class="fab-btn" style="width:32px;height:32px" onclick="toggleSearch()" title="搜尋">🔍</button></div>
-    <button class="fab-btn" onclick="toggleDark()" title="主題"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
-    <a class="fab-btn" href="https://github.com/evanhsia-git/mklab-stock" target="_blank" title="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-1-2.6c3-.3 6-1.5 6-6.5a5 5 0 0 0-1.4-3.5a4.7 4.7 0 0 0-.1-3.5s-1.1-.3-3.5 1.3a12 12 0 0 0-6.3 0C6.5 1.3 5.4 1.6 5.4 1.6a4.7 4.7 0 0 0-.1 3.5A5 5 0 0 0 4 8.6c0 5 3 6.2 6 6.5a3.4 3.4 0 0 0-1 2.6V22"/></svg></a>
-    <button class="fab-btn" onclick="openDrawer()" title="設定"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
-  </div>
+  <div id="utilbar" class="utilbar"><span class="brand" id="brand"></span><nav id="mainNav" class="nav"></nav><span class="spacer"></span></div>
   <div class="freshness">資料以 2026-07-13 收盤為準（前一日，非即時）</div>
-  <div class="drawer-mask" onclick="closeDrawer()"></div>
+  <div class="drawer-mask" onclick="MKLAB.Drawer.close()"></div>
   <aside class="drawer" id="drawer">
-    <button class="close-x" onclick="closeDrawer()">×</button>
-    <h3>設定</h3>
-    <h4>外觀</h4>
-    <div class="row"><span>深色主題</span><button class="switch on" id="swDark" onclick="toggleDark()"></button></div>
-    <div class="row"><span>語言</span><div class="seg"><button id="langZh" class="on" onclick="setLang('zh')">中文</button><button id="langEn" onclick="setLang('en')">EN</button></div></div>
-    <h4>說明</h4>
-    <div class="row"><a href="mklab-stock-help.html">功能說明（使用/資料源/評分標準）↗</a></div>
-    <div class="row"><a href="https://github.com/evanhsia-git/mklab-stock#readme" target="_blank" rel="noopener">GitHub README ↗</a></div>
-    <h4>System</h4>
-    <div class="sys-note">版本：dashboard v3.0<br>資料源：TWSE/TPEX/Yahoo/Stooq<br>最後更新：2026-07-14 08:30<br>狀態：<span class="up">●</span> 正常運作</div>
+    <button class="close-x" onclick="MKLAB.Drawer.close()">×</button>
   </aside>
   <div class="wrap">
     <div class="layout">
@@ -138,14 +119,17 @@
       </div>
     </div>
   </div>
+<script src="assets/mklab-core.js"></script>
 <script>
   let STOCKS={};
+  // 圖表相關變數提前宣告，避免 klRender/klInit 在 TDZ 存取（原本 let 在腳本中段導致 ReferenceError）
+  let rChart=null, rSeries=null, rMacd=false, rKD=false, rInited=false;
   const STATIC={
     "2330":{name:"台積電",price:1050,chg:+1.2,pe:24.1,pb:5.2,roe:28.1,roa:15.3,eps:43.6,div:2.1,mc:"27.2兆",sector:"半導體",fin:[["2023",43.6,28.1,2.1],["2024",48.2,30.5,2.3],["2025E",52.0,31.0,2.5]]},
     "2317":{name:"鴻海",price:215,chg:+0.9,pe:18.3,pb:2.1,roe:14.2,roa:6.8,eps:11.7,div:3.8,mc:"2.9兆",sector:"電子代工",fin:[["2023",11.7,14.2,3.8],["2024",12.5,15.0,4.0],["2025E",13.0,15.5,4.2]]},
     "2454":{name:"聯發科",price:1280,chg:-0.5,pe:30.2,pb:4.8,roe:22.5,roa:14.0,eps:42.4,div:2.5,mc:"2.0兆",sector:"IC設計",fin:[["2023",42.4,22.5,2.5],["2024",46.0,23.1,2.7],["2025E",50.0,24.0,2.9]]},
   };
-  function loadAll(){ fetch('data/stocks.json').then(r=>r.json()).then(d=>{ if(d&&Array.isArray(d.stocks)){ const o={}; d.stocks.forEach(s=>{ if(s.sym) o[s.sym]={name:s.name,price:s.price,chg:s.chg,pe:s.pe,pb:s.pb,roe:s.roe,roa:s.roa,eps:s.eps,div:s.div,mc:(s.market_cap!=null?(s.market_cap/1e8).toFixed(1)+'兆':null),sector:s.ind,fin:[]}; }); STOCKS=Object.assign({},STATIC,o); } else { STOCKS=Object.assign({},STATIC); } renderList(); }).catch(()=>{ STOCKS=Object.assign({},STATIC); renderList(); }); }
+  function loadAll(){ return fetch('data/stocks.json').then(r=>r.json()).then(d=>{ if(d&&Array.isArray(d.stocks)){ const o={}; d.stocks.forEach(s=>{ if(s.sym) o[s.sym]={name:s.name,price:s.price,chg:s.chg,pe:s.pe,pb:s.pb,roe:s.roe,roa:s.roa,eps:s.eps,div:s.div,mc:(s.market_cap!=null?(s.market_cap/1e8).toFixed(1)+'兆':null),sector:s.ind,fin:[]}; }); STOCKS=Object.assign({},STATIC,o); } else { STOCKS=Object.assign({},STATIC); } renderList(); }).catch(()=>{ STOCKS=Object.assign({},STATIC); renderList(); }); }
   function spark(data,color,w,h){ const min=Math.min(...data),max=Math.max(...data),r=(max-min)||1; const p=data.map((d,i)=>`${(i/(data.length-1)*w).toFixed(1)},${(h-((d-min)/r*h)).toFixed(1)}`).join(" "); return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><polyline points="${p}" fill="none" stroke="${color}" stroke-width="1.5"/></svg>`; }
   function gen(seed,n){ const o=[]; let p=seed; for(let i=0;i<n;i++){ p+=(Math.random()-0.45)*seed*0.02; o.push(+p.toFixed(2)); } return o; }
   function tip(id,t){ const el=document.getElementById(id); const x=el.querySelector('.tip'); if(x){x.textContent=t;x.style.display='block';} }
@@ -154,6 +138,7 @@
     document.getElementById('symlist').innerHTML=Object.entries(STOCKS).map(([s,m])=>`<div data-s="${s}" onclick="sel('${s}')">${s} ${m.name}</div>`).join("");
   }
   function sel(s){
+    if(!STOCKS[s]) return;   // 資料未就緒時防護，避免 undefined 拋錯中斷腳本
     document.querySelectorAll('#symlist div').forEach(d=>d.classList.toggle('on',d.dataset.s===s));
     const m=STOCKS[s];
     const chgCls = m.chg>=0 ? 'up' : 'down';
@@ -171,14 +156,13 @@
     document.getElementById('finTable').innerHTML=`<tr><th>年度</th><th>EPS</th><th>ROE%</th><th>殖利率%</th></tr>`+m.fin.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join("");
   }
   function search(){ const v=document.getElementById('q2').value.trim().toLowerCase(); if(!v){ renderList(); return; } const hits=Object.keys(STOCKS).filter(k=>k.toLowerCase().includes(v)||(STOCKS[k].name||'').toLowerCase().includes(v)).slice(0,12); document.getElementById('symlist').innerHTML=hits.map(k=>`<div data-s="${k}" onclick="sel('${k}')">${k} ${STOCKS[k].name}</div>`).join('')||`<div style="color:var(--muted);padding:8px">無符合代號</div>`; if(hits.length===1 && STOCKS[hits[0]]) sel(hits[0]); }
-  function toggleSearch(){ const b=document.getElementById('searchBox'); const inp=b.querySelector('input'); const exp=b.classList.toggle('expanded'); b.classList.toggle('collapsed',!exp); if(exp){ inp.style.display='block'; inp.focus(); } else { inp.style.display='none'; } }
-  function doSearch(){ const v=document.getElementById('q').value.trim(); if(v){ window.location.href='mklab-stock-research.html?sym='+encodeURIComponent(v); } }
-  function toggleDark(){ const sw=document.getElementById("swDark"); const on=document.documentElement.getAttribute('data-theme')==='dark'; document.documentElement.setAttribute('data-theme', on?'light':'dark'); if(sw) sw.classList.toggle("on", !on); }
-  function openDrawer(){ document.getElementById("drawer").classList.add("open"); document.querySelector(".drawer-mask").classList.add("open"); }
-  function closeDrawer(){ document.getElementById("drawer").classList.remove("open"); document.querySelector(".drawer-mask").classList.remove("open"); }
-  function setLang(l){ document.getElementById("langZh").classList.toggle("on",l==="zh"); document.getElementById("langEn").classList.toggle("on",l==="en"); }
-  // ===== KLineChart 自託管（個股 K線 + MACD + KDJ + 畫圖）=====
-  let rChart=null, rSeries=null, rMacd=false, rKD=false, rInited=false;
+  function openDrawer(){ MKLAB.Drawer.open(); }
+  function closeDrawer(){ MKLAB.Drawer.close(); }
+  // 工具列與抽屜先初始化（不依賴資料，避免後續資料邏輯報錯中斷）
+  MKLAB.initDrawer();
+  MKLAB.Shell.mount({ active:'research' });
+  // 資料載入完成後再選預設個股；sel 本身有防護（STOCKS 未就緒時直接 return）
+  loadAll().then(()=>sel("2330")).catch(()=>{});
   function genKData(n,seed){ const o=[]; let p=seed; const base=new Date(2025,6,14);
     for(let i=0;i<n;i++){ base.setDate(base.getDate()+1);
       const open=p; const close=+(p+(Math.random()-0.48)*seed*0.03).toFixed(1);
@@ -207,7 +191,7 @@
   function klRemoveAll(){ if(rChart) rChart.remove(); rChart=null; rSeries=null; rMacd=false; rKD=false; rInited=false; }
   function _initRWhenReady(){ if(document.readyState!=='loading'){ klRender('2330'); } else { document.addEventListener('DOMContentLoaded', ()=>klRender('2330')); } }
   _initRWhenReady();
-  loadAll(); sel("2330");
+  // 注意：sel('2330') 已由上方 loadAll().then 處理；此處只處理 ?sym= 搜尋跳轉參數
   // 接收來自搜尋跳轉的 ?sym= 參數，自動選股
   (function(){
     const p=new URLSearchParams(location.search).get('sym');

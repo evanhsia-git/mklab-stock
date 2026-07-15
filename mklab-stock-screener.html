@@ -82,29 +82,11 @@
 </style>
 </head>
 <body>
-  <nav class="nav">
-    <a href="index.html">Market</a><a href="mklab-stock-screener.html" class="active">Screener</a><a href="mklab-stock-research.html">Research</a><a href="mklab-stock-industry.html">Industry</a><a href="mklab-stock-watchlist.html">Watchlist</a>
-  </nav>
-  <div class="utilbar">
-    <span class="brand">mklab-stock</span>
-    <span class="spacer"></span>
-    <div class="search collapsed" id="searchBox"><input id="q" placeholder="搜尋代號，如 2330" onkeydown="if(event.key==='Enter')doSearch()" style="display:none"><button class="fab-btn" style="width:32px;height:32px" onclick="toggleSearch()" title="搜尋">🔍</button></div>
-    <button class="fab-btn" onclick="toggleDark()" title="主題"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
-    <a class="fab-btn" href="https://github.com/evanhsia-git/mklab-stock" target="_blank" title="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-1-2.6c3-.3 6-1.5 6-6.5a5 5 0 0 0-1.4-3.5a4.7 4.7 0 0 0-.1-3.5s-1.1-.3-3.5 1.3a12 12 0 0 0-6.3 0C6.5 1.3 5.4 1.6 5.4 1.6a4.7 4.7 0 0 0-.1 3.5A5 5 0 0 0 4 8.6c0 5 3 6.2 6 6.5a3.4 3.4 0 0 0-1 2.6V22"/></svg></a>
-    <button class="fab-btn" onclick="openDrawer()" title="設定"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
-  </div>
+  <div id="utilbar" class="utilbar"><span class="brand" id="brand"></span><nav id="mainNav" class="nav"></nav><span class="spacer"></span></div>
   <div class="freshness">資料以 2026-07-13 收盤為準（前一日，非即時）</div>
-  <div class="drawer-mask" onclick="closeDrawer()"></div>
+  <div class="drawer-mask" onclick="MKLAB.Drawer.close()"></div>
   <aside class="drawer" id="drawer">
-    <button class="close-x" onclick="closeDrawer()">×</button>
-    <h3>設定</h3>
-    <h4>外觀</h4>
-    <div class="row"><span>深色主題</span><button class="switch on" id="swDark" onclick="toggleDark()"></button></div>
-    <div class="row"><span>語言</span><div class="seg"><button id="langZh" class="on" onclick="setLang('zh')">中文</button><button id="langEn" onclick="setLang('en')">EN</button></div></div>
-        <h4>說明</h4>
-    <div class="row"><a href="mklab-stock-help.html">功能說明（使用/資料源/評分標準）↗</a></div>
-    <h4>System</h4>
-    <div class="sys-note">版本：dashboard v3.0<br>資料源：TWSE/TPEX/Yahoo/Stooq<br>最後更新：2026-07-14 08:30<br>狀態：<span class="up">●</span> 正常運作</div>
+    <button class="close-x" onclick="MKLAB.Drawer.close()">×</button>
   </aside>
   <div class="wrap">
     <div class="layout">
@@ -150,14 +132,8 @@
         </div>
         <div class="count" id="count"></div>
         <div class="table-wrap">
-          <table>
-            <thead><tr>
-              <th onclick="sortBy('sym')">代號</th><th onclick="sortBy('name')">名稱</th>
-              <th onclick="sortBy('price')">價格</th><th onclick="sortBy('chg')">漲跌%</th>
-              <th onclick="sortBy('pe')">PE</th><th onclick="sortBy('pb')">PB</th>
-              <th onclick="sortBy('roe')">ROE%</th><th onclick="sortBy('rsi')">RSI</th>
-              <th onclick="sortBy('cap')">市值(億)</th>
-            </tr></thead>
+          <table id="resTable">
+            <thead></thead>
             <tbody id="resBody"></tbody>
           </table>
         </div>
@@ -166,6 +142,7 @@
       </div>
     </div>
   </div>
+<script src="assets/mklab-core.js"></script>
 <script>
   const TOP100=(function(){ const base=[["2330","台積電"],["2317","鴻海"],["2454","聯發科"],["2303","聯電"],["2308","台達電"],["2412","中華電"],["6505","台塑化"],["1303","南亞"],["2882","國泰金"],["2881","富邦金"],["2891","中信金"],["3711","日月光投控"],["3008","大立光"],["2327","國巨"],["8046","南電"],["2382","廣達"],["2376","技嘉"],["2379","瑞昱"],["3034","聯詠"],["3231","緯創"]]; const out=[]; let s=42; function rnd(){ s=(s*1103515245+12345)&0x7fffffff; return s/0x7fffffff; } for(let i=0;i<100;i++){ const b=base[i%base.length]; const sym=i<base.length?b[0]:(2000+i); const name=i<base.length?b[1]:("個股"+i); out.push({sym,name,price:+(20+rnd()*1800).toFixed(1),chg:+((rnd()-0.45)*10).toFixed(2),pe:+(5+rnd()*40).toFixed(1),pb:+(0.5+rnd()*9).toFixed(2),roe:+(2+rnd()*40).toFixed(1),roa:+(1+rnd()*20).toFixed(1),eg:+(-5+rnd()*30).toFixed(1),rsi:+(20+rnd()*75).toFixed(0),ma5:rnd()>0.4,ma10:rnd()>0.45,ma30:rnd()>0.5,cap:+(500+rnd()*9000).toFixed(0),div:+(0+rnd()*6).toFixed(1)}); } return out; })();
   function sync(id){ const v=document.getElementById(id).value; const span=document.getElementById('v_'+id.slice(2)); if(span) span.textContent=v; }
@@ -176,13 +153,13 @@
     fetch('data/stocks.json').then(r=>{ if(!r.ok) throw new Error('no'); return r.json(); }).then(d=>{
       if(d && Array.isArray(d.stocks) && d.stocks.length){
         current=d.stocks.map(s=>({sym:s.sym,name:s.name,price:s.price,chg:s.chg,pe:s.pe,pb:s.pb,roe:s.roe,roa:s.roa,eg:(s.eps||0),rsi:(s.rsi!=null?s.rsi:50),ma5:s.chg>=0,ma10:s.chg>=0,ma30:s.chg>=0,cap:(s.market_cap!=null?(s.market_cap/1e8):0),div:(s.div||0)}));
-        apply(); updateSortArrows();
+        apply();
         const asof=d.meta&&d.meta.as_of;
         if(asof){ const f=document.querySelector('.freshness'); if(f) f.textContent='資料以 '+asof+' 收盤為準（Build-Time 自動更新）'; }
       }
     }).catch(()=>{ const c=document.getElementById('count'); if(c) c.textContent='資料載入失敗（stocks.json 不存在或格式錯誤）'; });
   }
-  const PER=10; let page=1;
+  const PER=10;
   function loadSymbol(){
     const v=document.getElementById('symInput').value.trim(); if(!v) return;
     const hit=current.find(x=>String(x.sym)===v);
@@ -190,20 +167,21 @@
     else { window.location.href='mklab-stock-research.html?sym='+encodeURIComponent(v); return; }
     apply();
   }
-  let sortKey='roe', sortDir=-1; // 預設 ROE 高→低
-  function sortBy(k){ if(sortKey===k){ sortDir*=-1; } else { sortKey=k; sortDir=-1; } updateSortArrows(); apply(); }
-  function updateSortArrows(){ document.querySelectorAll('#resBody').forEach(()=>{}); const ths=document.querySelectorAll('thead th'); const map={sym:0,name:1,price:2,chg:3,pe:4,pb:5,roe:6,rsi:7,cap:8}; ths.forEach((th,i)=>{ const base=th.textContent.replace(/[ ▲▼]/g,''); th.textContent=base; }); if(map[sortKey]!=null && ths[map[sortKey]]){ const arrow=sortDir===-1?' ▼':' ▲'; const base=ths[map[sortKey]].textContent; ths[map[sortKey]].textContent=base+arrow; } }
-  function apply(){ const g=id=>parseFloat(document.getElementById(id).value)||0; const pe=g('f_pe'),pb=g('f_pb'),div=g('f_div'),roe=g('f_roe'),roa=g('f_roa'),eg=g('f_eg'),rsi=g('f_rsi'),chg=g('f_chg'),cap=g('f_cap'); const ma=document.getElementById('f_ma').value; const ge=(a,b)=> a==null ? true : a>=b; const le=(a,b)=> a==null ? true : a<=b; let rows=current.filter(s=> le(s.pe,pe)&&le(s.pb,pb)&&ge(s.div,div)&&ge(s.roe,roe)&&ge(s.roa,roa)&&ge(s.eg,eg)&&ge(s.rsi,rsi)&&ge(s.chg,chg)&&ge(s.cap,cap)&&(ma==='any'||(ma==='ma5'&&s.ma5)||(ma==='ma10'&&s.ma10)||(ma==='ma30'&&s.ma30)));
-    rows.sort((a,b)=>{ const va=a[sortKey], vb=b[sortKey]; if(typeof va==='string'){ return va.localeCompare(vb)*sortDir; } return ((va||0)-(vb||0))*sortDir; });
-    const pages=Math.max(1,Math.ceil(rows.length/PER)); if(page>pages)page=pages; document.getElementById('count').textContent=`符合：${rows.length} / ${current.length} 檔`; const slice=rows.slice((page-1)*PER,page*PER); document.getElementById('resBody').innerHTML=slice.map(s=>`<tr><td class="sym">${s.sym}</td><td>${s.name}</td><td>${s.price!=null?s.price:'-'}</td><td class="${s.chg>=0?'up':'down'}">${s.chg>0?'+':''}${s.chg}%</td><td>${s.pe!=null?s.pe:'-'}</td><td>${s.pb!=null?s.pb:'-'}</td><td>${(s.roe!=null?s.roe:0).toFixed(1)}</td><td>${s.rsi!=null?s.rsi:'-'}</td><td>${s.cap!=null?s.cap.toFixed(1):'-'}</td></tr>`).join("")||`<tr><td colspan="9" style="text-align:center;color:var(--muted)">無符合條件</td></tr>`; renderPager(pages); }
-  function renderPager(pages){ const el=document.getElementById('pager'); let b=''; for(let i=1;i<=pages;i++) b+=`<button class="${i===page?'on':''}" onclick="goto(${i})">${i}</button>`; el.innerHTML=b; }
-  function goto(p){ page=p; apply(); }
-  function toggleSearch(){ const b=document.getElementById('searchBox'); const inp=b.querySelector('input'); const exp=b.classList.toggle('expanded'); b.classList.toggle('collapsed',!exp); if(exp){ inp.style.display='block'; inp.focus(); } else { inp.style.display='none'; } }
-  function doSearch(){ const v=document.getElementById('q').value.trim(); if(v){ window.location.href='mklab-stock-research.html?sym='+encodeURIComponent(v); } }
-  function toggleDark(){ const sw=document.getElementById("swDark"); const on=document.documentElement.getAttribute('data-theme')==='dark'; document.documentElement.setAttribute('data-theme', on?'light':'dark'); if(sw) sw.classList.toggle("on", !on); }
-  function openDrawer(){ document.getElementById("drawer").classList.add("open"); document.querySelector(".drawer-mask").classList.add("open"); }
-  function closeDrawer(){ document.getElementById("drawer").classList.remove("open"); document.querySelector(".drawer-mask").classList.remove("open"); }
-  function setLang(l){ document.getElementById("langZh").classList.toggle("on",l==="zh"); document.getElementById("langEn").classList.toggle("on",l==="en"); }
+  let resTable=null;
+  function apply(){
+    const g=id=>parseFloat(document.getElementById(id).value)||0; const pe=g('f_pe'),pb=g('f_pb'),div=g('f_div'),roe=g('f_roe'),roa=g('f_roa'),eg=g('f_eg'),rsi=g('f_rsi'),chg=g('f_chg'),cap=g('f_cap'); const ma=document.getElementById('f_ma').value; const ge=(a,b)=> a==null ? true : a>=b; const le=(a,b)=> a==null ? true : a<=b;
+    const rows=current.filter(s=> le(s.pe,pe)&&le(s.pb,pb)&&ge(s.div,div)&&ge(s.roe,roe)&&ge(s.roa,roa)&&ge(s.eg,eg)&&ge(s.rsi,rsi)&&ge(s.chg,chg)&&ge(s.cap,cap)&&(ma==='any'||(ma==='ma5'&&s.ma5)||(ma==='ma10'&&s.ma10)||(ma==='ma30'&&s.ma30)));
+    document.getElementById('count').textContent=`符合：${rows.length} / ${current.length} 檔`;
+    if(!resTable){
+      resTable = MKLAB.DataTable('resTable', { cols:['sym','name','price','chg','pe','pb','roe','rsi','cap'], rows:rows, pageSize:PER, pagerId:'pager', defaultSort:'roe' });
+    } else {
+      resTable.setRows(rows);
+    }
+  }
+  function openDrawer(){ MKLAB.Drawer.open(); }
+  function closeDrawer(){ MKLAB.Drawer.close(); }
   apply(); loadScreener();
+  MKLAB.initDrawer();
+  MKLAB.Shell.mount({ active:'screener' });
   </script>
 </body></html>
