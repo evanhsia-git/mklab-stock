@@ -48,15 +48,16 @@ def load_overview(conn):
     """stock_overview: 代號 -> 基本資料（產業名稱/roe/eps/市值等）"""
     codes, fallback = load_codes()
     cur = conn.execute(
-        "SELECT stock_id,stock_name,industry,roe,eps,market_cap,shares_outstanding "
+        "SELECT stock_id,stock_name,industry,roe,roa,eps,market_cap,shares_outstanding "
         "FROM stock_overview"
     )
     ov = {}
-    for sid, name, ind, roe, eps, mcap, shares in cur.fetchall():
+    for sid, name, ind, roe, roa, eps, mcap, shares in cur.fetchall():
         ov[sid] = {
             "name": name or sid,
             "industry": ind_name(codes, fallback, ind),
             "roe": roe,
+            "roa": roa,
             "eps": eps,
             "market_cap": mcap,
             "shares": shares,
@@ -101,6 +102,7 @@ def export_latest(conn, ov):
             "open": o, "high": h, "low": l, "volume": vol,
             "pe": pe, "pb": pb, "div": div,
             "roe": base.get("roe"),
+            "roa": base.get("roa"),
             "eps": base.get("eps"),
             "market_cap": base.get("market_cap"),
             "ind": base.get("industry", "未分類"),
