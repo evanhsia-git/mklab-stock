@@ -1,0 +1,38 @@
+name: qa-gate
+
+on:
+  push:
+    paths:
+      - '**.py'
+      - '**.html'
+      - 'data/**'
+      - 'scripts/**'
+      - '.github/workflows/qa-gate.yml'
+  pull_request:
+    paths:
+      - '**.py'
+      - '**.html'
+      - 'data/**'
+      - 'scripts/**'
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Quality Gate
+        run: python scripts/qa_gate.py --json qa-result.json
+      - name: 上傳報告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-report
+          path: |
+            data/qa-report.md
+            qa-result.json
