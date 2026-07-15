@@ -88,10 +88,12 @@
     </div>
     <div class="section-title" id="detailTitle" style="display:none"></div>
     <div class="table-wrap" id="detailWrap" style="display:none">
-      <table>
-        <thead><tr><th>代號</th><th>名稱</th><th>價格</th><th>漲跌%</th><th>PE</th><th>PB</th><th>ROE%</th><th>趨勢</th></tr></thead>
-        <tbody id="detailBody"></tbody>
+      <table id="indDetailTable">
+        <thead></thead>
+        <tbody></tbody>
       </table>
+      <div class="pager" id="indDetailPager"></div>
+    </div>
     </div>
     <div class="disclaimer">產業分類參考台灣證交所 33 個法定產業（示意資料）。生產環境由 Build-Time 計算各產業漲跌與成分股績效。</div>
   </div>
@@ -143,6 +145,7 @@
       perfTable.setRows(data);
     }
   }
+  let detailTable=null;
   function selInd(i){
     activeInd=i; renderGrid();
     const d=data[i];
@@ -150,12 +153,15 @@
     document.getElementById('detailTitle').style.display='block';
     document.getElementById('detailTitle').textContent=`${d.nm} · 成分股績效（${real.length} 檔，依 stocks.json 真實資料 Top 10）`;
     document.getElementById('detailWrap').style.display='block';
-    const stocks=(real.length?real:[]).map(s=>{
-      const ch=s.chg||0; const col=ch>=0?"#dc2626":"#16a34a";
-      const pe=s.pe!=null?s.pe:'-'; const pb=s.pb!=null?s.pb:'-'; const roe=s.roe!=null?s.roe:'-';
-      return `<tr><td class="sym">${s.sym}<small>${s.name||''}</small></td><td>${s.price!=null?s.price:'-'}</td><td class="${ch>=0?'up':'down'}">${ch>0?'+':''}${ch}%</td><td>${pe}</td><td>${pb}</td><td>${roe}</td><td class="spark-cell">${spark(gen(s.price||100),col,180,34)}</td></tr>`;
-    }).join("")||`<tr><td colspan="7" style="text-align:center;color:var(--muted)">該產業暫無成分股資料</td></tr>`;
-    document.getElementById('detailBody').innerHTML=stocks;
+    if(!detailTable){
+      detailTable = MKLAB.DataTable('indDetailTable', {
+        cols:['sym','price','chg','pe','pb','roe'],
+        rows:real, pageSize:10, pagerId:'indDetailPager',
+        defaultSort:'chg',
+      });
+    } else {
+      detailTable.setRows(real);
+    }
   }
   function openDrawer(){ MKLAB.Drawer.open(); }
   function closeDrawer(){ MKLAB.Drawer.close(); }

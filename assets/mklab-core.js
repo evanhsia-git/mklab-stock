@@ -27,7 +27,7 @@
   //   html : 不排序（sortable:false），原樣輸出
   //   act  : 動作欄（移除/選取），不排序
   const COLUMNS = {
-    sym:   { label:'代號',    type:'str', sortable:true,  fmt:r=>r.sym!=null?String(r.sym):'-' },
+    sym:   { label:'代號 / 名稱', type:'str', sortable:true,  fmt:r=>`${r.sym!=null?String(r.sym):'-'}${r.name?`<small>${r.name}</small>`:''}` },
     name:  { label:'名稱',    type:'str', sortable:true,  fmt:r=>(r.name||r.nm||'-') },
     price: { label:'價格',    type:'num', sortable:true,  fmt:r=>r.price!=null?Number(r.price).toLocaleString():'-' },
     chg:   { label:'漲跌%',   type:'pct', sortable:true,  fmt:r=>cellPct(r.chg) },
@@ -258,7 +258,7 @@
     let h = '<h3>設定</h3>';
     h += '<h4>外觀</h4>';
     if(c.appearance.dark){
-      h += `<div class="row"><span>深色主題</span><button class="switch ${darkOn?'on':''}" id="swDark" onclick="MKLAB.toggleDark()"></button></div>`;
+      h += `<div class="row"><span>深色主題</span><button class="switch ${darkOn?'on':''}" id="swDark" onclick="MKLAB.Drawer.toggleDark()"></button></div>`;
     }
     if(c.appearance.lang){
       h += `<div class="row"><span>語言</span><div class="seg"><button id="langZh" class="${lang==='zh'?'on':''}" onclick="MKLAB.setLang('zh')">中文</button><button id="langEn" class="${lang==='en'?'on':''}" onclick="MKLAB.setLang('en')">EN</button></div></div>`;

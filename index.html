@@ -31,6 +31,7 @@
   .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; }
   .card-sm { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:12px; box-shadow:var(--shadow); position:relative; }
   .card-sm .name { font-size:12px; color:var(--muted); }
+  .card-sm .name small { font-size:11px; color:var(--muted); font-weight:400; margin-left:4px; }
   .card-sm .val { font-size:18px; font-weight:700; margin:2px 0; }
   .card-sm .chg { font-size:13px; font-weight:600; }
   .card-sm .box { position:relative; margin-top:6px; height:34px; }
@@ -214,8 +215,8 @@
       if(price==null && chg==null) return `<div class="card-sm"><div class="name">${d.sym}</div><div class="val">-</div><div class="chg">-</div></div>`;
       const col = chg>=0 ? "#dc2626" : "#16a34a";
       const seed = (typeof price==='number' && price>0) ? price : 50;
-      const name = d.name ? ` ${d.name}` : '';
-      return `<div class="card-sm"><div class="name">${d.sym}${name}</div><div class="val">${(typeof price==='number')?price.toLocaleString():'-'}</div><div class="chg ${chg>=0?'up':'down'}">${chg>0?'+':''}${chg}%</div><div class="box" onmouseenter="tipIn(this,'${d.sym}')" onmouseleave="untipIn(this)">${spark(gen(seed,20),col,150,34)}<div class="tip"></div></div></div>`;
+      const symHtml = d.name ? `${d.sym}<small>${d.name}</small>` : d.sym;
+      return `<div class="card-sm"><div class="name">${symHtml}</div><div class="val">${(typeof price==='number')?price.toLocaleString():'-'}</div><div class="chg ${chg>=0?'up':'down'}">${chg>0?'+':''}${chg}%</div><div class="box" onmouseenter="tipIn(this,'${d.sym}')" onmouseleave="untipIn(this)">${spark(gen(seed,20),col,150,34)}<div class="tip"></div></div></div>`;
     }).join("") || `<div class="card-sm" style="grid-column:1/-1;text-align:center;color:var(--muted)">尚未設定自選股（於 watchlist 頁新增）</div>`;
   }
 
