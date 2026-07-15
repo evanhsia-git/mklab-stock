@@ -127,7 +127,7 @@
     <div class="cards" id="indices5"></div>
 
     <!-- 版塊 2：台股加權 + 績效表 -->
-    <div class="section-title">Market Health &amp; Exposure（^TWII · 1–30 日）</div>
+    <div class="section-title">Market Health &amp; Exposure（^TWII · 近 1 年）</div>
     <div class="mh-layout">
       <div class="tv-box">
         <div id="tv_chart" style="height:46vh;min-height:320px"></div>
@@ -191,7 +191,7 @@
     {k:"VIX 恐慌", v:"16.72", c:-2.56, d:gen(16.72,20)},
     {k:"CNN 恐慌貪婪", v:"43.14 恐慌", c:-1.33, d:gen(43.14,20)},
     {k:"USD/TWD", v:"32.148", c:+0.05, d:gen(32.148,20)},
-    {k:"黃金", v:"2,398", c:+0.6, d:gen(2398,20)},
+    {k:"黃金", v:"4,060.6", c:+0.22, d:gen(4060.6,20)},
     {k:"石油 WTI", v:"73.85", c:+3.41, d:gen(73.85,20)},
   ];
   document.getElementById("macro5").innerHTML=macro5.map(m=>{
@@ -279,7 +279,8 @@
       const txt=`20d: ${s.spct>=0?'+':''}${s.spct}% ${s.spct>=0?'▲':'▼'}`;
       const roeDisp = s.roe!=null ? (+s.roe).toFixed(1) : '-';
       const roaDisp = s.roa!=null ? (+s.roa).toFixed(1) : '-';
-      return `<tr><td class="sym">${s.sym}<small>${s.name}</small></td><td>${s.price}</td><td class="${s.chg>=0?'up':'down'}">${(s.chg>0?'+':'')}${s.chg}%</td><td><b>${s.rank}</b></td><td>${s.pe}</td><td>${s.pb}</td><td>${s.eps}</td><td>${roeDisp}</td><td>${roaDisp}</td><td class="spark-cell" onmouseenter="tipIn(this,'${txt}')" onmouseleave="untipIn(this)">${spark(gen(s.price,20),col,180,34)}<div class="tip"></div></td><td>${s.ind}</td></tr>`;
+      const peDisp=s.pe!=null?s.pe:'-'; const pbDisp=s.pb!=null?s.pb:'-'; const epsDisp=s.eps!=null?s.eps:'-';
+      return `<tr><td class="sym">${s.sym}<small>${s.name}</small></td><td>${s.price!=null?s.price:'-'}</td><td class="${s.chg>=0?'up':'down'}">${(s.chg>0?'+':'')}${s.chg}%</td><td><b>${s.rank}</b></td><td>${peDisp}</td><td>${pbDisp}</td><td>${epsDisp}</td><td>${roeDisp}</td><td>${roaDisp}</td><td class="spark-cell" onmouseenter="tipIn(this,'${txt}')" onmouseleave="untipIn(this)">${spark(gen(s.price||100,20),col,180,34)}<div class="tip"></div></td><td>${s.ind}</td></tr>`;
     }).join("");
     const cnt=document.getElementById("indCount"); if(cnt) cnt.textContent=arr.length;
   }

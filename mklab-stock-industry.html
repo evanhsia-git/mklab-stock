@@ -116,6 +116,7 @@
   function gen(seed,n){ const o=[]; let p=seed; for(let i=0;i<n;i++){ p+=(Math.random()-0.45)*seed*0.02; o.push(+p.toFixed(2)); } return o; }
   // 生成產業資料（預設示意 fallback；載入 data/industry.json 後以真實資料覆寫）
   let data=INDUSTRIES.map((nm,i)=>{ const chg=+((Math.random()-0.45)*6).toFixed(2); const cnt=+(8+Math.random()*40).toFixed(0); const top=+((Math.random()-0.45)*5).toFixed(2); const genp=()=>+((Math.random()-0.45)*10).toFixed(2); return {nm,chg,cnt,top,seed:+(20+i*37),w1:genp(),m1:genp(),m3:genp(),m6:genp(),ytd:genp(),y1:genp(),y5:genp()}; });
+  let ALL_STOCKS=[];
   function loadIndustry(){
     fetch('data/industry.json').then(r=>{ if(!r.ok) throw new Error('no'); return r.json(); }).then(d=>{
       if(d && Array.isArray(d.industry) && d.industry.length){
@@ -125,6 +126,7 @@
         if(asof){ const f=document.querySelector('.freshness'); if(f) f.textContent='資料以 '+asof+' 收盤為準（Build-Time 自動更新）'; }
       }
     }).catch(()=>{});
+    fetch('data/stocks.json').then(r=>r.json()).then(d=>{ if(d&&Array.isArray(d.stocks)) ALL_STOCKS=d.stocks; }).catch(()=>{});
   }
   let activeInd=null;
   function renderGrid(){
@@ -155,14 +157,15 @@
   function selInd(i){
     activeInd=i; renderGrid();
     const d=data[i];
+    const real=ALL_STOCKS.filter(s=>s.ind===d.nm).slice(0,10);
     document.getElementById('detailTitle').style.display='block';
-    document.getElementById('detailTitle').textContent=`${d.nm} · 成分股績效（${d.cnt} 檔，示意 Top 8）`;
+    document.getElementById('detailTitle').textContent=`${d.nm} · 成分股績效（${real.length} 檔，依 stocks.json 真實資料 Top 10）`;
     document.getElementById('detailWrap').style.display='block';
-    const stocks=Array.from({length:8}).map((_,k)=>{
-      const sym=2000+i*10+k; const price=+(20+Math.random()*1800).toFixed(1); const ch=+((Math.random()-0.45)*10).toFixed(2);
-      const col=ch>=0?"#dc2626":"#16a34a"; const nm=SAMPLE[(i+k)%SAMPLE.length];
-      return `<tr><td class="sym">${sym}<small>${nm}</small></td><td>${price}</td><td class="${ch>=0?'up':'down'}">${ch>0?'+':''}${ch}%</td><td>${+(8+Math.random()*30).toFixed(1)}</td><td>${(1+Math.random()*5).toFixed(1)}</td><td>${(5+Math.random()*30).toFixed(1)}</td><td class="spark-cell">${spark(gen(price,20),col,180,34)}</td></tr>`;
-    }).join("");
+    const stocks=(real.length?real:[]).map(s=>{
+      const ch=s.chg||0; const col=ch>=0?"#dc2626":"#16a34a";
+      const pe=s.pe!=null?s.pe:'-'; const pb=s.pb!=null?s.pb:'-'; const roe=s.roe!=null?s.roe:'-';
+      return `<tr><td class="sym">${s.sym}<small>${s.name||''}</small></td><td>${s.price!=null?s.price:'-'}</td><td class="${ch>=0?'up':'down'}">${ch>0?'+':''}${ch}%</td><td>${pe}</td><td>${pb}</td><td>${roe}</td><td class="spark-cell">${spark(gen(s.price||100),col,180,34)}</td></tr>`;
+    }).join("")||`<tr><td colspan="7" style="text-align:center;color:var(--muted)">該產業暫無成分股資料</td></tr>`;
     document.getElementById('detailBody').innerHTML=stocks;
   }
   function toggleSearch(){ const b=document.getElementById('searchBox'); const inp=b.querySelector('input'); const exp=b.classList.toggle('expanded'); b.classList.toggle('collapsed',!exp); if(exp){ inp.style.display='block'; inp.focus(); } else { inp.style.display='none'; } }

@@ -162,8 +162,8 @@
     document.getElementById('infoCard').innerHTML =
       '<h3>'+s+' '+m.name+' <span class="'+chgCls+'">'+chgTxt+'</span></h3>' +
       '<div class="kv">'+
-        kv('價格', m.price)+kv('PE', m.pe)+kv('PB', m.pb)+
-        kv('ROE', m.roe+'%')+kv('EPS', m.eps)+kv('殖利率', m.div+'%')+
+        kv('價格', m.price!=null?m.price:'-')+kv('PE', m.pe!=null?m.pe:'-')+kv('PB', m.pb!=null?m.pb:'-')+
+        kv('ROE', (m.roe!=null?m.roe.toFixed(1):'-')+'%')+kv('EPS', m.eps!=null?m.eps:'-')+kv('殖利率', (m.div!=null?m.div:'-')+'%')+
         kv('市值', m.mc)+kv('產業', '<span style="font-size:13px">'+m.sector+'</span>')+
       '</div>';
     document.getElementById('peChart').innerHTML=spark(gen(m.pe,60),"#3b82f6",600,160);
