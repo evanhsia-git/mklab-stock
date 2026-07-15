@@ -32,15 +32,15 @@
     price: { label:'價格',    type:'num', sortable:true,  fmt:r=>r.price!=null?Number(r.price).toLocaleString():'-' },
     chg:   { label:'漲跌%',   type:'pct', sortable:true,  fmt:r=>cellPct(r.chg) },
     score: { label:'綜合評分',type:'num', sortable:true, defDir:-1, fmt:r=>r.score!=null?r.score:'-' },
-    pe:    { label:'PE',      type:'num', sortable:true,  fmt:r=>r.pe!=null?r.pe:'-' },
-    pb:    { label:'PB',      type:'num', sortable:true,  fmt:r=>r.pb!=null?r.pb:'-' },
-    eps:   { label:'EPS',     type:'num', sortable:true,  fmt:r=>r.eps!=null?r.eps:'-' },
-    roe:   { label:'ROE',     type:'num', sortable:true,  fmt:r=>(r.roe!=null?Number(r.roe).toFixed(1):'-') },
-    roa:   { label:'ROA',     type:'num', sortable:true,  fmt:r=>(r.roa!=null?Number(r.roa).toFixed(1):'-') },
+    pe:    { label:'PE',      type:'num', sortable:true,  fmt:r=>r.pe!=null?Number(r.pe).toFixed(2):'-' },
+    pb:    { label:'PB',      type:'num', sortable:true,  fmt:r=>r.pb!=null?Number(r.pb).toFixed(2):'-' },
+    eps:   { label:'EPS',     type:'num', sortable:true,  fmt:r=>r.eps!=null?Number(r.eps).toFixed(2):'-' },
+    roe:   { label:'ROE',     type:'num', sortable:true,  fmt:r=>(r.roe!=null?Number(r.roe).toFixed(2):'-') },
+    roa:   { label:'ROA',     type:'num', sortable:true,  fmt:r=>(r.roa!=null?Number(r.roa).toFixed(2):'-') },
     trend: { label:'趨勢',    type:'str', sortable:true,  fmt:r=>(r.trend!=null?r.trend:(r.spct!=null?(r.spct>0?'+':'')+r.spct+'%':'-')) },
     ind:   { label:'產業',    type:'str', sortable:true,  key:'ind', fmt:r=>(r.ind||r.nm||'-') },
     rsi:   { label:'RSI',     type:'num', sortable:true,  fmt:r=>r.rsi!=null?r.rsi:'-' },
-    cap:   { label:'市值(億)',type:'num', sortable:true,  fmt:r=>r.market_cap!=null?Number(r.market_cap/1e8).toFixed(1):(r.cap!=null?r.cap:'-') },
+    cap:   { label:'市值(億)',type:'num', sortable:true,  fmt:r=>{ const v = r.market_cap!=null ? r.market_cap/1e8 : (r.cap!=null?r.cap:null); return v!=null ? Number(v).toFixed(2) : '-'; } },
     w1:    { label:'1週',     type:'pct', sortable:true,  fmt:r=>cellPct(r.w1) },
     m1:    { label:'1月',     type:'pct', sortable:true,  fmt:r=>cellPct(r.m1) },
     m3:    { label:'3月',     type:'pct', sortable:true,  fmt:r=>cellPct(r.m3) },
@@ -397,6 +397,7 @@
       const tools = document.createElement('span');
       tools.setAttribute('data-shell-tools','');
       tools.className = 'shell-tools';
+      tools.style.cssText = 'display:flex; align-items:center; gap:8px;';
       tools.innerHTML =
         `<div class="search collapsed" id="searchBox">` +
           `<input id="q" placeholder="搜尋代號，如 2330" onkeydown="if(event.key==='Enter')MKLAB.Shell.doSearch()">` +

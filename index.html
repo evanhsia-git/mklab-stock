@@ -131,6 +131,7 @@
         <thead></thead>
         <tbody id="indBody"></tbody>
       </table>
+      <div class="pager" id="indPager"></div>
     </div>
 
     <div class="disclaimer">免責聲明：僅供參考，非投資建議。示意資料，生產環境由 Build-Time 計算。</div>
@@ -210,7 +211,27 @@
   function loadStocks(){
     fetch('data/stocks.json').then(r=>{ if(!r.ok) throw new Error('no data'); return r.json(); }).then(d=>{
       if(d && Array.isArray(d.stocks) && d.stocks.length){
-        industry=d.stocks.map(s=>({ind:s.ind,sym:s.sym,name:s.name,price:s.price,chg:s.chg,pe:s.pe,pb:s.pb,eps:s.eps,roe:s.roe,roa:s.roa,rank:s.rank,spct:s.spct}));
+        // fallback map：手工真實財務（大盤權值股，欄位齊全）
+        const fbMap={}; industry.forEach(x=>fbMap[x.sym]=x);
+        industry = d.stocks.map(s=>{
+          const fb = fbMap[s.sym] || {};
+          const pe  = s.pe  !=null ? s.pe  : (fb.pe  !=null ? fb.pe  : null);
+          const pb  = s.pb  !=null ? s.pb  : (fb.pb  !=null ? fb.pb  : null);
+          const eps = s.eps !=null ? s.eps : (fb.eps !=null ? fb.eps : null);
+          const roe = s.roe !=null ? s.roe : (fb.roe !=null ? fb.roe : null);
+          const roa = s.roa !=null ? s.roa : (fb.roa !=null ? fb.roa : null);
+          const spct= s.spct!=null ? s.spct : (fb.spct!=null ? fb.spct : null);
+          return {
+            ind:  s.ind  || fb.ind  || '-',
+            sym:  s.sym,
+            name: s.name || fb.name || s.sym,
+            price:s.price, chg:s.chg,
+            pe, pb, eps, roe, roa,
+            spct,
+            rank: s.rank || fb.rank || 0,
+            trend: (spct!=null) ? (spct>0?'+':'')+spct+'%' : (fb.spct!=null ? (fb.spct>0?'+':'')+fb.spct+'%' : null),
+          };
+        });
         priceMap = {};
         d.stocks.forEach(s=>{ priceMap[s.sym] = {price:s.price, chg:s.chg, pe:s.pe, roe:s.roe, alert:null}; });
         renderWatch();
@@ -220,25 +241,26 @@
       }
     }).catch(()=>{ /* 保留 fallback 示意資料 */ });
   }
-  // 前端即時綜合評分（後端 rank 尚未計算，此處依欄位加權；欄位缺失則不計該項，不整檔排除）
+  // 前端即時綜合評分（依財務欄位加權；不含 chg 日波動，避免 ETF/權證因日漲跌排前面）
   function calcRank(s){
     let score=0, any=false;
     if(s.roe!=null && !isNaN(s.roe)){ score += Math.max(0, Math.min(40, s.roe*1.2)); any=true; }
     if(s.pe!=null && !isNaN(s.pe)){ score += Math.max(0, Math.min(20, (30-s.pe)*1.0)); any=true; }
     if(s.pb!=null && !isNaN(s.pb)){ score += Math.max(0, Math.min(15, (8-s.pb)*2.0)); any=true; }
     if(s.eps!=null && !isNaN(s.eps)){ score += Math.max(0, Math.min(10, s.eps*0.3)); any=true; }
-    if(s.chg!=null && !isNaN(s.chg)){ score += Math.max(0, Math.min(15, s.chg*1.0)); any=true; }
     if(!any) return -1;
     return Math.round(Math.max(0, Math.min(100, score)));
   }
   let indTable=null;
   function renderInd(){
-    const scored = industry.map(s=>({...s, score: calcRank(s)})).filter(s=>s.score>0).slice(0,10);
+    const scored = industry.map(s=>({...s, score: calcRank(s)}))
+      .filter(s=>s.score>0 && (s.pe!=null||s.pb!=null||s.roe!=null||s.eps!=null));
     if(!indTable){
       indTable = MKLAB.DataTable('indTable', {
         cols: ['sym','price','chg','score','pe','pb','eps','roe','roa','trend','ind'],
         rows: scored,
-        pageSize: 0,
+        pageSize: 10,
+        pagerId: 'indPager',
         defaultSort: 'score',
       });
       window.__ind = indTable;

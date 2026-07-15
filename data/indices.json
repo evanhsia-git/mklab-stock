@@ -1,0 +1,236 @@
+{
+  "meta": {
+    "as_of": "2026-07-15",
+    "source": "yfinance (免 key, 雲端 pip install)",
+    "schema_version": "1.0.0",
+    "index_count": 15,
+    "etf_count": 6,
+    "note": "收盤/漲跌% 每日更新；as_of 為該標的最後交易日（跨時區可能非同日）。planned 市場資料待未來開發填入。"
+  },
+  "indices": [
+    {
+      "market": "TW",
+      "name": "加權股價指數 (TAIEX)",
+      "yf": "^TWII",
+      "desc": "台灣大盤",
+      "close": 45631.59,
+      "prev_close": 45380.52,
+      "chg_pct": 0.55,
+      "as_of": "2026-07-15"
+    },
+    {
+      "market": "US",
+      "name": "S&P 500",
+      "yf": "^GSPC",
+      "desc": "美國最具代表性大型股",
+      "close": 7515.34,
+      "prev_close": 7575.39,
+      "chg_pct": -0.79,
+      "as_of": "2026-07-13"
+    },
+    {
+      "market": "US",
+      "name": "Nasdaq Composite",
+      "yf": "^IXIC",
+      "desc": "科技股為主",
+      "close": 25873.18,
+      "prev_close": 26281.61,
+      "chg_pct": -1.55,
+      "as_of": "2026-07-13"
+    },
+    {
+      "market": "US",
+      "name": "Dow Jones Industrial Average",
+      "yf": "^DJI",
+      "desc": "道瓊30",
+      "close": 52498.64,
+      "prev_close": 52637.01,
+      "chg_pct": -0.26,
+      "as_of": "2026-07-13"
+    },
+    {
+      "market": "JP",
+      "name": "Nikkei 225",
+      "yf": "^N225",
+      "desc": "日本最重要指數",
+      "close": 68751.51,
+      "prev_close": 67242.73,
+      "chg_pct": 2.24,
+      "as_of": "2026-07-15"
+    },
+    {
+      "market": "JP",
+      "name": "TOPIX",
+      "yf": "1306.T",
+      "desc": "日本全市場大型指數（以 1306.T NEXT FUNDS TOPIX ETF 代理）",
+      "close": 425.6,
+      "prev_close": 421.3,
+      "chg_pct": 1.02,
+      "as_of": "2026-07-15"
+    },
+    {
+      "market": "KR",
+      "name": "KOSPI",
+      "yf": "^KS11",
+      "desc": "韓國加權指數",
+      "close": 7284.41,
+      "prev_close": 6806.93,
+      "chg_pct": 7.01,
+      "as_of": "2026-07-15"
+    },
+    {
+      "market": "HK",
+      "name": "Hang Seng Index",
+      "yf": "^HSI",
+      "desc": "香港恆生指數",
+      "close": 24648.23,
+      "prev_close": 24213.72,
+      "chg_pct": 1.79,
+      "as_of": "2026-07-15"
+    },
+    {
+      "market": "CN",
+      "name": "Shanghai Composite",
+      "yf": "000001.SS",
+      "desc": "上證綜合指數",
+      "close": 3955.58,
+      "prev_close": 3913.79,
+      "chg_pct": 1.07,
+      "as_of": "2026-07-15"
+    },
+    {
+      "market": "CN",
+      "name": "CSI 300",
+      "yf": "000300.SS",
+      "desc": "滬深300（最常用）",
+      "close": 4786.78,
+      "prev_close": 4780.79,
+      "chg_pct": 0.13,
+      "as_of": "2026-07-15"
+    },
+    {
+      "market": "CN",
+      "name": "Shenzhen Component",
+      "yf": "399001.SZ",
+      "desc": "深證成指",
+      "close": 14779.4,
+      "prev_close": 14522.85,
+      "chg_pct": 1.77,
+      "as_of": "2026-07-15"
+    },
+    {
+      "market": "GB",
+      "name": "FTSE 100",
+      "yf": "^FTSE",
+      "desc": "英國倫敦藍籌",
+      "close": 10447.26,
+      "prev_close": 10498.3,
+      "chg_pct": -0.49,
+      "as_of": "2026-07-15"
+    },
+    {
+      "market": "DE",
+      "name": "DAX",
+      "yf": "^GDAXI",
+      "desc": "德國法蘭克福40大藍籌",
+      "close": 24860.26,
+      "prev_close": 25114.25,
+      "chg_pct": -1.01,
+      "as_of": "2026-07-15"
+    },
+    {
+      "market": "FR",
+      "name": "CAC 40",
+      "yf": "^FCHI",
+      "desc": "法國巴黎40大藍籌",
+      "close": 8325.37,
+      "prev_close": 8364.65,
+      "chg_pct": -0.47,
+      "as_of": "2026-07-15"
+    },
+    {
+      "market": "EU",
+      "name": "STOXX 50",
+      "yf": "^STOXX50E",
+      "desc": "歐元區50大藍籌",
+      "close": 6265.52,
+      "prev_close": 6271.02,
+      "chg_pct": -0.09,
+      "as_of": "2026-07-15"
+    }
+  ],
+  "etfs": [
+    {
+      "market": "TW",
+      "name": "元大台灣50",
+      "yf": "0050.TW",
+      "tracks": "台灣50",
+      "since": 2003,
+      "rep": 5,
+      "close": 106.3,
+      "prev_close": 104.4,
+      "chg_pct": 1.82,
+      "as_of": "2026-07-15"
+    },
+    {
+      "market": "US",
+      "name": "SPDR S&P 500 ETF (SPY)",
+      "yf": "SPY",
+      "tracks": "S&P500",
+      "since": 1993,
+      "rep": 5,
+      "close": 749.17,
+      "prev_close": 754.95,
+      "chg_pct": -0.77,
+      "as_of": "2026-07-13"
+    },
+    {
+      "market": "JP",
+      "name": "NEXT FUNDS Nikkei 225 ETF",
+      "yf": "1321.T",
+      "tracks": "Nikkei225",
+      "since": 2001,
+      "rep": 5,
+      "close": 71140.0,
+      "prev_close": 70050.0,
+      "chg_pct": 1.56,
+      "as_of": "2026-07-15"
+    },
+    {
+      "market": "KR",
+      "name": "KODEX 200 ETF",
+      "yf": "069500.KS",
+      "tracks": "KOSPI200",
+      "since": 2002,
+      "rep": 5,
+      "close": 116735.0,
+      "prev_close": 109720.0,
+      "chg_pct": 6.39,
+      "as_of": "2026-07-15"
+    },
+    {
+      "market": "HK",
+      "name": "Tracker Fund of Hong Kong",
+      "yf": "2800.HK",
+      "tracks": "Hang Seng Index",
+      "since": 1999,
+      "rep": 5,
+      "close": 25.12,
+      "prev_close": 24.84,
+      "chg_pct": 1.13,
+      "as_of": "2026-07-15"
+    },
+    {
+      "market": "CN",
+      "name": "ChinaAMC CSI300 ETF",
+      "yf": "510300.SS",
+      "tracks": "CSI300",
+      "since": 2012,
+      "rep": 5,
+      "close": 4.84,
+      "prev_close": 4.84,
+      "chg_pct": 0.02,
+      "as_of": "2026-07-15"
+    }
+  ]
+}

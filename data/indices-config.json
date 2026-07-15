@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "schema_version": "1.0.0",
+    "note": "全球主要指數 + 各國代表 ETF 靜態對照表（預留資料表）。本檔不含任何股價數值，僅定義 symbol / 市場 / yfinance 代碼 / 追蹤指數 / 說明。每日收盤與漲跌% 由 scripts/fetch_data.py 的 indices 模式抓取後寫入 data/indices.json（動態，進 repo）。",
+    "generated_by": "manual-reservation",
+    "as_of": null
+  },
+  "markets": [
+    { "id": "TW", "name": "台灣", "currency": "TWD", "timezone": "Asia/Taipei", "status": "active" },
+    { "id": "US", "name": "美國", "currency": "USD", "timezone": "America/New_York", "status": "planned" },
+    { "id": "JP", "name": "日本", "currency": "JPY", "timezone": "Asia/Tokyo", "status": "planned" },
+    { "id": "KR", "name": "韓國", "currency": "KRW", "timezone": "Asia/Seoul", "status": "planned" },
+    { "id": "HK", "name": "香港", "currency": "HKD", "timezone": "Asia/Hong_Kong", "status": "planned" },
+    { "id": "CN", "name": "中國", "currency": "CNY", "timezone": "Asia/Shanghai", "status": "planned" },
+    { "id": "GB", "name": "英國", "currency": "GBP", "timezone": "Europe/London", "status": "planned" },
+    { "id": "DE", "name": "德國", "currency": "EUR", "timezone": "Europe/Berlin", "status": "planned" },
+    { "id": "FR", "name": "法國", "currency": "EUR", "timezone": "Europe/Paris", "status": "planned" },
+    { "id": "EU", "name": "歐元區", "currency": "EUR", "timezone": "Europe/Brussels", "status": "planned" }
+  ],
+  "indices": [
+    { "market": "TW", "name": "加權股價指數 (TAIEX)", "desc": "台灣大盤", "yf": "^TWII" },
+    { "market": "US", "name": "S&P 500", "desc": "美國最具代表性大型股", "yf": "^GSPC" },
+    { "market": "US", "name": "Nasdaq Composite", "desc": "科技股為主", "yf": "^IXIC" },
+    { "market": "US", "name": "Dow Jones Industrial Average", "desc": "道瓊30", "yf": "^DJI" },
+    { "market": "JP", "name": "Nikkei 225", "desc": "日本最重要指數", "yf": "^N225" },
+    { "market": "JP", "name": "TOPIX", "desc": "日本全市場大型指數（以 1306.T NEXT FUNDS TOPIX ETF 代理）", "yf": "1306.T" },
+    { "market": "KR", "name": "KOSPI", "desc": "韓國加權指數", "yf": "^KS11" },
+    { "market": "HK", "name": "Hang Seng Index", "desc": "香港恆生指數", "yf": "^HSI" },
+    { "market": "CN", "name": "Shanghai Composite", "desc": "上證綜合指數", "yf": "000001.SS" },
+    { "market": "CN", "name": "CSI 300", "desc": "滬深300（最常用）", "yf": "000300.SS" },
+    { "market": "CN", "name": "Shenzhen Component", "desc": "深證成指", "yf": "399001.SZ" },
+    { "market": "GB", "name": "FTSE 100", "desc": "英國倫敦藍籌", "yf": "^FTSE", "status": "planned" },
+    { "market": "DE", "name": "DAX", "desc": "德國法蘭克福40大藍籌", "yf": "^GDAXI", "status": "planned" },
+    { "market": "FR", "name": "CAC 40", "desc": "法國巴黎40大藍籌", "yf": "^FCHI", "status": "planned" },
+    { "market": "EU", "name": "STOXX 50", "desc": "歐元區50大藍籌", "yf": "^STOXX50E", "status": "planned" }
+  ],
+  "etfs": [
+    { "market": "TW", "name": "元大台灣50", "tracks": "台灣50", "yf": "0050.TW", "since": 2003, "rep": 5 },
+    { "market": "US", "name": "SPDR S&P 500 ETF (SPY)", "tracks": "S&P500", "yf": "SPY", "since": 1993, "rep": 5 },
+    { "market": "JP", "name": "NEXT FUNDS Nikkei 225 ETF", "tracks": "Nikkei225", "yf": "1321.T", "since": 2001, "rep": 5 },
+    { "market": "KR", "name": "KODEX 200 ETF", "tracks": "KOSPI200", "yf": "069500.KS", "since": 2002, "rep": 5 },
+    { "market": "HK", "name": "Tracker Fund of Hong Kong", "tracks": "Hang Seng Index", "yf": "2800.HK", "since": 1999, "rep": 5 },
+    { "market": "CN", "name": "ChinaAMC CSI300 ETF", "tracks": "CSI300", "yf": "510300.SS", "since": 2012, "rep": 5 }
+  ]
+}

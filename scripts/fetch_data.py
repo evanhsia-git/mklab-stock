@@ -371,8 +371,123 @@ def run_weekly():
     LOG.finish(True)
 
 
+def run_indices():
+    """每日：yfinance 抓全球主要指數 + 各國代表 ETF 收盤/漲跌%，寫入 data/indices.json。
+    依賴 yfinance（雲端 daily-update.yml 的 indices 步驟會先 pip install）。
+    Graceful Degradation：單一 symbol 失敗留 null，不中斷整輪。
+    """
+    try:
+        import yfinance as yf
+    except ImportError:
+        LOG.error("yfinance 未安裝，無法抓指數/ETF（indices 模式跳過）")
+        LOG.finish(False, error="yfinance 未安裝")
+        return
+
+    cfg_path = os.path.join(OUT, "indices-config.json")
+    if not os.path.exists(cfg_path):
+        LOG.error(f"缺少 {cfg_path}，無法執行 indices 模式")
+        LOG.finish(False, error="缺少 indices-config.json")
+        return
+
+    cfg = json.load(open(cfg_path, encoding="utf-8"))
+    stamp = dt.datetime.now(dt.timezone(dt.timedelta(hours=8))).strftime("%Y-%m-%d")
+    LOG.info(f"indices 模式基準日 {stamp}，市場數={len(cfg.get('markets', []))}")
+
+    def fetch_one(item):
+        """抓單一 symbol 最後有效收盤 + 漲跌%。主 symbol 失敗則嘗試 fallback_yf。回傳 dict 或 None。"""
+        syms_to_try = [item.get("yf")]
+        if item.get("fallback_yf"):
+            syms_to_try.append(item["fallback_yf"])
+        last_err = None
+        for sym in syms_to_try:
+            if not sym:
+                continue
+            try:
+                t = yf.Ticker(sym)
+                h = t.history(period="1mo", interval="1d")
+                if h is None or h.empty:
+                    last_err = f"{sym} empty"
+                    continue
+                valid = h.dropna(subset=["Close"])
+                if valid.empty:
+                    last_err = f"{sym} all NaN"
+                    continue
+                last = valid.iloc[-1]
+                prev = valid.iloc[-2] if len(valid) > 1 else last
+                close = float(last["Close"])
+                prev_close = float(prev["Close"])
+                chg_pct = round((close - prev_close) / prev_close * 100, 2) if prev_close else None
+                return {
+                    "close": round(close, 2),
+                    "prev_close": round(prev_close, 2),
+                    "chg_pct": chg_pct,
+                    "as_of": str(last.name.date()),
+                }
+            except Exception as e:
+                last_err = f"{sym}: {e}"
+                continue
+        if last_err:
+            LOG.warn(f"{item.get('yf')} ({item.get('name')}) 未取得：{last_err}")
+        return None
+
+    def build(group_key):
+        out = []
+        for item in cfg.get(group_key, []):
+            sym = item.get("yf")
+            if not sym:
+                continue
+            rec = fetch_one(item)
+            row = {
+                "market": item.get("market"),
+                "name": item.get("name"),
+                "yf": sym,
+            }
+            if "desc" in item:
+                row["desc"] = item["desc"]
+            if "tracks" in item:
+                row["tracks"] = item["tracks"]
+            if "since" in item:
+                row["since"] = item["since"]
+            if "rep" in item:
+                row["rep"] = item["rep"]
+            if rec:
+                row.update(rec)
+                LOG.info(f"  {sym} {item.get('name')}: {rec['close']} ({rec['chg_pct']}%, as_of={rec['as_of']})")
+            else:
+                row["close"] = None
+                row["prev_close"] = None
+                row["chg_pct"] = None
+                row["as_of"] = None
+                LOG.warn(f"  {sym} {item.get('name')}: 未取得（留 null）")
+            out.append(row)
+        return out
+
+    indices = build("indices")
+    etfs = build("etfs")
+    LOG.stats["fetched"] = len(indices) + len(etfs)
+    LOG.stats["written"] = sum(1 for r in indices + etfs if r.get("close") is not None)
+
+    meta = {
+        "as_of": stamp,
+        "source": "yfinance (免 key, 雲端 pip install)",
+        "schema_version": SCHEMA_VERSION,
+        "index_count": len(indices),
+        "etf_count": len(etfs),
+        "note": "收盤/漲跌% 每日更新；as_of 為該標的最後交易日（跨時區可能非同日）。planned 市場資料待未來開發填入。",
+    }
+    with open(os.path.join(OUT, "indices.json"), "w", encoding="utf-8") as f:
+        json.dump({"meta": meta, "indices": indices, "etfs": etfs}, f, ensure_ascii=False, indent=2)
+
+    LOG.stats["details"]["index_count"] = len(indices)
+    LOG.stats["details"]["etf_count"] = len(etfs)
+    LOG.info(f"完成 → data/indices.json (indices={len(indices)}, etfs={len(etfs)})")
+    LOG.finish(True)
+
+
 if __name__ == "__main__":
     if MODE == "weekly":
         run_weekly()
+    elif MODE == "indices":
+        run_indices()
     else:
         run_daily()

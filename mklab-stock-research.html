@@ -92,6 +92,7 @@
           <button onclick="search()">搜</button>
         </div>
         <div class="symlist" id="symlist"></div>
+        <div class="pager" id="symPager"></div>
       </div>
       <div>
         <div class="card" id="infoCard"></div>
@@ -114,6 +115,7 @@
         <div class="card">
           <h3>財報摘要（年度）</h3>
           <table id="finTable"></table>
+      <div class="pager" id="finPager"></div>
         </div>
         <div class="disclaimer">個股研究中心原型（示意資料）。生產環境：公司資訊/財報/估值由 Build-Time 計算，歷史圖用 lightweight-charts。</div>
       </div>
@@ -134,9 +136,26 @@
   function gen(seed,n){ const o=[]; let p=seed; for(let i=0;i<n;i++){ p+=(Math.random()-0.45)*seed*0.02; o.push(+p.toFixed(2)); } return o; }
   function tip(id,t){ const el=document.getElementById(id); const x=el.querySelector('.tip'); if(x){x.textContent=t;x.style.display='block';} }
   function untip(id){ const el=document.getElementById(id); const x=el.querySelector('.tip'); if(x)x.style.display='none'; }
+  let symPage = 1;
+  const SYM_PER = 10;
   function renderList(){
-    document.getElementById('symlist').innerHTML=Object.entries(STOCKS).map(([s,m])=>`<div data-s="${s}" onclick="sel('${s}')">${s} ${m.name}</div>`).join("");
+    const keys = Object.keys(STOCKS);
+    const totalPages = Math.max(1, Math.ceil(keys.length / SYM_PER));
+    if(symPage > totalPages) symPage = totalPages;
+    const start = (symPage-1)*SYM_PER;
+    const pageKeys = keys.slice(start, start+SYM_PER);
+    document.getElementById('symlist').innerHTML = pageKeys.map(s=>{
+      const m = STOCKS[s];
+      return `<div data-s="${s}" onclick="sel('${s}')">${s} ${m.name}</div>`;
+    }).join("");
+    const pager = document.getElementById('symPager');
+    if(pager){
+      let b='';
+      for(let i=1;i<=totalPages;i++) b += `<button class="${i===symPage?'on':''}" onclick="gotoSymPage(${i})">${i}</button>`;
+      pager.innerHTML = b;
+    }
   }
+  function gotoSymPage(p){ symPage = p; renderList(); }
   function sel(s){
     if(!STOCKS[s]) return;   // 資料未就緒時防護，避免 undefined 拋錯中斷腳本
     document.querySelectorAll('#symlist div').forEach(d=>d.classList.toggle('on',d.dataset.s===s));

@@ -80,6 +80,7 @@
         <thead></thead>
         <tbody id="wlBody"></tbody>
       </table>
+      <div class="pager" id="wlPager"></div>
     </div>
     <div class="disclaimer">自選股中心（示意）。Alert 支援價格/技術/法人提醒，生產環境可由 Actions 產出。</div>
   </div>
@@ -93,7 +94,7 @@
       wlTable = MKLAB.DataTable('wlTable', {
         cols: ['sym','name','price','chg','pe','roe','alert','del'],
         rows: rows,
-        pageSize: 0,
+        pageSize: 10, pagerId: 'wlPager',
         onDel: function(sym){ MKLAB.Watch.remove(sym); render(); },
         ctx: {},
       });

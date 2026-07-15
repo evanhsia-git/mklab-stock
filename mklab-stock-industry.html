@@ -79,6 +79,7 @@
         <thead></thead>
         <tbody id="indPerfBody"></tbody>
       </table>
+      <div class="pager" id="indPerfPager"></div>
     </div>
     <div class="section-title" id="detailTitle" style="display:none"></div>
     <div class="table-wrap" id="detailWrap" style="display:none">
@@ -129,7 +130,7 @@
       perfTable = MKLAB.DataTable('indPerfTable', {
         cols:['ind','chg','w1','m1','m3','m6','ytd','y1','cnt'],
         rows:data,
-        pageSize:0,
+        pageSize: 10, pagerId: 'indPerfPager',
         fieldMap:{ ind:'nm' },
         defaultSort:'chg',
       });
