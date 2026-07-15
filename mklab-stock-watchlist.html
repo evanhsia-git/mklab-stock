@@ -85,13 +85,23 @@
     <div class="sys-note">版本：dashboard v3.0<br>資料源：TWSE/TPEX/Yahoo/Stooq<br>最後更新：2026-07-14 08:30<br>狀態：<span class="up">●</span> 正常運作</div>
   </aside>
   <div class="wrap">
+    <div class="section-title">我的自選股（最多 5 檔）</div>
     <div class="row-input">
       <input id="addSym" placeholder="新增自選股代號，如 2330">
       <button onclick="addSym()">加入</button>
     </div>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>代號</th><th>名稱</th><th>價格</th><th>漲跌%</th><th>PE</th><th>ROE%</th><th>提醒</th><th></th></tr></thead>
+        <thead><tr>
+          <th data-k="sym" onclick="sortWl('sym')">代號</th>
+          <th data-k="name" onclick="sortWl('name')">名稱</th>
+          <th data-k="price" onclick="sortWl('price')">價格</th>
+          <th data-k="chg" onclick="sortWl('chg')">漲跌%</th>
+          <th data-k="pe" onclick="sortWl('pe')">PE</th>
+          <th data-k="roe" onclick="sortWl('roe')">ROE%</th>
+          <th>提醒</th>
+          <th data-k="_del" onclick="sortWl('_del')">移除</th>
+        </tr></thead>
         <tbody id="wlBody"></tbody>
       </table>
     </div>
@@ -104,10 +114,25 @@
     {sym:"2454",name:"聯發科",price:1280,chg:-0.5,pe:30.2,roe:22.5,alert:"RSI>80"},
     {sym:"AAPL",name:"Apple",price:228,chg:+0.5,pe:34.5,roe:149,alert:""},
   ];
-  function render(){ document.getElementById('wlBody').innerHTML=wl.map((s,i)=>`<tr><td class="sym">${s.sym}<small>${s.name}</small></td><td>${s.price}</td><td class="${s.chg>=0?'up':'down'}">${s.chg>0?'+':''}${s.chg}%</td><td>${s.pe}</td><td>${s.roe}</td><td>${s.alert?`<span class="alert">${s.alert}</span>`:"—"}</td><td class="del" onclick="del(${i})">✕</td></tr>`).join(""); }
+  let wlSortKey='sym', wlSortDir=1;
+  function sortWl(k){ if(k==='_del') return; if(wlSortKey===k){ wlSortDir*=-1; } else { wlSortKey=k; wlSortDir=1; } render(); }
+  function render(){
+    const arr=[...wl].sort((a,b)=>{
+      let va=a[wlSortKey], vb=b[wlSortKey];
+      if(typeof va==='string'){ return va.localeCompare(vb)*wlSortDir; }
+      va=va==null?-1e9:va; vb=vb==null?-1e9:vb;
+      return (va-vb)*wlSortDir;
+    });
+    document.getElementById('wlBody').innerHTML=arr.map((s,i)=>`<tr><td class="sym">${s.sym}<small>${s.name}</small></td><td>${s.price}</td><td class="${s.chg>=0?'up':'down'}">${s.chg>0?'+':''}${s.chg}%</td><td>${s.pe}</td><td>${s.roe}</td><td>${s.alert?`<span class="alert">${s.alert}</span>`:"—"}</td><td class="del" onclick="del('${s.sym}')" title="移除">✕</td></tr>`).join("");
+    document.querySelectorAll('thead th[data-k]').forEach(th=>{
+      const k=th.getAttribute('data-k');
+      th.textContent=th.textContent.replace(/ [▲▼]$/,'');
+      if(k===wlSortKey) th.textContent+=(wlSortDir===1?' ▲':' ▼');
+    });
+  }
   const SYM_NAME={"2330":"台積電","2317":"鴻海","2454":"聯發科","2308":"台達電","2303":"聯電","2412":"中華電","2882":"國泰金","6505":"台塑化","1303":"南亞","2891":"中信金","2881":"富邦金","2885":"元大金","2886":"兆豐金","2892":"第一金","2884":"玉山金","3008":"大立光","2301":"光寶科","2408":"南亞科","3711":"日月光投控","4938":"和碩","AAPL":"Apple","MSFT":"Microsoft","GOOGL":"Alphabet","NVDA":"Nvidia","600519":"貴州茅台","000001":"平安銀行","00700.HK":"騰訊","09988.HK":"阿里巴巴"};
   function addSym(){ const v=document.getElementById('addSym').value.trim().toUpperCase(); if(!v) return; const name=SYM_NAME[v]||""; wl.push({sym:v,name,price:+(50+Math.random()*500).toFixed(1),chg:+(Math.random()*6-2).toFixed(2),pe:+(10+Math.random()*30).toFixed(1),roe:+(5+Math.random()*30).toFixed(1),alert:""}); document.getElementById('addSym').value=""; render(); }
-  function del(i){ wl.splice(i,1); render(); }
+  function del(sym){ const idx=wl.findIndex(s=>s.sym===sym); if(idx>=0){ wl.splice(idx,1); render(); } }
   function toggleDark(){ const c=document.documentElement.getAttribute('data-theme'); document.documentElement.setAttribute('data-theme', c==='dark'?'light':'dark'); }
   function openDrawer(){ document.getElementById("drawer").classList.add("open"); document.querySelector(".drawer-mask").classList.add("open"); }
   function closeDrawer(){ document.getElementById("drawer").classList.remove("open"); document.querySelector(".drawer-mask").classList.remove("open"); }
