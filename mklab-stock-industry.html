@@ -108,6 +108,7 @@
   // 生成產業資料（預設示意 fallback；載入 data/industry.json 後以真實資料覆寫）
   let data=INDUSTRIES.map((nm,i)=>{ const chg=+((Math.random()-0.45)*6).toFixed(2); const cnt=+(8+Math.random()*40).toFixed(0); const top=+((Math.random()-0.45)*5).toFixed(2); const genp=()=>+((Math.random()-0.45)*10).toFixed(2); return {nm,chg,cnt,top,seed:+(20+i*37),w1:genp(),m1:genp(),m3:genp(),m6:genp(),ytd:genp(),y1:genp(),y5:genp()}; });
   let ALL_STOCKS=[];
+  let stocksLoaded = false;
   function loadIndustry(){
     fetch('data/industry.json').then(r=>{ if(!r.ok) throw new Error('no'); return r.json(); }).then(d=>{
       if(d && Array.isArray(d.industry) && d.industry.length){
@@ -117,7 +118,7 @@
         if(asof){ const f=document.querySelector('.freshness'); if(f) f.textContent='資料以 '+asof+' 收盤為準（Build-Time 自動更新）'; }
       }
     }).catch(()=>{});
-    fetch('data/stocks.json').then(r=>r.json()).then(d=>{ if(d&&Array.isArray(d.stocks)) ALL_STOCKS=d.stocks; }).catch(()=>{});
+    fetch('data/stocks.json').then(r=>r.json()).then(d=>{ if(d&&Array.isArray(d.stocks)){ ALL_STOCKS=d.stocks; stocksLoaded=true; } }).catch(()=>{});
   }
   let activeInd=null;
   function renderGrid(){

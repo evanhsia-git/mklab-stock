@@ -38,6 +38,7 @@
     roe:   { label:'ROE',     type:'num', sortable:true,  fmt:r=>(r.roe!=null?Number(r.roe).toFixed(2):'-') },
     roa:   { label:'ROA',     type:'num', sortable:true,  fmt:r=>(r.roa!=null?Number(r.roa).toFixed(2):'-') },
     trend: { label:'趨勢',    type:'str', sortable:true,  fmt:r=>(r.trend!=null?r.trend:(r.spct!=null?(r.spct>0?'+':'')+r.spct+'%':'-')) },
+    spk:   { label:'趨勢',    type:'spark',sortable:false, fmt:r=>{ if(!r.spark||!r.spark.length) return '-'; const data=r.spark,min=Math.min(...data),max=Math.max(...data),rn=(max-min)||1; const p=data.map((d,i)=>`${(i/(data.length-1)*80).toFixed(1)},${(30-((d-min)/rn*30)).toFixed(1)}`).join(' '); const col=data[data.length-1]>=data[0]?'var(--up)':'var(--down)'; return `<svg viewBox=\"0 0 80 30\" style=\"width:80px;height:30px;display:block\"><polyline points=\"${p}\" fill=\"none\" stroke=\"${col}\" stroke-width=\"1.5\"/></svg>`; } },
     ind:   { label:'產業',    type:'str', sortable:true,  key:'ind', fmt:r=>(r.ind||r.nm||'-') },
     rsi:   { label:'RSI',     type:'num', sortable:true,  fmt:r=>r.rsi!=null?r.rsi:'-' },
     cap:   { label:'市值(億)',type:'num', sortable:true,  fmt:r=>{ const v = r.market_cap!=null ? r.market_cap/1e8 : (r.cap!=null?r.cap:null); return v!=null ? Number(v).toFixed(2) : '-'; } },
@@ -241,6 +242,7 @@
     },
     help: {
       doc: 'mklab-stock-help.html',                  // 功能說明（使用/資料源/評分標準）
+      log: 'mklab-stock-log.html',                    // 開發日誌
       readme: 'https://github.com/evanhsia-git/mklab-stock#readme', // GitHub README
     },
     system: {
@@ -265,6 +267,7 @@
     }
     h += '<h4>說明</h4>';
     h += `<div class="row"><a href="${c.help.doc}">功能說明（使用/資料源/評分標準）↗</a></div>`;
+    h += `<div class="row"><a href="${c.help.log}">開發日誌 ↗</a></div>`;
     h += `<div class="row"><a href="${c.help.readme}" target="_blank" rel="noopener">GitHub README ↗</a></div>`;
     h += '<h4>System</h4>';
     const s = c.system;
@@ -348,6 +351,7 @@
           price: p&&p.price!=null?p.price:null,
           chg:   p&&p.chg!=null?p.chg:null,
           pe:    p&&p.pe!=null?p.pe:null,
+          pb:    p&&p.pb!=null?p.pb:null,
           roe:   p&&p.roe!=null?p.roe:null,
           alert: p&&p.alert?p.alert:'',
         });

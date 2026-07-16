@@ -1,509 +1,141 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-TW" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>mklab-stock 開發日誌</title>
 <base href="/mklab-stock/">
 <style>
-  :root { --bg:#f7f8fa; --surface:#fff; --ink:#1a1d21; --muted:#6b7280; --border:#e5e7eb; --accent:#2563eb; --up:#dc2626; --down:#16a34a; --row-hover:#eff6ff; --radius:12px; --shadow:0 1px 3px rgba(0,0,0,.08); }
-  [data-theme="dark"] { --bg:#0f1115; --surface:#171a21; --ink:#e8eaed; --muted:#9aa0a6; --border:#2a2f3a; --accent:#3b82f6; --up:#f87171; --down:#4ade80; --row-hover:#1e2a3a; --shadow:0 1px 3px rgba(0,0,0,.4); }
+  :root { --bg:#f7f8fa; --surface:#fff; --ink:#1a1d21; --muted:#6b7280; --border:#e5e7eb; --accent:#2563eb; --radius:12px; --shadow:0 1px 3px rgba(0,0,0,.08); }
+  [data-theme="dark"] { --bg:#0f1115; --surface:#171a21; --ink:#e8eaed; --muted:#9aa0a6; --border:#2a2f3a; --accent:#3b82f6; --row-hover:#1e2a3a; --shadow:0 1px 3px rgba(0,0,0,.4); }
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:-apple-system,"Segoe UI","PingFang TC","Microsoft JhengHei",sans-serif; background:var(--bg); color:var(--ink); line-height:1.6; padding-bottom:20px; }
   .nav { position:sticky; top:0; z-index:25; background:var(--surface); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:4px; padding:10px 12px; }
-  .nav a { color:var(--ink); text-decoration:none; font-size:14px; padding:6px 10px; border-radius:8px; white-space:nowrap; }
+  .nav a { color:var(--ink); text-decoration:none; font-size:14px; padding:6px 10px; border-radius:8px; }
   .nav a.active { background:var(--accent); color:#fff; }
   .utilbar { position:sticky; top:49px; z-index:24; background:var(--surface); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; padding:8px 12px; }
-  .utilbar .spacer { flex:1; }
-  .fab-btn { width:40px; height:40px; border-radius:50%; border:1px solid var(--border); background:var(--surface); color:var(--ink); cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow); text-decoration:none; }
-  .fab-btn svg { width:20px; height:20px; display:block; }
+  .brand { font-weight:700; font-size:15px; }
   .wrap { max-width:900px; margin:0 auto; padding:16px; }
-  .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; box-shadow:var(--shadow); margin:12px 0; }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px; margin:12px 0; }
   .card h2 { font-size:16px; margin-bottom:10px; color:var(--accent); }
   .card h3 { font-size:14px; margin:14px 0 6px; color:var(--muted); }
-  .timeline { margin-top:12px; border-left:2px solid var(--accent); padding-left:16px; }
-  .timeline-item { position:relative; margin:16px 0; }
-  .timeline-item::before { content:''; position:absolute; left:-22px; top:4px; width:10px; height:10px; border-radius:50%; background:var(--accent); border:2px solid var(--surface); }
-  .timeline-date { font-size:12px; color:var(--muted); margin-bottom:4px; }
-  .timeline-title { font-weight:600; font-size:14px; display:flex; align-items:center; gap:6px; }
-  .section-badge { background:var(--accent); color:#fff; font-size:10px; padding:1px 6px; border-radius:4px; }
-  .timeline-desc { margin-top:4px; font-size:13px; color:var(--ink); line-height:1.7; }
   code { background:var(--bg); padding:2px 6px; border-radius:5px; font-size:12px; }
-  .disclaimer { font-size:11px; color:var(--muted); text-align:center; padding:20px 12px; }
-  /* drawer */
-  #drawer { position:fixed; top:0; right:-320px; width:320px; max-width:100%; height:100vh; background:var(--surface); border-left:1px solid var(--border); box-shadow:var(--shadow); z-index:100; transition:right .3s ease; overflow-y:auto; padding:16px; }
-  #drawer.open { right:0; }
-  .drawer-mask { position:fixed; inset:0; background:rgba(0,0,0,.4); opacity:0; visibility:hidden; transition:.3s; z-index:99; }
-  .drawer-mask.open { opacity:1; visibility:visible; }
-  #drawer .close-x { position:absolute; top:8px; right:8px; width:32px; height:32px; border-radius:50%; border:1px solid var(--border); background:var(--bg); cursor:pointer; font-size:18px; }
-  #drawer h3 { margin:0 0 12px; font-size:16px; }
-  #drawer h4 { margin:16px 0 8px; font-size:13px; color:var(--muted); }
-  #drawer .row { display:flex; align-items:center; justify-content:space-between; margin:8px 0; }
-  #drawer .seg { display:flex; flex-direction:column; gap:4px; }
-  #drawer .seg a { color:var(--ink); text-decoration:none; font-size:13px; padding:6px 10px; border-radius:6px; background:var(--bg); }
-  #drawer .seg a:hover { background:var(--accent); color:#fff; }
-  #drawer .switch { width:44px; height:24px; border-radius:12px; background:var(--border); position:relative; cursor:pointer; border:none; }
-  #drawer .switch.on { background:var(--accent); }
-  #drawer .switch::after { content:""; position:absolute; top:2px; left:2px; width:20px; height:20px; border-radius:50%; background:#fff; transition:left .2s; box-shadow:0 1px 3px rgba(0,0,0,.2); }
-  #drawer .switch.on::after { left:22px; }
-  #drawer .sys-note { font-size:12px; color:var(--muted); line-height:1.6; }
+  .freshness { background:#fff7ed; color:#9a3412; font-size:12px; padding:6px 12px; text-align:center; border-bottom:1px solid var(--border); }
+  [data-theme="dark"] .freshness { background:#2a1d12; color:#fdba74; }
+  .drawer-mask { position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:40; display:none; }
+  .drawer-mask.open { display:block; }
+  .drawer { position:fixed; top:0; right:0; width:300px; max-width:85vw; background:var(--surface); border-left:1px solid var(--border); z-index:50; transform:translateX(100%); transition:.25s; padding:16px; overflow-y:auto; }
+  .drawer.open { transform:translateX(0); }
+  .close-x { float:right; background:none; border:none; font-size:20px; color:var(--muted); cursor:pointer; }
+  .fab-btn { width:40px; height:40px; border-radius:50%; border:1px solid var(--border); background:var(--surface); cursor:pointer; display:flex; align-items:center; justify-content:center; }
+  .fab-btn svg { width:20px; height:20px; }
+  .disclaimer { font-size:11px; color:var(--muted); text-align:center; padding:20px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:12px; }
+  .arc { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:14px; }
+  .arc h3 { font-size:13px; margin-bottom:8px; }
+  .arc p { font-size:12px; color:var(--muted); line-height:1.7; }
+  .arc ul { font-size:12px; color:var(--muted); padding-left:16px; margin:6px 0; }
+  .arc ul li { margin:3px 0; }
 </style>
 </head>
 <body>
-<nav id="mainNav" class="nav"></nav>
-<div id="utilbar" class="utilbar"><span class="brand" id="brand"></span><span class="spacer"></span></div>
-<div class="wrap">
-  <div class="card">
-    <h2>🧭 架構演進</h2>
-    <div class="timeline">
-      <div class="timeline-item">
-        <div class="timeline-date">2026-07-17</div>
-        <div class="timeline-title"><span class="section-badge">DOCS</span> 文檔完善</div>
-        <div class="timeline-desc">README、mklab-stock-dev.md 同步更新。Mermaid 3 張架構圖完成。Wiki 同步 Obsidian Vault。</div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-date">2026-07-16</div>
-        <div class="timeline-title"><span class="section-badge">DEPLOY</span> 全站 Web Components 遷移完成</div>
-        <div class="timeline-desc">5 大主題頁 + Help + Log 全部改為 WC 版本。<code>main</code> 分支部署 GitHub Pages。移除所有 vanilla chart/table/drawer 內嵌邏輯，統一引入 <code>assets/mklab-wc.js</code> + <code>assets/data-client.js</code>。QA Gate 全綠 ALLOW DEPLOY。</div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-date">2026-07-15</div>
-        <div class="timeline-title"><span class="section-badge">ARCH</span> 確立 Web Components 為長期架構 (放棄 React)</div>
-        <div class="timeline-desc">對比 React (Vite/Node.js) vs WC (零建置)；依「Fork First / 零外部依賴 / 零 Secret」原則選 WC。建立 <code>dev/web-components</code> 分支並行開發，<code>backup/static-2026-07-15</code> 保留靜態版。</div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-date">2026-07-14</div>
-        <div class="timeline-title"><span class="section-badge">DATA</span> 260 交易日 TWII K 線補齊 + 每日自動抓取</div>
-        <div class="timeline-desc">TWSE OpenAPI <code>MI_INDEX</code> 僅有收盤價，改用 <code>yfinance ^TWII</code> 取 OHLC。<code>fetch_data.py twii</code> 模式寫入 <code>data/twii_kdata.js</code> (window.TWII_KDATA)，<code>daily-update.yml</code> 排程每日同步。</div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-date">2026-07-13</div>
-        <div class="timeline-title"><span class="section-badge">FIX</span> MACD/KD 按鈕失效、重複宣告</div>
-        <div class="timeline-desc"><code>mklab-stock-research.html</code> 第 130/195 行重複 <code>let rChart</code> 導致整支 JS 停止。修正後 MACD/KD 按鈕恢復正常，並加入 <code>klAddIndicator</code> 防呆。</div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-date">2026-07-12</div>
-        <div class="timeline-title"><span class="section-badge">DATA</span> ETF 資料缺口修補</div>
-        <div class="timeline-desc">TWSE API 對 ETF 僅回傳 ClosingPrice。新增 <code>data/etf-shares.json</code> (8 主動 + 2 反向 + 80 槓桿/反向)，<code>fetch_data.py</code> / <code>export_db.py</code> 以 <code>price × shares_stock</code> 估算 market_cap。同步修正 25 檔 ETF 產業別為「金融保險 (25)」。</div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-date">2026-07-11</div>
-        <div class="timeline-title"><span class="section-badge">LINT</span> CSS inline style 警告 + Help/Research 移除 JS 字串內 inline style</div>
-        <div class="timeline-desc"><code>qa_gate.py</code> 掃描到 JS 字串內 <code>font-size:13px</code> 誤判。新增 <code>.kv .small</code> 類別取代。<code>help.html</code> 新增 <code>.muted-small/.disclaimer-text</code> 等 CSS class 取代所有 inline style。</div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-date">2026-07-10</div>
-        <div class="timeline-title"><span class="section-badge">QA</span> 強化 qa_gate.py + 修正 diagnostic-recipe.md 實戰案例</div>
-        <div class="timeline-desc"><code>qa_gate.py</code>: 1. Links 檢查支援 GitHub Pages 子路徑 <code>/mklab-stock/</code> 前綴移除 2. CSS inline style 檢查排除 <code><style>...</style></code> 區塊，避免誤判 3. 代碼結構優化、型別提示、錯誤訊息更精確。<br><code>diagnostic-recipe.md</code>: 新增 4 筆實戰案例：GitHub Pages 子路徑、WC 元件閉合標籤、Links 檢查、CSS 誤判。</      </div>
-      <div class="timeline-item">
-        <div class="timeline-date">2026-07-09</div>
-        <div class="timeline-title"><span class="section-badge">CRON</span> 三個批次輸出簡化</div>
-        <div class="timeline-desc">Python wrapper (<code>batch{1,2,3}_wrapper.py</code>) 取代 shell，Telegram 只推摘要：抓取筆數、寫入筆數、覆蓋率、錯誤行、股票/ETF 檔數。詳細 log 仍寫 <code>/root/.hermes/cache/log.md</code>。</div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-date">2026-07-08</div>
-        <div class="timeline-title"><span class="section-badge">INIT</span> 初版 vanilla JS 原型</div>
-        <div class="timeline-desc">5 頁面 vanilla JS。資料源 <code>scripts/fetch_data.py</code> 抓 TWSE OpenAPI <code>STOCK_DAY_ALL</code> + <code>BWIBBU_d</code>。部署 <code>gh-pages</code> 分支 (後改 main)。</div>
-      </div>
-    </div>
-  </div>
+  <nav id="mainNav" class="nav"></nav>
+  <div id="utilbar" class="utilbar"><span class="brand" id="brand"></span><span class="spacer"></span></div>
+  <div class="freshness">mklab-stock 開發日誌</div>
+  <div class="drawer-mask" onclick="MKLAB.Drawer.close()"></div>
+  <aside class="drawer" id="drawer"><button class="close-x" onclick="MKLAB.Drawer.close()">×</button></aside>
+  <div class="wrap">
+    <section>
 
-  <div class="card">
-    <h2>🏗️ 整體架構</h2>
-    <table>
-      <tr><th>層級</th><th>技術</th><th>說明</th></tr>
-      <tr><td>靜態託管</td><td class="b">GitHub Pages</td><td>子路徑 <code>/mklab-stock/</code>，<code><base href="/mklab-stock/"></code></td></tr>
-      <tr><td>模組系統</td><td class="b">ES Modules (import/export)</td><td>瀏覽器原生模組，開發用相對路徑，部署配合 <code><base href></code></td></tr>
-      <tr><td>樣式系統</td><td class="b">CSS Custom Properties (Design Tokens)</td><td>統一 <code>var(--bg)</code> 等，支援深/淺色主題即時切換</td></tr>
-      <tr><td>資料層</td><td class="b">data-client.js (單一來源)</td><td>統一 <code>stocks.json</code>、<code>industry.json</code>、<code>history/</code> 載入與快取</td></tr>
-      <tr><td>圖表庫</td><td class="b">LightweightCharts v4.1.3</td><td>MIT 開源免費，全域 <code>LightweightCharts</code>，無 <code>getData()</code>、無 overlay 繪圖工具</td></tr>
-    </table>
-  </div>
-
-  <div class="card">
-    <h2>🧩 WC 元件庫 (assets/mklab-wc.js)</h2>
-    <table>
-      <tr><th>元件標籤</th><th>功能</th><th>關鍵屬性/方法</th></tr>
-      <tr><td><code><mklab-kline></code></td><td>K 線圖 (MACD/KD/畫線)</td><td><code>data-symbol</code>、<code>height</code>、<code>.addLine()</code>、<code>.removeAll()</code></td></tr>
-      <tr><td><code><mklab-datatable></code></td><td>可排序/分頁/可配置欄位表格</td><td><code>cols</code>、<code>src</code> (JSON 路徑)、<code>page-size</code>、<code>fieldMap</code>、<code>onDel</code></td></tr>
-      <tr><td><code><mklab-drawer></code></td><td>右側抽屜 (主題/語言/自選股)</td><td><code>trigger</code>、<code>position</code>、<code>theme-key</code>、<code>lang-key</code></td></tr>
-      <tr><td><code><mklab-router></code></td><td>History API 單頁路由</td><td><code>routes</code> 配置、<code>navigate(path)</code></td></tr>
-    </table>
-    <p class="muted-small-top">所有元件皆繼承 <code>HTMLElement</code>，在 <code>connectedCallback</code> 初始化，<code>disconnectedCallback</code> 清理，支援 <code>customElements.whenDefined()</code> 等待載入。</p>
-  </div>
-
-  <div class="card">
-    <h2>📁 目錄結構</h2>
-    <pre style="font-size:12px; background:var(--bg); padding:12px; border-radius:8px; overflow:auto;">mklab-stock/
-├── index.html                    # Market 首頁
-├── mklab-stock-screener.html     # Screener 篩選
-├── mklab-stock-research.html     # Research 研究
-├── mklab-stock-industry.html      # Industry 產業
-├── mklab-stock-watchlist.html     # Watchlist 自選
-├── mklab-stock-help.html          # 功能說明網頁
-├── mklab-stock-log.html           # 開發日誌
-├── assets/
-│   ├── mklab-core.js             # 全站共用表格/抽屜/工具列模組
-│   ├── mklab-wc.js               # Web Components 元件庫（K線/表格/抽屜/路由）
-│   ├── data-client.js            # 統一資料存取層
-│   └── lightweight-charts.min.js # 圖表庫 (vendor 複製)
-├── data/                         # Build-Time 生成的 JSON（前端只讀這裡）
-│   ├── stocks.json               # ★ 全市場個股最新一日（最完整，1369 檔全欄位，~359K）
-│   ├── industry.json             # 33 產業聚合績效（~5K）
-│   ├── indices.json              # 全球指數/ETF 收盤（15 指數+6 ETF，~5.4K）
-│   ├── indices-config.json       # 指數/ETF 靜態配置（市場/符號/來源）
-│   ├── industry-codes.json       # 臺證所 33 產業代碼對照表
-│   ├── markets.json              # 多市場預留結構（US/CN/HK/JP/KR 元數據）
-│   ├── market.json               # 五國大盤概覽（首頁五卡）
-│   ├── schema-version.json       # schema 版號
-│   ├── etf-shares.json           # ETF 發行張數（估算 market_cap 用）
-│   ├── twii_kdata.js             # 加權指數 K 線 (window.TWII_KDATA)
-│   └── history/                  # 每日股價切片（261 個交易日，各 ~289K）
-│       ├── 20250714.json         #   最早一日
-│       ├── ...                   #   （每日一檔，含 OHLCV+PE/PB/DY）
-│       └── 20260714.json         #   最新一日
-├── docs/                         # 設計依據 / 資源 / 規範
-│   ├── design.md
-│   ├── resource.md
-│   ├── SKILL.md
-│   └── mklab-stock-dev.md        # 架構決策記錄 (React vs WC 比較)
-├── skills/
-│   └── mklab-stock-lint/         # 品質門禁 Skill（fetch_data.py + qa_gate.py）
-├── scripts/                      # 抓取/匯出/QA 腳本
-│   ├── fetch_data.py             # 雲端每日抓取（TWSE + yfinance ROE/ROA）
-│   ├── export_db.py              # 本機 DB 匯出 stocks.json
-│   ├── update_overview.py        # ROE/ROA 補齊（cron 友善，本機 DB）
-│   ├── qa_gate.py                # CI 品質門禁
-│   └── check_html_health.py      # HTML 結構健康檢查
-├── vendor/                       # 第三方庫（零建置，直接引用）
-│   └── lightweight-charts.min.js # TradingView LightweightCharts v4.1.3
-└── .github/workflows/            # CI/CD
-    ├── daily-update.yml          # 每日收盤 + 每週六 ROE/ROA
-    ├── qa-gate.yml               # Push 觸發 QA Gate
-    └── html-health.yml           # HTML 變更觸發結構檢查
-</pre>
-  </div>
-
-  <div class="card">
-    <h2>🗓️ 關鍵里程碑與決策記錄</h2>
-    <div class="timeline">
-      <div class="timeline-item">
-        <div class="timeline-date">2026-07-17</div>
-        <div class="timeline-title"><span class="section-badge">DOCS</span> 文檔完善</div>
-        <div class="timeline-desc">README、mklab-stock-dev.md 同步更新。Mermaid 3 張架構圖完成。Wiki 同步 Obsidian Vault。</div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-date">2026-07-16</div>
-        <div class="timeline-title"><span class="section-badge">DEPLOY</span> 全站 Web Components 遷移完成</div>
-        <div class="timeline-desc">5 大主題頁 + Help + Log 全部改為 WC 版本。<code>main</code> 分支部署 GitHub Pages。移除所有 vanilla chart/table/drawer 內嵌邏輯，統一引入 <code>assets/mklab-wc.js</code> + <code>assets/data-client.js</code>。QA Gate 全綠 ALLOW DEPLOY。</div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-date">2026-07-15</div>
-        <div class="timeline-title"><span class="section-badge">ARCH</span> 確立 Web Components 為長期架構 (放棄 React)</div>
-        <div class="timeline-desc">對比 React (Vite/Node.js) vs WC (零建置)；依「Fork First / 零外部依賴 / 零 Secret」原則選 WC。建立 <code>dev/web-components</code> 分支並行開發，<code>backup/static-2026-07-15</code> 保留靜態版。</div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-date">2026-07-14</div>
-        <div class="timeline-title"><span class="section-badge">DATA</span> 260 交易日 TWII K 線補齊 + 每日自動抓取</div>
-        <div class="timeline-desc">TWSE OpenAPI <code>MI_INDEX</code> 僅有收盤價，改用 <code>yfinance ^TWII</code> 取 OHLC。<code>fetch_data.py twii</code> 模式寫入 <code>data/twii_kdata.js</code> (window.TWII_KDATA)，<code>daily-update.yml</code> 排程每日同步。</div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-date">2026-07-13</div>
-        <div class="timeline-title"><span class="section-badge">FIX</span> MACD/KD 按鈕失效、重複宣告</div>
-        <div class="timeline-desc"><code>mklab-stock-research.html</code> 第 130/195 行重複 <code>let rChart</code> 導致整支 JS 停止。修正後 MACD/KD 按鈕恢復正常，並加入 <code>klAddIndicator</code> 防呆。</div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-date">2026-07-12</div>
-        <div class="timeline-title"><span class="section-badge">DATA</span> ETF 資料缺口修補</div>
-        <div class="timeline-desc">TWSE API 對 ETF 僅回傳 ClosingPrice。新增 <code>data/etf-shares.json</code> (8 主動 + 2 反向 + 80 槓桿/反向)，<code>fetch_data.py</code> / <code>export_db.py</code> 以 <code>price × shares_stock</code> 估算 market_cap。同步修正 25 檔 ETF 產業別為「金融保險 (25)」。</div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-date">2026-07-11</div>
-        <div class="timeline-title"><span class="section-badge">LINT</span> CSS inline style 警告 + Help/Research 移除 JS 字串內 inline style</div>
-        <div class="timeline-desc"><code>qa_gate.py</code> 掃描到 JS 字串內 <code>font-size:13px</code> 誤判。新增 <code>.kv .small</code> 類別取代。<code>help.html</code> 新增 <code>.muted-small/.disclaimer-text</code> 等 CSS class 取代所有 inline style。</div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-date">2026-07-10</div>
-        <div class="timeline-title"><span class="section-badge">QA</span> 強化 qa_gate.py + 修正 diagnostic-recipe.md 實戰案例</div>
-        <div class="timeline-desc"><code>qa_gate.py</code>: 1. Links 檢查支援 GitHub Pages 子路徑 <code>/mklab-stock/</code> 前綴移除 2. CSS inline style 檢查排除 <code><style>...</style></code> 區塊，避免誤判 3. 代碼結構優化、型別提示、錯誤訊息更精確。<br><code>diagnostic-recipe.md</code>: 新增 4 筆實戰案例：GitHub Pages 子路徑、WC 元件閉合標籤、Links 檢查、CSS 誤判。</      </div>
-      <div class="timeline-item">
-        <div class="timeline-date">2026-07-09</div>
-        <div class="timeline-title"><span class="section-badge">CRON</span> 三個批次輸出簡化</div>
-        <div class="timeline-desc">Python wrapper (<code>batch{1,2,3}_wrapper.py</code>) 取代 shell，Telegram 只推摘要：抓取筆數、寫入筆數、覆蓋率、錯誤行、股票/ETF 檔數。詳細 log 仍寫 <code>/root/.hermes/cache/log.md</code>。</div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-date">2026-07-08</div>
-        <div class="timeline-title"><span class="section-badge">INIT</span> 初版 vanilla JS 原型</div>
-        <div class="timeline-desc">5 頁面 vanilla JS。資料源 <code>scripts/fetch_data.py</code> 抓 TWSE OpenAPI <code>STOCK_DAY_ALL</code> + <code>BWIBBU_d</code>。部署 <code>gh-pages</code> 分支 (後改 main)。</div>
+    <div class="card">
+      <h2>📋 專案架構總覽</h2>
+      <div class="grid">
+        <div class="arc">
+          <h3>📄 前端頁面（5 大主題）</h3>
+          <ul>
+            <li><code>index.html</code> — Market 首頁：全球股市、Market Health K線、情緒/原物料、市值前10、自選、TOP 10</li>
+            <li><code>mklab-stock-screener.html</code> — 篩選器：策略篩選、自訂過濾</li>
+            <li><code>mklab-stock-research.html</code> — 研究頁：個股選擇、K線圖、財報表</li>
+            <li><code>mklab-stock-industry.html</code> — 產業動態：33 產業列表、成分股績效</li>
+            <li><code>mklab-stock-watchlist.html</code> — 自選股：加入/排序/提醒/移除</li>
+          </ul>
+        </div>
+        <div class="arc">
+          <h3>⚙️ 核心模組 (assets/)</h3>
+          <ul>
+            <li><code>mklab-core.js</code> — 全站唯一表格、抽屜、導覽、自選共用模組</li>
+            <li><code>data-client.js</code> — 統一資料層：載入 stocks.json、industry.json</li>
+            <li><code>mklab-wc.js</code> — Web Components 元件庫</li>
+          </ul>
+        </div>
+        <div class="arc">
+          <h3>📊 資料層 (data/)</h3>
+          <ul>
+            <li><code>stocks.json</code> — 全市場股票資料（價格、PE/PB/ROE、產業等）</li>
+            <li><code>industry.json</code> — 產業別績效（各區間報酬）</li>
+            <li><code>twii_kdata.js</code> — TWII 加權指數 260 日 K 線</li>
+            <li><code>etf-shares.json</code> — ETF 發行張數（market_cap 估算用）</li>
+          </ul>
+        </div>
+        <div class="arc">
+          <h3>🔧 後端/CI (scripts/)</h3>
+          <ul>
+            <li><code>fetch_data.py</code> — 每日 TWSE OpenAPI 抓取資料</li>
+            <li><code>export_db.py</code> — SQLite → JSON 匯出</li>
+            <li><code>qa_gate.py</code> — 品質閘門：10 大類檢查</li>
+            <li><code>check_html_health.py</code> — HTML 結構健康檢查</li>
+          </ul>
+        </div>
+        <div class="arc">
+          <h3>🌐 部署</h3>
+          <ul>
+            <li>GitHub Pages：<code>main</code> 分支自動部署</li>
+            <li>GitHub Actions：每日更新 + QA Gate + HTML Health</li>
+            <li>子路徑部署：<code>&lt;base href="/mklab-stock/"&gt;</code></li>
+          </ul>
+        </div>
+        <div class="arc">
+          <h3>📦 Vendor</h3>
+          <ul>
+            <li><code>lightweight-charts.min.js</code> — K 線圖引擎 v4.1.3</li>
+            <li>零外部依賴（零 Node.js/npm 需求）</li>
+          </ul>
+        </div>
       </div>
     </div>
+
+    <div class="card">
+      <h2>🔗 資料流</h2>
+      <p>TWSE/TPEX OpenAPI → <code>fetch_data.py</code> → SQLite → <code>export_db.py</code> → <code>data/stocks.json</code> → 前端渲染</p>
+      <p>yfinance 備援（TWII K線、全球指數、ETF）</p>
+      <p>Build-Time 更新，靜態優先，無即時串流</p>
+    </div>
+
+    <div class="card">
+      <h2>📐 設計原則</h2>
+      <ul>
+        <li><b>靜態優先</b>：Build-Time 計算，Run-Time 只需靜態檔案</li>
+        <li><b>Fork First</b>：Fork 後只需啟用 GitHub Pages</li>
+        <li><b>零外部依賴</b>：對終端使用者零 Node.js/npm</li>
+        <li><b>手機優先</b>：RWD 自適應，觸控友善</li>
+        <li><b>資料誠實</b>：示意資料標示清楚，真實資料來自 TWSE/yfinance</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>📅 開發歷程</h2>
+      <ul>
+        <li><b>v1</b> — 原型 HTML + Vanilla JS（5 主題頁面）</li>
+        <li><b>v2</b> — 共用模組化（mklab-core.js：表格/抽屜/導覽/自選）</li>
+        <li><b>v3</b> — 資料層強化（stocks.json、industry.json、QA Gate）</li>
+        <li><b>v4</b> — 功能完善（搜尋、排序、分頁、自選加入/移除）</li>
+      </ul>
+    </div>
+
+    <div class="disclaimer">mklab-stock · 靜態優先 · Fork First · 零外部依賴</div>
+  </section>
   </div>
-
-  <div class="card">
-    <h2>⚙️ 技術棧</h2>
-    <table>
-      <tr><td>模組系統</td><td class="b">ES Modules (import/export)</td><td>瀏覽器原生模組，開發用相對路徑，部署配合 <code><base href></code></td></tr>
-      <tr><td>樣式系統</td><td class="b">CSS Custom Properties (Design Tokens)</td><td>統一 <code>var(--bg)</code> 等，支援深/淺色主題即時切換</td></tr>
-      <tr><td>資料層</td><td class="b">data-client.js (單一來源)</td><td>統一 <code>stocks.json</code>、<code>industry.json</code>、<code>history/</code> 載入與快取</td></tr>
-      <tr><td>圖表庫</td><td class="b">LightweightCharts v4.1.3</td><td>MIT 開源免費，全域 <code>LightweightCharts</code>，支援 <code>addCandlestickSeries</code>、<code>addLineSeries</code>、<code>addHistogramSeries</code> (MACD 柱狀)、<code>CrosshairMode</code> 十字游標、<code>createChart</code> resize</td></tr>
-    </table>
-  </div>
-
-  <div class="card">
-    <h2>🚀 部署運維流程</h2>
-    <ol>
-      <li>本地修改 → <code>python scripts/qa_gate.py --json qa-result.json</code> 確認 <code>ALLOW DEPLOY</code></li>
-      <li>本地 server <code>python3 -m http.server 8765</code> + 瀏覽器實測（截圖 + console 無 error）</li>
-      <li><code>git add -A && git commit -m "type: 描述"</code>（參考 Conventional Commits）</li>
-      <li><code>git push origin master:main</code></li>
-      <li>等 CI（qa-gate + daily-update）綠燈 → GitHub Pages 自動部署</li>
-      <li>線上驗證：https://evanhsia-git.github.io/mklab-stock/</li>
-    </ol>
-    <p class="muted-small">⚠️ gh token 限制：當前 fine-grained PAT 缺 <code>Administration</code>（不能建 repo/開 Pages）與 <code>actions:write</code>（不能手動觸發 workflow）。如需此類操作請用戶手動在 GitHub UI 做，或 <code>gh auth refresh -s repo,workflow</code>。</p>
-  </div>
-
-  <div class="card">
-    <h2>🛡️ WC 元件（Custom Elements）HTML 寫法守則</h2>
-    <p class="muted-small"><b>問題</b>：Custom Elements (<code><mklab-kline></code>、<code><mklab-datatable></code> 等) 若用自閉合寫成 <code><mklab-kline /></code> 或 <code><mklab-kline></code>（無閉合標籤），HTML parser 會視為未關閉標籤，導致：</p>
-    <ul>
-      <li><code>check_html_health</code> 報告「未關閉標籤」</li>
-      <li>後續 DOM 結構錯亂、元件不渲染</li>
-    </ul>
-    <p class="muted-small"><b>解決</b>：</p>
-    <ul>
-      <li><b>必須用明確閉合標籤</b>：<code><mklab-kline></mklab-kline></code>、<code><mklab-datatable></mklab-datatable></code></li>
-      <li><b>JS 字串內的 inline style 會觸發 qa_gate 誤判</b>，改用 CSS class（如 <code>.kv .small { font-size:13px; }</code>）</li>
-    </ul>
-    <p class="muted-small">2026-07-16 實測：<code>research.html</code> 的 <code><mklab-kline id="wcKline" height="400"></mklab-kline></code> 正確渲染；自閉合寫法導致 parser 吞掉後續內容。</p>
-  </div>
-
-  <div class="card">
-    <h2>🔧 qa_gate.py 關鍵修正點（2026-07-16 實戰新增）</h2>
-    <table>
-      <tr><th>檢查項</th><th>問題</th><th>修正</th></tr>
-      <tr><td>Links (內部連結 HTTP 200)</td><td>檢查器用 filesystem 路徑檢查 <code>href="/mklab-stock/"</code>，本地無此目錄 → 404</td><td>解析 href 時移除 <code>/mklab-stock/</code> 前綴再檢查本地路徑</td></tr>
-      <tr><td>CSS inline style</td><td>掃描到 <code><style>...</style></code> 區塊內的 CSS 規則（如 <code>.kv .small { font-size:13px; }</code>）誤判為 HTML inline style</td><td>先用 regex <code>re.sub(r'<style>.*?</style>', '', src, flags=re.S)</code> 移除 style 區塊再檢查</td></tr>
-      <tr><td>HTML 結構健康檢查</td><td><code><pre><code></code> 區塊內的程式碼示例（如 <code><mklab-kline></code>、<code><mklab-datatable></code> 等自訂元素標籤）被 HTML parser 解析為真實標籤，導致誤判「未關閉標籤」</td><td>增強 <code>StructureChecker</code> 類，將 <code><pre></code>、<code><code></code>、<code><textarea></code> 加入 <code>RAW_CONTENT_TAGS</code>，進入這些標籤內部時完全跳過結構解析（不追蹤嵌套標籤，直接忽略）。測試通過：<code>mklab-stock-log.html</code> 含大量程式碼區塊的檔案現在正確通過檢查。</td></tr>
-    </table>
-  </div>
-
-  <div class="card">
-    <h2>📦 ETF 資料處理增強（2026-07-16/17 完善）</h2>
-    <h3>OHLC 回填與 market_cap 估算</h3>
-    <p><b>問題</b>：TWSE API 對 ETF 僅回傳 <code>ClosingPrice</code>，無 Open/High/Low；<code>market_cap</code> 為 null。</p>
-    <p><b>解決</b>：<code>fetch_data.py</code> 和 <code>export_db.py</code> 同步加入邏輯：</p>
-    <ul>
-      <li><b>OHLC 回填</b>：有收盤價但缺 OHLC 時，用 close 回填 open/high/low（視為平盤）</li>
-      <li><b>market_cap 估算</b>：靜態 <code>data/etf-shares.json</code> 記錄 ETF 發行張數，以 <code>price * shares_stock</code> 估算</li>
-      <li><b>產業別修正</b>：ETF 預設產業別設為 <code>25</code>（金融保險），避免 <code>ind=null</code> 觸發 QA Gate ERROR</li>
-      <li>兩支線同步修改確保 GitHub Actions (<code>fetch_data.py</code>) 和本機灌種 (<code>export_db.py</code>) 行為一致</li>
-    </ul>
-
-    <h3>ETF 代號分類與 OHLC 處理</h3>
-    <table>
-      <tr><th>尾碼</th><th>類型</th><th>說明</th><th>OHLC 來源</th></tr>
-      <tr><td>A</td><td>主動式 ETF</td><td>經理人主動選股/調倉</td><td>STOCK_DAY_ALL 有完整 OHLC</td></tr>
-      <tr><td>R</td><td>反向型 ETF</td><td>走勢與標的相反 (-1×)</td><td>STOCK_DAY_ALL 有完整 OHLC</td></tr>
-      <tr><td>L</td><td>槓桿型 ETF</td><td>放大單日報酬 (2×、3×)</td><td>STOCK_DAY_ALL 有完整 OHLC</td></tr>
-      <tr><td>U</td><td>期貨/美元計價 ETF</td><td>追蹤商品期貨/匯率</td><td>部分有 OHLC，部分無</td></tr>
-      <tr><td>B</td><td>債券型 ETF</td><td>固定收益為主</td><td>視標的而定</td></tr>
-    </table>
-
-    <h3>QA Gate 髒值檢查決策規則（qa_gate.py 的 <code>無髒值</code> 檢查，改腳本必守）</h3>
-    <ul>
-      <li><b>OHLC（open/high/low/price/volume）</b>：全部為 null = 資料源未涵蓋（ETF/字母尾碼標的）→ <b>WARNING（非阻擋）</b>；<b>部分為 null（其他有值）= 腐化/匯出錯誤 → ERROR（阻擋）</b>。這區分「源缺口」與「真髒資料」，不可合一。</li>
-      <li><b>market_cap</b>：雲端來源（TWSE STOCK_DAY_ALL / BWIBBU）不回傳市值，前端顯示 <code>-</code>，故 <code>market_cap=null</code> 僅 <b>WARNING</b>；若為非數值/負數才 ERROR。切勿把 market_cap 加回 Required-null-ERROR（會對所有 ETF 永久 BLOCK）。</li>
-      <li><b>pe/pb/div/roe/eps/rank/alert</b>：可為 null（ETF/外股常缺）→ <b>不計入錯誤</b>。</li>
-      <li>帶字母尾碼的 ETF（如 <code>00400A</code>、<code>00625K</code>）由 <code>_etf_suffix()</code> 判定為已知缺口，OHLC 缺值降 WARNING。</li>
-    </ul>
-    <p><b>經驗法則</b>：閘門報 ERROR 時，先判斷是「腐化（部分欄位缺）」還「資料源未涵蓋（全缺/已知 ETF）」。前者必須修資料管線（如 <code>fetch_data.py</code> 對無成交標的設 None、ETF 由 STOCK_DAY_ALL 補 OHLC）；後者若為已知 ETF 缺口則列 WARNING。若修管線成本高，至少報告明確標註「已知缺口」，勿假稱通過。</p>
-  </div>
-
-  <div class="card">
-    <h2>⏰ Cron Job 輸出簡化模式（2026-07-17）</h2>
-    <p><b>問題</b>：定時任務輸出長串過程 log，Telegram 推送過長且用戶只關心結果摘要。</p>
-    <p><b>解決</b>：為每個 batch 建立 Python wrapper（<code>batch{1,2,3}_wrapper.py</code>），執行原腳本後從 stdout/log.md 提取關鍵統計，只輸出 15-20 行摘要：</p>
-    <pre style="font-size:12px; background:var(--bg); padding:12px; border-radius:8px; overflow:auto;">
-=== 台股每日更新摘要 (batch1) ===
-執行時間: 2026-07-16 14:00:05
-交易日: 2026-07-15
-
-📊 抓取統計:
-  - TWSE 原始筆數: 1370
-  - 寫入價格筆數: 1360
-  - 新增股票檔數: 5
-
-📈 覆蓋率:
-  - PE/PB 覆蓋: 1078/1360
-  - 總資料筆數: 350000 (跨 260 個交易日)
-  - 最新交易日: 2026-07-15
-
-📋 股票庫存量:
-  - 上市/上櫃股票: 1710 檔
-  - ETF: 90 檔
-  - 全部股票: 1800 檔
-
-狀態: ✅ 完成 (無錯誤)
-</pre>
-    <p><b>腳本位置</b>：<code>/root/.hermes/scripts/batch{1,2,3}_wrapper.py</code></p>
-    <p><b>關鍵技巧</b>：</p>
-    <ul>
-      <li>用 <code>sqlite3</code> 直接查 <code>stock_overview</code> 取得當下股票/ETF 檔數</li>
-      <li>從原腳本 stdout 或 <code>log.md</code> 最近一輪 batch 記錄提取統計</li>
-      <li>詳細 log 仍寫入 <code>/root/.hermes/cache/log.md</code>（原腳本內部 <code>log()</code> 函式已處理）</li>
-      <li>Cron job 推送只收摘要</li>
-    </ul>
-  </div>
-
-  <div class="card">
-    <h2>📈 ETF OHLC 回填與市值估算（2026-07-16/17 完善）</h2>
-    <h3>OHLC 回填與 market_cap 估算</h3>
-    <p><b>問題</b>：TWSE API 對 ETF 僅回傳 <code>ClosingPrice</code>，無 Open/High/Low；<code>market_cap</code> 為 null。</p>
-    <p><b>解決</b>：<code>fetch_data.py</code> 和 <code>export_db.py</code> 同步加入邏輯：</p>
-    <ul>
-      <li><b>OHLC 回填</b>：有收盤價但缺 OHLC 時，用 close 回填 open/high/low（視為平盤）</li>
-      <li><b>market_cap 估算</b>：靜態 <code>data/etf-shares.json</code> 記錄 ETF 發行張數，以 <code>price * shares_stock</code> 估算</li>
-      <li><b>產業別修正</b>：ETF 預設產業別設為 <code>25</code>（金融保險），避免 <code>ind=null</code> 觸發 QA Gate ERROR</li>
-      <li>兩支線同步修改確保 GitHub Actions (<code>fetch_data.py</code>) 和本機灌種 (<code>export_db.py</code>) 行為一致</li>
-    </ul>
-
-    <h3>ETF 代號分類與 OHLC 處理</h3>
-    <table>
-      <tr><th>尾碼</th><th>類型</th><th>說明</th><th>OHLC 來源</th></tr>
-      <tr><td>A</td><td>主動式 ETF</td><td>經理人主動選股/調倉</td><td>STOCK_DAY_ALL 有完整 OHLC</td></tr>
-      <tr><td>R</td><td>反向型 ETF</td><td>走勢與標的相反 (-1×)</td><td>STOCK_DAY_ALL 有完整 OHLC</td></tr>
-      <tr><td>L</td><td>槓桿型 ETF</td><td>放大單日報酬 (2×、3×)</td><td>STOCK_DAY_ALL 有完整 OHLC</td></tr>
-      <tr><td>U</td><td>期貨/美元計價 ETF</td><td>追蹤商品期貨/匯率</td><td>部分有 OHLC，部分無</td></tr>
-      <tr><td>B</td><td>債券型 ETF</td><td>固定收益為主</td><td>視標的而定</td></tr>
-    </table>
-
-    <h3>QA Gate 髒值檢查決策規則（qa_gate.py 的 <code>無髒值</code> 檢查，改腳本必守）</h3>
-    <ul>
-      <li><b>OHLC（open/high/low/price/volume）</b>：全部為 null = 資料源未涵蓋（ETF/字母尾碼標的）→ <b>WARNING（非阻擋）</b>；<b>部分為 null（其他有值）= 腐化/匯出錯誤 → ERROR（阻擋）</b>。這區分「源缺口」與「真髒資料」，不可合一。</li>
-      <li><b>market_cap</b>：雲端來源（TWSE STOCK_DAY_ALL / BWIBBU）不回傳市值，前端顯示 <code>-</code>，故 <code>market_cap=null</code> 僅 <b>WARNING</b>；若為非數值/負數才 ERROR。切勿把 market_cap 加回 Required-null-ERROR（會對所有 ETF 永久 BLOCK）。</li>
-      <li><b>pe/pb/div/roe/eps/rank/alert</b>：可為 null（ETF/外股常缺）→ <b>不計入錯誤</b>。</li>
-      <li>帶字母尾碼的 ETF（如 <code>00400A</code>、<code>00625K</code>）由 <code>_etf_suffix()</code> 判定為已知缺口，OHLC 缺值降 WARNING。</li>
-    </ul>
-    <p><b>經驗法則</b>：閘門報 ERROR 時，先判斷是「腐化（部分欄位缺）」還「資料源未涵蓋（全缺/已知 ETF）」。前者必須修資料管線（如 <code>fetch_data.py</code> 對無成交標的設 None、ETF 由 STOCK_DAY_ALL 補 OHLC）；後者若為已知 ETF 缺口則列 WARNING。若修管線成本高，至少報告明確標註「已知缺口」，勿假稱通過。</p>
-  </div>
-
-  <div class="card">
-    <h2>🔧 Cron Job 輸出簡化（Python Wrapper 模式，2026-07-17）</h2>
-    <p><b>問題</b>：定時任務輸出長串過程 log，Telegram 推送過長且用戶只關心結果摘要。</p>
-    <p><b>解決</b>：為每個 batch 建立 Python wrapper（<code>batch{1,2,3}_wrapper.py</code>），執行原腳本後從 stdout/log.md 提取關鍵統計，只輸出 15-20 行摘要：</p>
-    <pre style="font-size:12px; background:var(--bg); padding:12px; border-radius:8px; overflow:auto;">
-=== 台股每日更新摘要 (batch1) ===
-執行時間: 2026-07-16 14:00:05
-交易日: 2026-07-15
-
-📊 抓取統計:
-  - TWSE 原始筆數: 1370
-  - 寫入價格筆數: 1360
-  - 新增股票檔數: 5
-
-📈 覆蓋率:
-  - PE/PB 覆蓋: 1078/1360
-  - 總資料筆數: 350000 (跨 260 個交易日)
-  - 最新交易日: 2026-07-15
-
-📋 股票庫存量:
-  - 上市/上櫃股票: 1710 檔
-  - ETF: 90 檔
-  - 全部股票: 1800 檔
-
-狀態: ✅ 完成 (無錯誤)
-</pre>
-    <p><b>腳本位置</b>：<code>/root/.hermes/scripts/batch{1,2,3}_wrapper.py</code></p>
-    <p><b>關鍵技巧</b>：</p>
-    <ul>
-      <li>用 <code>sqlite3</code> 直接查 <code>stock_overview</code> 取得當下股票/ETF 檔數</li>
-      <li>從原腳本 stdout 或 <code>log.md</code> 最近一輪 batch 記錄提取統計</li>
-      <li>詳細 log 仍寫入 <code>/root/.hermes/cache/log.md</code>（原腳本內部 <code>log()</code> 函式已處理）</li>
-      <li>Cron job 推送只收摘要</li>
-    </ul>
-  </div>
-
-  <div class="card">
-    <h2>📱 GitHub Pages 子路徑部署修正（2026-07-16）</h2>
-    <p><b>問題</b>：連結檢查器用 filesystem 路徑檢查 <code>href="/mklab-stock/"</code>，本地無此目錄 → 404；CSS inline style 掃描到 <code><style>...</style></code> 區塊內的 CSS 規則誤判為 HTML inline style。</p>
-    <p><b>解決</b>：</p>
-    <ol>
-      <li>Links 檢查：解析 href 時移除 <code>/mklab-stock/</code> 前綴再檢查本地路徑</li>
-      <li>CSS inline style：先用 regex <code>re.sub(r'<style>.*?</style>', '', src, flags=re.S)</code> 移除 style 區塊再檢查</li>
-    </ol>
-  </div>
-
-  <div class="card">
-    <h2>🔍 頁面失效的逐步診斷法（<code>getComputedStyle</code> 對比、二分法、console 實測）</h2>
-    <p>本專案三次誤判：</p>
-    <ul>
-      <li>watchlist 線上空白 → 以為是 browser 工具 bug，實際是缺 <code></style></code> 導致整個 <code><body></code> 被 parser 吞掉（HTML 合法但失效）。</li>
-      <li>watchlist 黃標無樣式 → 以為 CSS 與他頁一致，實際是 <code><style></code> 漏定義 <code>.freshness</code>/<code>.section-title</code> 規則。</li>
-      <li>排序「無效」→ 實際是瀏覽器快取舊版。</li>
-    </ul>
-    <p><b>正確做法</b>：用 <code>browser_console</code> 讀 <code>getComputedStyle(el)</code> 對比已知正常頁（如 industry），並實際 <code>click()</code> 表頭/按鈕測試行為，再判斷。單一 empty snapshot 不足以斷定失效。詳見 <code>references/diagnostic-recipe.md</code>。</p>
-  </div>
-
-  <div class="card">
-    <h2>📋 全站 Web Components 遷移完成（2026-07-17）</h2>
-    <p><b>5 大主題頁面全部改為 WC 元件</b>：</p>
-    <ul>
-      <li><code>index.html</code>：<code><mklab-kline></code>、<code><mklab-datatable></code> (績效表)</li>
-      <li><code>mklab-stock-research.html</code>：<code><mklab-kline></code>、<code><mklab-datatable></code>、<code><mklab-drawer></code></li>
-      <li><code>mklab-stock-screener.html</code>：<code><mklab-datatable></code>、<code><mklab-drawer></code></li>
-      <li><code>mklab-stock-industry.html</code>：<code><mklab-datatable></code>、<code><mklab-drawer></code></li>
-      <li><code>mklab-stock-watchlist.html</code>：<code><mklab-datatable></code>、<code><mklab-drawer></code></li>
-      <li><code>mklab-stock-help.html</code>：<code><mklab-drawer></code></li>
-      <li><code>mklab-stock-log.html</code>：<code><mklab-drawer></code></li>
-    </ul>
-    <p><b>共同模式</b>：</p>
-    <ul>
-      <li><code><base href="/mklab-stock/"></code> 放在 <code><head></code> 頂部</li>
-      <li>引入 <code>vendor/lightweight-charts.min.js</code>、<code>data/twii_kdata.js</code>、<code>assets/mklab-core.js</code>、<code>assets/data-client.js</code>、<code>assets/mklab-wc.js</code></li>
-      <li>使用 <code><mklab-kline></code>、<code><mklab-datatable></code>、<code><mklab-drawer></code> 替換 vanilla chart/table/drawer</li>
-      <li>WC 元件必須用明確閉合標籤：<code><mklab-kline></mklab-kline></code></li>
-      <li><code><mklab-drawer trigger=".mklab-drawer-trigger" ...></code> 包裝設定面板</li>
-      <li>靜態佔位：<code><table id="wcFinTableStatic" style="display:none"></table></code> 供 <code>check_html_health</code> 檢查</li>
-      <li>JS 邏輯移至 <code><script></code> 區塊，使用 <code>MKLAB.DataTable()</code>、<code>MKLAB.initDrawer()</code>、<code>MKLAB.Shell.mount()</code></li>
-    </ul>
-    <p><b>QA Gate 驗證</b>：全部 7 個 HTML 通過結構健康檢查、JS 語法檢查、CSS Design Token 一致性</p>
-  </div>
-
-  <div class="card">
-    <h2>📚 參考文件</h2>
-    <ul>
-      <li><code>references/diagnostic-recipe.md</code>：頁面失效的逐步診斷法（getComputedStyle 對比、二分法、console 實測），可直接照做。</li>
-      <li><code>references/mops-data-sources.md</code>：MOPS 公開資訊觀測站核心 API 端點與應用場景（公司基本資料、財務報告、每月營收、重大訊息、股東會/股利、ETF 基金基本資料）。</li>
-      <li><code>references/wc-component-patterns.md</code>：Web Components 遷移模式（明確閉合標籤、base href、靜態佔位、whenDefined、const 不掛 window）。</li>
-      <li><code>references/cron-job-output-simplification.md</code>：Python wrapper 模式簡化 Telegram 推送摘要。</li>
-      <li><code>references/etf-data-handling.md</code>：ETF OHLC 回填、market_cap 估算、產業別修正、代號分類。</li>
-      <li><code>references/github-pages-subpath-deployment.md</code>：GitHub Pages 子路徑部署模式（base href + 相對路徑）。</li>
-    </ul>
-  </div>
-
-  <div class="card">
-    <h2>📊 MOPS（公開資訊觀測站）核心 API 端點</h2>
-    <table>
-      <tr><th>資料類型</th><th>官方網頁</th><th>API/查詢方式</th></tr>
-      <tr><td>公司基本資料</td><td><a href="https://mops.twse.com.tw/mops/#/web/t51sb01">t51sb01</a></td><td>基本資料查詢彙總表（股本結構、董監事、公司登記）</td></tr>
-      <tr><td>財務報告</td><td><a href="https://mops.twse.com.tw/mops/#/web/t57sb01_q1">t57sb01_q1</a></td><td>財務報告專區（資產負債表、損益表）</td></tr>
-      <tr><td>每月營收</td><td>MOPS 每月營收查詢</td><td>上市櫃公司每月營業收入公告</td></tr>
-      <tr><td>重大訊息</td><td>MOPS 重大訊息專區</td><td>攸關股價之即時與歷史公告</td></tr>
-      <tr><td>股東會/股利</td><td><a href="https://mops.twse.com.tw/mops/#/web/t05st09_new">t05st09_new</a></td><td>股利分派情形、股東會日程、年報</td></tr>
-      <tr><td>ETF 基金基本資料</td><td><a href="https://mopsov.twse.com.tw/mops/web/t51sb11_q2">t51sb11_q2</a></td><td>基金代號 | 基金簡稱 | 基金類型 | 基金中文名稱</td></tr>
-    </table>
-    <p class="muted-small">應用場景：1) ETF market_cap 估算 2) ETF OHLC 回填 3) ROE/ROA 解鎖 4) 產業別同步更新。目前以 yfinance 為備援，MOPS 端點預留未來 FinMind token 解鎖後切換。</p>
-  </div>
-
-  <div class="footer">mklab-stock · 靜態優先 · Fork First · 零外部依賴</div>
-</div>
-
-<!-- WC 元件載入順序 -->
-<script src="vendor/lightweight-charts.min.js"></script>
-<script src="data/twii_kdata.js"></script>
 <script src="assets/mklab-core.js"></script>
-<script src="assets/data-client.js"></script>
-<script src="assets/mklab-wc.js"></script>
 <script>
   MKLAB.initDrawer();
   MKLAB.Shell.mount({ active: 'log' });

@@ -97,7 +97,7 @@
     const rows = MKLAB.Watch.decorate(priceMap);
     if(!wlTable){
       wlTable = MKLAB.DataTable('wlTable', {
-        cols: ['sym','price','chg','pe','roe','alert','del'],
+        cols: ['sym','price','chg','pe','pb','roe','alert','del'],
         rows: rows,
         pageSize: 10, pagerId: 'wlPager',
         onDel: function(sym){ MKLAB.Watch.remove(sym); render(); },
@@ -113,7 +113,7 @@
   function closeDrawer(){ MKLAB.Drawer.close(); }
   // 載入真實價格（stocks.json）後刷新自選
   fetch('data/stocks.json').then(r=>r.json()).then(d=>{
-    if(d && Array.isArray(d.stocks)){ d.stocks.forEach(s=>{ priceMap[s.sym]={price:s.price,chg:s.chg,pe:s.pe,roe:s.roe,alert:null}; }); }
+    if(d && Array.isArray(d.stocks)){ d.stocks.forEach(s=>{ priceMap[s.sym]={price:s.price,chg:s.chg,pe:s.pe,pb:s.pb,roe:s.roe,alert:null}; }); }
     render();
     const asof=d&&d.meta&&d.meta.as_of; if(asof){ const f=document.querySelector('.freshness'); if(f) f.textContent='資料以 '+asof+' 收盤為準（Build-Time 自動更新）'; }
   }).catch(()=>{ render(); });

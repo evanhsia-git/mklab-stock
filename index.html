@@ -135,7 +135,7 @@
     <div class="cards" id="watch5"></div>
 
     <!-- 版塊 6：綜合評分 TOP 10 -->
-    <div class="section-title">綜合評分 TOP 10 (點標題排序切換升/降排序) 總共 <span id="indCount"></span> 檔</div>
+    <div class="section-title">綜合評分 TOP 10 (點擊表格標題切換升/降排序) 總共 <span id="indCount"></span> 檔</div>
     <div class="table-wrap">
       <table id="indTable">
         <thead></thead>
@@ -163,7 +163,7 @@
   ];
   document.getElementById("indices5").innerHTML=indices5.map(m=>{
     const col=m.chg>=0?"#dc2626":"#16a34a";
-    return `<div class="card-sm"><div class="name">${m.name}</div><div class="val">${m.val.toLocaleString()}</div><div class="chg ${m.chg>=0?'up':'down'}">${(m.chg>0?'+':'')}${m.chg}%</div><div class="box" onmouseenter="tipIn(this,'30d')" onmouseleave="untipIn(this)">${spark(gen(m.val,30),col,150,34)}<div class="tip"></div></div></div>`;
+    return `<div class="card-sm"><div class="name">${m.name}</div><div class="val">${m.val.toLocaleString()}</div><div class="chg ${m.chg>=0?'up':'down'}">${(m.chg>0?'+':'')}${m.chg}%</div><div class="box" onmouseenter="tipIn(this,'30日走勢')" onmouseleave="untipIn(this)">${spark(gen(m.val,30),col,150,34)}<div class="tip"></div></div></div>`;
   }).join("");
 
   // 版塊 2：績效表（上方加 TWII 列）
@@ -180,14 +180,14 @@
   ];
   document.getElementById("macro5").innerHTML=macro5.map(m=>{
     const col=m.c>=0?"#dc2626":"#16a34a";
-    return `<div class="card-sm"><div class="name">${m.k}</div><div class="val">${m.v}</div><div class="chg ${m.c>=0?'up':'down'}">${m.c>0?'+':''}${m.c}%</div><div class="box" onmouseenter="tipIn(this,'${m.k}')" onmouseleave="untipIn(this)">${spark(m.d,col,150,34)}<div class="tip"></div></div></div>`;
+    return `<div class="card-sm"><div class="name">${m.k}</div><div class="val">${m.v}</div><div class="chg ${m.c>=0?'up':'down'}">${m.c>0?'+':''}${m.c}%</div><div class="box" onmouseenter="tipIn(this,'30日走勢')" onmouseleave="untipIn(this)">${spark(m.d,col,150,34)}<div class="tip"></div></div></div>`;
   }).join("");
 
   // 版塊 4：市值前 10（靜態真實近似值，依 Yahoo 2026-07-13）
   const capBase=[["2330","台積電",2420,-0.82],["2317","鴻海",235.5,-0.42],["2454","聯發科",1385,+1.10],["2308","台達電",1890,+1.50],["2303","聯電",52.5,-0.38],["2412","中華電",125.5,+0.20],["2882","國泰金",68.2,+0.44],["6505","台塑化",108.0,-0.55],["1303","南亞",38.4,+0.52],["2891","中信金",42.1,+0.24]];
   document.getElementById("cap10").innerHTML=capBase.map((b)=>{
     const price=b[2], chg=b[3], col=chg>=0?"#dc2626":"#16a34a";
-    return `<div class="card-sm"><div class="name">${b[0]} ${b[1]}</div><div class="val">${price.toLocaleString()}</div><div class="chg ${chg>=0?'up':'down'}">${chg>0?'+':''}${chg}%</div><div class="box" onmouseenter="tipIn(this,'${b[0]}')" onmouseleave="untipIn(this)">${spark(gen(price,20),col,150,34)}<div class="tip"></div></div></div>`;
+    return `<div class="card-sm"><div class="name">${b[0]} ${b[1]}</div><div class="val">${price.toLocaleString()}</div><div class="chg ${chg>=0?'up':'down'}">${chg>0?'+':''}${chg}%</div><div class="box" onmouseenter="tipIn(this,'30日走勢')" onmouseleave="untipIn(this)">${spark(gen(price,20),col,150,34)}<div class="tip"></div></div></div>`;
   }).join("");
 
   // 版塊 5：我的自選（與 watchlist 共用同一份 localStorage 清單，價格取自 stocks.json 真實值）
@@ -220,7 +220,7 @@
       const col = chg>=0 ? "#dc2626" : "#16a34a";
       const seed = (typeof price==='number' && price>0) ? price : 50;
       const symHtml = d.name ? `${d.sym}<small>${d.name}</small>` : d.sym;
-      return `<div class="card-sm"><div class="name">${symHtml}</div><div class="val">${(typeof price==='number')?price.toLocaleString():'-'}</div><div class="chg ${chg>=0?'up':'down'}">${chg>0?'+':''}${chg}%</div><div class="box" onmouseenter="tipIn(this,'${d.sym}')" onmouseleave="untipIn(this)">${spark(gen(seed,20),col,150,34)}<div class="tip"></div></div></div>`;
+      return `<div class="card-sm"><div class="name">${symHtml}</div><div class="val">${(typeof price==='number')?price.toLocaleString():'-'}</div><div class="chg ${chg>=0?'up':'down'}">${chg>0?'+':''}${chg}%</div><div class="box" onmouseenter="tipIn(this,'30日走勢')" onmouseleave="untipIn(this)">${spark(gen(seed,20),col,150,34)}<div class="tip"></div></div></div>`;
     }).join("") || `<div class="card-sm" style="grid-column:1/-1;text-align:center;color:var(--muted)">尚未設定自選股（於 watchlist 頁新增）</div>`;
   }
 
@@ -263,7 +263,7 @@
           };
         });
         priceMap = {};
-        d.stocks.forEach(s=>{ priceMap[s.sym] = {price:s.price, chg:s.chg, pe:s.pe, roe:s.roe, market_cap:s.market_cap, alert:null}; });
+        d.stocks.forEach(s=>{ priceMap[s.sym] = {price:s.price, chg:s.chg, pe:s.pe, pb:s.pb, roe:s.roe, market_cap:s.market_cap, alert:null}; });
         renderWatch();
         renderInd();
         const asof=d.meta&&d.meta.as_of;
@@ -283,11 +283,15 @@
   }
   let indTable=null;
   function renderInd(){
-    const scored = industry.map(s=>({...s, score: calcRank(s)}))
+    const scored = industry.map(s=>({
+      ...s,
+      score: calcRank(s),
+      spark: gen(s.price||50, 20)
+    }))
       .filter(s=>s.score>0 && (s.pe!=null||s.pb!=null||s.roe!=null||s.eps!=null));
     if(!indTable){
       indTable = MKLAB.DataTable('indTable', {
-        cols: ['sym','price','chg','score','pe','pb','eps','roe','trend','ind'],
+        cols: ['sym','price','chg','score','spk','pe','pb','roe'],
         rows: scored,
         pageSize: 10,
         pagerId: 'indPager',
