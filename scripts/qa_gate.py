@@ -241,6 +241,19 @@ def run():
         else:
             c.ok("無異常波動")
         add(c)
+
+        # chg 單位合理性（防「漲跌元」被誤存為「漲跌%」）
+        # 台股單日漲跌幅 ±10% 內（槓桿 ETF ±20%）；正常漲跌% 不可能 >50。
+        # 若 |chg|>50 → 高度懷疑 fetch_data.py 把 Change(元) 直接存成 chg，未換算成 %
+        c = Check("Data", "chg 單位合理性 (|chg|<=50 應為漲跌%)", critical=False)
+        unit_suspect = [s.get("sym") for s in ss
+                        if isinstance(s.get("chg"), (int, float)) and abs(s["chg"]) > 50]
+        if unit_suspect:
+            c.error(f"|chg|>50 疑似漲跌『元』非『%』: {unit_suspect[:10]}（檢查 fetch_data.py 是否用 Change 直接存 chg 而未 /prev_close*100）",
+                    "fetch_data.py 的 chg 必須是漲跌%，非漲跌元", stocks_path)
+        else:
+            c.ok("chg 均為合理漲跌% 範圍")
+        add(c)
     else:
         add(Check("Data", "stocks.json 存在").error("找不到 data/stocks.json", "先執行 export_db.py 或 fetch_data.py", ROOT + "/data"))
 

@@ -1,6 +1,6 @@
 # mklab-stock QA Gate 報告
-**時間**: 2026-07-16 16:53:28  
-**Critical ERROR**: 0  | **WARNING**: 3  
+**時間**: 2026-07-16 17:24:46  
+**Critical ERROR**: 0  | **WARNING**: 2  
 **最終判定**: 🟢 ALLOW DEPLOY
 
 | 類別 | 項目 | 狀態 | 說明 | 修正建議 | 位置 |
@@ -18,7 +18,8 @@
 | Data | 股票代號唯一 | PASS | 1370 檔唯一 |  |  |
 | Data | 無髒值 (NaN/null/undefined/Infinity/空字串/非法'-') | WARNING | 00408A.ind=null(無產業分類，ETF/海外股正常); 0050.market_cap=null(雲端未涵蓋); 0051.market_cap=null(雲端未涵蓋); 0052.market_cap=null(雲端未涵蓋); | 確認資料源是否涵蓋該標的 | /root/Documents/mklab-stock/data/stocks.json |
 | Data | OHLC 合理性 (H>=L, H>=O, H>=C, L<=O, L<=C, P>0, V>=0, MktCap>0) | PASS | 1370 檔 OHLC 合理 |  |  |
-| Data | 前日波動異常 (>20% 閾值) | WARNING | 漲跌% 超過 20%: ['1560', '1590', '2059', '2308', '2313', '2345', '2360', '2383', '2404', '2408']（可能為除權息或資料異常） | 人工確認是否為正常事件 | /root/Documents/mklab-stock/data/stocks.json |
+| Data | 前日波動異常 (>20% 閾值) | PASS | 無異常波動 |  |  |
+| Data | chg 單位合理性 (|chg|<=50 應為漲跌%) | PASS | chg 均為合理漲跌% 範圍 |  |  |
 | JSON | stocks.json Schema | PASS | schema 完整 (1370 檔) |  |  |
 | JSON | industry.json Schema | PASS | 33 個產業 |  |  |
 | HTML | 結構健康檢查 | PASS | 全部 7 個 HTML 通過（含 check_html_health 功能） |  |  |
@@ -39,8 +40,6 @@
 ## 問題摘要
 - **[WARNING] Data/無髒值 (NaN/null/undefined/Infinity/空字串/非法'-')**: 00408A.ind=null(無產業分類，ETF/海外股正常); 0050.market_cap=null(雲端未涵蓋); 0051.market_cap=null(雲端未涵蓋); 0052.market_cap=null(雲端未涵蓋); 0053.market_cap=null(雲端未涵蓋); 0055.market_cap=null(雲端未涵蓋); 0056.market_cap=null(雲端未涵蓋); 0057.market_cap=null(雲端未涵蓋)（全 OHLC 缺=ETF/資料源未涵蓋，非阻擋）
   - 建議: 確認資料源是否涵蓋該標的（/root/Documents/mklab-stock/data/stocks.json）
-- **[WARNING] Data/前日波動異常 (>20% 閾值)**: 漲跌% 超過 20%: ['1560', '1590', '2059', '2308', '2313', '2345', '2360', '2383', '2404', '2408']（可能為除權息或資料異常）
-  - 建議: 人工確認是否為正常事件（/root/Documents/mklab-stock/data/stocks.json）
 - **[WARNING] CSS/禁止硬寫核心樣式 (違反 Design Token)**: 行內硬寫樣式: ['mklab-stock-research.html:1', 'mklab-stock-log.html:1', 'mklab-stock-watchlist.html:1']
   - 建議: 改用 CSS class / Design Token（mklab-stock-research.html:1, mklab-stock-log.html:1, mklab-stock-watchlist.html:1）
 
