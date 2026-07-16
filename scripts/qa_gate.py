@@ -428,7 +428,13 @@ def run():
             if not m:
                 broken.append(f"{os.path.basename(hf)}: 空白 href")
                 continue
-            target = os.path.join(ROOT, m.split("#")[0])
+            # GitHub Pages 子路徑處理：/mklab-stock/... -> 移除前綴
+            path = m.split("#")[0]
+            if path.startswith("/mklab-stock/"):
+                path = path[len("/mklab-stock/"):]
+            elif path.startswith("/"):
+                path = path[1:]
+            target = os.path.join(ROOT, path)
             if not os.path.exists(target):
                 broken.append(f"{os.path.basename(hf)} -> {m} (404)")
     if broken:
