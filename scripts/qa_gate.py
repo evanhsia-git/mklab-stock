@@ -104,7 +104,7 @@ def run():
         add(c)
 
     # lint (ruff/flake8/black) — 可選，不存在則 WARNING skip
-    for tool in (["ruff", "check"], ["flake8"], ["black", "--check"]):
+    for tool in ([ "ruff", "check"], ["flake8"], ["black", "--check"]):
         exe = tool[0]
         if subprocess.run(["which", exe], capture_output=True).returncode != 0:
             continue
@@ -337,7 +337,6 @@ def run():
     html_files = glob.glob(os.path.join(ROOT, "*.html"))
     html_fail = 0
     for hf in html_files:
-        p = HTMLParser()
         _h = _Health()
         try:
             _h.feed(open(hf, encoding="utf-8").read())
@@ -355,7 +354,6 @@ def run():
     # ============================================================
     # 五、CSS 驗證 (統一 Theme / 重複定義)
     # ============================================================
-    html_files = glob.glob(os.path.join(ROOT, "*.html"))
     c = Check("CSS", "統一 Theme 變數 (var(--bg) 等)")
     no_theme = []
     for hf in html_files:
