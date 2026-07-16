@@ -255,6 +255,18 @@ def run_daily():
     # 保留既有 ROE/ROA/eps/market_cap（這些由 weekly 模式更新，daily 不覆寫）
     existing = load_existing_stocks()
 
+    # 載入 ETF 發行張數，用於補算 ETF market_cap
+    etf_shares_path = os.path.join(OUT, "etf-shares.json")
+    etf_shares = {}
+    if os.path.exists(etf_shares_path):
+        try:
+            etf_shares = json.load(open(etf_shares_path, encoding="utf-8")).get("etf", {})
+            LOG.info(f"ETF 發行張數載入 {len(etf_shares)} 檔")
+        except Exception as e:
+            LOG.warn(f"etf-shares.json 載入失敗：{e}")
+    else:
+        LOG.warn("etf-shares.json 不存在，ETF market_cap 將留空")
+
     stocks = []
     for r in raw:
         sid = r.get("Code", "").strip()
@@ -292,13 +304,21 @@ def run_daily():
         no_trade = (close is None or close <= 0)
         if no_trade:
             open_p = high = low = close = None
+
+        # ETF market_cap：若無既有值且有發行張數資料，用 price * shares_stock 估算
+        mc = ex.get("market_cap")
+        if mc is None and sid in etf_shares and close is not None:
+            shares = etf_shares[sid].get("shares_stock")
+            if shares:
+                mc = round(close * shares)
+
         stocks.append({
             "sym": sid,
             "name": name,
             "price": close,
             "open": open_p, "high": high, "low": low, "volume": volume,
             "pe": bb.get("pe"), "pb": bb.get("pb"), "div": bb.get("div"),
-            "roe": ex.get("roe"), "eps": ex.get("eps"), "market_cap": ex.get("market_cap"),
+            "roe": ex.get("roe"), "eps": ex.get("eps"), "market_cap": mc,
             "ind": ex.get("ind"),
             "chg": chg,
             "rank": ex.get("rank"),

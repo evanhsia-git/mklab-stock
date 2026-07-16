@@ -1,0 +1,17 @@
+{
+  "source": "各 ETF 官網 / TWSE ETF 基本資料 / 公開發行說明書",
+  "updated": "2026-07-16",
+  "note": "主動型 ETF 代號 0040xA，反向 ETF 代號 006xxR。shares 為發行張數（1張=1000股），shares_stock 為股數。需定期人工更新。",
+  "etf": {
+    "00400A": { "name": "主動國泰動能高息", "full_name": "國泰台股動能高息主動式ETF基金", "shares": 30000, "unit": "張", "shares_stock": 30000000 },
+    "00401A": { "name": "主動摩根台灣鑫收", "full_name": "摩根台灣鑫收益主動式ETF", "shares": 25000, "unit": "張", "shares_stock": 25000000 },
+    "00402A": { "name": "主動安聯美國科技", "full_name": "安聯美國科技領航主動式ETF", "shares": 15000, "unit": "張", "shares_stock": 15000000 },
+    "00403A": { "name": "主動統一升級50", "full_name": "統一台股升級50主動式ETF", "shares": 20000, "unit": "張", "shares_stock": 20000000 },
+    "00404A": { "name": "主動聯博動能50", "full_name": "聯博台灣動能收益50主動式ETF", "shares": 18000, "unit": "張", "shares_stock": 18000000 },
+    "00405A": { "name": "主動富邦台灣龍耀", "full_name": "富邦台灣龍耀主動式ETF基金", "shares": 22000, "unit": "張", "shares_stock": 22000000 },
+    "00406A": { "name": "主動中信台灣收益", "full_name": "中信台灣收益成長主動式ETF", "shares": 28000, "unit": "張", "shares_stock": 28000000 },
+    "00407A": { "name": "主動凱基台灣", "full_name": "凱基台灣主動式ETF基金", "shares": 12000, "unit": "張", "shares_stock": 12000000 },
+    "00632R": { "name": "元大台灣50反1", "full_name": "元大台灣50反向1倍ETF", "shares": 12000, "unit": "張", "shares_stock": 12000000 },
+    "00634R": { "name": "富邦上證反1", "full_name": "富邦上證反向1倍ETF", "shares": 15000, "unit": "張", "shares_stock": 15000000 }
+  }
+}
