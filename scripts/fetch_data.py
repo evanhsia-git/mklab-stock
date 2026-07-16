@@ -525,6 +525,9 @@ def fetch_twii_kline(days=260, out_path=None):
             out_path = os.path.join(OUT, "twii_kdata.js")
         with open(out_path, "w", encoding="utf-8") as f:
             f.write("const TWII_KDATA=" + json.dumps(rows, ensure_ascii=False, separators=(",", ":")) + ";\n")
+            # 同時掛 window.TWII_KDATA：頂層 const 在瀏覽器不掛 window 物件，
+            # <mklab-kline data-symbol="TWII"> 需經 window[sym+'_KDATA'] 存取，故顯式掛載。
+            f.write("if(typeof window!=='undefined')window.TWII_KDATA=TWII_KDATA;\n")
         LOG.stats["written"] = len(rows)
         LOG.stats["details"]["twii_days"] = len(rows)
         LOG.stats["details"]["twii_range"] = f"{rows[0]['time']}~{rows[-1]['time']}"
