@@ -56,6 +56,9 @@
   th,td { padding:8px 6px; text-align:right; font-size:13px; border-bottom:1px solid var(--border); white-space:nowrap; }
   th:first-child,td:first-child { text-align:left; }
   th { font-size:12px; color:var(--muted); font-weight:600; }
+  .kv { display:grid; grid-template-columns:repeat(auto-fit,minmax(110px,1fr)); gap:10px; }
+  .kv .k { font-size:11px; color:var(--muted); } .kv .v { font-size:16px; font-weight:700; }
+  .kv .small { font-size:13px; }
 </style>
 <script src="vendor/lightweight-charts.min.js"></script>
 <script src="data/twii_kdata.js"></script>
@@ -103,8 +106,8 @@
         <!-- 區塊 1：個股摘要 -->
         <div class="card" id="infoCard"></div>
         <!-- 區塊 2：歷史價格圖（WC mklab-kline） -->
-                <div class="card">
-                  <h3>歷史價格圖（WC mklab-kline + MACD/KD）</h3>
+        <div class="card">
+          <h3>歷史價格圖（WC mklab-kline + MACD/KD）</h3>
           <div class="kline-toolbar">
             <button onclick="klAddIndicatorWC('MACD')">MACD</button>
             <button onclick="klAddIndicatorWC('KDJ')">KD</button>
@@ -116,12 +119,12 @@
           <mklab-kline id="wcKline" height="400"></mklab-kline>
         </div>
         <!-- 區塊 3：財報摘要（WC mklab-datatable） -->
-                <div class="card">
-                  <h3>財報摘要（最新年度，WC mklab-datatable）</h3>
-                  <!-- 靜態佔位 table 供靜態檢查器找到主要內容區塊 -->
-                  <table id="wcFinTableStatic" style="display:none;"><thead><tr><th>指標</th><th>值</th></tr></thead><tbody></tbody></table>
-                  <mklab-datatable id="wcFinTable" cols="sym,name,price,chg,pe,pb,roe,roa,eps,div" src="stocks.json" page-size="10"></mklab-datatable>
-                </div>
+        <div class="card">
+          <h3>財報摘要（最新年度，WC mklab-datatable）</h3>
+          <!-- 靜態佔位 table 供靜態檢查器找到主要內容區塊 -->
+          <table id="wcFinTableStatic" style="display:none;"><thead><tr><th>指標</th><th>值</th></tr></thead><tbody></tbody></table>
+          <mklab-datatable id="wcFinTable" cols="sym,name,price,chg,pe,pb,roe,roa,eps,div" src="stocks.json" page-size="10"></mklab-datatable>
+        </div>
       </div>
     </div>
   </div>
@@ -190,7 +193,7 @@ function sel(sym){
     '<div class="kv">'+
       kv('價格', m.price!=null?m.price:'-')+kv('PE', m.pe!=null?m.pe:'-')+kv('PB', m.pb!=null?m.pb:'-')+
       kv('ROE', (m.roe!=null?m.roe.toFixed(1):'-')+'%')+kv('EPS', m.eps!=null?m.eps:'-')+kv('殖利率', (m.div!=null?m.div:'-')+'%')+
-      kv('市值', m.mc)+kv('產業', '<span style="font-size:13px">'+m.sector+'</span>')+
+      kv('市值', m.mc)+kv('產業', '<span class="small">'+m.sector+'</span>')+
     '</div>';
   // WC K線：data-symbol 觸發屬性驅動
   const k = document.getElementById('wcKline');

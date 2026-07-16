@@ -370,10 +370,13 @@ def run():
 
     c = Check("CSS", "禁止硬寫核心樣式 (違反 Design Token)", critical=False)
     # 偵測 HTML 行內 style 直接寫顏色/字型（簡易 heuristic）
+    # 只檢查 HTML 標籤屬性 style="..."，排除 <style>...</style> 區塊內的 CSS 規則
     inline_hard = []
     for hf in html_files:
         src = open(hf, encoding="utf-8").read()
-        hards = re.findall(r'style="[^"]*(?:color:#|background:#|font-size:\d)', src)
+        # 先移除 <style>...</style> 區塊再檢查
+        src_no_style = re.sub(r'<style>.*?</style>', '', src, flags=re.S)
+        hards = re.findall(r'style="[^"]*(?:color:#|background:#|font-size:\d)', src_no_style)
         if hards:
             inline_hard.append(f"{os.path.basename(hf)}:{len(hards)}")
     if inline_hard:

@@ -1,6 +1,6 @@
 # mklab-stock QA Gate 報告
-**時間**: 2026-07-16 04:46:47  
-**Critical ERROR**: 0  | **WARNING**: 2  
+**時間**: 2026-07-16 04:56:42  
+**Critical ERROR**: 0  | **WARNING**: 1  
 **最終判定**: 🟢 ALLOW DEPLOY
 
 | 類別 | 項目 | 狀態 | 說明 | 修正建議 | 位置 |
@@ -23,7 +23,7 @@
 | JSON | industry.json Schema | PASS | 33 個產業 |  |  |
 | HTML | 結構健康檢查 | PASS | 全部 6 個 HTML 通過（含 check_html_health 功能） |  |  |
 | CSS | 統一 Theme 變數 (var(--bg) 等) | PASS | 6 個頁面皆含 Theme |  |  |
-| CSS | 禁止硬寫核心樣式 (違反 Design Token) | WARNING | 行內硬寫樣式: ['mklab-stock-research.html:1', 'mklab-stock-help.html:5'] | 改用 CSS class / Design Token | mklab-stock-research.html:1, mklab-stock-help.html:5 |
+| CSS | 禁止硬寫核心樣式 (違反 Design Token) | PASS | 無行內硬寫核心樣式 |  |  |
 | JS | syntax: mklab-stock-screener.html#0 | PASS |  |  |  |
 | JS | syntax: index.html#0 | PASS |  |  |  |
 | JS | syntax: mklab-stock-research.html#0 | PASS |  |  |  |
@@ -37,8 +37,6 @@
 ## 問題摘要
 - **[WARNING] Data/無髒值 (NaN/null/undefined/Infinity/空字串/非法'-')**: 00400A.market_cap=null(雲端未涵蓋); 00401A.market_cap=null(雲端未涵蓋); 00402A.market_cap=null(雲端未涵蓋); 00403A.market_cap=null(雲端未涵蓋); 00404A.market_cap=null(雲端未涵蓋); 00405A.market_cap=null(雲端未涵蓋); 00406A.market_cap=null(雲端未涵蓋); 00407A.market_cap=null(雲端未涵蓋)（全 OHLC 缺=ETF/資料源未涵蓋，非阻擋）
   - 建議: 確認資料源是否涵蓋該標的（/root/Documents/mklab-stock/data/stocks.json）
-- **[WARNING] CSS/禁止硬寫核心樣式 (違反 Design Token)**: 行內硬寫樣式: ['mklab-stock-research.html:1', 'mklab-stock-help.html:5']
-  - 建議: 改用 CSS class / Design Token（mklab-stock-research.html:1, mklab-stock-help.html:5）
 
 ## 最終判定: ALLOW DEPLOY
 
