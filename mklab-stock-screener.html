@@ -3,13 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>mklab-stock Screener</title>
-<base href="/mklab-stock/">
+<title>mklab-stock Screener 原型 v11</title>
 <style>
-  :root { --bg:#f7f8fa; --surface:#fff; --ink:#1a1d21; --muted:#6b7280; --border:#e5e7eb; --accent:#2563eb; --up:#dc2626; --down:#16a34a; --row-hover:#eff6ff; --radius:12px; --shadow:0 1px 3px rgba(0,0,0,.08); }
-  [data-theme="dark"] { --bg:#0f1115; --surface:#171a21; --ink:#e8eaed; --muted:#9aa0a6; --border:#2a2f3a; --accent:#3b82f6; --up:#f87171; --down:#4ade80; --row-hover:#1e2a3a; --shadow:0 1px 3px rgba(0,0,0,.4); }
+  :root { --bg:#0f1115; --surface:#171a21; --ink:#e8eaed; --muted:#9aa0a6; --border:#2a2f3a; --accent:#3b82f6; --up:#f87171; --down:#4ade80; --row-hover:#1e2a3a; --radius:10px; --shadow:0 1px 3px rgba(0,0,0,.4); }
+  [data-theme="light"] { --bg:#f7f8fa; --surface:#fff; --ink:#1a1d21; --muted:#6b7280; --border:#e5e7eb; --accent:#2563eb; --up:#dc2626; --down:#16a34a; --row-hover:#eff6ff; --shadow:0 1px 3px rgba(0,0,0,.08); }
   * { box-sizing:border-box; margin:0; padding:0; }
-  body { font-family:-apple-system,"Segoe UI","PingFang TC","Microsoft JhengHei",sans-serif; background:var(--bg); color:var(--ink); line-height:1.5; padding-bottom:20px; }
+  body { font-family:-apple-system,"Segoe UI","PingFang TC","Microsoft JhengHei",sans-serif; background:var(--bg); color:var(--ink); line-height:1.5; }
   .nav { position:sticky; top:0; z-index:26; background:var(--surface); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:4px; padding:10px 12px; }
   .nav a { color:var(--ink); text-decoration:none; font-size:14px; padding:6px 10px; border-radius:8px; white-space:nowrap; }
   .nav a.active { background:var(--accent); color:#fff; }
@@ -23,270 +22,167 @@
   .fab-btn svg { width:20px; height:20px; display:block; }
   .freshness { background:#fff7ed; color:#9a3412; font-size:12px; padding:6px 12px; border-bottom:1px solid var(--border); text-align:center; }
   [data-theme="dark"] .freshness { background:#2a1d12; color:#fdba74; }
-  .wrap { max-width:1400px; margin:0 auto; padding:12px; }
-  .section-title { font-size:14px; font-weight:600; margin:18px 4px 10px; color:var(--muted); }
+  .wrap { max-width:1200px; margin:0 auto; padding:12px; }
+  @media (min-width:1024px){ .wrap{ padding:16px 24px; } }
   .up { color:var(--up); } .down { color:var(--down); }
-  .tip { position:absolute; left:0; right:0; bottom:-22px; background:var(--surface); color:var(--ink); border:1px solid var(--border); border-radius:6px; padding:2px 6px; font-size:11px; text-align:center; box-shadow:var(--shadow); display:none; z-index:5; }
+  .layout { display:block; }
+  @media (min-width:1024px){ .layout{ display:grid; grid-template-columns:300px 1fr; gap:16px; } }
+  .panel { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:14px; box-shadow:var(--shadow); margin-bottom:12px; }
+  .panel h3 { font-size:14px; margin-bottom:10px; }
+  .grp { margin-bottom:14px; }
+  .grp .lab { font-size:12px; color:var(--muted); margin-bottom:6px; font-weight:600; }
+  .cond { margin-bottom:10px; }
+  .cond .row { display:flex; align-items:center; gap:6px; font-size:12px; }
+  .cond label { width:54px; color:var(--muted); }
+  .cond input[type=number] { width:62px; padding:4px 6px; border:1px solid var(--border); border-radius:6px; background:var(--bg); color:var(--ink); }
+  .cond input[type=range] { flex:1; min-width:80px; }
+  .cond .rv { width:34px; text-align:right; font-variant-numeric:tabular-nums; color:var(--ink); font-weight:600; }
+  .chk label:hover { border-color:var(--accent); color:var(--accent); }
+  .cond select { padding:4px 6px; border:1px solid var(--border); border-radius:6px; background:var(--bg); color:var(--ink); }
+  .chk { display:flex; flex-wrap:wrap; gap:6px; }
+  .chk label { font-size:12px; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:4px 8px; cursor:pointer; }
+  .row-input { display:flex; gap:6px; margin-bottom:10px; }
+  .row-input input { flex:1; padding:8px; border:1px solid var(--border); border-radius:8px; background:var(--bg); color:var(--ink); }
+  .row-input button { padding:8px 12px; background:var(--accent); color:#fff; border:none; border-radius:8px; cursor:pointer; }
+  .count { font-size:12px; color:var(--muted); margin-bottom:8px; }
+  .table-wrap { background:var(--surface); border-radius:var(--radius); box-shadow:var(--shadow); overflow-x:auto; }
+  table { width:100%; border-collapse:collapse; }
+  th,td { padding:9px 7px; text-align:right; font-size:13px; border-bottom:1px solid var(--border); white-space:nowrap; }
+  th:first-child,td:first-child { text-align:left; }
+  th { font-size:12px; color:var(--muted); font-weight:600; background:var(--surface); cursor:pointer; position:sticky; top:0; }
+  tbody tr:nth-child(even){ background:rgba(255,255,255,.02); }
+  tbody tr:hover { background:var(--row-hover); }
+  .sym { font-weight:600; } .sym small { color:var(--muted); font-weight:400; display:block; }
+  .pager { display:flex; gap:6px; justify-content:center; margin:12px 0; flex-wrap:wrap; }
+  .pager button { padding:6px 11px; border:1px solid var(--border); border-radius:8px; background:var(--surface); color:var(--ink); cursor:pointer; font-size:13px; }
+  .pager button.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+  .disclaimer { font-size:11px; color:var(--muted); text-align:center; padding:16px 12px; }
+  /* drawer */
   .toolbar { display:flex; align-items:center; gap:8px; margin:4px 4px 10px; flex-wrap:wrap; }
   .toolbar label { font-size:13px; color:var(--muted); }
   .toolbar select { background:var(--surface); color:var(--ink); border:1px solid var(--border); border-radius:8px; padding:6px 8px; font-size:13px; }
-  .toolbar .seg { display:flex; gap:4px; }
-  .toolbar .seg button { flex:1; padding:6px; background:var(--surface); color:var(--ink); border:1px solid var(--border); border-radius:6px; font-size:12px; }
-  .toolbar .seg button.on { background:var(--accent); color:#fff; }
-  .pager { display:flex; gap:6px; justify-content:center; margin:12px 0; flex-wrap:wrap; }
-  .pager button { background:var(--surface); border:1px solid var(--border); color:var(--ink); border-radius:8px; padding:6px 11px; }
-  .pager button.on { background:var(--accent); color:#fff; }
-  /* drawer */
-  #drawer { position:fixed; top:0; right:-320px; width:320px; max-width:100%; height:100vh; background:var(--surface); border-left:1px solid var(--border); box-shadow:var(--shadow); z-index:100; transition:right .3s ease; overflow-y:auto; padding:16px; }
-  #drawer.open { right:0; }
-  .drawer-mask { position:fixed; inset:0; background:rgba(0,0,0,.5); opacity:0; visibility:hidden; transition:.3s; z-index:99; }
-  .drawer-mask.open { opacity:1; visibility:visible; }
-  #drawer .close-x { position:absolute; top:8px; right:8px; width:32px; height:32px; border-radius:50%; border:1px solid var(--border); background:var(--bg); cursor:pointer; font-size:18px; }
-  #drawer h3 { margin:0 0 12px; font-size:16px; }
-  #drawer h4 { margin:16px 0 8px; font-size:13px; color:var(--muted); }
-  #drawer .row { display:flex; align-items:center; justify-content:space-between; margin:8px 0; }
-  #drawer .seg { display:flex; flex-direction:column; gap:4px; }
-  #drawer .seg a { color:var(--ink); text-decoration:none; font-size:13px; padding:6px 10px; border-radius:6px; background:var(--bg); }
-  #drawer .seg a:hover { background:var(--accent); color:#fff; }
-  #drawer .switch { width:44px; height:24px; border-radius:12px; background:var(--border); border:none; cursor:pointer; position:relative; }
-  #drawer .switch.on { background:var(--accent); }
-  #drawer .switch::after { content:''; position:absolute; top:2px; left:2px; width:20px; height:20px; border-radius:50%; background:#fff; transition:.2s; box-shadow:0 1px 3px rgba(0,0,0,.2); }
-  #drawer .switch.on::after { left:22px; }
-  #drawer .sys-note { font-size:12px; color:var(--muted); line-height:1.6; }
-  #drawer .sys-note .up { color:var(--down); }
-  #drawer .seg { display:flex; flex-direction:column; gap:4px; }
-  /* WC 元件樣式 */
-  mklab-kline { display:block; border:1px solid var(--border); border-radius:var(--radius); padding:8px; margin-bottom:8px; background:var(--surface); }
-  mklab-datatable { display:block; border:1px solid var(--border); border-radius:var(--radius); padding:8px; background:var(--surface); }
-  mklab-drawer { display:block; }
-  /* pager */
-  .pager { display:flex; gap:6px; justify-content:center; margin:12px 0; flex-wrap:wrap; }
-  .pager button { background:var(--surface); border:1px solid var(--border); color:var(--ink); border-radius:8px; padding:6px 11px; }
-  .pager button.on { background:var(--accent); color:#fff; }
+  .drawer-mask { position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:40; display:none; }
+  .drawer-mask.open { display:block; }
+  .drawer { position:fixed; top:0; right:0; height:100%; width:300px; max-width:85vw; background:var(--surface); border-left:1px solid var(--border); z-index:50; transform:translateX(100%); transition:transform .25s ease; padding:16px; overflow-y:auto; box-shadow:var(--shadow); }
+  .drawer.open { transform:translateX(0); }
+  .drawer h3 { font-size:15px; margin-bottom:12px; }
+  .drawer h4 { font-size:13px; color:var(--muted); margin:16px 0 8px; }
+  .row { display:flex; align-items:center; justify-content:space-between; padding:8px 0; font-size:14px; }
+  .row input { width:90px; padding:4px 6px; border:1px solid var(--border); border-radius:6px; background:var(--bg); color:var(--ink); }
+  .switch { width:44px; height:24px; border-radius:12px; background:var(--border); position:relative; cursor:pointer; border:none; }
+  .switch.on { background:var(--accent); }
+  .switch::after { content:""; position:absolute; top:2px; left:2px; width:20px; height:20px; border-radius:50%; background:#fff; transition:left .2s; }
+  .switch.on::after { left:22px; }
+  .seg { display:flex; border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+  .seg button { flex:1; padding:6px; background:var(--surface); color:var(--ink); border:none; font-size:13px; }
+  .seg button.on { background:var(--accent); color:#fff; }
+  .close-x { float:right; background:none; border:none; font-size:20px; color:var(--muted); cursor:pointer; }
+  .drawer a { color:var(--accent); text-decoration:none; }
+  .sys-note { font-size:12px; color:var(--muted); line-height:1.6; }
 </style>
 </head>
 <body>
-<nav id="mainNav" class="nav"></nav>
-<div id="utilbar" class="utilbar"><span class="brand" id="brand"></span><span class="spacer"></span></div>
-<div class="freshness">資料以 2026-07-13 收盤為準（Build-Time 自動更新）</div>
-<div class="wrap">
-  <div class="section-title">多條件篩選（Screener）</div>
-  
-  <div class="toolbar">
-    <label>策略：</label>
-    <select id="strategySel" onchange="applyStrategy()">
-      <option value="custom">自訂條件</option>
-      <option value="value">價值型（低 PE/PB、高股息）</option>
-      <option value="quality">品質型（高 ROE/ROA、低負債）</option>
-      <option value="growth">成長型（高 EPS 成長、高 ROE）</option>
-      <option value="momentum">動能型（強勢趨勢、大漲）</option>
-      <option value="dividend">高股息（殖利率>4%、PE<15）</option>
-    </select>
-    <div class="seg">
-      <button onclick="setFilter('pe', '', 'max')" id="btnPE">PE</button>
-      <button onclick="setFilter('pb', '', 'max')" id="btnPB">PB</button>
-      <button onclick="setFilter('roe', 'min', '')" id="btnROE">ROE</button>
-      <button onclick="setFilter('eps', 'min', '')" id="btnEPS">EPS</button>
-      <button onclick="setFilter('chg', 'min', '')" id="btnCHG">漲跌%</button>
-      <button onclick="setFilter('div', 'min', '')" id="btnDIV">殖利率</button>
+  <nav id="mainNav" class="nav"></nav>
+  <div id="utilbar" class="utilbar"><span class="brand" id="brand"></span><span class="spacer"></span></div>
+  <div class="freshness">資料以 2026-07-13 收盤為準（前一日，非即時）</div>
+  <div class="drawer-mask" onclick="MKLAB.Drawer.close()"></div>
+  <aside class="drawer" id="drawer">
+    <button class="close-x" onclick="MKLAB.Drawer.close()">×</button>
+  </aside>
+  <div class="wrap">
+    <div class="layout">
+      <div class="panel">
+        <h3>策略模板（一鍵套用）</h3>
+        <div class="chk" style="margin-bottom:14px">
+          <label onclick="tpl('value')">價值策略</label>
+          <label onclick="tpl('quality')">品質策略</label>
+          <label onclick="tpl('growth')">成長策略</label>
+          <label onclick="tpl('momentum')">動能策略</label>
+          <label onclick="tpl('dividend')">高股息策略</label>
+        </div>
+        <h3>多條件篩選（滑動即時更新）</h3>
+        <div class="grp">
+          <div class="lab">估值</div>
+          <div class="cond"><div class="row"><label>PE≤</label><input type="range" id="f_pe" min="0" max="60" value="20" oninput="sync('f_pe');apply()"><span class="rv" id="v_pe">20</span></div></div>
+          <div class="cond"><div class="row"><label>PB≤</label><input type="range" id="f_pb" min="0" max="20" value="99" oninput="sync('f_pb');apply()"><span class="rv" id="v_pb">99</span></div></div>
+          <div class="cond"><div class="row"><label>殖利率≥</label><input type="range" id="f_div" min="0" max="10" value="0" step="0.5" oninput="sync('f_div');apply()"><span class="rv" id="v_div">0</span></div></div>
+        </div>
+        <div class="grp">
+          <div class="lab">獲利品質</div>
+          <div class="cond"><div class="row"><label>ROE≥</label><input type="range" id="f_roe" min="0" max="40" value="15" oninput="sync('f_roe');apply()"><span class="rv" id="v_roe">15</span></div></div>
+          <div class="cond"><div class="row"><label>ROA≥</label><input type="range" id="f_roa" min="0" max="25" value="0" oninput="sync('f_roa');apply()"><span class="rv" id="v_roa">0</span></div></div>
+          <div class="cond"><div class="row"><label>EPS成長≥</label><input type="range" id="f_eg" min="-10" max="50" value="0" oninput="sync('f_eg');apply()"><span class="rv" id="v_eg">0</span></div></div>
+        </div>
+        <div class="grp">
+          <div class="lab">技術面</div>
+          <div class="cond"><div class="row"><label>RSI≥</label><input type="range" id="f_rsi" min="0" max="100" value="0" oninput="sync('f_rsi');apply()"><span class="rv" id="v_rsi">0</span></div></div>
+          <div class="cond"><div class="row"><label>漲幅≥</label><input type="range" id="f_chg" min="-10" max="10" value="0" step="0.5" oninput="sync('f_chg');apply()"><span class="rv" id="v_chg">0</span></div></div>
+          <div class="cond"><div class="row"><label>均線</label>
+            <select id="f_ma" onchange="apply()"><option value="any">不限</option><option value="ma5">站上5MA</option><option value="ma10">站上10MA</option><option value="ma30">站上30MA</option></select>
+          </div></div>
+        </div>
+        <div class="grp">
+          <div class="lab">規模</div>
+          <div class="cond"><div class="row"><label>市值≥</label><input type="range" id="f_cap" min="0" max="10000" step="100" value="0" oninput="sync('f_cap');apply()"><span class="rv" id="v_cap">0</span><span>億</span></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="row-input">
+          <input id="symInput" placeholder="快速搜尋代號，如 2330">
+          <button onclick="loadSymbol()">加入</button>
+        </div>
+        <div class="count" id="count"></div>
+        <div class="table-wrap">
+          <table id="resTable">
+            <thead></thead>
+            <tbody id="resBody"></tbody>
+          </table>
+        </div>
+        <div class="pager" id="pager"></div>
+        <div class="disclaimer">預載台股市值 Top100（示意資料），篩選前端即時過濾，生產環境由 Build-Time 預算。每頁 10 檔。</div>
+      </div>
     </div>
-    <input type="number" id="fMin" placeholder="最小" step="0.01" style="width:80px">
-    <input type="number" id="fMax" placeholder="最大" step="0.01" style="width:80px">
-    <button class="fab-btn" onclick="applyCustomFilter()" title="套用"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 16 12 14 15 10 9 18 21"/></svg></button>
-    <button class="fab-btn" onclick="resetFilters()" title="重置"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/></svg></button>
   </div>
-
-  <div class="section-title">篩選結果</div>
-  <mklab-datatable id="scrTable" page-size="10" pager-id="scrPager" default-sort="score"></mklab-datatable>
-  <div class="pager" id="scrPager"></div>
-  <table id="scrTableStatic" style="display:none"></table>
-
-  <div class="section-title">個股大圖表（點選代號查看）</div>
-  <mklab-kline id="scrKline" height="400"></mklab-kline>
-  <div class="kline-toolbar" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
-    <button onclick="addMacd()" class="up">MACD</button>
-    <button onclick="addKd()" class="up">KD</button>
-    <button onclick="clearInd()">清除指標</button>
-  </div>
-</div>
-
-<div class="drawer-mask" onclick="MKLAB.Drawer.close()"></div>
-<div id="drawer"><button class="close-x" onclick="MKLAB.Drawer.close()">×</button></div>
-
-<script src="vendor/lightweight-charts.min.js"></script>
-<script src="data/twii_kdata.js"></script>
 <script src="assets/mklab-core.js"></script>
-<script src="assets/data-client.js"></script>
-<script src="assets/mklab-wc.js"></script>
 <script>
-let scrTable = null;
-let allStocks = [];
-let currentFilter = { pe: null, pb: null, roe: null, eps: null, chg: null, div: null };
-
-// 策略預設值
-const STRATEGIES = {
-  value: { pe: {max:15}, pb: {max:2}, div: {min:3}, roe: {min:10} },
-  quality: { roe: {min:15}, roa: {min:7}, pe: {max:20} },
-  growth: { eps: {min:5}, roe: {min:15}, chg: {min:5} },
-  momentum: { chg: {min:3}, pe: {max:30} },
-  dividend: { div: {min:4}, pe: {max:15}, pb: {max:2} },
-};
-
-// 初始化表格
-if(typeof MKLAB !== 'undefined'){
-  scrTable = MKLAB.DataTable('scrTable', {
-    cols: ['sym','price','chg','pe','pb','eps','roe','roa','score','trend','ind'],
-    rows: [],
-    pageSize: 10,
-    pagerId: 'scrPager',
-    defaultSort: 'score',
-  });
-  MKLAB.Shell.mount({ active:'screener' });
-}
-
-// 載入資料
-async function loadData(){
-  try{
-    const r = await fetch('data/stocks.json');
-    const d = await r.json();
-    if(d && d.stocks){
-      allStocks = d.stocks.map(s=>({
-        sym: s.sym, name: s.name, price: s.price, chg: s.chg,
-        pe: s.pe, pb: s.pb, eps: s.eps, roe: s.roe, roa: s.roa,
-        div: s.div, ind: s.ind, spct: s.spct,
-        score: calcScore(s), trend: s.spct!=null?(s.spct>0?'+':'')+s.spct+'%':null
-      }));
-      renderTable();
-      document.querySelector('.freshness').textContent = `資料以 ${d.meta?.as_of || '2026-07-13'} 收盤為準（Build-Time 自動更新）`;
-    }
-  }catch(e){console.error(e)}
-}
-
-function calcScore(s){
-  let score=0, any=false;
-  if(s.roe!=null){ score += Math.max(0, Math.min(40, s.roe*1.2)); any=true; }
-  if(s.pe!=null){ score += Math.max(0, Math.min(20, (30-s.pe)*1.0)); any=true; }
-  if(s.pb!=null){ score += Math.max(0, Math.min(15, (8-s.pb)*2.0)); any=true; }
-  if(s.eps!=null){ score += Math.max(0, Math.min(10, s.eps*0.3)); any=true; }
-  if(!any) return -1;
-  return Math.round(Math.max(0, Math.min(100, score)));
-}
-
-function renderTable(){
-  let rows = allStocks.filter(s=>s.score>=0);
-  // 套用過濾
-  rows = rows.filter(s=>{
-    if(currentFilter.pe && currentFilter.pe.max!=null && (s.pe==null || s.pe > currentFilter.pe.max)) return false;
-    if(currentFilter.pb && currentFilter.pb.max!=null && (s.pb==null || s.pb > currentFilter.pb.max)) return false;
-    if(currentFilter.roe && currentFilter.roe.min!=null && (s.roe==null || s.roe < currentFilter.roe.min)) return false;
-    if(currentFilter.eps && currentFilter.eps.min!=null && (s.eps==null || s.eps < currentFilter.eps.min)) return false;
-    if(currentFilter.chg && currentFilter.chg.min!=null && (s.chg==null || s.chg < currentFilter.chg.min)) return false;
-    if(currentFilter.div && currentFilter.div.min!=null && (s.div==null || s.div < currentFilter.div.min)) return false;
-    return true;
-  });
-  scrTable.setRows(rows);
-}
-
-function applyStrategy(){
-  const sel = document.getElementById('strategySel').value;
-  if(sel==='custom') return;
-  const s = STRATEGIES[sel];
-  currentFilter = {...s};
-  syncFilterUI();
-  renderTable();
-}
-
-function applyCustomFilter(){
-  const min = parseFloat(document.getElementById('fMin').value);
-  const max = parseFloat(document.getElementById('fMax').value);
-  const active = document.querySelector('.toolbar .seg button.on');
-  if(!active) return alert('請先選擇要設定的指標（PE/PB/ROE/EPS/漲跌%/殖利率）');
-  const field = active.id.replace('btn','').toLowerCase();
-  currentFilter[field] = currentFilter[field] || {};
-  if(!isNaN(min)) currentFilter[field].min = min;
-  if(!isNaN(max)) currentFilter[field].max = max;
-  renderTable();
-}
-
-function setFilter(field, min, max){
-  // 清除其他按鈕
-  document.querySelectorAll('.toolbar .seg button').forEach(b=>b.classList.remove('on'));
-  document.getElementById('btn'+field.toUpperCase()).classList.add('on');
-  document.getElementById('fMin').value = min || '';
-  document.getElementById('fMax').value = max || '';
-}
-
-function syncFilterUI(){
-  // TODO: 同步 UI 到 currentFilter
-}
-
-function resetFilters(){
-  currentFilter = { pe: null, pb: null, roe: null, eps: null, chg: null, div: null };
-  document.querySelectorAll('.toolbar .seg button').forEach(b=>b.classList.remove('on'));
-  document.getElementById('fMin').value = '';
-  document.getElementById('fMax').value = '';
-  document.getElementById('strategySel').value = 'custom';
-  renderTable();
-}
-
-// 個股大圖表
-let scrKline = null;
-function addMacd(){
-  const k = document.getElementById('scrKline');
-  if(k && k.addLine) k.addLine({type:'macd', fast:12, slow:26, signal:9, color:'#2563eb', histColor:'#93c5fd'});
-}
-function addKd(){
-  const k = document.getElementById('scrKline');
-  if(k && k.addLine) k.addLine({type:'kd', kPeriod:9, dPeriod:3, color:'#16a34a', dColor:'#86efac'});
-}
-function clearInd(){
-  const k = document.getElementById('scrKline');
-  if(k && k.removeAll) k.removeAll();
-}
-
-// 初始化
-loadData().then(()=>{
-  if(typeof MKLAB !== 'undefined'){
-    scrTable = MKLAB.DataTable('scrTable', {
-      cols: ['sym','price','chg','pe','pb','eps','roe','roa','score','trend','ind'],
-      rows: [],
-      pageSize: 10,
-      pagerId: 'scrPager',
-      defaultSort: 'score',
-    });
-    MKLAB.Shell.mount({ active:'screener' });
-    // 初始化 K 線
-    const k = document.getElementById('scrKline');
-    if(k) k.setAttribute('data-symbol', '2330');
+  const TOP100=(function(){ const base=[["2330","台積電"],["2317","鴻海"],["2454","聯發科"],["2303","聯電"],["2308","台達電"],["2412","中華電"],["6505","台塑化"],["1303","南亞"],["2882","國泰金"],["2881","富邦金"],["2891","中信金"],["3711","日月光投控"],["3008","大立光"],["2327","國巨"],["8046","南電"],["2382","廣達"],["2376","技嘉"],["2379","瑞昱"],["3034","聯詠"],["3231","緯創"]]; const out=[]; let s=42; function rnd(){ s=(s*1103515245+12345)&0x7fffffff; return s/0x7fffffff; } for(let i=0;i<100;i++){ const b=base[i%base.length]; const sym=i<base.length?b[0]:(2000+i); const name=i<base.length?b[1]:("個股"+i); out.push({sym,name,price:+(20+rnd()*1800).toFixed(1),chg:+((rnd()-0.45)*10).toFixed(2),pe:+(5+rnd()*40).toFixed(1),pb:+(0.5+rnd()*9).toFixed(2),roe:+(2+rnd()*40).toFixed(1),roa:+(1+rnd()*20).toFixed(1),eg:+(-5+rnd()*30).toFixed(1),rsi:+(20+rnd()*75).toFixed(0),ma5:rnd()>0.4,ma10:rnd()>0.45,ma30:rnd()>0.5,cap:+(500+rnd()*9000).toFixed(0),div:+(0+rnd()*6).toFixed(1)}); } return out; })();
+  function sync(id){ const v=document.getElementById(id).value; const span=document.getElementById('v_'+id.slice(2)); if(span) span.textContent=v; }
+  const TPLS={ value:{f_pe:20,f_pb:5,f_div:3,f_roe:0,f_roa:0,f_eg:0,f_rsi:0,f_chg:0,f_cap:0}, quality:{f_pe:99,f_pb:99,f_div:0,f_roe:15,f_roa:8,f_eg:0,f_rsi:0,f_chg:0,f_cap:0}, growth:{f_pe:99,f_pb:99,f_div:0,f_roe:0,f_roa:0,f_eg:20,f_rsi:0,f_chg:0,f_cap:0}, momentum:{f_pe:99,f_pb:99,f_div:0,f_roe:0,f_roa:0,f_eg:0,f_rsi:70,f_chg:1,f_cap:0}, dividend:{f_pe:99,f_pb:99,f_div:5,f_roe:0,f_roa:0,f_eg:0,f_rsi:0,f_chg:0,f_cap:0} };
+  function tpl(name){ const t=TPLS[name]; if(!t)return; for(const k in t){ const el=document.getElementById(k); if(el){ el.value=t[k]; const span=document.getElementById('v_'+k.slice(2)); if(span) span.textContent=t[k]; } } apply(); }
+  let current=[];
+  function loadScreener(){
+    fetch('data/stocks.json').then(r=>{ if(!r.ok) throw new Error('no'); return r.json(); }).then(d=>{
+      if(d && Array.isArray(d.stocks) && d.stocks.length){
+        current=d.stocks.map(s=>({sym:s.sym,name:s.name,price:s.price,chg:s.chg,pe:s.pe,pb:s.pb,roe:s.roe,roa:s.roa,eg:(s.eps||0),rsi:(s.rsi!=null?s.rsi:50),ma5:s.chg>=0,ma10:s.chg>=0,ma30:s.chg>=0,cap:(s.market_cap!=null?(s.market_cap/1e8):0),div:(s.div||0)}));
+        apply();
+        const asof=d.meta&&d.meta.as_of;
+        if(asof){ const f=document.querySelector('.freshness'); if(f) f.textContent='資料以 '+asof+' 收盤為準（Build-Time 自動更新）'; }
+      }
+    }).catch(()=>{ const c=document.getElementById('count'); if(c) c.textContent='資料載入失敗（stocks.json 不存在或格式錯誤）'; });
   }
-});
-
-async function loadData(){
-  try{
-    const r = await fetch('data/stocks.json');
-    const d = await r.json();
-    if(d && d.stocks){
-      allStocks = d.stocks.map(s=>({
-        sym: s.sym, name: s.name, price: s.price, chg: s.chg,
-        pe: s.pe, pb: s.pb, eps: s.eps, roe: s.roe, roa: s.roa,
-        div: s.div, ind: s.ind, spct: s.spct,
-        score: calcScore(s), trend: s.spct!=null?(s.spct>0?'+':'')+s.spct+'%':null
-      }));
-      renderTable();
-      document.querySelector('.freshness').textContent = `資料以 ${d.meta?.as_of || '2026-07-13'} 收盤為準（Build-Time 自動更新）`;
+  const PER=10;
+  function loadSymbol(){
+    const v=document.getElementById('symInput').value.trim(); if(!v) return;
+    const hit=current.find(x=>String(x.sym)===v);
+    if(hit){ if(!current.slice(0,200).includes(hit)) current.unshift(hit); }
+    else { window.location.href='mklab-stock-research.html?sym='+encodeURIComponent(v); return; }
+    apply();
+  }
+  let resTable=null;
+  function apply(){
+    const g=id=>parseFloat(document.getElementById(id).value)||0; const pe=g('f_pe'),pb=g('f_pb'),div=g('f_div'),roe=g('f_roe'),roa=g('f_roa'),eg=g('f_eg'),rsi=g('f_rsi'),chg=g('f_chg'),cap=g('f_cap'); const ma=document.getElementById('f_ma').value; const ge=(a,b)=> a==null ? true : a>=b; const le=(a,b)=> a==null ? true : a<=b;
+    const rows=current.filter(s=> le(s.pe,pe)&&le(s.pb,pb)&&ge(s.div,div)&&ge(s.roe,roe)&&ge(s.roa,roa)&&ge(s.eg,eg)&&ge(s.rsi,rsi)&&ge(s.chg,chg)&&ge(s.cap,cap)&&(ma==='any'||(ma==='ma5'&&s.ma5)||(ma==='ma10'&&s.ma10)||(ma==='ma30'&&s.ma30)));
+    document.getElementById('count').textContent=`符合：${rows.length} / ${current.length} 檔`;
+    if(!resTable){
+      resTable = MKLAB.DataTable('resTable', { cols:['sym','name','price','chg','pe','pb','roe','rsi','cap'], rows:rows, pageSize:PER, pagerId:'pager', defaultSort:'roe' });
+    } else {
+      resTable.setRows(rows);
     }
-  }catch(e){console.error(e)}
-}
-
-function calcScore(s){
-  let score=0, any=false;
-  if(s.roe!=null){ score += Math.max(0, Math.min(40, s.roe*1.2)); any=true; }
-  if(s.pe!=null){ score += Math.max(0, Math.min(20, (30-s.pe)*1.0)); any=true; }
-  if(s.pb!=null){ score += Math.max(0, Math.min(15, (8-s.pb)*2.0)); any=true; }
-  if(s.eps!=null){ score += Math.max(0, Math.min(10, s.eps*0.3)); any=true; }
-  if(!any) return -1;
-  return Math.round(Math.max(0, Math.min(100, score)));
-}
-</script>
-</body>
-</html>
+  }
+  function openDrawer(){ MKLAB.Drawer.open(); }
+  function closeDrawer(){ MKLAB.Drawer.close(); }
+  apply(); loadScreener();
+  MKLAB.initDrawer();
+  MKLAB.Shell.mount({ active:'screener' });
+  </script>
+</body></html>
