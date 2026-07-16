@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>mklab-stock Market 原型 v11</title>
+<base href="/mklab-stock/">
 <style>
   :root { --bg:#f7f8fa; --surface:#fff; --ink:#1a1d21; --muted:#6b7280; --border:#e5e7eb; --accent:#2563eb; --up:#dc2626; --down:#16a34a; --row-hover:#eff6ff; --radius:12px; --shadow:0 1px 3px rgba(0,0,0,.08); }
   [data-theme="dark"] { --bg:#0f1115; --surface:#171a21; --ink:#e8eaed; --muted:#9aa0a6; --border:#2a2f3a; --accent:#3b82f6; --up:#f87171; --down:#4ade80; --row-hover:#1e2a3a; --shadow:0 1px 3px rgba(0,0,0,.4); }
@@ -92,6 +93,9 @@
 </style>
 <script src="vendor/lightweight-charts.min.js"></script>
 <script src="data/twii_kdata.js"></script>
+<script src="assets/mklab-core.js"></script>
+<script src="assets/data-client.js"></script>
+<script src="assets/mklab-wc.js"></script>
 </head>
 <body>
   <nav id="mainNav" class="nav"></nav>
@@ -107,16 +111,16 @@
     <div class="cards" id="indices5"></div>
 
     <!-- 版塊 2：台股加權 + 績效表 -->
-    <div class="section-title">Market Health &amp; Exposure（^TWII · 近 1 年）</div>
-    <div class="mh-layout">
-      <div class="tv-box">
-        <div id="tv_chart" style="height:46vh;min-height:320px"></div>
-      </div>
-      <div class="perf">
-        <h3>績效表現</h3>
-        <table id="perfTable"></table>
-      </div>
-    </div>
+        <div class="section-title">Market Health & Exposure（^TWII · 近 1 年）</div>
+        <div class="mh-layout">
+          <div class="tv-box">
+            <mklab-kline id="marketKline" data-symbol="TWII" height="460"></mklab-kline>
+          </div>
+          <div class="perf">
+            <h3>績效表現</h3>
+            <table id="perfTable"></table>
+          </div>
+        </div>
 
     <!-- 版塊 3：VIX / CNN / 匯率 / 黃金 / 石油 -->
     <div class="section-title">市場情緒與原物料</div>
@@ -301,66 +305,15 @@
   function toggle(id){ document.getElementById(id).classList.toggle("on"); }
   renderWatch(); renderInd(); loadStocks();
   MKLAB.initDrawer();
-  MKLAB.Shell.mount({ active:'market' });
-
-  // ===== 版塊 2：KLineChart 自託管（K線，真實 TWII 2026-07-13 收盤）=====
-  function genKData(n,seed){ // 生成示意日 K 線（lightweight-charts 格式：time=YYYY-MM-DD）
-    const o=[]; let p=seed; const base=new Date(2025,6,14);
-    for(let i=0;i<n;i++){ base.setDate(base.getDate()+1);
-      const open=p; const close=+(p+(Math.random()-0.48)*seed*0.03).toFixed(1);
-      const high=+(Math.max(open,close)+(Math.random()*seed*0.015)).toFixed(1);
-      const low=+(Math.min(open,close)-(Math.random()*seed*0.015)).toFixed(1);
-      const y=base.getFullYear(), m=String(base.getMonth()+1).padStart(2,'0'), d=String(base.getDate()).padStart(2,'0');
-      o.push({ time:`${y}-${m}-${d}`, open, high, low, close });
-      p=close;
-    } return o;
-  }
-  function calcMACD(data){ const c=data.map(d=>d.close); const ema=(p,acc)=>{ const k=2/(p+1); let prev=acc[0]; const out=[prev]; for(let i=1;i<c.length;i++){ prev=c[i]*k+prev*(1-k); out.push(prev);} return out; };
-    const e12=ema(12,c), e26=ema(26,c); const dif=e12.map((v,i)=>v-e26[i]); const dea=ema(9,dif);
-    const hist=dif.map((v,i)=>(v-dea[i]).toFixed(2)); const difR=dif.map(v=>+v.toFixed(2)); const deaR=dea.map(v=>+v.toFixed(2));
-    return data.map((d,i)=>({ time:d.time, dif:difR[i], dea:deaR[i], hist:+hist[i] }));
-  }
-  function calcKD(data){ const c=data.map(d=>d.close), h=data.map(d=>d.high), l=data.map(d=>d.low); const K=[],D=[]; let pk=50,pd=50;
-    for(let i=0;i<c.length;i++){ const lo=Math.min(...l.slice(Math.max(0,i-8),i+1)), hi=Math.max(...h.slice(Math.max(0,i-8),i+1)); const rsv=hi===lo?50:((c[i]-lo)/(hi-lo)*100); pk=pk+2/3*(rsv-pk); pd=pd+2/3*(pk-pd); K.push(+pk.toFixed(2)); D.push(+pd.toFixed(2)); }
-    return K.map((v,i)=>({ time:data[i].time, k:v, d:D[i] }));
-  }
-  let klChart=null, klSeries=null, klMacd=null, klKD=null, klInited=false;
-  function klInit(){
-    if(klInited||typeof LightweightCharts==='undefined') return;
-    const el=document.getElementById('tv_chart');
-    if(!el) return;
-    const h=el.clientHeight||360;
-    klChart=LightweightCharts.createChart(el, {
-      layout:{ background:{type:'solid', color:'transparent'}, textColor:'#94a3b8' },
-      grid:{ vertLines:{color:'rgba(148,163,184,0.1)'}, horzLines:{color:'rgba(148,163,184,0.1)'} },
-      rightPriceScale:{ borderColor:'rgba(148,163,184,0.2)' },
-      timeScale:{ borderColor:'rgba(148,163,184,0.2)', timeVisible:false },
-      crosshair:{ mode: LightweightCharts.CrosshairMode.Normal },
-      width: el.clientWidth, height: h
+    MKLAB.Shell.mount({ active:'market' });
+    // WC Market K線已由 <mklab-kline data-symbol="TWII"> 自動載入
+    // 績效表資料
+    MKLAB_DATA.indices().then(d=>{
+      if(d && d.indices){
+        const rows = Object.entries(d.indices).map(([k,v])=>`<tr><td>${k}</td><td>${v}</td></tr>`).join('');
+        document.getElementById('perfTable').innerHTML = '<tr><th>指數</th><th>收盤</th></tr>' + rows;
+      }
     });
-    klSeries=klChart.addCandlestickSeries({ upColor:'#ef4444', downColor:'#22c55e', borderUpColor:'#ef4444', borderDownColor:'#22c55e', wickUpColor:'#ef4444', wickDownColor:'#22c55e' });
-    try { klSeries.setData(TWII_KDATA); } catch(e){ console.warn('setData',e); }
-    klInited=true;
-    window.addEventListener('resize', ()=>{ if(klChart) klChart.resize(el.clientWidth, el.clientHeight||360); });
-  }
-  function klAddIndicator(name){
-    if(!klChart||!klSeries) return;
-    const d=klSeries.getData ? klSeries.getData() : [];
-    if(!d.length) return;
-    if(name==='MACD'){ if(klMacd) return; const m=calcMACD(d);
-      const pane=klChart.addPane ? klChart.addPane({}) : null;
-      const s1=klChart.addLineSeries({ color:'#3b82f6', lineWidth:1, priceScaleId:'macd' }); s1.setData(m.map(x=>({time:x.time,value:x.dif})));
-      const s2=klChart.addLineSeries({ color:'#f59e0b', lineWidth:1, priceScaleId:'macd' }); s2.setData(m.map(x=>({time:x.time,value:x.dea})));
-      klMacd=true;
-    } else if(name==='KDJ'||name==='KD'){ if(klKD) return; const k=calcKD(d);
-      const s3=klChart.addLineSeries({ color:'#a855f7', lineWidth:1 }); s3.setData(k.map(x=>({time:x.time,value:x.k})));
-      const s4=klChart.addLineSeries({ color:'#14b8a', lineWidth:1 }); s4.setData(k.map(x=>({time:x.time,value:x.d})));
-      klKD=true;
-    }
-  }
-  function klDraw(type){ /* lightweight-charts v4 standalone 免費版無 overlay 繪圖工具，暫保留介面 */ }
-  function klRemoveAll(){ if(klChart) klChart.remove(); klChart=null; klSeries=null; klMacd=null; klKD=null; klInited=false; }
-  function _initWhenReady(){ if(document.readyState!=='loading'){ klInit(); } else { document.addEventListener('DOMContentLoaded', klInit); } }
-  _initWhenReady();
-</script>
+  });
+  </script>
 </body></html>

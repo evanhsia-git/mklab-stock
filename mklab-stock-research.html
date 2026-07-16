@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>mklab-stock Research 原型 v11（個股研究中心）</title>
+<title>mklab-stock Research（WC 版）</title>
+<base href="/mklab-stock/">
 <style>
   :root { --bg:#0f1115; --surface:#171a21; --ink:#e8eaed; --muted:#9aa0a6; --border:#2a2f3a; --accent:#3b82f6; --up:#f87171; --down:#4ade80; --radius:10px; --shadow:0 1px 3px rgba(0,0,0,.4); }
   [data-theme="light"] { --bg:#f7f8fa; --surface:#fff; --ink:#1a1d21; --muted:#6b7280; --border:#e5e7eb; --accent:#2563eb; --up:#dc2626; --down:#16a34a; --shadow:0 1px 3px rgba(0,0,0,.08); }
@@ -21,6 +22,7 @@
   .fab-btn { width:40px; height:40px; border-radius:50%; border:1px solid var(--border); background:var(--surface); color:var(--ink); cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow); }
   .fab-btn svg { width:20px; height:20px; display:block; }
   .freshness { background:#fff7ed; color:#9a3412; font-size:12px; padding:6px 12px; border-bottom:1px solid var(--border); text-align:center; }
+  [data-theme="light"] .freshness { background:#fff7ed; color:#9a3412; }
   [data-theme="dark"] .freshness { background:#2a1d12; color:#fdba74; }
   .wrap { max-width:1200px; margin:0 auto; padding:12px; }
   @media (min-width:1024px){ .wrap{ padding:16px 24px; } }
@@ -41,53 +43,46 @@
   .pager button.on { background:var(--accent); color:#fff; border-color:var(--accent); }
   .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:14px; box-shadow:var(--shadow); margin-bottom:12px; }
   .card h3 { font-size:15px; margin-bottom:8px; }
-  .kv { display:grid; grid-template-columns:repeat(auto-fit,minmax(110px,1fr)); gap:10px; }
-  .kv .k { font-size:11px; color:var(--muted); } .kv .v { font-size:16px; font-weight:700; }
-  .chartbox { position:relative; height:160px; }
-  .chartbox svg { width:100%; height:160px; display:block; }
-  .tip { position:absolute; left:0; right:0; bottom:-20px; background:var(--surface); color:var(--ink); border:1px solid var(--border); border-radius:6px; padding:2px 6px; font-size:11px; text-align:center; box-shadow:var(--shadow); display:none; z-index:5; }
-  table { width:100%; border-collapse:collapse; }
-  th,td { padding:8px 6px; text-align:right; font-size:13px; border-bottom:1px solid var(--border); white-space:nowrap; }
-  th:first-child,td:first-child { text-align:left; }
-  th { font-size:12px; color:var(--muted); font-weight:600; }
-  .disclaimer { font-size:11px; color:var(--muted); text-align:center; padding:16px 12px; }
-  /* KLineChart 自託管 */
   .kline-toolbar { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; }
   .kline-toolbar button { padding:5px 10px; font-size:12px; border:1px solid var(--border); border-radius:8px; background:var(--bg); color:var(--ink); cursor:pointer; }
   .kline-toolbar button.on { background:var(--accent); color:#fff; border-color:var(--accent); }
-  /* drawer */
-  .toolbar { display:flex; align-items:center; gap:8px; margin:4px 4px 10px; flex-wrap:wrap; }
-  .toolbar label { font-size:13px; color:var(--muted); }
-  .toolbar select { background:var(--surface); color:var(--ink); border:1px solid var(--border); border-radius:8px; padding:6px 8px; font-size:13px; }
   .drawer-mask { position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:40; display:none; }
   .drawer-mask.open { display:block; }
   .drawer { position:fixed; top:0; right:0; height:100%; width:300px; max-width:85vw; background:var(--surface); border-left:1px solid var(--border); z-index:50; transform:translateX(100%); transition:transform .25s ease; padding:16px; overflow-y:auto; box-shadow:var(--shadow); }
   .drawer.open { transform:translateX(0); }
-  .drawer h3 { font-size:15px; margin-bottom:12px; }
-  .drawer h4 { font-size:13px; color:var(--muted); margin:16px 0 8px; }
-  .row { display:flex; align-items:center; justify-content:space-between; padding:8px 0; font-size:14px; }
-  .row input { width:90px; padding:4px 6px; border:1px solid var(--border); border-radius:6px; background:var(--bg); color:var(--ink); }
-  .switch { width:44px; height:24px; border-radius:12px; background:var(--border); position:relative; cursor:pointer; border:none; }
-  .switch.on { background:var(--accent); }
-  .switch::after { content:""; position:absolute; top:2px; left:2px; width:20px; height:20px; border-radius:50%; background:#fff; transition:left .2s; }
-  .switch.on::after { left:22px; }
-  .seg { display:flex; border:1px solid var(--border); border-radius:8px; overflow:hidden; }
-  .seg button { flex:1; padding:6px; background:var(--surface); color:var(--ink); border:none; font-size:13px; }
-  .seg button.on { background:var(--accent); color:#fff; }
-  .close-x { float:right; background:none; border:none; font-size:20px; color:var(--muted); cursor:pointer; }
-  .drawer a { color:var(--accent); text-decoration:none; }
-  .sys-note { font-size:12px; color:var(--muted); line-height:1.6; }
+  .disclaimer { font-size:11px; color:var(--muted); text-align:center; padding:16px 12px; }
+  mklab-kline { display:block; border:1px solid var(--border); border-radius:var(--radius); padding:8px; margin-bottom:8px; }
+  mklab-datatable { display:block; border:1px solid var(--border); border-radius:var(--radius); padding:8px; }
+  table { width:100%; border-collapse:collapse; }
+  th,td { padding:8px 6px; text-align:right; font-size:13px; border-bottom:1px solid var(--border); white-space:nowrap; }
+  th:first-child,td:first-child { text-align:left; }
+  th { font-size:12px; color:var(--muted); font-weight:600; }
 </style>
 <script src="vendor/lightweight-charts.min.js"></script>
+<script src="data/twii_kdata.js"></script>
+<script src="assets/mklab-core.js"></script>
+<script src="assets/data-client.js"></script>
+<script src="assets/mklab-wc.js"></script>
 </head>
 <body>
   <nav id="mainNav" class="nav"></nav>
   <div id="utilbar" class="utilbar"><span class="brand" id="brand"></span><span class="spacer"></span></div>
-  <div class="freshness">資料以 2026-07-13 收盤為準（前一日，非即時）</div>
-  <div class="drawer-mask" onclick="MKLAB.Drawer.close()"></div>
-  <aside class="drawer" id="drawer">
-    <button class="close-x" onclick="MKLAB.Drawer.close()">×</button>
-  </aside>
+  <div class="freshness">資料以 2026-07-15 收盤為準（WC 版）</div>
+
+  <!-- WC 抽屜元件 -->
+  <mklab-drawer trigger=".mklab-drawer-trigger" position="right" title="設定" theme-key="mklab-theme" lang-key="mklab-lang">
+    <h4>主題</h4>
+    <label class="row">
+      <span>深色模式</span>
+      <button class="switch" id="themeSwitch" onclick="toggleTheme()"></button>
+    </label>
+    <h4>語言</h4>
+    <div class="seg">
+      <button onclick="setLang('zh')">繁中</button>
+      <button onclick="setLang('en')">English</button>
+    </div>
+  </mklab-drawer>
+
   <div class="wrap">
     <div class="layout">
       <div class="panel">
@@ -102,137 +97,165 @@
       <div>
         <!-- 區塊 1：個股摘要 -->
         <div class="card" id="infoCard"></div>
-        <!-- 區塊 2：歷史價格圖（K線 + MACD + KD + 畫線） -->
+        <!-- 區塊 2：歷史價格圖（WC mklab-kline） -->
         <div class="card">
-          <h3>歷史價格圖（K線 + MACD + KD，自託管 KLineChart）</h3>
+          <h3>歷史價格圖（WC <mklab-kline> + MACD/KD）</h3>
           <div class="kline-toolbar">
-            <button onclick="klAddIndicator('MACD')">MACD</button>
-            <button onclick="klAddIndicator('KDJ')">KD</button>
-            <button onclick="klDraw('segment')">畫線</button>
-            <button onclick="klDraw('horizontalStraightLine')">水平線</button>
-            <button onclick="klDraw('fibonacciLine')">費波那契</button>
-            <button onclick="klRemoveAll()">清除</button>
+            <button onclick="klAddIndicatorWC('MACD')">MACD</button>
+            <button onclick="klAddIndicatorWC('KDJ')">KD</button>
+            <button onclick="klDrawWC('segment')">畫線</button>
+            <button onclick="klDrawWC('horizontalStraightLine')">水平線</button>
+            <button onclick="klDrawWC('fibonacciLine')">費波那契</button>
+            <button onclick="klRemoveAllWC()">清除</button>
           </div>
-          <div id="priceChart" style="height:42vh;min-height:300px"></div>
+          <mklab-kline id="wcKline" height="400"></mklab-kline>
         </div>
-        <!-- 區塊 3：財報摘要（真實資料，來自 stocks.json） -->
+        <!-- 區塊 3：財報摘要（WC mklab-datatable） -->
         <div class="card">
-          <h3>財報摘要（最新年度，來源 stocks.json）</h3>
-          <table id="finTable"></table>
+          <h3>財報摘要（最新年度，WC <mklab-datatable>）</h3>
+          <mklab-datatable id="wcFinTable" cols="sym,name,price,chg,pe,pb,roe,roa,eps,div" src="stocks.json" page-size="10"></mklab-datatable>
         </div>
       </div>
     </div>
   </div>
-<script src="assets/mklab-core.js"></script>
+
 <script>
-  let STOCKS={};
-  // 圖表相關變數提前宣告，避免 klRender/klInit 在 TDZ 存取（原本 let 在腳本中段導致 ReferenceError）
-  let rChart=null, rSeries=null, rMacd=false, rKD=false, rInited=false;
-  const STATIC={
-    "2330":{name:"台積電",price:1050,chg:+1.2,pe:24.1,pb:5.2,roe:28.1,roa:15.3,eps:43.6,div:2.1,mc:"27.2兆",sector:"半導體",fin:[["2023",43.6,28.1,2.1],["2024",48.2,30.5,2.3],["2025E",52.0,31.0,2.5]]},
-    "2317":{name:"鴻海",price:215,chg:+0.9,pe:18.3,pb:2.1,roe:14.2,roa:6.8,eps:11.7,div:3.8,mc:"2.9兆",sector:"電子代工",fin:[["2023",11.7,14.2,3.8],["2024",12.5,15.0,4.0],["2025E",13.0,15.5,4.2]]},
-    "2454":{name:"聯發科",price:1280,chg:-0.5,pe:30.2,pb:4.8,roe:22.5,roa:14.0,eps:42.4,div:2.5,mc:"2.0兆",sector:"IC設計",fin:[["2023",42.4,22.5,2.5],["2024",46.0,23.1,2.7],["2025E",50.0,24.0,2.9]]},
-  };
-  function loadAll(){ return fetch('data/stocks.json').then(r=>r.json()).then(d=>{ if(d&&Array.isArray(d.stocks)){ const o={}; d.stocks.forEach(s=>{ if(s.sym) o[s.sym]={name:s.name,price:s.price,chg:s.chg,pe:s.pe,pb:s.pb,roe:s.roe,roa:s.roa,eps:s.eps,div:s.div,mc:(s.market_cap!=null?(s.market_cap/1e8).toFixed(1)+'兆':null),sector:s.ind,fin:[]}; }); STOCKS=Object.assign({},STATIC,o); } else { STOCKS=Object.assign({},STATIC); } renderList(); }).catch(()=>{ STOCKS=Object.assign({},STATIC); renderList(); }); }
-  function spark(data,color,w,h){ const min=Math.min(...data),max=Math.max(...data),r=(max-min)||1; const p=data.map((d,i)=>`${(i/(data.length-1)*w).toFixed(1)},${(h-((d-min)/r*h)).toFixed(1)}`).join(" "); return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><polyline points="${p}" fill="none" stroke="${color}" stroke-width="1.5"/></svg>`; }
-  function gen(seed,n){ const o=[]; let p=seed; for(let i=0;i<n;i++){ p+=(Math.random()-0.45)*seed*0.02; o.push(+p.toFixed(2)); } return o; }
-  function tip(id,t){ const el=document.getElementById(id); const x=el.querySelector('.tip'); if(x){x.textContent=t;x.style.display='block';} }
-  function untip(id){ const el=document.getElementById(id); const x=el.querySelector('.tip'); if(x)x.style.display='none'; }
-  let symPage = 1;
-  const SYM_PER = 10;
-  function renderList(){
-    const keys = Object.keys(STOCKS);
-    const totalPages = Math.max(1, Math.ceil(keys.length / SYM_PER));
-    if(symPage > totalPages) symPage = totalPages;
-    const start = (symPage-1)*SYM_PER;
-    const pageKeys = keys.slice(start, start+SYM_PER);
-    document.getElementById('symlist').innerHTML = pageKeys.map(s=>{
-      const m = STOCKS[s];
-      return `<div data-s="${s}" onclick="sel('${s}')">${s} ${m.name}</div>`;
-    }).join("");
-    const pager = document.getElementById('symPager');
-    if(pager){
-      let b='';
-      for(let i=1;i<=totalPages;i++) b += `<button class="${i===symPage?'on':''}" onclick="gotoSymPage(${i})">${i}</button>`;
-      pager.innerHTML = b;
+/* ============ WC 研究頁專用邏輯 ============ */
+let STOCKS = {};
+const STATIC = {
+  "2330":{name:"台積電",price:1050,chg:+1.2,pe:24.1,pb:5.2,roe:28.1,roa:15.3,eps:43.6,div:2.1,mc:"27.2兆",sector:"半導體",fin:[["2023",43.6,28.1,2.1],["2024",48.2,30.5,2.3],["2025E",52.0,31.0,2.5]]},
+  "2317":{name:"鴻海",price:215,chg:+0.9,pe:18.3,pb:2.1,roe:14.2,roa:6.8,eps:11.7,div:3.8,mc:"2.9兆",sector:"電子代工",fin:[["2023",11.7,14.2,3.8],["2024",12.5,15.0,4.0],["2025E",13.0,15.5,4.2]]},
+  "2454":{name:"聯發科",price:1280,chg:-0.5,pe:30.2,pb:4.8,roe:22.5,roa:14.0,eps:42.4,div:2.5,mc:"2.0兆",sector:"IC設計",fin:[["2023",42.4,22.5,2.5],["2024",46.0,23.1,2.7],["2025E",50.0,24.0,2.9]]},
+};
+
+let wcKline = null;
+let wcFinTable = null;
+
+function loadAll(){
+  return fetch('data/stocks.json').then(r=>r.json()).then(d=>{
+    if(d && Array.isArray(d.stocks)){
+      const o={};
+      d.stocks.forEach(s=>{ if(s.sym) o[s.sym]={name:s.name,price:s.price,chg:s.chg,pe:s.pe,pb:s.pb,roe:s.roe,roa:s.roa,eps:s.eps,div:s.div,mc:(s.market_cap!=null?(s.market_cap/1e8).toFixed(1)+'兆':null),sector:s.ind,fin:[]}; });
+      STOCKS = Object.assign({}, STATIC, o);
+    } else { STOCKS = Object.assign({}, STATIC); }
+    renderList();
+  }).catch(()=>{ STOCKS = Object.assign({}, STATIC); renderList(); });
+}
+
+function search(){
+  const v=document.getElementById('q2').value.trim().toLowerCase();
+  if(!v){ renderList(); return; }
+  const hits=Object.keys(STOCKS).filter(k=>k.toLowerCase().includes(v)||(STOCKS[k].name||'').toLowerCase().includes(v)).slice(0,12);
+  document.getElementById('symlist').innerHTML=hits.map(k=>`<div data-s="${k}" onclick="sel('${k}')">${k} ${STOCKS[k].name}</div>`).join('')||`<div style="color:var(--muted);padding:8px">無符合代號</div>`;
+  if(hits.length===1 && STOCKS[hits[0]]) sel(hits[0]);
+}
+
+let symPage = 1;
+const SYM_PER = 10;
+function renderList(){
+  const keys = Object.keys(STOCKS);
+  const totalPages = Math.max(1, Math.ceil(keys.length / SYM_PER));
+  if(symPage > totalPages) symPage = totalPages;
+  const start = (symPage-1)*SYM_PER;
+  const pageKeys = keys.slice(start, start+SYM_PER);
+  document.getElementById('symlist').innerHTML = pageKeys.map(s=>{
+    const m = STOCKS[s];
+    return `<div data-s="${s}" onclick="sel('${s}')">${s} ${m.name}</div>`;
+  }).join("");
+  const pager = document.getElementById('symPager');
+  if(pager){
+    let b='';
+    for(let i=1;i<=totalPages;i++) b += `<button class="${i===symPage?'on':''}" onclick="gotoSymPage(${i})">${i}</button>`;
+    pager.innerHTML = b;
+  }
+}
+function gotoSymPage(p){ symPage = p; renderList(); }
+
+function sel(sym){
+  if(!STOCKS[sym]) return;
+  document.querySelectorAll('#symlist div').forEach(d=>d.classList.toggle('on',d.dataset.s===sym));
+  const m = STOCKS[sym];
+  const chgCls = m.chg>=0 ? 'up' : 'down';
+  const chgTxt = (m.chg>0?'+':'') + m.chg + '%';
+  const kv = (k,v)=>'<div><div class="k">'+k+'</div><div class="v">'+v+'</div></div>';
+  document.getElementById('infoCard').innerHTML =
+    '<h3>'+sym+' '+m.name+' <span class="'+chgCls+'">'+chgTxt+'</span></h3>' +
+    '<div class="kv">'+
+      kv('價格', m.price!=null?m.price:'-')+kv('PE', m.pe!=null?m.pe:'-')+kv('PB', m.pb!=null?m.pb:'-')+
+      kv('ROE', (m.roe!=null?m.roe.toFixed(1):'-')+'%')+kv('EPS', m.eps!=null?m.eps:'-')+kv('殖利率', (m.div!=null?m.div:'-')+'%')+
+      kv('市值', m.mc)+kv('產業', '<span style="font-size:13px">'+m.sector+'</span>')+
+    '</div>';
+  // WC K線：data-symbol 觸發屬性驅動
+  const k = document.getElementById('wcKline');
+  k.setAttribute('data-symbol', sym);
+  // 財報表格：data-client 已處理，WC 會自動渲染
+}
+
+function toggleTheme(){
+  const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('mklab-theme', theme);
+}
+function setLang(lang){
+  localStorage.setItem('mklab-lang', lang);
+  console.log('[WC] lang:', lang);
+}
+
+loadAll().then(()=>sel('2330')).catch(()=>{});
+
+// WC K線指標按鈕
+function klAddIndicatorWC(name){
+  const k = document.getElementById('wcKline');
+  if(!k._chart) return;
+  if(name==='MACD'){
+    // MACD 簡易計算並疊加
+    const data = k._series ? k._series._data : [];
+    if(!data.length) return;
+    // 簡易 MACD 計算
+    const closes = data.map(d=>d.close);
+    const ema = (period, arr)=>{ const k=2/(period+1); let prev=arr[0]; const out=[prev]; for(let i=1;i<arr.length;i++){ prev=arr[i]*k+prev*(1-k); out.push(prev);} return out; };
+    const e12=ema(12,closes), e26=ema(26,closes);
+    const dif=e12.map((v,i)=>v-e26[i]);
+    const dea=ema(9,dif);
+    const hist=dif.map((v,i)=>+ (v-dea[i]).toFixed(2));
+    const mData = data.map((d,i)=>({time:d.time, value:+dif[i].toFixed(2)}));
+    const m2Data = data.map((d,i)=>({time:d.time, value:+dea[i].toFixed(2)}));
+    k.addLine({color:'#3b82f6',lineWidth:1}).setData(mData);
+    k.addLine({color:'#f59e0b',lineWidth:1}).setData(m2Data);
+    k.addLine({color:'#64748b',lineWidth:1}).setData(data.map((d,i)=>({time:d.time,value:hist[i],color:hist[i]>=0?'#ef4444':'#22c55e'})));
+  } else if(name==='KDJ' || name==='KD'){
+    // KD 簡易計算
+    const data = k._series ? k._series._data : [];
+    if(!data.length) return;
+    const closes = data.map(d=>d.close), highs = data.map(d=>d.high), lows = data.map(d=>d.low);
+    const K=[], D=[]; let pk=50, pd=50;
+    for(let i=0;i<closes.length;i++){
+      const lo=Math.min(...lows.slice(Math.max(0,i-8),i+1));
+      const hi=Math.max(...highs.slice(Math.max(0,i-8),i+1));
+      const rsv = hi===lo ? 50 : ((closes[i]-lo)/(hi-lo)*100);
+      pk = pk + 2/3*(rsv-pk);
+      pd = pd + 2/3*(pk-pd);
+      K.push(+pk.toFixed(2));
+      D.push(+pd.toFixed(2));
     }
+    k.addLine({color:'#a855f7',lineWidth:1}).setData(data.map((d,i)=>({time:d.time,value:K[i]})));
+    k.addLine({color:'#14b8a6',lineWidth:1}).setData(data.map((d,i)=>({time:d.time,value:D[i]})));
   }
-  function gotoSymPage(p){ symPage = p; renderList(); }
-  function sel(s){
-    if(!STOCKS[s]) return;   // 資料未就緒時防護，避免 undefined 拋錯中斷腳本
-    document.querySelectorAll('#symlist div').forEach(d=>d.classList.toggle('on',d.dataset.s===s));
-    const m=STOCKS[s];
-    const chgCls = m.chg>=0 ? 'up' : 'down';
-    const chgTxt = (m.chg>0?'+':'') + m.chg + '%';
-    const kv = (k,v)=>'<div><div class="k">'+k+'</div><div class="v">'+v+'</div></div>';
-    document.getElementById('infoCard').innerHTML =
-      '<h3>'+s+' '+m.name+' <span class="'+chgCls+'">'+chgTxt+'</span></h3>' +
-      '<div class="kv">'+
-        kv('價格', m.price!=null?m.price:'-')+kv('PE', m.pe!=null?m.pe:'-')+kv('PB', m.pb!=null?m.pb:'-')+
-        kv('ROE', (m.roe!=null?m.roe.toFixed(1):'-')+'%')+kv('EPS', m.eps!=null?m.eps:'-')+kv('殖利率', (m.div!=null?m.div:'-')+'%')+
-        kv('市值', m.mc)+kv('產業', '<span style="font-size:13px">'+m.sector+'</span>')+
-      '</div>';
-    klRender(s);
-    // 財報摘要：讀真實資料（stocks.json 的 roe/roa/eps/div 為最新年度）
-    const fin = [
-      ["ROE%", m.roe!=null ? m.roe.toFixed(1) : '-'],
-      ["ROA%", m.roa!=null ? m.roa.toFixed(1) : '-'],
-      ["EPS", m.eps!=null ? m.eps : '-'],
-      ["殖利率%", m.div!=null ? m.div.toFixed(1) : '-'],
-      ["PE", m.pe!=null ? m.pe : '-'],
-      ["PB", m.pb!=null ? m.pb : '-'],
-    ];
-    document.getElementById('finTable').innerHTML=`<tr><th>指標</th><th>值</th></tr>`+fin.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join("");
-  }
-  function search(){ const v=document.getElementById('q2').value.trim().toLowerCase(); if(!v){ renderList(); return; } const hits=Object.keys(STOCKS).filter(k=>k.toLowerCase().includes(v)||(STOCKS[k].name||'').toLowerCase().includes(v)).slice(0,12); document.getElementById('symlist').innerHTML=hits.map(k=>`<div data-s="${k}" onclick="sel('${k}')">${k} ${STOCKS[k].name}</div>`).join('')||`<div style="color:var(--muted);padding:8px">無符合代號</div>`; if(hits.length===1 && STOCKS[hits[0]]) sel(hits[0]); }
-  function openDrawer(){ MKLAB.Drawer.open(); }
-  function closeDrawer(){ MKLAB.Drawer.close(); }
-  // 工具列與抽屜先初始化（不依賴資料，避免後續資料邏輯報錯中斷）
-  MKLAB.initDrawer();
-  MKLAB.Shell.mount({ active:'research' });
-  // 資料載入完成後再選預設個股；sel 本身有防護（STOCKS 未就緒時直接 return）
-  loadAll().then(()=>sel("2330")).catch(()=>{});
-  function genKData(n,seed){ const o=[]; let p=seed; const base=new Date(2025,6,14);
-    for(let i=0;i<n;i++){ base.setDate(base.getDate()+1);
-      const open=p; const close=+(p+(Math.random()-0.48)*seed*0.03).toFixed(1);
-      const high=+(Math.max(open,close)+(Math.random()*seed*0.015)).toFixed(1);
-      const low=+(Math.min(open,close)-(Math.random()*seed*0.015)).toFixed(1);
-      const y=base.getFullYear(), m=String(base.getMonth()+1).padStart(2,'0'), d=String(base.getDate()).padStart(2,'0');
-      o.push({ time:`${y}-${m}-${d}`, open, high, low, close }); p=close;
-    } return o;
-  }
-  function calcMACD(data){ const c=data.map(d=>d.close); const ema=(p,arr)=>{ const k=2/(p+1); let prev=arr[0]; const out=[prev]; for(let i=1;i<arr.length;i++){ prev=arr[i]*k+prev*(1-k); out.push(prev);} return out; };
-    const e12=ema(12,c), e26=ema(26,c); const dif=e12.map((v,i)=>v-e26[i]); const dea=ema(9,dif);
-    const hist=dif.map((v,i)=>+(v-dea[i]).toFixed(2)); const difR=dif.map(v=>+v.toFixed(2)); const deaR=dea.map(v=>+v.toFixed(2));
-    return data.map((d,i)=>({ time:d.time, dif:difR[i], dea:deaR[i], hist:+hist[i] }));
-  }
-  function calcKD(data){ const c=data.map(d=>d.close), h=data.map(d=>d.high), l=data.map(d=>d.low); const K=[],D=[]; let pk=50,pd=50;
-    for(let i=0;i<c.length;i++){ const lo=Math.min(...l.slice(Math.max(0,i-8),i+1)), hi=Math.max(...h.slice(Math.max(0,i-8),i+1)); const rsv=hi===lo?50:((c[i]-lo)/(hi-lo)*100); pk=pk+2/3*(rsv-pk); pd=pd+2/3*(pk-pd); K.push(+pk.toFixed(2)); D.push(+pd.toFixed(2)); }
-    return data.map((d,i)=>({ time:d.time, k:K[i], d:D[i] }));
-  }
-  function klInit(s){ if(rInited||typeof LightweightCharts==='undefined') return; const el=document.getElementById('priceChart'); if(!el) return; const h=el.clientHeight||360;
-    rChart=LightweightCharts.createChart(el, { layout:{background:{type:'solid',color:'transparent'},textColor:'#94a3b8'}, grid:{vertLines:{color:'rgba(148,163,184,0.1)'},horzLines:{color:'rgba(148,163,184,0.1)'}}, rightPriceScale:{borderColor:'rgba(148,163,184,0.2)'}, timeScale:{borderColor:'rgba(148,163,184,0.2)',timeVisible:false}, width:el.clientWidth, height:h });
-    rSeries=rChart.addCandlestickSeries({ upColor:'#ef4444', downColor:'#22c55e', borderUpColor:'#ef4444', borderDownColor:'#22c55e', wickUpColor:'#ef4444', wickDownColor:'#22c55e' });
-    try{ klineData=genKData(250, STOCKS[s]?STOCKS[s].price:100); rSeries.setData(klineData); }catch(e){ console.warn('setData',e); }
-    rInited=true;
-    window.addEventListener('resize', ()=>{ if(rChart) rChart.resize(el.clientWidth, el.clientHeight||360); });
-  }
-  function klRender(s){ if(rChart){ try{ rChart.remove(); }catch(e){} rInited=false; rChart=null; rSeries=null; rMacd=false; rKD=false; klineData=[]; } klInit(s); }
-  function klAddIndicator(name){ if(!rChart||!klineData.length) return; const d=klineData; if(!d.length) return;
-    if(name==='MACD'){ if(rMacd) return; const m=calcMACD(d); const s1=rChart.addLineSeries({color:'#3b82f6',lineWidth:1}); s1.setData(m.map(x=>({time:x.time,value:x.dif}))); const s2=rChart.addLineSeries({color:'#f59e0b',lineWidth:1}); s2.setData(m.map(x=>({time:x.time,value:x.dea}))); const s3=rChart.addHistogramSeries({color:'#64748b',priceScaleId:''}); s3.setData(m.map(x=>({time:x.time,value:x.hist,color:x.hist>=0?'#ef4444':'#22c55e'}))); rMacd=true; }
-    else if(name==='KDJ'||name==='KD'){ if(rKD) return; const k=calcKD(d); const s4=rChart.addLineSeries({color:'#a855f7',lineWidth:1}); s4.setData(k.map(x=>({time:x.time,value:x.k}))); const s5=rChart.addLineSeries({color:'#14b8a',lineWidth:1}); s5.setData(k.map(x=>({time:x.time,value:x.d}))); rKD=true; }
-  }
-  // 畫線功能：LightweightCharts v4 免費版無原生 overlay 繪圖工具，保留按鈕介面但提示
-  function klDraw(type){ console.info('畫線功能需 LightweightCharts 付費版或 klinecharts 庫，當前 v4.1.3 免費版不支援'); }
-  function klRemoveAll(){ if(rChart) rChart.remove(); rChart=null; rSeries=null; rMacd=false; rKD=false; rInited=false; }
-  function _initRWhenReady(){ if(document.readyState!=='loading'){ klRender('2330'); } else { document.addEventListener('DOMContentLoaded', ()=>klRender('2330')); } }
-  _initRWhenReady();
-  // 注意：sel('2330') 已由上方 loadAll().then 處理；此處只處理 ?sym= 搜尋跳轉參數
-  // 接收來自搜尋跳轉的 ?sym= 參數，自動選股
-  (function(){
-    const p=new URLSearchParams(location.search).get('sym');
-    if(p && STOCKS[p]){ document.getElementById('q2').value=p; sel(p); }
-    else if(p){ document.getElementById('q2').value=p; }
-  })();
+}
+function klDrawWC(type){ console.info('畫線功能需 LightweightCharts 付費版，當前 v4.1.3 免費版不支援'); }
+function klRemoveAllWC(){
+  const k = document.getElementById('wcKline');
+  if(k._chart){ try{ k._chart.remove(); }catch(e){} }
+  k._chart = null; k._series = null;
+  k.setAttribute('data-symbol', '');
+}
+
+// 主題/語言初始化
+customElements.whenDefined('mklab-drawer').then(()=>{
+  const theme = localStorage.getItem('mklab-theme') || 'dark';
+  const lang = localStorage.getItem('mklab-lang') || 'zh-TW';
+  document.documentElement.setAttribute('data-theme', theme);
+});
 </script>
-</body></html>
+</body>
+</html>
