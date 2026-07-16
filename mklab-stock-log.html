@@ -5,21 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>mklab-stock 開發日誌（WC 版）</title>
 <base href="/mklab-stock/">
+<link rel="stylesheet" href="assets/mklab-theme.css">
 <style>
-  :root { --bg:#0f1115; --surface:#171a21; --ink:#e8eaed; --muted:#9aa0a6; --border:#2a2f3a; --accent:#3b82f6; --up:#f87171; --down:#4ade80; --row-hover:#27374d; --radius:10px; --shadow:0 1px 3px rgba(0,0,0,.4); }
-  [data-theme="light"] { --bg:#f7f8fa; --surface:#fff; --ink:#1a1d21; --muted:#6b7280; --border:#e5e7eb; --accent:#2563eb; --up:#dc2626; --down:#16a34a; --row-hover:#eff6ff; --shadow:0 1px 3px rgba(0,0,0,.08); }
-  * { box-sizing:border-box; margin:0; padding:0; }
-  body { font-family:-apple-system,"Segoe UI","PingFang TC","Microsoft JhengHei",sans-serif; background:var(--bg); color:var(--ink); line-height:1.6; }
-  .nav { position:sticky; top:0; z-index:26; background:var(--surface); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:4px; padding:10px 12px; }
-  .nav a { color:var(--ink); text-decoration:none; font-size:14px; padding:6px 10px; border-radius:8px; white-space:nowrap; }
-  .nav a.active { background:var(--accent); color:#fff; }
-  .utilbar { position:sticky; top:49px; z-index:25; background:var(--surface); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; padding:8px 12px; }
-  .utilbar .spacer { flex:1; }
-  .brand { font-weight:700; font-size:15px; margin-right:4px; white-space:nowrap; }
-  .fab-btn { width:40px; height:40px; border-radius:50%; border:1px solid var(--border); background:var(--surface); color:var(--ink); cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow); }
-  .fab-btn svg { width:20px; height:20px; display:block; }
-  .wrap { max-width:900px; margin:0 auto; padding:12px; }
-  @media (min-width:1024px){ .wrap{ padding:16px 24px; } }
+  /* log (開發日誌) 獨有樣式 — 文件型頁面 */
   .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; box-shadow:var(--shadow); margin:12px 0; }
   .card h2 { font-size:16px; margin-bottom:10px; color:var(--accent); }
   .card h3 { font-size:14px; margin:14px 0 6px; color:var(--muted); }
@@ -27,11 +15,7 @@
   .kv:last-child { border-bottom:none; }
   .kv b { font-weight:700; }
   code { background:var(--bg); padding:2px 6px; border-radius:5px; font-size:13px; }
-  table { width:100%; border-collapse:collapse; margin-top:8px; }
-  th,td { padding:9px 8px; text-align:left; font-size:13px; border-bottom:1px solid var(--border); }
-  th { color:var(--muted); font-weight:600; }
   td.b { font-weight:700; color:var(--accent); }
-  tbody tr:hover { background:var(--row-hover); }
   .pill { display:inline-block; background:var(--row-hover); border:1px solid var(--border); border-radius:20px; padding:3px 10px; font-size:12px; margin:2px; }
   ul { padding-left:20px; font-size:14px; }
   li { margin:5px 0; }

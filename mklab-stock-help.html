@@ -4,19 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>mklab-stock 功能說明</title>
+<link rel="stylesheet" href="assets/mklab-theme.css">
 <style>
-  :root { --bg:#f7f8fa; --surface:#fff; --ink:#1a1d21; --muted:#6b7280; --border:#e5e7eb; --accent:#2563eb; --up:#dc2626; --down:#16a34a; --row-hover:#eff6ff; --radius:12px; --shadow:0 1px 3px rgba(0,0,0,.08); }
-  [data-theme="dark"] { --bg:#0f1115; --surface:#171a21; --ink:#e8eaed; --muted:#9aa0a6; --border:#2a2f3a; --accent:#3b82f6; --up:#f87171; --down:#4ade80; --row-hover:#1e2a3a; --shadow:0 1px 3px rgba(0,0,0,.4); }
-  * { box-sizing:border-box; margin:0; padding:0; }
-  body { font-family:-apple-system,"Segoe UI","PingFang TC","Microsoft JhengHei",sans-serif; background:var(--bg); color:var(--ink); line-height:1.6; padding-bottom:20px; }
-  .nav { position:sticky; top:0; z-index:25; background:var(--surface); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:4px; padding:10px 12px; }
-  .nav a { color:var(--ink); text-decoration:none; font-size:14px; padding:6px 10px; border-radius:8px; white-space:nowrap; }
-  .nav a.active { background:var(--accent); color:#fff; }
-  .utilbar { position:sticky; top:49px; z-index:24; background:var(--surface); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; padding:8px 12px; }
-  .utilbar .spacer { flex:1; }
-  .fab-btn { width:40px; height:40px; border-radius:50%; border:1px solid var(--border); background:var(--surface); color:var(--ink); cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow); text-decoration:none; }
-  .fab-btn svg { width:20px; height:20px; display:block; }
-  .wrap { max-width:760px; margin:0 auto; padding:16px; }
+  /* help 獨有樣式 — 文件型頁面 */
   .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; box-shadow:var(--shadow); margin:12px 0; }
   .card h2 { font-size:16px; margin-bottom:10px; color:var(--accent); }
   .card h3 { font-size:14px; margin:14px 0 6px; color:var(--muted); }
@@ -24,9 +14,6 @@
   .kv:last-child { border-bottom:none; }
   .kv b { font-weight:700; }
   code { background:var(--bg); padding:2px 6px; border-radius:5px; font-size:13px; }
-  table { width:100%; border-collapse:collapse; margin-top:8px; }
-  th,td { padding:9px 8px; text-align:left; font-size:13px; border-bottom:1px solid var(--border); }
-  th { color:var(--muted); font-weight:600; }
   td.b { font-weight:700; color:var(--accent); }
   .pill { display:inline-block; background:var(--row-hover); border:1px solid var(--border); border-radius:20px; padding:3px 10px; font-size:12px; margin:2px; }
   ul { padding-left:20px; font-size:14px; }
@@ -40,14 +27,13 @@
 </style>
 </head>
 <body>
-  <nav class="nav">
-    <a href="index.html">Market</a><a href="mklab-stock-screener.html">Screener</a><a href="mklab-stock-research.html">Research</a><a href="mklab-stock-industry.html">Industry</a><a href="mklab-stock-watchlist.html">Watchlist</a>
-  </nav>
-  <div class="utilbar">
-    <span class="brand">mklab-stock</span>
-    <span class="spacer"></span>
-    <a class="fab-btn" href="https://github.com/evanhsia-git/mklab-stock" target="_blank" title="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-1-2.6c3-.3 6-1.5 6-6.5a5 5 0 0 0-1.4-3.5a4.7 4.7 0 0 0-.1-3.5s-1.1-.3-3.5 1.3a12 12 0 0 0-6.3 0C6.5 1.3 5.4 1.6 5.4 1.6a4.7 4.7 0 0 0-.1 3.5A5 5 0 0 0 4 8.6c0 5 3 6.2 6 6.5a3.4 3.4 0 0 0-1 2.6V22"/></svg></a>
-  </div>
+  <nav id="mainNav" class="nav"></nav>
+  <div id="utilbar" class="utilbar"><span class="brand" id="brand"></span><span class="spacer"></span></div>
+  <div class="freshness">資料載入中…</div>
+  <div class="drawer-mask" onclick="MKLAB.Drawer.close()"></div>
+  <aside class="drawer" id="drawer">
+    <button class="close-x" onclick="MKLAB.Drawer.close()">×</button>
+  </aside>
 
   <div class="wrap">
     <div class="card">
@@ -119,5 +105,10 @@
 
     <div class="footer">mklab-stock · 靜態優先 · Fork First · 零外部依賴</div>
   </div>
+<script src="assets/mklab-core.js"></script>
+<script>
+  if (window.MKLAB && MKLAB.Shell) MKLAB.Shell.mount();
+  if (window.MKLAB && MKLAB.Drawer) MKLAB.Drawer.init();
+</script>
 </body>
 </html>
