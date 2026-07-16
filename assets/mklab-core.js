@@ -246,7 +246,7 @@
     system: {
       version: 'dashboard v3.0',
       source:  'TWSE/TPEX/Yahoo/Stooq',
-      updated: '2026-07-14 08:30',
+      updated: '2026-07-13 收盤 (Build-Time 自動更新)',
       status:  '● 正常運作',
     },
   };
@@ -266,6 +266,7 @@
     h += '<h4>說明</h4>';
     h += `<div class="row"><a href="${c.help.doc}">功能說明（使用/資料源/評分標準）↗</a></div>`;
     h += `<div class="row"><a href="${c.help.readme}" target="_blank" rel="noopener">GitHub README ↗</a></div>`;
+    h += `<div class="row"><a href="mklab-stock-log.html">開發日誌 ↗</a></div>`;
     h += '<h4>System</h4>';
     const s = c.system;
     h += `<div class="sys-note">版本：${s.version}<br>資料源：${s.source}<br>最後更新：${s.updated}<br>狀態：<span class="up">${s.status}</span></div>`;
@@ -366,8 +367,6 @@
     { key:'research',  label:'Research',  href:'mklab-stock-research.html' },
     { key:'industry',  label:'Industry',  href:'mklab-stock-industry.html' },
     { key:'watchlist', label:'Watchlist', href:'mklab-stock-watchlist.html' },
-    { key:'help',      label:'Help',      href:'mklab-stock-help.html' },
-    { key:'log',       label:'Log',       href:'mklab-stock-log.html' },
   ];
   const SHELL_CFG = {
     brand: 'mklab-stock',
