@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>mklab-stock Watchlist 原型 v11</title>
+<title>mklab-stock Watchlist（WC 版）</title>
+<base href="/mklab-stock/">
 <style>
   :root { --bg:#0f1115; --surface:#171a21; --ink:#e8eaed; --muted:#9aa0a6; --border:#2a2f3a; --accent:#3b82f6; --up:#f87171; --down:#4ade80; --warn:#fbbf24; --radius:10px; --shadow:0 1px 3px rgba(0,0,0,.4); }
   [data-theme="light"] { --bg:#f7f8fa; --surface:#fff; --ink:#1a1d21; --muted:#6b7280; --border:#e5e7eb; --accent:#2563eb; --up:#dc2626; --down:#16a34a; --warn:#d97706; --shadow:0 1px 3px rgba(0,0,0,.08); }
@@ -64,16 +65,39 @@
   .section-title .hint { font-weight:400; font-size:11px; color:var(--muted); }
   .freshness { background:#fff7ed; color:#9a3412; font-size:12px; padding:6px 12px; border-bottom:1px solid var(--border); text-align:center; }
   [data-theme="dark"] .freshness { background:#2a1d12; color:#fdba74; }
+  /* WC 元件樣式 */
+  mklab-datatable { display:block; border:1px solid var(--border); border-radius:var(--radius); padding:8px; }
+  mklab-drawer { display:block; }
 </style>
+<script src="vendor/lightweight-charts.min.js"></script>
+<script src="data/twii_kdata.js"></script>
+<script src="assets/mklab-core.js"></script>
+<script src="assets/data-client.js"></script>
+<script src="assets/mklab-wc.js"></script>
 </head>
 <body>
   <nav id="mainNav" class="nav"></nav>
   <div id="utilbar" class="utilbar"><span class="brand" id="brand"></span><span class="spacer"></span></div>
-  <div class="freshness">資料以 2026-07-13 收盤為準（前一日，非即時）</div>
+  <div class="freshness">資料以 2026-07-15 收盤為準（WC 版）</div>
   <div class="drawer-mask" onclick="MKLAB.Drawer.close()"></div>
   <aside class="drawer" id="drawer">
     <button class="close-x" onclick="MKLAB.Drawer.close()">×</button>
   </aside>
+
+  <!-- WC 抽屜元件 -->
+  <mklab-drawer trigger=".mklab-drawer-trigger" position="right" title="設定" theme-key="mklab-theme" lang-key="mklab-lang">
+    <h4>主題</h4>
+    <label class="row">
+      <span>深色模式</span>
+      <button class="switch" id="themeSwitch" onclick="toggleTheme()"></button>
+    </label>
+    <h4>語言</h4>
+    <div class="seg">
+      <button onclick="setLang('zh')">繁中</button>
+      <button onclick="setLang('en')">English</button>
+    </div>
+  </mklab-drawer>
+
   <div class="wrap">
     <div class="section-title">我的自選股<span class="hint">點表頭可排序</span></div>
     <div class="row-input">
@@ -81,43 +105,78 @@
       <button onclick="addSym()">加入</button>
     </div>
     <div class="table-wrap">
-      <table id="wlTable">
-        <thead></thead>
-        <tbody id="wlBody"></tbody>
-      </table>
+      <table id="wlTable"></table>
       <div class="pager" id="wlPager"></div>
     </div>
     <div class="disclaimer">自選股中心（示意）。Alert 支援價格/技術/法人提醒，生產環境可由 Actions 產出。</div>
   </div>
-<script src="assets/mklab-core.js"></script>
+
 <script>
-  let priceMap = {};
-  let wlTable = null;
-  function render(){
-    const rows = MKLAB.Watch.decorate(priceMap);
-    if(!wlTable){
-      wlTable = MKLAB.DataTable('wlTable', {
-        cols: ['sym','price','chg','pe','roe','alert','del'],
-        rows: rows,
-        pageSize: 10, pagerId: 'wlPager',
-        onDel: function(sym){ MKLAB.Watch.remove(sym); render(); },
-        ctx: {},
-      });
-    } else {
-      wlTable.setRows(rows);
+/* ============ Watchlist 專用邏輯 ============ */
+let priceMap = {};
+let wlTable = null;
+
+const SYM_NAME={"2330":"台積電","2317":"鴻海","2454":"聯發科","2308":"台達電","2303":"聯電","2412":"中華電","2882":"國泰金","6505":"台塑化","1303":"南亞","2891":"中信金","2881":"富邦金","2885":"元大金","2886":"兆豐金","2892":"第一金","2884":"玉山金","3008":"大立光","2301":"光寶科","2408":"南亞科","3711":"日月光投控","4938":"和碩","AAPL":"Apple","MSFT":"Microsoft","GOOGL":"Alphabet","NVDA":"Nvidia","600519":"貴州茅台","000001":"平安銀行","00700.HK":"騰訊","09988.HK":"阿里巴巴"};
+
+async function loadPrices(){
+  try{
+    const r=await fetch('data/stocks.json');
+    if(!r.ok) throw new Error('no');
+    const d=await r.json();
+    if(d && Array.isArray(d.stocks)){
+      d.stocks.forEach(s=>{ priceMap[s.sym]={price:s.price,chg:s.chg,pe:s.pe,roe:s.roe,alert:null}; });
+      render();
+      const asof=d.meta&&d.meta.as_of;
+      if(asof){ const f=document.querySelector('.freshness'); if(f) f.textContent='資料以 '+asof+' 收盤為準（Build-Time 自動更新）'; }
     }
+  }catch(e){ render(); }
+}
+
+function render(){
+  const rows = MKLAB.Watch.decorate(priceMap);
+  if(!wlTable){
+    wlTable = MKLAB.DataTable('wlTable', {
+      cols: ['sym','price','chg','pe','roe','alert','del'],
+      rows: rows,
+      pageSize: 10, pagerId: 'wlPager',
+      onDel: function(sym){ MKLAB.Watch.remove(sym); render(); },
+      ctx: {},
+    });
+  }else{
+    wlTable.setRows(rows);
   }
-  const SYM_NAME={"2330":"台積電","2317":"鴻海","2454":"聯發科","2308":"台達電","2303":"聯電","2412":"中華電","2882":"國泰金","6505":"台塑化","1303":"南亞","2891":"中信金","2881":"富邦金","2885":"元大金","2886":"兆豐金","2892":"第一金","2884":"玉山金","3008":"大立光","2301":"光寶科","2408":"南亞科","3711":"日月光投控","4938":"和碩","AAPL":"Apple","MSFT":"Microsoft","GOOGL":"Alphabet","NVDA":"Nvidia","600519":"貴州茅台","000001":"平安銀行","00700.HK":"騰訊","09988.HK":"阿里巴巴"};
-  function addSym(){ const v=document.getElementById('addSym').value.trim().toUpperCase(); if(!v) return; MKLAB.Watch.add(v, SYM_NAME[v]||""); document.getElementById('addSym').value=""; render(); }
-  function openDrawer(){ MKLAB.Drawer.open(); }
-  function closeDrawer(){ MKLAB.Drawer.close(); }
-  // 載入真實價格（stocks.json）後刷新自選
-  fetch('data/stocks.json').then(r=>r.json()).then(d=>{
-    if(d && Array.isArray(d.stocks)){ d.stocks.forEach(s=>{ priceMap[s.sym]={price:s.price,chg:s.chg,pe:s.pe,roe:s.roe,alert:null}; }); }
-    render();
-    const asof=d&&d.meta&&d.meta.as_of; if(asof){ const f=document.querySelector('.freshness'); if(f) f.textContent='資料以 '+asof+' 收盤為準（Build-Time 自動更新）'; }
-  }).catch(()=>{ render(); });
-  MKLAB.initDrawer();
-  MKLAB.Shell.mount({ active:'watchlist' });
+}
+
+function addSym(){
+  const v=document.getElementById('addSym').value.trim().toUpperCase();
+  if(!v) return;
+  MKLAB.Watch.add(v, SYM_NAME[v]||"");
+  document.getElementById('addSym').value="";
+  render();
+}
+
+function openDrawer(){ MKLAB.Drawer.open(); }
+function closeDrawer(){ MKLAB.Drawer.close(); }
+
+loadPrices();
+MKLAB.initDrawer();
+MKLAB.Shell.mount({ active:'watchlist' });
+
+/* 主題/語言初始化 */
+customElements.whenDefined('mklab-drawer').then(()=>{
+  const theme = localStorage.getItem('mklab-theme') || 'dark';
+  const lang = localStorage.getItem('mklab-lang') || 'zh-TW';
+  document.documentElement.setAttribute('data-theme', theme);
+});
+function toggleTheme(){
+  const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('mklab-theme', theme);
+}
+function setLang(lang){
+  localStorage.setItem('mklab-lang', lang);
+  console.log('[WC] lang:', lang);
+}
 </script>
-</body></html>
+</body>
+</html>

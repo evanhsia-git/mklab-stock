@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>mklab-stock Screener 原型 v11</title>
+<title>mklab-stock Screener（WC 版）</title>
+<base href="/mklab-stock/">
 <style>
   :root { --bg:#0f1115; --surface:#171a21; --ink:#e8eaed; --muted:#9aa0a6; --border:#2a2f3a; --accent:#3b82f6; --up:#f87171; --down:#4ade80; --row-hover:#1e2a3a; --radius:10px; --shadow:0 1px 3px rgba(0,0,0,.4); }
   [data-theme="light"] { --bg:#f7f8fa; --surface:#fff; --ink:#1a1d21; --muted:#6b7280; --border:#e5e7eb; --accent:#2563eb; --up:#dc2626; --down:#16a34a; --row-hover:#eff6ff; --shadow:0 1px 3px rgba(0,0,0,.08); }
@@ -37,27 +38,23 @@
   .cond input[type=number] { width:62px; padding:4px 6px; border:1px solid var(--border); border-radius:6px; background:var(--bg); color:var(--ink); }
   .cond input[type=range] { flex:1; min-width:80px; }
   .cond .rv { width:34px; text-align:right; font-variant-numeric:tabular-nums; color:var(--ink); font-weight:600; }
-  .chk label:hover { border-color:var(--accent); color:var(--accent); }
-  .cond select { padding:4px 6px; border:1px solid var(--border); border-radius:6px; background:var(--bg); color:var(--ink); }
   .chk { display:flex; flex-wrap:wrap; gap:6px; }
   .chk label { font-size:12px; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:4px 8px; cursor:pointer; }
+  .chk label:hover { border-color:var(--accent); color:var(--accent); }
   .row-input { display:flex; gap:6px; margin-bottom:10px; }
   .row-input input { flex:1; padding:8px; border:1px solid var(--border); border-radius:8px; background:var(--bg); color:var(--ink); }
   .row-input button { padding:8px 12px; background:var(--accent); color:#fff; border:none; border-radius:8px; cursor:pointer; }
   .count { font-size:12px; color:var(--muted); margin-bottom:8px; }
   .table-wrap { background:var(--surface); border-radius:var(--radius); box-shadow:var(--shadow); overflow-x:auto; }
-  table { width:100%; border-collapse:collapse; }
-  th,td { padding:9px 7px; text-align:right; font-size:13px; border-bottom:1px solid var(--border); white-space:nowrap; }
-  th:first-child,td:first-child { text-align:left; }
-  th { font-size:12px; color:var(--muted); font-weight:600; background:var(--surface); cursor:pointer; position:sticky; top:0; }
-  tbody tr:nth-child(even){ background:rgba(255,255,255,.02); }
-  tbody tr:hover { background:var(--row-hover); }
-  .sym { font-weight:600; } .sym small { color:var(--muted); font-weight:400; display:block; }
   .pager { display:flex; gap:6px; justify-content:center; margin:12px 0; flex-wrap:wrap; }
   .pager button { padding:6px 11px; border:1px solid var(--border); border-radius:8px; background:var(--surface); color:var(--ink); cursor:pointer; font-size:13px; }
+  .pager button:hover { background:var(--row-hover); }
   .pager button.on { background:var(--accent); color:#fff; border-color:var(--accent); }
   .disclaimer { font-size:11px; color:var(--muted); text-align:center; padding:16px 12px; }
-  /* drawer */
+  /* WC 元件樣式 */
+  mklab-datatable { display:block; border:1px solid var(--border); border-radius:var(--radius); padding:8px; }
+  mklab-drawer { display:block; }
+  /* drawer 共用樣式（保留原有以兼容） */
   .toolbar { display:flex; align-items:center; gap:8px; margin:4px 4px 10px; flex-wrap:wrap; }
   .toolbar label { font-size:13px; color:var(--muted); }
   .toolbar select { background:var(--surface); color:var(--ink); border:1px solid var(--border); border-radius:8px; padding:6px 8px; font-size:13px; }
@@ -80,15 +77,35 @@
   .drawer a { color:var(--accent); text-decoration:none; }
   .sys-note { font-size:12px; color:var(--muted); line-height:1.6; }
 </style>
+<script src="vendor/lightweight-charts.min.js"></script>
+<script src="data/twii_kdata.js"></script>
+<script src="assets/mklab-core.js"></script>
+<script src="assets/data-client.js"></script>
+<script src="assets/mklab-wc.js"></script>
 </head>
 <body>
   <nav id="mainNav" class="nav"></nav>
   <div id="utilbar" class="utilbar"><span class="brand" id="brand"></span><span class="spacer"></span></div>
-  <div class="freshness">資料以 2026-07-13 收盤為準（前一日，非即時）</div>
+  <div class="freshness">資料以 2026-07-15 收盤為準（WC 版）</div>
   <div class="drawer-mask" onclick="MKLAB.Drawer.close()"></div>
   <aside class="drawer" id="drawer">
     <button class="close-x" onclick="MKLAB.Drawer.close()">×</button>
   </aside>
+
+  <!-- WC 抽屜元件 -->
+  <mklab-drawer trigger=".mklab-drawer-trigger" position="right" title="設定" theme-key="mklab-theme" lang-key="mklab-lang">
+    <h4>主題</h4>
+    <label class="row">
+      <span>深色模式</span>
+      <button class="switch" id="themeSwitch" onclick="toggleTheme()"></button>
+    </label>
+    <h4>語言</h4>
+    <div class="seg">
+      <button onclick="setLang('zh')">繁中</button>
+      <button onclick="setLang('en')">English</button>
+    </div>
+  </mklab-drawer>
+
   <div class="wrap">
     <div class="layout">
       <div class="panel">
@@ -133,56 +150,115 @@
         </div>
         <div class="count" id="count"></div>
         <div class="table-wrap">
-          <table id="resTable">
-            <thead></thead>
-            <tbody id="resBody"></tbody>
-          </table>
+          <table id="resTable"></table>
         </div>
         <div class="pager" id="pager"></div>
-        <div class="disclaimer">預載台股市值 Top100（示意資料），篩選前端即時過濾，生產環境由 Build-Time 預算。每頁 10 檔。</div>
+        <div class="disclaimer">篩選結果即時前端過濾，生產環境由 Build-Time 預算。每頁 10 檔。</div>
       </div>
     </div>
   </div>
-<script src="assets/mklab-core.js"></script>
+
 <script>
-  const TOP100=(function(){ const base=[["2330","台積電"],["2317","鴻海"],["2454","聯發科"],["2303","聯電"],["2308","台達電"],["2412","中華電"],["6505","台塑化"],["1303","南亞"],["2882","國泰金"],["2881","富邦金"],["2891","中信金"],["3711","日月光投控"],["3008","大立光"],["2327","國巨"],["8046","南電"],["2382","廣達"],["2376","技嘉"],["2379","瑞昱"],["3034","聯詠"],["3231","緯創"]]; const out=[]; let s=42; function rnd(){ s=(s*1103515245+12345)&0x7fffffff; return s/0x7fffffff; } for(let i=0;i<100;i++){ const b=base[i%base.length]; const sym=i<base.length?b[0]:(2000+i); const name=i<base.length?b[1]:("個股"+i); out.push({sym,name,price:+(20+rnd()*1800).toFixed(1),chg:+((rnd()-0.45)*10).toFixed(2),pe:+(5+rnd()*40).toFixed(1),pb:+(0.5+rnd()*9).toFixed(2),roe:+(2+rnd()*40).toFixed(1),roa:+(1+rnd()*20).toFixed(1),eg:+(-5+rnd()*30).toFixed(1),rsi:+(20+rnd()*75).toFixed(0),ma5:rnd()>0.4,ma10:rnd()>0.45,ma30:rnd()>0.5,cap:+(500+rnd()*9000).toFixed(0),div:+(0+rnd()*6).toFixed(1)}); } return out; })();
-  function sync(id){ const v=document.getElementById(id).value; const span=document.getElementById('v_'+id.slice(2)); if(span) span.textContent=v; }
-  const TPLS={ value:{f_pe:20,f_pb:5,f_div:3,f_roe:0,f_roa:0,f_eg:0,f_rsi:0,f_chg:0,f_cap:0}, quality:{f_pe:99,f_pb:99,f_div:0,f_roe:15,f_roa:8,f_eg:0,f_rsi:0,f_chg:0,f_cap:0}, growth:{f_pe:99,f_pb:99,f_div:0,f_roe:0,f_roa:0,f_eg:20,f_rsi:0,f_chg:0,f_cap:0}, momentum:{f_pe:99,f_pb:99,f_div:0,f_roe:0,f_roa:0,f_eg:0,f_rsi:70,f_chg:1,f_cap:0}, dividend:{f_pe:99,f_pb:99,f_div:5,f_roe:0,f_roa:0,f_eg:0,f_rsi:0,f_chg:0,f_cap:0} };
-  function tpl(name){ const t=TPLS[name]; if(!t)return; for(const k in t){ const el=document.getElementById(k); if(el){ el.value=t[k]; const span=document.getElementById('v_'+k.slice(2)); if(span) span.textContent=t[k]; } } apply(); }
-  let current=[];
-  function loadScreener(){
-    fetch('data/stocks.json').then(r=>{ if(!r.ok) throw new Error('no'); return r.json(); }).then(d=>{
-      if(d && Array.isArray(d.stocks) && d.stocks.length){
-        current=d.stocks.map(s=>({sym:s.sym,name:s.name,price:s.price,chg:s.chg,pe:s.pe,pb:s.pb,roe:s.roe,roa:s.roa,eg:(s.eps||0),rsi:(s.rsi!=null?s.rsi:50),ma5:s.chg>=0,ma10:s.chg>=0,ma30:s.chg>=0,cap:(s.market_cap!=null?(s.market_cap/1e8):0),div:(s.div||0)}));
-        apply();
-        const asof=d.meta&&d.meta.as_of;
-        if(asof){ const f=document.querySelector('.freshness'); if(f) f.textContent='資料以 '+asof+' 收盤為準（Build-Time 自動更新）'; }
-      }
-    }).catch(()=>{ const c=document.getElementById('count'); if(c) c.textContent='資料載入失敗（stocks.json 不存在或格式錯誤）'; });
+/* ============ Screener 專用邏輯 ============ */
+const TPLS = {
+  value:  {f_pe:20,f_pb:5,f_div:3,f_roe:0,f_roa:0,f_eg:0,f_rsi:0,f_chg:0,f_cap:0},
+  quality:{f_pe:99,f_pb:99,f_div:0,f_roe:15,f_roa:8,f_eg:0,f_rsi:0,f_chg:0,f_cap:0},
+  growth: {f_pe:99,f_pb:99,f_div:0,f_roe:0,f_roa:0,f_eg:20,f_rsi:0,f_chg:0,f_cap:0},
+  momentum:{f_pe:99,f_pb:99,f_div:0,f_roe:0,f_roa:0,f_eg:0,f_rsi:70,f_chg:1,f_cap:0},
+  dividend:{f_pe:99,f_pb:99,f_div:5,f_roe:0,f_roa:0,f_eg:0,f_rsi:0,f_chg:0,f_cap:0}
+};
+function tpl(name){
+  const t=TPLS[name]; if(!t)return;
+  for(const k in t){
+    const el=document.getElementById(k);
+    if(el){ el.value=t[k]; const span=document.getElementById('v_'+k.slice(2)); if(span) span.textContent=t[k]; }
   }
-  const PER=10;
-  function loadSymbol(){
-    const v=document.getElementById('symInput').value.trim(); if(!v) return;
-    const hit=current.find(x=>String(x.sym)===v);
-    if(hit){ if(!current.slice(0,200).includes(hit)) current.unshift(hit); }
-    else { window.location.href='mklab-stock-research.html?sym='+encodeURIComponent(v); return; }
-    apply();
-  }
-  let resTable=null;
-  function apply(){
-    const g=id=>parseFloat(document.getElementById(id).value)||0; const pe=g('f_pe'),pb=g('f_pb'),div=g('f_div'),roe=g('f_roe'),roa=g('f_roa'),eg=g('f_eg'),rsi=g('f_rsi'),chg=g('f_chg'),cap=g('f_cap'); const ma=document.getElementById('f_ma').value; const ge=(a,b)=> a==null ? true : a>=b; const le=(a,b)=> a==null ? true : a<=b;
-    const rows=current.filter(s=> le(s.pe,pe)&&le(s.pb,pb)&&ge(s.div,div)&&ge(s.roe,roe)&&ge(s.roa,roa)&&ge(s.eg,eg)&&ge(s.rsi,rsi)&&ge(s.chg,chg)&&ge(s.cap,cap)&&(ma==='any'||(ma==='ma5'&&s.ma5)||(ma==='ma10'&&s.ma10)||(ma==='ma30'&&s.ma30)));
-    document.getElementById('count').textContent=`符合：${rows.length} / ${current.length} 檔`;
-    if(!resTable){
-      resTable = MKLAB.DataTable('resTable', { cols:['sym','name','price','chg','pe','pb','roe','rsi','cap'], rows:rows, pageSize:PER, pagerId:'pager', defaultSort:'roe' });
-    } else {
-      resTable.setRows(rows);
+  apply();
+}
+function sync(id){
+  const v=document.getElementById(id).value;
+  const span=document.getElementById('v_'+id.slice(2));
+  if(span) span.textContent=v;
+}
+
+let current=[];
+let resTable=null;
+const PER=10;
+
+async function loadScreener(){
+  try{
+    const r=await fetch('data/stocks.json');
+    if(!r.ok) throw new Error('no');
+    const d=await r.json();
+    if(d && Array.isArray(d.stocks) && d.stocks.length){
+      current=d.stocks.map(s=>({
+        sym:s.sym, name:s.name, price:s.price, chg:s.chg,
+        pe:s.pe, pb:s.pb, roe:s.roe, roa:s.roa, eg:(s.eps||0),
+        rsi:(s.rsi!=null?s.rsi:50),
+        ma5:s.chg>=0, ma10:s.chg>=0, ma30:s.chg>=0,
+        cap:(s.market_cap!=null?(s.market_cap/1e8):0),
+        div:(s.div||0)
+      }));
+      apply();
+      const asof=d.meta&&d.meta.as_of;
+      if(asof){ const f=document.querySelector('.freshness'); if(f) f.textContent='資料以 '+asof+' 收盤為準（Build-Time 自動更新）'; }
     }
+  }catch(e){
+    const c=document.getElementById('count'); if(c) c.textContent='資料載入失敗（stocks.json 不存在或格式錯誤）';
   }
-  function openDrawer(){ MKLAB.Drawer.open(); }
-  function closeDrawer(){ MKLAB.Drawer.close(); }
-  apply(); loadScreener();
-  MKLAB.initDrawer();
-  MKLAB.Shell.mount({ active:'screener' });
-  </script>
-</body></html>
+}
+
+function loadSymbol(){
+  const v=document.getElementById('symInput').value.trim(); if(!v) return;
+  const hit=current.find(x=>String(x.sym)===v);
+  if(hit){
+    if(!current.slice(0,200).includes(hit)) current.unshift(hit);
+  }else{
+    window.location.href='mklab-stock-research.html?sym='+encodeURIComponent(v); return;
+  }
+  apply();
+}
+
+function apply(){
+  const g=id=>parseFloat(document.getElementById(id).value)||0;
+  const pe=g('f_pe'), pb=g('f_pb'), div=g('f_div'), roe=g('f_roe'), roa=g('f_roa'), eg=g('f_eg'), rsi=g('f_rsi'), chg=g('f_chg'), cap=g('f_cap');
+  const ma=document.getElementById('f_ma').value;
+  const ge=(a,b)=> a==null ? true : a>=b;
+  const le=(a,b)=> a==null ? true : a<=b;
+  const rows=current.filter(s=>
+    le(s.pe,pe)&&le(s.pb,pb)&&ge(s.div,div)&&ge(s.roe,roe)&&ge(s.roa,roa)&&ge(s.eg,eg)&&ge(s.rsi,rsi)&&ge(s.chg,chg)&&ge(s.cap,cap)&&
+    (ma==='any'||(ma==='ma5'&&s.ma5)||(ma==='ma10'&&s.ma10)||(ma==='ma30'&&s.ma30))
+  );
+  document.getElementById('count').textContent=`符合：${rows.length} / ${current.length} 檔`;
+  if(!resTable){
+    resTable = MKLAB.DataTable('resTable', { cols:['sym','name','price','chg','pe','pb','roe','rsi','cap'], rows:rows, pageSize:PER, pagerId:'pager', defaultSort:'roe' });
+  }else{
+    resTable.setRows(rows);
+  }
+}
+
+function openDrawer(){ MKLAB.Drawer.open(); }
+function closeDrawer(){ MKLAB.Drawer.close(); }
+
+loadScreener();
+MKLAB.initDrawer();
+MKLAB.Shell.mount({ active:'screener' });
+
+/* 主題/語言初始化 */
+customElements.whenDefined('mklab-drawer').then(()=>{
+  const theme = localStorage.getItem('mklab-theme') || 'dark';
+  const lang = localStorage.getItem('mklab-lang') || 'zh-TW';
+  document.documentElement.setAttribute('data-theme', theme);
+});
+function toggleTheme(){
+  const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('mklab-theme', theme);
+}
+function setLang(lang){
+  localStorage.setItem('mklab-lang', lang);
+  console.log('[WC] lang:', lang);
+}
+</script>
+</body>
+</html>
