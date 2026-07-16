@@ -19,6 +19,7 @@
   .card-sm .chg { font-size:13px; font-weight:600; }
   .card-sm .box { position:relative; margin-top:6px; height:34px; }
   .card-sm svg { width:100%; height:34px; display:block; }
+  .card-sm .box:focus { outline:2px solid var(--ink); outline-offset:2px; }
   .mh-layout { display:grid; grid-template-columns:1fr; gap:12px; }
   @media (min-width:1024px){ .mh-layout{ grid-template-columns:1fr 280px; align-items:start; } }
   .tv-box { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:8px; box-shadow:var(--shadow); min-height:480px; overflow:hidden; }
@@ -108,10 +109,14 @@
 <script src="assets/data-client.js"></script>
 <script src="assets/mklab-wc.js"></script>
 <script>
-  function spark(data,color,w,h){ const min=Math.min(...data),max=Math.max(...data),r=(max-min)||1; const p=data.map((d,i)=>`${(i/(data.length-1)*w).toFixed(1)},${(h-((d-min)/r*h)).toFixed(1)}`).join(" "); return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><polyline points="${p}" fill="none" stroke="${color}" stroke-width="1.5"/></svg>`; }
+  (function(){
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function spark(data,color,w,h){ const min=Math.min(...data),max=Math.max(...data),r=(max-min)||1; const p=data.map((d,i)=>`${(i/(data.length-1)*w).toFixed(1)},${(h-((d-min)/r*h)).toFixed(1)}`).join(" "); return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" role="img" aria-label="30日走勢圖"><polyline points="${p}" fill="none" stroke="${color}" stroke-width="1.5"/></svg>`; }
   function gen(seed,n){ const o=[]; let p=seed; for(let i=0;i<n;i++){ p+=(Math.random()-0.5)*seed*0.01; o.push(+p.toFixed(2)); } return o; }
   function tipIn(el,t){ const x=el.querySelector('.tip'); if(x){x.textContent=t;x.style.display='block';} }
   function untipIn(el){ const x=el.querySelector('.tip'); if(x)x.style.display='none'; }
+  function tipToggle(el,t){ const x=el.querySelector('.tip'); if(!x)return; const show=x.style.display!=='block'; x.textContent=t; x.style.display=show?'block':'none'; }
+  window.tipIn=tipIn; window.untipIn=untipIn; window.tipToggle=tipToggle;
 
   // 版塊 1：五國股市
   const indices5=[
@@ -123,7 +128,7 @@
   ];
   document.getElementById("indices5").innerHTML=indices5.map(m=>{
     const col=m.chg>=0?"#dc2626":"#16a34a";
-    return `<div class="card-sm"><div class="name">${m.name}</div><div class="val">${m.val.toLocaleString()}</div><div class="chg ${m.chg>=0?'up':'down'}">${(m.chg>0?'+':'')}${m.chg}%</div><div class="box" onmouseenter="tipIn(this,'30日走勢')" onmouseleave="untipIn(this)">${spark(gen(m.val,30),col,150,34)}<div class="tip"></div></div></div>`;
+    return `<div class="card-sm"><div class="name">${esc(m.name)}</div><div class="val">${m.val.toLocaleString()}</div><div class="chg ${m.chg>=0?'up':'down'}">${(m.chg>0?'+':'')}${m.chg}%</div><div class="box" tabindex="0" onmouseenter="tipIn(this,'30日走勢')" onmouseleave="untipIn(this)" onfocus="tipIn(this,'30日走勢')" onblur="untipIn(this)" onclick="tipToggle(this,'30日走勢')">${spark(gen(m.val,30),col,150,34)}<div class="tip"></div></div></div>`;
   }).join("");
 
   // 版塊 2：績效表（上方加 TWII 列）
@@ -140,14 +145,14 @@
   ];
   document.getElementById("macro5").innerHTML=macro5.map(m=>{
     const col=m.c>=0?"#dc2626":"#16a34a";
-    return `<div class="card-sm"><div class="name">${m.k}</div><div class="val">${m.v}</div><div class="chg ${m.c>=0?'up':'down'}">${m.c>0?'+':''}${m.c}%</div><div class="box" onmouseenter="tipIn(this,'30日走勢')" onmouseleave="untipIn(this)">${spark(m.d,col,150,34)}<div class="tip"></div></div></div>`;
+    return `<div class="card-sm"><div class="name">${esc(m.k)}</div><div class="val">${esc(m.v)}</div><div class="chg ${m.c>=0?'up':'down'}">${m.c>0?'+':''}${m.c}%</div><div class="box" tabindex="0" onmouseenter="tipIn(this,'30日走勢')" onmouseleave="untipIn(this)" onfocus="tipIn(this,'30日走勢')" onblur="untipIn(this)" onclick="tipToggle(this,'30日走勢')">${spark(m.d,col,150,34)}<div class="tip"></div></div></div>`;
   }).join("");
 
   // 版塊 4：市值前 10（靜態真實近似值，依 Yahoo 2026-07-13）
   const capBase=[["2330","台積電",2420,-0.82],["2317","鴻海",235.5,-0.42],["2454","聯發科",1385,+1.10],["2308","台達電",1890,+1.50],["2303","聯電",52.5,-0.38],["2412","中華電",125.5,+0.20],["2882","國泰金",68.2,+0.44],["6505","台塑化",108.0,-0.55],["1303","南亞",38.4,+0.52],["2891","中信金",42.1,+0.24]];
   document.getElementById("cap10").innerHTML=capBase.map((b)=>{
     const price=b[2], chg=b[3], col=chg>=0?"#dc2626":"#16a34a";
-    return `<div class="card-sm"><div class="name">${b[0]} ${b[1]}</div><div class="val">${price.toLocaleString()}</div><div class="chg ${chg>=0?'up':'down'}">${chg>0?'+':''}${chg}%</div><div class="box" onmouseenter="tipIn(this,'30日走勢')" onmouseleave="untipIn(this)">${spark(gen(price,20),col,150,34)}<div class="tip"></div></div></div>`;
+    return `<div class="card-sm"><div class="name">${esc(b[0])} ${esc(b[1])}</div><div class="val">${price.toLocaleString()}</div><div class="chg ${chg>=0?'up':'down'}">${chg>0?'+':''}${chg}%</div><div class="box" tabindex="0" onmouseenter="tipIn(this,'30日走勢')" onmouseleave="untipIn(this)" onfocus="tipIn(this,'30日走勢')" onblur="untipIn(this)" onclick="tipToggle(this,'30日走勢')">${spark(gen(price,20),col,150,34)}<div class="tip"></div></div></div>`;
   }).join("");
 
   // 版塊 5：我的自選（與 watchlist 共用同一份 localStorage 清單，價格取自 stocks.json 真實值）
@@ -180,11 +185,11 @@
     }
     document.getElementById("watch5").innerHTML = items.map((d)=>{
       const price = d.price, chg = d.chg;
-      if(price==null && chg==null) return `<div class="card-sm"><div class="name">${d.sym}</div><div class="val">-</div><div class="chg">-</div></div>`;
+      if(price==null && chg==null) return `<div class="card-sm"><div class="name">${esc(d.sym)}</div><div class="val">-</div><div class="chg">-</div></div>`;
       const col = chg>=0 ? "#dc2626" : "#16a34a";
       const seed = (typeof price==='number' && price>0) ? price : 50;
-      const symHtml = d.name ? `${d.sym}<small>${d.name}</small>` : d.sym;
-      return `<div class="card-sm"><div class="name">${symHtml}</div><div class="val">${(typeof price==='number')?price.toLocaleString():'-'}</div><div class="chg ${chg>=0?'up':'down'}">${chg>0?'+':''}${chg}%</div><div class="box" onmouseenter="tipIn(this,'30日走勢')" onmouseleave="untipIn(this)">${spark(gen(seed,20),col,150,34)}<div class="tip"></div></div></div>`;
+      const symHtml = d.name ? `${esc(d.sym)}<small>${esc(d.name)}</small>` : esc(d.sym);
+      return `<div class="card-sm"><div class="name">${symHtml}</div><div class="val">${(typeof price==='number')?price.toLocaleString():'-'}</div><div class="chg ${chg>=0?'up':'down'}">${chg>0?'+':''}${chg}%</div><div class="box" tabindex="0" onmouseenter="tipIn(this,'30日走勢')" onmouseleave="untipIn(this)" onfocus="tipIn(this,'30日走勢')" onblur="untipIn(this)" onclick="tipToggle(this,'30日走勢')">${spark(gen(seed,20),col,150,34)}<div class="tip"></div></div></div>`;
     }).join("") || `<div class="card-sm" style="grid-column:1/-1;text-align:center;color:var(--muted)">尚未設定自選股（於 watchlist 頁新增）</div>`;
   }
 
@@ -234,7 +239,11 @@
         const asof=d.meta&&d.meta.as_of;
         if(asof){ const f=document.querySelector('.freshness'); if(f) f.textContent='資料以 '+asof+' 收盤為準（Build-Time 自動更新）'; }
       }
-    }).catch(()=>{ /* 保留 fallback 示意資料 */ });
+    }).catch(err=>{
+      console.error('data/stocks.json 載入失敗，使用內建示意資料', err);
+      const f=document.querySelector('.freshness');
+      if(f) f.textContent='即時資料載入失敗，目前顯示示意資料';
+    });
   }
   // 前端即時綜合評分（依財務欄位加權；不含 chg 日波動，避免 ETF/權證因日漲跌排前面）
   function calcRank(s){
@@ -272,6 +281,7 @@
   function openDrawer(){ MKLAB.Drawer.open(); }
   function closeDrawer(){ MKLAB.Drawer.close(); }
   function toggle(id){ document.getElementById(id).classList.toggle("on"); }
+  window.openDrawer=openDrawer; window.closeDrawer=closeDrawer; window.toggle=toggle;
   renderWatch(); renderInd(); loadStocks();
   MKLAB.initDrawer();
     MKLAB.Shell.mount({ active:'market' });
@@ -279,9 +289,12 @@
     // 績效表資料
     MKLAB_DATA.indices().then(d=>{
       if(d && d.indices && Array.isArray(d.indices)){
-        const rows = d.indices.map(v=>`<tr><td>${v.name||'-'}</td><td class="${(v.chg_pct>=0)?'up':'down'}">${v.close!=null?Number(v.close).toLocaleString():'-'} (${(v.chg_pct>0?'+':'')}${v.chg_pct}%)</td></tr>`).join('');
+        const rows = d.indices.map(v=>`<tr><td>${esc(v.name||'-')}</td><td class="${(v.chg_pct>=0)?'up':'down'}">${v.close!=null?Number(v.close).toLocaleString():'-'} (${(v.chg_pct>0?'+':'')}${v.chg_pct}%)</td></tr>`).join('');
         document.getElementById('idxTable').innerHTML = '<tr><th>指數</th><th>收盤 (漲跌%)</th></tr>' + rows;
       }
+    }).catch(err=>{
+      console.error('MKLAB_DATA.indices() 載入失敗', err);
     });
+  })();
   </script>
 </body></html>
