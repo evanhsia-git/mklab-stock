@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-TW" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>mklab-stock 開發日誌（WC 版）</title>
+<base href="/mklab-stock/">
+<style>
+  :root { --bg:#0f1115; --surface:#171a21; --ink:#e8eaed; --muted:#9aa0a6; --border:#2a2f3a; --accent:#3b82f6; --up:#f87171; --down:#4ade80; --row-hover:#1e2a3a; --radius:10px; --shadow:0 1px 3px rgba(0,0,0,.4); }
+  [data-theme="light"] { --bg:#f7f8fa; --surface:#fff; --ink:#1a1d21; --muted:#6b7280; --border:#e5e7eb; --accent:#2563eb; --up:#dc2626; --down:#16a34a; --row-hover:#eff6ff; --shadow:0 1px 3px rgba(0,0,0,.08); }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,"Segoe UI","PingFang TC","Microsoft JhengHei",sans-serif; background:var(--bg); color:var(--ink); line-height:1.6; }
+  .nav { position:sticky; top:0; z-index:26; background:var(--surface); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:4px; padding:10px 12px; }
+  .nav a { color:var(--ink); text-decoration:none; font-size:14px; padding:6px 10px; border-radius:8px; white-space:nowrap; }
+  .nav a.active { background:var(--accent); color:#fff; }
+  .utilbar { position:sticky; top:49px; z-index:25; background:var(--surface); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; padding:8px 12px; }
+  .utilbar .spacer { flex:1; }
+  .brand { font-weight:700; font-size:15px; margin-right:4px; white-space:nowrap; }
+  .fab-btn { width:40px; height:40px; border-radius:50%; border:1px solid var(--border); background:var(--surface); color:var(--ink); cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow); }
+  .fab-btn svg { width:20px; height:20px; display:block; }
+  .wrap { max-width:900px; margin:0 auto; padding:12px; }
+  @media (min-width:1024px){ .wrap{ padding:16px 24px; } }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; box-shadow:var(--shadow); margin:12px 0; }
+  .card h2 { font-size:16px; margin-bottom:10px; color:var(--accent); }
+  .card h3 { font-size:14px; margin:14px 0 6px; color:var(--muted); }
+  .kv { display:flex; justify-content:space-between; padding:7px 0; border-bottom:1px solid var(--border); font-size:14px; }
+  .kv:last-child { border-bottom:none; }
+  .kv b { font-weight:700; }
+  code { background:var(--bg); padding:2px 6px; border-radius:5px; font-size:13px; }
+  table { width:100%; border-collapse:collapse; margin-top:8px; }
+  th,td { padding:9px 8px; text-align:left; font-size:13px; border-bottom:1px solid var(--border); }
+  th { color:var(--muted); font-weight:600; }
+  td.b { font-weight:700; color:var(--accent); }
+  .pill { display:inline-block; background:var(--row-hover); border:1px solid var(--border); border-radius:20px; padding:3px 10px; font-size:12px; margin:2px; }
+  ul { padding-left:20px; font-size:14px; }
+  li { margin:5px 0; }
+  .footer { text-align:center; color:var(--muted); font-size:12px; padding:20px; }
+  a.link { color:var(--accent); text-decoration:none; }
+  .muted-small { color:var(--muted); font-size:13px; margin-top:10px; }
+  .muted-small-top { color:var(--muted); font-size:13px; margin-top:8px; }
+  .text-muted { color:var(--muted); font-size:14px; }
+  .disclaimer-text { color:var(--muted); font-size:14px; }
+  .timeline { border-left:2px solid var(--border); padding-left:16px; margin-left:8px; }
+  .timeline-item { position:relative; padding:12px 0 12px 16px; border-bottom:1px solid var(--border); }
+  .timeline-item:last-child { border-bottom:none; }
+  .timeline-item::before { content:""; position:absolute; left:-8px; top:16px; width:10px; height:10px; border-radius:50%; background:var(--accent); border:2px solid var(--surface); box-shadow:0 0 0 2px var(--border); }
+  .timeline-date { font-size:12px; color:var(--muted); margin-bottom:4px; }
+  .timeline-title { font-weight:600; margin-bottom:4px; }
+  .timeline-desc { font-size:13px; color:var(--ink); line-height:1.5; }
+  .timeline-desc code { background:var(--bg); padding:1px 4px; border-radius:3px; }
+  .section-badge { display:inline-block; background:var(--accent); color:#fff; font-size:10px; padding:1px 6px; border-radius:4px; margin-right:8px; }
+  .tech-stack { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+</style>
+<script src="vendor/lightweight-charts.min.js"></script>
+<script src="data/twii_kdata.js"></script>
+<script src="assets/mklab-core.js"></script>
+<script src="assets/data-client.js"></script>
+<script src="assets/mklab-wc.js"></script>
+</head>
+<body>
+  <nav id="mainNav" class="nav"></nav>
+  <div id="utilbar" class="utilbar"><span class="brand" id="brand"></span><span class="spacer"></span></div>
+
+  <div class="drawer-mask" onclick="MKLAB.Drawer.close()"></div>
+  <aside class="drawer" id="drawer">
+    <button class="close-x" onclick="MKLAB.Drawer.close()">×</button>
+  </aside>
+
+  <!-- WC 抽屜元件 -->
+  <mklab-drawer trigger=".mklab-drawer-trigger" position="right" title="設定" theme-key="mklab-theme" lang-key="mklab-lang">
+    <h4>主題</h4>
+    <label class="row">
+      <span>深色模式</span>
+      <button class="switch" id="themeSwitch" onclick="toggleTheme()"></button>
+    </label>
+    <h4>語言</h4>
+    <div class="seg">
+      <button onclick="setLang('zh')">繁中</button>
+      <button onclick="setLang('en')">English</button>
+    </div>
+    <h4>頁面導航</h4>
+    <div class="seg" style="flex-direction:column; gap:4px;">
+      <a href="index.html" class="link" onclick="MKLAB.Drawer.close()">Market 首頁</a>
+      <a href="mklab-stock-screener.html" class="link" onclick="MKLAB.Drawer.close()">Screener 篩選</a>
+      <a href="mklab-stock-research.html" class="link" onclick="MKLAB.Drawer.close()">Research 研究</a>
+      <a href="mklab-stock-industry.html" class="link" onclick="MKLAB.Drawer.close()">Industry 產業</a>
+      <a href="mklab-stock-watchlist.html" class="link" onclick="MKLAB.Drawer.close()">Watchlist 自選</a>
+      <a href="mklab-stock-help.html" class="link" onclick="MKLAB.Drawer.close()">Help 說明</a>
+      <a href="mklab-stock-log.html" class="link" style="color:var(--accent); font-weight:600;" onclick="MKLAB.Drawer.close()">Log 開發日誌</a>
+    </div>
+  </mklab-drawer>
+
+  <div class="wrap">
+    <div class="card">
+      <h2>📋 mklab-stock 開發日誌</h2>
+      <p class="text-muted">記錄專案架構演進、關鍵決策、技術債清理與部署歷程。最新在上。</p>
+      <div class="kv"><span>專案狀態</span><b>生產部署中 (GitHub Pages)</b></div>
+      <div class="kv"><span>架構版本</span><b>Web Components + ES Modules (v2.0)</b></div>
+      <div class="kv"><span>部署分支</span><b>main → GitHub Pages</b></div>
+      <div class="kv"><span>最後同步</span><b id="logSyncDate">載入中...</b></div>
+    </div>
+
+    <div class="card">
+      <h2>🏗️ 整體架構概覽</h2>
+      <table>
+        <tr><th>層級</th><th>技術選型</th><th>說明</th></tr>
+        <tr><td>前端架構</td><td class="b">Web Components (Custom Elements v1)</td><td>零建置、零 Node.js 依賴、原生瀏覽器支援、可直接 fork 運作</td></tr>
+        <tr><td>圖表引擎</td><td class="b">Lightweight Charts v4.1.3</td><td>TradingView 官方輕量圖表庫，免費版支援 K 線、指標、畫線</td></tr>
+        <tr><td>模組系統</td><td class="b">ES Modules (import/export)</td><td>瀏覽器原生模組，開發用相對路徑，部署配合 <base href></td></tr>
+        <tr><td>樣式系統</td><td class="b">CSS Custom Properties (Design Tokens)</td><td>統一 <code>var(--bg)</code> <code>var(--surface)</code> 等，支援深/淺色主題即時切換</td></tr>
+        <tr><td>資料層</td><td class="b">data-client.js (單一來源)</td><td>統一 <code>stocks.json</code>、<code>industry.json</code>、<code>history/</code> 載入與快取</td></tr>
+        <tr><td>部署目標</td><td class="b">GitHub Pages (子路徑 /mklab-stock/)</td><td>靜態檔案直出，無 Server 端渲染，CI 只跑 Python 抓資料</td></tr>
+        <tr><td>資料來源</td><td class="b">TWSE OpenAPI (免 Key) + yfinance (備援)</td><td>收盤/PE/PB/殖利率每日抓；ROE/ROA 每週補；指數 K 線用 yfinance</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>🧩 WC 元件庫 (assets/mklab-wc.js)</h2>
+      <table>
+        <tr><th>元件標籤</th><th>功能</th><th>關鍵屬性/方法</th></tr>
+        <tr><td><code><mklab-kline></code></td><td>K 線圖 (MACD/KD/畫線)</td><td><code>data-symbol</code>、<code>height</code>、<code>.addLine()</code>、<code>.removeAll()</code></td></tr>
+        <tr><td><code><mklab-datatable></code></td><td>可排序/分頁/可配置欄位表格</td><td><code>cols</code>、<code>src</code> (JSON 路徑)、<code>page-size</code>、<code>fieldMap</code>、<code>onDel</code></td></tr>
+        <tr><td><code><mklab-drawer></code></td><td>右側抽屜 (主題/語言/自選股)</td><td><code>trigger</code>、<code>position</code>、<code>theme-key</code>、<code>lang-key</code></td></tr>
+        <tr><td><code><mklab-router></code></td><td>History API 單頁路由</td><td><code>routes</code> 配置、<code>navigate(path)</code></td></tr>
+      </table>
+      <p class="muted-small-top">所有元件皆繼承 <code>HTMLElement</code>，在 <code>connectedCallback</code> 初始化，<code>disconnectedCallback</code> 清理，支援 <code>customElements.whenDefined()</code> 等待載入。</p>
+    </div>
+
+    <div class="card">
+      <h2>📁 專案目錄結構 (關鍵檔案)</h2>
+      <pre style="font-size:12px; background:var(--bg); padding:12px; border-radius:8px; overflow:auto;"><code>mklab-stock/
+├── index.html                    # 首頁：Market Health + 自選 + 評分 TOP10
+├── mklab-stock-screener.html     # 多條件篩選器 (PE/PB/ROE/EPS/技術面)
+├── mklab-stock-research.html     # 個股深度研究 (K線+MACD/KD+財報表)
+├── mklab-stock-industry.html     # 33 產業動態 + 成分股明細
+├── mklab-stock-watchlist.html    # 自選股管理 (localStorage 持久化)
+├── mklab-stock-help.html         # 使用說明 + 資料來源 + 評分標準
+├── mklab-stock-log.html          # 本頁：開發日誌與架構文件
+├── assets/
+│   ├── mklab-wc.js               # WC 元件庫 (4 大元件)
+│   ├── mklab-core.js             # 共用核心 (Shell/Watch/Utils)
+│   ├── data-client.js            # 統一資料存取層
+│   └── lightweight-charts.min.js # 圖表庫 (vendor 複製)
+├── data/
+│   ├── stocks.json               # 全市場最新一日 (meta + stocks[])
+│   ├── industry.json             # 33 產業聚合 + 區間績效
+│   ├── history/YYYYMMDD.json     # 每日切片 (260 交易日)
+│   ├── twii_kdata.js             # 加權指數 K 線 (window.TWII_KDATA)
+│   ├── etf-shares.json           # ETF 發行張數 (估算 market_cap 用)
+│   └── schema-version.json       # Schema 版本檢查
+├── scripts/
+│   ├── fetch_data.py             # GitHub Actions 每日抓取 (TWSE/yfinance)
+│   ├── export_db.py              # 本機 DB 灌種 (一次性歷史)
+│   ├── qa_gate.py                # 品質閘門 (部署前必過)
+│   └── check_html_health.py      # HTML 結構健康檢查
+├── .github/workflows/
+│   ├── daily-update.yml          # 每日 17:00 抓收盤 + PE/PB/殖利率
+│   ├── qa-gate.yml               # Push 觸發 QA Gate
+│   └── html-health.yml           # HTML 變更觸發結構檢查
+└── docs/mklab-stock-dav.md       # 架構決策記錄 (React vs WC 比較)</code></pre>
+    </div>
+
+    <div class="card">
+      <h2>🗓️ 關鍵里程碑與決策記錄</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-date">2026-07-16</div>
+          <div class="timeline-title"><span class="section-badge">DEPLOY</span> 全站 Web Components 遷移完成</div>
+          <div class="timeline-desc">5 大主題頁 + Help + Log 全部改為 WC 版本。<code>main</code> 分支部署 GitHub Pages。移除所有 vanilla chart/table/drawer 內嵌邏輯，統一引入 <code>assets/mklab-wc.js</code> + <code>assets/data-client.js</code>。QA Gate 全綠 ALLOW DEPLOY。</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">2026-07-15</div>
+          <div class="timeline-title"><span class="section-badge">ARCH</span> 確立 Web Components 為長期架構 (放棄 React)</div>
+          <div class="timeline-desc">對比 React (Vite/Node.js) vs WC (零建置)；依「Fork First / 零外部依賴 / 零 Secret」原則選 WC。建立 <code>dev/web-components</code> 分支並行開發，<code>backup/static-2026-07-15</code> 保留靜態版。</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">2026-07-14</div>
+          <div class="timeline-title"><span class="section-badge">DATA</span> 260 交易日 TWII K 線補齊 + 每日自動抓取</div>
+          <div class="timeline-desc">TWSE OpenAPI <code>MI_INDEX</code> 僅有收盤價，改用 <code>yfinance ^TWII</code> 取 OHLC。<code>fetch_data.py twii</code> 模式寫入 <code>data/twii_kdata.js</code> (window.TWII_KDATA)，<code>daily-update.yml</code> 排程每日同步。</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">2026-07-13</div>
+          <div class="timeline-title"><span class="section-badge">FIX</span> Research 頁 SyntaxError (重複 let 宣告) + MACD/KD 不顯示</div>
+          <div class="timeline-desc"><code>mklab-stock-research.html</code> 第 130/195 行重複 <code>let rChart</code> 導致整支 JS 停止。修正後 MACD/KD 按鈕恢復正常，並加入 <code>klAddIndicator</code> 防呆。</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">2026-07-12</div>
+          <div class="timeline-title"><span class="section-badge">DATA</span> ETF market_cap 為 null 問題修正</div>
+          <div class="timeline-desc">TWSE API 對 ETF 僅回傳 ClosingPrice。新增 <code>data/etf-shares.json</code> (8 主動 + 2 反向 + 80 槓桿/反向)，<code>fetch_data.py</code> / <code>export_db.py</code> 以 <code>price × shares_stock</code> 估算 market_cap。同步修正 25 檔 ETF 產業別為「金融保險 (25)」。</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">2026-07-11</div>
+          <div class="timeline-title"><span class="section-badge">QA</span> qa_gate.py 強化 + CSS/Links 檢查修正</div>
+          <div class="timeline-desc">CSS inline style 檢查排除 <code><style></code> 區塊避免誤判；Links 檢查支援 GitHub Pages <code>/mklab-stock/</code> 子路徑前綴移除。新增 4 筆實戰案例到 <code>diagnostic-recipe.md</code> (GitHub Pages 子路徑、WC 元件閉合標籤、Links 檢查、CSS 誤判)。</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">2026-07-10</div>
+          <div class="timeline-title"><span class="section-badge">ARCH</span> Cron Job 輸出簡化 (只看結果不看過程)</div>
+          <div class="timeline-desc">三個批次 <code>batch1/2/3_wrapper.sh</code> 改為 Python wrapper，Telegram 只推摘要：抓取筆數、寫入筆數、覆蓋率、錯誤行、股票/ETF 檔數。詳細 log 仍寫 <code>/root/.hermes/cache/log.md</code>。</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">2026-07-09</div>
+          <div class="timeline-title"><span class="section-badge">INIT</span> 專案啟動：靜態 HTML + GitHub Actions 每日更新</div>
+          <div class="timeline-desc">初版 <code>index.html</code> <code>mklab-stock-research.html</code> 等 5 頁 vanilla JS。資料源 <code>scripts/fetch_data.py</code> 抓 TWSE OpenAPI <code>STOCK_DAY_ALL</code> + <code>BWIBBU_d</code>。部署 <code>gh-pages</code> 分支 (後改 main)。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🔧 技術棧細節</h2>
+      <div class="tech-stack">
+        <span class="pill">HTML5 + ES2022</span>
+        <span class="pill">Custom Elements v1</span>
+        <span class="pill">Shadow DOM (可選)</span>
+        <span class="pill">CSS Custom Properties</span>
+        <span class="pill">Lightweight Charts v4.1.3</span>
+        <span class="pill">Python 3.11</span>
+        <span class="pill">SQLite (本機 DB)</span>
+        <span class="pill">GitHub Actions</span>
+        <span class="pill">GitHub Pages (static)</span>
+        <span class="pill">TWSE OpenAPI</span>
+        <span class="pill">yfinance (備援)</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>📐 設計原則與約束 (SOUL.md 精華)</h2>
+      <ul>
+        <li><b>資料安全 > 正確性 > 完整性 > 任務完成</b> — 任何不確定資訊寧缺勿濫</li>
+        <li><b>零外部依賴 (端用戶)</b> — 無 Node.js、無 npm、無建置步驟，<code>git clone</code> 即可 <code>python -m http.server</code> 運行</li>
+        <li><b>Fork First</b> — 任何人 fork 倉庫即可獨立部署，GitHub Actions 自動跑每日抓取</li>
+        <li><b>靜態優先</b> — GitHub Pages 直出靜態檔，CI 只負責產生 <code>data/</code> JSON</li>
+        <li><b>相對路徑 + <code><base href></code></b> — 開發用相對路徑，部署子路徑 <code>/mklab-stock/</code> 由 <code>base href</code> 解決</li>
+        <li><b>單一資料層</b> — <code>data-client.js</code> 統一 <code>fetch()</code>、快取、錯誤重試，頁面不直接 <code>fetch()</code></li>
+        <li><b>QA Gate 阻擋部署</b> — Critical ERROR 即 BLOCK DEPLOY，WARNING 僅提醒 (ETF market_cap null 等已知非阻擋)</li>
+        <li><b>詳細交接文檔</b> — <code>handoff.md</code> + <code>SOUL.md</code> + <code>diagnostic-recipe.md</code> 確保下一輪無縫銜接</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>🚀 部署與運維流程</h2>
+      <table>
+        <tr><th>階段</th><th>觸發條件</th><th>動作</th></tr>
+        <tr><td>每日資料更新</td><td>GitHub Actions 排程 (UTC 09:00 = 台 17:00)</td><td><code>fetch_data.py daily</code> → 產生 <code>data/stocks.json</code> <code>data/history/</code> → commit push → Pages 自動重建</td></tr>
+        <tr><td>每週 ROE/ROA 補齊</td><td>GitHub Actions 排程 (UTC 週六 10:00)</td><td><code>fetch_data.py weekly</code> (yfinance) → 更新 <code>stocks.json</code> 中的 roe/roa/eps/market_cap</td></tr>
+        <tr><td>指數/ETF 價格同步</td><td>GitHub Actions 排程 (UTC 09:30)</td><td><code>fetch_data.py indices</code> (yfinance 全球指數 + 代表性 ETF)</td></tr>
+        <tr><td>TWII K 線更新</td><td>同上</td><td><code>fetch_data.py twii</code> → <code>data/twii_kdata.js</code></td></tr>
+        <tr><td>程式碼變更部署</td><td>Push to <code>main</code></td><td>GitHub Actions 跑 <code>qa_gate.py</code> + <code>check_html_health.py</code> → 全綠 → Pages 自動部署</td></tr>
+        <tr><td>本機開發驗證</td><td>手動</td><td><code>python scripts/qa_gate.py</code> → 全綠再 push</td></tr>
+      </table>
+    </div>
+
+    <div class="footer">mklab-stock · Web Components v2.0 · <a class="link" href="https://github.com/evanhsia-git/mklab-stock" target="_blank">GitHub 倉庫 ↗</a></div>
+  </div>
+
+<script>
+/* ============ Log 頁面專用邏輯 ============ */
+async function loadMeta() {
+  try {
+    const r = await fetch('data/stocks.json');
+    if (!r.ok) throw new Error('no data');
+    const d = await r.json();
+    if (d && Array.isArray(d.stocks) && d.stocks.length) {
+      const latestDate = d.meta?.as_of || 'Unknown';
+      document.getElementById('logSyncDate').textContent = latestDate;
+    }
+  } catch(e) {
+    console.warn('[Log] loadMeta failed:', e);
+    document.getElementById('logSyncDate').textContent = '載入失敗';
+  }
+}
+
+function toggleTheme() {
+  const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('mklab-theme', theme);
+}
+function setLang(lang) {
+  localStorage.setItem('mklab-lang', lang);
+  console.log('[WC] lang:', lang);
+}
+
+/* 主題/語言初始化 */
+customElements.whenDefined('mklab-drawer').then(() => {
+  const theme = localStorage.getItem('mklab-theme') || 'dark';
+  const lang = localStorage.getItem('mklab-lang') || 'zh-TW';
+  document.documentElement.setAttribute('data-theme', theme);
+});
+
+loadMeta();
+MKLAB.initDrawer();
+MKLAB.Shell.mount({ active: 'log' });
+</script>
+</body>
+</html>
