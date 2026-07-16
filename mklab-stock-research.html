@@ -195,7 +195,7 @@ function loadKLine(){
 
 function klAddIndicator(name){
   if(!series) return;
-  const data = series._data || [];
+  const data = window.TWII_KDATA || [];
   if(!data.length) return;
   const closes = data.map(d=>d.close);
   if(name==='MACD'){

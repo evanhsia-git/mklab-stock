@@ -98,11 +98,12 @@
             <table>
               <thead><tr><th>流派</th><th>進場邏輯</th><th>出場 / 停損</th><th>適用標的</th></tr></thead>
               <tbody>
-                <tr><td>動能</td><td>多頭排列（MA5&gt;MA20&gt;MA60）+ 近 60 日報酬前 10% + 量能放大</td><td>跌破 MA20 或最大回撤 &gt;8% 出場</td><td>強勢產業龍頭</td></tr>
-                <tr><td>價值</td><td>PE&lt;12、PB&lt;1.5、殖利率&gt;5%、ROE&gt;15%</td><td>本益比回歸均值或護城河破壞</td><td>金融 / 傳產 / 收益型</td></tr>
-                <tr><td>成長</td><td>營收 YoY&gt;20%、ROIC&gt;15%、PEG&lt;1</td><td>成長率連兩季衰減即減碼</td><td>半導體 / AI / 新興產業</td></tr>
+                <tr><td>動能</td><td>RSI≥70 + 單日漲幅≥1% + 站上5MA（均線多頭）</td><td>RSI跌破50或跌破5MA出場</td><td>強勢產業龍頭</td></tr>
+                <tr><td>價值</td><td>PE≤12、PB≤1.5、殖利率≥5%、ROE≥15%</td><td>本益比回歸均值或護城河破壞</td><td>金融 / 傳產 / 收益型</td></tr>
+                <tr><td>成長</td><td>EPS成長≥20%、ROE≥15%</td><td>成長率連兩季衰減即減碼</td><td>半導體 / AI / 新興產業</td></tr>
+                <tr><td>品質</td><td>ROE≥15%、ROA≥8%、低負債</td><td>獲利能力連兩季下滑即減碼</td><td>穩健大型權值股</td></tr>
                 <tr><td>多因子</td><td>價值 + 動能 + 品質 + 低波動 加權評分，取前 10</td><td>因子反轉（如動能轉負）再平衡</td><td>前 300 大市值輪動</td></tr>
-                <tr><td>高股息</td><td>殖利率&gt;5%、連續 5 年配息、配息率穩定</td><td>除息後填息失敗或配息驟降</td><td>電信 / 金融 / 公用事業</td></tr>
+                <tr><td>高股息</td><td>殖利率≥5%、連續 5 年配息、配息率穩定</td><td>除息後填息失敗或配息驟降</td><td>電信 / 金融 / 公用事業</td></tr>
               </tbody>
             </table>
           </div>
@@ -115,7 +116,7 @@
 <script>
   const TOP100=(function(){ const base=[["2330","台積電"],["2317","鴻海"],["2454","聯發科"],["2303","聯電"],["2308","台達電"],["2412","中華電"],["6505","台塑化"],["1303","南亞"],["2882","國泰金"],["2881","富邦金"],["2891","中信金"],["3711","日月光投控"],["3008","大立光"],["2327","國巨"],["8046","南電"],["2382","廣達"],["2376","技嘉"],["2379","瑞昱"],["3034","聯詠"],["3231","緯創"]]; const out=[]; let s=42; function rnd(){ s=(s*1103515245+12345)&0x7fffffff; return s/0x7fffffff; } for(let i=0;i<100;i++){ const b=base[i%base.length]; const sym=i<base.length?b[0]:(2000+i); const name=i<base.length?b[1]:("個股"+i); out.push({sym,name,price:+(20+rnd()*1800).toFixed(1),chg:+((rnd()-0.45)*10).toFixed(2),pe:+(5+rnd()*40).toFixed(1),pb:+(0.5+rnd()*9).toFixed(2),roe:+(2+rnd()*40).toFixed(1),roa:+(1+rnd()*20).toFixed(1),eg:+(-5+rnd()*30).toFixed(1),rsi:+(20+rnd()*75).toFixed(0),ma5:rnd()>0.4,ma10:rnd()>0.45,ma30:rnd()>0.5,cap:+(500+rnd()*9000).toFixed(0),div:+(0+rnd()*6).toFixed(1)}); } return out; })();
   function sync(id){ const v=document.getElementById(id).value; const span=document.getElementById('v_'+id.slice(2)); if(span) span.textContent=v; }
-  const TPLS={ value:{f_pe:20,f_pb:5,f_div:3,f_roe:0,f_roa:0,f_eg:0,f_rsi:0,f_chg:0,f_cap:0}, quality:{f_pe:99,f_pb:99,f_div:0,f_roe:15,f_roa:8,f_eg:0,f_rsi:0,f_chg:0,f_cap:0}, growth:{f_pe:99,f_pb:99,f_div:0,f_roe:0,f_roa:0,f_eg:20,f_rsi:0,f_chg:0,f_cap:0}, momentum:{f_pe:99,f_pb:99,f_div:0,f_roe:0,f_roa:0,f_eg:0,f_rsi:70,f_chg:1,f_cap:0}, dividend:{f_pe:99,f_pb:99,f_div:5,f_roe:0,f_roa:0,f_eg:0,f_rsi:0,f_chg:0,f_cap:0} };
+  const TPLS={ value:{f_pe:12,f_pb:1.5,f_div:5,f_roe:15,f_roa:0,f_eg:0,f_rsi:0,f_chg:0,f_cap:0, f_ma:'any'}, quality:{f_pe:99,f_pb:99,f_div:0,f_roe:15,f_roa:8,f_eg:0,f_rsi:0,f_chg:0,f_cap:0, f_ma:'any'}, growth:{f_pe:99,f_pb:99,f_div:0,f_roe:0,f_roa:0,f_eg:20,f_rsi:0,f_chg:0,f_cap:0, f_ma:'any'}, momentum:{f_pe:99,f_pb:99,f_div:0,f_roe:0,f_roa:0,f_eg:0,f_rsi:70,f_chg:1,f_cap:0, f_ma:'ma5'}, dividend:{f_pe:99,f_pb:99,f_div:5,f_roe:0,f_roa:0,f_eg:0,f_rsi:0,f_chg:0,f_cap:0, f_ma:'any'} };
   function tpl(name){ const t=TPLS[name]; if(!t)return; for(const k in t){ const el=document.getElementById(k); if(el){ el.value=t[k]; const span=document.getElementById('v_'+k.slice(2)); if(span) span.textContent=t[k]; } } apply(); }
   let current=[];
   function loadScreener(){

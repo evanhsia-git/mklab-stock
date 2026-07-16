@@ -45,6 +45,7 @@
 <body>
   <nav id="mainNav" class="nav"></nav>
   <div id="utilbar" class="utilbar"><span class="brand" id="brand"></span><span class="spacer"></span></div>
+  <div class="freshness">資料載入中…</div>
 
   <div class="drawer-mask" onclick="MKLAB.Drawer.close()"></div>
   <aside class="drawer" id="drawer">
@@ -73,6 +74,40 @@
         <tr><td>部署目標</td><td class="b">GitHub Pages (子路徑 /mklab-stock/)</td><td>靜態檔案直出，無 Server 端渲染，CI 只跑 Python 抓資料</td></tr>
         <tr><td>資料來源</td><td class="b">TWSE OpenAPI (免 Key) + yfinance (備援)</td><td>收盤/PE/PB/殖利率每日抓；ROE/ROA 每週補；指數 K 線用 yfinance</td></tr>
       </table>
+    </div>
+
+    <div class="card">
+      <h2>⚠️ 已知限制與待辦</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-date">2026-07-17</div>
+          <div class="timeline-title"><span class="section-badge">待修正</span>Research 個股點擊未連動大圖</div>
+          <div class="timeline-desc">
+            目前 <code>loadKLine()</code> 僅載入 <code>window.TWII_KDATA</code>（加權指數），點擊個股時個股摘要會同步更新，但大圖表仍顯示 TWII。
+            根因：<b>無個股歷史 OHLC 序列資料源</b>（stocks.json 僅含日收盤，無時序 K 線）。
+            若要支援，需在 <code>fetch_data.py</code> 增抓個股近 1 年日線（TWSE / FinMind / yfinance），寫入 <code>history/{sym}.json</code>，
+            並改 <code>loadKLine()</code> 依 <code>currentSym</code> 切換資料源。
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">2026-07-17</div>
+          <div class="timeline-title"><span class="section-badge">待開發</span>Research 財報摘要深化</div>
+          <div class="timeline-desc">
+            目前已可顯示基本財報摘要（PE/PB/ROE/ROA/EPS 表格），技術上可行。
+            待開發：季度營收 YoY、毛利率趨勢、負債比、現金流、法人持股變化等深度欄位，
+            需 <code>fetch_data.py</code> 補 MOPS 財報抓取（目前 ROE/ROA 由 weekly 模式補齊，其餘財報欄位尚缺）。
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">2026-07-17</div>
+          <div class="timeline-title"><span class="section-badge">待修正</span>screener / index 漲跌幅資料校正</div>
+          <div class="timeline-desc">
+            已修 <code>fetch_data.py</code> 讓 <code>chg</code> 存漲跌%（原誤存漲跌元，導致台積電顯示 +20%、川湖 +505%）。
+            線上 stocks.json 需重新跑 daily-update 管線才會更新為正確百分比。
+            前端已加防禦：<code>|chg|>10</code> 視為異常標紅（<code>.warn</code> class）。
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="card">
@@ -250,6 +285,11 @@ function setLang(lang) {
 loadMeta();
 MKLAB.initDrawer();
 MKLAB.Shell.mount({ active: 'log' });
+// 動態更新 freshness
+fetch('data/stocks.json').then(r=>r.ok?r.json():null).then(d=>{
+  const asof = d && d.meta && d.meta.as_of;
+  if(asof){ const f=document.querySelector('.freshness'); if(f) f.textContent='資料以 '+asof+' 收盤為準（Build-Time 自動更新）'; }
+}).catch(()=>{});
 </script>
 </body>
 </html>

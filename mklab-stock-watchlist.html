@@ -50,14 +50,15 @@
     </div>
     <div class="alert-note">
       <h3>提醒（Alert）欄位說明</h3>
-      <p>提醒欄顯示系統針對自選股設定的條件觸發狀態。當滿足以下任一條件時，該股提醒欄會標記警示：</p>
+      <p>提醒欄顯示系統針對自選股自動判定的觸發狀態。依各市場漲跌幅限制與熔斷機制自動示警：</p>
       <ul>
-        <li><b>價格提醒</b>：股價突破你設定的目標價或停損價</li>
+        <li><b>價格提醒</b>：於下方輸入目標價 / 停損價，股價觸及即標記（示意：生產環境由 GitHub Actions 每日計算）</li>
         <li><b>技術提醒</b>：RSI 進入超買（&gt;80）或超賣（&lt;20）區間</li>
         <li><b>法人提醒</b>：三大法人連續買超 / 賣超達門檻</li>
-        <li><b>異常提醒</b>：單日漲跌超過 ±7% 或成交量異常放大</li>
+        <li><b>異常提醒（台股）</b>：單日漲跌幅超過 ±10%（一般上市櫃漲停限制）；槓桿型 ETF（2 倍槓桿）單日漲跌可達 ±20%，超過 ±21% 示警</li>
+        <li><b>異常提醒（美股）</b>：與前日收盤相比下跌 7% 啟動熔斷（中斷 15 分鐘）；跌 13% 再次中斷；跌 20% 當日交易結束。達各級門檻即示警</li>
       </ul>
-      <p class="muted">目前為示意階段：生產環境由 GitHub Actions 每日計算各股觸發狀態並寫入資料，屆時此欄會自動顯示對應警示標籤。</p>
+      <p class="muted">目前為示意階段：異常漲跌已依上述標準自動標紅（<span class="warn">橘色</span>）。價格/技術/法人提醒的精確觸發由生產環境 Actions 計算後寫入。</p>
     </div>
     <div class="disclaimer">自選股中心（示意）。Alert 支援價格/技術/法人提醒，生產環境可由 Actions 產出。</div>
   </div>
@@ -65,8 +66,25 @@
 <script>
   let priceMap = {};
   let wlTable = null;
+  // 依各市場漲跌限制自動判定異常示警
+  function calcAlert(sym, chg){
+    if(chg==null) return '';
+    const abs=Math.abs(chg);
+    // 美股熔斷門檻（下跌）
+    if(sym && /[A-Z]/.test(sym) && !isNaN(parseInt(sym[0]))===false){ /* 美股代號含字母 */ }
+    if(chg<0 && abs>=20) return '🚨 熔斷';
+    if(chg<0 && abs>=13) return '⚠ 熔斷II';
+    if(chg<0 && abs>=7)  return '⚠ 熔斷I';
+    // 槓桿ETF ±20%、一般台股/上櫃 ±10%
+    if(abs>21) return '🚨 超限';
+    if(abs>10) return '⚠ 異常';
+    return '';
+  }
   function render(){
-    const rows = MKLAB.Watch.decorate(priceMap);
+    const rows = MKLAB.Watch.decorate(priceMap).map(r=>{
+      r.alert = calcAlert(r.sym, r.chg);
+      return r;
+    });
     if(!wlTable){
       wlTable = MKLAB.DataTable('wlTable', {
         cols: ['sym','name','price','chg','pe','pb','roe','alert','del'],
