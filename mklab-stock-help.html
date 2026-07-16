@@ -68,7 +68,7 @@
 
     <div class="card">
       <h2>🕒 資料更新日期</h2>
-      <div class="kv"><span>最新收盤資料日</span><b>2026-07-13</b></div>
+      <div class="kv"><span>最新收盤資料日</span><b id="helpAsOf">載入中…</b></div>
       <div class="kv"><span>每日自動更新</span><b>台灣收盤後 17:00（UTC 09:00）週一至週五</b></div>
       <div class="kv"><span>ROE / ROA 更新</span><b>每週六自動補齊</b></div>
       <div class="kv"><span>休市處理</span><b>週末 / 國定假日 / 突發颱風假自動跳過</b></div>
@@ -77,24 +77,11 @@
 
     <div class="card">
       <h2>📊 目前資料庫數量</h2>
-      <div class="kv"><span>上市 / ETF 檔數</span><b>1,369 檔</b></div>
+      <div class="kv"><span>上市股票</span><b id="helpListed">—</b></div>
+      <div class="kv"><span>ETF 檔數</span><b id="helpEtf">—</b></div>
       <div class="kv"><span>歷史股價切片</span><b>260 個交易日</b></div>
       <div class="kv"><span>產業分類</span><b>33 個官方大類</b></div>
       <div class="kv"><span>ROE 已涵蓋</span><b>1,042 檔（其餘待每週補齊）</b></div>
-    </div>
-
-    <div class="card">
-      <h2>綜合評分計算標準</h2>
-      <p class="text-muted">首頁「綜合評分 TOP 10」依下列加權即時計算（0–100 分），<b>只列出資料齊全且評分 > 0 的推薦股</b>：</p>
-      <table>
-        <tr><th>指標</th><th>權重</th><th>計算方式</th></tr>
-        <tr><td>ROE（股東權益報酬率）</td><td class="b">最高 40</td><td><code>min(40, ROE × 1.2)</code>，越高越好</td></tr>
-        <tr><td>PE（本益比）</td><td class="b">最高 20</td><td><code>min(20, (30 − PE) × 1.0)</code>，越低越好</td></tr>
-        <tr><td>PB（股價淨值比）</td><td class="b">最高 15</td><td><code>min(15, (8 − PB) × 2.0)</code>，越低越好</td></tr>
-        <tr><td>EPS（每股盈餘）</td><td class="b">最高 10</td><td><code>min(10, EPS × 0.3)</code>，越高越好</td></tr>
-        <tr><td>漲跌%</td><td class="b">最高 15</td><td><code>min(15, 漲跌% × 1.0)</code>，越高越好</td></tr>
-      </table>
-      <p class="muted-small-top">任一欄位缺漏（null）則該股不列入推薦。評分僅供參考，<b>非投資建議</b>。</p>
     </div>
 
     <div class="card">
@@ -109,6 +96,21 @@
 <script>
   if (window.MKLAB && MKLAB.Shell) MKLAB.Shell.mount();
   if (window.MKLAB && MKLAB.Drawer) MKLAB.Drawer.init();
+  // 動態更新收盤日 / 上市數 / ETF 數（避免硬寫日期與數量）
+  fetch('data/stocks.json').then(r=>r.ok?r.json():null).then(d=>{
+    if(!d || !Array.isArray(d.stocks)) return;
+    const sts = d.stocks;
+    const asof = d.meta && d.meta.as_of;
+    const elAsOf = document.getElementById('helpAsOf');
+    if(asof && elAsOf) elAsOf.textContent = asof;
+    const isEtf = s => /^\d{4,5}[A-Z]$/.test(String(s.sym));
+    const etf = sts.filter(isEtf).length;
+    const listed = sts.length - etf;
+    const elListed = document.getElementById('helpListed');
+    const elEtf = document.getElementById('helpEtf');
+    if(elListed) elListed.textContent = listed.toLocaleString() + ' 檔';
+    if(elEtf) elEtf.textContent = etf.toLocaleString() + ' 檔';
+  }).catch(()=>{});
 </script>
 </body>
 </html>

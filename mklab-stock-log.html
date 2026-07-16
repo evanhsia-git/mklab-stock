@@ -111,18 +111,6 @@
     </div>
 
     <div class="card">
-      <h2>🧩 WC 元件庫 (assets/mklab-wc.js)</h2>
-      <table>
-        <tr><th>元件標籤</th><th>功能</th><th>關鍵屬性/方法</th></tr>
-        <tr><td><code><mklab-kline></code></td><td>K 線圖 (MACD/KD/畫線)</td><td><code>data-symbol</code>、<code>height</code>、<code>.addLine()</code>、<code>.removeAll()</code></td></tr>
-        <tr><td><code><mklab-datatable></code></td><td>可排序/分頁/可配置欄位表格</td><td><code>cols</code>、<code>src</code> (JSON 路徑)、<code>page-size</code>、<code>fieldMap</code>、<code>onDel</code></td></tr>
-        <tr><td><code><mklab-drawer></code></td><td>右側抽屜 (主題/語言/自選股)</td><td><code>trigger</code>、<code>position</code>、<code>theme-key</code>、<code>lang-key</code></td></tr>
-        <tr><td><code><mklab-router></code></td><td>History API 單頁路由</td><td><code>routes</code> 配置、<code>navigate(path)</code></td></tr>
-      </table>
-      <p class="muted-small-top">所有元件皆繼承 <code>HTMLElement</code>，在 <code>connectedCallback</code> 初始化，<code>disconnectedCallback</code> 清理，支援 <code>customElements.whenDefined()</code> 等待載入。</p>
-    </div>
-
-    <div class="card">
       <h2>🚀 待開發功能清單（2026-07-17 彙整）</h2>
 
       <h3>搜尋鍵功能 — 三方案與推薦</h3>
@@ -354,9 +342,14 @@ function setLang(lang) {
   document.documentElement.setAttribute('data-theme', theme);
 })();
 
-loadMeta();
-MKLAB.initDrawer();
-MKLAB.Shell.mount({ active: 'log' });
+// 等 DOM + Web Components 都 ready 再掛載 nav/drawer（避免載入時機競爭導致 nav 空白）
+function bootLog(){
+  loadMeta();
+  MKLAB.initDrawer();
+  MKLAB.Shell.mount({ active: 'log' });
+}
+if (document.readyState === 'complete') bootLog();
+else window.addEventListener('load', bootLog);
 // 動態更新 freshness
 fetch('data/stocks.json').then(r=>r.ok?r.json():null).then(d=>{
   const asof = d && d.meta && d.meta.as_of;

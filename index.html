@@ -6,6 +6,8 @@
 <title>mklab-stock Market 原型 v11</title>
 <base href="/mklab-stock/">
 <link rel="stylesheet" href="assets/mklab-theme.css">
+<script src="vendor/lightweight-charts.min.js"></script>
+<script src="data/twii_kdata.js"></script>
 <style>
   /* index 獨有樣式 */
   .tip { position:absolute; left:0; right:0; bottom:-22px; background:var(--surface); color:var(--ink); border:1px solid var(--border); border-radius:6px; padding:2px 6px; font-size:11px; text-align:center; box-shadow:var(--shadow); display:none; z-index:5; }
@@ -76,6 +78,20 @@
         <tbody id="indBody"></tbody>
       </table>
       <div class="pager" id="indPager"></div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <h2>綜合評分計算標準</h2>
+      <p class="text-muted">首頁「綜合評分 TOP 10」依下列加權即時計算（0–100 分），<b>只列出資料齊全且評分 > 0 的推薦股</b>：</p>
+      <table>
+        <tr><th>指標</th><th>權重</th><th>計算方式</th></tr>
+        <tr><td>ROE（股東權益報酬率）</td><td class="b">最高 40</td><td><code>min(40, ROE × 1.2)</code>，越高越好</td></tr>
+        <tr><td>PE（本益比）</td><td class="b">最高 20</td><td><code>min(20, (30 − PE) × 1.0)</code>，越低越好</td></tr>
+        <tr><td>PB（股價淨值比）</td><td class="b">最高 15</td><td><code>min(15, (8 − PB) × 2.0)</code>，越低越好</td></tr>
+        <tr><td>EPS（每股盈餘）</td><td class="b">最高 10</td><td><code>min(10, EPS × 0.3)</code>，越高越好</td></tr>
+        <tr><td>漲跌%</td><td class="b">最高 15</td><td><code>min(15, 漲跌% × 1.0)</code>，越高越好</td></tr>
+      </table>
+      <p class="muted-small-top">任一欄位缺漏（null）則該股不列入推薦。評分僅供參考，<b>非投資建議</b>。</p>
     </div>
 
     <div class="section-title">全球指數快照</div>
