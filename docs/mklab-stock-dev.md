@@ -1,18 +1,18 @@
 ---
-title: "mklab-stock DAV（Web Components 路線 · 決策 2026-07-15 · 完成 2026-07-17）"
+title: "mklab-stock Dev（Web Components 路線 · 決策 2026-07-15 · 完成 2026-07-17）"
 description: "比對設計主文 mklab-stock.md v3.0 §10 與目前實際開發差異；2026-07-15 決議放棄 React 化，改採原生 Web Components / ES Modules 元件化，守零外部依賴 / fork 即維護原則。2026-07-17 全站 WC 遷移完成上線。"
 type: analysis
 status: completed
 tags:
   - mklab-stock
   - web-components
-  - dav
+  - dev
   - 零依賴
 created: 2026-07-15
 updated: 2026-07-17
 ---
 
-# mklab-stock DAV（Web Components 路線）
+# mklab-stock Dev（Web Components 路線）
 
 > 比對對象：設計主文 [[mklab-stock|mklab 簡化架構 v3.0]] §10 React 規劃
 > 決策（2026-07-15）：**放棄 React 化**（需 Node/npm/Vite，違反「不依賴外部軟體」），改採**原生 Web Components / ES Modules 元件化**

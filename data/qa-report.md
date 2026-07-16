@@ -1,6 +1,6 @@
 # mklab-stock QA Gate 報告
-**時間**: 2026-07-16 05:37:32  
-**Critical ERROR**: 0  | **WARNING**: 1  
+**時間**: 2026-07-16 07:53:26  
+**Critical ERROR**: 0  | **WARNING**: 2  
 **最終判定**: 🟢 ALLOW DEPLOY
 
 | 類別 | 項目 | 狀態 | 說明 | 修正建議 | 位置 |
@@ -16,18 +16,20 @@
 | Python | import-ok: check_html_health.py | PASS |  |  |  |
 | Python | import-ok: qa_gate.py | PASS |  |  |  |
 | Data | 股票代號唯一 | PASS | 1360 檔唯一 |  |  |
-| Data | 無髒值 (NaN/null/undefined/Infinity/空字串/非法'-') | WARNING | 00400A.market_cap=null(雲端未涵蓋); 00401A.market_cap=null(雲端未涵蓋); 00402A.market_cap=null(雲端未涵蓋); 00403A.market_cap=null(雲端未涵 | 確認資料源是否涵蓋該標的 | /root/Documents/mklab-stock/data/stocks.json |
+| Data | 無髒值 (NaN/null/undefined/Infinity/空字串/非法'-') | WARNING | 0050.market_cap=null(雲端未涵蓋); 0051.market_cap=null(雲端未涵蓋); 0052.market_cap=null(雲端未涵蓋); 0053.market_cap=null(雲端未涵蓋); 0055 | 確認資料源是否涵蓋該標的 | /root/Documents/mklab-stock/data/stocks.json |
 | Data | OHLC 合理性 (H>=L, H>=O, H>=C, L<=O, L<=C, P>0, V>=0, MktCap>0) | PASS | 1360 檔 OHLC 合理 |  |  |
 | Data | 前日波動異常 (>20% 閾值) | PASS | 無異常波動 |  |  |
 | JSON | stocks.json Schema | PASS | schema 完整 (1360 檔) |  |  |
 | JSON | industry.json Schema | PASS | 33 個產業 |  |  |
-| HTML | 結構健康檢查 | PASS | 全部 6 個 HTML 通過（含 check_html_health 功能） |  |  |
-| CSS | 統一 Theme 變數 (var(--bg) 等) | PASS | 6 個頁面皆含 Theme |  |  |
-| CSS | 禁止硬寫核心樣式 (違反 Design Token) | PASS | 無行內硬寫核心樣式 |  |  |
+| HTML | 結構健康檢查 | PASS | 全部 7 個 HTML 通過（含 check_html_health 功能） |  |  |
+| CSS | 統一 Theme 變數 (var(--bg) 等) | PASS | 7 個頁面皆含 Theme |  |  |
+| CSS | 禁止硬寫核心樣式 (違反 Design Token) | WARNING | 行內硬寫樣式: ['mklab-stock-log.html:1'] | 改用 CSS class / Design Token | mklab-stock-log.html:1 |
 | JS | syntax: mklab-stock-screener.html#0 | PASS |  |  |  |
 | JS | syntax: index.html#0 | PASS |  |  |  |
 | JS | syntax: mklab-stock-research.html#0 | PASS |  |  |  |
 | JS | syntax: mklab-stock-industry.html#0 | PASS |  |  |  |
+| JS | syntax: mklab-stock-log.html#0 | PASS |  |  |  |
+| JS | syntax: mklab-stock-help.html#0 | PASS |  |  |  |
 | JS | syntax: mklab-stock-watchlist.html#0 | PASS |  |  |  |
 | Chart | 圖表渲染: index.html | MANUAL | 需瀏覽器載入確認 Canvas/SVG 存在、Dataset 非空、無 Chart Error，並截圖 |  |  |
 | Chart | 圖表渲染: mklab-stock-research.html | MANUAL | 需瀏覽器載入確認 Canvas/SVG 存在、Dataset 非空、無 Chart Error，並截圖 |  |  |
@@ -35,8 +37,10 @@
 | Visual | 視覺回歸比對 | MANUAL | 需瀏覽器截圖，與 Baseline 比較配色/字體/間距/版面/圖表，差異超閾值標記失敗 |  |  |
 
 ## 問題摘要
-- **[WARNING] Data/無髒值 (NaN/null/undefined/Infinity/空字串/非法'-')**: 00400A.market_cap=null(雲端未涵蓋); 00401A.market_cap=null(雲端未涵蓋); 00402A.market_cap=null(雲端未涵蓋); 00403A.market_cap=null(雲端未涵蓋); 00404A.market_cap=null(雲端未涵蓋); 00405A.market_cap=null(雲端未涵蓋); 00406A.market_cap=null(雲端未涵蓋); 00407A.market_cap=null(雲端未涵蓋)（全 OHLC 缺=ETF/資料源未涵蓋，非阻擋）
+- **[WARNING] Data/無髒值 (NaN/null/undefined/Infinity/空字串/非法'-')**: 0050.market_cap=null(雲端未涵蓋); 0051.market_cap=null(雲端未涵蓋); 0052.market_cap=null(雲端未涵蓋); 0053.market_cap=null(雲端未涵蓋); 0055.market_cap=null(雲端未涵蓋); 0056.market_cap=null(雲端未涵蓋); 0057.market_cap=null(雲端未涵蓋); 0061.market_cap=null(雲端未涵蓋)（全 OHLC 缺=ETF/資料源未涵蓋，非阻擋）
   - 建議: 確認資料源是否涵蓋該標的（/root/Documents/mklab-stock/data/stocks.json）
+- **[WARNING] CSS/禁止硬寫核心樣式 (違反 Design Token)**: 行內硬寫樣式: ['mklab-stock-log.html:1']
+  - 建議: 改用 CSS class / Design Token（mklab-stock-log.html:1）
 
 ## 最終判定: ALLOW DEPLOY
 

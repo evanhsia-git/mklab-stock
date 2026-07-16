@@ -1,17 +1,637 @@
 {
-  "source": "各 ETF 官網 / TWSE ETF 基本資料 / 公開發行說明書",
+  "source": "TWSE ETF 基本資料 / 公開發行說明書",
   "updated": "2026-07-16",
-  "note": "主動型 ETF 代號 0040xA，反向 ETF 代號 006xxR。shares 為發行張數（1張=1000股），shares_stock 為股數。需定期人工更新。",
+  "note": "主動型/槓桿/反向/期貨 ETF 發行張數，需定期人工更新",
   "etf": {
-    "00400A": { "name": "主動國泰動能高息", "full_name": "國泰台股動能高息主動式ETF基金", "shares": 30000, "unit": "張", "shares_stock": 30000000 },
-    "00401A": { "name": "主動摩根台灣鑫收", "full_name": "摩根台灣鑫收益主動式ETF", "shares": 25000, "unit": "張", "shares_stock": 25000000 },
-    "00402A": { "name": "主動安聯美國科技", "full_name": "安聯美國科技領航主動式ETF", "shares": 15000, "unit": "張", "shares_stock": 15000000 },
-    "00403A": { "name": "主動統一升級50", "full_name": "統一台股升級50主動式ETF", "shares": 20000, "unit": "張", "shares_stock": 20000000 },
-    "00404A": { "name": "主動聯博動能50", "full_name": "聯博台灣動能收益50主動式ETF", "shares": 18000, "unit": "張", "shares_stock": 18000000 },
-    "00405A": { "name": "主動富邦台灣龍耀", "full_name": "富邦台灣龍耀主動式ETF基金", "shares": 22000, "unit": "張", "shares_stock": 22000000 },
-    "00406A": { "name": "主動中信台灣收益", "full_name": "中信台灣收益成長主動式ETF", "shares": 28000, "unit": "張", "shares_stock": 28000000 },
-    "00407A": { "name": "主動凱基台灣", "full_name": "凱基台灣主動式ETF基金", "shares": 12000, "unit": "張", "shares_stock": 12000000 },
-    "00632R": { "name": "元大台灣50反1", "full_name": "元大台灣50反向1倍ETF", "shares": 12000, "unit": "張", "shares_stock": 12000000 },
-    "00634R": { "name": "富邦上證反1", "full_name": "富邦上證反向1倍ETF", "shares": 15000, "unit": "張", "shares_stock": 15000000 }
+    "00400A": {
+      "name": "主動國泰動能高息",
+      "full_name": "國泰台股動能高息主動式ETF基金",
+      "shares": 30000,
+      "unit": "張",
+      "shares_stock": 30000000
+    },
+    "00401A": {
+      "name": "主動摩根台灣鑫收",
+      "full_name": "摩根台灣鑫收益主動式ETF",
+      "shares": 25000,
+      "unit": "張",
+      "shares_stock": 25000000
+    },
+    "00402A": {
+      "name": "主動安聯美國科技",
+      "full_name": "安聯美國科技領航主動式ETF",
+      "shares": 15000,
+      "unit": "張",
+      "shares_stock": 15000000
+    },
+    "00403A": {
+      "name": "主動統一升級50",
+      "full_name": "統一台股升級50主動式ETF",
+      "shares": 20000,
+      "unit": "張",
+      "shares_stock": 20000000
+    },
+    "00404A": {
+      "name": "主動聯博動能50",
+      "full_name": "聯博台灣動能收益50主動式ETF",
+      "shares": 18000,
+      "unit": "張",
+      "shares_stock": 18000000
+    },
+    "00405A": {
+      "name": "主動富邦台灣龍耀",
+      "full_name": "富邦台灣龍耀主動式ETF基金",
+      "shares": 22000,
+      "unit": "張",
+      "shares_stock": 22000000
+    },
+    "00406A": {
+      "name": "主動中信台灣收益",
+      "full_name": "中信台灣收益成長主動式ETF",
+      "shares": 28000,
+      "unit": "張",
+      "shares_stock": 28000000
+    },
+    "00407A": {
+      "name": "主動凱基台灣",
+      "full_name": "凱基台灣主動式ETF基金",
+      "shares": 12000,
+      "unit": "張",
+      "shares_stock": 12000000
+    },
+    "00408A": {
+      "name": "主動第一金優股息",
+      "full_name": "主動第一金優股息",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00631L": {
+      "name": "元大台灣50正2",
+      "full_name": "元大台灣50正2",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00632R": {
+      "name": "元大台灣50反1",
+      "full_name": "元大台灣50反向1倍ETF",
+      "shares": 12000,
+      "unit": "張",
+      "shares_stock": 12000000
+    },
+    "00633L": {
+      "name": "富邦上証正2",
+      "full_name": "富邦上証正2",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00634R": {
+      "name": "富邦上證反1",
+      "full_name": "富邦上證反向1倍ETF",
+      "shares": 15000,
+      "unit": "張",
+      "shares_stock": 15000000
+    },
+    "00635U": {
+      "name": "期元大S&P黃金",
+      "full_name": "期元大S&P黃金",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00637L": {
+      "name": "元大滬深300正2",
+      "full_name": "元大滬深300正2",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00638R": {
+      "name": "元大滬深300反1",
+      "full_name": "元大滬深300反1",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00640L": {
+      "name": "富邦日本正2",
+      "full_name": "富邦日本正2",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00641R": {
+      "name": "富邦日本反1",
+      "full_name": "富邦日本反1",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00642U": {
+      "name": "期元大S&P石油",
+      "full_name": "期元大S&P石油",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00647L": {
+      "name": "元大S&P500正2",
+      "full_name": "元大S&P500正2",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00648R": {
+      "name": "元大S&P500反1",
+      "full_name": "元大S&P500反1",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00650L": {
+      "name": "復華香港正2",
+      "full_name": "復華香港正2",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00651R": {
+      "name": "復華香港反1",
+      "full_name": "復華香港反1",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00653L": {
+      "name": "富邦印度正2",
+      "full_name": "富邦印度正2",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00654R": {
+      "name": "富邦印度反1",
+      "full_name": "富邦印度反1",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00655L": {
+      "name": "國泰中國A50正2",
+      "full_name": "國泰中國A50正2",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00656R": {
+      "name": "國泰中國A50反1",
+      "full_name": "國泰中國A50反1",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00663L": {
+      "name": "國泰臺灣加權正2",
+      "full_name": "國泰臺灣加權正2",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00664R": {
+      "name": "國泰臺灣加權反1",
+      "full_name": "國泰臺灣加權反1",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00665L": {
+      "name": "富邦恒生國企正2",
+      "full_name": "富邦恒生國企正2",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00666R": {
+      "name": "富邦恒生國企反1",
+      "full_name": "富邦恒生國企反1",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00669R": {
+      "name": "國泰美國道瓊反1",
+      "full_name": "國泰美國道瓊反1",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00670L": {
+      "name": "富邦NASDAQ正2",
+      "full_name": "富邦NASDAQ正2",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00671R": {
+      "name": "富邦NASDAQ反1",
+      "full_name": "富邦NASDAQ反1",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00673R": {
+      "name": "期元大S&P原油反1",
+      "full_name": "期元大S&P原油反1",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00674R": {
+      "name": "期元大S&P黃金反1",
+      "full_name": "期元大S&P黃金反1",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00675L": {
+      "name": "富邦臺灣加權正2",
+      "full_name": "富邦臺灣加權正2",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00676R": {
+      "name": "富邦臺灣加權反1",
+      "full_name": "富邦臺灣加權反1",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00680L": {
+      "name": "元大美債20正2",
+      "full_name": "元大美債20正2",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00681R": {
+      "name": "元大美債20反1",
+      "full_name": "元大美債20反1",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00682U": {
+      "name": "期元大美元指數",
+      "full_name": "期元大美元指數",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00683L": {
+      "name": "期元大美元指正2",
+      "full_name": "期元大美元指正2",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00684R": {
+      "name": "期元大美元指反1",
+      "full_name": "期元大美元指反1",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00685L": {
+      "name": "群益臺灣加權正2",
+      "full_name": "群益臺灣加權正2",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00686R": {
+      "name": "群益臺灣加權反1",
+      "full_name": "群益臺灣加權反1",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00688L": {
+      "name": "國泰20年美債正2",
+      "full_name": "國泰20年美債正2",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00689R": {
+      "name": "國泰20年美債反1",
+      "full_name": "國泰20年美債反1",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00693U": {
+      "name": "期街口S&P黃豆",
+      "full_name": "期街口S&P黃豆",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00706L": {
+      "name": "期元大S&P日圓正2",
+      "full_name": "期元大S&P日圓正2",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00707R": {
+      "name": "期元大S&P日圓反1",
+      "full_name": "期元大S&P日圓反1",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00708L": {
+      "name": "期元大S&P黃金正2",
+      "full_name": "期元大S&P黃金正2",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00715L": {
+      "name": "期街口布蘭特正2",
+      "full_name": "期街口布蘭特正2",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00738U": {
+      "name": "期元大道瓊白銀",
+      "full_name": "期元大道瓊白銀",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00753L": {
+      "name": "中信中國50正2",
+      "full_name": "中信中國50正2",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00763U": {
+      "name": "期街口道瓊銅",
+      "full_name": "期街口道瓊銅",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00852L": {
+      "name": "國泰美國道瓊正2",
+      "full_name": "國泰美國道瓊正2",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00980A": {
+      "name": "主動野村臺灣優選",
+      "full_name": "主動野村臺灣優選",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00981A": {
+      "name": "主動統一台股增長",
+      "full_name": "主動統一台股增長",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00982A": {
+      "name": "主動群益台灣強棒",
+      "full_name": "主動群益台灣強棒",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00983A": {
+      "name": "主動中信ARK創新",
+      "full_name": "主動中信ARK創新",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00984A": {
+      "name": "主動安聯台灣高息",
+      "full_name": "主動安聯台灣高息",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00985A": {
+      "name": "主動野村台灣50",
+      "full_name": "主動野村台灣50",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00986A": {
+      "name": "主動台新龍頭成長",
+      "full_name": "主動台新龍頭成長",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00987A": {
+      "name": "主動台新優勢成長",
+      "full_name": "主動台新優勢成長",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00988A": {
+      "name": "主動統一全球創新",
+      "full_name": "主動統一全球創新",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00989A": {
+      "name": "主動摩根美國科技",
+      "full_name": "主動摩根美國科技",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00990A": {
+      "name": "主動元大AI新經濟",
+      "full_name": "主動元大AI新經濟",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00991A": {
+      "name": "主動復華未來50",
+      "full_name": "主動復華未來50",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00992A": {
+      "name": "主動群益科技創新",
+      "full_name": "主動群益科技創新",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00993A": {
+      "name": "主動安聯台灣",
+      "full_name": "主動安聯台灣",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00994A": {
+      "name": "主動第一金台股優",
+      "full_name": "主動第一金台股優",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00995A": {
+      "name": "主動中信台灣卓越",
+      "full_name": "主動中信台灣卓越",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00996A": {
+      "name": "主動兆豐台灣豐收",
+      "full_name": "主動兆豐台灣豐收",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00997A": {
+      "name": "主動群益美國增長",
+      "full_name": "主動群益美國增長",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00998A": {
+      "name": "主動復華金融股息",
+      "full_name": "主動復華金融股息",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "00999A": {
+      "name": "主動野村臺灣高息",
+      "full_name": "主動野村臺灣高息",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "02001L": {
+      "name": "富邦蘋果正二N",
+      "full_name": "富邦蘋果正二N",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "1312A": {
+      "name": "國喬特",
+      "full_name": "國喬特",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "1522A": {
+      "name": "堤維西甲特",
+      "full_name": "堤維西甲特",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "2002A": {
+      "name": "中鋼特",
+      "full_name": "中鋼特",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "2348A": {
+      "name": "海悅甲特",
+      "full_name": "海悅甲特",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "2836A": {
+      "name": "高雄銀甲特",
+      "full_name": "高雄銀甲特",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "2838A": {
+      "name": "聯邦銀甲特",
+      "full_name": "聯邦銀甲特",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "2881A": {
+      "name": "富邦特",
+      "full_name": "富邦特",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "2882A": {
+      "name": "國泰特",
+      "full_name": "國泰特",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "5871A": {
+      "name": "中租-KY甲特",
+      "full_name": "中租-KY甲特",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "6592A": {
+      "name": "和潤企業甲特",
+      "full_name": "和潤企業甲特",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "6958A": {
+      "name": "日盛台駿甲特",
+      "full_name": "日盛台駿甲特",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "8112A": {
+      "name": "至上甲特",
+      "full_name": "至上甲特",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    },
+    "9941A": {
+      "name": "裕融甲特",
+      "full_name": "裕融甲特",
+      "shares": 10000,
+      "unit": "張",
+      "shares_stock": 10000000
+    }
   }
 }

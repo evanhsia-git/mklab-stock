@@ -304,6 +304,13 @@ def run_daily():
         no_trade = (close is None or close <= 0)
         if no_trade:
             open_p = high = low = close = None
+        # ETF 特殊處理：TWSE API 對 ETF（代號含字母尾碼）只給 ClosingPrice、不給 Open/High/Low
+        # 當有收盤價但無 OHLC 時，用 close 回填 open/high/low（視為平盤，避免前端缺值）
+        elif open_p is None or high is None or low is None:
+            if close is not None:
+                if open_p is None: open_p = close
+                if high is None: high = close
+                if low is None: low = close
 
         # ETF market_cap：若無既有值且有發行張數資料，用 price * shares_stock 估算
         mc = ex.get("market_cap")

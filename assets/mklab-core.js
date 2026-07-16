@@ -366,6 +366,8 @@
     { key:'research',  label:'Research',  href:'mklab-stock-research.html' },
     { key:'industry',  label:'Industry',  href:'mklab-stock-industry.html' },
     { key:'watchlist', label:'Watchlist', href:'mklab-stock-watchlist.html' },
+    { key:'help',      label:'Help',      href:'mklab-stock-help.html' },
+    { key:'log',       label:'Log',       href:'mklab-stock-log.html' },
   ];
   const SHELL_CFG = {
     brand: 'mklab-stock',
