@@ -295,7 +295,16 @@ def run_daily():
             chg = float(r.get("Change")) if r.get("Change") not in (None, "") else None
         except ValueError:
             chg = None
-        # 漲跌%：TWSE Change 是絕對值差，需昨收推算；這裡直接存 chg（元），前端可換算
+        # 漲跌%：TWSE Change 是漲跌「元」（絕對值差），需由 收盤-Change 推算昨收，再算漲跌%
+        # 修正：原本直接存 chg（元）導致前端把「元」當「%」顯示（如台積電 +20 元誤顯 +20%）。
+        # 現改存漲跌%（chg_pct），前端直接顯示百分比。
+        chg_pct = None
+        if chg is not None and close is not None and close > 0:
+            prev_close = close - chg
+            if prev_close and prev_close > 0:
+                chg_pct = round(chg / prev_close * 100, 2)
+        # 向後相容：保留 chg 欄位存漲跌%（統一為 %），避免前端逐頁改欄位名
+        chg = chg_pct
         # 繼承既有 ROE/ROA/eps/market_cap/ind；PE/PB/div 來自 BWIBBU
         ex = existing.get(sid, {})
         bb = bwibbu.get(sid, {})

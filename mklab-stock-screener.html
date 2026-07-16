@@ -69,7 +69,6 @@
         </div>
         <div class="grp">
           <div class="lab">技術面</div>
-          <div class="cond"><div class="row"><label>RSI≥</label><input type="range" id="f_rsi" min="0" max="100" value="0" oninput="sync('f_rsi');apply()"><span class="rv" id="v_rsi">0</span></div></div>
           <div class="cond"><div class="row"><label>漲幅≥</label><input type="range" id="f_chg" min="-10" max="10" value="0" step="0.5" oninput="sync('f_chg');apply()"><span class="rv" id="v_chg">0</span></div></div>
           <div class="cond"><div class="row"><label>均線</label>
             <select id="f_ma" onchange="apply()"><option value="any">不限</option><option value="ma5">站上5MA</option><option value="ma10">站上10MA</option><option value="ma30">站上30MA</option></select>
@@ -143,7 +142,7 @@
     const rows=current.filter(s=> le(s.pe,pe)&&le(s.pb,pb)&&ge(s.div,div)&&ge(s.roe,roe)&&ge(s.roa,roa)&&ge(s.eg,eg)&&ge(s.rsi,rsi)&&ge(s.chg,chg)&&ge(s.cap,cap)&&(ma==='any'||(ma==='ma5'&&s.ma5)||(ma==='ma10'&&s.ma10)||(ma==='ma30'&&s.ma30)));
     document.getElementById('count').textContent=`符合：${rows.length} / ${current.length} 檔`;
     if(!resTable){
-      resTable = MKLAB.DataTable('resTable', { cols:['sym','name','price','chg','pe','pb','roe','rsi','cap'], rows:rows, pageSize:PER, pagerId:'pager', defaultSort:'roe' });
+      resTable = MKLAB.DataTable('resTable', { cols:['sym','name','price','chg','pe','pb','roe','cap'], rows:rows, pageSize:PER, pagerId:'pager', defaultSort:'roe' });
     } else {
       resTable.setRows(rows);
     }

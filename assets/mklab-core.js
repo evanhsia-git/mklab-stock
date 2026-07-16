@@ -176,8 +176,13 @@
     const ctx = this._ctx;
     const rowsHtml = view.map(r=>{
       const tds = this.cols.map(c=>{
-        const v = (typeof c.fmt === 'function') ? c.fmt(r, ctx) : (getVal(c,r,this.fieldMap)!=null?getVal(c,r,this.fieldMap):'-');
-        const cls = (c.type==='pct') ? ((getVal(c,r,this.fieldMap)>=0)?'up':'down') : '';
+        const rawVal = getVal(c,r,this.fieldMap);
+        const v = (typeof c.fmt === 'function') ? c.fmt(r, ctx) : (rawVal!=null?rawVal:'-');
+        let cls = (c.type==='pct') ? ((rawVal>=0)?'up':'down') : '';
+        // 異常漲跌幅防禦：台股漲停限制 ±10%，槓桿ETF ±20%；超過視為資料異常標紅
+        if(c.type==='pct' && typeof rawVal==='number' && Math.abs(rawVal) > 10){
+          cls = 'warn';
+        }
         return `<td class="${cls}">${v}</td>`;
       }).join('');
       return `<tr>${tds}</tr>`;
@@ -288,6 +293,15 @@
       const darkOn = (localStorage.getItem('mk_dark')!=='0') && DRAWER_CFG.appearance.darkOn;
       document.documentElement.setAttribute('data-theme', darkOn?'dark':'light');
       const sw = document.getElementById('swDark'); if(sw) sw.classList.toggle('on', darkOn);
+      // 動態更新「最後更新」日期：讀 stocks.json 的 meta.as_of
+      fetch('data/stocks.json').then(r=>r.ok?r.json():null).then(d=>{
+        const asof = d && d.meta && d.meta.as_of;
+        if(asof){
+          DRAWER_CFG.system.updated = asof;
+          const note = el.querySelector('.sys-note');
+          if(note) note.innerHTML = `版本：${s.version}<br>資料源：${s.source}<br>最後更新：${asof}<br>狀態：<span class="up">${s.status}</span>`;
+        }
+      }).catch(()=>{});
     },
     open(){
       const el = document.getElementById('drawer'); if(!el) return;
@@ -343,11 +357,12 @@
       const arr = this.list().filter(x=>x.sym!==sym);
       this.save(arr); return arr;
     },
-    // 用 stocks.json map（{sym:{price,chg,pe,roe,alert}}）補真實值
+    // 用 stocks.json map（{sym:{price,chg,pe,roe,alert,name}}）補真實值
     decorate(priceMap){
       return this.list().map(x=>{
         const p = priceMap && priceMap[x.sym];
         return Object.assign({}, x, {
+          name:  p&&p.name ? p.name : x.name,   // 優先用 stocks.json 真實名稱
           price: p&&p.price!=null?p.price:null,
           chg:   p&&p.chg!=null?p.chg:null,
           pe:    p&&p.pe!=null?p.pe:null,

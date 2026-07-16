@@ -69,7 +69,7 @@
     <div class="cards" id="watch5"></div>
 
     <!-- 版塊 6：綜合評分 TOP 10 -->
-    <div class="section-title">綜合評分 TOP 10 (點擊表格標題切換升/降排序) 總共 <span id="indCount"></span> 檔</div>
+    <div class="section-title">綜合評分 TOP 10 (點擊表格標題切換升/降排序)</div>
     <div class="table-wrap">
       <table id="indTable">
         <thead></thead>
@@ -90,6 +90,7 @@
   </div>
 <script src="assets/mklab-core.js"></script>
 <script src="assets/data-client.js"></script>
+<script src="assets/mklab-wc.js"></script>
 <script>
   function spark(data,color,w,h){ const min=Math.min(...data),max=Math.max(...data),r=(max-min)||1; const p=data.map((d,i)=>`${(i/(data.length-1)*w).toFixed(1)},${(h-((d-min)/r*h)).toFixed(1)}`).join(" "); return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><polyline points="${p}" fill="none" stroke="${color}" stroke-width="1.5"/></svg>`; }
   function gen(seed,n){ const o=[]; let p=seed; for(let i=0;i<n;i++){ p+=(Math.random()-0.5)*seed*0.01; o.push(+p.toFixed(2)); } return o; }
@@ -148,6 +149,10 @@
   }
   function renderWatch(){
     let items = MKLAB.Watch.decorate(priceMap);
+    // 排除機制：stocks.json 無資料的跨市場標的（如上櫃股 3344）不顯示，避免空白圖表
+    if(priceMap && Object.keys(priceMap).length){
+      items = items.filter(d=> priceMap[d.sym] != null);
+    }
     // 自動清理：跨市場標的若 stocks.json 無資料（price/chg 皆 null），以台股市值前5替換，確保 5 張圖表都有值
     if(priceMap && Object.keys(priceMap).length){
       const valid = items.filter(d=>d.price!=null || d.chg!=null);
@@ -200,6 +205,7 @@
             name: s.name || fb.name || s.sym,
             price:s.price, chg:s.chg,
             pe, pb, eps, roe, roa,
+            market_cap: s.market_cap != null ? s.market_cap : (fb.market_cap != null ? fb.market_cap : null),
             spct,
             rank: s.rank || fb.rank || 0,
             trend: (spct!=null) ? (spct>0?'+':'')+spct+'%' : (fb.spct!=null ? (fb.spct>0?'+':'')+fb.spct+'%' : null),
@@ -229,12 +235,13 @@
     const scored = industry.map(s=>({
       ...s,
       score: calcRank(s),
+      cap: s.market_cap != null ? s.market_cap : null,
       spark: gen(s.price||50, 20)
     }))
       .filter(s=>s.score>0 && (s.pe!=null||s.pb!=null||s.roe!=null||s.eps!=null));
     if(!indTable){
       indTable = MKLAB.DataTable('indTable', {
-        cols: ['sym','name','price','chg','score','spk','pe','pb','roe'],
+        cols: ['sym','name','price','chg','score','cap','spk','pe','pb','roe'],
         rows: scored,
         pageSize: 10,
         pagerId: 'indPager',
@@ -244,7 +251,7 @@
     } else {
       indTable.setRows(scored);
     }
-    const cnt=document.getElementById("indCount"); if(cnt) cnt.textContent=scored.length;
+  }
   }
 
   function openDrawer(){ MKLAB.Drawer.open(); }

@@ -104,9 +104,9 @@
   function selInd(i){
     activeInd=i; renderGrid();
     const d=data[i];
-    const real=ALL_STOCKS.filter(s=>s.ind===d.nm).slice(0,10);
+    const real=ALL_STOCKS.filter(s=>s.ind===d.nm);
     document.getElementById('detailTitle').style.display='block';
-    document.getElementById('detailTitle').textContent=`${d.nm} · 成分股績效（${real.length} 檔，依 stocks.json 真實資料 Top 10）`;
+    document.getElementById('detailTitle').textContent=`${d.nm} · 成分股績效（共 ${real.length} 檔，每頁 10 檔可翻頁）`;
     document.getElementById('detailWrap').style.display='block';
     if(!detailTable){
       detailTable = MKLAB.DataTable('indDetailTable', {
