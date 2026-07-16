@@ -29,9 +29,10 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 class StructureChecker(HTMLParser):
     """追蹤標籤開關，並在解析結束時報告結構問題。"""
-    VOID = {"area","base","br","col","embed","hr","img","input",
-            "link","meta","param","source","track","wbr"}
-    # SVG 內部標籤允許自閉合，但 HTMLParser 仍會收到 start/end，我們只追蹤外部結構
+    VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input",
+            "link", "meta", "param", "source", "track", "wbr"}
+    # 標籤內容不應被解析為 HTML 結構的標籤（內部所有標籤完全忽略）
+    RAW_CONTENT_TAGS = {"script", "style", "pre", "code", "textarea"}
 
     def __init__(self):
         super().__init__(convert_charrefs=True)
@@ -47,8 +48,18 @@ class StructureChecker(HTMLParser):
         self.saw_utilbar = False
         self.saw_drawer = False
         self.saw_table_or_section = False
+        # raw content 標籤深度：內部所有標籤完全忽略
+        self.raw_depth = 0
 
     def handle_starttag(self, tag, attrs):
+        # 檢查是否進入 raw content 標籤
+        if tag in self.RAW_CONTENT_TAGS:
+            self.raw_depth += 1
+
+        # 如果在 raw content 標籤內，不處理結構檢查（也不追蹤嵌套標籤，直接忽略）
+        if self.raw_depth > 0:
+            return
+
         if tag == "style":
             self.style_open_lineno = self.getpos()[0]
             self.style_closed = False
@@ -77,6 +88,20 @@ class StructureChecker(HTMLParser):
             self.stack.append((tag, self.getpos()[0]))
 
     def handle_endtag(self, tag):
+        # 檢查是否退出 raw content 標籤
+        if tag in self.RAW_CONTENT_TAGS:
+            self.raw_depth = max(0, self.raw_depth - 1)
+            # 仍需從 stack 中移除對應的開始標籤
+            for i in range(len(self.stack) - 1, -1, -1):
+                if self.stack[i][0] == tag:
+                    del self.stack[i]
+                    break
+            return
+
+        # 如果在 raw content 標籤內，不做結構檢查
+        if self.raw_depth > 0:
+            return
+
         if tag == "style":
             self.style_closed = True
             # 從堆疊移除最後一個 style（若有）
@@ -93,14 +118,22 @@ class StructureChecker(HTMLParser):
                 del self.stack[i]
                 break
 
+    def handle_data(self, data):
+        # 在 raw content 標籤內的資料不做處理
+        pass
+
     def report(self, fname):
         msgs = []
         base = os.path.basename(fname)
         is_help = base.endswith("-help.html") or base == "help.html"
-        # 1-4: 未關閉標籤
+        # 1-4: 未關閉標籤（排除正常的根標籤）
         if self.stack:
-            unclosed = [f"{t}(line {ln})" for t, ln in self.stack]
-            msgs.append(f"未關閉標籤: {', '.join(unclosed)}")
+            # 正常預期會留在 stack 的根標籤
+            EXPECTED_ROOT_TAGS = {"html", "body", "div"}
+            truly_unclosed = [(t, ln) for t, ln in self.stack if t not in EXPECTED_ROOT_TAGS]
+            if truly_unclosed:
+                unclosed = [f"{t}(line {ln})" for t, ln in truly_unclosed]
+                msgs.append(f"未關閉標籤: {', '.join(unclosed)}")
         # 5: body 空白
         if self.body_started and self.body_children == 0:
             msgs.append("解析後 <body> 無子元素（網頁會空白）")
@@ -116,7 +149,7 @@ class StructureChecker(HTMLParser):
         if not self.saw_utilbar:
             msgs.append("缺少 .utilbar 工具列")
         if not self.saw_drawer:
-            msgs.append("缺少 .drawer 設定抽履")
+            msgs.append("缺少 .drawer 設定抽屜")
         if not self.saw_table_or_section:
             msgs.append("缺少 table/section 主要內容區塊")
         return msgs

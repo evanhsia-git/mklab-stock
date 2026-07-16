@@ -280,6 +280,9 @@ def run():
     class _Health(HTMLParser):
         VOID = {"area","base","br","col","embed","hr","img","input","link",
                 "meta","param","source","track","wbr"}
+        # 標籤內容不應被解析為 HTML 結構的標籤
+        RAW_CONTENT_TAGS = frozenset({"script", "style", "pre", "code", "textarea"})
+
         def __init__(self):
             super().__init__(convert_charrefs=True)
             self.stack = []
@@ -289,7 +292,15 @@ def run():
             self.style_closed = True
             self.saw_nav = self.saw_utilbar = self.saw_drawer = self.saw_tbl = False
             self.errors = []
+            self.raw_depth = 0
+
         def handle_starttag(self, tag, attrs):
+            if tag in self.RAW_CONTENT_TAGS:
+                self.raw_depth += 1
+
+            if self.raw_depth > 0:
+                return
+
             if tag == "style":
                 self.style_open = self.getpos()[0]; self.style_closed = False
             if tag == "body":
@@ -305,7 +316,18 @@ def run():
             if tag in ("table", "section"): self.saw_tbl = True
             if tag not in self.VOID:
                 self.stack.append((tag, self.getpos()[0]))
+
         def handle_endtag(self, tag):
+            if tag in self.RAW_CONTENT_TAGS:
+                self.raw_depth = max(0, self.raw_depth - 1)
+                for i in range(len(self.stack)-1, -1, -1):
+                    if self.stack[i][0] == tag:
+                        del self.stack[i]; break
+                return
+
+            if self.raw_depth > 0:
+                return
+
             if tag == "style":
                 self.style_closed = True
                 for i in range(len(self.stack)-1, -1, -1):
@@ -316,12 +338,16 @@ def run():
             for i in range(len(self.stack)-1, -1, -1):
                 if self.stack[i][0] == tag:
                     del self.stack[i]; break
+
         def report(self, fname):
             msgs = []
             base = os.path.basename(fname)
             is_help = base.endswith("-help.html") or base == "help.html"
             if self.stack:
-                msgs.append("未關閉標籤: " + ", ".join(f"{t}(line {ln})" for t, ln in self.stack))
+                EXPECTED_ROOT_TAGS = {"html", "body", "div"}
+                truly_unclosed = [(t, ln) for t, ln in self.stack if t not in EXPECTED_ROOT_TAGS]
+                if truly_unclosed:
+                    msgs.append("未關閉標籤: " + ", ".join(f"{t}(line {ln})" for t, ln in truly_unclosed))
             if self.in_body is False and self.body_children == 0 and self.stack:
                 msgs.append("解析後 <body> 無子元素（網頁會空白）")
             if not self.style_closed:
