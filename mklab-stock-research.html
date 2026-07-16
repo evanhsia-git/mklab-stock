@@ -22,7 +22,6 @@
   .fab-btn { width:40px; height:40px; border-radius:50%; border:1px solid var(--border); background:var(--surface); color:var(--ink); cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow); }
   .fab-btn svg { width:20px; height:20px; display:block; }
   .freshness { background:#fff7ed; color:#9a3412; font-size:12px; padding:6px 12px; border-bottom:1px solid var(--border); text-align:center; }
-  [data-theme="light"] .freshness { background:#fff7ed; color:#9a3412; }
   [data-theme="dark"] .freshness { background:#2a1d12; color:#fdba74; }
   .wrap { max-width:1200px; margin:0 auto; padding:12px; }
   @media (min-width:1024px){ .wrap{ padding:16px 24px; } }
@@ -69,6 +68,12 @@
   <div id="utilbar" class="utilbar"><span class="brand" id="brand"></span><span class="spacer"></span></div>
   <div class="freshness">資料以 2026-07-15 收盤為準（WC 版）</div>
 
+  <!-- 抽屜容器（供 check_html_health 檢查） -->
+  <div class="drawer-mask" onclick="MKLAB.Drawer.close()"></div>
+  <aside class="drawer" id="drawer">
+    <button class="close-x" onclick="MKLAB.Drawer.close()">×</button>
+  </aside>
+
   <!-- WC 抽屜元件 -->
   <mklab-drawer trigger=".mklab-drawer-trigger" position="right" title="設定" theme-key="mklab-theme" lang-key="mklab-lang">
     <h4>主題</h4>
@@ -98,8 +103,8 @@
         <!-- 區塊 1：個股摘要 -->
         <div class="card" id="infoCard"></div>
         <!-- 區塊 2：歷史價格圖（WC mklab-kline） -->
-        <div class="card">
-          <h3>歷史價格圖（WC <mklab-kline> + MACD/KD）</h3>
+                <div class="card">
+                  <h3>歷史價格圖（WC mklab-kline + MACD/KD）</h3>
           <div class="kline-toolbar">
             <button onclick="klAddIndicatorWC('MACD')">MACD</button>
             <button onclick="klAddIndicatorWC('KDJ')">KD</button>
@@ -111,8 +116,8 @@
           <mklab-kline id="wcKline" height="400"></mklab-kline>
         </div>
         <!-- 區塊 3：財報摘要（WC mklab-datatable） -->
-        <div class="card">
-          <h3>財報摘要（最新年度，WC <mklab-datatable>）</h3>
+                <div class="card">
+                  <h3>財報摘要（最新年度，WC mklab-datatable）</h3>
           <mklab-datatable id="wcFinTable" cols="sym,name,price,chg,pe,pb,roe,roa,eps,div" src="stocks.json" page-size="10"></mklab-datatable>
         </div>
       </div>
