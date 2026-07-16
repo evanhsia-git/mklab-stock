@@ -182,7 +182,10 @@ def run():
             ohlc_null = sum(1 for k in OHLC if s.get(k) is None)
             for k, v in s.items():
                 if k in REQUIRED and v is None:
-                    if (k in OHLC) and (_etf_suffix(sym) or ohlc_null == len(OHLC)):
+                    # chg=null 對 TDR/海外存託憑證（sym 以 K 結尾）或整檔無收盤（price=null）屬資料源未涵蓋，降為 WARN 不阻擋
+                    if k == 'chg' and (sym.endswith('K') or s.get('price') is None):
+                        dirty_warn.append(f"{sym}.chg=null(TDR/海外股資料源未涵蓋)")
+                    elif (k in OHLC) and (_etf_suffix(sym) or ohlc_null == len(OHLC)):
                         dirty_warn.append(f"{sym}.{k}=null(ETF/資料源未涵蓋)")
                     else:
                         dirty_err.append(f"{sym}.{k}=null")
