@@ -36,8 +36,6 @@
   .section-badge { display:inline-block; background:var(--accent); color:#fff; font-size:10px; padding:1px 6px; border-radius:4px; margin-right:8px; }
   .tech-stack { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
 </style>
-<script src="vendor/lightweight-charts.min.js"></script>
-<script src="data/twii_kdata.js"></script>
 <script src="assets/mklab-core.js"></script>
 <script src="assets/data-client.js"></script>
 <script src="assets/mklab-wc.js"></script>
@@ -49,7 +47,7 @@
 
   <div class="drawer-mask" onclick="MKLAB.Drawer.close()"></div>
   <aside class="drawer" id="drawer">
-    <button class="close-x" onclick="MKLAB.Drawer.close()">×</button>
+    <button class="close-x" onclick="MKLAB.Drawer.close()" aria-label="關閉">×</button>
   </aside>
 
   <div class="wrap">
@@ -316,9 +314,13 @@ async function loadMeta() {
     const r = await fetch('data/stocks.json');
     if (!r.ok) throw new Error('no data');
     const d = await r.json();
+    const asof = d?.meta?.as_of;
     if (d && Array.isArray(d.stocks) && d.stocks.length) {
-      const latestDate = d.meta?.as_of || 'Unknown';
-      document.getElementById('logSyncDate').textContent = latestDate;
+      document.getElementById('logSyncDate').textContent = asof || 'Unknown';
+    }
+    if (asof) {
+      const f = document.querySelector('.freshness');
+      if (f) f.textContent = '資料以 ' + asof + ' 收盤為準（Build-Time 自動更新）';
     }
   } catch(e) {
     console.warn('[Log] loadMeta failed:', e);
@@ -350,11 +352,6 @@ function bootLog(){
 }
 if (document.readyState === 'complete') bootLog();
 else window.addEventListener('load', bootLog);
-// 動態更新 freshness
-fetch('data/stocks.json').then(r=>r.ok?r.json():null).then(d=>{
-  const asof = d && d.meta && d.meta.as_of;
-  if(asof){ const f=document.querySelector('.freshness'); if(f) f.textContent='資料以 '+asof+' 收盤為準（Build-Time 自動更新）'; }
-}).catch(()=>{});
 </script>
 </body>
 </html>
