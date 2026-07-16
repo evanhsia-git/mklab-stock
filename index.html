@@ -291,7 +291,7 @@
       .filter(s=>s.score>0 && (s.pe!=null||s.pb!=null||s.roe!=null||s.eps!=null));
     if(!indTable){
       indTable = MKLAB.DataTable('indTable', {
-        cols: ['sym','price','chg','score','spk','pe','pb','roe'],
+        cols: ['sym','name','price','chg','score','spk','pe','pb','roe'],
         rows: scored,
         pageSize: 10,
         pagerId: 'indPager',

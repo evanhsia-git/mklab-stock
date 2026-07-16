@@ -156,7 +156,7 @@
     document.getElementById('detailWrap').style.display='block';
     if(!detailTable){
       detailTable = MKLAB.DataTable('indDetailTable', {
-        cols:['sym','price','chg','pe','pb','roe'],
+        cols:['sym','name','price','chg','pe','pb','roe'],
         rows:real, pageSize:10, pagerId:'indDetailPager',
         defaultSort:'chg',
       });

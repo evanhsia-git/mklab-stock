@@ -38,7 +38,6 @@
   .card h3 { font-size:15px; margin-bottom:8px; }
   .kv { display:grid; grid-template-columns:repeat(auto-fit,minmax(110px,1fr)); gap:10px; }
   .kv .k { font-size:11px; color:var(--muted); } .kv .v { font-size:16px; font-weight:700; }
-  .kv .small { font-size:13px; }
   .kline-toolbar { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; }
   .kline-toolbar button { padding:5px 10px; font-size:12px; border:1px solid var(--border); border-radius:8px; background:var(--bg); color:var(--ink); cursor:pointer; }
   .kline-toolbar button.on { background:var(--accent); color:#fff; border-color:var(--accent); }
@@ -59,7 +58,7 @@
 <body>
   <nav id="mainNav" class="nav"></nav>
   <div id="utilbar" class="utilbar"><span class="brand" id="brand"></span><span class="spacer"></span></div>
-  <div class="freshness">資料以 2026-07-13 收盤為準（Build-Time）</div>
+  <div class="freshness">資料以 2026-07-13 收盤為準（Build-Time 自動更新）</div>
   <div class="drawer-mask" onclick="MKLAB.Drawer.close()"></div>
   <aside class="drawer" id="drawer"><button class="close-x" onclick="MKLAB.Drawer.close()">×</button></aside>
   <div class="wrap">
@@ -75,7 +74,7 @@
       <div>
         <div class="card" id="infoCard"><p style="color:var(--muted);font-size:13px;text-align:center">請選擇個股</p></div>
         <div class="card">
-          <h3>歷史價格圖</h3>
+          <h3 id="chartTitle">歷史價格圖（TWII 加權指數 · 近 1 年）</h3>
           <div class="kline-toolbar">
             <button onclick="klAddIndicator('MACD')">MACD</button>
             <button onclick="klAddIndicator('KDJ')">KD</button>
@@ -102,6 +101,7 @@ let chart = null;
 let series = null;
 let finTable = null;
 let extraLines = [];
+let currentSym = '';
 
 const STATIC = {
   "2330":{name:"台積電",price:1050,chg:+1.2,pe:24.1,pb:5.2,roe:28.1,roa:15.3,eps:43.6},
@@ -139,6 +139,7 @@ function renderList(){
 
 function selectSym(sym){
   if(!STOCKS[sym]) return;
+  currentSym = sym;
   document.querySelectorAll('#symList div').forEach(d=>d.classList.toggle('on',d.dataset.s===sym));
   const m = STOCKS[sym];
   const chgCls = m.chg>=0?'up':'down', chgTxt = (m.chg>0?'+':'')+m.chg+'%';
@@ -149,12 +150,13 @@ function selectSym(sym){
       kv('價格', m.price!=null?m.price:'-')+kv('PE', m.pe!=null?m.pe:'-')+kv('PB', m.pb!=null?m.pb:'-')+
       kv('ROE', (m.roe!=null?m.roe.toFixed(1):'-')+'%')+kv('EPS', m.eps!=null?m.eps:'-')+kv('ROA', (m.roa!=null?m.roa.toFixed(1):'-')+'%')+
     '</div>';
-  // 嘗試載入 TWII K 線資料（無該股即時API時用 TWII 示意）
-  loadKLine(sym);
+  document.getElementById('chartTitle').textContent = '歷史價格圖（' + sym + ' ' + (m.name||'') + ' · TWII 加權指數參考）';
+  // 更新圖表
+  loadKLine();
   // 財報表格
   if(!finTable){
     finTable = MKLAB.DataTable('finTable', {
-      cols: ['sym','price','chg','pe','pb','roe','roa','eps'],
+      cols: ['sym','name','price','chg','pe','pb','roe','roa','eps'],
       rows: [m],
       pageSize: 0,
     });
@@ -163,25 +165,57 @@ function selectSym(sym){
   }
 }
 
-function loadKLine(sym){
-  const data = window.TWII_KDATA;
-  if(!data || !data.length){
+function loadKLine(){
+  const raw = window.TWII_KDATA;
+  if(!raw || !raw.length){
     document.getElementById('tvChart').innerHTML = '<div style="padding:40px;text-align:center;color:var(--muted)">K線資料載入中…</div>';
     return;
   }
-  if(!chart){
-    chart = LightweightCharts.createChart(document.getElementById('tvChart'), {
-      width: document.getElementById('tvChart').clientWidth || 600,
-      height: 400,
-      layout: { backgroundColor: 'transparent', textColor: '#9aa0a6' },
-      grid: { vertLines: {color:'#2a2f3a'}, horzLines: {color:'#2a2f3a'} },
-      crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
-      timeScale: { timeVisible: true, secondsVisible: false },
-    });
-    series = chart.addCandlestickSeries();
-    chart.timeScale().fitContent();
+  // 清除舊圖表
+  if(chart){
+    try{ chart.remove(); }catch(e){}
+    chart = null; series = null; extraLines = [];
   }
-  series.setData(data);
+  // 建立新圖表（統一風格）
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+  chart = LightweightCharts.createChart(document.getElementById('tvChart'), {
+    width: document.getElementById('tvChart').clientWidth || 600,
+    height: 400,
+    layout: {
+      background: { type:'solid', color: 'transparent' },
+      textColor: isDark ? '#9aa0a6' : '#6b7280',
+    },
+    rightPriceScale: { borderColor: isDark ? '#2a2f3a' : '#e5e7eb' },
+    timeScale: {
+      borderColor: isDark ? '#2a2f3a' : '#e5e7eb',
+      timeVisible: true,
+      secondsVisible: false,
+    },
+    grid: {
+      vertLines: { color: isDark ? '#2a2f3a20' : '#e5e7eb40' },
+      horzLines: { color: isDark ? '#2a2f3a20' : '#e5e7eb40' },
+    },
+    crosshair: {
+      mode: LightweightCharts.CrosshairMode.Normal,
+    },
+  });
+  series = chart.addCandlestickSeries({
+    upColor: '#f87171',
+    downColor: '#4ade80',
+    borderUpColor: '#f87171',
+    borderDownColor: '#4ade80',
+    wickUpColor: '#f87171',
+    wickDownColor: '#4ade80',
+  });
+  series.setData(raw);
+  chart.timeScale().fitContent();
+  // resize 監聽
+  window.addEventListener('resize', ()=>{
+    if(chart){
+      const w = document.getElementById('tvChart').clientWidth;
+      if(w>0) chart.resize(w, 400);
+    }
+  });
 }
 
 function klAddIndicator(name){
@@ -224,13 +258,6 @@ function klClear(){
   extraLines.forEach(l=>{ try{ chart.removeSeries(l); }catch(e){} });
   extraLines = [];
 }
-
-window.addEventListener('resize', ()=>{
-  if(chart){
-    const w = document.getElementById('tvChart').clientWidth;
-    if(w>0) chart.resize(w, 400);
-  }
-});
 
 loadAll();
 MKLAB.initDrawer();

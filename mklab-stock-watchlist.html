@@ -97,7 +97,7 @@
     const rows = MKLAB.Watch.decorate(priceMap);
     if(!wlTable){
       wlTable = MKLAB.DataTable('wlTable', {
-        cols: ['sym','price','chg','pe','pb','roe','alert','del'],
+        cols: ['sym','name','price','chg','pe','pb','roe','alert','del'],
         rows: rows,
         pageSize: 10, pagerId: 'wlPager',
         onDel: function(sym){ MKLAB.Watch.remove(sym); render(); },

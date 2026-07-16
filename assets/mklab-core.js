@@ -27,7 +27,7 @@
   //   html : 不排序（sortable:false），原樣輸出
   //   act  : 動作欄（移除/選取），不排序
   const COLUMNS = {
-    sym:   { label:'代號 / 名稱', type:'str', sortable:true,  fmt:r=>`${r.sym!=null?String(r.sym):'-'}${r.name?`<small>${r.name}</small>`:''}` },
+    sym:   { label:'股票代號', type:'str', sortable:true,  fmt:r=>r.sym!=null?String(r.sym):'-' },
     name:  { label:'名稱',    type:'str', sortable:true,  fmt:r=>(r.name||r.nm||'-') },
     price: { label:'價格',    type:'num', sortable:true,  fmt:r=>r.price!=null?Number(r.price).toLocaleString():'-' },
     chg:   { label:'漲跌%',   type:'pct', sortable:true,  fmt:r=>cellPct(r.chg) },
@@ -38,7 +38,7 @@
     roe:   { label:'ROE',     type:'num', sortable:true,  fmt:r=>(r.roe!=null?Number(r.roe).toFixed(2):'-') },
     roa:   { label:'ROA',     type:'num', sortable:true,  fmt:r=>(r.roa!=null?Number(r.roa).toFixed(2):'-') },
     trend: { label:'趨勢',    type:'str', sortable:true,  fmt:r=>(r.trend!=null?r.trend:(r.spct!=null?(r.spct>0?'+':'')+r.spct+'%':'-')) },
-    spk:   { label:'趨勢',    type:'spark',sortable:false, fmt:r=>{ if(!r.spark||!r.spark.length) return '-'; const data=r.spark,min=Math.min(...data),max=Math.max(...data),rn=(max-min)||1; const p=data.map((d,i)=>`${(i/(data.length-1)*80).toFixed(1)},${(30-((d-min)/rn*30)).toFixed(1)}`).join(' '); const col=data[data.length-1]>=data[0]?'var(--up)':'var(--down)'; return `<svg viewBox=\"0 0 80 30\" style=\"width:80px;height:30px;display:block\"><polyline points=\"${p}\" fill=\"none\" stroke=\"${col}\" stroke-width=\"1.5\"/></svg>`; } },
+    spk:   { label:'趨勢',    type:'spark',sortable:false, fmt:r=>{ if(!r.spark||!r.spark.length) return '-'; const data=r.spark,min=Math.min(...data),max=Math.max(...data),rn=(max-min)||1; const p=data.map((d,i)=>`${(i/(data.length-1)*80).toFixed(1)},${(30-((d-min)/rn*30)).toFixed(1)}`).join(' '); const col=data[data.length-1]>=data[0]?'var(--up)':'var(--down)'; return `<div style="display:flex;justify-content:center"><svg viewBox="0 0 80 30" style="width:80px;height:30px;display:block"><polyline points="${p}" fill="none" stroke="${col}" stroke-width="1.5"/></svg></div>`; } },
     ind:   { label:'產業',    type:'str', sortable:true,  key:'ind', fmt:r=>(r.ind||r.nm||'-') },
     rsi:   { label:'RSI',     type:'num', sortable:true,  fmt:r=>r.rsi!=null?r.rsi:'-' },
     cap:   { label:'市值(億)',type:'num', sortable:true,  fmt:r=>{ const v = r.market_cap!=null ? r.market_cap/1e8 : (r.cap!=null?r.cap:null); return v!=null ? Number(v).toFixed(2) : '-'; } },
@@ -248,7 +248,7 @@
     system: {
       version: 'dashboard v3.0',
       source:  'TWSE/TPEX/Yahoo/Stooq',
-      updated: '2026-07-14 08:30',
+      updated: '2026-07-13',
       status:  '● 正常運作',
     },
   };
