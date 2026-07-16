@@ -107,7 +107,126 @@
     global.customElements.define('mklab-kline', MklabKline);
   }
 
+  /* ============ <mklab-datatable> ============ */
+  class MklabDatatable extends HTMLElement {
+    connectedCallback() {
+          if (!global.MKLAB || !global.MKLAB.DataTable) {
+            console.warn('[mklab-datatable] MKLAB.DataTable 未載入（需先載 mklab-core.js）');
+            return;
+          }
+          const cols = (this.getAttribute('cols') || 'sym,name,price,chg').split(',').map(s => s.trim());
+          const src = this.getAttribute('src') || 'stocks.json';
+          const pageSize = parseInt(this.getAttribute('page-size'), 10) || 0;
+          const id = 'tbl_' + Math.random().toString(36).slice(2);
+          // DataTable 需要完整 table 結構：<table id="..."><thead></thead><tbody></tbody></table>
+          const table = document.createElement('table');
+          table.id = id;
+          table.innerHTML = '<thead></thead><tbody></tbody>';
+          this.appendChild(table);
+          const render = (data) => {
+            // stocks.json 結構為 {meta: {...}, stocks: [...]}
+            const rows = (data && data.stocks) ? data.stocks : (Array.isArray(data) ? data : []);
+            try { new global.MKLAB.DataTable(id, { cols, rows, pageSize }); }
+            catch (e) { console.warn('[mklab-datatable] render', e); }
+          };
+          if (global.MKLAB_DATA) {
+            global.MKLAB_DATA.json(src).then(render).catch(e => console.warn('[mklab-datatable]', e));
+          } else {
+            fetch('data/' + src).then(r => r.json()).then(render).catch(e => console.warn(e));
+          }
+        }
+  }
+  if (!global.customElements.get('mklab-datatable')) {
+    global.customElements.define('mklab-datatable', MklabDatatable);
+  }
+
+  /* ============ <mklab-drawer> ============ */
+  class MklabDrawer extends HTMLElement {
+    connectedCallback() {
+      if (!global.MKLAB || !global.MKLAB.Drawer) {
+        console.warn('[mklab-drawer] MKLAB.Drawer 未載入（需先載 mklab-core.js）');
+        return;
+      }
+      const trigger = this.getAttribute('trigger') || '.mklab-drawer-trigger';
+      const position = this.getAttribute('position') || 'right';
+      const title = this.getAttribute('title') || '設定';
+      const themeKey = this.getAttribute('theme-key') || 'mklab-theme';
+      const langKey = this.getAttribute('lang-key') || 'mklab-lang';
+
+      // 內容區塊（支援 slots）
+      const content = this.innerHTML || '<p>無內容</p>';
+      this.innerHTML = '';
+      this._drawer = new global.MKLAB.Drawer({
+        trigger: document.querySelector(trigger),
+        position: position,
+        title: title,
+        content: content,
+        themeKey: themeKey,
+        langKey: langKey,
+      });
+    }
+    disconnectedCallback() {
+      if (this._drawer && this._drawer.destroy) this._drawer.destroy();
+    }
+    // 程式化開關
+    open() { if (this._drawer) this._drawer.open(); }
+    close() { if (this._drawer) this._drawer.close(); }
+    toggle() { if (this._drawer) this._drawer.toggle(); }
+  }
+  if (!global.customElements.get('mklab-drawer')) {
+    global.customElements.define('mklab-drawer', MklabDrawer);
+  }
+
+  /* ============ <mklab-router> + <mklab-route> ============ */
+  class MklabRouter extends HTMLElement {
+    constructor() {
+      super();
+      this.routes = [];
+      this._bound = this._onPop.bind(this);
+      this._clickBound = this._onClick.bind(this);
+    }
+    connectedCallback() {
+      window.addEventListener('popstate', this._bound);
+      document.body.addEventListener('click', this._clickBound);
+      this._collectRoutes();
+      this._nav(location.pathname);
+    }
+    disconnectedCallback() {
+      window.removeEventListener('popstate', this._bound);
+      document.body.removeEventListener('click', this._clickBound);
+    }
+    _collectRoutes() {
+      this.routes = Array.from(this.querySelectorAll('mklab-route')).map(r => ({
+        path: r.getAttribute('path') || '/',
+        component: r.getAttribute('component'),
+        show: r.getAttribute('show') || 'block',
+      }));
+    }
+    _onClick(e) {
+      const a = e.target.closest('a[href^="/"]');
+      if (a && a.target !== '_blank' && !a.hasAttribute('data-no-router')) {
+        e.preventDefault();
+        const href = a.getAttribute('href');
+        history.pushState({}, '', href);
+        this._nav(href);
+      }
+    }
+    _onPop() { this._nav(location.pathname); }
+    _nav(path) {
+      const route = this.routes.find(r => path === r.path || (r.path !== '/' && path.startsWith(r.path)));
+      this.routes.forEach(r => {
+        const el = r.component ? document.querySelector(r.component) : null;
+        if (el) el.style.display = (route && route.path === r.path) ? r.show : 'none';
+      });
+      this.dispatchEvent(new CustomEvent('mklab:navigate', { detail: { path, route } }));
+    }
+    go(path) { history.pushState({}, '', path); this._nav(path); }
+  }
+  class MklabRoute extends HTMLElement { /* 只供 router 讀取屬性 */ }
+  if (!global.customElements.get('mklab-router')) global.customElements.define('mklab-router', MklabRouter);
+  if (!global.customElements.get('mklab-route')) global.customElements.define('mklab-route', MklabRoute);
+
   /* ============ 匯出（選用，供其他 script 參考） ============ */
-  global.MKLAB_WC = { MklabKline };
+  global.MKLAB_WC = { MklabKline, MklabDatatable, MklabDrawer, MklabRouter, MklabRoute };
 
 })(window);

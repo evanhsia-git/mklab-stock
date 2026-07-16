@@ -3,28 +3,83 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>mklab-stock WC Demo — &lt;mklab-kline&gt;</title>
+<title>mklab-stock WC Demo — kline + datatable + drawer + router</title>
 <style>
   body { font-family: system-ui, sans-serif; background: #0f1115; color: #e8eaed; padding: 20px; }
   h3 { font-size: 15px; margin: 18px 0 8px; color: #94a3b8; }
-  mklab-kline { display: block; border: 1px solid #2a2f3a; border-radius: 12px; padding: 8px; }
+  mklab-kline, mklab-datatable { display: block; border: 1px solid #2a2f3a; border-radius: 12px; padding: 8px; margin-bottom: 16px; }
+  .mklab-drawer-trigger { cursor: pointer; background: #1e293b; border: 1px solid #334155; padding: 8px 16px; border-radius: 8px; color: #e8eaed; }
 </style>
-<!-- 圖表庫（必須在 mklab-wc.js 前）-->
+<!-- 圖表庫 -->
 <script src="/vendor/lightweight-charts.min.js"></script>
-<!-- TWII 真實資料（260 天）-->
+<!-- TWII 真實資料 -->
 <script src="/data/twii_kdata.js?v=20260715b"></script>
-<!-- Web Components 元件庫 -->
-<script src="/assets/mklab-wc.js"></script>
+<!-- 核心模組 -->
+<script src="/assets/mklab-core.js"></script>   <!-- MKLAB.DataTable / Drawer -->
+<script src="/assets/data-client.js?v=20260715c"></script>  <!-- MKLAB_DATA -->
+<script src="/assets/mklab-wc.js?v=20260715c"></script>     <!-- WC 元件 -->
 </head>
 <body>
-  <h3>測試 1：屬性驅動（data-symbol="TWII" → 讀 window.TWII_KDATA）</h3>
-  <mklab-kline data-symbol="TWII" height="360"></mklab-kline>
 
-  <h3>測試 2：程式化 setData（15 筆隨機）</h3>
-  <mklab-kline id="manual" height="240"></mklab-kline>
+  <mklab-router>
+    <mklab-route path="/" component="#home-view"></mklab-route>
+    <mklab-route path="/research" component="#research-view"></mklab-route>
+    <mklab-route path="/market" component="#market-view"></mklab-route>
+  </mklab-router>
+
+  <nav style="margin-bottom:20px;">
+    <a href="/">首頁</a> | <a href="/research">個股研究</a> | <a href="/market">大盤</a>
+  </nav>
+
+  <section id="home-view">
+    <h3>測試 1：<mklab-kline> 屬性驅動（data-symbol="TWII" → window.TWII_KDATA）</h3>
+    <mklab-kline data-symbol="TWII" height="360"></mklab-kline>
+
+    <h3>測試 2：<mklab-kline> 程式化 setData（15 筆隨機）</h3>
+    <mklab-kline id="manual" height="240"></mklab-kline>
+
+    <h3>測試 3：data-client.js（MKLAB_DATA.stocks()）</h3>
+    <pre id="data-client-log" style="background:#1e293b;padding:8px;border-radius:8px;">載入中...</pre>
+
+    <h3>測試 4：<mklab-datatable>（cols + src + page-size）</h3>
+    <mklab-datatable cols="sym,name,price,chg,pe" src="stocks.json" page-size="8"></mklab-datatable>
+
+    <h3>測試 5：<mklab-drawer> 抽屜/主題/語言</h3>
+    <button class="mklab-drawer-trigger" data-drawer-target="settings-drawer">開啟設定抽屜</button>
+    <mklab-drawer id="settings-drawer" trigger=".mklab-drawer-trigger" position="right" title="設定抽屜" theme-key="mklab-theme" lang-key="mklab-lang">
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div>
+          <label>主題：</label>
+          <select id="theme-select"><option value="dark">深色</option><option value="light">淺色</option></select>
+        </div>
+        <div>
+          <label>語言：</label>
+          <select id="lang-select"><option value="zh-TW">繁體中文</option><option value="en">English</option></select>
+        </div>
+        <div style="margin-top:12px;color:#94a3b8;font-size:13px;">這是 <mklab-drawer> 測試內容，支援主題/語言切換。</div>
+      </div>
+    </mklab-drawer>
+
+    <h3>測試 6：<mklab-router> 路由導航</h3>
+    <div style="padding:8px;background:#1e293b;border-radius:8px;">
+      當前路徑：<span id="router-path" style="color:#22d3ee;font-family:monospace;">/</span><br>
+      <button id="router-test-btn" style="margin-top:8px;padding:6px 12px;background:#3b82f6;border:none;border-radius:6px;color:white;">導航到 /research</button>
+    </div>
+  </section>
+
+  <section id="research-view" style="display:none;">
+    <h3>個股研究頁（/research）</h3>
+    <mklab-kline data-symbol="TWII" height="300"></mklab-kline>
+    <p>這是研究頁內容...</p>
+  </section>
+
+  <section id="market-view" style="display:none;">
+    <h3>大盤頁（/market）</h3>
+    <p>這是大盤頁內容...</p>
+  </section>
 
   <script>
-    // 測試 2：程式化餵資料（等元件升級後再 setData，避免時序競爭）
+    // 測試 2：程式化 setData（15 筆隨機）
     customElements.whenDefined('mklab-kline').then(() => {
       const el = document.getElementById('manual');
       const o = []; let p = 22000;
@@ -40,7 +95,47 @@
       }
       el.setData(o);
       if (el._chart && el._container) el._chart.resize(el._container.clientWidth || 800, 240);
-      console.log('[demo] manual setData 筆數:', o.length);
+    });
+
+    // 測試 3：data-client.js
+    customElements.whenDefined('mklab-datatable').then(() => {
+      if (window.MKLAB_DATA) {
+        MKLAB_DATA.stocks().then(m => {
+          const log = document.getElementById('data-client-log');
+          log.textContent = '✅ stocks 載入成功，筆數：' + m.length + '（sample: ' + (m[0]?.sym || 'N/A') + ')';
+        });
+      }
+    });
+
+    // 測試 5：drawer 主題/語言切換
+    customElements.whenDefined('mklab-drawer').then(() => {
+      const themeSel = document.getElementById('theme-select');
+      const langSel = document.getElementById('lang-select');
+      themeSel?.addEventListener('change', e => {
+        localStorage.setItem('mklab-theme', e.target.value);
+        document.documentElement.setAttribute('data-theme', e.target.value);
+        console.log('[drawer] theme:', e.target.value);
+      });
+      langSel?.addEventListener('change', e => {
+        localStorage.setItem('mklab-lang', e.target.value);
+        console.log('[drawer] lang:', e.target.value);
+      });
+      // 讀取已儲存
+      const savedTheme = localStorage.getItem('mklab-theme') || 'dark';
+      const savedLang = localStorage.getItem('mklab-lang') || 'zh-TW';
+      if (themeSel) themeSel.value = savedTheme;
+      if (langSel) langSel.value = savedLang;
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    });
+
+    // 測試 6：router 導航
+    customElements.whenDefined('mklab-router').then(() => {
+      const router = document.querySelector('mklab-router');
+      const pathEl = document.getElementById('router-path');
+      if (router && pathEl) {
+        router.addEventListener('mklab:navigate', e => { pathEl.textContent = e.detail.path; });
+        document.getElementById('router-test-btn')?.addEventListener('click', () => router.go('/research'));
+      }
     });
   </script>
 </body>
