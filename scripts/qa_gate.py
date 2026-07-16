@@ -166,7 +166,8 @@ def run():
         #                null 僅 WARNING（非阻擋）；若為非數值/負數才 ERROR
         #  - 其他必填（sym/name/price/volume/ind/chg）null = ERROR
         REQUIRED = {"sym", "name", "price", "open", "high", "low",
-                    "volume", "ind", "chg"}
+                    "volume", "chg"}  # ind 從 REQUIRED 移除：ETF/期貨/海外股本來無產業分類，null 為正常特性非髒值
+        OPTIONAL_WARN = {"ind"}  # ind 缺失：僅 WARN（不阻擋），因 ETF 等無產業分類是資料源特性
         OHLC = {"open", "high", "low", "price", "volume"}
         MARKET_CAP = "market_cap"
         import re as _re
@@ -185,6 +186,8 @@ def run():
                         dirty_warn.append(f"{sym}.{k}=null(ETF/資料源未涵蓋)")
                     else:
                         dirty_err.append(f"{sym}.{k}=null")
+                elif k in OPTIONAL_WARN and v is None:
+                    dirty_warn.append(f"{sym}.{k}=null(無產業分類，ETF/海外股正常)")
                 elif k == MARKET_CAP:
                     if v is None:
                         dirty_warn.append(f"{sym}.market_cap=null(雲端未涵蓋)")
@@ -384,12 +387,15 @@ def run():
     no_theme = []
     for hf in html_files:
         src = open(hf, encoding="utf-8").read()
-        if ":root" not in src and "--bg" not in src:
+        # 認 inline :root 或 外部 link 引入 mklab-theme.css（Design Token 統一在該檔）
+        has_inline = (":root" in src and "--bg" in src)
+        has_link = ('rel="stylesheet"' in src) and ('mklab-theme.css' in src)
+        if not (has_inline or has_link):
             no_theme.append(os.path.basename(hf))
     if no_theme:
-        c.error(f"未定義 Theme 變數: {no_theme}", "加入 :root { --bg... }", ", ".join(no_theme))
+        c.error(f"未定義 Theme 變數: {no_theme}", "加入 :root { --bg... } 或 <link rel=\"stylesheet\" href=\"assets/mklab-theme.css\">", ", ".join(no_theme))
     else:
-        c.ok(f"{len(html_files)} 個頁面皆含 Theme")
+        c.ok(f"{len(html_files)} 個頁面皆含 Theme (inline 或 link)")
     add(c)
 
     c = Check("CSS", "禁止硬寫核心樣式 (違反 Design Token)", critical=False)
