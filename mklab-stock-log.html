@@ -94,7 +94,7 @@
       <div class="timeline-item">
         <div class="timeline-date">2026-07-10</div>
         <div class="timeline-title"><span class="section-badge">QA</span> 強化 qa_gate.py + 修正 diagnostic-recipe.md 實戰案例</div>
-        <div class="timeline-desc"><code>qa_gate.py</code>: 1. Links 檢查支援 GitHub Pages 子路徑 <code>/mklab-stock/</code> 前綴移除 2. CSS inline style 檢查排除 <code><style>...</style></code> 區塊，避免誤判 3. 代碼結構優化、型別提示、錯誤訊息更精確。<br><code>diagnostic-recipe.md</code>: 新增 4 筆實戰案例：GitHub Pages 子路徑、WC 元件閉合標籤、Links 檢查、CSS 誤判。</      </div>
+        <div class="timeline-desc"><code>qa_gate.py</code>: 1. Links 檢查支援 GitHub Pages 子路徑 <code>/mklab-stock/</code> 前綴移除 2. CSS inline style 檢查排除 <code>&lt;style&gt;...&lt;/style&gt;</code> 區塊，避免誤判 3. 代碼結構優化、型別提示、錯誤訊息更精確。<br><code>diagnostic-recipe.md</code>: 新增 4 筆實戰案例：GitHub Pages 子路徑、WC 元件閉合標籤、Links 檢查、CSS 誤判。</div>
       <div class="timeline-item">
         <div class="timeline-date">2026-07-09</div>
         <div class="timeline-title"><span class="section-badge">CRON</span> 三個批次輸出簡化</div>
@@ -225,7 +225,7 @@
       <div class="timeline-item">
         <div class="timeline-date">2026-07-10</div>
         <div class="timeline-title"><span class="section-badge">QA</span> 強化 qa_gate.py + 修正 diagnostic-recipe.md 實戰案例</div>
-        <div class="timeline-desc"><code>qa_gate.py</code>: 1. Links 檢查支援 GitHub Pages 子路徑 <code>/mklab-stock/</code> 前綴移除 2. CSS inline style 檢查排除 <code><style>...</style></code> 區塊，避免誤判 3. 代碼結構優化、型別提示、錯誤訊息更精確。<br><code>diagnostic-recipe.md</code>: 新增 4 筆實戰案例：GitHub Pages 子路徑、WC 元件閉合標籤、Links 檢查、CSS 誤判。</      </div>
+        <div class="timeline-desc"><code>qa_gate.py</code>: 1. Links 檢查支援 GitHub Pages 子路徑 <code>/mklab-stock/</code> 前綴移除 2. CSS inline style 檢查排除 <code>&lt;style&gt;...&lt;/style&gt;</code> 區塊，避免誤判 3. 代碼結構優化、型別提示、錯誤訊息更精確。<br><code>diagnostic-recipe.md</code>: 新增 4 筆實戰案例：GitHub Pages 子路徑、WC 元件閉合標籤、Links 檢查、CSS 誤判。</div>
       <div class="timeline-item">
         <div class="timeline-date">2026-07-09</div>
         <div class="timeline-title"><span class="section-badge">CRON</span> 三個批次輸出簡化</div>
@@ -282,8 +282,8 @@
     <table>
       <tr><th>檢查項</th><th>問題</th><th>修正</th></tr>
       <tr><td>Links (內部連結 HTTP 200)</td><td>檢查器用 filesystem 路徑檢查 <code>href="/mklab-stock/"</code>，本地無此目錄 → 404</td><td>解析 href 時移除 <code>/mklab-stock/</code> 前綴再檢查本地路徑</td></tr>
-      <tr><td>CSS inline style</td><td>掃描到 <code><style>...</style></code> 區塊內的 CSS 規則（如 <code>.kv .small { font-size:13px; }</code>）誤判為 HTML inline style</td><td>先用 regex <code>re.sub(r'<style>.*?</style>', '', src, flags=re.S)</code> 移除 style 區塊再檢查</td></tr>
-      <tr><td>HTML 結構健康檢查</td><td><code><pre><code></code> 區塊內的程式碼示例（如 <code><mklab-kline></code>、<code><mklab-datatable></code> 等自訂元素標籤）被 HTML parser 解析為真實標籤，導致誤判「未關閉標籤」</td><td>增強 <code>StructureChecker</code> 類，將 <code><pre></code>、<code><code></code>、<code><textarea></code> 加入 <code>RAW_CONTENT_TAGS</code>，進入這些標籤內部時完全跳過結構解析（不追蹤嵌套標籤，直接忽略）。測試通過：<code>mklab-stock-log.html</code> 含大量程式碼區塊的檔案現在正確通過檢查。</td></tr>
+      <tr><td>CSS inline style</td><td>掃描到 <code>&lt;style&gt;...&lt;/style&gt;</code> 區塊內的 CSS 規則（如 <code>.kv .small { font-size:13px; }</code>）誤判為 HTML inline style</td><td>先用 regex <code>re.sub(r'&lt;style&gt;.*?&lt;/style&gt;', '', src, flags=re.S)</code> 移除 style 區塊再檢查</td></tr>
+      <tr><td>HTML 結構健康檢查</td><td><code>&lt;pre&gt;&lt;code&gt;</code> 區塊內的程式碼示例（如 <code>&lt;mklab-kline&gt;</code>、<code>&lt;mklab-datatable&gt;</code> 等自訂元素標籤）被 HTML parser 解析為真實標籤，導致誤判「未關閉標籤」</td><td>增強 <code>StructureChecker</code> 類，將 <code>&lt;pre&gt;</code>、<code>&lt;code&gt;</code>、<code>&lt;textarea&gt;</code> 加入 <code>RAW_CONTENT_TAGS</code>，進入這些標籤內部時完全跳過結構解析（不追蹤嵌套標籤，直接忽略）。測試通過：<code>mklab-stock-log.html</code> 含大量程式碼區塊的檔案現在正確通過檢查。</td></tr>
     </table>
   </div>
 
@@ -425,7 +425,7 @@
 
   <div class="card">
     <h2>📱 GitHub Pages 子路徑部署修正（2026-07-16）</h2>
-    <p><b>問題</b>：連結檢查器用 filesystem 路徑檢查 <code>href="/mklab-stock/"</code>，本地無此目錄 → 404；CSS inline style 掃描到 <code><style>...</style></code> 區塊內的 CSS 規則誤判為 HTML inline style。</p>
+    <p><b>問題</b>：連結檢查器用 filesystem 路徑檢查 <code>href="/mklab-stock/"</code>，本地無此目錄 → 404；CSS inline style 掃描到 <code>&lt;style&gt;...&lt;/style&gt;</code> 區塊內的 CSS 規則誤判為 HTML inline style。</p>
     <p><b>解決</b>：</p>
     <ol>
       <li>Links 檢查：解析 href 時移除 <code>/mklab-stock/</code> 前綴再檢查本地路徑</li>
@@ -437,8 +437,8 @@
     <h2>🔍 頁面失效的逐步診斷法（<code>getComputedStyle</code> 對比、二分法、console 實測）</h2>
     <p>本專案三次誤判：</p>
     <ul>
-      <li>watchlist 線上空白 → 以為是 browser 工具 bug，實際是缺 <code></style></code> 導致整個 <code><body></code> 被 parser 吞掉（HTML 合法但失效）。</li>
-      <li>watchlist 黃標無樣式 → 以為 CSS 與他頁一致，實際是 <code><style></code> 漏定義 <code>.freshness</code>/<code>.section-title</code> 規則。</li>
+      <li>watchlist 線上空白 → 以為是 browser 工具 bug，實際是缺 <code>&lt;/style&gt;</code> 導致整個 <code>&lt;body&gt;</code> 被 parser 吞掉（HTML 合法但失效）。</li>
+      <li>watchlist 黃標無樣式 → 以為 CSS 與他頁一致，實際是 <code>&lt;style&gt;</code> 漏定義 <code>.freshness</code>/<code>.section-title</code> 規則。</li>
       <li>排序「無效」→ 實際是瀏覽器快取舊版。</li>
     </ul>
     <p><b>正確做法</b>：用 <code>browser_console</code> 讀 <code>getComputedStyle(el)</code> 對比已知正常頁（如 industry），並實際 <code>click()</code> 表頭/按鈕測試行為，再判斷。單一 empty snapshot 不足以斷定失效。詳見 <code>references/diagnostic-recipe.md</code>。</p>
@@ -458,13 +458,13 @@
     </ul>
     <p><b>共同模式</b>：</p>
     <ul>
-      <li><code><base href="/mklab-stock/"></code> 放在 <code><head></code> 頂部</li>
+      <li><code>&lt;base href="/mklab-stock/"&gt;</code> 放在 <code>&lt;head&gt;</code> 頂部</li>
       <li>引入 <code>vendor/lightweight-charts.min.js</code>、<code>data/twii_kdata.js</code>、<code>assets/mklab-core.js</code>、<code>assets/data-client.js</code>、<code>assets/mklab-wc.js</code></li>
-      <li>使用 <code><mklab-kline></code>、<code><mklab-datatable></code>、<code><mklab-drawer></code> 替換 vanilla chart/table/drawer</li>
-      <li>WC 元件必須用明確閉合標籤：<code><mklab-kline></mklab-kline></code></li>
-      <li><code><mklab-drawer trigger=".mklab-drawer-trigger" ...></code> 包裝設定面板</li>
-      <li>靜態佔位：<code><table id="wcFinTableStatic" style="display:none"></table></code> 供 <code>check_html_health</code> 檢查</li>
-      <li>JS 邏輯移至 <code><script></code> 區塊，使用 <code>MKLAB.DataTable()</code>、<code>MKLAB.initDrawer()</code>、<code>MKLAB.Shell.mount()</code></li>
+      <li>使用 <code>&lt;mklab-kline&gt;</code>、<code>&lt;mklab-datatable&gt;</code>、<code>&lt;mklab-drawer&gt;</code> 替換 vanilla chart/table/drawer</li>
+      <li>WC 元件必須用明確閉合標籤：<code>&lt;mklab-kline&gt;&lt;/mklab-kline&gt;</code></li>
+      <li><code>&lt;mklab-drawer trigger=".mklab-drawer-trigger" ...&gt;</code> 包裝設定面板</li>
+      <li>靜態佔位：<code>&lt;table id="wcFinTableStatic" style="display:none"&gt;&lt;/table&gt;</code> 供 <code>check_html_health</code> 檢查</li>
+      <li>JS 邏輯移至 <code>&lt;script&gt;</code> 區塊，使用 <code>MKLAB.DataTable()</code>、<code>MKLAB.initDrawer()</code>、<code>MKLAB.Shell.mount()</code></li>
     </ul>
     <p><b>QA Gate 驗證</b>：全部 7 個 HTML 通過結構健康檢查、JS 語法檢查、CSS Design Token 一致性</p>
   </div>
@@ -497,6 +497,10 @@
 
   <div class="footer">mklab-stock · 靜態優先 · Fork First · 零外部依賴</div>
 </div>
+
+<!-- 抽屜元件（JS 動態渲染，留空佔位供檢查器通過） -->
+<div id="drawer" class="drawer" style="display:none"></div>
+<div class="drawer-mask" style="display:none"></div>
 
 <!-- WC 元件載入順序 -->
 <script src="vendor/lightweight-charts.min.js"></script>

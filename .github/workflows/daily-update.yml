@@ -31,7 +31,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "no changes"
           else
-            git commit -m "data: 每日更新 $(date +%Y-%m-%d) [skip ci]"
+            git commit -m "data: 每日更新 $(date +%Y-%m-%d)"
             git push
           fi
 
@@ -55,7 +55,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "no changes"
           else
-            git commit -m "data: 每週 ROE/ROA 更新 $(date +%Y-%m-%d) [skip ci]"
+            git commit -m "data: 每週 ROE/ROA 更新 $(date +%Y-%m-%d)"
             git push
           fi
 
@@ -79,7 +79,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "no changes"
           else
-            git commit -m "data: 全球指數/ETF 更新 $(date +%Y-%m-%d) [skip ci]"
+            git commit -m "data: 全球指數/ETF 更新 $(date +%Y-%m-%d)"
             git push
           fi
 
@@ -103,6 +103,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "no changes"
           else
-            git commit -m "data: TWII 加權指數 K 線更新 $(date +%Y-%m-%d) [skip ci]"
+            git commit -m "data: TWII 加權指數 K 線更新 $(date +%Y-%m-%d)"
             git push
           fi
