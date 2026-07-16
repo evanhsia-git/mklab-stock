@@ -12,7 +12,8 @@
 (function (global) {
   'use strict';
 
-  const BASE = '/data/';
+  // BASE 用相對路徑（配合 <base href="/mklab-stock/">），避免 GitHub Pages 子路徑下絕對路徑 /data/ 解析到根域而 404
+  const BASE = 'data/';
 
   // 快取（避免重複 fetch）
   const _cache = {};

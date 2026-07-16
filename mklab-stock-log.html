@@ -6,7 +6,7 @@
 <title>mklab-stock 開發日誌（WC 版）</title>
 <base href="/mklab-stock/">
 <style>
-  :root { --bg:#0f1115; --surface:#171a21; --ink:#e8eaed; --muted:#9aa0a6; --border:#2a2f3a; --accent:#3b82f6; --up:#f87171; --down:#4ade80; --row-hover:#1e2a3a; --radius:10px; --shadow:0 1px 3px rgba(0,0,0,.4); }
+  :root { --bg:#0f1115; --surface:#171a21; --ink:#e8eaed; --muted:#9aa0a6; --border:#2a2f3a; --accent:#3b82f6; --up:#f87171; --down:#4ade80; --row-hover:#27374d; --radius:10px; --shadow:0 1px 3px rgba(0,0,0,.4); }
   [data-theme="light"] { --bg:#f7f8fa; --surface:#fff; --ink:#1a1d21; --muted:#6b7280; --border:#e5e7eb; --accent:#2563eb; --up:#dc2626; --down:#16a34a; --row-hover:#eff6ff; --shadow:0 1px 3px rgba(0,0,0,.08); }
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:-apple-system,"Segoe UI","PingFang TC","Microsoft JhengHei",sans-serif; background:var(--bg); color:var(--ink); line-height:1.6; }
@@ -31,6 +31,7 @@
   th,td { padding:9px 8px; text-align:left; font-size:13px; border-bottom:1px solid var(--border); }
   th { color:var(--muted); font-weight:600; }
   td.b { font-weight:700; color:var(--accent); }
+  tbody tr:hover { background:var(--row-hover); }
   .pill { display:inline-block; background:var(--row-hover); border:1px solid var(--border); border-radius:20px; padding:3px 10px; font-size:12px; margin:2px; }
   ul { padding-left:20px; font-size:14px; }
   li { margin:5px 0; }
@@ -65,30 +66,6 @@
   <aside class="drawer" id="drawer">
     <button class="close-x" onclick="MKLAB.Drawer.close()">×</button>
   </aside>
-
-  <!-- WC 抽屜元件 -->
-  <mklab-drawer trigger=".mklab-drawer-trigger" position="right" title="設定" theme-key="mklab-theme" lang-key="mklab-lang">
-    <h4>主題</h4>
-    <label class="row">
-      <span>深色模式</span>
-      <button class="switch" id="themeSwitch" onclick="toggleTheme()"></button>
-    </label>
-    <h4>語言</h4>
-    <div class="seg">
-      <button onclick="setLang('zh')">繁中</button>
-      <button onclick="setLang('en')">English</button>
-    </div>
-    <h4>頁面導航</h4>
-    <div class="seg" style="flex-direction:column; gap:4px;">
-      <a href="index.html" class="link" onclick="MKLAB.Drawer.close()">Market 首頁</a>
-      <a href="mklab-stock-screener.html" class="link" onclick="MKLAB.Drawer.close()">Screener 篩選</a>
-      <a href="mklab-stock-research.html" class="link" onclick="MKLAB.Drawer.close()">Research 研究</a>
-      <a href="mklab-stock-industry.html" class="link" onclick="MKLAB.Drawer.close()">Industry 產業</a>
-      <a href="mklab-stock-watchlist.html" class="link" onclick="MKLAB.Drawer.close()">Watchlist 自選</a>
-      <a href="mklab-stock-help.html" class="link" onclick="MKLAB.Drawer.close()">Help 說明</a>
-      <a href="mklab-stock-log.html" class="link" style="color:var(--accent); font-weight:600;" onclick="MKLAB.Drawer.close()">Log 開發日誌</a>
-    </div>
-  </mklab-drawer>
 
   <div class="wrap">
     <div class="card">
@@ -281,11 +258,10 @@ function setLang(lang) {
 }
 
 /* 主題/語言初始化 */
-customElements.whenDefined('mklab-drawer').then(() => {
+(function initTheme(){
   const theme = localStorage.getItem('mklab-theme') || 'dark';
-  const lang = localStorage.getItem('mklab-lang') || 'zh-TW';
   document.documentElement.setAttribute('data-theme', theme);
-});
+})();
 
 loadMeta();
 MKLAB.initDrawer();
