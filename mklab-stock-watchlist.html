@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>mklab-stock Watchlist 原型 v11</title>
 <style>
-  :root { --bg:#0f1115; --surface:#171a21; --ink:#e8eaed; --muted:#9aa0a6; --border:#2a2f3a; --accent:#3b82f6; --up:#f87171; --down:#4ade80; --warn:#fbbf24; --radius:10px; --shadow:0 1px 3px rgba(0,0,0,.4); }
+  :root { --bg:#0f1115; --surface:#171a21; --ink:#e8eaed; --muted:#9aa0a6; --border:#2a2f3a; --accent:#3b82f6; --up:#f87171; --down:#4ade80; --warn:#fbbf24; --row-hover:#27374d; --radius:10px; --shadow:0 1px 3px rgba(0,0,0,.4); }
   [data-theme="light"] { --bg:#f7f8fa; --surface:#fff; --ink:#1a1d21; --muted:#6b7280; --border:#e5e7eb; --accent:#2563eb; --up:#dc2626; --down:#16a34a; --warn:#d97706; --shadow:0 1px 3px rgba(0,0,0,.08); }
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:-apple-system,"Segoe UI","PingFang TC","Microsoft JhengHei",sans-serif; background:var(--bg); color:var(--ink); line-height:1.5; }
@@ -41,6 +41,11 @@
   .sym { font-weight:600; } .sym small { color:var(--muted); font-weight:400; display:block; }
   .alert { font-size:11px; padding:2px 6px; border-radius:6px; background:var(--warn); color:#000; }
   .del { color:var(--muted); cursor:pointer; font-size:12px; }
+  .alert-note { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:14px; margin-top:16px; box-shadow:var(--shadow); }
+  .alert-note h3 { font-size:14px; margin-bottom:8px; }
+  .alert-note p { font-size:13px; line-height:1.7; margin-bottom:8px; }
+  .alert-note ul { padding-left:20px; font-size:13px; line-height:1.8; }
+  .alert-note .muted { color:var(--muted); font-size:12px; }
   .disclaimer { font-size:11px; color:var(--muted); text-align:center; padding:16px 12px; }
   .drawer-mask { position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:40; display:none; }
   .drawer-mask.open { display:block; }
@@ -69,7 +74,7 @@
 <body>
   <nav id="mainNav" class="nav"></nav>
   <div id="utilbar" class="utilbar"><span class="brand" id="brand"></span><span class="spacer"></span></div>
-  <div class="freshness">資料以 2026-07-13 收盤為準（前一日，非即時）</div>
+  <div class="freshness">資料載入中…</div>
   <div class="drawer-mask" onclick="MKLAB.Drawer.close()"></div>
   <aside class="drawer" id="drawer">
     <button class="close-x" onclick="MKLAB.Drawer.close()">×</button>
@@ -86,6 +91,17 @@
         <tbody id="wlBody"></tbody>
       </table>
       <div class="pager" id="wlPager"></div>
+    </div>
+    <div class="alert-note">
+      <h3>提醒（Alert）欄位說明</h3>
+      <p>提醒欄顯示系統針對自選股設定的條件觸發狀態。當滿足以下任一條件時，該股提醒欄會標記警示：</p>
+      <ul>
+        <li><b>價格提醒</b>：股價突破你設定的目標價或停損價</li>
+        <li><b>技術提醒</b>：RSI 進入超買（&gt;80）或超賣（&lt;20）區間</li>
+        <li><b>法人提醒</b>：三大法人連續買超 / 賣超達門檻</li>
+        <li><b>異常提醒</b>：單日漲跌超過 ±7% 或成交量異常放大</li>
+      </ul>
+      <p class="muted">目前為示意階段：生產環境由 GitHub Actions 每日計算各股觸發狀態並寫入資料，屆時此欄會自動顯示對應警示標籤。</p>
     </div>
     <div class="disclaimer">自選股中心（示意）。Alert 支援價格/技術/法人提醒，生產環境可由 Actions 產出。</div>
   </div>
@@ -113,7 +129,7 @@
   function closeDrawer(){ MKLAB.Drawer.close(); }
   // 載入真實價格（stocks.json）後刷新自選
   fetch('data/stocks.json').then(r=>r.json()).then(d=>{
-    if(d && Array.isArray(d.stocks)){ d.stocks.forEach(s=>{ priceMap[s.sym]={price:s.price,chg:s.chg,pe:s.pe,pb:s.pb,roe:s.roe,alert:null}; }); }
+    if(d && Array.isArray(d.stocks)){ d.stocks.forEach(s=>{ priceMap[s.sym]={price:s.price,chg:s.chg,pe:s.pe,pb:s.pb,roe:s.roe,alert:null,name:s.name}; }); }
     render();
     const asof=d&&d.meta&&d.meta.as_of; if(asof){ const f=document.querySelector('.freshness'); if(f) f.textContent='資料以 '+asof+' 收盤為準（Build-Time 自動更新）'; }
   }).catch(()=>{ render(); });

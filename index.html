@@ -7,7 +7,7 @@
 <base href="/mklab-stock/">
 <style>
   :root { --bg:#f7f8fa; --surface:#fff; --ink:#1a1d21; --muted:#6b7280; --border:#e5e7eb; --accent:#2563eb; --up:#dc2626; --down:#16a34a; --row-hover:#eff6ff; --radius:12px; --shadow:0 1px 3px rgba(0,0,0,.08); }
-  [data-theme="dark"] { --bg:#0f1115; --surface:#171a21; --ink:#e8eaed; --muted:#9aa0a6; --border:#2a2f3a; --accent:#3b82f6; --up:#f87171; --down:#4ade80; --row-hover:#1e2a3a; --shadow:0 1px 3px rgba(0,0,0,.4); }
+  [data-theme="dark"] { --bg:#0f1115; --surface:#171a21; --ink:#e8eaed; --muted:#9aa0a6; --border:#2a2f3a; --accent:#3b82f6; --up:#f87171; --down:#4ade80; --row-hover:#27374d; --shadow:0 1px 3px rgba(0,0,0,.4); }
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:-apple-system,"Segoe UI","PingFang TC","Microsoft JhengHei",sans-serif; background:var(--bg); color:var(--ink); line-height:1.5; padding-bottom:20px; }
   .nav { position:sticky; top:0; z-index:26; background:var(--surface); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:4px; padding:10px 12px; }
@@ -89,13 +89,7 @@
   /* KLineChart 自託管 */
   .kline-toolbar { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; }
   .kline-toolbar button { padding:5px 10px; font-size:12px; border:1px solid var(--border); border-radius:8px; background:var(--bg); color:var(--ink); cursor:pointer; }
-  .kline-toolbar button.on { background:var(--accent); color:#fff; border-color:var(--accent); }
 </style>
-<script src="vendor/lightweight-charts.min.js"></script>
-<script src="data/twii_kdata.js"></script>
-<script src="assets/mklab-core.js"></script>
-<script src="assets/data-client.js"></script>
-<script src="assets/mklab-wc.js"></script>
 </head>
 <body>
   <nav id="mainNav" class="nav"></nav>
@@ -144,9 +138,18 @@
       <div class="pager" id="indPager"></div>
     </div>
 
+    <div class="section-title">全球指數快照</div>
+    <div class="table-wrap">
+      <table id="idxTable">
+        <thead></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
     <div class="disclaimer">免責聲明：僅供參考，非投資建議。示意資料，生產環境由 Build-Time 計算。</div>
   </div>
 <script src="assets/mklab-core.js"></script>
+<script src="assets/data-client.js"></script>
 <script>
   function spark(data,color,w,h){ const min=Math.min(...data),max=Math.max(...data),r=(max-min)||1; const p=data.map((d,i)=>`${(i/(data.length-1)*w).toFixed(1)},${(h-((d-min)/r*h)).toFixed(1)}`).join(" "); return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><polyline points="${p}" fill="none" stroke="${color}" stroke-width="1.5"/></svg>`; }
   function gen(seed,n){ const o=[]; let p=seed; for(let i=0;i<n;i++){ p+=(Math.random()-0.5)*seed*0.01; o.push(+p.toFixed(2)); } return o; }
@@ -313,9 +316,9 @@
     // WC Market K線已由 <mklab-kline data-symbol="TWII"> 自動載入
     // 績效表資料
     MKLAB_DATA.indices().then(d=>{
-      if(d && d.indices){
-        const rows = Object.entries(d.indices).map(([k,v])=>`<tr><td>${k}</td><td>${v}</td></tr>`).join('');
-        document.getElementById('perfTable').innerHTML = '<tr><th>指數</th><th>收盤</th></tr>' + rows;
+      if(d && d.indices && Array.isArray(d.indices)){
+        const rows = d.indices.map(v=>`<tr><td>${v.name||'-'}</td><td class="${(v.chg_pct>=0)?'up':'down'}">${v.close!=null?Number(v.close).toLocaleString():'-'} (${(v.chg_pct>0?'+':'')}${v.chg_pct}%)</td></tr>`).join('');
+        document.getElementById('idxTable').innerHTML = '<tr><th>指數</th><th>收盤 (漲跌%)</th></tr>' + rows;
       }
     });
   </script>
