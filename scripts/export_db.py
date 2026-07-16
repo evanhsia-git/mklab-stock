@@ -95,6 +95,10 @@ def export_latest(conn, ov):
     stocks = []
     for sid, name, close, vol, pe, pb, div, o, h, l in cur.fetchall():
         base = ov.get(sid, {})
+        # ETF/無 OHLC 時用 close 填補
+        o = o if o is not None else close
+        h = h if h is not None else close
+        l = l if l is not None else close
         stocks.append({
             "sym": sid,
             "name": (name or base.get("name") or sid),
@@ -108,20 +112,24 @@ def export_latest(conn, ov):
             "ind": base.get("industry", "未分類"),
         })
     # 計算漲跌%（與前一日切片比對）
-    prev = latest_prev_day(conn, trade_date)
-    if prev:
-        pmap = {r[0]: r[1] for r in conn.execute(
-            f"SELECT stock_id,close FROM daily_prices_{prev}").fetchall()}
-        for s in stocks:
-            pc = pmap.get(s["sym"])
-            if pc and pc != 0:
-                s["chg"] = round((s["price"] - pc) / pc * 100, 2)
-            else:
+        prev = latest_prev_day(conn, trade_date)
+        if prev:
+            pmap = {r[0]: r[1] for r in conn.execute(
+                f"SELECT stock_id,close FROM daily_prices_{prev}").fetchall()}
+            for s in stocks:
+                pc = pmap.get(s["sym"])
+                if pc and pc != 0:
+                    s["chg"] = round((s["price"] - pc) / pc * 100, 2)
+                else:
+                    s["chg"] = None
+        else:
+            for s in stocks:
                 s["chg"] = None
-    else:
-        for s in stocks:
-            s["chg"] = None
-    # 綜合評分（簡易：ROE 為主 + 殖利率）
+        # 過濾掉價格 <= 0 的異常股（停牌/除權/興櫃異常）
+        before = len(stocks)
+        stocks = [s for s in stocks if s.get("price") and s["price"] > 0]
+        print(f"[latest] 過濾異常股: {before} -> {len(stocks)} (移除價格 <= 0)")
+        # 綜合評分（簡易：ROE 為主 + 殖利率）
     for s in stocks:
         roe = s.get("roe") or 0
         dv = s.get("div") or 0
@@ -265,7 +273,12 @@ def export_history(conn, ov):
                 "industry": base.get("industry", "未分類"),
             }
             if has_ohlc:
-                rec["open"], rec["high"], rec["low"] = r[7], r[8], r[9]
+                o, h, l = r[7], r[8], r[9]
+                # ETF/無 OHLC 時用 close 填補
+                o = o if o is not None else close
+                h = h if h is not None else close
+                l = l if l is not None else close
+                rec["open"], rec["high"], rec["low"] = o, h, l
             else:
                 rec["open"], rec["high"], rec["low"] = None, None, None
             rows.append(rec)

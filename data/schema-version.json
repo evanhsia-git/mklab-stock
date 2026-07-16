@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0.0",
-  "generated": "2026-07-15T13:20:58",
+  "generated": "2026-07-16T00:35:38",
   "description": "mklab-stock data contract (stocks/industry/history)",
   "history_format": "data/history/YYYYMMDD.json → {trade_date, schema_version, count, stocks:[stock_id,stock_name,close,open,high,low,volume,pe_ratio,pb_ratio,dividend_yield,industry]}",
   "stocks_format": "data/stocks.json → {meta:{as_of,source,schema_version,count}, stocks:[sym,name,price,open,high,low,volume,pe,pb,div,roe,eps,market_cap,ind,chg,rank]}"
