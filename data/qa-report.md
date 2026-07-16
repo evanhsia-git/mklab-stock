@@ -1,5 +1,5 @@
 # mklab-stock QA Gate 報告
-**時間**: 2026-07-16 16:33:52  
+**時間**: 2026-07-16 16:53:28  
 **Critical ERROR**: 0  | **WARNING**: 3  
 **最終判定**: 🟢 ALLOW DEPLOY
 
@@ -23,7 +23,7 @@
 | JSON | industry.json Schema | PASS | 33 個產業 |  |  |
 | HTML | 結構健康檢查 | PASS | 全部 7 個 HTML 通過（含 check_html_health 功能） |  |  |
 | CSS | 統一 Theme 變數 (var(--bg) 等) | PASS | 7 個頁面皆含 Theme (inline 或 link) |  |  |
-| CSS | 禁止硬寫核心樣式 (違反 Design Token) | WARNING | 行內硬寫樣式: ['mklab-stock-research.html:1', 'mklab-stock-log.html:1'] | 改用 CSS class / Design Token | mklab-stock-research.html:1, mklab-stock-log.html:1 |
+| CSS | 禁止硬寫核心樣式 (違反 Design Token) | WARNING | 行內硬寫樣式: ['mklab-stock-research.html:1', 'mklab-stock-log.html:1', 'mklab-stock-watchlist.html:1'] | 改用 CSS class / Design Token | mklab-stock-research.html:1, mklab-stock-log.html:1, mklab-stock-watchlist.html:1 |
 | JS | syntax: mklab-stock-screener.html#0 | PASS |  |  |  |
 | JS | syntax: index.html#0 | PASS |  |  |  |
 | JS | syntax: mklab-stock-research.html#0 | PASS |  |  |  |
@@ -41,8 +41,8 @@
   - 建議: 確認資料源是否涵蓋該標的（/root/Documents/mklab-stock/data/stocks.json）
 - **[WARNING] Data/前日波動異常 (>20% 閾值)**: 漲跌% 超過 20%: ['1560', '1590', '2059', '2308', '2313', '2345', '2360', '2383', '2404', '2408']（可能為除權息或資料異常）
   - 建議: 人工確認是否為正常事件（/root/Documents/mklab-stock/data/stocks.json）
-- **[WARNING] CSS/禁止硬寫核心樣式 (違反 Design Token)**: 行內硬寫樣式: ['mklab-stock-research.html:1', 'mklab-stock-log.html:1']
-  - 建議: 改用 CSS class / Design Token（mklab-stock-research.html:1, mklab-stock-log.html:1）
+- **[WARNING] CSS/禁止硬寫核心樣式 (違反 Design Token)**: 行內硬寫樣式: ['mklab-stock-research.html:1', 'mklab-stock-log.html:1', 'mklab-stock-watchlist.html:1']
+  - 建議: 改用 CSS class / Design Token（mklab-stock-research.html:1, mklab-stock-log.html:1, mklab-stock-watchlist.html:1）
 
 ## 最終判定: ALLOW DEPLOY
 

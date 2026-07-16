@@ -38,9 +38,10 @@
   <div class="wrap">
     <div class="section-title">我的自選股<span class="hint">點表頭可排序</span></div>
     <div class="row-input">
-      <input id="addSym" placeholder="新增自選股代號，如 2330">
+      <input id="addSym" placeholder="新增自選股代號，如 2330" onkeydown="if(event.key==='Enter')addSym()">
       <button onclick="addSym()">加入</button>
     </div>
+    <div id="addTip" style="display:none;color:var(--warn);font-size:12px;margin-bottom:8px;"></div>
     <div class="table-wrap">
       <table id="wlTable">
         <thead></thead>
@@ -98,7 +99,19 @@
     }
   }
   const SYM_NAME={"2330":"台積電","2317":"鴻海","2454":"聯發科","2308":"台達電","2303":"聯電","2412":"中華電","2882":"國泰金","6505":"台塑化","1303":"南亞","2891":"中信金","2881":"富邦金","2885":"元大金","2886":"兆豐金","2892":"第一金","2884":"玉山金","3008":"大立光","2301":"光寶科","2408":"南亞科","3711":"日月光投控","4938":"和碩","AAPL":"Apple","MSFT":"Microsoft","GOOGL":"Alphabet","NVDA":"Nvidia","600519":"貴州茅台","000001":"平安銀行","00700.HK":"騰訊","09988.HK":"阿里巴巴"};
-  function addSym(){ const v=document.getElementById('addSym').value.trim().toUpperCase(); if(!v) return; MKLAB.Watch.add(v, SYM_NAME[v]||""); document.getElementById('addSym').value=""; render(); }
+  function addSym(){
+    const v=document.getElementById('addSym').value.trim().toUpperCase();
+    if(!v) return;
+    // 排除機制：代號不在 stocks.json 中則提示不存在
+    if(!priceMap[v]){
+      const tip=document.getElementById('addTip');
+      if(tip){ tip.textContent='⚠ 代號 '+v+' 不存在於資料庫（僅支援台股上市/美股主要標的）'; tip.style.display='block'; setTimeout(()=>{tip.style.display='none';},3000); }
+      return;
+    }
+    MKLAB.Watch.add(v, SYM_NAME[v]||priceMap[v].name||"");
+    document.getElementById('addSym').value="";
+    render();
+  }
   function openDrawer(){ MKLAB.Drawer.open(); }
   function closeDrawer(){ MKLAB.Drawer.close(); }
   // 載入真實價格（stocks.json）後刷新自選

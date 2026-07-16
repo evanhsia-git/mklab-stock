@@ -37,8 +37,8 @@ body { font-family:-apple-system,"Segoe UI","PingFang TC","Microsoft JhengHei",s
 .search { display:flex; align-items:center; gap:4px; background:var(--bg); border:1px solid var(--border); border-radius:20px; padding:4px 10px; }
 .search.collapsed input { display:none; }
 .search.expanded input { display:block; width:160px; background:var(--surface); color:var(--ink); border:1px solid var(--border); border-radius:16px; padding:4px 10px; outline:none; }
-.fab-btn { width:40px; height:40px; border-radius:50%; border:1px solid var(--border); background:var(--surface); color:var(--ink); cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow); text-decoration:none; }
-.fab-btn svg { width:20px; height:20px; display:block; }
+.fab-btn { width:32px; height:32px; border-radius:50%; border:1px solid var(--border); background:var(--surface); color:var(--ink); cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow); text-decoration:none; }
+.fab-btn svg { width:16px; height:16px; display:block; }
 
 /* ===== 通用 ===== */
 .up { color:var(--up); } .down { color:var(--down); } .warn { color:var(--warn); }
