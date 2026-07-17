@@ -25,6 +25,7 @@
   .alert-note .muted { color:var(--muted); font-size:12px; }
   .section-title { font-weight:700; font-size:15px; margin:4px 0 10px; display:flex; align-items:baseline; gap:8px; }
   .section-title .hint { font-weight:400; font-size:11px; color:var(--muted); }
+  .muted-small-top { color:var(--muted); font-size:12px; margin-bottom:8px; }
 </style>
 </head>
 <body>
@@ -44,7 +45,7 @@
           <div id="addTip" style="display:none;color:var(--warn);font-size:12px;margin-bottom:8px;"></div>
 
           <!-- 價格提醒設定 -->
-          <div class="section-title">價格提醒（Alert）設定</h3>
+          <div class="section-title">價格提醒（Alert）設定</div>
           <p class="muted-small-top">
             輸入「目標價」與「停損價」(可設定多組)。當股價觸及即會在表格顯示 <span class="warn">⚠️ 觸發</span> 標記。
             <br>
@@ -127,6 +128,16 @@
   }
   function openDrawer(){ MKLAB.Drawer.open(); }
   function closeDrawer(){ MKLAB.Drawer.close(); }
+  // 價格提醒儲存（示意 stub，尚未接 localStorage/後端）
+  function savePriceAlert(){
+    const t = document.getElementById('alertTargetPrice').value;
+    const s = document.getElementById('alertStopLossPrice').value;
+    const note = document.getElementById('addAlertNote');
+    if(note){
+      if(t || s) note.textContent = `已記錄：目標價 ${t||'—'} / 停損價 ${s||'—'}（待接存儲層）`;
+      else note.textContent = '請至少輸入目標價或停損價';
+    }
+  }
   // 載入真實價格（stocks.json）後刷新自選
   fetch('data/stocks.json').then(r=>r.json()).then(d=>{
     if(d && Array.isArray(d.stocks)){ d.stocks.forEach(s=>{ priceMap[s.sym]={price:s.price,chg:s.chg,pe:s.pe,pb:s.pb,roe:s.roe,alert:null,name:s.name}; }); }

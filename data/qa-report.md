@@ -1,5 +1,5 @@
 # mklab-stock QA Gate 報告
-**時間**: 2026-07-17 02:50:49  
+**時間**: 2026-07-17 03:09:17  
 **Critical ERROR**: 0  | **WARNING**: 2  
 **最終判定**: 🟢 ALLOW DEPLOY
 
