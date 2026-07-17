@@ -27,7 +27,20 @@ body {
 .wrap { max-width: 1200px; margin: 0 auto; padding: 12px; }
 @media (min-width: 1024px){ .wrap{ padding: 16px 24px; } }
 
-/* sticky 元素層疊順序（由高到低） */
+/* ===== sticky header 容器（新版：nav+utilbar 整體 sticky）===== */
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.sticky-header .nav,
+.sticky-header .utilbar {
+  position: static;  /* 由父容器統一 sticky，不再各自 sticky */
+}
+
+/* ===== sticky 元素層疊順序（由高到低）===== */
 .nav        { z-index: 1000; }
 .utilbar    { z-index: 999; }
 .freshness  { z-index: 998; }
@@ -36,8 +49,12 @@ body {
 .alert-note.modal { z-index: 997; }
 
 /* ===== nav (第一列) ===== */
+/* 當不在 .sticky-header 內時，單獨 sticky（舊版相容） */
+.nav:not(.sticky-header > .nav) {
+  position: sticky;
+  top: 0;
+}
 .nav {
-  position: sticky; top: 0;
   background: var(--surface);
   border-bottom: 1px solid var(--border);
   display: flex; align-items: center; gap: 4px; padding: 10px 12px;
@@ -47,8 +64,12 @@ body {
 .nav .brand { font-weight: 700; font-size: 15px; margin-right: 12px; white-space: nowrap; }
 
 /* ===== utilbar (第二列) ===== */
+/* 當不在 .sticky-header 內時，單獨 sticky（舊版相容） */
+.utilbar:not(.sticky-header > .utilbar) {
+  position: sticky;
+  top: 49px;
+}
 .utilbar {
-  position: sticky; top: 49px;
   background: var(--surface);
   border-bottom: 1px solid var(--border);
   display: flex; align-items: center; gap: 8px; padding: 8px 12px;
@@ -63,7 +84,7 @@ body {
 }
 [data-theme="dark"] .freshness { background: #2a1d12; color: #fdba74; }
 
-/* ===== 內容區避讓 sticky 元素總高度（nav + utilbar + freshness ≈ 120px） ===== */
+/* ===== 內容區避讓 sticky 元素總高度（nav + utilbar + freshness ≈ 120px）===== */
 .timeline-item,
 .card,
 .table-wrap,
