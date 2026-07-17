@@ -321,11 +321,15 @@
           }
         }
       }).catch(()=>{});
+      // 啟動系統時間定時器
+      this.startSysTimer();
     },
     close(){
       const el = document.getElementById('drawer'); if(!el) return;
       el.classList.remove('open');
       const mask = document.querySelector('.drawer-mask'); if(mask) mask.classList.remove('open');
+      // 停止系統時間定時器
+      this.stopSysTimer();
     },
     toggleDark(){
       const on = document.documentElement.getAttribute('data-theme')==='dark';
@@ -339,6 +343,30 @@
       const zh = document.getElementById('langZh'), en = document.getElementById('langEn');
       if(zh) zh.classList.toggle('on', l==='zh');
       if(en) en.classList.toggle('on', l==='en');
+    },
+    // 系統時間定時器：每分鐘更新一次 System 區塊的日期/時間/星期
+    startSysTimer(){
+      if (this._sysTimer) return;
+      this._sysTimer = setInterval(() => {
+        const el = document.getElementById('drawer');
+        if (!el || !el.classList.contains('open')) return;
+        const note = el.querySelector('.sys-note');
+        if (!note) return;
+        const now = new Date();
+        const s = DRAWER_CFG.system;
+        const dateStr = now.toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit' });
+        const timeStr = now.toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+        const weekStr = ['日','一','二','三','四','五','六'][now.getDay()];
+        note.innerHTML = `版本：${s.version}<br>資料源：${s.source}<br>最後更新：${s.updated}<br>當前時間：${dateStr} (週${weekStr}) ${timeStr}<br>狀態：<span class="up">${s.status}</span>`;
+      }, 60000); // 每分鐘
+      // 立即執行一次
+      this._sysTimerCallback && this._sysTimerCallback();
+    },
+    stopSysTimer(){
+      if (this._sysTimer) {
+        clearInterval(this._sysTimer);
+        this._sysTimer = null;
+      }
     },
   };
 

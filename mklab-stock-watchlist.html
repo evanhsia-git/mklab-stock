@@ -5,28 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>mklab-stock Watchlist 原型 v11</title>
 <link rel="stylesheet" href="assets/mklab-theme.css">
-<style>
-  /* watchlist 獨有樣式 */
-  .up { color:var(--up); } .down { color:var(--down); } .warn { color:var(--warn); }
-  .search { display:flex; align-items:center; gap:4px; background:var(--bg); border:1px solid var(--border); border-radius:20px; padding:4px 10px; }
-  .search.collapsed input { display:none; }
-  .search.expanded input { display:block; width:160px; background:var(--surface); color:var(--ink); border:1px solid var(--border); border-radius:16px; padding:4px 10px; outline:none; }
-  .search input { border:none; background:transparent; color:var(--ink); outline:none; width:120px; font-size:13px; }
-  .row-input { display:flex; gap:6px; margin-bottom:12px; }
-  .row-input input { flex:1; padding:8px; border:1px solid var(--border); border-radius:8px; background:var(--bg); color:var(--ink); }
-  .row-input button { padding:8px 12px; background:var(--accent); color:#fff; border:none; border-radius:8px; cursor:pointer; }
-  .sym { font-weight:600; } .sym small { color:var(--muted); font-weight:400; display:block; }
-  .alert { font-size:11px; padding:2px 6px; border-radius:6px; background:var(--warn); color:#000; }
-  .del { color:var(--muted); cursor:pointer; font-size:12px; }
-  .alert-note { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:14px; margin-top:16px; box-shadow:var(--shadow); }
-  .alert-note h3 { font-size:14px; margin-bottom:8px; }
-  .alert-note p { font-size:13px; line-height:1.7; margin-bottom:8px; }
-  .alert-note ul { padding-left:20px; font-size:13px; line-height:1.8; }
-  .alert-note .muted { color:var(--muted); font-size:12px; }
-  .section-title { font-weight:700; font-size:15px; margin:4px 0 10px; display:flex; align-items:baseline; gap:8px; }
-  .section-title .hint { font-weight:400; font-size:11px; color:var(--muted); }
-  .muted-small-top { color:var(--muted); font-size:12px; margin-bottom:8px; }
-</style>
 </head>
 <body>
   <div class="sticky-header">

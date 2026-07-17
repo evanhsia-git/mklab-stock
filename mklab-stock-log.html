@@ -6,37 +6,7 @@
 <title>mklab-stock 開發日誌（WC 版）</title>
 <base href="/mklab-stock/">
 <link rel="stylesheet" href="assets/mklab-theme.css">
-<style>
-  /* log (開發日誌) 獨有樣式 — 文件型頁面 */
-  .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; box-shadow:var(--shadow); margin:12px 0; }
-  .card h2 { font-size:16px; margin-bottom:10px; color:var(--accent); }
-  .card h3 { font-size:14px; margin:14px 0 6px; color:var(--muted); }
-  .kv { display:flex; justify-content:space-between; padding:7px 0; border-bottom:1px solid var(--border); font-size:14px; }
-  .kv:last-child { border-bottom:none; }
-  .kv b { font-weight:700; }
-  code { background:var(--bg); padding:2px 6px; border-radius:5px; font-size:13px; }
-  td.b { font-weight:700; color:var(--accent); }
-  .pill { display:inline-block; background:var(--row-hover); border:1px solid var(--border); border-radius:20px; padding:3px 10px; font-size:12px; margin:2px; }
-  ul { padding-left:20px; font-size:14px; }
-  li { margin:5px 0; }
-  .footer { text-align:center; color:var(--muted); font-size:12px; padding:20px; }
-  a.link { color:var(--accent); text-decoration:none; }
-  .muted-small { color:var(--muted); font-size:13px; margin-top:10px; }
-  .muted-small-top { color:var(--muted); font-size:13px; margin-top:8px; }
-  .text-muted { color:var(--muted); font-size:14px; }
-  .disclaimer-text { color:var(--muted); font-size:14px; }
-  .timeline { border-left:2px solid var(--border); padding-left:16px; margin-left:8px; }
-  .timeline-item { position:relative; padding:12px 0 12px 16px; border-bottom:1px solid var(--border); }
-  .timeline-item:last-child { border-bottom:none; }
-  .timeline-item::before { content:""; position:absolute; left:-8px; top:16px; width:10px; height:10px; border-radius:50%; background:var(--accent); border:2px solid var(--surface); box-shadow:0 0 0 2px var(--border); }
-  .timeline-date { font-size:12px; color:var(--muted); margin-bottom:4px; }
-  .timeline-title { font-weight:600; margin-bottom:4px; }
-  .timeline-desc { font-size:13px; color:var(--ink); line-height:1.5; }
-  .timeline-desc code { background:var(--bg); padding:1px 4px; border-radius:3px; }
-  .section-badge { display:inline-block; background:var(--accent); color:#fff; font-size:10px; padding:1px 6px; border-radius:4px; margin-right:8px; }
-  .tech-stack { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
-</style>
-<script src="assets/mklab-core.js"></script>
+</head>
 <script src="assets/data-client.js"></script>
 <script src="assets/mklab-wc.js"></script>
 </head>
@@ -50,6 +20,8 @@
   <div class="drawer-mask" onclick="MKLAB.Drawer.close()"></div>
   <aside class="drawer" id="drawer">
     <button class="close-x" onclick="MKLAB.Drawer.close()" aria-label="關閉">×</button>
+    <div class="drawer-content">
+  </div>
   </aside>
 
   <div class="wrap">
@@ -179,49 +151,33 @@
         <tr><td>MA 指標確認</td><td>LightweightCharts 免費版</td><td>低</td><td>低</td><td>低</td></tr>
         <tr><td>離線 PWA Cache</td><td>Service Worker</td><td>中</td><td>低</td><td>低（Fork 即用）</td></tr>
       </table>
-
-      <h3>待開發項目排行榜（功能 | 說明 | 製作難易度 | 維護成本 | 風險）</h3>
-      <table>
-        <tr><th>功能</th><th>說明</th><th>難度</th><th>維護</th><th>風險</th></tr>
-        <tr><td>搜尋鍵①即時跳轉</td><td>輸入→匹配→跳 Research</td><td>低</td><td>低</td><td>低</td></tr>
-        <tr><td>IRR/XIRR 計算</td><td>純前端現金流數學</td><td>低</td><td>低</td><td>低</td></tr>
-        <tr><td>Dashboard 拖曳 Widget</td><td>可拖曳布局</td><td>高</td><td>中</td><td>中</td></tr>
-        <tr><td>個股歷史 K 線抓取</td><td>補 OHLC 時序</td><td>高</td><td>高</td><td>中（API 限流）</td></tr>
-        <tr><td>RS/EMA/MACD/Sharpe/回撤</td><td>依賴歷史 K 線</td><td>高</td><td>高</td><td>中</td></tr>
-        <tr><td>ETF 比較器/分類</td><td>ETF 績效/成分</td><td>中</td><td>高</td><td>中（需爬蟲）</td></tr>
-        <tr><td>新聞模組</td><td>聚合/評分</td><td>高</td><td>高</td><td>高（API 成本/法規）</td></tr>
-        <tr><td>回測版本快照</td><td>凍結舊結果</td><td>高</td><td>高</td><td>中</td></tr>
-        <tr><td>筆記本/lots.csv 編輯</td><td>持倉/日誌編輯</td><td>中</td><td>中</td><td>低</td></tr>
-        <tr><td>贊助/廣告</td><td>收益功能</td><td>低</td><td>中</td><td>中（開源精神）</td></tr>
-        <tr><td>KLineChart 替換</td><td>評估免費圖表庫</td><td>中</td><td>中</td><td>中</td></tr>
-        <tr><td>架構圖/流程圖 Canvas</td><td>視覺化架構</td><td>中</td><td>低</td><td>低</td></tr>
-        <tr><td>MA 指標確認</td><td>LightweightCharts 免費版</td><td>低</td><td>低</td><td>低</td></tr>
-        <tr><td>離線 PWA Cache</td><td>Service Worker</td><td>中</td><td>低</td><td>低（Fork 即用）</td></tr>
-      </table>
       <p class="muted-small-top">排序邏輯：難度低→高、維護成本低→高、風險低→高。優先開發「低難度低風險」項目（搜尋跳轉/IRR/SVG雷達圖/LocalStorage/圓餅圖），再逐步推進需歷史資料與外部 API 的項目。</p>
 
-              <!-- 原本錯誤放在表格內的 timeline-item，移到表格外作為獨立區塊 -->
-              <div class="timeline">
-                <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>個股歷史 K 線抓取</div><div class="timeline-desc">fetch_data.py 增抓個股近 1 年日線寫入 <code>history/{sym}.json</code>，解鎖 RS/EMA/MACD/Sharpe/回撤 計算。</div></div>
-                <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>股票比較器</div><div class="timeline-desc">輸入自選代號→比較圖表 (compare-multiple-series) + 比較表格（5日/10日/1月/3月/6月/1年 報酬）。</div></div>
-                <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>ETF 比較器 / 成分股 TOP10</div><div class="timeline-desc">ETF 間績效/費用率比較，或單一 ETF 成分股前 10 大持股。</div></div>
-                <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>Dashboard 儀表板開關</div><div class="timeline-desc">自由開關 ☑市場 ☑ETF ☑AI ☑半導體 ☑Watchlist 模組顯示。</div></div>
-                <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>LocalStorage 收藏與保存</div><div class="timeline-desc">自選股/設定/布局持久化，跨頁面同步。</div></div>
-                <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>新聞模組</div><div class="timeline-desc">聚合新聞流 / 個股新聞 / 關鍵字規則評分。需評估免費新聞 API 可行性。</div></div>
-                <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>持倉集中度警示 / 圓餅圖</div><div class="timeline-desc">持倉行業/個股集中度，原生 SVG 圓餅圖。</div></div>
-                <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>回測版本快照</div><div class="timeline-desc">策略改版時凍結舊結果（對應 Y 節建議）。</div></div>
-                <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>規則式情緒燈號</div><div class="timeline-desc">關鍵字庫（利多/利空詞）非 AI 版情緒分析。</div></div>
-                <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>贊助 / 廣告收益</div><div class="timeline-desc">靜態頁面嵌入贊助區塊或廣告位（需符合開源精神）。</div></div>
-                <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>筆記本 / 持倉 lots.csv 編輯</div><div class="timeline-desc">網頁編輯投資日誌 / 持倉明細（lots.csv），純前端 + localStorage 或 GitHub API。</div></div>
-                <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>ETF 分類 / 持倉檢視</div><div class="timeline-desc">市值型/高股息/債券/主動式分類 + 持倉檢視，需抓取或爬蟲 ETF 成分。</div></div>
-                <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>ETF 各證券/銀行產品</div><div class="timeline-desc">整理各證券商/銀行旗下 ETF 產品清單。</div></div>
-                <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>原生 SVG 綜合評分雷達圖</div><div class="timeline-desc">視覺化首頁「綜合評分」五大指標（ROE/PE/PB/EPS/漲跌%），內部用 <code><polygon></code>/<code><rect></code> 繪製，不引 Chart.js。</div></div>
-                <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>免費開源 KLineChart 評估</div><div class="timeline-desc">內部測試頁完整運行成功後，再行替換 Lightweight Charts v4.1.3。</div></div>
-                <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>整體架構圖 / 流程圖 (Canvas)</div><div class="timeline-desc">網頁內可視化專案架構與資料流。</div></div>
-                <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>Lightweight Charts MA 指標確認</div><div class="timeline-desc">確認免費版是否支援移動平均線 (MA) 指標疊加。</div></div>
-                <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>離線 PWA Cache</div><div class="timeline-desc">ES Modules 註冊極簡 Service Worker，實現離線無網瀏覽。遵守 Fork 即用原則。</div></div>
-              </div>
-            </div>
+      <!-- 原本錯誤放在表格內的 timeline-item，移到表格外作為獨立區塊 -->
+      <div class="timeline">
+        <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>個股歷史 K 線抓取</div><div class="timeline-desc">fetch_data.py 增抓個股近 1 年日線寫入 <code>history/{sym}.json</code>，解鎖 RS/EMA/MACD/Sharpe/回撤 計算。</div></div>
+        <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>股票比較器</div><div class="timeline-desc">輸入自選代號→比較圖表 (compare-multiple-series) + 比較表格（5日/10日/1月/3月/6月/1年 報酬）。</div></div>
+        <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>ETF 比較器 / 成分股 TOP10</div><div class="timeline-desc">ETF 間績效/費用率比較，或單一 ETF 成分股前 10 大持股。</div></div>
+        <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>Dashboard 儀表板開關</div><div class="timeline-desc">自由開關 ☑市場 ☑ETF ☑AI ☑半導體 ☑Watchlist 模組顯示。</div></div>
+        <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>LocalStorage 收藏與保存</div><div class="timeline-desc">自選股/設定/布局持久化，跨頁面同步。</div></div>
+        <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>新聞模組</div><div class="timeline-desc">聚合新聞流 / 個股新聞 / 關鍵字規則評分。需評估免費新聞 API 可行性。</div></div>
+        <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>持倉集中度警示 / 圓餅圖</div><div class="timeline-desc">持倉行業/個股集中度，原生 SVG 圓餅圖。</div></div>
+        <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>回測版本快照</div><div class="timeline-desc">策略改版時凍結舊結果（對應 Y 節建議）。</div></div>
+        <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>規則式情緒燈號</div><div class="timeline-desc">關鍵字庫（利多/利空詞）非 AI 版情緒分析。</div></div>
+        <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>贊助 / 廣告收益</div><div class="timeline-desc">靜態頁面嵌入贊助區塊或廣告位（需符合開源精神）。</div></div>
+        <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>筆記本 / 持倉 lots.csv 編輯</div><div class="timeline-desc">網頁編輯投資日誌 / 持倉明細（lots.csv），純前端 + localStorage 或 GitHub API。</div></div>
+        <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>ETF 分類 / 持倉檢視</div><div class="timeline-desc">市值型/高股息/債券/主動式分類 + 持倉檢視，需抓取或爬蟲 ETF 成分。</div></div>
+        <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>ETF 各證券/銀行產品</div><div class="timeline-desc">整理各證券商/銀行旗下 ETF 產品清單。</div></div>
+        <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>原生 SVG 綜合評分雷達圖</div><div class="timeline-desc">視覺化首頁「綜合評分」五大指標（ROE/PE/PB/EPS/漲跌%），內部用 <code><polygon></code>/<code><rect></code> 繪製，不引 Chart.js。</div></div>
+        <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>免費開源 KLineChart 評估</div><div class="timeline-desc">內部測試頁完整運行成功後，再行替換 Lightweight Charts v4.1.3。</div></div>
+        <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>整體架構圖 / 流程圖 (Canvas)</div><div class="timeline-desc">網頁內可視化專案架構與資料流。</div></div>
+        <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>Lightweight Charts MA 指標確認</div><div class="timeline-desc">確認免費版是否支援移動平均線 (MA) 指標疊加。</div></div>
+        <div class="timeline-item"><div class="timeline-date">2026-07-17</div><div class="timeline-title"><span class="section-badge">待開發</span>離線 PWA Cache</div><div class="timeline-desc">ES Modules 註冊極簡 Service Worker，實現離線無網瀏覽。遵守 Fork 即用原則。</div></div>
+      </div>
+
+    </div>
+
+    <div class="card">
       <h2>📁 專案目錄結構 (關鍵檔案)</h2>
       <pre style="font-size:12px; background:var(--bg); padding:12px; border-radius:8px; overflow:auto;"><code>mklab-stock/
 ├── index.html                    # 首頁：Market Health + 自選 + 評分 TOP10

@@ -5,35 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>mklab-stock Screener 原型 v11</title>
 <link rel="stylesheet" href="assets/mklab-theme.css">
-<style>
-  /* screener 獨有樣式 */
-  .layout { display:block; }
-  @media (min-width:1024px){ .layout{ display:grid; grid-template-columns:300px 1fr; gap:16px; } }
-  .panel { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:14px; box-shadow:var(--shadow); margin-bottom:12px; }
-  .panel h3 { font-size:14px; margin-bottom:10px; }
-  .grp { margin-bottom:14px; }
-  .grp .lab { font-size:12px; color:var(--muted); margin-bottom:6px; font-weight:600; }
-  .cond { margin-bottom:10px; }
-  .cond .row { display:flex; align-items:center; gap:6px; font-size:12px; }
-  .cond label { width:54px; color:var(--muted); }
-  .cond input[type=number] { width:62px; padding:4px 6px; border:1px solid var(--border); border-radius:6px; background:var(--bg); color:var(--ink); }
-  .cond input[type=range] { flex:1; min-width:80px; }
-  .cond .rv { width:34px; text-align:right; font-variant-numeric:tabular-nums; color:var(--ink); font-weight:600; }
-  .chk label:hover { border-color:var(--accent); color:var(--accent); }
-  .cond select { padding:4px 6px; border:1px solid var(--border); border-radius:6px; background:var(--bg); color:var(--ink); }
-  .chk { display:flex; flex-wrap:wrap; gap:6px; }
-  .chk label { font-size:12px; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:4px 8px; cursor:pointer; }
-  .row-input { display:flex; gap:6px; margin-bottom:10px; }
-  .row-input input { flex:1; padding:8px; border:1px solid var(--border); border-radius:8px; background:var(--bg); color:var(--ink); }
-  .row-input button { padding:8px 12px; background:var(--accent); color:#fff; border:none; border-radius:8px; cursor:pointer; }
-  .count { font-size:12px; color:var(--muted); margin-bottom:8px; }
-  .strategy-note { margin-top:20px; }
-  .strategy-note h3 { font-size:14px; margin-bottom:10px; color:var(--ink); }
-  .strategy-note table { width:100%; border-collapse:collapse; }
-  .strategy-note th, .strategy-note td { padding:8px 7px; text-align:left; font-size:12px; border-bottom:1px solid var(--border); white-space:normal; vertical-align:top; }
-  .strategy-note th { color:var(--muted); font-weight:600; background:var(--surface); }
-  .strategy-note tbody tr:hover { background:var(--row-hover); }
-</style>
 </head>
 <body>
   <div class="sticky-header">
