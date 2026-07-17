@@ -9,17 +9,18 @@ mklab-stock HTML 結構健康檢查
 import os
 import sys
 import glob
+import re
 from html.parser import HTMLParser
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+
 
 class StructureChecker(HTMLParser):
     """追蹤標籤開關，並在解析結束時報告結構問題。"""
     VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input",
             "link", "meta", "param", "source", "track", "wbr"}
-    RAW_CONTENT_TAGS = {"script", "style", "pre", "code", "textarea", "xmp"}
-    
-    # 關鍵區塊遮罩 (Bitmask)
+    RAW_CONTENT_TAGS = {"script", "style", "textarea", "xmp", "plaintext", "listing", "template", "noscript"}
+
     MASK_NAV = 1 << 0
     MASK_UTILBAR = 1 << 1
     MASK_DRAWER = 1 << 2
@@ -28,17 +29,24 @@ class StructureChecker(HTMLParser):
 
     def __init__(self):
         super().__init__(convert_charrefs=True)
-        self.stack = []  # 儲存 (tag, lineno)
+        self.stack = []
         self.body_children = 0
         self.in_body = False
         self.body_started = False
         self.style_open_lineno = None
         self.errors = []
         self.raw_depth = 0
-        self.features = 0  # 關鍵區塊記錄
+        self.code_depth = 0
+        self.features = 0
 
     def handle_starttag(self, tag, attrs):
-        # 若在 raw content 內部，所有標籤只做棧追蹤不解析結構
+        if self.code_depth > 0:
+            if tag in {"code", "pre"}:
+                self.code_depth += 1
+                if tag not in self.VOID:
+                    self.stack.append((tag, self.getpos()[0]))
+            return
+
         if self.raw_depth > 0:
             if tag in self.RAW_CONTENT_TAGS:
                 if tag == "style":
@@ -47,12 +55,17 @@ class StructureChecker(HTMLParser):
                 self.stack.append((tag, self.getpos()[0]))
             return
 
-        # 進入 raw content 標籤
         if tag in self.RAW_CONTENT_TAGS:
             if tag == "style":
                 self.style_open_lineno = self.getpos()[0]
             self.raw_depth += 1
             self.stack.append((tag, self.getpos()[0]))
+            return
+
+        if tag in {"code", "pre"}:
+            self.code_depth += 1
+            if tag not in self.VOID:
+                self.stack.append((tag, self.getpos()[0]))
             return
 
         if tag == "body":
@@ -83,19 +96,39 @@ class StructureChecker(HTMLParser):
             self.stack.append((tag, self.getpos()[0]))
 
     def handle_endtag(self, tag):
-        # 處理 raw content 標籤退出
+        if self.code_depth > 0:
+            if tag in {"code", "pre"}:
+                self.code_depth = max(0, self.code_depth - 1)
+                if tag not in self.VOID:
+                    for i in range(len(self.stack) - 1, -1, -1):
+                        if self.stack[i][0] == tag:
+                            del self.stack[i]
+                            break
+            return
+
+        if self.raw_depth > 0:
+            if tag in self.RAW_CONTENT_TAGS:
+                self.raw_depth = max(0, self.raw_depth - 1)
+                if tag == "style":
+                    self.style_open_lineno = None
+                for i in range(len(self.stack) - 1, -1, -1):
+                    if self.stack[i][0] == tag:
+                        del self.stack[i]
+                        break
+            return
+
         if tag in self.RAW_CONTENT_TAGS:
-            self.raw_depth = max(0, self.raw_depth - 1)
             if tag == "style":
                 self.style_open_lineno = None
-
-        if self.raw_depth > 0 and tag not in self.RAW_CONTENT_TAGS:
+            for i in range(len(self.stack) - 1, -1, -1):
+                if self.stack[i][0] == tag:
+                    del self.stack[i]
+                    break
             return
 
         if tag == "body":
             self.in_body = False
 
-        # 彈棧優化：從最近的標籤匹配並清除
         for i in range(len(self.stack) - 1, -1, -1):
             if self.stack[i][0] == tag:
                 del self.stack[i]
@@ -106,26 +139,21 @@ class StructureChecker(HTMLParser):
         base = os.path.basename(fname)
         is_help = base.endswith("-help.html") or base == "help.html"
 
-        # 1-4: 檢查未關閉的關鍵結構標籤
         if self.stack:
             EXPECTED_ROOT_TAGS = {"html", "body", "div"}
             unclosed = [f"<{t}>(line {ln})" for t, ln in self.stack if t not in EXPECTED_ROOT_TAGS]
             if unclosed:
                 msgs.append(f"未關閉標籤: {', '.join(unclosed)}")
 
-        # 5: body 空白檢查
         if self.body_started and self.body_children == 0:
             msgs.append("解析後 <body> 無實質子元素（網頁可能空白）")
 
-        # 6: style 未關閉檢查
         if self.style_open_lineno is not None:
             msgs.append(f"<style> 未關閉（開於 line {self.style_open_lineno}）")
 
-        # 說明頁不檢查標準框架區塊
         if is_help:
             return msgs
 
-        # 7: 關鍵區塊遮罩檢查
         if (self.features & self.MASK_ALL) != self.MASK_ALL:
             if not (self.features & self.MASK_NAV):
                 msgs.append("缺少 <nav> 導航列")
@@ -143,6 +171,22 @@ def check_file(path):
     try:
         with open(path, encoding="utf-8") as f:
             html = f.read()
+
+        # Preprocess: escape RAW_CONTENT_TAGS inside <code> and <pre> so HTMLParser
+        # doesn't enter "raw text mode" and swallow all subsequent tags.
+        # 關鍵修復：將 <style> 等標籤轉為 HTML 實體 &lt;style&gt;，而非自我替換
+        def escape_in_code_pre(match):
+            tag_name = match.group(1)
+            content = match.group(2)
+            if tag_name in ("code", "pre"):
+                # 將 code/pre 內的 RAW 標籤轉為 HTML 實體，避免 HTMLParser 誤判為真實標籤
+                for tag in ("style", "script", "textarea", "xmp", "plaintext", "listing", "template", "noscript"):
+                    content = content.replace(f"<{tag}>", f"&lt;{tag}&gt;")
+                    content = content.replace(f"</{tag}>", f"&lt;/{tag}&gt;")
+            return f"<{tag_name}>{content}</{tag_name}>"
+
+        html = re.sub(r'<(code|pre)>(.*?)</\1>', escape_in_code_pre, html, flags=re.DOTALL)
+
         checker = StructureChecker()
         checker.feed(html)
         return checker.report(path)
@@ -154,7 +198,7 @@ def main():
     targets = sys.argv[1:]
     if not targets:
         targets = glob.glob(os.path.join(ROOT, "*.html")) + glob.glob(os.path.join(ROOT, "Prototypes", "*.html"))
-    
+
     targets = [t for t in targets if os.path.isfile(t)]
     if not targets:
         print("❌ 找不到要檢查的 HTML 檔案")

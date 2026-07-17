@@ -284,11 +284,11 @@
     init(){
       const el = document.getElementById('drawer');
       if(!el) return;
-      // 保留 close-x（若有），注入其餘內容
-      const close = el.querySelector('.close-x');
-      let html = close ? close.outerHTML : '<button class="close-x" onclick="MKLAB.closeDrawer()">×</button>';
-      html += drawerHTML();
-      el.innerHTML = html;
+      // 保留現有的 close-x 和 drawer-content，只注入 drawerHTML()
+      const content = el.querySelector('.drawer-content');
+      if(content){
+        content.innerHTML = drawerHTML();
+      }
       // 套用初始深淺色
       const darkOn = (localStorage.getItem('mk_dark')!=='0') && DRAWER_CFG.appearance.darkOn;
       document.documentElement.setAttribute('data-theme', darkOn?'dark':'light');
@@ -301,7 +301,7 @@
           const note = el.querySelector('.sys-note');
           if(note) note.innerHTML = `版本：${DRAWER_CFG.system.version}<br>資料源：${DRAWER_CFG.system.source}<br>最後更新：${asof}<br>狀態：<span class="up">${DRAWER_CFG.system.status}</span>`;
         }
-      }).catch(()=>{});
+      }).catch(e=>{ console.warn('[Drawer] fetch stocks.json failed:', e); });
     },
     open(){
       const el = document.getElementById('drawer'); if(!el) return;
@@ -316,11 +316,11 @@
           DRAWER_CFG.system.updated = asof;
           const note = el.querySelector('.sys-note');
           if(note){
-            const s = DRAWER_CFG.system;
-            note.innerHTML = `版本：${s.version}<br>資料源：${s.source}<br>最後更新：${asof}<br>狀態：<span class="up">${s.status}</span>`;
+            const sys = DRAWER_CFG.system;
+            note.innerHTML = `版本：${sys.version}<br>資料源：${sys.source}<br>最後更新：${asof}<br>狀態：<span class="up">${sys.status}</span>`;
           }
         }
-      }).catch(()=>{});
+      }).catch(e=>{ console.warn('[Drawer.open] fetch stocks.json failed:', e); });
       // 啟動系統時間定時器
       this.startSysTimer();
     },
@@ -346,22 +346,37 @@
     },
     // 系統時間定時器：每分鐘更新一次 System 區塊的日期/時間/星期
     startSysTimer(){
-      if (this._sysTimer) return;
-      this._sysTimer = setInterval(() => {
-        const el = document.getElementById('drawer');
-        if (!el || !el.classList.contains('open')) return;
-        const note = el.querySelector('.sys-note');
-        if (!note) return;
-        const now = new Date();
-        const s = DRAWER_CFG.system;
-        const dateStr = now.toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit' });
-        const timeStr = now.toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
-        const weekStr = ['日','一','二','三','四','五','六'][now.getDay()];
-        note.innerHTML = `版本：${s.version}<br>資料源：${s.source}<br>最後更新：${s.updated}<br>當前時間：${dateStr} (週${weekStr}) ${timeStr}<br>狀態：<span class="up">${s.status}</span>`;
-      }, 60000); // 每分鐘
-      // 立即執行一次
-      this._sysTimerCallback && this._sysTimerCallback();
-    },
+          if (this._sysTimer) return;
+          this._sysTimer = setInterval(() => {
+            const el = document.getElementById('drawer');
+            if (!el || !el.classList.contains('open')) return;
+            const note = el.querySelector('.sys-note');
+            if (!note) return;
+            const now = new Date();
+            const sys = DRAWER_CFG.system;
+            const dateStr = now.toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit' });
+            const timeStr = now.toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+            const weekStr = ['日','一','二','三','四','五','六'][now.getDay()];
+            note.innerHTML = `版本：${sys.version}<br>資料源：${sys.source}<br>最後更新：${sys.updated}<br>當前時間：${dateStr} (週${weekStr}) ${timeStr}<br>狀態：<span class="up">${sys.status}</span>`;
+          }, 60000); // 每分鐘
+          // 立即執行一次
+          try {
+            const el = document.getElementById('drawer');
+            if (el && el.classList.contains('open')) {
+              const note = el.querySelector('.sys-note');
+              if (note) {
+                const now = new Date();
+                const sys = DRAWER_CFG.system;
+                const dateStr = now.toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit' });
+                const timeStr = now.toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+                const weekStr = ['日','一','二','三','四','五','六'][now.getDay()];
+                note.innerHTML = `版本：${sys.version}<br>資料源：${sys.source}<br>最後更新：${sys.updated}<br>當前時間：${dateStr} (週${weekStr}) ${timeStr}<br>狀態：<span class="up">${sys.status}</span>`;
+              }
+            }
+          } catch(e) {
+            console.warn('[Drawer.startSysTimer] initial update failed:', e);
+          }
+        },
     stopSysTimer(){
       if (this._sysTimer) {
         clearInterval(this._sysTimer);

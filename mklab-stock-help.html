@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>mklab-stock 功能說明</title>
 <link rel="stylesheet" href="assets/mklab-theme.css">
-</head>
+<style>
   .muted-small { color:var(--muted); font-size:13px; margin-top:10px; }
   .muted-small-top { color:var(--muted); font-size:13px; margin-top:8px; }
   .text-muted { color:var(--muted); font-size:14px; }
@@ -21,7 +21,7 @@
   <div class="drawer-mask" onclick="MKLAB.Drawer.close()"></div>
   <aside class="drawer" id="drawer">
     <button class="close-x" onclick="MKLAB.Drawer.close()">×</button>
-    <div class="drawer-content">
+    <div class="drawer-content"></div>
   </aside>
 
   <div class="wrap">
@@ -80,9 +80,8 @@
     </div>
 
     <div class="footer">mklab-stock · 靜態優先 · Fork First · 零外部依賴</div>
-      </div>
-    </div>
-    </aside>
+  </div>
+
 <script>
   if (window.MKLAB && MKLAB.Shell) MKLAB.Shell.mount();
   if (window.MKLAB && MKLAB.Drawer) MKLAB.Drawer.init();

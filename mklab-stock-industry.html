@@ -15,7 +15,9 @@
   <div class="drawer-mask" onclick="MKLAB.Drawer.close()"></div>
   <aside class="drawer" id="drawer">
     <button class="close-x" onclick="MKLAB.Drawer.close()">×</button>
-    <div class="drawer-content">
+    <div class="drawer-content"></div>
+  </aside>
+
   <div class="wrap">
     <div class="section-title">台灣 33 產業動態（漲跌績效 · 點擊產業看成分股）</div>
     <div class="grid" id="igrid"></div>
@@ -35,9 +37,9 @@
       </table>
       <div class="pager" id="indDetailPager"></div>
     </div>
-    </div>
     <div class="disclaimer">產業分類參考台灣證交所 33 個法定產業（示意資料）。生產環境由 Build-Time 計算各產業漲跌與成分股績效。</div>
   </div>
+
 <script src="assets/mklab-core.js"></script>
 <script>
   // 台灣 33 個法定產業（依用戶提供清單）
@@ -110,8 +112,6 @@
   renderGrid(); renderPerf(); loadIndustry();
   MKLAB.initDrawer();
   MKLAB.Shell.mount({ active:'industry' });
-  </script>
-  </div>
-  </div>
-  </aside>
-  </body></html>
+</script>
+</body>
+</html>
