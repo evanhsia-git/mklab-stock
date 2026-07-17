@@ -38,12 +38,27 @@
   <div class="wrap">
     <div class="section-title">我的自選股<span class="hint">點表頭可排序</span></div>
     <div class="row-input">
-      <input id="addSym" placeholder="新增自選股代號，如 2330" onkeydown="if(event.key==='Enter')addSym()">
-      <button onclick="addSym()">加入</button>
-    </div>
-    <div id="addTip" style="display:none;color:var(--warn);font-size:12px;margin-bottom:8px;"></div>
-    <div class="table-wrap">
-      <table id="wlTable">
+            <input id="addSym" placeholder="新增自選股代號，如 2330" onkeydown="if(event.key==='Enter')addSym()">
+            <button onclick="addSym()">加入</button>
+          </div>
+          <div id="addTip" style="display:none;color:var(--warn);font-size:12px;margin-bottom:8px;"></div>
+
+          <!-- 價格提醒設定 -->
+          <div class="section-title">價格提醒（Alert）設定</h3>
+          <p class="muted-small-top">
+            輸入「目標價」與「停損價」(可設定多組)。當股價觸及即會在表格顯示 <span class="warn">⚠️ 觸發</span> 標記。
+            <br>
+            <small>※ 現在僅示意，未實作實時報警；若有需求可自行擴充</small>
+          </p>
+          <div class="settings-grid" style="display:flex;gap:6px;margin-bottom:8px;">
+            <input id="alertTargetPrice" placeholder="目標價" style="flex:1;padding:4px 6px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--ink);">
+            <span style="align-self:center;">~</span>
+            <input id="alertStopLossPrice" placeholder="停損價" style="flex:1;padding:4px 6px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--ink);">
+            <button onclick="savePriceAlert()" style="padding:4px 10px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;">儲存</button>
+          </div>
+          <div id="addAlertNote" style="color:var(--warn);font-size:11px;margin-bottom:8px;"></div>
+
+          <div class="table-wrap">
         <thead></thead>
         <tbody id="wlBody"></tbody>
       </table>
