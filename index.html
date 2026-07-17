@@ -35,9 +35,11 @@
 </style>
 </head>
 <body>
-  <nav id="mainNav" class="nav"></nav>
-  <div id="utilbar" class="utilbar"><span class="brand" id="brand"></span><span class="spacer"></span></div>
-  <div class="freshness">資料載入中…</div>
+  <div class="sticky-header">
+    <nav id="mainNav" class="nav"></nav>
+    <div id="utilbar" class="utilbar"><span class="brand" id="brand"></span><span class="spacer"></span></div>
+    <div class="freshness">資料載入中…</div>
+  </div>
   <div class="drawer-mask" onclick="MKLAB.Drawer.close()"></div>
   <aside class="drawer" id="drawer">
     <button class="close-x" onclick="MKLAB.Drawer.close()">×</button>
@@ -297,4 +299,6 @@
     });
   })();
   </script>
+</div>
+</aside>
 </body></html>

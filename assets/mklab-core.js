@@ -299,7 +299,7 @@
         if(asof){
           DRAWER_CFG.system.updated = asof;
           const note = el.querySelector('.sys-note');
-          if(note) note.innerHTML = `版本：${s.version}<br>資料源：${s.source}<br>最後更新：${asof}<br>狀態：<span class="up">${s.status}</span>`;
+          if(note) note.innerHTML = `版本：${DRAWER_CFG.system.version}<br>資料源：${DRAWER_CFG.system.source}<br>最後更新：${asof}<br>狀態：<span class="up">${DRAWER_CFG.system.status}</span>`;
         }
       }).catch(()=>{});
     },
@@ -309,6 +309,18 @@
       const mask = document.querySelector('.drawer-mask'); if(mask) mask.classList.add('open');
       // index 首頁有自選，開抽屜時刷新
       if(typeof renderWatch === 'function') renderWatch();
+      // 刷新 System 區塊的「最後更新」日期
+      fetch('data/stocks.json').then(r=>r.ok?r.json():null).then(d=>{
+        const asof = d && d.meta && d.meta.as_of;
+        if(asof){
+          DRAWER_CFG.system.updated = asof;
+          const note = el.querySelector('.sys-note');
+          if(note){
+            const s = DRAWER_CFG.system;
+            note.innerHTML = `版本：${s.version}<br>資料源：${s.source}<br>最後更新：${asof}<br>狀態：<span class="up">${s.status}</span>`;
+          }
+        }
+      }).catch(()=>{});
     },
     close(){
       const el = document.getElementById('drawer'); if(!el) return;
