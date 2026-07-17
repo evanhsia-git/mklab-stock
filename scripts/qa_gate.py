@@ -332,7 +332,9 @@ def run():
             if tag == "nav": self.saw_nav = True
             if "utilbar" in cls: self.saw_utilbar = True
             if "drawer" in cls: self.saw_drawer = True
-            if tag in ("table", "section"): self.saw_tbl = True
+            # 認可 WC 元件作為主要內容容器
+            if tag in ("table", "section", "mklab-datatable", "mklab-kline"):
+                self.saw_tbl = True
             if tag not in self.VOID:
                 self.stack.append((tag, self.getpos()[0]))
 

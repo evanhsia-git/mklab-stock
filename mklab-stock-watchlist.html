@@ -59,9 +59,7 @@
           <div id="addAlertNote" style="color:var(--warn);font-size:11px;margin-bottom:8px;"></div>
 
           <div class="table-wrap">
-        <thead></thead>
-        <tbody id="wlBody"></tbody>
-      </table>
+        <mklab-datatable id="wlTableDynamic"></mklab-datatable>
       <div class="pager" id="wlPager"></div>
     </div>
     <div class="alert-note">
@@ -102,7 +100,7 @@
       return r;
     });
     if(!wlTable){
-      wlTable = MKLAB.DataTable('wlTable', {
+      wlTable = MKLAB.DataTable('wlTableDynamic', {
         cols: ['sym','name','price','chg','pe','pb','roe','alert','del'],
         rows: rows,
         pageSize: 10, pagerId: 'wlPager',

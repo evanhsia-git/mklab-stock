@@ -34,6 +34,8 @@ class StructureChecker(HTMLParser):
     # 標籤內容不應被解析為 HTML 結構的標籤（內部所有標籤完全忽略）
     RAW_CONTENT_TAGS = {"script", "style", "pre", "code", "textarea"}
 
+    WC_CONTENT_TAGS = {"mklab-datatable", "mklab-kline", "mklab-drawer"}
+
     def __init__(self):
         super().__init__(convert_charrefs=True)
         self.stack = []          # (tag, lineno)
@@ -81,7 +83,8 @@ class StructureChecker(HTMLParser):
             self.saw_utilbar = True
         if "drawer" in cls:
             self.saw_drawer = True
-        if tag in ("table", "section"):
+        # 認可 WC 元件作為主要內容容器
+        if tag in ("table", "section", "mklab-datatable", "mklab-kline"):
             self.saw_table_or_section = True
         # 非 void 且非自閉合 → 入棧
         if tag not in self.VOID:

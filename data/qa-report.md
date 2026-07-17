@@ -1,5 +1,5 @@
 # mklab-stock QA Gate 報告
-**時間**: 2026-07-16 18:36:59  
+**時間**: 2026-07-17 02:49:06  
 **Critical ERROR**: 0  | **WARNING**: 2  
 **最終判定**: 🟢 ALLOW DEPLOY
 
@@ -24,7 +24,7 @@
 | JSON | industry.json Schema | PASS | 33 個產業 |  |  |
 | HTML | 結構健康檢查 | PASS | 全部 7 個 HTML 通過（含 check_html_health 功能） |  |  |
 | CSS | 統一 Theme 變數 (var(--bg) 等) | PASS | 7 個頁面皆含 Theme (inline 或 link) |  |  |
-| CSS | 禁止硬寫核心樣式 (違反 Design Token) | WARNING | 行內硬寫樣式: ['mklab-stock-research.html:1', 'mklab-stock-log.html:1', 'mklab-stock-watchlist.html:1'] | 改用 CSS class / Design Token | mklab-stock-research.html:1, mklab-stock-log.html:1, mklab-stock-watchlist.html:1 |
+| CSS | 禁止硬寫核心樣式 (違反 Design Token) | WARNING | 行內硬寫樣式: ['mklab-stock-research.html:1', 'mklab-stock-log.html:1', 'mklab-stock-watchlist.html:3'] | 改用 CSS class / Design Token | mklab-stock-research.html:1, mklab-stock-log.html:1, mklab-stock-watchlist.html:3 |
 | JS | syntax: mklab-stock-screener.html#0 | PASS |  |  |  |
 | JS | syntax: index.html#0 | PASS |  |  |  |
 | JS | syntax: mklab-stock-research.html#0 | PASS |  |  |  |
@@ -40,8 +40,8 @@
 ## 問題摘要
 - **[WARNING] Data/無髒值 (NaN/null/undefined/Infinity/空字串/非法'-')**: 00408A.ind=null(無產業分類，ETF/海外股正常); 0050.market_cap=null(雲端未涵蓋); 0051.market_cap=null(雲端未涵蓋); 0052.market_cap=null(雲端未涵蓋); 0053.market_cap=null(雲端未涵蓋); 0055.market_cap=null(雲端未涵蓋); 0056.market_cap=null(雲端未涵蓋); 0057.market_cap=null(雲端未涵蓋)（全 OHLC 缺=ETF/資料源未涵蓋，非阻擋）
   - 建議: 確認資料源是否涵蓋該標的（/root/Documents/mklab-stock/data/stocks.json）
-- **[WARNING] CSS/禁止硬寫核心樣式 (違反 Design Token)**: 行內硬寫樣式: ['mklab-stock-research.html:1', 'mklab-stock-log.html:1', 'mklab-stock-watchlist.html:1']
-  - 建議: 改用 CSS class / Design Token（mklab-stock-research.html:1, mklab-stock-log.html:1, mklab-stock-watchlist.html:1）
+- **[WARNING] CSS/禁止硬寫核心樣式 (違反 Design Token)**: 行內硬寫樣式: ['mklab-stock-research.html:1', 'mklab-stock-log.html:1', 'mklab-stock-watchlist.html:3']
+  - 建議: 改用 CSS class / Design Token（mklab-stock-research.html:1, mklab-stock-log.html:1, mklab-stock-watchlist.html:3）
 
 ## 最終判定: ALLOW DEPLOY
 
