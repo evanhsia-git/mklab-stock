@@ -35,15 +35,6 @@
   .timeline-desc code { background:var(--bg); padding:1px 4px; border-radius:3px; }
   .section-badge { display:inline-block; background:var(--accent); color:#fff; font-size:10px; padding:1px 6px; border-radius:4px; margin-right:8px; }
   .tech-stack { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
-
-  /* ---- 修正 nav/utilbar 重疊擠壓問題 ----
-     原因：theme.css 用 .utilbar{ top:49px } 這個寫死的數字去假設 .nav 的高度剛好是 49px，
-     只要 .nav 實際渲染高度不等於 49px（字體/縮放/內容差異都會造成），
-     捲動時兩個各自 sticky 的元素就會互相覆蓋，連帶把下方的 .freshness 也擠壓在一起。
-     解法：把 nav+utilbar 包進同一個 sticky 容器，讓瀏覽器自動疊放高度，不再依賴猜測的像素值。 */
-  .sticky-header { position: sticky; top: 0; z-index: 1000; }
-  .sticky-header .nav,
-  .sticky-header .utilbar { position: static; }
 </style>
 <script src="assets/mklab-core.js"></script>
 <script src="assets/data-client.js"></script>
@@ -53,8 +44,8 @@
   <div class="sticky-header">
     <nav id="mainNav" class="nav"></nav>
     <div id="utilbar" class="utilbar"><span class="brand" id="brand"></span><span class="spacer"></span></div>
+    <div class="freshness">資料載入中…</div>
   </div>
-  <div class="freshness">資料載入中…</div>
 
   <div class="drawer-mask" onclick="MKLAB.Drawer.close()"></div>
   <aside class="drawer" id="drawer">
