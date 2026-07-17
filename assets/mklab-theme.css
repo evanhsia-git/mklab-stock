@@ -27,7 +27,7 @@ body {
 .wrap { max-width: 1200px; margin: 0 auto; padding: 12px; }
 @media (min-width: 1024px){ .wrap{ padding: 16px 24px; } }
 
-/* ===== sticky header 容器（新版：nav+utilbar 整體 sticky）===== */
+/* ===== sticky header 容器（新版：nav+utilbar+freshness 整體 sticky）===== */
 .sticky-header {
   position: sticky;
   top: 0;
@@ -36,7 +36,8 @@ body {
   border-bottom: 1px solid var(--border);
 }
 .sticky-header .nav,
-.sticky-header .utilbar {
+.sticky-header .utilbar,
+.sticky-header .freshness {
   position: static;  /* 由父容器統一 sticky，不再各自 sticky */
 }
 
