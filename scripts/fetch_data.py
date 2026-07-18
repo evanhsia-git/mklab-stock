@@ -328,6 +328,10 @@ def run_daily():
             if shares:
                 mc = round(close * shares)
 
+        # ETF 標記：name 含 ETF/基金/指數/槓桿/反向/期貨/配息/高息/優息/收益
+        import re as _re
+        is_etf = bool(_re.search(r"ETF|基金|指數|正[0-9]|反[0-9]|槓桿|反向|期貨|配息|高息|優息|收益", name or ""))
+
         stocks.append({
             "sym": sid,
             "name": name,
@@ -336,6 +340,7 @@ def run_daily():
             "pe": bb.get("pe"), "pb": bb.get("pb"), "div": bb.get("div"),
             "roe": ex.get("roe"), "eps": ex.get("eps"), "market_cap": mc,
             "ind": ex.get("ind"),
+            "is_etf": is_etf,
             "chg": chg,
             "rank": ex.get("rank"),
         })

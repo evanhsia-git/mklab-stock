@@ -315,12 +315,14 @@
       const def = COLUMNS[this._sortKey];
       if (!def) return this._rows.slice();
       let rows = this._rows.slice();
-      // 過濾 ETF：cap10 表格排除 ETF
-      // 台股 ETF 代號：00 開頭，後面 3-5 位數字/字母
-      // 00xxxA/B, 005x, 006xx, 007xx, 008xx, 009xx
+      // 過濾 ETF：cap10 表格排除 ETF（用 name 關鍵字判斷，最穩）
       if (this.id === 'cap10') {
-        const isETF = (sym) => /^00\d{3,5}[A-Z]{0,2}$/.test(String(sym || '').toUpperCase());
-        rows = rows.filter(r => !isETF(r.sym));
+        const looksETF = (r) => {
+          if (r.is_etf) return true;
+          const nm = String(r.name || r.nm || '');
+          return /ETF|基金|指數|正[0-9]|反[0-9]|槓桿|反向|期貨|配息|高息|優息|收益/.test(nm);
+        };
+        rows = rows.filter(r => !looksETF(r));
       }
       return rows.sort((a, b) => compare(a, b, def, this._fieldMap) * this._sortDir);
     }
