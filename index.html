@@ -42,7 +42,7 @@
   </div>
   <div class="perf">
     <h3>績效表現</h3>
-    <mklab-datatable id="perfTable" cols="sym,name,price,chg,pe,pb,roe" data-src="indices" page-size="10" default-sort="chg"></mklab-datatable>
+    <mklab-datatable id="perfTable" cols="name,close,chg_pct" data-src="indices" page-size="10" default-sort="chg_pct"></mklab-datatable>
   </div>
 </div>
 
@@ -68,8 +68,9 @@
 
 <script>
   // Market page specific logic
-  const INDICES = ['TWII', 'SPX', 'NDX', 'HSI', 'N225'];
-  const IDX_NAME = { TWII: '台股加權', SPX: 'S&P 500', NDX: '納指 100', HSI: '恆生', N225: '日經 225' };
+  // Use yf symbols from indices-config.json to match data
+  const INDICES = ['^TWII', '^GSPC', '^IXIC', '^HSI', '^N225'];
+  const IDX_NAME = { '^TWII': '台股加權', '^GSPC': 'S&P 500', '^IXIC': '納指 100', '^HSI': '恆生', '^N225': '日經 225' };
 
   // Render index cards
   function renderIndices() {
@@ -109,8 +110,10 @@
       const data = await MKLAB.data.indices();
       if (data && data.indices) {
         data.indices.forEach(v => {
-          const el = document.getElementById(`idx-${v.sym || v.name}`);
-          const chgEl = document.getElementById(`idx-chg-${v.sym || v.name}`);
+          // Use yf field (e.g., ^TWII) or name for ID matching
+          const key = v.yf || v.name;
+          const el = document.getElementById(`idx-${key}`);
+          const chgEl = document.getElementById(`idx-chg-${key}`);
           if (el && v.close != null) {
             el.textContent = Number(v.close).toLocaleString();
             const pct = v.chg_pct ?? 0;

@@ -106,6 +106,8 @@
   const COLUMNS = {
     sym:   { label: '股票代號', type: 'str', sortable: true,  fmt: r => r.sym != null ? String(r.sym) : '-' },
     name:  { label: '名稱', type: 'str', sortable: true,  fmt: r => (r.name || r.nm || '-') },
+    close: { label: '收盤', type: 'num', sortable: true,  fmt: r => r.close != null ? Number(r.close).toLocaleString() : '-' },
+    chg_pct: { label: '漲跌%', type: 'pct', sortable: true,  fmt: r => cellPct(r.chg_pct) },
     price: { label: '價格', type: 'num', sortable: true,  fmt: r => r.price != null ? Number(r.price).toLocaleString() : '-' },
     chg:   { label: '漲跌%', type: 'pct', sortable: true,  fmt: r => cellPct(r.chg) },
     score: { label: '綜合評分', type: 'num', sortable: true, defDir: -1, fmt: r => r.score != null ? r.score : '-' },

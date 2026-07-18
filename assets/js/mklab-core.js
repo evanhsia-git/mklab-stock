@@ -234,7 +234,16 @@
     return t;
   }
 
-  global.MKLAB = { COLUMNS, DataTable: create, cellPct };
+  global.MKLAB = { 
+  COLUMNS, 
+  DataTable: create, 
+  cellPct,
+  Drawer: Drawer,
+  Shell: Shell,
+  Watch: Watch,
+  initDrawer: function() { Drawer.init(); },
+  setLang: function(l) { Drawer.setLang(l); }
+};
 
   // ============================================================
   // 共用設定抽屜（全站唯一，所有頁一致）
