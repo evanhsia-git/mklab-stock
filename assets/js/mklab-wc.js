@@ -314,7 +314,15 @@
       if (!this._sortKey) return this._rows.slice();
       const def = COLUMNS[this._sortKey];
       if (!def) return this._rows.slice();
-      return this._rows.slice().sort((a, b) => compare(a, b, def, this._fieldMap) * this._sortDir);
+      let rows = this._rows.slice();
+      // 過濾 ETF：cap10 表格排除 ETF（代號 00xxxx 或 0050, 0056 等）
+      if (this.id === 'cap10') {
+        rows = rows.filter(r => {
+          const sym = String(r.sym || '').toUpperCase();
+          return !(sym.startsWith('00') && sym.length >= 4 && /^[0-9]{4}[A-Z]?$/.test(sym));
+        });
+      }
+      return rows.sort((a, b) => compare(a, b, def, this._fieldMap) * this._sortDir);
     }
 
     render() {
