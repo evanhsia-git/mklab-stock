@@ -1,6 +1,6 @@
 # mklab-stock Handoff（2026-07-15 更新 — Web Components 開發輪）
 
-> 新 session 接手時：先讀此檔 + 執行導航（SCHEMA/policy/index/log）+ 讀 `docs/mklab-stock-dav.md`（完整開發指引）。
+> 新 session 接手時：先讀此檔 + 執行導航（SCHEMA/policy/index/log）+ 讀 `docs/mklab-stock-dev.md`（完整開發指引）。
 > 上一輪（待修 A/B + 圖表庫修正 + push）已完成並合併 master，內容已清空，不再贅述。
 
 ## 當前 Git 狀態（重要）

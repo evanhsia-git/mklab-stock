@@ -93,12 +93,30 @@ def export_latest(conn, ov):
         f"FROM {latest_tbl}"
     )
     stocks = []
+    # 載入 ETF 發行張數（用於估算 ETF market_cap）
+    etf_shares_path = os.path.join(OUT, "etf-shares.json")
+    etf_shares = {}
+    if os.path.exists(etf_shares_path):
+        try:
+            etf_shares = json.load(open(etf_shares_path, encoding="utf-8")).get("etf", {})
+            print(f"[latest] ETF 發行張數載入 {len(etf_shares)} 檔")
+        except Exception as e:
+            print(f"[latest] etf-shares.json 載入失敗：{e}")
+    else:
+        print("[latest] etf-shares.json 不存在，ETF market_cap 將留空")
+
     for sid, name, close, vol, pe, pb, div, o, h, l in cur.fetchall():
         base = ov.get(sid, {})
         # ETF/無 OHLC 時用 close 填補
         o = o if o is not None else close
         h = h if h is not None else close
         l = l if l is not None else close
+        # ETF market_cap：若無既有值且有發行張數資料，用 price * shares_stock 估算
+        mc = base.get("market_cap")
+        if mc is None and sid in etf_shares and close is not None:
+            shares = etf_shares[sid].get("shares_stock")
+            if shares:
+                mc = round(close * shares)
         stocks.append({
             "sym": sid,
             "name": (name or base.get("name") or sid),
@@ -108,7 +126,7 @@ def export_latest(conn, ov):
             "roe": base.get("roe"),
             "roa": base.get("roa"),
             "eps": base.get("eps"),
-            "market_cap": base.get("market_cap"),
+            "market_cap": mc,
             "ind": base.get("industry", "未分類"),
         })
     # 計算漲跌%（與前一日切片比對）

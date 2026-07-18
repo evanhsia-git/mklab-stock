@@ -71,7 +71,7 @@
 > 任一欄位缺漏（null）則該股不列入推薦。評分僅供參考，**非投資建議**。
 
 ## 目錄結構
-```
+```text
 mklab-stock/
 ├── index.html                    # Market 首頁
 ├── mklab-stock-screener.html     # Screener 篩選
@@ -79,8 +79,12 @@ mklab-stock/
 ├── mklab-stock-industry.html      # Industry 產業
 ├── mklab-stock-watchlist.html     # Watchlist 自選
 ├── mklab-stock-help.html          # 功能說明網頁
+├── mklab-stock-log.html           # 開發日誌
 ├── assets/
-│   └── mklab-core.js             # 全站共用表格/抽屜/工具列模組
+│   ├── mklab-core.js             # 全站共用表格/抽屜/工具列模組
+│   ├── mklab-wc.js               # Web Components 元件庫（K線/表格/抽屜/路由）
+│   ├── data-client.js            # 統一資料存取層
+│   └── lightweight-charts.min.js # 圖表庫 (vendor 複製)
 ├── data/                         # Build-Time 生成的 JSON（前端只讀這裡）
 │   ├── stocks.json               # ★ 全市場個股最新一日（最完整，1369 檔全欄位，~359K）
 │   ├── industry.json             # 33 產業聚合績效（~5K）
@@ -90,6 +94,8 @@ mklab-stock/
 │   ├── markets.json              # 多市場預留結構（US/CN/HK/JP/KR 元數據）
 │   ├── market.json               # 五國大盤概覽（首頁五卡）
 │   ├── schema-version.json       # schema 版號
+│   ├── etf-shares.json           # ETF 發行張數（估算 market_cap 用）
+│   ├── twii_kdata.js             # 加權指數 K 線 (window.TWII_KDATA)
 │   └── history/                  # 每日股價切片（261 個交易日，各 ~289K）
 │       ├── 20250714.json         #   最早一日
 │       ├── ...                   #   （每日一檔，含 OHLCV+PE/PB/DY）
@@ -105,10 +111,14 @@ mklab-stock/
 │   ├── fetch_data.py             # 雲端每日抓取（TWSE + yfinance ROE/ROA）
 │   ├── export_db.py              # 本機 DB 匯出 stocks.json
 │   ├── update_overview.py        # ROE/ROA 補齊（cron 友善，本機 DB）
-│   └── qa_gate.py                # CI 質量門禁
+│   ├── qa_gate.py                # CI 質量門禁
+│   └── check_html_health.py      # HTML 結構健康檢查
+├── vendor/                       # 第三方庫（零建置，直接引用）
+│   └── lightweight-charts.min.js # TradingView LightweightCharts v4.1.3
 └── .github/workflows/            # CI/CD
     ├── daily-update.yml          # 每日收盤 + 每週六 ROE/ROA
-    └── qa-gate.yml               # 質量門禁
+    ├── qa-gate.yml               # 質量門禁
+    └── html-health.yml           # HTML 結構檢查
 ```
 
 > **資料源頭**：本機 `/root/Documents/database/tw_stock_all.db`（38MB SQLite）是權威來源；`scripts/export_db.py` 將其匯出為上方 `data/*.json` 推上 GitHub Pages。雲端 `fetch_data.py` 每日增量更新收盤價，每週六補 ROE/ROA。

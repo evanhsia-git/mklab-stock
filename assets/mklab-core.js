@@ -27,7 +27,7 @@
   //   html : 不排序（sortable:false），原樣輸出
   //   act  : 動作欄（移除/選取），不排序
   const COLUMNS = {
-    sym:   { label:'代號 / 名稱', type:'str', sortable:true,  fmt:r=>`${r.sym!=null?String(r.sym):'-'}${r.name?`<small>${r.name}</small>`:''}` },
+    sym:   { label:'股票代號', type:'str', sortable:true,  fmt:r=>r.sym!=null?String(r.sym):'-' },
     name:  { label:'名稱',    type:'str', sortable:true,  fmt:r=>(r.name||r.nm||'-') },
     price: { label:'價格',    type:'num', sortable:true,  fmt:r=>r.price!=null?Number(r.price).toLocaleString():'-' },
     chg:   { label:'漲跌%',   type:'pct', sortable:true,  fmt:r=>cellPct(r.chg) },
@@ -38,6 +38,7 @@
     roe:   { label:'ROE',     type:'num', sortable:true,  fmt:r=>(r.roe!=null?Number(r.roe).toFixed(2):'-') },
     roa:   { label:'ROA',     type:'num', sortable:true,  fmt:r=>(r.roa!=null?Number(r.roa).toFixed(2):'-') },
     trend: { label:'趨勢',    type:'str', sortable:true,  fmt:r=>(r.trend!=null?r.trend:(r.spct!=null?(r.spct>0?'+':'')+r.spct+'%':'-')) },
+    spk:   { label:'趨勢',    type:'spark',sortable:false, fmt:r=>{ if(!r.spark||!r.spark.length) return '-'; const data=r.spark,min=Math.min(...data),max=Math.max(...data),rn=(max-min)||1; const p=data.map((d,i)=>`${(i/(data.length-1)*80).toFixed(1)},${(30-((d-min)/rn*30)).toFixed(1)}`).join(' '); const col=data[data.length-1]>=data[0]?'var(--up)':'var(--down)'; return `<div style="display:flex;justify-content:center"><svg viewBox="0 0 80 30" style="width:80px;height:30px;display:block"><polyline points="${p}" fill="none" stroke="${col}" stroke-width="1.5"/></svg></div>`; } },
     ind:   { label:'產業',    type:'str', sortable:true,  key:'ind', fmt:r=>(r.ind||r.nm||'-') },
     rsi:   { label:'RSI',     type:'num', sortable:true,  fmt:r=>r.rsi!=null?r.rsi:'-' },
     cap:   { label:'市值(億)',type:'num', sortable:true,  fmt:r=>{ const v = r.market_cap!=null ? r.market_cap/1e8 : (r.cap!=null?r.cap:null); return v!=null ? Number(v).toFixed(2) : '-'; } },
@@ -175,8 +176,13 @@
     const ctx = this._ctx;
     const rowsHtml = view.map(r=>{
       const tds = this.cols.map(c=>{
-        const v = (typeof c.fmt === 'function') ? c.fmt(r, ctx) : (getVal(c,r,this.fieldMap)!=null?getVal(c,r,this.fieldMap):'-');
-        const cls = (c.type==='pct') ? ((getVal(c,r,this.fieldMap)>=0)?'up':'down') : '';
+        const rawVal = getVal(c,r,this.fieldMap);
+        const v = (typeof c.fmt === 'function') ? c.fmt(r, ctx) : (rawVal!=null?rawVal:'-');
+        let cls = (c.type==='pct') ? ((rawVal>=0)?'up':'down') : '';
+        // 異常漲跌幅防禦：台股漲停限制 ±10%，槓桿ETF ±20%；超過視為資料異常標紅
+        if(c.type==='pct' && typeof rawVal==='number' && Math.abs(rawVal) > 10){
+          cls = 'warn';
+        }
         return `<td class="${cls}">${v}</td>`;
       }).join('');
       return `<tr>${tds}</tr>`;
@@ -241,12 +247,13 @@
     },
     help: {
       doc: 'mklab-stock-help.html',                  // 功能說明（使用/資料源/評分標準）
+      log: 'mklab-stock-log.html',                    // 開發日誌
       readme: 'https://github.com/evanhsia-git/mklab-stock#readme', // GitHub README
     },
     system: {
       version: 'dashboard v3.0',
       source:  'TWSE/TPEX/Yahoo/Stooq',
-      updated: '2026-07-14 08:30',
+      updated: '2026-07-13',
       status:  '● 正常運作',
     },
   };
@@ -265,6 +272,7 @@
     }
     h += '<h4>說明</h4>';
     h += `<div class="row"><a href="${c.help.doc}">功能說明（使用/資料源/評分標準）↗</a></div>`;
+    h += `<div class="row"><a href="${c.help.log}">開發日誌 ↗</a></div>`;
     h += `<div class="row"><a href="${c.help.readme}" target="_blank" rel="noopener">GitHub README ↗</a></div>`;
     h += '<h4>System</h4>';
     const s = c.system;
@@ -276,15 +284,24 @@
     init(){
       const el = document.getElementById('drawer');
       if(!el) return;
-      // 保留 close-x（若有），注入其餘內容
-      const close = el.querySelector('.close-x');
-      let html = close ? close.outerHTML : '<button class="close-x" onclick="MKLAB.closeDrawer()">×</button>';
-      html += drawerHTML();
-      el.innerHTML = html;
+      // 保留現有的 close-x 和 drawer-content，只注入 drawerHTML()
+      const content = el.querySelector('.drawer-content');
+      if(content){
+        content.innerHTML = drawerHTML();
+      }
       // 套用初始深淺色
       const darkOn = (localStorage.getItem('mk_dark')!=='0') && DRAWER_CFG.appearance.darkOn;
       document.documentElement.setAttribute('data-theme', darkOn?'dark':'light');
       const sw = document.getElementById('swDark'); if(sw) sw.classList.toggle('on', darkOn);
+      // 動態更新「最後更新」日期：讀 stocks.json 的 meta.as_of
+      fetch('data/stocks.json').then(r=>r.ok?r.json():null).then(d=>{
+        const asof = d && d.meta && d.meta.as_of;
+        if(asof){
+          DRAWER_CFG.system.updated = asof;
+          const note = el.querySelector('.sys-note');
+          if(note) note.innerHTML = `版本：${DRAWER_CFG.system.version}<br>資料源：${DRAWER_CFG.system.source}<br>最後更新：${asof}<br>狀態：<span class="up">${DRAWER_CFG.system.status}</span>`;
+        }
+      }).catch(e=>{ console.warn('[Drawer] fetch stocks.json failed:', e); });
     },
     open(){
       const el = document.getElementById('drawer'); if(!el) return;
@@ -292,11 +309,27 @@
       const mask = document.querySelector('.drawer-mask'); if(mask) mask.classList.add('open');
       // index 首頁有自選，開抽屜時刷新
       if(typeof renderWatch === 'function') renderWatch();
+      // 刷新 System 區塊的「最後更新」日期
+      fetch('data/stocks.json').then(r=>r.ok?r.json():null).then(d=>{
+        const asof = d && d.meta && d.meta.as_of;
+        if(asof){
+          DRAWER_CFG.system.updated = asof;
+          const note = el.querySelector('.sys-note');
+          if(note){
+            const sys = DRAWER_CFG.system;
+            note.innerHTML = `版本：${sys.version}<br>資料源：${sys.source}<br>最後更新：${asof}<br>狀態：<span class="up">${sys.status}</span>`;
+          }
+        }
+      }).catch(e=>{ console.warn('[Drawer.open] fetch stocks.json failed:', e); });
+      // 啟動系統時間定時器
+      this.startSysTimer();
     },
     close(){
       const el = document.getElementById('drawer'); if(!el) return;
       el.classList.remove('open');
       const mask = document.querySelector('.drawer-mask'); if(mask) mask.classList.remove('open');
+      // 停止系統時間定時器
+      this.stopSysTimer();
     },
     toggleDark(){
       const on = document.documentElement.getAttribute('data-theme')==='dark';
@@ -310,6 +343,45 @@
       const zh = document.getElementById('langZh'), en = document.getElementById('langEn');
       if(zh) zh.classList.toggle('on', l==='zh');
       if(en) en.classList.toggle('on', l==='en');
+    },
+    // 系統時間定時器：每分鐘更新一次 System 區塊的日期/時間/星期
+    startSysTimer(){
+          if (this._sysTimer) return;
+          this._sysTimer = setInterval(() => {
+            const el = document.getElementById('drawer');
+            if (!el || !el.classList.contains('open')) return;
+            const note = el.querySelector('.sys-note');
+            if (!note) return;
+            const now = new Date();
+            const sys = DRAWER_CFG.system;
+            const dateStr = now.toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit' });
+            const timeStr = now.toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+            const weekStr = ['日','一','二','三','四','五','六'][now.getDay()];
+            note.innerHTML = `版本：${sys.version}<br>資料源：${sys.source}<br>最後更新：${sys.updated}<br>當前時間：${dateStr} (週${weekStr}) ${timeStr}<br>狀態：<span class="up">${sys.status}</span>`;
+          }, 60000); // 每分鐘
+          // 立即執行一次
+          try {
+            const el = document.getElementById('drawer');
+            if (el && el.classList.contains('open')) {
+              const note = el.querySelector('.sys-note');
+              if (note) {
+                const now = new Date();
+                const sys = DRAWER_CFG.system;
+                const dateStr = now.toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit' });
+                const timeStr = now.toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+                const weekStr = ['日','一','二','三','四','五','六'][now.getDay()];
+                note.innerHTML = `版本：${sys.version}<br>資料源：${sys.source}<br>最後更新：${sys.updated}<br>當前時間：${dateStr} (週${weekStr}) ${timeStr}<br>狀態：<span class="up">${sys.status}</span>`;
+              }
+            }
+          } catch(e) {
+            console.warn('[Drawer.startSysTimer] initial update failed:', e);
+          }
+        },
+    stopSysTimer(){
+      if (this._sysTimer) {
+        clearInterval(this._sysTimer);
+        this._sysTimer = null;
+      }
     },
   };
 
@@ -340,14 +412,16 @@
       const arr = this.list().filter(x=>x.sym!==sym);
       this.save(arr); return arr;
     },
-    // 用 stocks.json map（{sym:{price,chg,pe,roe,alert}}）補真實值
+    // 用 stocks.json map（{sym:{price,chg,pe,roe,alert,name}}）補真實值
     decorate(priceMap){
       return this.list().map(x=>{
         const p = priceMap && priceMap[x.sym];
         return Object.assign({}, x, {
+          name:  p&&p.name ? p.name : x.name,   // 優先用 stocks.json 真實名稱
           price: p&&p.price!=null?p.price:null,
           chg:   p&&p.chg!=null?p.chg:null,
           pe:    p&&p.pe!=null?p.pe:null,
+          pb:    p&&p.pb!=null?p.pb:null,
           roe:   p&&p.roe!=null?p.roe:null,
           alert: p&&p.alert?p.alert:'',
         });

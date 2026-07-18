@@ -255,6 +255,18 @@ def run_daily():
     # 保留既有 ROE/ROA/eps/market_cap（這些由 weekly 模式更新，daily 不覆寫）
     existing = load_existing_stocks()
 
+    # 載入 ETF 發行張數，用於補算 ETF market_cap
+    etf_shares_path = os.path.join(OUT, "etf-shares.json")
+    etf_shares = {}
+    if os.path.exists(etf_shares_path):
+        try:
+            etf_shares = json.load(open(etf_shares_path, encoding="utf-8")).get("etf", {})
+            LOG.info(f"ETF 發行張數載入 {len(etf_shares)} 檔")
+        except Exception as e:
+            LOG.warn(f"etf-shares.json 載入失敗：{e}")
+    else:
+        LOG.warn("etf-shares.json 不存在，ETF market_cap 將留空")
+
     stocks = []
     for r in raw:
         sid = r.get("Code", "").strip()
@@ -283,7 +295,16 @@ def run_daily():
             chg = float(r.get("Change")) if r.get("Change") not in (None, "") else None
         except ValueError:
             chg = None
-        # 漲跌%：TWSE Change 是絕對值差，需昨收推算；這裡直接存 chg（元），前端可換算
+        # 漲跌%：TWSE Change 是漲跌「元」（絕對值差），需由 收盤-Change 推算昨收，再算漲跌%
+        # 修正：原本直接存 chg（元）導致前端把「元」當「%」顯示（如台積電 +20 元誤顯 +20%）。
+        # 現改存漲跌%（chg_pct），前端直接顯示百分比。
+        chg_pct = None
+        if chg is not None and close is not None and close > 0:
+            prev_close = close - chg
+            if prev_close and prev_close > 0:
+                chg_pct = round(chg / prev_close * 100, 2)
+        # 向後相容：保留 chg 欄位存漲跌%（統一為 %），避免前端逐頁改欄位名
+        chg = chg_pct
         # 繼承既有 ROE/ROA/eps/market_cap/ind；PE/PB/div 來自 BWIBBU
         ex = existing.get(sid, {})
         bb = bwibbu.get(sid, {})
@@ -292,13 +313,28 @@ def run_daily():
         no_trade = (close is None or close <= 0)
         if no_trade:
             open_p = high = low = close = None
+        # ETF 特殊處理：TWSE API 對 ETF（代號含字母尾碼）只給 ClosingPrice、不給 Open/High/Low
+        # 當有收盤價但無 OHLC 時，用 close 回填 open/high/low（視為平盤，避免前端缺值）
+        elif open_p is None or high is None or low is None:
+            if close is not None:
+                if open_p is None: open_p = close
+                if high is None: high = close
+                if low is None: low = close
+
+        # ETF market_cap：若無既有值且有發行張數資料，用 price * shares_stock 估算
+        mc = ex.get("market_cap")
+        if mc is None and sid in etf_shares and close is not None:
+            shares = etf_shares[sid].get("shares_stock")
+            if shares:
+                mc = round(close * shares)
+
         stocks.append({
             "sym": sid,
             "name": name,
             "price": close,
             "open": open_p, "high": high, "low": low, "volume": volume,
             "pe": bb.get("pe"), "pb": bb.get("pb"), "div": bb.get("div"),
-            "roe": ex.get("roe"), "eps": ex.get("eps"), "market_cap": ex.get("market_cap"),
+            "roe": ex.get("roe"), "eps": ex.get("eps"), "market_cap": mc,
             "ind": ex.get("ind"),
             "chg": chg,
             "rank": ex.get("rank"),
