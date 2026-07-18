@@ -316,9 +316,10 @@
       if (!def) return this._rows.slice();
       let rows = this._rows.slice();
       // 過濾 ETF：cap10 表格排除 ETF
-      // 台股 ETF 代號規則：00xxxA/B(4碼+字母)、005x、006xxx
+      // 台股 ETF 代號：00 開頭，後面 3-5 位數字/字母
+      // 00xxxA/B, 005x, 006xx, 007xx, 008xx, 009xx
       if (this.id === 'cap10') {
-        const isETF = (sym) => /^(?:00\d{3}[A-Z]{1,2}|005\d|006\d{3})$/.test(String(sym || '').toUpperCase());
+        const isETF = (sym) => /^00\d{3,5}[A-Z]{0,2}$/.test(String(sym || '').toUpperCase());
         rows = rows.filter(r => !isETF(r.sym));
       }
       return rows.sort((a, b) => compare(a, b, def, this._fieldMap) * this._sortDir);
