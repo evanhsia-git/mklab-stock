@@ -315,12 +315,14 @@
       const def = COLUMNS[this._sortKey];
       if (!def) return this._rows.slice();
       let rows = this._rows.slice();
-      // 過濾 ETF：cap10 表格排除 ETF（用 name 關鍵字判斷，最穩）
+      // 過濾 ETF：cap10 表格排除 ETF
+      // 優先 is_etf 欄位；否則用 name 關鍵字（涵蓋台股 ETF 命名慣例）
       if (this.id === 'cap10') {
+        const ETF_RE = /ETF|基金|指數|正[0-9]|反[0-9]|槓桿|反向|期貨|配息|高息|優息|收益|台灣50|中型100|科技|電子|摩台|摩澤|寶滬深|上證|上証|S&P|MSCI|日經|歐洲|印度|陸股|龍耀|鑫收|動能|升級|優股息|兆豐|元大|富邦|國泰|中信|統一|聯博|第一金|凯基|凱基/;
         const looksETF = (r) => {
           if (r.is_etf) return true;
           const nm = String(r.name || r.nm || '');
-          return /ETF|基金|指數|正[0-9]|反[0-9]|槓桿|反向|期貨|配息|高息|優息|收益/.test(nm);
+          return ETF_RE.test(nm);
         };
         rows = rows.filter(r => !looksETF(r));
       }
