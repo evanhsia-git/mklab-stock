@@ -315,12 +315,10 @@
       const def = COLUMNS[this._sortKey];
       if (!def) return this._rows.slice();
       let rows = this._rows.slice();
-      // 過濾 ETF：cap10 表格排除 ETF（代號 00xxxx 或 0050, 0056 等）
+      // 過濾 ETF：cap10 表格排除 ETF（代號 00xxxA/B 或 0050/0056）
       if (this.id === 'cap10') {
-        rows = rows.filter(r => {
-          const sym = String(r.sym || '').toUpperCase();
-          return !(sym.startsWith('00') && sym.length >= 4 && /^[0-9]{4}[A-Z]?$/.test(sym));
-        });
+        const isETF = (sym) => /^(?:00\d{3}[A-Z]{1,2}|005[06])$/.test(String(sym || '').toUpperCase());
+        rows = rows.filter(r => !isETF(r.sym));
       }
       return rows.sort((a, b) => compare(a, b, def, this._fieldMap) * this._sortDir);
     }
