@@ -1,15 +1,14 @@
 {
-  "mode": "twii",
+  "mode": "weekly",
   "success": true,
   "error": null,
-  "fetched": 0,
-  "written": 260,
+  "fetched": 1371,
+  "written": 1115,
   "skipped": false,
   "details": {
-    "twii_days": 260,
-    "twii_range": "2025-06-24~2026-07-17"
+    "roe_updated": 1115
   },
-  "end": "2026-07-17 19:06:13",
-  "duration_sec": 1.2,
-  "start": "2026-07-17 19:06:12"
+  "end": "2026-07-18 20:10:08",
+  "duration_sec": 3823.5,
+  "start": "2026-07-18 19:06:25"
 }
