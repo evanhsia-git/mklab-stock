@@ -1,0 +1,118 @@
+{{TITLE}}mklab-stock Watchlist 自選股{{/TITLE}}
+{{DESCRIPTION}}mklab-stock — 台股/美股/中股免費分析儀表板，提供自選股管理、價格提醒、技術/法人/異常提醒。{{/DESCRIPTION}}
+
+<div class="section-title">我的自選股<span class="hint">點表頭可排序</span></div>
+<div class="row-input">
+  <input id="addSym" placeholder="新增自選股代號，如 2330" onkeydown="if(event.key==='Enter')addSym()">
+  <button onclick="addSym()">加入</button>
+</div>
+<div id="addTip" style="display:none;color:var(--warn);font-size:12px;margin-bottom:8px;"></div>
+
+<div class="section-title">價格提醒（Alert）設定</div>
+<p class="muted-small-top">
+  輸入「目標價」與「停損價」(可設定多組)。當股價觸及即會在表格顯示 <span class="warn">⚠️ 觸發</span> 標記。
+  <br>
+  <small>※ 現在僅示意，未實作實時報警；若有需求可自行擴充</small>
+</p>
+<div class="settings-grid" style="display:flex;gap:6px;margin-bottom:8px;">
+  <input id="alertTargetPrice" placeholder="目標價" style="flex:1;padding:4px 6px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--ink);">
+  <span style="align-self:center;">~</span>
+  <input id="alertStopLossPrice" placeholder="停損價" style="flex:1;padding:4px 6px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--ink);">
+  <button onclick="savePriceAlert()" style="padding:4px 10px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;">儲存</button>
+</div>
+<div id="addAlertNote" style="color:var(--warn);font-size:11px;margin-bottom:8px;"></div>
+
+<div class="table-wrap">
+  <mklab-datatable id="wlTable" cols="sym,name,price,chg,pe,pb,roe,alert,del" page-size="10" pager-id="wlPager" default-sort="chg"></mklab-datatable>
+</div>
+
+<div class="alert-note inline">
+  <h3>提醒（Alert）欄位說明</h3>
+  <p>提醒欄顯示系統針對自選股自動判定的觸發狀態。依各市場漲跌幅限制與熔斷機制自動示警：</p>
+  <ul>
+    <li><b>價格提醒</b>：於下方輸入目標價 / 停損價，股價觸及即標記（示意：生產環境由 GitHub Actions 每日計算）</li>
+    <li><b>技術提醒</b>：RSI 進入超買（>80）或超賣（<20）區間</li>
+    <li><b>法人提醒</b>：三大法人連續買超 / 賣超達門檻</li>
+    <li><b>異常提醒（台股）</b>：單日漲跌幅超過 ±10%（一般上市櫃漲停限制）；槓桿型 ETF（2 倍槓桿）單日漲跌可達 ±20%，超過 ±21% 示警</li>
+    <li><b>異常提醒（美股）</b>：與前日收盤相比下跌 7% 啟動熔斷（中斷 15 分鐘）；跌 13% 再次中斷；跌 20% 當日交易結束。達各級門檻即示警</li>
+  </ul>
+  <p class="muted">目前為示意階段：異常漲跌已依上述標準自動標紅（<span class="warn">橘色</span>）。價格/技術/法人提醒的精確觸發由生產環境 Actions 計算後寫入。</p>
+</div>
+
+<div class="disclaimer">自選股中心（示意）。Alert 支援價格/技術/法人提醒，生產環境可由 Actions 產出。</div>
+
+<script>
+  let priceMap = {};
+  let wlTable = null;
+
+  function calcAlert(sym, chg) {
+    if (chg == null) return '';
+    const abs = Math.abs(chg);
+    if (chg < 0 && abs >= 20) return '🚨 熔斷';
+    if (chg < 0 && abs >= 13) return '⚠ 熔斷II';
+    if (chg < 0 && abs >= 7) return '⚠ 熔斷I';
+    if (abs > 21) return '🚨 超限';
+    if (abs > 10) return '⚠ 異常';
+    return '';
+  }
+
+  function render() {
+    const rows = MKLAB.Watch.decorate(priceMap).map(r => {
+      r.alert = calcAlert(r.sym, r.chg);
+      return r;
+    });
+    if (!wlTable) {
+      wlTable = MKLAB.DataTable('wlTable', {
+        cols: ['sym', 'name', 'price', 'chg', 'pe', 'pb', 'roe', 'alert', 'del'],
+        rows: rows,
+        pageSize: 10, pagerId: 'wlPager',
+        onDel: function(sym) { MKLAB.Watch.remove(sym); render(); },
+        ctx: {},
+      });
+    } else {
+      wlTable.setRows(rows);
+    }
+  }
+
+  const SYM_NAME = {"2330":"台積電","2317":"鴻海","2454":"聯發科","2308":"台達電","2303":"聯電","2412":"中華電","2882":"國泰金","6505":"台塑化","1303":"南亞","2891":"中信金","2881":"富邦金","2885":"元大金","2886":"兆豐金","2892":"第一金","2884":"玉山金","3008":"大立光","2301":"光寶科","2408":"南亞科","3711":"日月光投控","4938":"和碩","AAPL":"Apple","MSFT":"Microsoft","GOOGL":"Alphabet","NVDA":"Nvidia","600519":"貴州茅台","000001":"平安銀行","00700.HK":"騰訊","09988.HK":"阿里巴巴"};
+
+  function addSym() {
+    const v = document.getElementById('addSym').value.trim().toUpperCase();
+    if (!v) return;
+    if (!priceMap[v]) {
+      const tip = document.getElementById('addTip');
+      if (tip) { tip.textContent = '⚠ 代號 ' + v + ' 不存在於資料庫（僅支援台股上市/美股主要標的）'; tip.style.display = 'block'; setTimeout(() => { tip.style.display = 'none'; }, 3000); }
+      return;
+    }
+    MKLAB.Watch.add(v, SYM_NAME[v] || priceMap[v].name || "");
+    document.getElementById('addSym').value = "";
+    render();
+  }
+
+  function openDrawer() { MKLAB.Drawer.open(); }
+  function closeDrawer() { MKLAB.Drawer.close(); }
+
+  function savePriceAlert() {
+    const t = document.getElementById('alertTargetPrice').value;
+    const s = document.getElementById('alertStopLossPrice').value;
+    const note = document.getElementById('addAlertNote');
+    if (note) {
+      if (t || s) note.textContent = `已記錄：目標價 ${t || '—'} / 停損價 ${s || '—'}（待接存儲層）`;
+      else note.textContent = '請至少輸入目標價或停損價';
+    }
+  }
+
+  MKLAB.data.stocks().then(d => {
+    if (d && Array.isArray(d)) {
+      d.forEach(s => { priceMap[s.sym] = { price: s.price, chg: s.chg, pe: s.pe, pb: s.pb, roe: s.roe, alert: null, name: s.name }; });
+    }
+    render();
+    return MKLAB.data.json('stocks');
+  }).then(meta => {
+    const asof = meta && meta.meta && meta.meta.as_of;
+    if (asof) { const f = document.querySelector('.freshness'); if (f) f.textContent = '資料以 ' + asof + ' 收盤為準（Build-Time 自動更新）'; }
+  }).catch(() => { render(); });
+
+  MKLAB.initDrawer();
+  MKLAB.Shell.mount({ active: 'watchlist' });
+</script>

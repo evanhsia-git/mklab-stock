@@ -12,7 +12,7 @@ mklab-stock HTML 結構健康檢查
   4. <script> / </script> 配對
   5. 解析後 <body> 必須有子元素（抓出「載入後空白」的實質失效）
   6. <style> 必須在 <body> 之前關閉（否則 body 被吞）
-  7. 關鍵區塊存在（nav / utilbar / drawer / 至少一個 table 或 section）
+  7. 關鍵區塊存在（nav / utilbar / drawer / 至少一個 table 或 section 或 mklab-*）
 
 用法：
   python3 scripts/check_html_health.py [檔案或目錄...]
@@ -30,7 +30,8 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 class StructureChecker(HTMLParser):
     """追蹤標籤開關，並在解析結束時報告結構問題。"""
     VOID = {"area","base","br","col","embed","hr","img","input",
-            "link","meta","param","source","track","wbr"}
+            "link","meta","param","source","track","wbr",
+            "mklab-kline","mklab-datatable","mklab-drawer","mklab-router"}
     # SVG 內部標籤允許自閉合，但 HTMLParser 仍會收到 start/end，我們只追蹤外部結構
 
     def __init__(self):
@@ -46,48 +47,98 @@ class StructureChecker(HTMLParser):
         self.saw_nav = False
         self.saw_utilbar = False
         self.saw_drawer = False
-        self.saw_table_or_section = False
+        self.saw_content = False
+        self.code_stack = []  # Track <code> elements separately
 
     def handle_starttag(self, tag, attrs):
-        if tag == "style":
+        tag_lower = tag.lower()
+        
+        # Track <code> elements on a separate stack
+        if tag_lower == "code":
+            self.code_stack.append(self.getpos()[0])
+            self.stack.append(("code", self.getpos()[0]))
+            return
+            
+        # If inside any <code> element, ignore ALL tags
+        if self.code_stack:
+            return
+            
+        # Track <pre> elements
+        if tag_lower == "pre":
+            self.stack.append((tag, self.getpos()[0]))
+            return
+            
+        # If inside <pre>, ignore ALL tags
+        # Check if pre is in stack
+        for t, _ in reversed(self.stack):
+            if t == "pre":
+                return
+            if t == "code":
+                break
+                
+        if tag_lower == "style":
             self.style_open_lineno = self.getpos()[0]
             self.style_closed = False
-        if tag == "body":
+            self.stack.append((tag, self.getpos()[0]))
+            return
+        if tag_lower == "body":
             self.in_body = True
             self.body_started = True
-            # style 必須已關閉
             if not self.style_closed:
-                self.errors.append(
-                    f"line {self.getpos()[0]}: <body> 出現在 <style> 未關閉之後"
-                    f"（style 開於 line {self.style_open_lineno}）——body 會被當成 CSS 吞掉")
-        if self.in_body and tag not in self.VOID:
+                self.errors.append(f"line {self.getpos()[0]}: <body> 出現在 <style> 未關閉之後（style 開於 line {self.style_open_lineno}）——body 會被當成 CSS 吞掉")
+        if self.in_body and tag_lower not in self.VOID:
             self.body_children += 1
         # 關鍵區塊標記
-        if tag == "nav":
-            self.saw_nav = True
+        if tag_lower == "nav": self.saw_nav = True
         cls = dict(attrs).get("class") or ""
-        if "utilbar" in cls:
-            self.saw_utilbar = True
-        if "drawer" in cls:
-            self.saw_drawer = True
-        if tag in ("table", "section"):
-            self.saw_table_or_section = True
-        # 非 void 且非自閉合 → 入棧
-        if tag not in self.VOID:
+        if "utilbar" in cls: self.saw_utilbar = True
+        if "drawer" in cls: self.saw_drawer = True
+        if tag_lower in ("table", "section") or tag_lower.startswith("mklab-"): self.saw_content = True
+        if tag_lower not in self.VOID:
             self.stack.append((tag, self.getpos()[0]))
 
     def handle_endtag(self, tag):
-        if tag == "style":
+        tag_lower = tag.lower()
+        
+        # Handle </code>
+        if tag_lower == "code":
+            if self.code_stack:
+                self.code_stack.pop()
+            # Pop the code from main stack
+            for i in range(len(self.stack) - 1, -1, -1):
+                if self.stack[i][0] == "code":
+                    del self.stack[i]
+                    break
+            return
+            
+        # If inside any <code> element, ignore ALL end tags
+        if self.code_stack:
+            return
+            
+        # Handle </pre>
+        if tag_lower == "pre":
+            for i in range(len(self.stack) - 1, -1, -1):
+                if self.stack[i][0] == "pre":
+                    del self.stack[i]
+                    break
+            return
+            
+        # If inside <pre>, ignore ALL end tags
+        for t, _ in reversed(self.stack):
+            if t == "pre":
+                return
+            if t == "code":
+                break
+            
+        if tag_lower == "style":
             self.style_closed = True
-            # 從堆疊移除最後一個 style（若有）
             for i in range(len(self.stack) - 1, -1, -1):
                 if self.stack[i][0] == "style":
                     del self.stack[i]
                     break
             return
-        if tag == "body":
+        if tag_lower == "body": 
             self.in_body = False
-        # 彈棧（寬鬆匹配：找最近的同名開標籤）
         for i in range(len(self.stack) - 1, -1, -1):
             if self.stack[i][0] == tag:
                 del self.stack[i]
@@ -108,17 +159,12 @@ class StructureChecker(HTMLParser):
         if not self.style_closed:
             msgs.append(f"<style> 未關閉（開於 line {self.style_open_lineno}）")
         if is_help:
-            # 說明頁：只檢結構，不強求 nav/utilbar/drawer
             return msgs
         # 7: 關鍵區塊
-        if not self.saw_nav:
-            msgs.append("缺少 <nav> 導航列")
-        if not self.saw_utilbar:
-            msgs.append("缺少 .utilbar 工具列")
-        if not self.saw_drawer:
-            msgs.append("缺少 .drawer 設定抽履")
-        if not self.saw_table_or_section:
-            msgs.append("缺少 table/section 主要內容區塊")
+        if not self.saw_nav: msgs.append("缺少 <nav> 導航列")
+        if not self.saw_utilbar: msgs.append("缺少 .utilbar 工具列")
+        if not self.saw_drawer: msgs.append("缺少 .drawer 設定抽屜")
+        if not self.saw_content: msgs.append("缺少 table/section/mklab-* 主要內容區塊")
         return msgs
 
 

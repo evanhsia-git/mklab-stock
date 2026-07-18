@@ -1,0 +1,79 @@
+{{TITLE}}mklab-stock 功能說明{{/TITLE}}
+{{DESCRIPTION}}mklab-stock — 台股/美股/中股免費分析儀表板，提供產業動態、個股研究、技術指標與綜合評分。{{/DESCRIPTION}}
+
+<div class="card">
+  <h2>📘 使用說明</h2>
+  <ul>
+    <li><b>Market（首頁）</b>：大盤走勢、自選股、績效表現，以及「綜合評分 TOP 10」推薦清單。</li>
+    <li><b>Screener（篩選）</b>：依 PE / PB / ROE / EPS / 漲跌% 等條件過濾股票，內建價值 / 成長 / 動能等策略模板。</li>
+    <li><b>Research（研究）</b>：個股深度研究，含 K 線圖（KLineChart）、MACD / KD 指標與畫線工具。</li>
+    <li><b>Industry（產業）</b>：依臺證所 114.06.09 要點劃分的 33 個官方產業大類，查看各產業動態與成分股。</li>
+    <li><b>Watchlist（自選）</b>：在設定抽屜填入最多 5 檔代號，首頁與自選頁即顯示其走勢。</li>
+  </ul>
+  <h3>通用操作</h3>
+  <ul>
+    <li>點擊右上 <b>🔍</b> 可展開搜尋框，輸入代號（如 <code>2330</code>）搜尋。</li>
+    <li>點擊 <b>🌓 主題</b> 切換深色 / 淺色。</li>
+    <li>點擊 <b>⚙ 設定</b> 開啟抽屜：設定自選股、主題、語言。</li>
+    <li>表格標題（代號 / 價格 / PE / ROE…）可<b>點擊排序</b>，再點一次切換升 / 降序。</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>🗄️ 股市資料來源</h2>
+  <table>
+    <thead><tr><th>資料類型</th><th>來源</th><th>說明</th></tr></thead>
+    <tbody>
+      <tr><td>每日收盤價 / 漲跌</td><td class="b">TWSE OpenAPI</td><td>臺灣證交所公開 API（<code>STOCK_DAY_ALL</code>），免 key、雲端可達</td></tr>
+      <tr><td>ROE / ROA</td><td class="b">yfinance</td><td>每週六自動補齊（免 key，含 3 秒延遲避免被封）</td></tr>
+      <tr><td>產業分類</td><td class="b">33 類對照表</td><td>依臺證所「上市公司產業類別劃分暨調整要點（114.06.09）」</td></tr>
+      <tr><td>歷史股價</td><td class="b">本機 DB 灌種</td><td>初始 260 個交易日快照，後續由 GitHub Actions 每日追加</td></tr>
+    </tbody>
+  </table>
+  <p style="margin-top:10px; color:var(--muted); font-size:13px;">原則：<b>GitHub-Native / Fork First / 零外部依賴 / 零 secret</b>。任何人 fork 本倉庫即可獨立運作，不需申請任何 API key。</p>
+</div>
+
+<div class="card">
+  <h2>🕒 資料更新日期</h2>
+  <div class="kv"><span>最新收盤資料日</span><b>2026-07-18</b></div>
+  <div class="kv"><span>每日自動更新</span><b>台灣收盤後 17:00（UTC 09:00）週一至週五</b></div>
+  <div class="kv"><span>ROE / ROA 更新</span><b>每週六自動補齊</b></div>
+  <div class="kv"><span>休市處理</span><b>週末 / 國定假日 / 突發颱風假自動跳過</b></div>
+  <p style="margin-top:8px; color:var(--muted); font-size:13px;">資料以收盤為準，非即時。首頁黃標顯示實際資料日。</p>
+</div>
+
+<div class="card">
+  <h2>📊 目前資料庫數量</h2>
+  <div class="kv"><span>上市 / ETF 檔數</span><b>1,369 檔</b></div>
+  <div class="kv"><span>歷史股價切片</span><b>260 個交易日</b></div>
+  <div class="kv"><span>產業分類</span><b>33 個官方大類</b></div>
+  <div class="kv"><span>ROE 已涵蓋</span><b>1,042 檔（其餘待每週補齊）</b></div>
+</div>
+
+<div class="card">
+  <h2>🧮 綜合評分計算標準</h2>
+  <p style="font-size:14px;">首頁「綜合評分 TOP 10」依下列加權即時計算（0–100 分），<b>只列出資料齊全且評分 &gt; 0 的推薦股</b>：</p>
+  <table>
+    <thead><tr><th>指標</th><th>權重</th><th>計算方式</th></tr></thead>
+    <tbody>
+      <tr><td>ROE（股東權益報酬率）</td><td class="b">最高 40</td><td><code>min(40, ROE × 1.2)</code>，越高越好</td></tr>
+      <tr><td>PE（本益比）</td><td class="b">最高 20</td><td><code>min(20, (30 − PE) × 1.0)</code>，越低越好</td></tr>
+      <tr><td>PB（股價淨值比）</td><td class="b">最高 15</td><td><code>min(15, (8 − PB) × 2.0)</code>，越低越好</td></tr>
+      <tr><td>EPS（每股盈餘）</td><td class="b">最高 10</td><td><code>min(10, EPS × 0.3)</code>，越高越好</td></tr>
+      <tr><td>漲跌%</td><td class="b">最高 15</td><td><code>min(15, 漲跌% × 1.0)</code>，越高越好</td></tr>
+    </tbody>
+  </table>
+  <p style="margin-top:10px; color:var(--muted); font-size:13px;">任一欄位缺漏（null）則該股不列入推薦。評分僅供參考，<b>非投資建議</b>。</p>
+</div>
+
+<div class="card">
+  <h2>⚠️ 免責聲明</h2>
+  <p style="font-size:14px; color:var(--muted);">本網站所有資料與評分僅供研究與教育參考，不構成任何投資建議。使用者應自行判斷並承擔投資風險。</p>
+  <p style="margin-top:10px;"><a class="link" href="https://github.com/evanhsia-git/mklab-stock" target="_blank">GitHub 倉庫 ↗</a></p>
+</div>
+
+<script>
+  // Help page specific logic
+  MKLAB.initDrawer();
+  MKLAB.Shell.mount({ active: 'help' });
+</script>
