@@ -1,123 +1,161 @@
 <!DOCTYPE html>
 <html lang="zh-TW" data-theme="dark">
 <head>
+<base href="/mklab-stock/">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>mklab-stock Watchlist 原型 v11</title>
-<style>
-  :root { --bg:#0f1115; --surface:#171a21; --ink:#e8eaed; --muted:#9aa0a6; --border:#2a2f3a; --accent:#3b82f6; --up:#f87171; --down:#4ade80; --warn:#fbbf24; --radius:10px; --shadow:0 1px 3px rgba(0,0,0,.4); }
-  [data-theme="light"] { --bg:#f7f8fa; --surface:#fff; --ink:#1a1d21; --muted:#6b7280; --border:#e5e7eb; --accent:#2563eb; --up:#dc2626; --down:#16a34a; --warn:#d97706; --shadow:0 1px 3px rgba(0,0,0,.08); }
-  * { box-sizing:border-box; margin:0; padding:0; }
-  body { font-family:-apple-system,"Segoe UI","PingFang TC","Microsoft JhengHei",sans-serif; background:var(--bg); color:var(--ink); line-height:1.5; }
-  .nav { position:sticky; top:0; z-index:26; background:var(--surface); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:4px; padding:10px 12px; }
-  .nav .brand { font-weight:700; font-size:15px; margin-right:12px; white-space:nowrap; }
-  .nav a { color:var(--ink); text-decoration:none; font-size:14px; padding:6px 10px; border-radius:8px; white-space:nowrap; }
-  .nav a.active { background:var(--accent); color:#fff; }
-  .utilbar { position:sticky; top:49px; z-index:25; background:var(--surface); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; padding:8px 12px; }
-  .utilbar .spacer { flex:1; }
-  .fab-btn { width:40px; height:40px; border-radius:50%; border:1px solid var(--border); background:var(--surface); color:var(--ink); cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow); }
-  .fab-btn svg { width:20px; height:20px; display:block; }
-  .wrap { max-width:1200px; margin:0 auto; padding:12px; }
-  @media (min-width:1024px){ .wrap{ padding:16px 24px; } }
-  .up { color:var(--up); } .down { color:var(--down); } .warn { color:var(--warn); }
-  .search { display:flex; align-items:center; gap:4px; background:var(--bg); border:1px solid var(--border); border-radius:20px; padding:4px 10px; }
-  .search.collapsed input { display:none; }
-  .search.expanded input { display:block; width:160px; background:var(--surface); color:var(--ink); border:1px solid var(--border); border-radius:16px; padding:4px 10px; outline:none; }
-  .search input { border:none; background:transparent; color:var(--ink); outline:none; width:120px; font-size:13px; }
-  .row-input { display:flex; gap:6px; margin-bottom:12px; }
-  .row-input input { flex:1; padding:8px; border:1px solid var(--border); border-radius:8px; background:var(--bg); color:var(--ink); }
-  .row-input button { padding:8px 12px; background:var(--accent); color:#fff; border:none; border-radius:8px; cursor:pointer; }
-  .table-wrap { background:var(--surface); border-radius:var(--radius); box-shadow:var(--shadow); overflow-x:auto; }
-  .pager { display:flex; gap:6px; justify-content:center; margin:12px 0; flex-wrap:wrap; }
-  .pager button { padding:6px 11px; border:1px solid var(--border); border-radius:8px; background:var(--surface); color:var(--ink); cursor:pointer; font-size:13px; }
-  .pager button:hover { background:var(--row-hover); }
-  .pager button.on { background:var(--accent); color:#fff; border-color:var(--accent); }
-  table { width:100%; border-collapse:collapse; }
-  th,td { padding:10px 8px; text-align:right; font-size:13px; border-bottom:1px solid var(--border); white-space:nowrap; }
-  th:first-child,td:first-child { text-align:left; }
-  th { font-size:12px; color:var(--muted); font-weight:600; background:var(--surface); }
-  tbody tr:nth-child(even){ background:rgba(255,255,255,.02); }
-  tbody tr:hover { background:var(--row-hover); }
-  .sym { font-weight:600; } .sym small { color:var(--muted); font-weight:400; display:block; }
-  .alert { font-size:11px; padding:2px 6px; border-radius:6px; background:var(--warn); color:#000; }
-  .del { color:var(--muted); cursor:pointer; font-size:12px; }
-  .disclaimer { font-size:11px; color:var(--muted); text-align:center; padding:16px 12px; }
-  .drawer-mask { position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:40; display:none; }
-  .drawer-mask.open { display:block; }
-  .drawer { position:fixed; top:0; right:0; height:100%; width:300px; max-width:85vw; background:var(--surface); border-left:1px solid var(--border); z-index:50; transform:translateX(100%); transition:transform .25s ease; padding:16px; overflow-y:auto; box-shadow:var(--shadow); }
-  .drawer.open { transform:translateX(0); }
-  .drawer h3 { font-size:15px; margin-bottom:12px; }
-  .drawer h4 { font-size:13px; color:var(--muted); margin:16px 0 8px; }
-  .row { display:flex; align-items:center; justify-content:space-between; padding:8px 0; font-size:14px; }
-  .row input { width:90px; padding:4px 6px; border:1px solid var(--border); border-radius:6px; background:var(--bg); color:var(--ink); }
-  .switch { width:44px; height:24px; border-radius:12px; background:var(--border); position:relative; cursor:pointer; border:none; }
-  .switch.on { background:var(--accent); }
-  .switch::after { content:""; position:absolute; top:2px; left:2px; width:20px; height:20px; border-radius:50%; background:#fff; transition:left .2s; }
-  .switch.on::after { left:22px; }
-  .seg { display:flex; border:1px solid var(--border); border-radius:8px; overflow:hidden; }
-  .seg button { flex:1; padding:6px; background:var(--surface); color:var(--ink); border:none; font-size:13px; }
-  .seg button.on { background:var(--accent); color:#fff; }
-  .close-x { float:right; background:none; border:none; font-size:20px; color:var(--muted); cursor:pointer; }
-  .drawer a { color:var(--accent); text-decoration:none; }
-  .sys-note { font-size:12px; color:var(--muted); line-height:1.6; }
-  .section-title { font-weight:700; font-size:15px; margin:4px 0 10px; display:flex; align-items:baseline; gap:8px; }
-  .section-title .hint { font-weight:400; font-size:11px; color:var(--muted); }
-  .freshness { background:#fff7ed; color:#9a3412; font-size:12px; padding:6px 12px; border-bottom:1px solid var(--border); text-align:center; }
-  [data-theme="dark"] .freshness { background:#2a1d12; color:#fdba74; }
-</style>
+<meta name="description" content="mklab-stock — 台股/美股/中股免費分析儀表板，提供自選股管理、價格提醒、技術/法人/異常提醒。">
+<title>mklab-stock Watchlist 自選股</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
+<link rel="stylesheet" href="assets/css/mklab-theme.css">
+<link rel="stylesheet" href="assets/css/layout.css">
+<link rel="stylesheet" href="assets/css/component.css">
+<link rel="stylesheet" href="assets/css/mobile.css">
 </head>
 <body>
-  <nav id="mainNav" class="nav"></nav>
-  <div id="utilbar" class="utilbar"><span class="brand" id="brand"></span><span class="spacer"></span></div>
-  <div class="freshness">資料以 2026-07-13 收盤為準（前一日，非即時）</div>
-  <div class="drawer-mask" onclick="MKLAB.Drawer.close()"></div>
-  <aside class="drawer" id="drawer">
-    <button class="close-x" onclick="MKLAB.Drawer.close()">×</button>
-  </aside>
-  <div class="wrap">
-    <div class="section-title">我的自選股<span class="hint">點表頭可排序</span></div>
-    <div class="row-input">
-      <input id="addSym" placeholder="新增自選股代號，如 2330">
-      <button onclick="addSym()">加入</button>
-    </div>
-    <div class="table-wrap">
-      <table id="wlTable">
-        <thead></thead>
-        <tbody id="wlBody"></tbody>
-      </table>
-      <div class="pager" id="wlPager"></div>
-    </div>
-    <div class="disclaimer">自選股中心（示意）。Alert 支援價格/技術/法人提醒，生產環境可由 Actions 產出。</div>
+<header class="sticky-header" role="banner">
+  <nav id="mainNav" class="nav" aria-label="主導覽"></nav>
+  <div id="utilbar" class="utilbar">
+    <span class="brand" id="brand"></span>
+    <span class="spacer"></span>
   </div>
-<script src="assets/mklab-core.js"></script>
+  <div class="freshness" aria-live="polite">資料載入中…</div>
+</header>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+  <button class="close-x" onclick="MKLAB.Drawer.close()" aria-label="關閉抽屜">×</button>
+  <div class="drawer-content" id="drawerContent">
+    <!-- 由 MKLAB.Drawer.init() 動態注入 drawerHTML() -->
+  </div>
+</aside>
+<div class="drawer-mask" onclick="MKLAB.Drawer.close()" aria-hidden="true"></div>
+<main class="wrap">
+
+
+
+<div class="section-title">我的自選股<span class="hint">點表頭可排序</span></div>
+<div class="row-input">
+  <input id="addSym" placeholder="新增自選股代號，如 2330" onkeydown="if(event.key==='Enter')addSym()">
+  <button onclick="addSym()">加入</button>
+</div>
+<div id="addTip" style="display:none;color:var(--warn);font-size:12px;margin-bottom:8px;"></div>
+
+<div class="section-title">價格提醒（Alert）設定</div>
+<p class="muted-small-top">
+  輸入「目標價」與「停損價」(可設定多組)。當股價觸及即會在表格顯示 <span class="warn">⚠️ 觸發</span> 標記。
+  <br>
+  <small>※ 現在僅示意，未實作實時報警；若有需求可自行擴充</small>
+</p>
+<div class="settings-grid" style="display:flex;gap:6px;margin-bottom:8px;">
+  <input id="alertTargetPrice" placeholder="目標價" style="flex:1;padding:4px 6px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--ink);">
+  <span style="align-self:center;">~</span>
+  <input id="alertStopLossPrice" placeholder="停損價" style="flex:1;padding:4px 6px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--ink);">
+  <button onclick="savePriceAlert()" style="padding:4px 10px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;">儲存</button>
+</div>
+<div id="addAlertNote" style="color:var(--warn);font-size:11px;margin-bottom:8px;"></div>
+
+<div class="table-wrap">
+  <mklab-datatable id="wlTable" cols="sym,name,price,chg,pe,pb,roe,alert,del" page-size="10" pager-id="wlPager" default-sort="chg"></mklab-datatable>
+</div>
+
+<div class="alert-note inline">
+  <h3>提醒（Alert）欄位說明</h3>
+  <p>提醒欄顯示系統針對自選股自動判定的觸發狀態。依各市場漲跌幅限制與熔斷機制自動示警：</p>
+  <ul>
+    <li><b>價格提醒</b>：於下方輸入目標價 / 停損價，股價觸及即標記（示意：生產環境由 GitHub Actions 每日計算）</li>
+    <li><b>技術提醒</b>：RSI 進入超買（>80）或超賣（<20）區間</li>
+    <li><b>法人提醒</b>：三大法人連續買超 / 賣超達門檻</li>
+    <li><b>異常提醒（台股）</b>：單日漲跌幅超過 ±10%（一般上市櫃漲停限制）；槓桿型 ETF（2 倍槓桿）單日漲跌可達 ±20%，超過 ±21% 示警</li>
+    <li><b>異常提醒（美股）</b>：與前日收盤相比下跌 7% 啟動熔斷（中斷 15 分鐘）；跌 13% 再次中斷；跌 20% 當日交易結束。達各級門檻即示警</li>
+  </ul>
+  <p class="muted">目前為示意階段：異常漲跌已依上述標準自動標紅（<span class="warn">橘色</span>）。價格/技術/法人提醒的精確觸發由生產環境 Actions 計算後寫入。</p>
+</div>
+
+<div class="disclaimer">自選股中心（示意）。Alert 支援價格/技術/法人提醒，生產環境可由 Actions 產出。</div>
+
 <script>
   let priceMap = {};
   let wlTable = null;
-  function render(){
-    const rows = MKLAB.Watch.decorate(priceMap);
-    if(!wlTable){
+
+  function calcAlert(sym, chg) {
+    if (chg == null) return '';
+    const abs = Math.abs(chg);
+    if (chg < 0 && abs >= 20) return '🚨 熔斷';
+    if (chg < 0 && abs >= 13) return '⚠ 熔斷II';
+    if (chg < 0 && abs >= 7) return '⚠ 熔斷I';
+    if (abs > 21) return '🚨 超限';
+    if (abs > 10) return '⚠ 異常';
+    return '';
+  }
+
+  function render() {
+    const rows = MKLAB.Watch.decorate(priceMap).map(r => {
+      r.alert = calcAlert(r.sym, r.chg);
+      return r;
+    });
+    if (!wlTable) {
       wlTable = MKLAB.DataTable('wlTable', {
-        cols: ['sym','price','chg','pe','roe','alert','del'],
+        cols: ['sym', 'name', 'price', 'chg', 'pe', 'pb', 'roe', 'alert', 'del'],
         rows: rows,
         pageSize: 10, pagerId: 'wlPager',
-        onDel: function(sym){ MKLAB.Watch.remove(sym); render(); },
+        onDel: function(sym) { MKLAB.Watch.remove(sym); render(); },
         ctx: {},
       });
     } else {
       wlTable.setRows(rows);
     }
   }
-  const SYM_NAME={"2330":"台積電","2317":"鴻海","2454":"聯發科","2308":"台達電","2303":"聯電","2412":"中華電","2882":"國泰金","6505":"台塑化","1303":"南亞","2891":"中信金","2881":"富邦金","2885":"元大金","2886":"兆豐金","2892":"第一金","2884":"玉山金","3008":"大立光","2301":"光寶科","2408":"南亞科","3711":"日月光投控","4938":"和碩","AAPL":"Apple","MSFT":"Microsoft","GOOGL":"Alphabet","NVDA":"Nvidia","600519":"貴州茅台","000001":"平安銀行","00700.HK":"騰訊","09988.HK":"阿里巴巴"};
-  function addSym(){ const v=document.getElementById('addSym').value.trim().toUpperCase(); if(!v) return; MKLAB.Watch.add(v, SYM_NAME[v]||""); document.getElementById('addSym').value=""; render(); }
-  function openDrawer(){ MKLAB.Drawer.open(); }
-  function closeDrawer(){ MKLAB.Drawer.close(); }
-  // 載入真實價格（stocks.json）後刷新自選
-  fetch('data/stocks.json').then(r=>r.json()).then(d=>{
-    if(d && Array.isArray(d.stocks)){ d.stocks.forEach(s=>{ priceMap[s.sym]={price:s.price,chg:s.chg,pe:s.pe,roe:s.roe,alert:null}; }); }
+
+  const SYM_NAME = {"2330":"台積電","2317":"鴻海","2454":"聯發科","2308":"台達電","2303":"聯電","2412":"中華電","2882":"國泰金","6505":"台塑化","1303":"南亞","2891":"中信金","2881":"富邦金","2885":"元大金","2886":"兆豐金","2892":"第一金","2884":"玉山金","3008":"大立光","2301":"光寶科","2408":"南亞科","3711":"日月光投控","4938":"和碩","AAPL":"Apple","MSFT":"Microsoft","GOOGL":"Alphabet","NVDA":"Nvidia","600519":"貴州茅台","000001":"平安銀行","00700.HK":"騰訊","09988.HK":"阿里巴巴"};
+
+  function addSym() {
+    const v = document.getElementById('addSym').value.trim().toUpperCase();
+    if (!v) return;
+    if (!priceMap[v]) {
+      const tip = document.getElementById('addTip');
+      if (tip) { tip.textContent = '⚠ 代號 ' + v + ' 不存在於資料庫（僅支援台股上市/美股主要標的）'; tip.style.display = 'block'; setTimeout(() => { tip.style.display = 'none'; }, 3000); }
+      return;
+    }
+    MKLAB.Watch.add(v, SYM_NAME[v] || priceMap[v].name || "");
+    document.getElementById('addSym').value = "";
     render();
-    const asof=d&&d.meta&&d.meta.as_of; if(asof){ const f=document.querySelector('.freshness'); if(f) f.textContent='資料以 '+asof+' 收盤為準（Build-Time 自動更新）'; }
-  }).catch(()=>{ render(); });
+  }
+
+  function openDrawer() { MKLAB.Drawer.open(); }
+  function closeDrawer() { MKLAB.Drawer.close(); }
+
+  function savePriceAlert() {
+    const t = document.getElementById('alertTargetPrice').value;
+    const s = document.getElementById('alertStopLossPrice').value;
+    const note = document.getElementById('addAlertNote');
+    if (note) {
+      if (t || s) note.textContent = `已記錄：目標價 ${t || '—'} / 停損價 ${s || '—'}（待接存儲層）`;
+      else note.textContent = '請至少輸入目標價或停損價';
+    }
+  }
+
+  MKLAB.data.stocks().then(d => {
+    if (d && Array.isArray(d)) {
+      d.forEach(s => { priceMap[s.sym] = { price: s.price, chg: s.chg, pe: s.pe, pb: s.pb, roe: s.roe, alert: null, name: s.name }; });
+    }
+    render();
+    return MKLAB.data.json('stocks');
+  }).then(meta => {
+    const asof = meta && meta.meta && meta.meta.as_of;
+    if (asof) { const f = document.querySelector('.freshness'); if (f) f.textContent = '資料以 ' + asof + ' 收盤為準（Build-Time 自動更新）'; }
+  }).catch(() => { render(); });
+
   MKLAB.initDrawer();
-  MKLAB.Shell.mount({ active:'watchlist' });
+  MKLAB.Shell.mount({ active: 'watchlist' });
 </script>
-</body></html>
+</main>
+<footer class="footer" role="contentinfo">
+  <div class="footer-inner">
+    <span>mklab-stock · Web Components v2.0</span>
+    <a class="link" href="https://github.com/evanhsia-git/mklab-stock" target="_blank" rel="noopener">GitHub 倉庫 ↗</a>
+  </div>
+</footer>
+<script src="assets/js/mklab-core.js"></script>
+<script src="assets/js/data-client.js"></script>
+<script src="assets/mklab-wc.js"></script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+{{TITLE}}Data Client 測試頁{{/TITLE}}
+<div class="wrap" style="padding: 20px;">
+  <h2>data-client.js 功能測試</h2>
+  <div style="margin-bottom: 16px;">
+    <button onclick="testStocks()">測試 stocks()</button>
+    <button onclick="testTwii()">測試 twiiKline()</button>
+    <button onclick="testCache()">測試快取機制</button>
+    <button onclick="MKLAB.data.clearCache()">清除快取</button>
+  </div>
+  <div id="output" style="white-space: pre-wrap; font-family: monospace; background: #1e1e1e; padding: 16px; border-radius: 4px; max-height: 500px; overflow: auto;"></div>
+</div>
+
+<script src="assets/mklab-core.js"></script>
+<script src="assets/js/data-client.js"></script>
+<script>
+  function log(msg) {
+    var t = new Date().toLocaleTimeString();
+    document.getElementById('output').textContent += '[' + t + '] ' + msg + '\n';
+  }
+
+  function testStocks() {
+    log('=== 測試 MKLAB.data.stocks() ===');
+    MKLAB.data.stocks()
+      .then(function(arr) {
+        log('成功取得 ' + arr.length + ' 筆股票資料');
+        if (arr.length) {
+          log('第一筆範例: ' + JSON.stringify(arr[0], null, 2).slice(0, 200) + '...');
+        }
+      })
+      .catch(function(err) {
+        log('錯誤: ' + err.message);
+      });
+  }
+
+  function testTwii() {
+    log('=== 測試 MKLAB.data.twiiKline() ===');
+    MKLAB.data.twiiKline()
+      .then(function(arr) {
+        log('成功取得 ' + arr.length + ' 筆 TWII K 線資料');
+        if (arr.length) {
+          log('第一筆範例: ' + JSON.stringify(arr[0], null, 2).slice(0, 200) + '...');
+        }
+      })
+      .catch(function(err) {
+        log('錯誤: ' + err.message);
+      });
+  }
+
+  function testCache() {
+    log('=== 測試快取機制 (連續呼叫 2 次 stocks) ===');
+    var start = Date.now();
+    MKLAB.data.stocks().then(function() {
+      var first = Date.now() - start;
+      log('第一次耗時: ' + first + 'ms');
+      var start2 = Date.now();
+      return MKLAB.data.stocks();
+    }).then(function() {
+      var second = Date.now() - start2;
+      log('第二次耗時: ' + second + 'ms (應有明顯差異，第二次走快取)');
+    });
+  }
+</script>

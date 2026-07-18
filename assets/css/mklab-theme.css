@@ -8,6 +8,9 @@
   --bg: #f7f8fa;
   --surface: #fff;
   --ink: #1a1d21;
+  --fg: var(--ink);
+  --primary: var(--accent);
+  --card: var(--surface);
   --muted: #6b7280;
   --border: #e5e7eb;
   --accent: #2563eb;
@@ -34,6 +37,9 @@
   --bg: #0f1115;
   --surface: #171a21;
   --ink: #e8eaed;
+  --fg: var(--ink);
+  --primary: var(--accent);
+  --card: var(--surface);
   --muted: #9aa0a6;
   --border: #2a2f3a;
   --accent: #3b82f6;
