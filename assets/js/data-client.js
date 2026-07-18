@@ -1,13 +1,12 @@
 /*
  * data-client.js — 統一資料層（零依賴、plain script IIFE）
- * 2026-07-15 選 2 路線：取代各頁散落 fetch('data/*.json')。
- * 設計：集中讀取 data/*.json + 新鮮度計算 + 錯誤處理。
- * 與 mklab-wc.js 並行：本檔只管資料，不碰 DOM。
- *
+ * 2026-07-18 重構：整合到新架構 assets/js/，支援 <base href="/mklab-stock/">
+ * 設計：集中讀取 data/*.json + 快取 + 新鮮度計算 + 錯誤處理
  * 用法：
- *   MKLAB_DATA.stocks().then(d => ...)
- *   MKLAB_DATA.json('indices').then(d => ...)
- *   MKLAB_DATA.freshness('stocks.json')  // 回傳 {age, level, text}
+ *   MKLAB.data.stocks().then(d => ...)
+ *   MKLAB.data.indices().then(d => ...)
+ *   MKLAB.data.twiiKline().then(d => ...)
+ *   MKLAB.data.freshness('stocks.json')  // 回傳 {age, level, text}
  */
 (function (global) {
   'use strict';
@@ -45,7 +44,9 @@
     return _fetch(name).then(text => {
       // 執行 JS 以定義全域（const 不掛 window，故用 new Function 取出）
       if (globalKey && !global[globalKey]) {
-        try { new Function(text + '\n;return typeof ' + globalKey + '!=="undefined"?' + globalKey + ':null;')(); } catch (e) {}
+        try {
+          new Function(text + '\n;return typeof ' + globalKey + '!=="undefined"?' + globalKey + ':null;')();
+        } catch (e) {}
       }
       return global[globalKey] || null;
     });
@@ -80,10 +81,19 @@
   }
 
   /** 清除快取（除錯用） */
-  function clearCache() { for (const k in _cache) delete _cache[k]; }
+  function clearCache() {
+    for (const k in _cache) delete _cache[k];
+  }
 
-  global.MKLAB_DATA = {
-    json, jsData, stocks, indices, twiiKline, freshness, clearCache,
+  global.MKLAB = global.MKLAB || {};
+  global.MKLAB.data = {
+    json,
+    jsData,
+    stocks,
+    indices,
+    twiiKline,
+    freshness,
+    clearCache,
     BASE,
   };
 

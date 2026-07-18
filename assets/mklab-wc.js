@@ -1,232 +1,376 @@
-/*
- * mklab-wc.js — 原生 Web Components 元件庫（零依賴、plain <script>）
- * 2026-07-15 選 2 路線：不引入 React/npm/Vite，用瀏覽器原生 Custom Elements。
- * 設計：classic script 註冊（非 ES module）→ 仍可在 file:// 直接開，守零依賴原則。
- * 與既有 mklab-core.js（MKLAB.* IIFE）並行不衝突：本檔只新增 <mklab-*> 標籤，不動舊邏輯。
- *
- * 提供的元件：
- *   <mklab-kline>      封裝 LightweightCharts 蠟燭圖（解 vanilla DOM 白屏風險）
- *   <mklab-datatable>  （預留，待 #5 實作）
- *
- * 用法：
- *   <mklab-kline data-symbol="TWII" height="420"></mklab-kline>
- *   JS: el.setData([{time,open,high,low,close}])  // 程式化餵資料
- *   JS: el.loadGlobal('TWII_KDATA')                // 讀 window.TWII_KDATA 全域
+/* mklab-wc.js — MKLAB Web Components Library (plain script, classic registration)
+ * 零依賴、支援 file:// 直接開啟、非 ES module、classic script (IIFE)
+ * 元件註冊使用 customElements.define，掛載到 window.MKLAB_WC 供參考
  */
 (function (global) {
   'use strict';
 
-  /* ============ <mklab-kline> ============ */
+  /* ============ 共用工具 ============ */
+  function cellPct(v) {
+    if (v == null) return '-';
+    const n = Number(v);
+    return (n > 0 ? '+' : '') + n.toFixed(2) + '%';
+  }
+
+  /* ============ 1. <mklab-kline> K 線圖元件 ============ */
   class MklabKline extends HTMLElement {
+    static get observedAttributes() { return ['data-symbol', 'height']; }
+
     constructor() {
       super();
+      this.attachShadow({ mode: 'open' });
       this._chart = null;
       this._series = null;
-      this._data = [];
+      this._resizeHandler = null;
     }
 
     connectedCallback() {
-      // 圖表庫未載入（vendor/lightweight-charts.min.js 需在前面）則靜默退出
-      if (typeof global.LightweightCharts === 'undefined') {
-        console.warn('[mklab-kline] LightweightCharts 未載入，跳過渲染');
-        return;
-      }
-      const h = parseInt(this.getAttribute('height'), 10) || 360;
-      // 圖表 container 掛在元素內（不進 Shadow DOM：LightweightCharts 對 shadowRoot 支援有限）
-      this._container = document.createElement('div');
-      this._container.style.width = '100%';
-      this._container.style.height = h + 'px';
-      this.appendChild(this._container);
-
-      try {
-        this._chart = global.LightweightCharts.createChart(this._container, {
-          layout: { background: { type: 'solid', color: 'transparent' }, textColor: '#94a3b8' },
-          grid: { vertLines: { color: 'rgba(148,163,184,0.1)' }, horzLines: { color: 'rgba(148,163,184,0.1)' } },
-          rightPriceScale: { borderColor: 'rgba(148,163,184,0.2)' },
-          timeScale: { borderColor: 'rgba(148,163,184,0.2)', timeVisible: false },
-          width: this._container.clientWidth || this.clientWidth || 800,
-          height: h,
-        });
-        this._series = this._chart.addCandlestickSeries({
-          upColor: '#ef4444', downColor: '#22c55e',
-          borderUpColor: '#ef4444', borderDownColor: '#22c55e',
-          wickUpColor: '#ef4444', wickDownColor: '#22c55e',
-        });
-      } catch (e) {
-        console.warn('[mklab-kline] createChart 失敗', e);
-        return;
-      }
-
-      // 屬性驅動：data-symbol 讀全域；或 data-src 標記（由外部呼叫 setData）
-      const sym = this.getAttribute('data-symbol');
-      if (sym && global[sym + '_KDATA']) {
-        this.setData(global[sym + '_KDATA']);
-      } else if (this._data.length) {
-        this.setData(this._data);
-      }
-
-      // resize 自適應
-      this._onResize = () => {
-        if (this._chart && this._container) {
-          this._chart.resize(this._container.clientWidth || this.clientWidth || 800, h);
-        }
-      };
-      global.addEventListener('resize', this._onResize);
+      this._render();
+      this._loadData();
+      this._resizeHandler = () => { if (this._chart) this._chart.resize(this._container.clientWidth, this._height); };
+      window.addEventListener('resize', this._resizeHandler);
     }
 
     disconnectedCallback() {
-      if (this._onResize) global.removeEventListener('resize', this._onResize);
-      if (this._chart) { try { this._chart.remove(); } catch (e) {} this._chart = null; }
+      if (this._resizeHandler) window.removeEventListener('resize', this._resizeHandler);
+      if (this._chart) { try { this._chart.remove(); } catch (e) {} this._chart = null; this._series = null; }
     }
 
-    /** 程式化餵資料：[{time,open,high,low,close}] */
-    setData(arr) {
-      this._data = Array.isArray(arr) ? arr : [];
-      if (this._series && this._data.length) {
-        try { this._series.setData(this._data); } catch (e) { console.warn('[mklab-kline] setData', e); }
+    attributeChangedCallback(name, oldVal, newVal) {
+      if (oldVal === newVal) return;
+      if (name === 'data-symbol') this._loadData();
+      if (name === 'height') { this._height = parseInt(newVal, 10) || 400; this._applyHeight(); }
+    }
+
+    _render() {
+      this._height = parseInt(this.getAttribute('height'), 10) || 400;
+      this.shadowRoot.innerHTML = `
+        <style>
+          :host { display: block; width: 100%; }
+          .kline-wrap { width: 100%; height: ${this._height}px; position: relative; }
+        </style>
+        <div class="kline-wrap" id="klineWrap"></div>
+      `;
+      this._container = this.shadowRoot.getElementById('klineWrap');
+    }
+
+    _applyHeight() {
+      if (this._container) this._container.style.height = this._height + 'px';
+      if (this._chart) this._chart.resize(this._container.clientWidth, this._height);
+    }
+
+    _loadData() {
+      const sym = this.getAttribute('data-symbol') || 'TWII';
+      const globalKey = sym + '_KDATA';
+      let raw = window[globalKey];
+      if (raw) { this._draw(raw); return; }
+      // 後備：嘗試從 data-client 載入
+      if (window.MKLAB && MKLAB.data && MKLAB.data.twiiKline) {
+        MKLAB.data.twiiKline().then(d => { if (d && d.length) this._draw(d); });
       }
-      return this;
     }
 
-    /** 讀取全域變數（如 window.TWII_KDATA） */
-    loadGlobal(name) {
-      if (global[name]) this.setData(global[name]);
-      return this;
-    }
+    _draw(raw) {
+      if (!window.LightweightCharts) { console.warn('[mklab-kline] LightweightCharts not loaded'); return; }
+      if (!raw || !raw.length) return;
 
-    /** 疊加指標（MACD/KD 由外部算好傳入） */
-    addLine(opts) {
-      if (!this._chart) return null;
-      try {
-        const s = this._chart.addLineSeries(opts);
-        return s;
-      } catch (e) { console.warn('[mklab-kline] addLine', e); return null; }
-    }
-  }
-  if (!global.customElements.get('mklab-kline')) {
-    global.customElements.define('mklab-kline', MklabKline);
-  }
+      if (this._chart) { try { this._chart.remove(); } catch (e) {} this._chart = null; this._series = null; }
 
-  /* ============ <mklab-datatable> ============ */
-  class MklabDatatable extends HTMLElement {
-    connectedCallback() {
-          if (!global.MKLAB || !global.MKLAB.DataTable) {
-            console.warn('[mklab-datatable] MKLAB.DataTable 未載入（需先載 mklab-core.js）');
-            return;
-          }
-          const cols = (this.getAttribute('cols') || 'sym,name,price,chg').split(',').map(s => s.trim());
-          const src = this.getAttribute('src') || 'stocks.json';
-          const pageSize = parseInt(this.getAttribute('page-size'), 10) || 0;
-          const id = 'tbl_' + Math.random().toString(36).slice(2);
-          // DataTable 需要完整 table 結構：<table id="..."><thead></thead><tbody></tbody></table>
-          const table = document.createElement('table');
-          table.id = id;
-          table.innerHTML = '<thead></thead><tbody></tbody>';
-          this.appendChild(table);
-          const render = (data) => {
-            // stocks.json 結構為 {meta: {...}, stocks: [...]}
-            const rows = (data && data.stocks) ? data.stocks : (Array.isArray(data) ? data : []);
-            try { new global.MKLAB.DataTable(id, { cols, rows, pageSize }); }
-            catch (e) { console.warn('[mklab-datatable] render', e); }
-          };
-          if (global.MKLAB_DATA) {
-            global.MKLAB_DATA.json(src).then(render).catch(e => console.warn('[mklab-datatable]', e));
-          } else {
-            fetch('data/' + src).then(r => r.json()).then(render).catch(e => console.warn(e));
-          }
-        }
-  }
-  if (!global.customElements.get('mklab-datatable')) {
-    global.customElements.define('mklab-datatable', MklabDatatable);
-  }
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      this._chart = LightweightCharts.createChart(this._container, {
+        width: this._container.clientWidth,
+        height: this._height,
+        layout: { background: { type: 'solid', color: 'transparent' }, textColor: isDark ? '#9aa0a6' : '#6b7280' },
+        rightPriceScale: { borderColor: isDark ? '#2a2f3a' : '#e5e7eb' },
+        timeScale: { borderColor: isDark ? '#2a2f3a' : '#e5e7eb', timeVisible: true, secondsVisible: false },
+        grid: { vertLines: { color: isDark ? '#2a2f3a20' : '#e5e7eb40' }, horzLines: { color: isDark ? '#2a2f3a20' : '#e5e7eb40' } },
+        crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+      });
+      this._series = this._chart.addCandlestickSeries({
+        upColor: '#f87171', downColor: '#4ade80',
+        borderUpColor: '#f87171', borderDownColor: '#4ade80',
+        wickUpColor: '#f87171', wickDownColor: '#4ade80',
+      });
+      this._series.setData(raw);
+      this._chart.timeScale().fitContent();
 
-  /* ============ <mklab-drawer> ============ */
-  class MklabDrawer extends HTMLElement {
-    connectedCallback() {
-      if (!global.MKLAB || !global.MKLAB.Drawer) {
-        console.warn('[mklab-drawer] MKLAB.Drawer 未載入（需先載 mklab-core.js）');
-        return;
-      }
-      const trigger = this.getAttribute('trigger') || '.mklab-drawer-trigger';
-      const position = this.getAttribute('position') || 'right';
-      const title = this.getAttribute('title') || '設定';
-      const themeKey = this.getAttribute('theme-key') || 'mklab-theme';
-      const langKey = this.getAttribute('lang-key') || 'mklab-lang';
-
-      // 內容區塊（支援 slots）
-      const content = this.innerHTML || '<p>無內容</p>';
-      this.innerHTML = '';
-      this._drawer = new global.MKLAB.Drawer({
-        trigger: document.querySelector(trigger),
-        position: position,
-        title: title,
-        content: content,
-        themeKey: themeKey,
-        langKey: langKey,
+      window.addEventListener('resize', () => {
+        if (this._chart) this._chart.resize(this._container.clientWidth, this._height);
       });
     }
-    disconnectedCallback() {
-      if (this._drawer && this._drawer.destroy) this._drawer.destroy();
-    }
-    // 程式化開關
-    open() { if (this._drawer) this._drawer.open(); }
-    close() { if (this._drawer) this._drawer.close(); }
-    toggle() { if (this._drawer) this._drawer.toggle(); }
-  }
-  if (!global.customElements.get('mklab-drawer')) {
-    global.customElements.define('mklab-drawer', MklabDrawer);
   }
 
-  /* ============ <mklab-router> + <mklab-route> ============ */
-  class MklabRouter extends HTMLElement {
+  /* ============ 2. <mklab-datatable> 表格元件 ============ */
+
+  // 欄位定義表（同 mklab-core.js 的 COLUMNS）
+  const COLUMNS = {
+    sym:   { label: '股票代號', type: 'str', sortable: true,  fmt: r => r.sym != null ? String(r.sym) : '-' },
+    name:  { label: '名稱', type: 'str', sortable: true,  fmt: r => (r.name || r.nm || '-') },
+    price: { label: '價格', type: 'num', sortable: true,  fmt: r => r.price != null ? Number(r.price).toLocaleString() : '-' },
+    chg:   { label: '漲跌%', type: 'pct', sortable: true,  fmt: r => cellPct(r.chg) },
+    score: { label: '綜合評分', type: 'num', sortable: true, defDir: -1, fmt: r => r.score != null ? r.score : '-' },
+    pe:    { label: 'PE', type: 'num', sortable: true,  fmt: r => r.pe != null ? Number(r.pe).toFixed(2) : '-' },
+    pb:    { label: 'PB', type: 'num', sortable: true,  fmt: r => r.pb != null ? Number(r.pb).toFixed(2) : '-' },
+    eps:   { label: 'EPS', type: 'num', sortable: true,  fmt: r => r.eps != null ? Number(r.eps).toFixed(2) : '-' },
+    roe:   { label: 'ROE', type: 'num', sortable: true,  fmt: r => (r.roe != null ? Number(r.roe).toFixed(2) : '-') },
+    roa:   { label: 'ROA', type: 'num', sortable: true,  fmt: r => (r.roa != null ? Number(r.roa).toFixed(2) : '-') },
+    trend: { label: '趨勢', type: 'str', sortable: true,  fmt: r => (r.trend != null ? r.trend : (r.spct != null ? (r.spct > 0 ? '+' : '') + r.spct + '%' : '-')) },
+    spk:   { label: '趨勢', type: 'spark', sortable: false, fmt: r => { if (!r.spark || !r.spark.length) return '-'; const data = r.spark, min = Math.min(...data), max = Math.max(...data), rn = (max - min) || 1; const p = data.map((d, i) => `${(i / (data.length - 1) * 80).toFixed(1)},${(30 - ((d - min) / rn * 30)).toFixed(1)}`).join(' '); const col = data[data.length - 1] >= data[0] ? 'var(--up)' : 'var(--down)'; return `<div style="display:flex;justify-content:center"><svg viewBox="0 0 80 3N" style="width:80px;height:30px;display:block"><polyline points="${p}" fill="none" stroke="${col}" stroke-width="1.5"/></svg></div>`; } },
+    ind:   { label: '產業', type: 'str', sortable: true, key: 'ind', fmt: r => (r.ind || r.nm || '-') },
+    rsi:   { label: 'RSI', type: 'num', sortable: true, fmt: r => r.rsi != null ? r.rsi : '-' },
+    cap:   { label: '市值(億)', type: 'num', sortable: true, fmt: r => { const v = r.market_cap != null ? r.market_cap / 1e8 : (r.cap != null ? r.cap : null); return v != null ? Number(v).toFixed(2) : '-'; } },
+    w1:    { label: '1週', type: 'pct', sortable: true, fmt: r => cellPct(r.w1) },
+    m1:    { label: '1月', type: 'pct', sortable: true, fmt: r => cellPct(r.m1) },
+    m3:    { label: '3月', type: 'pct', sortable: true, fmt: r => cellPct(r.m3) },
+    m6:    { label: '6月', type: 'pct', sortable: true, fmt: r => cellPct(r.m6) },
+    ytd:   { label: 'YTD', type: 'pct', sortable: true, fmt: r => cellPct(r.ytd) },
+    y1:    { label: '1年', type: 'pct', sortable: true, fmt: r => cellPct(r.y1) },
+    cnt:   { label: '檔數', type: 'num', sortable: true, fmt: r => r.cnt != null ? r.cnt : '-' },
+    alert: { label: '提醒', type: 'html', sortable: false, fmt: r => r.alert ? `<span class="alert">${r.alert}</span>` : '—' },
+    del:   { label: '移除', type: 'act', sortable: false, fmt: (r, ctx) => `<span class="del" onclick="${ctx.__cb}('${r.sym}')">✕</span>` },
+  };
+
+  function getVal(col, row, fieldMap) {
+    const key = (fieldMap && fieldMap[col.id]) || col.key || col.id;
+    return row[key];
+  }
+
+  function compare(a, b, col, fieldMap) {
+    let va = getVal(col, a, fieldMap);
+    let vb = getVal(col, b, fieldMap);
+    if (col.type === 'str') return String(va || '').localeCompare(String(vb || ''));
+    va = (va == null) ? -Infinity : Number(va);
+    vb = (vb == null) ? -Infinity : Number(vb);
+    return va - vb;
+  }
+
+  // 實例註冊表（供分頁、排序的全域回呼查找）
+  const _instances = {};
+  const _byTable = {};
+  let _seq = 0;
+
+  class MklabDatatable extends HTMLElement {
+    static get observedAttributes() {
+      return ['cols', 'page-size', 'default-sort', 'pager-id', 'data-src', 'field-map', 'rows-json'];
+    }
+
     constructor() {
       super();
-      this.routes = [];
-      this._bound = this._onPop.bind(this);
-      this._clickBound = this._onClick.bind(this);
+      this.attachShadow({ mode: 'open' });
+      this._table = null;
+      this._cols = [];
+      this._rows = [];
+      this._fieldMap = {};
+      this._pageSize = 0;
+      this._page = 1;
+      this._sortKey = null;
+      this._sortDir = -1;
+      this._pagerId = null;
+      this._dataSrc = null;
+      this._inst = null;
     }
+
     connectedCallback() {
-      window.addEventListener('popstate', this._bound);
-      document.body.addEventListener('click', this._clickBound);
-      this._collectRoutes();
-      this._nav(location.pathname);
+      this._parseAttributes();
+      this._inst = 'dt' + (_seq++);
+      this.opts = { _inst: this._inst };
+      _instances[this._inst] = this;
+      _byTable[this.id || this._inst] = this;
+
+      this._render();
+      this._loadData();
     }
+
     disconnectedCallback() {
-      window.removeEventListener('popstate', this._bound);
-      document.body.removeEventListener('click', this._clickBound);
+      delete _instances[this._inst];
+      delete _byTable[this.id || this._inst];
     }
-    _collectRoutes() {
-      this.routes = Array.from(this.querySelectorAll('mklab-route')).map(r => ({
-        path: r.getAttribute('path') || '/',
-        component: r.getAttribute('component'),
-        show: r.getAttribute('show') || 'block',
-      }));
+
+    static get observedAttributes() {
+      return ['cols', 'page-size', 'default-sort', 'pager-id', 'data-src', 'field-map', 'rows-json'];
     }
-    _onClick(e) {
-      const a = e.target.closest('a[href^="/"]');
-      if (a && a.target !== '_blank' && !a.hasAttribute('data-no-router')) {
-        e.preventDefault();
-        const href = a.getAttribute('href');
-        history.pushState({}, '', href);
-        this._nav(href);
+
+    attributeChangedCallback(name, oldVal, newVal) {
+      if (oldVal === newVal) return;
+      this._parseAttributes();
+      if (name === 'rows-json') this._loadData();
+      else this.render();
+    }
+
+    _parseAttributes() {
+      // cols: "sym,name,price,chg,score"
+      this._cols = (this.getAttribute('cols') || 'sym,name,price,chg').split(',').map(s => s.trim()).filter(Boolean);
+      // page-size
+      this._pageSize = parseInt(this.getAttribute('page-size'), 10) || 0;
+      // default-sort
+      this._sortKey = this.getAttribute('default-sort') || (this._cols.find(c => COLUMNS[c]?.sortable) || {}).id || null;
+      this._sortDir = -1;
+      if (this._sortKey && COLUMNS[this._sortKey] && COLUMNS[this._sortKey].defDir) this._sortDir = COLUMNS[this._sortKey].defDir;
+      // pager-id
+      this._pagerId = this.getAttribute('pager-id') || null;
+      // data-src (JSON URL 或 'stocks' / 'indices' 等內建鍵)
+      this._dataSrc = this.getAttribute('data-src') || null;
+      // field-map JSON
+      try { this._fieldMap = JSON.parse(this.getAttribute('field-map') || '{}'); } catch (e) { this._fieldMap = {}; }
+      // rows-json (inline JSON)
+      this._rowsJson = this.getAttribute('rows-json') || null;
+    }
+
+    _render() {
+      this.shadowRoot.innerHTML = `
+        <style>
+          :host { display: block; width: 100%; overflow-x: auto; }
+          table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+          th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--border, #e5e7eb); white-space: nowrap; }
+          th { background: var(--bg-header, var(--bg-elevated)); color: var(--ink); cursor: pointer; user-select: none; position: sticky; top: 0; z-index: 1; }
+          th[data-k]:hover { background: var(--bg-hover); }
+          td { color: var(--ink); }
+          tr:hover td { background: var(--bg-hover); }
+          .up { color: var(--up, #dc2626); }
+          .down { color: var(--down, #16a34a); }
+          .warn { color: var(--warn, #f59e0b); font-weight: bold; }
+          .alert { color: var(--warn, #f59e0b); }
+          .del { cursor: pointer; color: var(--muted); }
+          .del:hover { color: var(--danger, #ef4444); }
+          .spark { display: flex; justify-content: center; }
+          .pager { display: flex; gap: 4px; justify-content: center; margin-top: 8px; flex-wrap: wrap; }
+          .pager button { padding: 4px 8px; border: 1px solid var(--border); background: var(--bg); color: var(--ink); border-radius: 4px; cursor: pointer; }
+          .pager button.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+          .empty { text-align: center; color: var(--muted); padding: 20px; }
+        </style>
+        <table>
+          <thead><tr></tr></thead>
+          <tbody></tbody>
+        </table>
+        ${this._pagerId ? `<div class="pager" id="${this._pagerId}"></div>` : ''}
+      `;
+
+      this._table = this.shadowRoot.querySelector('table');
+      this._thead = this.shadowRoot.querySelector('thead tr');
+      this._tbody = this.shadowRoot.querySelector('tbody');
+      this._buildHeader();
+    }
+
+    _buildHeader() {
+      this._thead.innerHTML = '';
+      this._cols.forEach(id => {
+        const def = COLUMNS[id];
+        if (!def) { console.warn('[mklab-datatable] 未知欄位:', id); return; }
+        const th = document.createElement('th');
+        th.textContent = def.label;
+        th.setAttribute('data-k', id);
+        if (def.sortable) { th.style.cursor = 'pointer'; th.title = '點擊排序'; }
+        this._thead.appendChild(th);
+      });
+
+      // 委託排序點擊
+      this.shadowRoot.querySelector('thead').addEventListener('click', e => {
+        const th = e.target.closest('th[data-k]');
+        if (!th) return;
+        this._toggleSort(th.getAttribute('data-k'));
+      });
+    }
+
+    _toggleSort(key) {
+      const def = COLUMNS[key];
+      if (!def || !def.sortable) return;
+      if (this._sortKey === key) this._sortDir *= -1;
+      else { this._sortKey = key; this._sortDir = (def.defDir != null) ? def.defDir : -1; }
+      this._page = 1;
+      this.render();
+    }
+
+    async _loadData() {
+      // 1) inline rows-json
+      if (this._rowsJson) {
+        try { this._rows = JSON.parse(this._rowsJson); this.render(); return; } catch (e) { console.warn('[mklab-datatable] rows-json parse error:', e); }
+      }
+      // 2) data-src
+      if (this._dataSrc) {
+        if (window.MKLAB && MKLAB.data) {
+          try {
+            if (this._dataSrc === 'stocks') { const d = await MKLAB.data.stocks(); this._rows = d || []; }
+            else if (this._dataSrc === 'indices') { const d = await MKLAB.data.indices(); this._rows = d?.indices || []; }
+            else if (this._dataSrc === 'twiiKline') { const d = await MKLAB.data.twiiKline(); this._rows = d || []; }
+            else { const d = await MKLAB.data.json(this._dataSrc); this._rows = d || []; }
+          } catch (e) { console.warn('[mklab-datatable] data-src fetch error:', e); this._rows = []; }
+        }
+        this.render();
+        return;
+      }
+      // 3) 預設：若有全域 window.TWII_KDATA 等可自行處理
+      this.render();
+    }
+
+    setRows(rows) {
+      this._rows = rows || [];
+      this._page = 1;
+      this.render();
+    }
+
+    _sorted() {
+      if (!this._sortKey) return this._rows.slice();
+      const def = COLUMNS[this._sortKey];
+      if (!def) return this._rows.slice();
+      return this._rows.slice().sort((a, b) => compare(a, b, def, this._fieldMap) * this._sortDir);
+    }
+
+    render() {
+      // 表頭箭頭
+      this.shadowRoot.querySelectorAll('thead th').forEach(th => {
+        const k = th.getAttribute('data-k');
+        let txt = th.textContent.replace(/\s*[▲▼]$/, '');
+        if (k === this._sortKey) txt += (this._sortDir === -1 ? ' ▼' : ' ▲');
+        th.textContent = txt;
+      });
+
+      // 分頁
+      let view = this._sorted();
+      let totalPages = 1;
+      if (this._pageSize > 0) {
+        totalPages = Math.max(1, Math.ceil(view.length / this._pageSize));
+        if (this._page > totalPages) this._page = totalPages;
+        view = view.slice((this._page - 1) * this._pageSize, this._page * this._pageSize);
+      }
+
+      // 內容
+      const rowsHtml = view.map(r => {
+        const tds = this._cols.map(id => {
+          const def = COLUMNS[id];
+          if (!def) return '<td>?</td>';
+          const rawVal = getVal({ id, ...def }, r, this._fieldMap);
+          const v = (typeof def.fmt === 'function') ? def.fmt(r, { __cb: '__dt_del_' + this.id }) : (rawVal != null ? rawVal : '-');
+          let cls = (def.type === 'pct') ? ((rawVal >= 0) ? 'up' : 'down') : '';
+          if (def.type === 'pct' && typeof rawVal === 'number' && Math.abs(rawVal) > 10) cls = 'warn';
+          return `<td class="${cls}">${v}</td>`;
+        }).join('');
+        return `<tr>${tds}</tr>`;
+      }).join('') || `<tr><td colspan="${this._cols.length}" class="empty">無資料</td></tr>`;
+
+      this.shadowRoot.querySelector('tbody').innerHTML = rowsHtml;
+
+      // 分頁條
+      const pagerEl = this.shadowRoot.getElementById(this._pagerId);
+      if (pagerEl && this._pageSize > 0) {
+        let html = '';
+        for (let i = 1; i <= totalPages; i++) {
+          html += `<button class="${i === this._page ? 'on' : ''}" onclick="__dt_goto('${this._inst}',${i})">${i}</button>`;
+        }
+        pagerEl.innerHTML = html;
       }
     }
-    _onPop() { this._nav(location.pathname); }
-    _nav(path) {
-      const route = this.routes.find(r => path === r.path || (r.path !== '/' && path.startsWith(r.path)));
-      this.routes.forEach(r => {
-        const el = r.component ? document.querySelector(r.component) : null;
-        if (el) el.style.display = (route && route.path === r.path) ? r.show : 'none';
-      });
-      this.dispatchEvent(new CustomEvent('mklab:navigate', { detail: { path, route } }));
-    }
-    go(path) { history.pushState({}, '', path); this._nav(path); }
   }
-  class MklabRoute extends HTMLElement { /* 只供 router 讀取屬性 */ }
-  if (!global.customElements.get('mklab-router')) global.customElements.define('mklab-router', MklabRouter);
-  if (!global.customElements.get('mklab-route')) global.customElements.define('mklab-route', MklabRoute);
 
-  /* ============ 匯出（選用，供其他 script 參考） ============ */
-  global.MKLAB_WC = { MklabKline, MklabDatatable, MklabDrawer, MklabRouter, MklabRoute };
+  /* ============ 全域註冊與匯出 ============ */
+  if (!global.customElements.get('mklab-kline')) global.customElements.define('mklab-kline', MklabKline);
+  if (!global.customElements.get('mklab-datatable')) global.customElements.define('mklab-datatable', MklabDatatable);
+
+  // 分頁跳轉全域函式
+  global.__dt_goto = function(inst, p) { const t = _instances[inst]; if (t) { t._page = p; t.render(); } };
+
+  // 匯出供參考
+  global.MKLAB_WC = global.MKLAB_WC || {};
+  global.MKLAB_WC.MklabKline = MklabKline;
+  global.MKLAB_WC.MklabDatatable = MklabDatatable;
 
 })(window);
