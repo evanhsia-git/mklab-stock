@@ -70,6 +70,7 @@
 </div>
 
 <script>
+  document.addEventListener('DOMContentLoaded', () => {
   // Market page specific logic
   // Use yf symbols from indices-config.json to match data
   const INDICES = ['^TWII', '^GSPC', '^IXIC', '^HSI', '^N225'];
@@ -149,6 +150,7 @@
     MKLAB.Shell?.mount({ active: 'market' });
     MKLAB.initDrawer?.();
   }
+  });
 </script>
 </main>
 <footer class="footer" role="contentinfo">
