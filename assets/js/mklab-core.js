@@ -234,17 +234,6 @@
     return t;
   }
 
-  global.MKLAB = { 
-  COLUMNS, 
-  DataTable: create, 
-  cellPct,
-  Drawer: Drawer,
-  Shell: Shell,
-  Watch: Watch,
-  initDrawer: function() { Drawer.init(); },
-  setLang: function(l) { Drawer.setLang(l); }
-};
-
   // ============================================================
   // 共用設定抽屜（全站唯一，所有頁一致）
   // ============================================================
@@ -336,7 +325,7 @@
     close(){
       const el = document.getElementById('drawer'); if(!el) return;
       el.classList.remove('open');
-      const mask = document.querySelector('.drawer-mask'); if(mask) mask.classList.remove('open');
+      const mask = document.query('.drawer-mask'); if(mask) mask.classList.remove('open');
       // 停止系統時間定時器
       this.stopSysTimer();
     },
@@ -510,12 +499,18 @@
     },
   };
 
+  // 關鍵：在 Drawer/Shell/Watch 全部定義完成後，再統一掛載到 global.MKLAB
+  // 避免暫時性死區 (TDZ) ReferenceError，導致導覽列/抽屜/頂部功能全部消失
+  global.MKLAB = global.MKLAB || {};
+  global.MKLAB.COLUMNS = COLUMNS;
   global.MKLAB.DataTable = create;
+  global.MKLAB.cellPct = cellPct;
   global.MKLAB.drawerHTML = drawerHTML;
   global.MKLAB.Drawer = Drawer;
   global.MKLAB.Watch = Watch;
   global.MKLAB.Shell = Shell;
   global.MKLAB.DRAWER_CFG = DRAWER_CFG;
   global.MKLAB.initDrawer = function(){ Drawer.init(); };
+  global.MKLAB.setLang = function(l){ Drawer.setLang(l); };
 
 })(window);
