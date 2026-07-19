@@ -113,6 +113,35 @@
   color: #fff;
 }
 
+.segmented {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 4px;
+  background: var(--surface);
+}
+.seg-btn {
+  flex: 1;
+  min-width: 60px;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+.seg-btn:hover { background: var(--row-hover); }
+.seg-btn.on {
+  background: var(--accent);
+  color: #fff;
+}
+.mb-2 { margin-bottom: 12px; }
+
 /* ===== Buttons ===== */
 .btn {
   display: inline-flex;

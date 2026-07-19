@@ -726,11 +726,11 @@ def run_weekly():
 
 # ===== 指數模式 =====
 def run_indices():
-    """每日：yfinance 抓全球主要指數 + 各國代表 ETF 收盤/漲跌%，寫入 data/indices.json。"""
+    """每日：yfinance 抓全球主要指數 + 各國代表 ETF + 巨集經濟指標，寫入 data/indices.json。"""
     try:
         import yfinance as yf
     except ImportError:
-        LOG.error("yfinance 未安裝，無法抓指數/ETF（indices 模式跳過）")
+        LOG.error("yfinance 未安裝，無法抓指數/ETF/巨集指標（indices 模式跳過）")
         LOG.finish(False, error="yfinance 未安裝")
         return
 
@@ -742,7 +742,22 @@ def run_indices():
 
     cfg = json.load(open(cfg_path, encoding="utf-8"))
     stamp = dt.datetime.now(dt.timezone(dt.timedelta(hours=8))).strftime("%Y-%m-%d")
-    LOG.info(f"indices 模式基準日 {stamp}，市場數={len(cfg.get('markets', []))}")
+    
+    # 支援新結構 (markets) 與舊結構 (indices/etfs/macro 根層級)
+    if "markets" in cfg:
+        LOG.info(f"indices 模式基準日 {stamp}，市場數={len(cfg['markets'])} (新結構 markets)")
+        # 扁平化所有市場的 indices/etfs
+        indices_cfg = []
+        etfs_cfg = []
+        for m in cfg["markets"]:
+            indices_cfg.extend(m.get("indices", []))
+            etfs_cfg.extend(m.get("etfs", []))
+        macro_cfg = cfg.get("macro", [])
+    else:
+        LOG.info(f"indices 模式基準日 {stamp}，指數數={len(cfg.get('indices', []))}，ETF數={len(cfg.get('etfs', []))} (舊結構)")
+        indices_cfg = cfg.get("indices", [])
+        etfs_cfg = cfg.get("etfs", [])
+        macro_cfg = cfg.get("macro", [])
 
     def fetch_one(item):
         syms_to_try = [item.get("yf")]
@@ -814,8 +829,41 @@ def run_indices():
 
     indices = build("indices")
     etfs = build("etfs")
-    LOG.stats["fetched"] = len(indices) + len(etfs)
-    LOG.stats["written"] = sum(1 for r in indices + etfs if r.get("close") is not None)
+    
+    # 抓取巨集經濟指標
+    macro_items = cfg.get("macro", [])
+    macro = {}
+    for item in macro_items:
+        item_id = item.get("id")
+        if not item_id:
+            continue
+        rec = fetch_one(item)
+        if rec:
+            macro[item_id] = {
+                "label": item.get("label"),
+                "unit": item.get("unit"),
+                "value": rec.get("close"),
+                "prev_value": rec.get("prev_close"),
+                "chg_pct": rec.get("chg_pct"),
+                "as_of": rec.get("as_of"),
+                "yf": item.get("yf"),
+                "desc": item.get("desc")
+            }
+            LOG.info(f"  {item_id} ({item.get('label')}): {rec['close']} ({rec['chg_pct']}%, as_of={rec['as_of']})")
+        else:
+            macro[item_id] = {
+                "label": item.get("label"),
+                "unit": item.get("unit"),
+                "value": None,
+                "prev_value": None,
+                "chg_pct": None,
+                "as_of": None,
+                "yf": item.get("yf"),
+                "desc": item.get("desc")
+            }
+            LOG.warn(f"  {item_id} ({item.get('label')}): 未取得（留 null）")
+    LOG.stats["fetched"] = len(indices) + len(etfs) + len(macro)
+    LOG.stats["written"] = sum(1 for r in indices + etfs if r.get("close") is not None) + sum(1 for v in macro.values() if v.get("value") is not None)
 
     meta = {
         "as_of": stamp,
@@ -823,10 +871,11 @@ def run_indices():
         "schema_version": SCHEMA_VERSION,
         "index_count": len(indices),
         "etf_count": len(etfs),
-        "note": "收盤/漲跌% 每日更新；as_of 為該標的最後交易日（跨時區可能非同日）。planned 市場資料待未來開發填入。",
+        "macro_count": len(macro),
+        "note": "收盤/漲跌% 每日更新；as_of 為該標的最後交易日（跨時區可能非同日）。巨集指標含 VIX、匯率、大宗商品、加密貨幣。",
     }
     with open(os.path.join(OUT, "indices.json"), "w", encoding="utf-8") as f:
-        json.dump({"meta": meta, "indices": indices, "etfs": etfs}, f, ensure_ascii=False, indent=2)
+        json.dump({"meta": meta, "indices": indices, "etfs": etfs, "macro": macro}, f, ensure_ascii=False, indent=2)
 
     LOG.stats["details"]["index_count"] = len(indices)
     LOG.stats["details"]["etf_count"] = len(etfs)

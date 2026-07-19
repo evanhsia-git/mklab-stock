@@ -57,9 +57,14 @@
     return json('stocks').then(arr => arr || []);
   }
 
-  /** indices.json（大盤快照） */
+  /** 讀取 indices.json（大盤、ETF、巨集指標） */
   function indices() {
     return json('indices');
+  }
+
+  /** 讀取巨集指標 */
+  function macro() {
+    return json('indices').then(d => d && d.macro ? d.macro : {});
   }
 
   /** TWII K 線（260 天） */
