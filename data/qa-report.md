@@ -1,5 +1,5 @@
 # mklab-stock QA Gate 報告
-**時間**: 2026-07-18 22:21:09  
+**時間**: 2026-07-19 00:15:59  
 **Critical ERROR**: 0  | **WARNING**: 2  
 **最終判定**: 🟢 ALLOW DEPLOY
 
@@ -15,11 +15,11 @@
 | Python | import-ok: export_db.py | PASS |  |  |  |
 | Python | import-ok: check_html_health.py | PASS |  |  |  |
 | Python | import-ok: qa_gate.py | PASS |  |  |  |
-| Data | 股票代號唯一 | PASS | 1370 檔唯一 |  |  |
+| Data | 股票代號唯一 | PASS | 1371 檔唯一 |  |  |
 | Data | 無髒值 (NaN/null/undefined/Infinity/空字串/非法'-') | WARNING | ?.pe=None; ?.pb=None; ?.div=None; ?.roe=None; ?.eps=None; ?.pe=None; ?.pb=None; ?.div=None; ?.roe=None; ?.eps=None | 確認資料源是否涵蓋該標的 | /root/Documents/mklab-stock/data/stocks.json |
-| Data | OHLC 合理性 (H>=L, H>=O, H>=C, L<=O, L<=C, P>0, V>=0, MktCap>0) | PASS | 1370 檔 OHLC 合理 |  |  |
+| Data | OHLC 合理性 (H>=L, H>=O, H>=C, L<=O, L<=C, P>0, V>=0, MktCap>0) | PASS | 1371 檔 OHLC 合理 |  |  |
 | Data | 前日波動異常 (>20% 閾值) | PASS | 無異常波動 |  |  |
-| JSON | stocks.json Schema | PASS | schema 完整 (1370 檔) |  |  |
+| JSON | stocks.json Schema | PASS | schema 完整 (1371 檔) |  |  |
 | JSON | industry.json Schema | PASS | 33 個產業 |  |  |
 | HTML | 結構健康檢查 | PASS | 全部 7 個 HTML 通過 |  |  |
 | CSS | 統一 Theme 變數 (var(--bg) 等) | PASS | Theme CSS 關鍵設計令牌完整 |  |  |
