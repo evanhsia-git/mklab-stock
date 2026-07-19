@@ -6,7 +6,7 @@
   <input id="addSym" placeholder="新增自選股代號，如 2330" onkeydown="if(event.key==='Enter')addSym()">
   <button onclick="addSym()">加入</button>
 </div>
-<div id="addTip" style="display:none;color:var(--warn);font-size:12px;margin-bottom:8px;"></div>
+<div id="addTip" class="note-inline"></div>
 
 <div class="section-title">價格提醒（Alert）設定</div>
 <p class="muted-small-top">
@@ -14,19 +14,19 @@
   <br>
   <small>※ 現在僅示意，未實作實時報警；若有需求可自行擴充</small>
 </p>
-<div class="settings-grid" style="display:flex;gap:6px;margin-bottom:8px;">
-  <input id="alertTargetPrice" placeholder="目標價" style="flex:1;padding:4px 6px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--ink);">
-  <span style="align-self:center;">~</span>
-  <input id="alertStopLossPrice" placeholder="停損價" style="flex:1;padding:4px 6px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--ink);">
-  <button onclick="savePriceAlert()" style="padding:4px 10px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;">儲存</button>
+<div class="flex-row gap-2" style="margin-bottom:8px;">
+  <input id="alertTargetPrice" placeholder="目標價" class="form-input flex-1">
+  <span class="flex-center">~</span>
+  <input id="alertStopLossPrice" placeholder="停損價" class="form-input flex-1">
+  <button onclick="savePriceAlert()" class="btn btn-primary btn-sm">儲存</button>
 </div>
-<div id="addAlertNote" style="color:var(--warn);font-size:11px;margin-bottom:8px;"></div>
+<div id="addAlertNote" class="note-inline"></div>
 
 <div class="table-wrap">
   <mklab-datatable id="wlTable" cols="sym,name,price,chg,pe,pb,roe,alert,del" page-size="10" pager-id="wlPager" default-sort="chg"></mklab-datatable>
 </div>
 
-<div class="alert-note inline">
+<div class="alert-note">
   <h3>提醒（Alert）欄位說明</h3>
   <p>提醒欄顯示系統針對自選股自動判定的觸發狀態。依各市場漲跌幅限制與熔斷機制自動示警：</p>
   <ul>

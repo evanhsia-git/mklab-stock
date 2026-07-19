@@ -1,6 +1,6 @@
 # mklab-stock QA Gate 報告
-**時間**: 2026-07-19 01:19:38  
-**Critical ERROR**: 0  | **WARNING**: 2  
+**時間**: 2026-07-19 02:34:11  
+**Critical ERROR**: 0  | **WARNING**: 1  
 **最終判定**: 🟢 ALLOW DEPLOY
 
 | 類別 | 項目 | 狀態 | 說明 | 修正建議 | 位置 |
@@ -15,15 +15,15 @@
 | Python | import-ok: export_db.py | PASS |  |  |  |
 | Python | import-ok: check_html_health.py | PASS |  |  |  |
 | Python | import-ok: qa_gate.py | PASS |  |  |  |
-| Data | 股票代號唯一 | PASS | 1371 檔唯一 |  |  |
-| Data | 無髒值 (NaN/null/undefined/Infinity/空字串/非法'-') | WARNING | ?.pe=None; ?.pb=None; ?.div=None; ?.roe=None; ?.eps=None; ?.pe=None; ?.pb=None; ?.div=None; ?.roe=None; ?.eps=None | 確認資料源是否涵蓋該標的 | /root/Documents/mklab-stock/data/stocks.json |
-| Data | OHLC 合理性 (H>=L, H>=O, H>=C, L<=O, L<=C, P>0, V>=0, MktCap>0) | PASS | 1371 檔 OHLC 合理 |  |  |
+| Data | 股票代號唯一 | PASS | 1789 檔唯一 |  |  |
+| Data | 無髒值 (NaN/null/undefined/Infinity/空字串/非法'-') | WARNING | ?.capital_stock=None; ?.capital_stock=None; ?.capital_stock=None; ?.capital_stock=None; ?.capital_stock=None; ?.capital_ | 確認資料源是否涵蓋該標的 | /root/Documents/mklab-stock/data/stocks.json |
+| Data | OHLC 合理性 (H>=L, H>=O, H>=C, L<=O, L<=C, P>0, V>=0, MktCap>0) | PASS | 1789 檔 OHLC 合理 |  |  |
 | Data | 前日波動異常 (>20% 閾值) | PASS | 無異常波動 |  |  |
-| JSON | stocks.json Schema | PASS | schema 完整 (1371 檔) |  |  |
+| JSON | stocks.json Schema | PASS | schema 完整 (1789 檔) |  |  |
 | JSON | industry.json Schema | PASS | 33 個產業 |  |  |
 | HTML | 結構健康檢查 | PASS | 全部 7 個 HTML 通過 |  |  |
 | CSS | 統一 Theme 變數 (var(--bg) 等) | PASS | Theme CSS 關鍵設計令牌完整 |  |  |
-| CSS | 禁止硬寫核心樣式 (違反 Design Token) | WARNING | 行內硬寫樣式: ['mklab-stock-research.html', 'mklab-stock-help.html', 'mklab-stock-watchlist.html'] | 改用 CSS class / Design Token | mklab-stock-research.html, mklab-stock-help.html, mklab-stock-watchlist.html |
+| CSS | 禁止硬寫核心樣式 (違反 Design Token) | PASS | 無行內硬寫核心樣式 |  |  |
 | JS | syntax: mklab-stock-screener.html#0 | PASS |  |  |  |
 | JS | syntax: index.html#0 | PASS |  |  |  |
 | JS | syntax: mklab-stock-research.html#0 | PASS |  |  |  |
@@ -37,10 +37,8 @@
 | Visual | 視覺回歸比對 | MANUAL | 需瀏覽器截圖，與 Baseline 比較配色/字體/間距/版面/圖表，差異超閾值標記失敗 |  |  |
 
 ## 問題摘要
-- **[WARNING] Data/無髒值 (NaN/null/undefined/Infinity/空字串/非法'-')**: ?.pe=None; ?.pb=None; ?.div=None; ?.roe=None; ?.eps=None; ?.pe=None; ?.pb=None; ?.div=None; ?.roe=None; ?.eps=None
+- **[WARNING] Data/無髒值 (NaN/null/undefined/Infinity/空字串/非法'-')**: ?.capital_stock=None; ?.capital_stock=None; ?.capital_stock=None; ?.capital_stock=None; ?.capital_stock=None; ?.capital_stock=None; ?.capital_stock=None; ?.capital_stock=None; ?.eps=None; ?.capital_stock=None
   - 建議: 確認資料源是否涵蓋該標的（/root/Documents/mklab-stock/data/stocks.json）
-- **[WARNING] CSS/禁止硬寫核心樣式 (違反 Design Token)**: 行內硬寫樣式: ['mklab-stock-research.html', 'mklab-stock-help.html', 'mklab-stock-watchlist.html']
-  - 建議: 改用 CSS class / Design Token（mklab-stock-research.html, mklab-stock-help.html, mklab-stock-watchlist.html）
 
 ## 最終判定: ALLOW DEPLOY
 

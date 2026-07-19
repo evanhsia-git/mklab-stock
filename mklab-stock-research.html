@@ -48,14 +48,14 @@
   </div>
 
   <div>
-    <div class="card" id="infoCard"><p style="color:var(--muted);font-size:13px;text-align:center">請選擇個股</p></div>
+    <div class="card" id="infoCard"><p class="text-muted text-center">請選擇個股</p></div>
 
     <div class="card">
       <h3 id="chartTitle">歷史價格圖（TWII 加權指數 · 近 1 年）</h3>
       <div class="kline-toolbar">
-        <button onclick="klAddIndicator('MACD')">MACD</button>
-        <button onclick="klAddIndicator('KDJ')">KD</button>
-        <button onclick="klClear()">清除</button>
+        <button onclick="klAddIndicator('MACD')" class="btn btn-secondary btn-sm">MACD</button>
+        <button onclick="klAddIndicator('KDJ')" class="btn btn-secondary btn-sm">KD</button>
+        <button onclick="klClear()" class="btn btn-ghost btn-sm">清除</button>
       </div>
       <mklab-kline id="tvChart" height="400"></mklab-kline>
     </div>
@@ -119,7 +119,7 @@ function searchSym() {
   const v = document.getElementById('symQ').value.trim().toUpperCase();
   if (!v) return renderList();
   const hits = Object.keys(STOCKS).filter(k => k.includes(v) || (STOCKS[k].name || '').includes(v)).slice(0, 12);
-  document.getElementById('symList').innerHTML = hits.map(k => `<div data-s="${k}" onclick="selectSym('${k}')">${k} ${STOCKS[k].name || ''}</div>`).join('') || '<div style="color:var(--muted);padding:8px">無符合代號</div>';
+  document.getElementById('symList').innerHTML = hits.map(k => `<div data-s="${k}" onclick="selectSym('${k}')">${k} ${STOCKS[k].name || ''}</div>`).join('') || '<div class="text-muted text-sm text-center py-2">無符合代號</div>';
   if (hits.length === 1 && STOCKS[hits[0]]) selectSym(hits[0]);
 }
 
@@ -161,7 +161,7 @@ function selectSym(sym) {
 function loadKLine() {
   const raw = window.TWII_KDATA;
   if (!raw || !raw.length) {
-    document.getElementById('tvChart').innerHTML = '<div style="padding:40px;text-align:center;color:var(--muted)">K線資料載入中…</div>';
+    document.getElementById('tvChart').innerHTML = '<div class="text-muted text-sm text-center py-6">K線資料載入中…</div>';
     return;
   }
   if (chart) {

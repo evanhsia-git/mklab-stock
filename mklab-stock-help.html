@@ -66,7 +66,7 @@
       <tr><td>歷史股價</td><td class="b">本機 DB 灌種</td><td>初始 260 個交易日快照，後續由 GitHub Actions 每日追加</td></tr>
     </tbody>
   </table>
-  <p style="margin-top:10px; color:var(--muted); font-size:13px;">原則：<b>GitHub-Native / Fork First / 零外部依賴 / 零 secret</b>。任何人 fork 本倉庫即可獨立運作，不需申請任何 API key。</p>
+  <p class="muted-small-top">原則：<b>GitHub-Native / Fork First / 零外部依賴 / 零 secret</b>。任何人 fork 本倉庫即可獨立運作，不需申請任何 API key。</p>
 </div>
 
 <div class="card">
@@ -75,7 +75,7 @@
   <div class="kv"><span>每日自動更新</span><b>台灣收盤後 17:00（UTC 09:00）週一至週五</b></div>
   <div class="kv"><span>ROE / ROA 更新</span><b>每週六自動補齊</b></div>
   <div class="kv"><span>休市處理</span><b>週末 / 國定假日 / 突發颱風假自動跳過</b></div>
-  <p style="margin-top:8px; color:var(--muted); font-size:13px;">資料以收盤為準，非即時。首頁黃標顯示實際資料日。</p>
+  <p class="muted-small-top">資料以收盤為準，非即時。首頁黃標顯示實際資料日。</p>
 </div>
 
 <div class="card">
@@ -88,7 +88,7 @@
 
 <div class="card">
   <h2>🧮 綜合評分計算標準</h2>
-  <p style="font-size:14px;">首頁「綜合評分 TOP 10」依下列加權即時計算（0–100 分），<b>只列出資料齊全且評分 &gt; 0 的推薦股</b>：</p>
+  <p class="text-sm">首頁「綜合評分 TOP 10」依下列加權即時計算（0–100 分），<b>只列出資料齊全且評分 > 0 的推薦股</b>：</p>
   <table>
     <thead><tr><th>指標</th><th>權重</th><th>計算方式</th></tr></thead>
     <tbody>
@@ -99,13 +99,13 @@
       <tr><td>漲跌%</td><td class="b">最高 15</td><td><code>min(15, 漲跌% × 1.0)</code>，越高越好</td></tr>
     </tbody>
   </table>
-  <p style="margin-top:10px; color:var(--muted); font-size:13px;">任一欄位缺漏（null）則該股不列入推薦。評分僅供參考，<b>非投資建議</b>。</p>
+  <p class="muted-small-top">任一欄位缺漏（null）則該股不列入推薦。評分僅供參考，<b>非投資建議</b>。</p>
 </div>
 
 <div class="card">
   <h2>⚠️ 免責聲明</h2>
-  <p style="font-size:14px; color:var(--muted);">本網站所有資料與評分僅供研究與教育參考，不構成任何投資建議。使用者應自行判斷並承擔投資風險。</p>
-  <p style="margin-top:10px;"><a class="link" href="https://github.com/evanhsia-git/mklab-stock" target="_blank">GitHub 倉庫 ↗</a></p>
+  <p class="text-muted text-sm">本網站所有資料與評分僅供研究與教育參考，不構成任何投資建議。使用者應自行判斷並承擔投資風險。</p>
+  <p class="mt-2"><a class="link" href="https://github.com/evanhsia-git/mklab-stock" target="_blank">GitHub 倉庫 ↗</a></p>
 </div>
 
 <script>
