@@ -375,9 +375,191 @@
     }
   }
 
+  /* ============ 3. <mklab-drawer> 抽屜元件 ============ */
+  const DRAWER_CFG = {
+    appearance: { dark: true, darkOn: true, lang: true },
+    help: { doc: 'mklab-stock-help.html', log: 'mklab-stock-log.html', readme: 'https://github.com/evanhsia-git/mklab-stock#readme' },
+    system: { version: 'dashboard v3.0', source: 'TWSE/TPEX/Yahoo/Stooq', updated: '2026-07-13', status: '● 正常運作' },
+  };
+
+  function drawerHTML() {
+    const c = DRAWER_CFG;
+    const darkOn = (localStorage.getItem('mk_dark') !== '0') && c.appearance.darkOn;
+    const lang = localStorage.getItem('mk_lang') || 'zh';
+    let h = '<h3>設定</h3>';
+    h += '<h4>外觀</h4>';
+    if (c.appearance.dark) {
+      h += `<div class="row"><span>深色主題</span><button class="switch ${darkOn?'on':''}" id="swDark" onclick="MKLAB_WC.MklabDrawer.toggleDark()"></button></div>`;
+    }
+    if (c.appearance.lang) {
+      h += `<div class="row"><span>語言</span><div class="seg"><button id="langZh" class="${lang==='zh'?'on':''}" onclick="MKLAB_WC.MklabDrawer.setLang('zh')">中文</button><button id="langEn" class="${lang==='en'?'on':''}" onclick="MKLAB_WC.MklabDrawer.setLang('en')">EN</button></div></div>`;
+    }
+    h += '<h4>說明</h4>';
+    h += `<div class="row"><a href="${c.help.doc}">功能說明（使用/資料源/評分標準）↗</a></div>`;
+    h += `<div class="row"><a href="${c.help.log}">開發日誌 ↗</a></div>`;
+    h += `<div class="row"><a href="${c.help.readme}" target="_blank" rel="noopener">GitHub README ↗</a></div>`;
+    h += '<h4>System</h4>';
+    const s = c.system;
+    h += `<div class="sys-note">版本：${s.version}<br>資料源：${s.source}<br>最後更新：${s.updated}<br>狀態：<span class="up">${s.status}</span></div>`;
+    return h;
+  }
+
+  class MklabDrawer extends HTMLElement {
+    static get observedAttributes() { return []; }
+    constructor() {
+      super();
+      this.attachShadow({ mode: 'open' });
+      this._sysTimer = null;
+    }
+    connectedCallback() {
+      this._render();
+      this._applyInitialTheme();
+      this._fetchUpdateDate();
+      this._startSysTimer();
+    }
+    disconnectedCallback() { this._stopSysTimer(); }
+    _render() {
+      this.shadowRoot.innerHTML = `
+        <style>
+          :host { display: block; width: 100%; height: 100%; overflow-y: auto; padding: 16px; box-sizing: border-box; }
+          .close-x { position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; border: none; background: var(--bg-elevated); border-radius: 50%; font-size: 1.5rem; cursor: pointer; color: var(--ink); display: flex; align-items: center; justify-content: center; }
+          h3 { margin: 0 0 12px; font-size: 1.1rem; color: var(--ink); }
+          h4 { margin: 16px 0 8px; font-size: 0.9rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+          .row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); }
+          .row:last-child { border-bottom: none; }
+          .switch { width: 44px; height: 24px; border-radius: 12px; background: var(--border); border: none; position: relative; cursor: pointer; transition: background 0.2s; }
+          .switch::after { content: ''; position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; border-radius: 50%; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.3); transition: transform 0.2s; }
+          .switch.on { background: var(--accent); }
+          .switch.on::after { transform: translateX(20px); }
+          .seg { display: flex; gap: 4px; }
+          .seg button { flex: 1; padding: 6px 12px; border: 1px solid var(--border); background: var(--bg); color: var(--ink); border-radius: 4px; cursor: pointer; font-size: 0.85rem; }
+          .seg button.on { background: var(--accent); color: white; border-color: var(--accent); }
+          .sys-note { font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
+          .sys-note .up { color: var(--up); }
+          a { color: var(--accent); text-decoration: none; }
+          a:hover { text-decoration: underline; }
+        </style>
+        <button class="close-x" onclick="MKLAB_WC.MklabDrawer.close()">×</button>
+        <div class="drawer-content">${drawerHTML()}</div>
+      `;
+    }
+    _applyInitialTheme() {
+      const darkOn = (localStorage.getItem('mk_dark') !== '0') && DRAWER_CFG.appearance.darkOn;
+      document.documentElement.setAttribute('data-theme', darkOn ? 'dark' : 'light');
+      const sw = this.shadowRoot.getElementById('swDark');
+      if (sw) sw.classList.toggle('on', darkOn);
+    }
+    _fetchUpdateDate() {
+      fetch('data/stocks.json').then(r => r.ok ? r.json() : null).then(d => {
+        const asof = d && d.meta && d.meta.as_of;
+        if (asof) {
+          DRAWER_CFG.system.updated = asof;
+          const note = this.shadowRoot.querySelector('.sys-note');
+          if (note) {
+            const sys = DRAWER_CFG.system;
+            note.innerHTML = `版本：${sys.version}<br>資料源：${sys.source}<br>最後更新：${asof}<br>狀態：<span class="up">${sys.status}</span>`;
+          }
+        }
+      }).catch(e => console.warn('[MklabDrawer] fetch stocks.json failed:', e));
+    }
+    _startSysTimer() {
+      if (this._sysTimer) return;
+      this._sysTimer = setInterval(() => {
+        const note = this.shadowRoot.querySelector('.sys-note');
+        if (!note) return;
+        const now = new Date();
+        const sys = DRAWER_CFG.system;
+        const dateStr = now.toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit' });
+        const timeStr = now.toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+        const weekStr = ['日','一','二','三','四','五','六'][now.getDay()];
+        note.innerHTML = `版本：${sys.version}<br>資料源：${sys.source}<br>最後更新：${sys.updated}<br>當前時間：${dateStr} (週${weekStr}) ${timeStr}<br>狀態：<span class="up">${sys.status}</span>`;
+      }, 60000);
+    }
+    _stopSysTimer() { if (this._sysTimer) { clearInterval(this._sysTimer); this._sysTimer = null; } }
+    static open() { const el = document.querySelector('mklab-drawer'); if (el) { el.classList.add('open'); document.querySelector('.drawer-mask')?.classList.add('open'); } }
+    static close() { const el = document.querySelector('mklab-drawer'); if (el) { el.classList.remove('open'); document.querySelector('.drawer-mask')?.classList.remove('open'); } }
+    static toggleDark() {
+      const on = document.documentElement.getAttribute('data-theme') === 'dark';
+      const next = !on;
+      document.documentElement.setAttribute('data-theme', next ? 'dark' : 'light');
+      localStorage.setItem('mk_dark', next ? '1' : '0');
+      const sw = document.querySelector('mklab-drawer')?.shadowRoot?.getElementById('swDark');
+      if (sw) sw.classList.toggle('on', next);
+    }
+    static setLang(l) {
+      localStorage.setItem('mk_lang', l);
+      const zh = document.querySelector('mklab-drawer')?.shadowRoot?.getElementById('langZh');
+      const en = document.querySelector('mklab-drawer')?.shadowRoot?.getElementById('langEn');
+      if (zh) zh.classList.toggle('on', l === 'zh');
+      if (en) en.classList.toggle('on', l === 'en');
+    }
+  }
+
+  /* ============ 4. <mklab-router> SPA 路由元件 ============ */
+  class MklabRouter extends HTMLElement {
+    static get observedAttributes() { return []; }
+    constructor() {
+      super();
+      this.attachShadow({ mode: 'open' });
+      this._routes = [];
+      this._currentPath = null;
+    }
+    connectedCallback() {
+      this._parseRoutes();
+      this._bindEvents();
+      this._navigate(location.pathname, false);
+    }
+    _parseRoutes() {
+      const routeEls = this.querySelectorAll('mklab-route');
+      routeEls.forEach(el => {
+        const path = el.getAttribute('path');
+        const component = el.getAttribute('component');
+        const show = el.getAttribute('show') || 'block';
+        if (path && component) this._routes.push({ path, component, show });
+      });
+      // 預設路由：path="/" 優先
+      this._routes.sort((a, b) => (a.path === '/' ? -1 : 1));
+    }
+    _bindEvents() {
+      window.addEventListener('popstate', () => this._navigate(location.pathname, false));
+      // 處理 <a> 點擊攔截
+      document.addEventListener('click', e => {
+        const a = e.target.closest('a[href^="/"]');
+        if (a && !a.target && !a.hasAttribute('download')) {
+          e.preventDefault();
+          this._navigate(a.getAttribute('href'), true);
+        }
+      });
+    }
+    _navigate(path, push) {
+      if (this._currentPath === path) return;
+      this._currentPath = path;
+      if (push) history.pushState(null, '', path);
+      let matched = this._routes.find(r => r.path === path) || this._routes.find(r => r.path === '/');
+      this._routes.forEach(r => {
+        const el = document.querySelector(r.component);
+        if (el) el.style.display = (r === matched ? r.show : 'none');
+      });
+      // 更新導覽列 active 狀態
+      document.querySelectorAll('#mainNav a').forEach(a => {
+        const href = a.getAttribute('href');
+        a.classList.toggle('active', href === path || (path === '/' && href === 'index.html'));
+      });
+      // 更新 utilbar active 狀態（若有）
+      document.querySelectorAll('.utilbar a[href]').forEach(a => {
+        const href = a.getAttribute('href');
+        a.classList.toggle('active', href === path || (path === '/' && href === 'index.html'));
+      });
+    }
+    _render() { this.shadowRoot.innerHTML = ''; }
+  }
+
   /* ============ 全域註冊與匯出 ============ */
   if (!global.customElements.get('mklab-kline')) global.customElements.define('mklab-kline', MklabKline);
   if (!global.customElements.get('mklab-datatable')) global.customElements.define('mklab-datatable', MklabDatatable);
+  if (!global.customElements.get('mklab-drawer')) global.customElements.define('mklab-drawer', MklabDrawer);
+  if (!global.customElements.get('mklab-router')) global.customElements.define('mklab-router', MklabRouter);
+  if (!global.customElements.get('mklab-route')) global.customElements.define('mklab-route', class extends HTMLElement {});
 
   // 分頁跳轉全域函式
   global.__dt_goto = function(inst, p) { const t = _instances[inst]; if (t) { t._page = p; t.render(); } };
@@ -386,5 +568,7 @@
   global.MKLAB_WC = global.MKLAB_WC || {};
   global.MKLAB_WC.MklabKline = MklabKline;
   global.MKLAB_WC.MklabDatatable = MklabDatatable;
+  global.MKLAB_WC.MklabDrawer = MklabDrawer;
+  global.MKLAB_WC.MklabRouter = MklabRouter;
 
 })(window);

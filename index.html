@@ -72,7 +72,7 @@
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('DOMContentLoaded', async () => {
   // Market page specific logic
   // Use yf symbols from indices-config.json to match data
   const INDICES = ['^TWII', '^GSPC', '^IXIC', '^HSI', '^N225'];
@@ -134,10 +134,43 @@
   }
 
   // Macro data (placeholder - would need separate API)
-  function loadMacro() {
-    // Placeholder for macro data
-    document.querySelectorAll('[id^="m-"]').forEach(el => {
-      el.textContent = '—';
+  async function loadMacro() {
+    const wrap = document.getElementById('macro5');
+    if (!wrap) return;
+    const items = [
+      { id: 'vix', label: 'VIX 恐慌指數', unit: '' },
+      { id: 'usd_twd', label: 'USD/TWD', unit: '' },
+      { id: 'gold', label: '黃金', unit: 'USD/oz' },
+      { id: 'oil', label: '原油 WTI', unit: 'USD/bbl' },
+      { id: 'btc', label: '比特幣', unit: 'USD' }
+    ];
+    // 嘗試從 indices.json 的 macro 欄位讀取（若有）
+    try {
+      const data = await MKLAB.data.json('indices');
+      if (data && data.macro) {
+        items.forEach(d => {
+          const el = document.getElementById(`m-${d.id}`);
+          if (el && data.macro[d.id] != null) {
+            const v = data.macro[d.id];
+            el.textContent = typeof v === 'number' ? v.toLocaleString() : v;
+            el.className = 'card-val';
+          } else if (el) {
+            el.textContent = '暫不提供';
+            el.className = 'card-val muted';
+          }
+        });
+        return;
+      }
+    } catch (e) {
+      console.warn('[Market] macro fetch failed:', e);
+    }
+    // Fallback: 顯示暫不提供
+    items.forEach(d => {
+      const el = document.getElementById(`m-${d.id}`);
+      if (el) {
+        el.textContent = '暫不提供';
+        el.className = 'card-val muted';
+      }
     });
   }
 
@@ -146,6 +179,19 @@
   renderMacro();
   loadIndices();
   loadMacro();
+
+  // 更新 freshness（資料新鮮度指示器）
+  try {
+    const meta = await MKLAB.data.json('stocks');
+    const asof = meta && meta.meta && meta.meta.as_of;
+    if (asof) {
+      const f = document.querySelector('.freshness');
+      if (f) f.textContent = '資料以 ' + asof + ' 收盤為準（Build-Time 自動更新）';
+    }
+  } catch (e) {
+    const f = document.querySelector('.freshness');
+    if (f) f.textContent = '無法載入即時資料，暫以示意資料顯示';
+  }
 
   // Register shell & drawer
   if (window.MKLAB) {

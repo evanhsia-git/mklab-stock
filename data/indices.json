@@ -7,6 +7,13 @@
     "etf_count": 6,
     "note": "收盤/漲跌% 每日更新；as_of 為該標的最後交易日（跨時區可能非同日）。planned 市場資料待未來開發填入。"
   },
+  "macro": {
+    "vix": null,
+    "usd_twd": null,
+    "gold": null,
+    "oil": null,
+    "btc": null
+  },
   "indices": [
     {
       "market": "TW",
