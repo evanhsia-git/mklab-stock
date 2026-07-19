@@ -325,7 +325,7 @@
     close(){
       const el = document.getElementById('drawer'); if(!el) return;
       el.classList.remove('open');
-      const mask = document.query('.drawer-mask'); if(mask) mask.classList.remove('open');
+      const mask = document.querySelector('.drawer-mask'); if(mask) mask.classList.remove('open');
       // 停止系統時間定時器
       this.stopSysTimer();
     },

@@ -181,6 +181,7 @@
 
       this._render();
       this._loadData();
+      this._connected = true;
     }
 
     disconnectedCallback() {
@@ -194,6 +195,12 @@
 
     attributeChangedCallback(name, oldVal, newVal) {
       if (oldVal === newVal) return;
+      // 用 _connected 旗標而非 isConnected：customElements.define() 升級「已存在於 DOM
+      // 但尚未升級」的元素時，瀏覽器仍會先跑完所有 attributeChangedCallback、才跑
+      // connectedCallback；此時 isConnected 已經是 true（元素本來就在 DOM 上），
+      // 但內部表格結構（由 connectedCallback -> _render() 建立）還不存在，
+      // 呼叫 render() 會對還不存在的節點寫入 innerHTML 而噴錯。
+      if (!this._connected) return;
       this._parseAttributes();
       if (name === 'rows-json') this._loadData();
       else this.render();
@@ -521,7 +528,7 @@
       this._routes.sort((a, b) => (a.path === '/' ? -1 : 1));
     }
     _bindEvents() {
-      window.addEventListener('popstate', () => this._navigate(location.pathname, false));
+      window.addEventEventListener('popstate', () => this._navigate(location.pathname, false));
       // 處理 <a> 點擊攔截
       document.addEventListener('click', e => {
         const a = e.target.closest('a[href^="/"]');
