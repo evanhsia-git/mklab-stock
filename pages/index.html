@@ -70,6 +70,7 @@
       <div class="card">
         <div class="card-title">${d.label}</div>
         <div class="card-val" id="m-${d.id}">—</div>
+        <div class="card-sub" id="m-chg-${d.id}"></div>
       </div>
     `).join('');
   }
@@ -119,6 +120,13 @@
             const val = (v && typeof v === 'object' && v.value != null) ? v.value : v;
             el.textContent = typeof val === 'number' ? val.toLocaleString() : (val ?? '—');
             el.className = 'card-val';
+            // 顯示漲跌幅
+            const chgEl = document.getElementById(`m-chg-${d.id}`);
+            if (chgEl && v && typeof v === 'object' && v.chg_pct != null) {
+              const pct = Number(v.chg_pct);
+              chgEl.textContent = (pct > 0 ? '+' : '') + pct.toFixed(2) + '%';
+              chgEl.className = 'card-sub ' + (pct >= 0 ? 'up' : 'down');
+            }
           } else if (el) {
             el.textContent = '暫不提供';
             el.className = 'card-val muted';
