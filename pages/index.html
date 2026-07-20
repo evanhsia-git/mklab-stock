@@ -116,7 +116,8 @@
           const el = document.getElementById(`m-${d.id}`);
           if (el && data.macro[d.id] != null) {
             const v = data.macro[d.id];
-            el.textContent = typeof v === 'number' ? v.toLocaleString() : v;
+            const val = (v && typeof v === 'object' && v.value != null) ? v.value : v;
+            el.textContent = typeof val === 'number' ? val.toLocaleString() : (val ?? '—');
             el.className = 'card-val';
           } else if (el) {
             el.textContent = '暫不提供';
