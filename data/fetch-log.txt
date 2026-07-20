@@ -1,15 +1,7 @@
-mklab-stock 資料抓取 Log | 模式=daily
-開始: 2026-07-20 19:36:48  結束: 2026-07-20 19:37:03  耗時: 14.9s
+mklab-stock 資料抓取 Log | 模式=twii
+開始: 2026-07-20 20:01:39  結束: 2026-07-20 20:01:40  耗時: 1.2s
 成功: True  跳過: False
-抓取筆數: 1371  寫入筆數: 1787
+抓取筆數: 0  寫入筆數: 260
 --------------------------------------------------
-[INFO] Actions 基準日 2026-07-20
-[WARN] 營益分析抓取失敗（ROE/ROA/EPS 留空，不中斷）：Expecting value: line 1 column 1 (char 0)
-[INFO] 資產負債表取得 0 檔股本
-[INFO] trade_date=2026-07-17, TWSE=1371
-[INFO] ETF 發行張數載入 90 檔
-[INFO] TPEX 每日收盤取得 10030 筆原始資料
-[INFO] TPEX ETF 候選筆數: 416
-[WARN] TPEX BWIBBU 抓取失敗（PE/PB 留空，不中斷）：Expecting value: line 1 column 1 (char 0)
-[WARN] yfinance 未安裝，跳過補齊
-[INFO] 完成 → data/ (stocks=1787, history=2026-07-17, TWSE=1371)
+[INFO] 開始抓取 TWII 加權指數 K 線 (yfinance ^TWII, 260 日窗口)
+[INFO] TWII K 線寫入 260 天 → twii_kdata.js (2025-06-25~2026-07-20)
