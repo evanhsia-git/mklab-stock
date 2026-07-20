@@ -86,22 +86,22 @@
 
 ```text
 mklab-stock/
-├── templates/                    # 模板系統（唯一來源）
-│   ├── base.html                 # 頁面骨架（{{META}} {{HEADER}} {{DRAWER}} {{CONTENT}} {{FOOTER}}）
+├── templates/                    # 共用區塊（非整頁）
+│   ├── base.html                 # 頁面骨架參考
 │   ├── meta.html                 # title/description/viewport/favicon/Open Graph
 │   ├── header.html               # Sticky Header（導覽列 + 工具列）
 │   ├── drawer.html               # 設定抽屜（主題/語言/自選股/系統狀態）
 │   └── footer.html               # 頁腳
-├── pages/                        # 頁面內容片段（僅放 {{CONTENT}} 區塊）
-│   ├── index.html                # Market 首頁
-│   ├── mklab-stock-screener.html # Screener 篩選
-│   ├── mklab-stock-research.html # Research 研究
-│   ├── mklab-stock-industry.html # Industry 產業
-│   ├── mklab-stock-watchlist.html# Watchlist 自選
-│   ├── mklab-stock-help.html     # Help 說明
-│   └── mklab-stock-log.html      # Log 開發日誌
-├── build/                        # 建置系統
-│   └── build_pages.py            # 組裝器：templates + pages → 根目錄完整 HTML
+├── index.html                    # 正式網站（唯一來源，含完整頁面內容）
+├── mklab-stock-screener.html     # Screener 篩選
+├── mklab-stock-research.html     # Research 研究
+├── mklab-stock-industry.html     # Industry 產業
+├── mklab-stock-watchlist.html    # Watchlist 自選
+├── mklab-stock-help.html         # Help 說明
+├── mklab-stock-log.html          # Log 開發日誌
+
+├── build/                        # Template Synchronizer（僅同步共用區塊）
+│   └── template_sync.py          # 同步 Header/Drawer/Footer/Meta 至根目錄 HTML
 ├── assets/                       # 靜態資源
 │   ├── css/
 │   │   ├── mklab-theme.css       # Design Tokens + 基礎 Reset（:root 變數）
@@ -119,7 +119,6 @@ mklab-stock/
 │   ├── indices-config.json       # 指數/ETF 靜態配置（市場/符號/來源）
 │   ├── industry-codes.json       # 臺證所 33 產業代碼對照表
 │   ├── markets.json              # 多市場預留結構
-│   ├── market.json               # 五國大盤概覽（首頁五卡）
 │   ├── schema-version.json       # schema 版號
 │   ├── etf-shares.json           # ETF 發行張數（估算 market_cap 用）
 │   ├── twii_kdata.js             # 加權指數 K 線 (window.TWII_KDATA)
@@ -131,34 +130,53 @@ mklab-stock/
 │   ├── design.md
 │   ├── resource.md
 │   ├── SKILL.md
+│   ├── DATA_FIELDS.md            # 資料欄位對照表
 │   └── mklab-stock-schema.md     # 規範與架構手冊
-├── scripts/                      # 抓取/匯出/QA 腳本
-│   ├── fetch_data.py             # 雲端每日抓取（TWSE + yfinance ROE/ROA + 指數）
-│   ├── export_db.py              # 本機 DB 匯出 stocks.json
-│   ├── update_overview.py        # ROE/ROA 補齊（cron 友善，本機 DB）
-│   ├── qa_gate.py                # CI 質量門禁
-│   └── check_html_health.py      # HTML 結構健康檢查
+├── skills/                       # Skills First — 每個 Skill 自包含
+│   ├── README.md                 # 索引
+│   ├── router.md                 # 路由決策
+│   ├── qa-gate/                  # 品質門禁
+│   │   ├── skill.md  qa_gate.py  validate_data.py  checklist.md  config.json
+│   ├── html-health/              # HTML 結構健康
+│   │   ├── skill.md  check_html_health.py  checklist.md  rules.json
+│   ├── lint/                     # 程式碼/結構規範
+│   │   ├── skill.md  lint.py  checklist.md  lint-rules.json
+│   ├── design-system/           # UI/Theme 規範
+│   │   ├── skill.md  ui-rules.md  theme.json
+│   ├── data/                     # 資料抓取/匯出
+│   │   ├── skill.md  fetch_data.py  update_overview.py  export_db.py  schema.md
+│   ├── deployment/              # GitHub Pages 部署
+│   │   ├── skill.md  deploy.py  github-pages.md
+│   └── development/             # 開發輔助
+│       ├── skill.md  coding-style.md  helper.py
+├── build/                        # Template Synchronizer（僅同步共用區塊）
+│   └── template_sync.py
 ├── .github/workflows/            # CI/CD
 │   ├── daily-update.yml          # 每日收盤 + 每週六 ROE/ROA + 指數/ETF/K線
 │   ├── qa-gate.yml               # 質量門禁
 │   └── html-health.yml           # HTML 結構檢查
-├── index.html                    # Build 產出：Market 首頁
-├── mklab-stock-screener.html     # Build 產出：Screener 篩選
-├── mklab-stock-research.html     # Build 產出：Research 研究
-├── mklab-stock-industry.html     # Build 產出：Industry 產業
-├── mklab-stock-watchlist.html    # Build 產出：Watchlist 自選
-├── mklab-stock-help.html         # Build 產出：Help 說明
-├── mklab-stock-log.html          # Build 產出：Log 開發日誌
+├── templates/                    # 共用區塊（非整頁）
+│   ├── base.html  header.html  drawer.html  footer.html  meta.html
+├── sandbox/                      # 實驗/原型（GrapesJS/Dashboard/UI）
+├── vendor/                       # 第三方 JS（lightweight-charts.min.js）
+├── index.html                    # 正式網站（唯一來源）
+├── mklab-stock-screener.html     # Screener 篩選
+├── mklab-stock-research.html     # Research 研究
+├── mklab-stock-industry.html     # Industry 產業
+├── mklab-stock-watchlist.html    # Watchlist 自選
+├── mklab-stock-help.html         # Help 說明
+├── mklab-stock-log.html          # Log 開發日誌
+├── HANDOFF.md                    # 架構標準規範（MKLAB Framework v1.x）
 └── README.md                     # 本檔案
 ```
 
-> **資料源頭**：本機 `/root/Documents/database/tw_stock_all.db`（38MB SQLite）是權威來源；`scripts/export_db.py` 將其匯出為上方 `data/*.json` 推上 GitHub Pages。雲端 `fetch_data.py` 每日增量更新收盤價，每週六補 ROE/ROA。
+> **資料源頭**：本機 `/root/Documents/database/tw_stock_all.db`（38MB SQLite）是權威來源；`skills/data/export_db.py` 將其匯出為上方 `data/*.json` 推上 GitHub Pages。雲端 `skills/data/fetch_data.py` 每日增量更新收盤價，每週六補 ROE/ROA。
 
 ## 核心架構特色
 
 ### Template-based 架構
-- **單一來源**：Header/Drawer/Footer/Meta 只維護一份 `templates/`
-- **內容分離**：各頁只寫內容 `pages/`，Build 時組裝
+- **單一來源**：根目錄 HTML 即正式網站；Header/Drawer/Footer/Meta 只維護一份 `templates/`
+- **模板同步**：`build/template_sync.py` 將共用區塊同步進 7 個根目錄 HTML
 - **零重複**：改一次 Template，全站 7 頁同步更新
 
 ### Web Components 元件化
@@ -194,7 +212,7 @@ MKLAB.data = {
 
 ### GrapesJS 視覺編輯器（官方）
 - 僅作為開發階段編輯器，**正式網站不引用 GrapesJS Runtime**
-- 編輯 → 匯出乾淨 HTML/CSS → 手動同步回 `templates/`、`pages/`、`assets/css/`
+- 編輯 → 匯出乾淨 HTML/CSS → 手動同步回 `templates/`、`assets/css/`
 - 保證輸出可再次載入 GrapesJS 編輯，無 `data-gjs-*` 殘留
 
 ## 本地預覽與開發
@@ -203,15 +221,15 @@ MKLAB.data = {
 # 1. 進入專案
 cd mklab-stock
 
-# 2. 執行 Build（產出根目錄完整 HTML）
-python build/build_pages.py
+# 2. 同步共用區塊（Template Synchronizer）
+python build/template_sync.py
 
 # 3. 本地預覽
 python -m http.server 8000
 # 開瀏覽器 http://localhost:8000/index.html
 
-# 4. 開發流程：編輯 templates/、pages/、assets/css/、assets/js/
-#    → 重新 Build → 驗證 → Commit
+# 4. 開發流程：編輯根目錄 HTML、templates/、assets/css/、assets/js/
+#    → 重新同步 → 驗證 → Commit
 ```
 
 ### 使用 GrapesJS 編輯設計
@@ -230,7 +248,7 @@ python build/build_pages.py
 #    - Header → templates/header.html
 #    - Drawer → templates/drawer.html
 #    - Footer → templates/footer.html
-#    - 頁面內容 → pages/*.html
+#    - 頁面內容 → mklab-stock-*.html（根目錄）
 #    - CSS 變數/樣式 → assets/css/mklab-theme.css 等
 # 6. 重新 Build 驗證
 ```
@@ -246,7 +264,7 @@ python build/build_pages.py
 
 ```bash
 # 本地執行
-python scripts/qa_gate.py --json qa-result.json
+python skills/qa-gate/qa_gate.py --json qa-result.json
 
 # CI 自動執行：.github/workflows/qa-gate.yml
 # 檢查項目：

@@ -37,7 +37,7 @@ tags: [mklab-stock, schema, 規範, 運維, 文檔]
 │    └─ stock_overview (roe/eps/market_cap/industry/roa)       │
 │    └─ daily_prices_YYYYMMDD (OHLCV+pe/pb/div)                │
 │         │                                                    │
-│         ▼ scripts/export_db.py (一次性灌種)                  │
+│         ▼ skills/data/export_db.py (一次性灌種)                  │
 │    data/stocks.json / industry.json / history/*.json         │
 └─────────────────────────────────────────────────────────────┘
                          │ git push
@@ -46,7 +46,7 @@ tags: [mklab-stock, schema, 規範, 運維, 文檔]
 │  GitHub repo: evanhsia-git/mklab-stock (main)               │
 │  .github/workflows/daily-update.yml (台灣 17:00=UTC 09:00)   │
 │         │                                                    │
-│         ▼ scripts/fetch_data.py daily / weekly              │
+│         ▼ skills/data/fetch_data.py daily / weekly              │
 │    data/stocks.json (每日 TWSE 收盤) + indices.json (yf)     │
 │         │                                                    │
 │         ▼ GitHub Pages                                       │

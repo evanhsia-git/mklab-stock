@@ -358,3 +358,10 @@ Agent 必須先提供：
 - Fork First：clone 即跑，無 scripts/ 依賴 ✅
 - Web Components / GrapesJS：未改 `mklab-wc.js`、未改元件用法 ✅
 - 既有 UI 修復（8 項）：已含於根目錄 HTML，未被同步覆寫 ✅
+
+### 補遺修正（同輪，確保 CI 不中斷）
+
+- `.github/workflows/daily-update.yml`：4 處 `scripts/fetch_data.py` → `skills/data/fetch_data.py`
+- `.github/workflows/html-health.yml`：push block paths 殘留 `scripts/` → 改 `skills/html-health/`
+- `README.md` / `docs/mklab-stock-schema.md` / `mklab-stock-log.html`：舊 `scripts/`、`pages/`、`build_pages.py` 引用更新為 Skills First 架構
+- 上述修正經 QA 全 PASS（ALLOW DEPLOY, 7/7 健康, lint 通過, broken links 通過）

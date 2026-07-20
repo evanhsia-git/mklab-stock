@@ -22,7 +22,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Fetch daily (TWSE OpenAPI, 雲端免 key)
-        run: python scripts/fetch_data.py daily
+        run: python skills/data/fetch_data.py daily
       - name: Commit & push
         run: |
           git config user.name "github-actions[bot]"
@@ -48,7 +48,7 @@ jobs:
       - name: Install yfinance
         run: pip install yfinance
       - name: Fetch ROE/ROA (yfinance, 免 key, sleep 3s 防 ban)
-        run: python scripts/fetch_data.py weekly
+        run: python skills/data/fetch_data.py weekly
       - name: Commit & push
         run: |
           git config user.name "github-actions[bot]"
@@ -73,7 +73,7 @@ jobs:
       - name: Install yfinance
         run: pip install yfinance
       - name: Fetch global indices + ETFs (yfinance, 免 key)
-        run: python scripts/fetch_data.py indices
+        run: python skills/data/fetch_data.py indices
       - name: Commit & push
         run: |
           git config user.name "github-actions[bot]"
@@ -98,7 +98,7 @@ jobs:
       - name: Install yfinance
         run: pip install yfinance
       - name: Fetch TWII 加權指數 K 線 (yfinance ^TWII, 260 日窗口)
-        run: python scripts/fetch_data.py twii
+        run: python skills/data/fetch_data.py twii
       - name: Commit & push
         run: |
           git config user.name "github-actions[bot]"
