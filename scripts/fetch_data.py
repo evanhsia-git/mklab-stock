@@ -651,6 +651,60 @@ def run_daily():
         s.pop("_est_mc", None)
 
     stocks = all_stocks
+
+    # ===== 方案二：yfinance 補齊 capital_stock / eps 缺漏 =====
+    def _yfinance_fill_missing(stocks_list):
+        """對 capital_stock 或 eps 為 null 的股票，呼叫 yfinance 補齊"""
+        try:
+            import yfinance as yf
+        except ImportError:
+            LOG.warn("yfinance 未安裝，跳過補齊")
+            return
+
+        # 找出需要補齊的代號
+        need_fill = [s for s in stocks_list if s.get("capital_stock") is None or s.get("eps") is None]
+        if not need_fill:
+            LOG.info("無需 yfinance 補齊")
+            return
+
+        syms = [s["sym"] for s in need_fill]
+        LOG.info(f"yfinance 補齊 {len(syms)} 檔 (capital_stock/eps 缺漏)")
+
+        # 為避免被 ban，分批處理，每檔 sleep 1.5 秒
+        for i, sym in enumerate(syms):
+            try:
+                t = yf.Ticker(f"{sym}.TW")
+                info = t.info or {}
+
+                # capital_stock: 實收資本額 = sharesOutstanding * 面值(台股慣例 10 元)
+                shares_out = info.get("sharesOutstanding")
+                capital = round(shares_out * 10) if shares_out else None
+
+                # eps: trailingEps (最新財報)
+                trailing_eps = info.get("trailingEps")
+
+                # 找到對應股票物件並更新
+                for s in stocks_list:
+                    if s["sym"] == sym:
+                        if s.get("capital_stock") is None and capital is not None:
+                            s["capital_stock"] = capital
+                        if s.get("eps") is None and trailing_eps is not None:
+                            s["eps"] = round(trailing_eps, 2)
+                        break
+
+            except Exception as e:
+                LOG.warn(f"yfinance {sym} 補齊失敗: {e}")
+
+            # 進度 log + 限速
+            if (i + 1) % 10 == 0:
+                LOG.info(f"  進度 {i+1}/{len(syms)}")
+            time.sleep(1.5)  # 防 ban
+
+        filled = sum(1 for s in need_fill if s.get("capital_stock") is not None or s.get("eps") is not None)
+        LOG.info(f"yfinance 補齊完成：{filled}/{len(need_fill)} 檔有新資料")
+
+    _yfinance_fill_missing(stocks)
+
     meta = {
         "as_of": trade_date,
         "source": f"TWSE OpenAPI STOCK_DAY_ALL (免 key, 雲端)",
@@ -938,11 +992,18 @@ def run_twii():
 
 
 if __name__ == "__main__":
-    if MODE == "weekly":
-        run_weekly()
-    elif MODE == "indices":
-        run_indices()
-    elif MODE == "twii":
-        run_twii()
-    else:
-        run_daily()
+    try:
+        if MODE == "weekly":
+            run_weekly()
+        elif MODE == "indices":
+            run_indices()
+        elif MODE == "twii":
+            run_twii()
+        else:
+            run_daily()
+    except Exception as e:
+        # 任何未被個別函式攔截的非預期例外，先寫入結構化 log 再往外拋，
+        # 避免 GitHub Actions 只看到裸露的 traceback、卻沒有 fetch-log.json/txt 可查。
+        LOG.error(f"未預期例外，執行中止：{e}")
+        LOG.finish(False, error=f"未預期例外：{e}")
+        raise
