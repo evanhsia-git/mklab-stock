@@ -104,9 +104,9 @@
       "name": "恆生指數",
       "yf": "^HSI",
       "desc": "香港恆生指數",
-      "close": 25049.24,
+      "close": 25143.05,
       "prev_close": 24562.24,
-      "chg_pct": 1.98,
+      "chg_pct": 2.36,
       "as_of": "2026-07-20"
     },
     {
@@ -124,9 +124,9 @@
       "name": "Euro STOXX 50",
       "yf": "^STOXX50E",
       "desc": "歐元區50大藍籌",
-      "close": 6224.52,
+      "close": 6258.72,
       "prev_close": 6230.87,
-      "chg_pct": -0.1,
+      "chg_pct": 0.45,
       "as_of": "2026-07-20"
     },
     {
@@ -134,9 +134,9 @@
       "name": "DAX (德國)",
       "yf": "^GDAXI",
       "desc": "德國法蘭克福40大藍籌",
-      "close": 24784.75,
+      "close": 24937.33,
       "prev_close": 24830.98,
-      "chg_pct": -0.19,
+      "chg_pct": 0.43,
       "as_of": "2026-07-20"
     },
     {
@@ -144,9 +144,9 @@
       "name": "CAC 40 (法國)",
       "yf": "^FCHI",
       "desc": "法國巴黎40大藍籌",
-      "close": 8326.2,
+      "close": 8382.54,
       "prev_close": 8338.81,
-      "chg_pct": -0.15,
+      "chg_pct": 0.52,
       "as_of": "2026-07-20"
     },
     {
@@ -154,9 +154,9 @@
       "name": "FTSE 100 (英國)",
       "yf": "^FTSE",
       "desc": "英國倫敦藍籌",
-      "close": 10543.24,
+      "close": 10583.09,
       "prev_close": 10600.4,
-      "chg_pct": -0.54,
+      "chg_pct": -0.16,
       "as_of": "2026-07-20"
     },
     {
@@ -308,19 +308,19 @@
     "vix": {
       "label": "VIX 恐慌指數",
       "unit": "",
-      "value": 18.77,
-      "prev_value": 16.73,
-      "chg_pct": 12.19,
-      "as_of": "2026-07-17",
+      "value": 17.95,
+      "prev_value": 18.77,
+      "chg_pct": -4.37,
+      "as_of": "2026-07-20",
       "yf": "^VIX",
       "desc": "CBOE 波動率指數，衡量市場恐慌程度"
     },
     "usd_twd": {
       "label": "USD/TWD",
       "unit": "",
-      "value": 32.32,
+      "value": 32.29,
       "prev_value": 32.26,
-      "chg_pct": 0.17,
+      "chg_pct": 0.1,
       "as_of": "2026-07-20",
       "yf": "USDTWD=X",
       "desc": "美元兌台幣即期匯率"
@@ -328,9 +328,9 @@
     "gold": {
       "label": "黃金",
       "unit": "USD/oz",
-      "value": 4008.0,
+      "value": 4024.8,
       "prev_value": 4012.7,
-      "chg_pct": -0.12,
+      "chg_pct": 0.3,
       "as_of": "2026-07-20",
       "yf": "GC=F",
       "desc": "COMEX 黃金期貨近月合約"
@@ -338,9 +338,9 @@
     "oil": {
       "label": "原油 WTI",
       "unit": "USD/bbl",
-      "value": 83.92,
+      "value": 80.43,
       "prev_value": 82.49,
-      "chg_pct": 1.73,
+      "chg_pct": -2.5,
       "as_of": "2026-07-20",
       "yf": "CL=F",
       "desc": "NYMEX WTI 原油期貨近月合約"
@@ -348,9 +348,9 @@
     "btc": {
       "label": "比特幣",
       "unit": "USD",
-      "value": 64030.52,
+      "value": 64794.76,
       "prev_value": 64690.8,
-      "chg_pct": -1.02,
+      "chg_pct": 0.16,
       "as_of": "2026-07-20",
       "yf": "BTC-USD",
       "desc": "比特幣兌美元現貨價格"
@@ -358,9 +358,9 @@
     "copper": {
       "label": "銅期貨",
       "unit": "USD/lb",
-      "value": 6.28,
+      "value": 6.33,
       "prev_value": 6.22,
-      "chg_pct": 0.96,
+      "chg_pct": 1.74,
       "as_of": "2026-07-20",
       "yf": "HG=F",
       "desc": "COMEX 銅期貨近月合約 (領先經濟指標)"
@@ -378,9 +378,9 @@
     "dxy": {
       "label": "美元指數",
       "unit": "",
-      "value": 100.76,
+      "value": 100.81,
       "prev_value": 100.75,
-      "chg_pct": 0.01,
+      "chg_pct": 0.06,
       "as_of": "2026-07-20",
       "yf": "DX-Y.NYB",
       "desc": "ICE 美元指數 (DXY)"
