@@ -11,11 +11,11 @@
 <link rel="stylesheet" href="assets/css/layout.css">
 <link rel="stylesheet" href="assets/css/component.css">
 <link rel="stylesheet" href="assets/css/mobile.css">
-<script src="vendor/lightweight-charts.min.js" defer></script>
+vendor/lightweight-charts.min.js
 <script src="data/twii_kdata.js" defer></script>
-<script src="assets/js/mklab-core.js" defer></script>
-<script src="assets/js/data-client.js" defer></script>
-<script src="assets/js/mklab-wc.js" defer></script>
+assets/js/mklab-core.js
+assets/js/data-client.js
+assets/js/mklab-wc.js
 </head>
 <body>
 <header class="sticky-header" role="banner">
@@ -63,7 +63,7 @@
     <div class="card">
       <h3>財報摘要</h3>
       <div class="table-wrap">
-        <mklab-datatable id="finTable" cols="sym,name,price,chg,pe,pb,roe,roa,eps" page-size="0"></mklab-datatable>
+        <table id="finTable"></table>
       </div>
     </div>
   </div>
@@ -244,9 +244,11 @@ function klClear() {
   extraLines = [];
 }
 
-loadAll();
-MKLAB.initDrawer();
-MKLAB.Shell.mount({ active: 'research' });
+window.addEventListener('DOMContentLoaded', function () {
+  loadAll();
+  MKLAB.initDrawer();
+  MKLAB.Shell.mount({ active: 'research' });
+});
 </script>
 </main>
 <footer class="footer" role="contentinfo">

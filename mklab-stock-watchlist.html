@@ -11,11 +11,11 @@
 <link rel="stylesheet" href="assets/css/layout.css">
 <link rel="stylesheet" href="assets/css/component.css">
 <link rel="stylesheet" href="assets/css/mobile.css">
-<script src="vendor/lightweight-charts.min.js" defer></script>
+vendor/lightweight-charts.min.js
 <script src="data/twii_kdata.js" defer></script>
-<script src="assets/js/mklab-core.js" defer></script>
-<script src="assets/js/data-client.js" defer></script>
-<script src="assets/js/mklab-wc.js" defer></script>
+assets/js/mklab-core.js
+assets/js/data-client.js
+assets/js/mklab-wc.js
 </head>
 <body>
 <header class="sticky-header" role="banner">
@@ -59,7 +59,7 @@
 <div id="addAlertNote" class="note-inline"></div>
 
 <div class="table-wrap">
-  <mklab-datatable id="wlTable" cols="sym,name,price,chg,pe,pb,roe,alert,del" page-size="10" pager-id="wlPager" default-sort="chg"></mklab-datatable>
+  <table id="wlTable"></table>
 </div>
 
 <div class="alert-note">
@@ -138,6 +138,7 @@
     }
   }
 
+  window.addEventListener('DOMContentLoaded', function () {
   MKLAB.data.stocks().then(d => {
     if (d && Array.isArray(d)) {
       d.forEach(s => { priceMap[s.sym] = { price: s.price, chg: s.chg, pe: s.pe, pb: s.pb, roe: s.roe, alert: null, name: s.name }; });
@@ -151,6 +152,7 @@
 
   MKLAB.initDrawer();
   MKLAB.Shell.mount({ active: 'watchlist' });
+});
 </script>
 </main>
 <footer class="footer" role="contentinfo">

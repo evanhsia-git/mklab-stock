@@ -107,7 +107,11 @@
 .card-sm { padding: 12px 14px; }
 .card-title { font-weight: 600; margin-bottom: 8px; color: var(--ink); }
 .card-val { font-size: 20px; font-weight: 700; color: var(--ink); }
+.card-val.up { color: var(--up); }
+.card-val.down { color: var(--down); }
 .card-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.card-sub.up { color: var(--up); }
+.card-sub.down { color: var(--down); }
 .card .chg { font-size: 13px; font-weight: 600; }
 .card .chg.up { color: var(--up); }
 .card .chg.down { color: var(--down); }

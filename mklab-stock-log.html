@@ -11,11 +11,11 @@
 <link rel="stylesheet" href="assets/css/layout.css">
 <link rel="stylesheet" href="assets/css/component.css">
 <link rel="stylesheet" href="assets/css/mobile.css">
-<script src="vendor/lightweight-charts.min.js" defer></script>
+vendor/lightweight-charts.min.js
 <script src="data/twii_kdata.js" defer></script>
-<script src="assets/js/mklab-core.js" defer></script>
-<script src="assets/js/data-client.js" defer></script>
-<script src="assets/js/mklab-wc.js" defer></script>
+assets/js/mklab-core.js
+assets/js/data-client.js
+assets/js/mklab-wc.js
 </head>
 <body>
 <header class="sticky-header" role="banner">
@@ -51,9 +51,9 @@
   <h3>v2.0 — Web Components 重構（2026-07-18）</h3>
   <ul>
     <li><b>重構路線</b>：放棄 React/Vite/npm（違反零依賴），改採 <b>原生 Web Components / classic script</b>。</li>
-    <li><b>元件庫</b>：<code>assets/mklab-wc.js</code> 註冊 <code><mklab-kline></code>、<code><mklab-datatable></code>、<code><mklab-drawer></code>、<code><mklab-router></code>。</li>
+    <li><b>元件庫</b>：<code>assets/mklab-wc.js</code> 註冊 <code>&lt;mklab-kline&gt;</code>、<code>&lt;mklab-datatable&gt;</code>、<code>&lt;mklab-drawer&gt;</code>、<code>&lt;mklab-router&gt;</code>。</li>
     <li><b>資料層</b>：<code>assets/js/data-client.js</code>（IIFE、快取、ETag、內建鍵 <code>stocks</code>/<code>indices</code>/<code>twiiKline</code>），統一取代各頁散落 <code>fetch()</code>。</li>
-    <li><b>表格元件</b>：<code><mklab-datatable></code> 封裝 <code>MKLAB.DataTable</code>，支援 <code>cols</code>、<code>page-size</code>、<code>default-sort</code>、<code>data-src</code>、<code>field-map</code>、<code>pager-id</code>。</li>
+    <li><b>表格元件</b>：<code>&lt;mklab-datatable&gt;</code> 封裝 <code>MKLAB.DataTable</code>，支援 <code>cols</code>、<code>page-size</code>、<code>default-sort</code>、<code>data-src</code>、<code>field-map</code>、<code>pager-id</code>。</li>
     <li><b>所有主題頁</b>：Market / Screener / Research / Industry / Watchlist / Help / Log 全部改為 WC 版本，移除所有 vanilla chart/table/drawer 內嵌邏輯，統一引入 <code>assets/mklab-wc.js</code> + <code>assets/js/data-client.js</code>。</li>
     <li><b>Build 系統</b>：<code>build/build_pages.py</code> 將 <code>templates/</code> + <code>pages/</code> 組裝為根目錄完整 HTML；<code>python build/build_pages.py</code> 一鍵產出。</li>
     <li><b>QA Gate</b>：Python/JSON/HTML/Link/Chart 全自動檢測，全綠 <code>ALLOW DEPLOY</code>。</li>
@@ -79,9 +79,9 @@
     <li><b>瀏覽器快取</b>：Demo 頁 script src 加 <code>?v=</code> cache-bust。</li>
     <li><b>Custom Element 時序</b>：呼叫元件方法（<code>setData</code> 等）必須等 <code>customElements.whenDefined('mklab-kline')</code> 後。</li>
     <li><b>LightweightCharts v4 限制</b>：無 <code>series.getData()</code>、無 overlay 繪圖工具（畫線/費波那契不生效）。</li>
-    <li><b>HTML 驗證</b>：<code>check_html_health.py</code> 的 <code>escape_in_code_pre</code> 必須真正轉義為 <code><style></style></code>（曾因自我替換 bug 導致誤報）。</li>
+    <li><b>HTML 驗證</b>：<code>check_html_health.py</code> 的 <code>escape_in_code_pre</code> 必須真正轉義為 <code>&lt;style&gt;&lt;/style&gt;</code>（曾因自我替換 bug 導致誤報）。</li>
     <li><b>QA Gate Links 檢查</b>：<code>data:</code>/<code>mailto:</code>/<code>javascript:</code>/<code>#</code> 協議必須排除，否則 favicon 的 <code>data:image/svg+xml</code> 被誤判 404。</li>
-    <li><b><code>MKLAB</code> 全域物件</b>：<code>mklab-core.js</code> 用 IIFE + <code>global.MKLAB = {...}</code> 匯出，頁面 <code><script></script></code> 必須在 core.js 之後執行。</li>
+    <li><b><code>MKLAB</code> 全域物件</b>：<code>mklab-core.js</code> 用 IIFE + <code>global.MKLAB = {...}</code> 匯出，頁面 <code>&lt;script&gt;&lt;/script&gt;</code> 必須在 core.js 之後執行。</li>
     <li><b>Build 後根目錄 HTML 需 git add</b>：<code>build_pages.py</code> 輸出到專案根，CI 部署的是根目錄檔案，不是 <code>pages/</code>。</li>
   </ul>
 </div>

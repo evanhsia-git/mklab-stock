@@ -11,11 +11,11 @@
 <link rel="stylesheet" href="assets/css/layout.css">
 <link rel="stylesheet" href="assets/css/component.css">
 <link rel="stylesheet" href="assets/css/mobile.css">
-<script src="vendor/lightweight-charts.min.js" defer></script>
+vendor/lightweight-charts.min.js
 <script src="data/twii_kdata.js" defer></script>
-<script src="assets/js/mklab-core.js" defer></script>
-<script src="assets/js/data-client.js" defer></script>
-<script src="assets/js/mklab-wc.js" defer></script>
+assets/js/mklab-core.js
+assets/js/data-client.js
+assets/js/mklab-wc.js
 </head>
 <body>
 <header class="sticky-header" role="banner">
@@ -42,12 +42,12 @@
 
 <div class="section-title">全產業列表（區間績效 %）</div>
 <div class="table-wrap">
-  <mklab-datatable id="indPerfTable" cols="ind,chg,w1,m1,m3,m6,ytd,y1,cnt" page-size="10" pager-id="indPerfPager" default-sort="chg" field-map='{"ind":"nm"}'></mklab-datatable>
+  <table id="indPerfTable"></table>
 </div>
 
 <div class="section-title" id="detailTitle" class="hidden"></div>
 <div class="table-wrap" id="detailWrap" class="hidden">
-  <mklab-datatable id="indDetailTable" cols="sym,name,price,chg,pe,pb,roe" page-size="10" pager-id="indDetailPager" default-sort="chg"></mklab-datatable>
+  <table id="indDetailTable"></table>
 </div>
 
 <div class="disclaimer">產業分類參考台灣證交所 33 個法定產業（示意資料）。生產環境由 Build-Time 計算各產業漲跌與成分股績效。</div>
@@ -139,9 +139,12 @@
   function openDrawer() { MKLAB.Drawer.open(); }
   function closeDrawer() { MKLAB.Drawer.close(); }
 
-  renderGrid(); renderPerf(); loadIndustry();
-  MKLAB.initDrawer();
-  MKLAB.Shell.mount({ active: 'industry' });
+  window.addEventListener('DOMContentLoaded', function () {
+    renderGrid(); renderPerf();
+    loadIndustry();
+    MKLAB.initDrawer();
+    MKLAB.Shell.mount({ active: 'industry' });
+  });
 </script>
 </main>
 <footer class="footer" role="contentinfo">

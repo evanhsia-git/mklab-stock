@@ -104,8 +104,8 @@
   }
 
   DataTable.prototype._build = function(){
-    const thead = this.table.querySelector('thead');
-    if(!thead) return;
+    let thead = this.table.querySelector('thead');
+    if(!thead){ thead = document.createElement('thead'); this.table.appendChild(thead); }
     const tr = document.createElement('tr');
     this.cols.forEach(col=>{
       const th = document.createElement('th');
@@ -301,6 +301,10 @@
         }
       }).catch(e=>{ console.warn('[Drawer] fetch stocks.json failed:', e); });
     },
+    toggle(){
+      const el = document.getElementById('drawer'); if(!el) return;
+      if (el.classList.contains('open')) this.close(); else this.open();
+    },
     open(){
       const el = document.getElementById('drawer'); if(!el) return;
       el.classList.add('open');
@@ -477,7 +481,7 @@
         `</div>` +
         `<button class="fab-btn" onclick="MKLAB.Drawer.toggleDark()" title="主題">${ICON.dark}</button>` +
         `<a class="fab-btn" href="${SHELL_CFG.github}" target="_blank" rel="noopener" title="GitHub">${ICON.github}</a>` +
-        `<button class="fab-btn" onclick="MKLAB.Drawer.open()" title="設定">${ICON.gear}</button>`;
+        `<button class="fab-btn" onclick="MKLAB.Drawer.toggle()" title="設定">${ICON.gear}</button>`;
       bar.appendChild(tools);
       // 深色按鈕同步初始狀態
       const darkOn = (localStorage.getItem('mk_dark')!=='0') && DRAWER_CFG.appearance.darkOn;

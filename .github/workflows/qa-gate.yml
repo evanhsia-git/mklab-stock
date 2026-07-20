@@ -6,14 +6,14 @@ on:
       - '**.py'
       - '**.html'
       - 'data/**'
-      - 'scripts/**'
+      - 'skills/**'
       - '.github/workflows/qa-gate.yml'
   pull_request:
     paths:
       - '**.py'
       - '**.html'
       - 'data/**'
-      - 'scripts/**'
+      - 'skills/**'
 
 permissions:
   contents: read
@@ -30,7 +30,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Quality Gate
-        run: python scripts/qa_gate.py --json qa-result.json
+        run: python skills/qa-gate/qa_gate.py --json qa-result.json
       - name: 判定結果
         id: verdict
         run: |
