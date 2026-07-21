@@ -1,15 +1,12 @@
 {
-  "mode": "indices",
-  "success": true,
-  "error": null,
-  "fetched": 36,
-  "written": 33,
+  "mode": "daily",
+  "success": false,
+  "error": "TWSE 抓取失敗：Expecting value: line 1 column 1 (char 0)",
+  "fetched": 0,
+  "written": 0,
   "skipped": false,
-  "details": {
-    "index_count": 16,
-    "etf_count": 12
-  },
-  "end": "2026-07-20 20:10:47",
-  "duration_sec": 12.5,
-  "start": "2026-07-20 20:10:35"
+  "details": {},
+  "end": "2026-07-21 18:56:49",
+  "duration_sec": 3.9,
+  "start": "2026-07-21 18:56:45"
 }
