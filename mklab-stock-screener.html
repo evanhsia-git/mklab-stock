@@ -1,17 +1,17 @@
+<!-- Mobile navigation placeholder -->
 <!DOCTYPE html>
 <html lang="zh-TW" data-theme="dark">
 <head>
 <base href="/mklab-stock/">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="{{DESCRIPTION}}">
+<title>{{TITLE}}</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
 <link rel="stylesheet" href="assets/css/mklab-theme.css">
 <link rel="stylesheet" href="assets/css/layout.css">
 <link rel="stylesheet" href="assets/css/component.css">
 <link rel="stylesheet" href="assets/css/mobile.css">
-<script src="vendor/lightweight-charts.min.js" defer></script>
-<script src="data/twii_kdata.js" defer></script>
-<script src="assets/js/mklab-core.js" defer></script>
-<script src="assets/js/data-client.js" defer></script>
-<script src="assets/js/mklab-wc.js" defer></script>
 </head>
 <body>
 <header class="sticky-header" role="banner">
@@ -19,9 +19,16 @@
   <div id="utilbar" class="utilbar">
     <span class="brand" id="brand"></span>
     <span class="spacer"></span>
+    <!-- 手機導航按鈕 -->
+    <div class="mobile-nav-toggle" style="display: none; position: absolute; top: 16px; right: 16px; z-index: 1000;">
+      <button class="mobile-menu-btn" onclick="MKLAB.Drawer.toggle()" aria-label="開啟選單">
+        <span class="hamburger">☰</span>
+      </button>
+    </div>
   </div>
   <div class="freshness" aria-live="polite">資料載入中…</div>
 </header>
+<!-- Mobile navigation placeholder -->
 <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
   <button class="close-x" onclick="MKLAB.Drawer.close()" aria-label="關閉抽屜">×</button>
   <div class="drawer-content" id="drawerContent">
@@ -174,6 +181,7 @@
   });
 </script>
 </main>
+<!-- Mobile navigation placeholder -->
 <footer class="footer" role="contentinfo">
   <div class="footer-inner">
     <span>mklab-stock · Web Components v2.0</span>

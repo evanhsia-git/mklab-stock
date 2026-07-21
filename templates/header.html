@@ -3,6 +3,10 @@
   <div id="utilbar" class="utilbar">
     <span class="brand" id="brand"></span>
     <span class="spacer"></span>
+    <!-- 手機導航按鈕 - 由 CSS media query 控制顯示/隱藏 -->
+    <button class="mobile-menu-btn" onclick="MKLAB.Drawer.toggle()" aria-label="開啟選單">
+      <span class="hamburger">☰</span>
+    </button>
   </div>
   <div class="freshness" aria-live="polite">資料載入中…</div>
 </header>
