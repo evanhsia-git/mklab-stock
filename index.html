@@ -19,15 +19,14 @@
   <div id="utilbar" class="utilbar">
     <span class="brand" id="brand"></span>
     <span class="spacer"></span>
-    <!-- 手機導航按鈕 -->
-    <div class="mobile-nav-toggle" style="display: none; position: absolute; top: 16px; right: 16px; z-index: 1000;">
-      <button class="mobile-menu-btn" onclick="MKLAB.Drawer.toggle()" aria-label="開啟選單">
-        <span class="hamburger">☰</span>
-      </button>
-    </div>
+    <!-- 手機導航按鈕 - 由 CSS media query 控制顯示/隱藏 -->
+    <button class="mobile-menu-btn" onclick="MKLAB.Drawer.toggle()" aria-label="開啟選單">
+      <span class="hamburger">☰</span>
+    </button>
   </div>
   <div class="freshness" aria-live="polite">資料載入中…</div>
 </header>
+<!-- Mobile navigation placeholder -->
 <!-- Mobile navigation placeholder -->
 <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
   <button class="close-x" onclick="MKLAB.Drawer.close()" aria-label="關閉抽屜">×</button>
@@ -213,6 +212,7 @@
   });
 </script>
 </main>
+<!-- Mobile navigation placeholder -->
 <!-- Mobile navigation placeholder -->
 <footer class="footer" role="contentinfo">
   <div class="footer-inner">

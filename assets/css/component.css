@@ -1,136 +1,67 @@
-// 移动端优化样式
+/* 全局阻止水平滑動 */
+html {
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 手機專屬抽屜 */
 @media (max-width: 768px) {
-  // 头部导航
-  .sticky-header {
-    position: relative;
-    padding: 10px;
-    background: var(--bg-elevated);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    z-index: 1000;
-  }
-
-  // 移动端导航菜单
-  .mobile-menu-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    color: var(--ink);
-    font-size: 24px;
-  }
-
-  // 移动端抽屉样式
   .drawer {
     position: fixed;
-    left: -85%;
-    width: 85%;
+    inset: 0;
+    width: 260px;
+    max-width: 90%;
     height: 100vh;
     background: var(--bg-elevated);
     box-shadow: 2px 0 16px rgba(0,0,0,0.2);
     z-index: 1001;
+    transition: transform 0.3s ease;
+    transform: translateX(-100%);
     padding: 20px;
+    box-sizing: border-box;
     overflow-y: auto;
-    transition: left 0.3s ease;
-    border-radius: 0;
   }
-
-  .drawer.open {
-    left: 0;
-  }
-
+  
+  .drawer.open { transform: translateX(0); }
+  
   .drawer-mask {
     display: none;
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     background: rgba(0,0,0,0.5);
     z-index: 999;
     opacity: 0;
     transition: opacity 0.3s ease;
   }
-
-  .drawer-mask.open {
-    display: block;
-    opacity: 1;
-  }
-
-  // 移动端内容区调整
-  main.wrap {
-    margin: 70px 10px 20px;
-    padding: 15px;
-  }
-
-  // 移动端卡片布局
-  .cards {
-    grid-template-columns: 1fr;
-    gap: 12px;
-    margin: 10px 0;
-  }
-
-  .card {
-    padding: 12px;
-  }
-
-  // 移动端导航栏调整
-  header.sticky-header {
-    padding: 10px 0;
-  }
-
-  // 移动端工具栏调整
-  .utilbar {
-    position: relative;
-    padding: 10px;
-  }
-
-  // 品牌调整
-  .brand {
-    font-size: 18px;
+  .drawer-mask.open { display: block; opacity: 1; }
+  
+  .mobile-menu-btn {
+    display: none;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 1002;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    color: var(--ink);
   }
 }
 
-// 桌面端样式
+/* 桌面版 */
 @media (min-width: 769px) {
-  .sticky-header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: var(--bg-elevated);
-  }
-
-  .mobile-menu-btn {
-    display: none;
-  }
-
+  .mobile-menu-btn { display: none; }
   .drawer {
     position: relative;
     left: auto;
     width: auto;
     height: auto;
-    background: transparent;
+    transform: none;
     box-shadow: none;
     padding: 0;
-    overflow-y: visible;
+    overflow: visible;
     z-index: auto;
   }
-
-  .drawer-mask {
-    display: none !important;
-  }
-
-  main.wrap {
-    margin: 80px 20px 30px;
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .cards {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  }
+  .drawer-mask { display: none !important; }
 }
