@@ -27,8 +27,8 @@
         return r.json();
       })
       .then(d => {
-        // stocks.json 結構為 {meta: {...}, stocks: [...]} —— 回傳 stocks 陣列
-        if (d && Array.isArray(d.stocks)) d = d.stocks;
+        // stocks.json 原始結構含 {meta, stocks}，回傳原始物件供 caller 自行取用
+        // 注意：不可在此自動拆解 stocks 陣列，否則 meta 資訊遺失
         _cache[name] = d;
         return d;
       });
@@ -42,19 +42,21 @@
   /** 讀 JS 資料檔（如 twii_kdata.js → 解析出 TWII_KDATA 全域） */
   function jsData(name, globalKey) {
     return _fetch(name).then(text => {
-      // 執行 JS 以定義全域（const 不掛 window，故用 new Function 取出）
       if (globalKey && !global[globalKey]) {
         try {
-          new Function(text + '\n;return typeof ' + globalKey + '!=="undefined"?' + globalKey + ':null;')();
-        } catch (e) {}
+          // 執行 JS：twii_kdata.js 末尾有 window.TWII_KDATA=TWII_KDATA，故執行後 global 可取到
+          new Function(text)();
+        } catch (e) {
+          console.warn('[data-client] jsData eval failed:', e);
+        }
       }
       return global[globalKey] || null;
     });
   }
 
-  /** 個股總表 stocks.json → 陣列（原始 d.stocks） */
+  /** 個股總表 stocks.json → 陣列（d.stocks） */
   function stocks() {
-    return json('stocks').then(arr => arr || []);
+    return json('stocks').then(d => (d && Array.isArray(d.stocks)) ? d.stocks : []);
   }
 
   /** 讀取 indices.json（大盤、ETF、巨集指標） */

@@ -117,7 +117,7 @@
     roe:   { label: 'ROE', type: 'num', sortable: true,  fmt: r => (r.roe != null ? Number(r.roe).toFixed(2) : '-') },
     roa:   { label: 'ROA', type: 'num', sortable: true,  fmt: r => (r.roa != null ? Number(r.roa).toFixed(2) : '-') },
     trend: { label: '趨勢', type: 'str', sortable: true,  fmt: r => (r.trend != null ? r.trend : (r.spct != null ? (r.spct > 0 ? '+' : '') + r.spct + '%' : '-')) },
-    spk:   { label: '趨勢', type: 'spark', sortable: false, fmt: r => { if (!r.spark || !r.spark.length) return '-'; const data = r.spark, min = Math.min(...data), max = Math.max(...data), rn = (max - min) || 1; const p = data.map((d, i) => `${(i / (data.length - 1) * 80).toFixed(1)},${(30 - ((d - min) / rn * 30)).toFixed(1)}`).join(' '); const col = data[data.length - 1] >= data[0] ? 'var(--up)' : 'var(--down)'; return `<div style="display:flex;justify-content:center"><svg viewBox="0 0 80 3N" style="width:80px;height:30px;display:block"><polyline points="${p}" fill="none" stroke="${col}" stroke-width="1.5"/></svg></div>`; } },
+    spk:   { label: '趨勢', type: 'spark', sortable: false, fmt: r => { if (!r.spark || !r.spark.length) return '-'; const data = r.spark, min = Math.min(...data), max = Math.max(...data), rn = (max - min) || 1; const p = data.map((d, i) => `${(i / (data.length - 1) * 80).toFixed(1)},${(30 - ((d - min) / rn * 30)).toFixed(1)}`).join(' '); const col = data[data.length - 1] >= data[0] ? 'var(--up)' : 'var(--down)'; return `<div style="display:flex;justify-content:center"><svg viewBox="0 0 80 30" style="width:80px;height:30px;display:block"><polyline points="${p}" fill="none" stroke="${col}" stroke-width="1.5"/></svg></div>`; } },
     ind:   { label: '產業', type: 'str', sortable: true, key: 'ind', fmt: r => (r.ind || r.nm || '-') },
     rsi:   { label: 'RSI', type: 'num', sortable: true, fmt: r => r.rsi != null ? r.rsi : '-' },
     cap:   { label: '市值(億)', type: 'num', sortable: true, fmt: r => { const v = r.market_cap != null ? r.market_cap / 1e8 : (r.cap != null ? r.cap : null); return v != null ? Number(v).toFixed(2) : '-'; } },
@@ -187,10 +187,6 @@
     disconnectedCallback() {
       delete _instances[this._inst];
       delete _byTable[this.id || this._inst];
-    }
-
-    static get observedAttributes() {
-      return ['cols', 'page-size', 'default-sort', 'pager-id', 'data-src', 'field-map', 'rows-json'];
     }
 
     attributeChangedCallback(name, oldVal, newVal) {
@@ -360,7 +356,7 @@
           const def = COLUMNS[id];
           if (!def) return '<td>?</td>';
           const rawVal = getVal({ id, ...def }, r, this._fieldMap);
-          const v = (typeof def.fmt === 'function') ? def.fmt(r, { __cb: '__dt_del_' + this.id }) : (rawVal != null ? rawVal : '-');
+          const v = (typeof def.fmt === 'function') ? def.fmt(r, { __cb: '__dt_del_' + (this.id || this._inst) }) : (rawVal != null ? rawVal : '-');
           let cls = (def.type === 'pct') ? ((rawVal >= 0) ? 'up' : 'down') : '';
           if (def.type === 'pct' && typeof rawVal === 'number' && Math.abs(rawVal) > 10) cls = 'warn';
           return `<td class="${cls}">${v}</td>`;
@@ -528,7 +524,7 @@
       this._routes.sort((a, b) => (a.path === '/' ? -1 : 1));
     }
     _bindEvents() {
-      window.addEventEventListener('popstate', () => this._navigate(location.pathname, false));
+      window.addEventListener('popstate', () => this._navigate(location.pathname, false));
       // 處理 <a> 點擊攔截
       document.addEventListener('click', e => {
         const a = e.target.closest('a[href^="/"]');
