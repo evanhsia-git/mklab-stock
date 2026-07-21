@@ -34,60 +34,29 @@ def sync_drawer(html, drawer):
     )
     return pat.sub(drawer.strip(), html) if pat.search(html) else html
 
-def sync_meta(html, meta, base):
+def sync_meta(html, base):
     """
-    Sync <head> content with proper CSS/JS links from meta.html and base.html.
-    Preserves <base>, <meta charset>, <meta viewport>, <meta description>, 
-    <link icon>, and page-specific scripts like data/twii_kdata.js.
+    Sync <head> with proper CSS/JS from base.html.
+    Preserves any existing head content but replaces with fresh base.html head.
     """
-    # Find head section
-    head_match = re.search(r'<head>.*?</head>', html, re.DOTALL)
+    # Extract head content from base.html
+    head_match = re.search(r'<head>.*?</head>', base, re.DOTALL)
     if not head_match:
         return html
     
-    head = head_match.group(0)
-    head_start = head_match.start()
-    head_end = head_match.end()
+    new_head = head_match.group(0)
     
-    # Extract all link and script tags from meta.html and base.html
-    # meta.html has CSS links and icon link
-    meta_links = re.findall(r'<link[^>]*>', meta)
-    # base.html has script tags
-    base_scripts = re.findall(r'<script[^>]*>.*?</script>', base, flags=re.DOTALL)
+    # Replace head in target HTML
+    head_match_target = re.search(r'<head>.*?</head>', html, re.DOTALL)
+    if not head_match_target:
+        return html
     
-    # Remove all existing link and script tags from head
-    head_clean = re.sub(r'<link[^>]*>', '', head)
-    head_clean = re.sub(r'<script[^>]*>.*?</script>', '', head_clean, flags=re.DOTALL)
-    
-    # Remove malformed lines (bare paths)
-    head_clean = re.sub(r'^(?:vendor|assets/js|data)/[^\n]*\n?', '', head_clean, flags=re.MULTILINE)
-    
-    # Rebuild head: preserve meta tags, add links and scripts
-    # Insert links after <meta viewport>
-    links_block = '\n'.join(meta_links)
-    head_with_links = re.sub(
-        r'(<meta name="viewport"[^>]*>)',
-        r'\1' + links_block,
-        head_clean,
-        count=1
-    )
-    
-    # Insert scripts before </head>
-    scripts_block = '\n'.join(base_scripts)
-    head_final = re.sub(
-        r'\s*</head>',
-        f'\n{scripts_block}\n</head>',
-        head_with_links,
-        count=1
-    )
-    
-    return html[:head_start] + head_final + html[head_end:]
+    return html[:head_match_target.start()] + new_head + html[head_match_target.end():]
 
 def main():
     header = read(os.path.join(TEMPLATES, "header.html"))
     drawer = read(os.path.join(TEMPLATES, "drawer.html"))
     footer = read(os.path.join(TEMPLATES, "footer.html"))
-    meta = read(os.path.join(TEMPLATES, "meta.html"))
     base = read(os.path.join(TEMPLATES, "base.html"))
 
     changed = 0
@@ -95,7 +64,7 @@ def main():
         html = read(p)
         new = sync_meta(
             sync_footer(sync_drawer(sync_header(html, header), drawer), footer),
-            meta, base
+            base
         )
         if new != html:
             write(p, new)
