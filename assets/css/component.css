@@ -61,8 +61,23 @@ html {
        padding: 0;
        overflow: visible;
        z-index: auto;
-       background: var(--bg);
+       background: var(--surface);
        max-width: 260px;
      }
   .drawer-mask { display: none !important; }
+}
+
+/* Industry card text overflow */
+.icard .nm,
+.icard .chg {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  max-width: 100%;
+}
+
+/* Industry card uniform height */
+.icard {
+  min-height: 140px;
 }

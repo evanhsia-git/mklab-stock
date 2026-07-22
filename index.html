@@ -27,6 +27,7 @@
 </header>
 <!-- Mobile navigation placeholder -->
 <!-- Mobile navigation placeholder -->
+<!-- Mobile navigation placeholder -->
 <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
   <button class="close-x" onclick="MKLAB.Drawer.close()" aria-label="關閉抽屜">×</button>
   <div class="drawer-content" id="drawerContent">
@@ -192,20 +193,16 @@
     loadIndices();
     loadMacro();
 
-    // 更新 yellow banner（資料日期）與 freshness（資料新鮮度指示器）
+    // 更新 freshness（資料新鮮度指示器）
     try {
       const meta = await MKLAB.data.json('stocks');
       const asof = meta && meta.meta && meta.meta.as_of;
       if (asof) {
-        const yellow = document.getElementById('yellowBanner');
         const fresh = document.querySelector('.freshness');
-        if (yellow) yellow.textContent = `資料以 ${asof} 收盤為準（Build-Time 自動更新）`;
-        if (fresh) fresh.textContent = '資料以 ' + asof + ' 收盤為準（Build-Time 自動更新）';
+        if (fresh) fresh.textContent = `資料以 ${asof} 收盤為準（Build-Time 自動更新）`;
       }
     } catch (e) {
-      const yellow = document.getElementById('yellowBanner');
       const fresh = document.querySelector('.freshness');
-      if (yellow) yellow.textContent = '無法載入即時資料，暫以示意資料顯示';
       if (fresh) fresh.textContent = '無法載入即時資料，暫以示意資料顯示';
     }
 
@@ -217,6 +214,7 @@
   });
 </script>
 </main>
+<!-- Mobile navigation placeholder -->
 <!-- Mobile navigation placeholder -->
 <!-- Mobile navigation placeholder -->
 <footer class="footer" role="contentinfo">
