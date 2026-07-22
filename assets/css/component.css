@@ -52,15 +52,17 @@ html {
 @media (min-width: 769px) {
   .mobile-menu-btn { display: none; }
   .drawer {
-    position: relative;
-    left: auto;
-    width: auto;
-    height: auto;
-    transform: none;
-    box-shadow: none;
-    padding: 0;
-    overflow: visible;
-    z-index: auto;
-  }
+       position: relative;
+       left: auto;
+       width: auto;
+       height: auto;
+       transform: none;
+       box-shadow: none;
+       padding: 0;
+       overflow: visible;
+       z-index: auto;
+       background: var(--bg);
+       max-width: 260px;
+     }
   .drawer-mask { display: none !important; }
 }

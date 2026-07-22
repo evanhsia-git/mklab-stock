@@ -94,16 +94,16 @@
   let activeInd = null;
 
   function renderGrid() {
-    document.getElementById('igrid').innerHTML = data.map((d, i) => {
-      const col = d.chg >= 0 ? "var(--up)" : "var(--down)";
-      const svg = spark(gen(d.seed, 20), d.chg >= 0 ? "#dc2626" : "#16a34a", 200, 28);
-      return `<div class="icard ${activeInd === i ? 'on' : ''}" onclick="selInd(${i})">
-        <div class="top"><span class="nm">${d.nm}</span><span class="chg ${d.chg >= 0 ? 'up' : 'down'}">${(d.chg > 0 ? '+' : '')}${d.chg}%</span></div>
-        <div class="meta">${d.cnt} 檔 · 領漲 ${d.top > 0 ? '+' : ''}${d.top}%</div>
-        <div class="spark">${svg}</div>
-      </div>`;
-    }).join("");
-  }
+      document.getElementById('igrid').innerHTML = data.map((d, i) => {
+        const col = d.chg >= 0 ? "var(--up)" : "var(--down)";
+        const svg = spark(gen(d.seed, 20), d.chg >= 0 ? "#dc2626" : "#16a34a", 200, 28);
+        return `<div class="icard ${activeInd === i ? 'on' : ''}" onclick="selInd(${i})">
+          <div class="top"><span class="nm text-wrap">${d.nm}</span><span class="chg text-wrap ${d.chg >= 0 ? 'up' : 'down'}">${(d.chg > 0 ? '+' : '')}${d.chg}%</span></div>
+          <div class="meta text-wrap">${d.cnt} 檔 · 領漲 ${d.top > 0 ? '+' : ''}${d.top}%</div>
+          <div class="spark">${svg}</div>
+        </div>`;
+      }).join("");
+    }
 
   let perfTable = null;
   function renderPerf() {
