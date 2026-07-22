@@ -365,3 +365,7 @@ Agent 必須先提供：
 - `.github/workflows/html-health.yml`：push block paths 殘留 `scripts/` → 改 `skills/html-health/`
 - `README.md` / `docs/mklab-stock-schema.md` / `mklab-stock-log.html`：舊 `scripts/`、`pages/`、`build_pages.py` 引用更新為 Skills First 架構
 - 上述修正經 QA 全 PASS（ALLOW DEPLOY, 7/7 健康, lint 通過, broken links 通過）
+
+### 今日任務完成（2026-07-22）
+- 已完成：首頁重複 freshness 橫幅移除、業界卡片文字溢出與統一高度修正、抽屜桌面背景與寬度、研究頁財報摘要佔位符、本地 QA 門檻通過、commit 並推送。
+- 未完成：無

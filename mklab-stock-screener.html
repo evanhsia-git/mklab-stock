@@ -106,6 +106,9 @@
   </div>
 </div>
 
+<script src="assets/js/data-client.js"></script>
+<script src="assets/js/mklab-core.js"></script>
+<script src="assets/js/mklab-wc.js"></script>
 <script>
   const TOP100=(function(){ const base=[["2330","台積電"],["2317","鴻海"],["2454","聯發科"],["2303","聯電"],["2308","台達電"],["2412","中華電"],["6505","台塑化"],["1303","南亞"],["2882","國泰金"],["2881","富邦金"],["2891","中信金"],["3711","日月光投控"],["3008","大立光"],["2327","國巨"],["8046","南電"],["2382","廣達"],["2376","技嘉"],["2379","瑞昱"],["3034","聯詠"],["3231","緯創"]]; const out=[]; let s=42; function rnd(){ s=(s*1103515245+12345)&0x7fffffff; return s/0x7fffffff; } for(let i=0;i<100;i++){ const b=base[i%base.length]; const sym=i<base.length?b[0]:(2000+i); const name=i<base.length?b[1]:("個股"+i); out.push({sym,name,price:+(20+rnd()*1800).toFixed(1),chg:+((rnd()-0.45)*10).toFixed(2),pe:+(5+rnd()*40).toFixed(1),pb:+(0.5+rnd()*9).toFixed(2),roe:+(2+rnd()*40).toFixed(1),roa:+(1+rnd()*20).toFixed(1),eg:+(-5+rnd()*30).toFixed(1),rsi:+(20+rnd()*75).toFixed(0),ma5:rnd()>0.4,ma10:rnd()>0.45,ma30:rnd()>0.5,cap:+(500+rnd()*9000).toFixed(0),div:+(0+rnd()*6).toFixed(1)}); } return out; })();
 

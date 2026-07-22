@@ -46,6 +46,11 @@ html {
     color: var(--ink);
     padding: 4px;
   }
+
+  /* 手機版已有漢堡選單鍵可開抽屜，Shell.mount() 動態插入的齒輪鍵會重複，故隱藏 */
+  #utilbar [data-shell-tools] button[title="設定"] {
+    display: none;
+  }
 }
 
 /* 桌面版 */
