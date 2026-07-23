@@ -503,6 +503,23 @@
     },
   };
 
+  // 統一格式化 as_of 日期：資料來源可能是 20260713 或 2026-07-13，一律正規化為 YYYY-MM-DD
+  function formatAsOf(raw) {
+    if (raw == null) return '';
+    const s = String(raw).trim();
+    const m8 = s.match(/^(\d{4})(\d{2})(\d{2})$/);
+    if (m8) return `${m8[1]}-${m8[2]}-${m8[3]}`;
+    return s;
+  }
+
+  // 各頁共用：更新 header 的 .freshness 黃標文字，格式統一
+  function setFreshness(asof) {
+    const f = document.querySelector('.freshness');
+    if (!f) return;
+    if (!asof) { f.textContent = '無法載入即時資料，暫以示意資料顯示'; return; }
+    f.textContent = '資料以 ' + formatAsOf(asof) + ' 收盤為準（Build-Time 自動更新）';
+  }
+
   // 關鍵：在 Drawer/Shell/Watch 全部定義完成後，再統一掛載到 global.MKLAB
   // 避免暫時性死區 (TDZ) ReferenceError，導致導覽列/抽屜/頂部功能全部消失
   global.MKLAB = global.MKLAB || {};
@@ -516,5 +533,7 @@
   global.MKLAB.DRAWER_CFG = DRAWER_CFG;
   global.MKLAB.initDrawer = function(){ Drawer.init(); };
   global.MKLAB.setLang = function(l){ Drawer.setLang(l); };
+  global.MKLAB.formatAsOf = formatAsOf;
+  global.MKLAB.setFreshness = setFreshness;
 
 })(window);

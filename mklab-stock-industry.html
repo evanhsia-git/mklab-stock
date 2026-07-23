@@ -4,8 +4,8 @@
 <base href="/mklab-stock/">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="{{DESCRIPTION}}">
-<title>{{TITLE}}</title>
+<meta name="description" content="mklab-stock — 台股/美股即時儀表板，大盤、產業、篩選、個股研究一站掌握">
+<title>mklab-stock</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
 <link rel="stylesheet" href="assets/css/mklab-theme.css">
 <link rel="stylesheet" href="assets/css/layout.css">
@@ -44,11 +44,13 @@
 <div class="table-wrap">
   <table id="indPerfTable"></table>
 </div>
+<div id="indPerfPager"></div>
 
-<div class="section-title" id="detailTitle" class="hidden"></div>
-<div class="table-wrap" id="detailWrap" class="hidden">
+<div class="section-title" id="detailTitle" style="display:none;"></div>
+<div class="table-wrap" id="detailWrap" style="display:none;">
   <table id="indDetailTable"></table>
 </div>
+<div id="indDetailPager"></div>
 
 <div class="disclaimer">產業分類參考台灣證交所 33 個法定產業（示意資料）。生產環境由 Build-Time 計算各產業漲跌與成分股績效。</div>
 
@@ -84,11 +86,16 @@
         data = d.industry.map((x, i) => ({ nm: x.nm, chg: x.chg, cnt: x.cnt, top: x.top, seed: +(20 + i * 37), w1: x.w1, m1: x.m1, m3: x.m3, m6: x.m6, ytd: x.ytd, y1: x.y1, y5: x.y5 }));
         renderGrid(); renderPerf();
         const asof = d.meta && d.meta.as_of;
-        if (asof) { const f = document.querySelector('.freshness'); if (f) f.textContent = '資料以 ' + asof + ' 收盤為準（Build-Time 自動更新）'; }
+        if (asof) MKLAB.setFreshness(asof);
       }
     }).catch(e => { console.warn('[industry] loadIndustry failed:', e); });
 
-    MKLAB.data.stocks().then(d => { if (d && Array.isArray(d)) { ALL_STOCKS = d; stocksLoaded = true; } }).catch(() => {});
+    MKLAB.data.stocks().then(d => {
+      if (d && Array.isArray(d)) {
+        ALL_STOCKS = d; stocksLoaded = true;
+        if (activeInd != null) renderDetail(activeInd);
+      }
+    }).catch(() => {});
   }
 
   let activeInd = null;
@@ -121,12 +128,13 @@
   }
 
   let detailTable = null;
-  function selInd(i) {
-    activeInd = i; renderGrid();
+  function renderDetail(i) {
     const d = data[i];
     const real = ALL_STOCKS.filter(s => s.ind === d.nm);
     document.getElementById('detailTitle').style.display = 'block';
-    document.getElementById('detailTitle').textContent = `${d.nm} · 成分股績效（共 ${real.length} 檔，每頁 10 檔可翻頁）`;
+    document.getElementById('detailTitle').textContent = stocksLoaded
+      ? `${d.nm} · 成分股績效（共 ${real.length} 檔，每頁 10 檔可翻頁）`
+      : `${d.nm} · 成分股績效（資料載入中…）`;
     document.getElementById('detailWrap').style.display = 'block';
     if (!detailTable) {
       detailTable = MKLAB.DataTable('indDetailTable', {
@@ -137,6 +145,11 @@
     } else {
       detailTable.setRows(real);
     }
+  }
+
+  function selInd(i) {
+    activeInd = i; renderGrid();
+    renderDetail(i);
   }
 
   function openDrawer() { MKLAB.Drawer.open(); }

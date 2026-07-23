@@ -4,8 +4,8 @@
 <base href="/mklab-stock/">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="{{DESCRIPTION}}">
-<title>{{TITLE}}</title>
+<meta name="description" content="mklab-stock — 台股/美股即時儀表板，大盤、產業、篩選、個股研究一站掌握">
+<title>mklab-stock</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
 <link rel="stylesheet" href="assets/css/mklab-theme.css">
 <link rel="stylesheet" href="assets/css/layout.css">
@@ -25,9 +25,6 @@
   </div>
   <div class="freshness" aria-live="polite">資料載入中…</div>
 </header>
-<!-- Mobile navigation placeholder -->
-<!-- Mobile navigation placeholder -->
-<!-- Mobile navigation placeholder -->
 <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
   <button class="close-x" onclick="MKLAB.Drawer.close()" aria-label="關閉抽屜">×</button>
   <div class="drawer-content" id="drawerContent">
@@ -47,7 +44,8 @@
   </div>
   <div class="perf">
     <h3>績效表現</h3>
-    <mklab-datatable id="perfTable" cols="name,close,chg_pct" data-src="indices" page-size="10" default-sort="chg_pct"></mklab-datatable>
+    <div class="table-wrap"><table id="perfTable"></table></div>
+    <div id="perfPager"></div>
   </div>
 </div>
 
@@ -55,17 +53,8 @@
 <div class="cards" id="macro5"></div>
 
 <div class="section-title">台股市值前 10 大</div>
-<mklab-datatable id="cap10" cols="sym,name,price,chg,pe,pb,roe,cap" data-src="stocks" page-size="10" default-sort="cap"></mklab-datatable>
-
-<mklab-router>
-  <mklab-route path="/" component="#page-market" show="block"></mklab-route>
-  <mklab-route path="/screener.html" component="#page-screener" show="none"></mklab-route>
-  <mklab-route path="/research.html" component="#page-research" show="none"></mklab-route>
-  <mklab-route path="/industry.html" component="#page-industry" show="none"></mklab-route>
-  <mklab-route path="/watchlist.html" component="#page-watchlist" show="none"></mklab-route>
-  <mklab-route path="/help.html" component="#page-help" show="none"></mklab-route>
-  <mklab-route path="/log.html" component="#page-log" show="none"></mklab-route>
-</mklab-router>
+<div class="table-wrap"><table id="cap10"></table></div>
+<div id="cap10Pager"></div>
 
 <div id="page-market">
   <!-- Market page content rendered by default -->
@@ -89,7 +78,6 @@
       wrap.innerHTML = INDICES.map(sym => `
         <div class="card">
           <div class="card-title">${IDX_NAME[sym]}</div>
-          <\/div>
           <div class="card-val" id="idx-${sym}">—</div>
           <div class="card-sub" id="idx-chg-${sym}"></div>
         </div>
@@ -130,7 +118,10 @@
               el.textContent = Number(v.close).toLocaleString();
               const pct = v.chg_pct ?? 0;
               el.className = 'card-val ' + (pct >= 0 ? 'up' : 'down');
-              if (chgEl) chgEl.textContent = (pct > 0 ? '+' : '') + pct.toFixed(2) + '%';
+              if (chgEl) {
+                chgEl.textContent = (pct > 0 ? '+' : '') + pct.toFixed(2) + '%';
+                chgEl.className = 'card-sub ' + (pct >= 0 ? 'up' : 'down');
+              }
             }
           });
         }
@@ -188,20 +179,47 @@
       });
     }
 
+    // Perf table（指數績效）與 cap10（市值前10大，排除 ETF）
+    let perfTable = null, cap10Table = null;
+    const ETF_RE = /ETF|基金|指數|正[0-9]|反[0-9]|槓桿|反向|期貨|配息|高息|優息|收益|台灣50|中型100|科技|電子|摩台|摩澤|寶滬深|上證|上証|S&P|MSCI|日經|歐洲|印度|陸股|龍耀|鑫收|動能|升級|優股息|兆豐|元大|富邦|國泰|中信|統一|聯博|第一金|凱基/;
+    function isETF(r) { return r.is_etf || ETF_RE.test(String(r.name || r.nm || '')); }
+
+    async function loadPerfTable() {
+      try {
+        const data = await MKLAB.data.indices();
+        const rows = (data && data.indices) || [];
+        if (!perfTable) {
+          perfTable = MKLAB.DataTable('perfTable', { cols: ['name', 'close', 'chg_pct'], rows, pageSize: 10, pagerId: 'perfPager', defaultSort: 'chg_pct' });
+        } else {
+          perfTable.setRows(rows);
+        }
+      } catch (e) { console.warn('[Market] perf table failed:', e); }
+    }
+
+    async function loadCap10() {
+      try {
+        const all = await MKLAB.data.stocks();
+        const rows = (Array.isArray(all) ? all : []).filter(r => !isETF(r));
+        if (!cap10Table) {
+          cap10Table = MKLAB.DataTable('cap10', { cols: ['sym', 'name', 'price', 'chg', 'pe', 'pb', 'roe', 'cap'], rows, pageSize: 10, pagerId: 'cap10Pager', defaultSort: 'cap' });
+        } else {
+          cap10Table.setRows(rows);
+        }
+      } catch (e) { console.warn('[Market] cap10 table failed:', e); }
+    }
+
     // Initialize
     renderIndices();
     renderMacro();
     loadIndices();
     loadMacro();
+    loadPerfTable();
+    loadCap10();
 
-    // 更新 freshness（資料新鮮度指示器）
+    // 更新 freshness（資料新鮮度指示器，統一格式）
     try {
       const meta = await MKLAB.data.json('stocks');
-      const asof = meta && meta.meta && meta.meta.as_of;
-      if (asof) {
-        const fresh = document.querySelector('.freshness');
-        if (fresh) fresh.textContent = `資料以 ${asof} 收盤為準（Build-Time 自動更新）`;
-      }
+      MKLAB.setFreshness(meta && meta.meta && meta.meta.as_of);
     } catch (e) {
       const fresh = document.querySelector('.freshness');
       if (fresh) fresh.textContent = '無法載入即時資料，暫以示意資料顯示';
@@ -215,9 +233,6 @@
   });
 </script>
 </main>
-<!-- Mobile navigation placeholder -->
-<!-- Mobile navigation placeholder -->
-<!-- Mobile navigation placeholder -->
 <footer class="footer" role="contentinfo">
   <div class="footer-inner">
     <span>mklab-stock · Web Components v2.0</span>

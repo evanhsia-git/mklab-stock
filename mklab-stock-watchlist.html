@@ -4,8 +4,8 @@
 <base href="/mklab-stock/">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="{{DESCRIPTION}}">
-<title>{{TITLE}}</title>
+<meta name="description" content="mklab-stock — 台股/美股即時儀表板，大盤、產業、篩選、個股研究一站掌握">
+<title>mklab-stock</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
 <link rel="stylesheet" href="assets/css/mklab-theme.css">
 <link rel="stylesheet" href="assets/css/layout.css">
@@ -150,7 +150,7 @@
     return MKLAB.data.json('stocks');
   }).then(meta => {
     const asof = meta && meta.meta && meta.meta.as_of;
-    if (asof) { const f = document.querySelector('.freshness'); if (f) f.textContent = '資料以 ' + asof + ' 收盤為準（Build-Time 自動更新）'; }
+    MKLAB.setFreshness(asof);
   }).catch(() => { render(); });
 
   MKLAB.initDrawer();

@@ -4,8 +4,8 @@
 <base href="/mklab-stock/">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="{{DESCRIPTION}}">
-<title>{{TITLE}}</title>
+<meta name="description" content="mklab-stock — 台股/美股即時儀表板，大盤、產業、篩選、個股研究一站掌握">
+<title>mklab-stock</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
 <link rel="stylesheet" href="assets/css/mklab-theme.css">
 <link rel="stylesheet" href="assets/css/layout.css">
@@ -48,13 +48,24 @@
 </div>
 
 <div class="card">
+  <h3>v2.1 — 表格模組統一化與死碼清理（2026-07-22）</h3>
+  <ul>
+    <li><b>統一 DataTable</b>：首頁「績效表現」「市值前 10 大」原本用獨立的 <code>&lt;mklab-datatable&gt;</code> Web Component（Shadow DOM 版），排序邏輯與 <code>MKLAB.DataTable</code> 各自實作、行為不一致（含排序失效 bug）。已全面改為與 Screener/Research/Industry/Watchlist 相同的 <code>MKLAB.DataTable</code>，全站表格共用同一套排序/分頁/樣式邏輯。</li>
+    <li><b>移除死碼</b>：<code>&lt;mklab-datatable&gt;</code>、<code>&lt;mklab-drawer&gt;</code>、<code>&lt;mklab-router&gt;</code> 三個 Web Component 從未被兩份以上頁面同時正確使用（<code>mklab-router</code> 甚至會攔截所有 <code>href="/..."</code> 連結卻無實際作用），已從 <code>assets/js/mklab-wc.js</code> 移除，僅保留仍在使用中的 <code>&lt;mklab-kline&gt;</code>。</li>
+    <li><b>共用黃標文字</b>：新增 <code>MKLAB.setFreshness()</code>，統一「資料以 X 收盤為準」文字並自動正規化日期格式（相容 <code>20260713</code> 與 <code>2026-07-13</code> 兩種來源格式），取代 6 個頁面各自重複的字串拼接程式碼。</li>
+    <li><b>桌面版抽屜修復</b>：桌面版原本把抽屜寫死成一直顯示在頁面中的區塊（<code>position:relative</code>），改為預設隱藏、點擊設定鍵才浮現的錨定面板。</li>
+    <li><b>CSS 修復</b>：<code>mklab-theme.css</code> 一批 research/industry 頁樣式誤用 <code>=</code> 取代 <code>:</code> 導致整段宣告失效；<code>--bg-elevated</code> 變數缺定義導致手機版抽屜背景透明。均已修正。</li>
+  </ul>
+</div>
+
+<div class="card">
   <h3>v2.0 — Web Components 重構（2026-07-18）</h3>
   <ul>
     <li><b>重構路線</b>：放棄 React/Vite/npm（違反零依賴），改採 <b>原生 Web Components / classic script</b>。</li>
-    <li><b>元件庫</b>：<code>assets/mklab-wc.js</code> 註冊 <code>&lt;mklab-kline&gt;</code>、<code>&lt;mklab-datatable&gt;</code>、<code>&lt;mklab-drawer&gt;</code>、<code>&lt;mklab-router&gt;</code>。</li>
+    <li><b>元件庫</b>：<code>assets/mklab-wc.js</code> 註冊 <code>&lt;mklab-kline&gt;</code>（K 線圖，目前仍在使用中的唯一 Web Component）。</li>
     <li><b>資料層</b>：<code>assets/js/data-client.js</code>（IIFE、快取、ETag、內建鍵 <code>stocks</code>/<code>indices</code>/<code>twiiKline</code>），統一取代各頁散落 <code>fetch()</code>。</li>
-    <li><b>表格元件</b>：<code>&lt;mklab-datatable&gt;</code> 封裝 <code>MKLAB.DataTable</code>，支援 <code>cols</code>、<code>page-size</code>、<code>default-sort</code>、<code>data-src</code>、<code>field-map</code>、<code>pager-id</code>。</li>
-    <li><b>所有主題頁</b>：Market / Screener / Research / Industry / Watchlist / Help / Log 全部改為 WC 版本，移除所有 vanilla chart/table/drawer 內嵌邏輯，統一引入 <code>assets/mklab-wc.js</code> + <code>assets/js/data-client.js</code>。</li>
+    <li><b>表格元件</b>：所有股票/績效表格統一使用 <code>assets/js/mklab-core.js</code> 的 <code>MKLAB.DataTable</code>（vanilla，非 Web Component），支援 <code>cols</code>、<code>pageSize</code>、<code>defaultSort</code>、<code>pagerId</code>、<code>fieldMap</code>。</li>
+    <li><b>所有主題頁</b>：Market / Screener / Research / Industry / Watchlist / Help / Log 全部統一引入 <code>assets/js/data-client.js</code> + <code>assets/js/mklab-core.js</code> + <code>assets/js/mklab-wc.js</code>。</li>
     <li><b>Build 系統（已演進）</b>：原 <code>build/build_pages.py</code> 將 <code>templates/</code> + <code>pages/</code> 組裝為根目錄完整 HTML；現已改為 <code>build/template_sync.py</code>（Template Synchronizer），根目錄 HTML 為唯一來源，<code>pages/</code> 已移除。</li>
     <li><b>QA Gate</b>：Python/JSON/HTML/Link/Chart 全自動檢測，全綠 <code>ALLOW DEPLOY</code>。</li>
   </ul>
@@ -109,8 +120,7 @@ async function loadMeta() {
       document.getElementById('logSyncDate').textContent = asof || 'Unknown';
     }
     if (asof) {
-      const f = document.querySelector('.freshness');
-      if (f) f.textContent = '資料以 ' + asof + ' 收盤為準（Build-Time 自動更新）';
+      MKLAB.setFreshness(asof);
     }
   } catch(e) {
     console.warn('[Log] loadMeta failed:', e);
