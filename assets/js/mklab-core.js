@@ -101,6 +101,7 @@
       global[name] = opts.onDel;
       this._ctx.__cb = name;
     }
+    this._register();
     this._build();
     this.render();
   }
@@ -231,9 +232,7 @@
   // 包裝建構：自動註冊實例供分頁用
   const _origNew = DataTable;
   function create(tableId, opts){
-    const t = new _origNew(tableId, opts);
-    t._register();
-    return t;
+    return new _origNew(tableId, opts);
   }
 
   // ============================================================

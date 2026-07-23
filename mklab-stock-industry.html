@@ -122,6 +122,18 @@
         fieldMap: { ind: 'nm' },
         defaultSort: 'chg',
       });
+      // tbody 元素本身不會被 render() 重建（只換 innerHTML），故只需綁一次委託即可持續生效（含換頁/排序後）
+      const tbody = document.querySelector('#indPerfTable tbody');
+      if (tbody) {
+        tbody.style.cursor = 'pointer';
+        tbody.addEventListener('click', function (e) {
+          const tr = e.target.closest('tr');
+          if (!tr) return;
+          const nm = tr.firstElementChild && tr.firstElementChild.textContent.trim();
+          const idx = data.findIndex(d => d.nm === nm);
+          if (idx >= 0) selInd(idx);
+        });
+      }
     } else {
       perfTable.setRows(data);
     }

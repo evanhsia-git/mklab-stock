@@ -45,6 +45,7 @@ html {
     font-size: 24px;
     color: var(--ink);
     padding: 4px;
+    order: 99; /* 排到 search/dark/github 之後，維持在最右邊 */
   }
 
   /* 手機版已有漢堡選單鍵可開抽屜，Shell.mount() 動態插入的齒輪鍵會重複，故隱藏 */
