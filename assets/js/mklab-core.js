@@ -31,6 +31,8 @@
     name:  { label:'名稱',    type:'str', sortable:true,  fmt:r=>(r.name||r.nm||'-') },
     price: { label:'價格',    type:'num', sortable:true,  fmt:r=>r.price!=null?Number(r.price).toLocaleString():'-' },
     chg:   { label:'漲跌%',   type:'pct', sortable:true,  fmt:r=>cellPct(r.chg) },
+    close: { label:'收盤',    type:'num', sortable:true,  fmt:r=>r.close!=null?Number(r.close).toLocaleString(undefined,{maximumFractionDigits:2}):'-' },
+    chg_pct: { label:'漲跌%', type:'pct', sortable:true,  fmt:r=>cellPct(r.chg_pct) },
     score: { label:'綜合評分',type:'num', sortable:true, defDir:-1, fmt:r=>r.score!=null?r.score:'-' },
     pe:    { label:'PE',      type:'num', sortable:true,  fmt:r=>r.pe!=null?Number(r.pe).toFixed(2):'-' },
     pb:    { label:'PB',      type:'num', sortable:true,  fmt:r=>r.pb!=null?Number(r.pb).toFixed(2):'-' },
@@ -473,7 +475,7 @@
       const tools = document.createElement('span');
       tools.setAttribute('data-shell-tools','');
       tools.className = 'shell-tools';
-      tools.style.cssText = 'display:flex; align-items:center; gap:8px;';
+      tools.style.cssText = 'display:flex; align-items:center; gap:8px; margin-left:auto;';
       tools.innerHTML =
         `<div class="search collapsed" id="searchBox">` +
           `<input id="q" placeholder="搜尋代號，如 2330" onkeydown="if(event.key==='Enter')MKLAB.Shell.doSearch()">` +
