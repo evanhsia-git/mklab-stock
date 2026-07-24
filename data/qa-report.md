@@ -1,5 +1,5 @@
 # mklab-stock QA Gate 報告
-**時間**: 2026-07-22 07:39:40  
+**時間**: 2026-07-24 10:39:59  
 **Critical ERROR**: 0  | **WARNING**: 1  
 **最終判定**: 🟢 ALLOW DEPLOY
 
@@ -25,20 +25,26 @@
 | Python | import-ok: deploy.py | PASS |  |  |  |
 | Python | import-ok: helper.py | PASS |  |  |  |
 | Python | import-ok: template_sync.py | PASS |  |  |  |
-| Data | 股票代號唯一 | PASS | 1787 檔唯一 |  |  |
+| Data | 股票代號唯一 | PASS | 1371 檔唯一 |  |  |
 | Data | 無髒值 (NaN/null/undefined/Infinity/空字串/非法'-') | WARNING | ?.capital_stock=None; ?.capital_stock=None; ?.capital_stock=None; ?.capital_stock=None; ?.capital_stock=None; ?.capital_ | 確認資料源是否涵蓋該標的 | /root/Documents/mklab-stock/data/stocks.json |
-| Data | OHLC 合理性 (H>=L, H>=O, H>=C, L<=O, L<=C, P>0, V>=0, MktCap>0) | PASS | 1787 檔 OHLC 合理 |  |  |
+| Data | OHLC 合理性 (H>=L, H>=O, H>=C, L<=O, L<=C, P>0, V>=0, MktCap>0) | PASS | 1371 檔 OHLC 合理 |  |  |
 | Data | 前日波動異常 (>20% 閾值) | PASS | 無異常波動 |  |  |
-| JSON | stocks.json Schema | PASS | schema 完整 (1787 檔) |  |  |
+| JSON | stocks.json Schema | PASS | schema 完整 (1371 檔) |  |  |
 | JSON | industry.json Schema | PASS | 33 個產業 |  |  |
-| HTML | 結構健康檢查 | PASS | 全部 7 個 HTML 通過 |  |  |
+| HTML | 結構健康檢查 | PASS | 全部 13 個 HTML 通過 |  |  |
 | CSS | 統一 Theme 變數 (var(--bg) 等) | PASS | Theme CSS 關鍵設計令牌完整 |  |  |
 | CSS | 禁止硬寫核心樣式 (違反 Design Token) | PASS | 無行內硬寫核心樣式 |  |  |
 | JS | syntax: mklab-stock-screener.html#0 | PASS |  |  |  |
 | JS | syntax: index.html#0 | PASS |  |  |  |
+| JS | syntax: mklab-stock-backtest.html#0 | PASS |  |  |  |
 | JS | syntax: mklab-stock-research.html#0 | PASS |  |  |  |
+| JS | syntax: mklab-stock-compare.html#0 | PASS |  |  |  |
+| JS | syntax: mklab-stock-breadth.html#0 | PASS |  |  |  |
+| JS | syntax: mklab-stock-dividend.html#0 | PASS |  |  |  |
 | JS | syntax: mklab-stock-industry.html#0 | PASS |  |  |  |
+| JS | syntax: mklab-stock-digest.html#0 | PASS |  |  |  |
 | JS | syntax: mklab-stock-log.html#0 | PASS |  |  |  |
+| JS | syntax: mklab-stock-portfolio.html#0 | PASS |  |  |  |
 | JS | syntax: mklab-stock-help.html#0 | PASS |  |  |  |
 | JS | syntax: mklab-stock-watchlist.html#0 | PASS |  |  |  |
 | Chart | 圖表渲染: index.html | MANUAL | 需瀏覽器載入確認 Canvas/SVG 存在、Dataset 非空、無 Chart Error，並截圖 |  |  |
