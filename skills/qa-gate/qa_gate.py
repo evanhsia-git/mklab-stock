@@ -47,12 +47,15 @@ class Check:
 
     def warn(self, detail, fix="", loc=""):
         self.status = "WARNING"; self.detail = detail; self.fix = fix; self.loc = loc
+        return self
 
     def error(self, detail, fix="", loc=""):
         self.status = "ERROR"; self.detail = detail; self.fix = fix; self.loc = loc
+        return self
 
     def manual(self, detail):
         self.status = "MANUAL"; self.detail = detail
+        return self
 
 
 class _Health(HTMLParser):
@@ -220,6 +223,7 @@ def run():
     ind_path = os.path.join(ROOT, "data", "industry.json")
 
     c = Check("Data", "股票代號唯一")
+    stocks_data = {}
     try:
         with open(stocks_path, encoding="utf-8") as f:
             stocks_data = json.load(f)
