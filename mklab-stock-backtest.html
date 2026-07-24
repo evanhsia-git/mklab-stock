@@ -30,22 +30,22 @@
 </aside>
 <div class="drawer-mask" onclick="MKLAB.Drawer.close()" aria-hidden="true"></div>
 <main class="wrap">
-
+<section id="backtestSection">
 <div class="section-title">歷史回測模擬器</div>
 <div class="card">
   <div class="kv">
     <span>股票代號</span>
-    <input id="btSym" placeholder="如 2330" style="padding:6px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--ink);">
+    <input id="btSym" placeholder="如 2330" class="field-input">
   </div>
   <div class="kv" style="margin-top:10px;">
     <span>買進日期</span>
-    <input id="btDate" type="date" style="padding:6px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--ink);">
+    <input id="btDate" type="date" class="field-input">
   </div>
   <div class="kv" style="margin-top:10px;">
     <span>投入金額（元）</span>
-    <input id="btAmount" type="number" value="100000" style="padding:6px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--ink);">
+    <input id="btAmount" type="number" value="100000" class="field-input">
   </div>
-  <button style="margin-top:14px;padding:8px 16px;background:var(--accent);color:#fff;border:none;border-radius:8px;cursor:pointer;" onclick="runBacktest()">開始試算</button>
+  <button class="btn-primary mt" onclick="runBacktest()">開始試算</button>
   <p class="muted-small-top" id="btMsg"></p>
 </div>
 
@@ -55,6 +55,7 @@
 </div>
 
 <p class="muted-small-top">⚠️ 此為兩點式試算（買進日 vs 最新一日收盤價），非完整走勢回測；資料以收盤為準，僅供教育參考，非投資建議。</p>
+</section>
 
 <script src="assets/js/data-client.js"></script>
 <script src="assets/js/mklab-core.js"></script>

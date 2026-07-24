@@ -1,9 +1,0 @@
-{
-  "skill": "lint",
-  "version": "1.0.0",
-  "entry": "lint.py",
-  "forbidden_dirs": ["pages", "config", "components", "src", "tests", "tools"],
-  "forbidden": ["node_build", "second_html_source"],
-  "css": { "require_design_token": true, "no_hardcode_core_style": true },
-  "python_location": "skills/<name>/"
-}

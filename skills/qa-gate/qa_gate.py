@@ -47,12 +47,15 @@ class Check:
 
     def warn(self, detail, fix="", loc=""):
         self.status = "WARNING"; self.detail = detail; self.fix = fix; self.loc = loc
+        return self
 
     def error(self, detail, fix="", loc=""):
         self.status = "ERROR"; self.detail = detail; self.fix = fix; self.loc = loc
+        return self
 
     def manual(self, detail):
         self.status = "MANUAL"; self.detail = detail
+        return self
 
 
 class _Health(HTMLParser):
