@@ -1,0 +1,389 @@
+{
+  "meta": {
+    "as_of": "2026-07-23",
+    "source": "yfinance (免 key, 雲端 pip install)",
+    "schema_version": "1.0.0",
+    "index_count": 16,
+    "etf_count": 12,
+    "macro_count": 8,
+    "note": "收盤/漲跌% 每日更新；as_of 為該標的最後交易日（跨時區可能非同日）。巨集指標含 VIX、匯率、大宗商品、加密貨幣。"
+  },
+  "indices": [
+    {
+      "market": "TW",
+      "name": "加權股價指數 (TAIEX)",
+      "yf": "^TWII",
+      "desc": "台灣大盤",
+      "close": 44850.81,
+      "prev_close": 44825.78,
+      "chg_pct": 0.06,
+      "as_of": "2026-07-23"
+    },
+    {
+      "market": "US",
+      "name": "S&P 500",
+      "yf": "^GSPC",
+      "desc": "美國最具代表性大型股",
+      "close": 7498.96,
+      "prev_close": 7509.2,
+      "chg_pct": -0.14,
+      "as_of": "2026-07-22"
+    },
+    {
+      "market": "US",
+      "name": "Nasdaq Composite",
+      "yf": "^IXIC",
+      "desc": "科技股為主",
+      "close": 25690.9,
+      "prev_close": 25837.21,
+      "chg_pct": -0.57,
+      "as_of": "2026-07-22"
+    },
+    {
+      "market": "US",
+      "name": "Dow Jones Industrial Average",
+      "yf": "^DJI",
+      "desc": "道瓊30",
+      "close": 52218.58,
+      "prev_close": 52224.64,
+      "chg_pct": -0.01,
+      "as_of": "2026-07-22"
+    },
+    {
+      "market": "JP",
+      "name": "Nikkei 225",
+      "yf": "^N225",
+      "desc": "日本最重要指數",
+      "close": 66422.6,
+      "prev_close": 66115.6,
+      "chg_pct": 0.46,
+      "as_of": "2026-07-23"
+    },
+    {
+      "market": "CN",
+      "name": "上海證券綜合指數",
+      "yf": "000001.SS",
+      "desc": "上證綜指",
+      "close": 3876.78,
+      "prev_close": 3867.03,
+      "chg_pct": 0.25,
+      "as_of": "2026-07-23"
+    },
+    {
+      "market": "CN",
+      "name": "滬深300",
+      "yf": "000300.SS",
+      "desc": "滬深300指數",
+      "close": 4728.0,
+      "prev_close": 4529.1,
+      "chg_pct": 4.39,
+      "as_of": "2026-07-23"
+    },
+    {
+      "market": "CN",
+      "name": "深證成指",
+      "yf": "399001.SZ",
+      "desc": "深證成份指數",
+      "close": 14123.31,
+      "prev_close": 14061.44,
+      "chg_pct": 0.44,
+      "as_of": "2026-07-23"
+    },
+    {
+      "market": "CN",
+      "name": "創業板指",
+      "yf": "399006.SZ",
+      "desc": "創業板指數",
+      "close": 3575.52,
+      "prev_close": 3575.52,
+      "chg_pct": 0.0,
+      "as_of": "2026-07-23"
+    },
+    {
+      "market": "HK",
+      "name": "恆生指數",
+      "yf": "^HSI",
+      "desc": "香港恆生指數",
+      "close": 25210.81,
+      "prev_close": 24892.66,
+      "chg_pct": 1.28,
+      "as_of": "2026-07-23"
+    },
+    {
+      "market": "HK",
+      "name": "恆生科技指數",
+      "yf": "^HSTECH",
+      "desc": "恆生科技指數",
+      "close": null,
+      "prev_close": null,
+      "chg_pct": null,
+      "as_of": null
+    },
+    {
+      "market": "EU",
+      "name": "Euro STOXX 50",
+      "yf": "^STOXX50E",
+      "desc": "歐元區50大藍籌",
+      "close": 6259.08,
+      "prev_close": 6316.99,
+      "chg_pct": -0.92,
+      "as_of": "2026-07-23"
+    },
+    {
+      "market": "EU",
+      "name": "DAX (德國)",
+      "yf": "^GDAXI",
+      "desc": "德國法蘭克福40大藍籌",
+      "close": 24996.88,
+      "prev_close": 25155.41,
+      "chg_pct": -0.63,
+      "as_of": "2026-07-23"
+    },
+    {
+      "market": "EU",
+      "name": "CAC 40 (法國)",
+      "yf": "^FCHI",
+      "desc": "法國巴黎40大藍籌",
+      "close": 8342.1,
+      "prev_close": 8437.89,
+      "chg_pct": -1.14,
+      "as_of": "2026-07-23"
+    },
+    {
+      "market": "EU",
+      "name": "FTSE 100 (英國)",
+      "yf": "^FTSE",
+      "desc": "英國倫敦藍籌",
+      "close": 10695.44,
+      "prev_close": 10717.0,
+      "chg_pct": -0.2,
+      "as_of": "2026-07-23"
+    },
+    {
+      "market": "JP",
+      "name": "TOPIX",
+      "yf": "^TPX",
+      "desc": "東京股價指數",
+      "close": null,
+      "prev_close": null,
+      "chg_pct": null,
+      "as_of": null
+    }
+  ],
+  "etfs": [
+    {
+      "market": "TW",
+      "name": "元大台灣50",
+      "yf": "0050.TW",
+      "tracks": "TW50",
+      "since": 2003,
+      "close": 103.9,
+      "prev_close": 103.85,
+      "chg_pct": 0.05,
+      "as_of": "2026-07-23"
+    },
+    {
+      "market": "TW",
+      "name": "富邦台50",
+      "yf": "006208.TW",
+      "tracks": "TW50",
+      "since": 2017,
+      "close": 237.9,
+      "prev_close": 237.4,
+      "chg_pct": 0.21,
+      "as_of": "2026-07-23"
+    },
+    {
+      "market": "TW",
+      "name": "元大高股息",
+      "yf": "0056.TW",
+      "tracks": "高股息",
+      "since": 2008,
+      "close": 50.65,
+      "prev_close": 50.95,
+      "chg_pct": -0.59,
+      "as_of": "2026-07-23"
+    },
+    {
+      "market": "TW",
+      "name": "富邦公司債",
+      "yf": "00891B.TW",
+      "tracks": "公司債",
+      "since": 2019,
+      "close": null,
+      "prev_close": null,
+      "chg_pct": null,
+      "as_of": null
+    },
+    {
+      "market": "US",
+      "name": "SPDR S&P 500 ETF",
+      "yf": "SPY",
+      "tracks": "S&P500",
+      "since": 1993,
+      "close": 747.41,
+      "prev_close": 748.28,
+      "chg_pct": -0.12,
+      "as_of": "2026-07-22"
+    },
+    {
+      "market": "US",
+      "name": "iShares Core S&P 500",
+      "yf": "IVV",
+      "tracks": "S&P500",
+      "since": 2000,
+      "close": 750.93,
+      "prev_close": 751.95,
+      "chg_pct": -0.14,
+      "as_of": "2026-07-22"
+    },
+    {
+      "market": "US",
+      "name": "Vanguard S&P 500",
+      "yf": "VOO",
+      "tracks": "S&P500",
+      "since": 2010,
+      "close": 687.03,
+      "prev_close": 687.87,
+      "chg_pct": -0.12,
+      "as_of": "2026-07-22"
+    },
+    {
+      "market": "US",
+      "name": "Invesco QQQ",
+      "yf": "QQQ",
+      "tracks": "Nasdaq100",
+      "since": 1999,
+      "close": 705.35,
+      "prev_close": 708.97,
+      "chg_pct": -0.51,
+      "as_of": "2026-07-22"
+    },
+    {
+      "market": "US",
+      "name": "iShares 20+ Year Treasury",
+      "yf": "TLT",
+      "tracks": "US長債",
+      "since": 2002,
+      "close": 83.44,
+      "prev_close": 83.66,
+      "chg_pct": -0.26,
+      "as_of": "2026-07-22"
+    },
+    {
+      "market": "US",
+      "name": "SPDR Gold Shares",
+      "yf": "GLD",
+      "tracks": "黃金",
+      "since": 2004,
+      "close": 379.12,
+      "prev_close": 374.81,
+      "chg_pct": 1.15,
+      "as_of": "2026-07-22"
+    },
+    {
+      "market": "US",
+      "name": "iShares MSCI Emerging Markets",
+      "yf": "EEM",
+      "tracks": "新興市場",
+      "since": 2003,
+      "close": 64.99,
+      "prev_close": 65.34,
+      "chg_pct": -0.54,
+      "as_of": "2026-07-22"
+    },
+    {
+      "market": "US",
+      "name": "iShares MSCI China",
+      "yf": "MCHI",
+      "tracks": "中國大陸股",
+      "since": 2011,
+      "close": 53.57,
+      "prev_close": 54.0,
+      "chg_pct": -0.8,
+      "as_of": "2026-07-22"
+    }
+  ],
+  "macro": {
+    "vix": {
+      "label": "VIX 恐慌指數",
+      "unit": "",
+      "value": 17.75,
+      "prev_value": 16.64,
+      "chg_pct": 6.67,
+      "as_of": "2026-07-23",
+      "yf": "^VIX",
+      "desc": "CBOE 波動率指數，衡量市場恐慌程度"
+    },
+    "usd_twd": {
+      "label": "USD/TWD",
+      "unit": "",
+      "value": 32.27,
+      "prev_value": 32.33,
+      "chg_pct": -0.18,
+      "as_of": "2026-07-23",
+      "yf": "USDTWD=X",
+      "desc": "美元兌台幣即期匯率"
+    },
+    "gold": {
+      "label": "黃金",
+      "unit": "USD/oz",
+      "value": 4090.7,
+      "prev_value": 4146.9,
+      "chg_pct": -1.36,
+      "as_of": "2026-07-23",
+      "yf": "GC=F",
+      "desc": "COMEX 黃金期貨近月合約"
+    },
+    "oil": {
+      "label": "原油 WTI",
+      "unit": "USD/bbl",
+      "value": 90.37,
+      "prev_value": 86.83,
+      "chg_pct": 4.08,
+      "as_of": "2026-07-23",
+      "yf": "CL=F",
+      "desc": "NYMEX WTI 原油期貨近月合約"
+    },
+    "btc": {
+      "label": "比特幣",
+      "unit": "USD",
+      "value": 65608.8,
+      "prev_value": 66100.8,
+      "chg_pct": -0.74,
+      "as_of": "2026-07-23",
+      "yf": "BTC-USD",
+      "desc": "比特幣兌美元現貨價格"
+    },
+    "copper": {
+      "label": "銅期貨",
+      "unit": "USD/lb",
+      "value": 6.47,
+      "prev_value": 6.45,
+      "chg_pct": 0.28,
+      "as_of": "2026-07-23",
+      "yf": "HG=F",
+      "desc": "COMEX 銅期貨近月合約 (領先經濟指標)"
+    },
+    "us10y": {
+      "label": "美債10年殖利率",
+      "unit": "%",
+      "value": 4.66,
+      "prev_value": 4.63,
+      "chg_pct": 0.63,
+      "as_of": "2026-07-22",
+      "yf": "^TNX",
+      "desc": "美國10年期公債殖利率 (×10，如 4.25% 顯示 42.5)"
+    },
+    "dxy": {
+      "label": "美元指數",
+      "unit": "",
+      "value": 101.18,
+      "prev_value": 101.14,
+      "chg_pct": 0.04,
+      "as_of": "2026-07-23",
+      "yf": "DX-Y.NYB",
+      "desc": "ICE 美元指數 (DXY)"
+    }
+  }
+}

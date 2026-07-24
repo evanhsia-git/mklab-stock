@@ -114,28 +114,3 @@ html {
 }
 /* 個股筆記角標（Watchlist 共用） */
 .badge-notes { cursor: pointer; font-size: 12px; }
-
-/* 表單輸入框與主要按鈕（新增功能頁共用，取代散落各處的行內硬寫樣式） */
-.field-input {
-  padding: 6px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--bg);
-  color: var(--ink);
-}
-.btn-primary {
-  padding: 8px 16px;
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-.btn-primary.mt { margin-top: 14px; }
-.rss-link { font-size: 12px; }
-
-/* 動態色塊（熱力圖 / 漲跌分布長條 / 圓餅圖）：顏色由 JS 依資料即時運算，
-   透過 CSS 自訂屬性帶入，避免 style="background:..." 這種硬寫樣式 */
-.heat-cell { background: var(--cell-bg, transparent); text-align: center; }
-.breadth-bar-fill { background: var(--bar-fill, var(--muted)); }
-.donut-slice { fill: var(--slice-color, var(--accent)); }

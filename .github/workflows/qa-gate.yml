@@ -1,0 +1,59 @@
+name: qa-gate
+
+on:
+  push:
+    paths:
+      - '**.py'
+      - '**.html'
+      - 'data/**'
+      - 'skills/**'
+      - '.github/workflows/qa-gate.yml'
+  pull_request:
+    paths:
+      - '**.py'
+      - '**.html'
+      - 'data/**'
+      - 'skills/**'
+
+permissions:
+  contents: read
+
+jobs:
+  qa-gate:
+    runs-on: ubuntu-latest
+    # 此 job 即 status check「qa-gate / qa-gate」。
+    # 若要讓它真正「阻擋不合規的 push/merge」，請在分支保護規則加入此 status check：
+    #   Settings → Branches → main → Require status checks to pass before merging → 勾選 "qa-gate / qa-gate"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Quality Gate
+        run: python skills/qa-gate/qa_gate.py --json qa-result.json
+      - name: 判定結果
+        id: verdict
+        run: |
+          python - <<'PY'
+          import json
+          try:
+              r = json.load(open('qa-result.json'))
+          except Exception as e:
+              print("無法讀取 qa-result.json:", e)
+              raise SystemExit(1)
+          allow = r.get('allow_deploy', False)
+          errs = r.get('errors', 0)
+          print(f"allow_deploy={allow}  critical_errors={errs}")
+          if not allow:
+              print("🔴 BLOCK DEPLOY：存在 Critical ERROR，CI 失敗")
+              raise SystemExit(1)
+          print("🟢 ALLOW DEPLOY")
+          PY
+      - name: 上傳報告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-report
+          path: |
+            data/qa-report.md
+            qa-result.json

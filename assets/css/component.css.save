@@ -1,0 +1,17 @@
+/* 桌面版抽屜寬度：桌面版寬度改為 360px */
+@media (min-width: 769px) {
+  .mobile-menu-btn { display: none; }
+  .drawer {
+    position: relative;
+    left: auto;
+    width: auto;
+    height: auto;
+    transform: none;
+    box-shadow: none;
+    padding: 0;
+    overflow: visible;
+    z-index: auto;
+    width: 360px; /* 加寬桌面抽屜 */
+  }
+  .drawer-mask { display: none !important; }
+}

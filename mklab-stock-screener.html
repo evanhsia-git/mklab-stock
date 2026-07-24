@@ -1,0 +1,191 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW" data-theme="dark">
+<head>
+<base href="/mklab-stock/">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="mklab-stock — 台股/美股即時儀表板，大盤、產業、篩選、個股研究一站掌握">
+<title>mklab-stock</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
+<link rel="stylesheet" href="assets/css/mklab-theme.css">
+<link rel="stylesheet" href="assets/css/layout.css">
+<link rel="stylesheet" href="assets/css/component.css">
+<link rel="stylesheet" href="assets/css/mobile.css">
+</head>
+<body>
+<header class="sticky-header" role="banner">
+  <nav id="mainNav" class="nav" aria-label="主導覽"></nav>
+  <div id="utilbar" class="utilbar">
+    <span class="brand" id="brand"></span>
+    <span class="spacer"></span>
+    <!-- 手機導航按鈕 - 由 CSS media query 控制顯示/隱藏 -->
+    <button class="mobile-menu-btn" onclick="MKLAB.Drawer.toggle()" aria-label="開啟選單">
+      <span class="hamburger">☰</span>
+    </button>
+  </div>
+  <div class="freshness" aria-live="polite">資料載入中…</div>
+</header>
+<!-- Mobile navigation placeholder -->
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+  <button class="close-x" onclick="MKLAB.Drawer.close()" aria-label="關閉抽屜">×</button>
+  <div class="drawer-content" id="drawerContent">
+    <!-- 由 MKLAB.Drawer.init() 動態注入 drawerHTML() -->
+  </div>
+</aside>
+<div class="drawer-mask" onclick="MKLAB.Drawer.close()" aria-hidden="true"></div>
+<main class="wrap">
+
+
+
+<div class="layout">
+  <div class="panel">
+    <h3>策略模板（一鍵套用）</h3>
+    <div class="chk chk-mb" >
+      <label onclick="tpl('value')">價值策略</label>
+      <label onclick="tpl('quality')">品質策略</label>
+      <label onclick="tpl('growth')">成長策略</label>
+      <label onclick="tpl('momentum')">動能策略</label>
+      <label onclick="tpl('dividend')">高股息策略</label>
+    </div>
+
+    <h3>多條件篩選（滑動即時更新）</h3>
+    <div class="grp">
+      <div class="lab">估值</div>
+      <div class="cond"><div class="row"><label>PE≤</label><input type="range" id="f_pe" min="0" max="60" value="20" oninput="sync('f_pe');apply()"><span class="rv" id="v_pe">20</span></div></div>
+      <div class="cond"><div class="row"><label>PB≤</label><input type="range" id="f_pb" min="0" max="20" value="20" oninput="sync('f_pb');apply()"><span class="rv" id="v_pb">不限</span></div></div>
+      <div class="cond"><div class="row"><label>殖利率≥</label><input type="range" id="f_div" min="0" max="10" value="0" step="0.5" oninput="sync('f_div');apply()"><span class="rv" id="v_div">0</span></div></div>
+    </div>
+    <div class="grp">
+      <div class="lab">獲利品質</div>
+      <div class="cond"><div class="row"><label>ROE≥</label><input type="range" id="f_roe" min="0" max="40" value="15" oninput="sync('f_roe');apply()"><span class="rv" id="v_roe">15</span></div></div>
+      <div class="cond"><div class="row"><label>ROA≥</label><input type="range" id="f_roa" min="0" max="25" value="0" oninput="sync('f_roa');apply()"><span class="rv" id="v_roa">0</span></div></div>
+      <div class="cond"><div class="row"><label>EPS成長≥</label><input type="range" id="f_eg" min="-10" max="50" value="0" oninput="sync('f_eg');apply()"><span class="rv" id="v_eg">0</span></div></div>
+    </div>
+    <div class="grp">
+      <div class="lab">技術面</div>
+      <div class="cond"><div class="row"><label>RSI≥</label><input type="range" id="f_rsi" min="0" max="100" value="0" oninput="sync('f_rsi');apply()"><span class="rv" id="v_rsi">0</span></div></div>
+      <div class="cond"><div class="row"><label>漲幅≥</label><input type="range" id="f_chg" min="-10" max="10" value="0" step="0.5" oninput="sync('f_chg');apply()"><span class="rv" id="v_chg">0</span></div></div>
+      <div class="cond"><div class="row"><label>均線</label>
+        <select id="f_ma" onchange="apply()"><option value="any">不限</option><option value="ma5">站上5MA</option><option value="ma10">站上10MA</option><option value="ma30">站上30MA</option></select>
+      </div></div>
+    </div>
+    <div class="grp">
+      <div class="lab">規模</div>
+      <div class="cond"><div class="row"><label>市值≥</label><input type="range" id="f_cap" min="0" max="10000" step="100" value="0" oninput="sync('f_cap');apply()"><span class="rv" id="v_cap">0</span><span>億</span></div></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="row-input">
+      <input id="symInput" placeholder="快速搜尋代號，如 2330" onkeydown="if(event.key==='Enter')loadSymbol()">
+      <button onclick="loadSymbol()">加入</button>
+    </div>
+    <div class="count" id="count"></div>
+    <div class="table-wrap">
+      <table id="resTable"></table>
+    </div>
+    <div class="pager" id="pager"></div>
+
+    <div class="strategy-note">
+      <h3>五大策略範本說明</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>流派</th><th>進場邏輯</th><th>出場 / 停損</th><th>適用標的</th></tr></thead>
+          <tbody>
+            <tr><td>動能</td><td>RSI≥70 + 單日漲幅≥1% + 站上5MA（均線多頭）</td><td>RSI跌破50或跌破5MA出場</td><td>強勢產業龍頭</td></tr>
+            <tr><td>價值</td><td>PE≤12、PB≤1.5、殖利率≥5%、ROE≥15%</td><td>本益比回歸均值或護城河破壞</td><td>金融 / 傳產 / 收益型</td></tr>
+            <tr><td>成長</td><td>EPS成長≥20%、ROE≥15%</td><td>成長率連兩季衰減即減碼</td><td>半導體 / AI / 新興產業</td></tr>
+            <tr><td>品質</td><td>ROE≥15%、ROA≥8%、低負債</td><td>獲利能力連兩季下滑即減碼</td><td>穩健大型權值股</td></tr>
+            <tr><td>多因子</td><td>價值 + 動能 + 品質 + 低波動 加權評分，取前 10</td><td>因子反轉（如動能轉負）再平衡</td><td>前 300 大市值輪動</td></tr>
+            <tr><td>高股息</td><td>殖利率≥5%、連續 5 年配息、配息率穩定</td><td>除息後填息失敗或配息驟降</td><td>電信 / 金融 / 公用事業</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="disclaimer">預載台股市值 Top100（示意資料），篩選前端即時過濾，生產環境由 Build-Time 預算。每頁 10 檔。</div>
+  </div>
+</div>
+
+<script src="assets/js/data-client.js"></script>
+<script src="assets/js/mklab-core.js"></script>
+<script src="assets/js/mklab-wc.js"></script>
+<script>
+  const TOP100=(function(){ const base=[["2330","台積電"],["2317","鴻海"],["2454","聯發科"],["2303","聯電"],["2308","台達電"],["2412","中華電"],["6505","台塑化"],["1303","南亞"],["2882","國泰金"],["2881","富邦金"],["2891","中信金"],["3711","日月光投控"],["3008","大立光"],["2327","國巨"],["8046","南電"],["2382","廣達"],["2376","技嘉"],["2379","瑞昱"],["3034","聯詠"],["3231","緯創"]]; const out=[]; let s=42; function rnd(){ s=(s*1103515245+12345)&0x7fffffff; return s/0x7fffffff; } for(let i=0;i<100;i++){ const b=base[i%base.length]; const sym=i<base.length?b[0]:(2000+i); const name=i<base.length?b[1]:("個股"+i); out.push({sym,name,price:+(20+rnd()*1800).toFixed(1),chg:+((rnd()-0.45)*10).toFixed(2),pe:+(5+rnd()*40).toFixed(1),pb:+(0.5+rnd()*9).toFixed(2),roe:+(2+rnd()*40).toFixed(1),roa:+(1+rnd()*20).toFixed(1),eg:+(-5+rnd()*30).toFixed(1),rsi:+(20+rnd()*75).toFixed(0),ma5:rnd()>0.4,ma10:rnd()>0.45,ma30:rnd()>0.5,cap:+(500+rnd()*9000).toFixed(0),div:+(0+rnd()*6).toFixed(1)}); } return out; })();
+
+  const UNBOUNDED_AT_MAX=['f_pe','f_pb'];
+  const UNBOUNDED_AT_MIN=['f_eg','f_chg'];
+  function sync(id){
+    const el=document.getElementById(id); if(!el) return;
+    const span=document.getElementById('v_'+id.slice(2)); if(!span) return;
+    const v=parseFloat(el.value);
+    const atMax=UNBOUNDED_AT_MAX.includes(id) && v>=parseFloat(el.max);
+    const atMin=UNBOUNDED_AT_MIN.includes(id) && v<=parseFloat(el.min);
+    span.textContent = (atMax||atMin) ? '不限' : v;
+  }
+  const TPLS={
+    value:    { f_pe:12, f_pb:1.5, f_div:5, f_roe:15, f_roa:0, f_eg:-10, f_rsi:0,  f_chg:-10, f_cap:0, f_ma:'any' },
+    quality:  { f_pe:60, f_pb:20,  f_div:0, f_roe:15, f_roa:8, f_eg:-10, f_rsi:0,  f_chg:-10, f_cap:0, f_ma:'any' },
+    growth:   { f_pe:60, f_pb:20,  f_div:0, f_roe:15, f_roa:0, f_eg:20,  f_rsi:0,  f_chg:-10, f_cap:0, f_ma:'any' },
+    momentum: { f_pe:60, f_pb:20,  f_div:0, f_roe:0,  f_roa:0, f_eg:-10, f_rsi:70, f_chg:1,   f_cap:0, f_ma:'ma5' },
+    dividend: { f_pe:60, f_pb:20,  f_div:5, f_roe:0,  f_roa:0, f_eg:-10, f_rsi:0,  f_chg:-10, f_cap:0, f_ma:'any' }
+  };
+  function tpl(name){ const t=TPLS[name]; if(!t)return; for(const k in t){ const el=document.getElementById(k); if(el){ el.value=t[k]; sync(k); } } apply(); }
+  let current=TOP100.slice();
+  function loadScreener(){
+    MKLAB.data.stocks().then(d=>{
+      if(d && Array.isArray(d) && d.length){
+        current=d.map(s=>({sym:s.sym,name:s.name,price:s.price,chg:s.chg,pe:s.pe,pb:s.pb,roe:s.roe,roa:s.roa,eg:(s.eps||0),rsi:(s.rsi!=null?s.rsi:50),ma5:s.chg>=0,ma10:s.chg>=0,ma30:s.chg>=0,cap:(s.market_cap!=null?(s.market_cap/1e8):0),div:(s.div||0)}));
+        apply();
+        return MKLAB.data.json('stocks');
+      }
+    }).then(meta=>{
+      MKLAB.setFreshness(meta&&meta.meta&&meta.meta.as_of);
+    }).catch(()=>{ MKLAB.setFreshness(null); });
+  }
+  const PER=10;
+  function loadSymbol(){
+    const v=document.getElementById('symInput').value.trim(); if(!v) return;
+    const hit=current.find(x=>String(x.sym)===v);
+    if(hit){ if(!current.slice(0,200).includes(hit)) current.unshift(hit); }
+    else { window.location.href='mklab-stock-research.html?sym='+encodeURIComponent(v); return; }
+    apply();
+  }
+  let resTable=null;
+  let _applyScheduled=false;
+  function apply(){
+    if(_applyScheduled) return;
+    _applyScheduled=true;
+    requestAnimationFrame(()=>{ _applyScheduled=false; applyNow(); });
+  }
+  function applyNow(){
+    const g=id=>parseFloat(document.getElementById(id).value)||0; const pe=g('f_pe'),pb=g('f_pb'),div=g('f_div'),roe=g('f_roe'),roa=g('f_roa'),eg=g('f_eg'),rsi=g('f_rsi'),chg=g('f_chg'),cap=g('f_cap'); const ma=document.getElementById('f_ma').value;
+    const ge=(a,b)=> a==null ? true : a>=b;
+    const leU=(a,val,max)=> a==null ? true : (val>=max ? true : a<=val);
+    const geU=(a,val,min)=> a==null ? true : (val<=min ? true : a>=val);
+    const rows=current.filter(s=> leU(s.pe,pe,60)&&leU(s.pb,pb,20)&&ge(s.div,div)&&ge(s.roe,roe)&&ge(s.roa,roa)&&geU(s.eg,eg,-10)&&ge(s.rsi,rsi)&&geU(s.chg,chg,-10)&&ge(s.cap,cap)&&(ma==='any'||(ma==='ma5'&&s.ma5)||(ma==='ma10'&&s.ma10)||(ma==='ma30'&&s.ma30)));
+    document.getElementById('count').textContent=`符合：${rows.length} / ${current.length} 檔`;
+    if(!resTable){
+      resTable = MKLAB.DataTable('resTable', { cols:['sym','name','price','chg','pe','pb','roe','cap'], rows:rows, pageSize:PER, pagerId:'pager', defaultSort:'roe' });
+    } else {
+      resTable.setRows(rows);
+    }
+  }
+  function openDrawer(){ MKLAB.Drawer.open(); }
+  function closeDrawer(){ MKLAB.Drawer.close(); }
+  window.addEventListener('DOMContentLoaded', function () {
+    apply(); // 初次渲染（此時 MKLAB 已定義）
+    loadScreener();
+    MKLAB.initDrawer();
+    MKLAB.Shell.mount({ active: 'screener' });
+  });
+</script>
+</main>
+<!-- Mobile navigation placeholder -->
+<footer class="footer" role="contentinfo">
+  <div class="footer-inner">
+    <span>mklab-stock · Web Components v2.0</span>
+    <a class="link" href="https://github.com/evanhsia-git/mklab-stock" target="_blank" rel="noopener">GitHub 倉庫 ↗</a>
+  </div>
+</footer>
+</body>
+</html>

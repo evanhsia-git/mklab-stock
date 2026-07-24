@@ -1,0 +1,154 @@
+<!-- Mobile navigation placeholder -->
+<!DOCTYPE html>
+<html lang="zh-TW" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>mklab-stock Industry 原型 v11（產業動態）</title>
+<style>
+  :root { --bg:#0f1115; --surface:#171a21; --ink:#e8eaed; --muted:#9aa0a6; --border:#2a2f3a; --accent:#3b82f6; --up:#f87171; --down:#4ade80; --row-hover:#1e2a3a; --radius:10px; --shadow:0 1px 3px rgba(0,0,0,.4); }
+  [data-theme="light"] { --bg:#f7f8fa; --surface:#fff; --ink:#1a1d21; --muted:#6b7280; --border:#e5e7eb; --accent:#2563eb; --up:#dc2626; --down:#16a34a; --row-hover:#eff6ff; --shadow:0 1px 3px rgba(0,0,0,.08); }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,"Segoe UI","PingFang TC","Microsoft JhengHei",sans-serif; background:var(--bg); color:var(--ink); line-height:1.5; }
+  .nav { position:sticky; top:0; z-index:25; background:var(--surface); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:4px; padding:10px 12px; }
+  .nav a { color:var(--ink); text-decoration:none; font-size:14px; padding:6px 10px; border-radius:8px; white-space:nowrap; }
+  .nav a.active { background:var(--accent); color:#fff; }
+  .utilbar { position:sticky; top:49px; z-index:24; background:var(--surface); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; padding:8px 12px; }
+  .utilbar .spacer { flex:1; }
+  .brand { font-weight:700; font-size:15px; margin-right:4px; white-space:nowrap; }
+  .search { display:flex; align-items:center; gap:4px; background:var(--bg); border:1px solid var(--border); border-radius:20px; padding:4px 10px; }
+  .search.collapsed input { display:none; }
+  .search.expanded input { display:block; width:160px; }
+  .fab-btn { width:40px; height:40px; border-radius:50%; border:1px solid var(--border); background:var(--surface); color:var(--ink); cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow); }
+  .fab-btn svg { width:20px; height:20px; display:block; }
+  .freshness { background:#fff7ed; color:#9a3412; font-size:12px; padding:6px 12px; border-bottom:1px solid var(--border); text-align:center; }
+  [data-theme="dark"] .freshness { background:#2a1d12; color:#fdba74; }
+  .wrap { max-width:1200px; margin:0 auto; padding:12px; }
+  @media (min-width:1024px){ .wrap{ padding:16px 24px; } }
+  .up { color:var(--up); } .down { color:var(--down); }
+  .section-title { font-size:14px; font-weight:600; margin:18px 4px 10px; color:var(--muted); }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:10px; }
+  .icard { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:12px; box-shadow:var(--shadow); cursor:pointer; transition:border-color .15s; }
+  .icard:hover { border-color:var(--accent); }
+  .icard.on { border-color:var(--accent); }
+  .icard .top { display:flex; justify-content:space-between; align-items:baseline; }
+  .icard .nm { font-size:13px; font-weight:600; }
+  .icard .chg { font-size:14px; font-weight:700; }
+  .icard .meta { font-size:11px; color:var(--muted); margin-top:2px; }
+  .icard .spark { margin-top:6px; }
+  .icard .spark svg { width:100%; height:28px; display:block; }
+  .table-wrap { background:var(--surface); border-radius:var(--radius); box-shadow:var(--shadow); overflow-x:auto; margin-top:14px; }
+  table { width:100%; border-collapse:collapse; }
+  th,td { padding:9px 8px; text-align:right; font-size:13px; border-bottom:1px solid var(--border); white-space:nowrap; }
+  th:first-child,td:first-child { text-align:left; }
+  th { font-size:12px; color:var(--muted); font-weight:600; background:var(--surface); cursor:pointer; position:sticky; top:0; }
+  tbody tr:nth-child(even){ background:rgba(255,255,255,.02); }
+  tbody tr:hover { background:var(--row-hover); }
+  .sym { font-weight:600; } .sym small { color:var(--muted); font-weight:400; display:block; }
+  .spark-cell { position:relative; width:90px; } .spark-cell svg { width:100%; height:34px; display:block; }
+  .disclaimer { font-size:11px; color:var(--muted); text-align:center; padding:20px 12px; }
+  /* drawer */
+  .drawer-mask { position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:40; display:none; }
+  .drawer-mask.open { display:block; }
+  .drawer { position:fixed; top:0; right:0; height:100%; width:300px; max-width:85vw; background:var(--surface); border-left:1px solid var(--border); z-index:50; transform:translateX(100%); transition:transform .25s ease; padding:16px; overflow-y:auto; box-shadow:var(--shadow); }
+  .drawer.open { transform:translateX(0); }
+  .drawer h3 { font-size:15px; margin-bottom:12px; }
+  .drawer h4 { font-size:13px; color:var(--muted); margin:16px 0 8px; }
+  .row { display:flex; align-items:center; justify-content:space-between; padding:8px 0; font-size:14px; }
+  .row input { width:90px; padding:4px 6px; border:1px solid var(--border); border-radius:6px; background:var(--bg); color:var(--ink); }
+  .seg { display:flex; border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+  .seg button { flex:1; padding:6px; background:var(--surface); color:var(--ink); border:none; font-size:13px; }
+  .seg button.on { background:var(--accent); color:#fff; }
+  .close-x { float:right; background:none; border:none; font-size:20px; color:var(--muted); cursor:pointer; }
+  .drawer a { color:var(--accent); text-decoration:none; }
+  .sys-note { font-size:12px; color:var(--muted); line-height:1.6; }
+</style>
+</head>
+<body>
+  <nav class="nav">
+    <a href="#">Market</a><a href="#">Screener</a><a href="#">Research</a><a href="#" class="active">Industry</a><a href="#">Watchlist</a>
+  </nav>
+  <div class="utilbar">
+    <span class="brand">mklab-stock</span>
+    <div class="search collapsed" id="searchBox"><input id="q" placeholder="搜尋代號，如 2330" onkeydown="if(event.key==='Enter')doSearch()" style="display:none"><button class="fab-btn" style="width:32px;height:32px" onclick="toggleSearch()" title="搜尋">🔍</button></div>
+    <span class="spacer"></span>
+    <button class="fab-btn" onclick="openDrawer()" title="設定"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <button class="fab-btn" onclick="toggleDark()" title="主題"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+    <a class="fab-btn" href="https://github.com/evanhsia-git/mklab-stock-stock" target="_blank" title="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-1-2.6c3-.3 6-1.5 6-6.5a5 5 0 0 0-1.4-3.5 4.7 4.7 0 0 0-.1-3.5s-1.1-.3-3.5 1.3a12 12 0 0 0-6.3 0C6.5 1.3 5.4 1.6 5.4 1.6a4.7 4.7 0 0 0-.1 3.5A5 5 0 0 0 4 8.6c0 5 3 6.2 6 6.5a3.4 3.4 0 0 0-1 2.6V22"/></svg></a>
+  </div>
+  <div class="freshness">資料以 2026-07-13 收盤為準（前一日，非即時）</div>
+  <div class="drawer-mask" onclick="closeDrawer()"></div>
+  <aside class="drawer" id="drawer">
+    <button class="close-x" onclick="closeDrawer()">×</button>
+    <h3>設定</h3>
+    <h4>外觀</h4>
+    <div class="row"><span>深色主題</span><button class="switch on" id="swDark" onclick="toggleDark()"></button></div>
+    <div class="row"><span>語言</span><div class="seg"><button id="langZh" class="on" onclick="setLang('zh')">中文</button><button id="langEn" onclick="setLang('en')">EN</button></div></div>
+    <h4>System</h4>
+    <div class="sys-note">版本：v11<br>更新：2026-07-14 08:30<br>狀態：<span class="up">●</span> 正常</div>
+  </aside>
+  <div class="wrap">
+    <div class="section-title">台灣 33 產業動態（漲跌績效 · 點擊產業看成分股）</div>
+    <div class="grid" id="igrid"></div>
+    <div class="section-title" id="detailTitle" style="display:none"></div>
+    <div class="table-wrap" id="detailWrap" style="display:none">
+      <table>
+        <thead><tr><th>代號</th><th>名稱</th><th>價格</th><th>漲跌%</th><th>PE</th><th>PB</th><th>ROE%</th><th>趨勢</th></tr></thead>
+        <tbody id="detailBody"></tbody>
+      </table>
+    </div>
+    <div class="disclaimer">產業分類參考台灣證交所 33 個法定產業（示意資料）。生產環境由 Build-Time 計算各產業漲跌與成分股績效。</div>
+  </div>
+<script>
+  // 台灣 33 個法定產業（依用戶提供清單）
+  const INDUSTRIES=["水泥工業","食品工業","塑膠工業","紡織纖維","電機機械","電器電纜","化學工業","生技醫療業","玻璃陶瓷","造紙工業","鋼鐵工業","橡膠工業","汽車工業","半導體業","電腦及週邊設備業","光電業","通訊網路業","電子零組件業","電子通路業","資訊服務業","其他電子業","建材營造","航運業","觀光餐旅","金融保險","貿易百貨","油電燃氣業","綜合","綠能環保","數位雲端","運動休閒","居家生活","其他等"];
+  const SAMPLE=["台積電","鴻海","聯發科","台達電","中華電","國泰金","台塑化","聯電","富邦金","中信金","兆豐金","玉山金","廣達","緯創","日月光","南亞科","大立光","統一","台泥","中鋼","長榮","華航","彰銀","第一金","元大金"];
+  function rnd(seed){ let s=seed; return ()=>{ s=(s*1103515245+12345)&0x7fffffff; return s/0x7fffffff; }; }
+  function spark(data,color,w,h){ const min=Math.min(...data),max=Math.max(...data),r=(max-min)||1; const p=data.map((d,i)=>`${(i/(data.length-1)*w).toFixed(1)},${(h-((d-min)/r*h)).toFixed(1)}`).join(" "); return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><polyline points="${p}" fill="none" stroke="${color}" stroke-width="1.5"/></svg>`; }
+  function gen(seed,n){ const o=[]; let p=seed; for(let i=0;i<n;i++){ p+=(Math.random()-0.45)*seed*0.02; o.push(+p.toFixed(2)); } return o; }
+  // 生成產業資料（預設示意 fallback；載入 data/industry.json 後以真實資料覆寫）
+  let data=INDUSTRIES.map((nm,i)=>{ const chg=+((Math.random()-0.45)*6).toFixed(2); const cnt=+(8+Math.random()*40).toFixed(0); const top=+((Math.random()-0.45)*5).toFixed(2); return {nm,chg,cnt,top,seed:+(20+i*37)}; });
+  function loadIndustry(){
+    fetch('data/industry.json').then(r=>{ if(!r.ok) throw new Error('no'); return r.json(); }).then(d=>{
+      if(d && Array.isArray(d.industry) && d.industry.length){
+        data=d.industry.map((x,i)=>({nm:x.nm,chg:x.chg,cnt:x.cnt,top:x.top,seed:+(20+i*37)}));
+        renderGrid();
+        const asof=d.meta&&d.meta.as_of;
+        if(asof){ const f=document.querySelector('.freshness'); if(f) f.textContent='資料以 '+asof+' 收盤為準（Build-Time 自動更新）'; }
+      }
+    }).catch(()=>{});
+  }
+  let activeInd=null;
+  function renderGrid(){
+    document.getElementById('igrid').innerHTML=data.map((d,i)=>{
+      const col=d.chg>=0?"var(--up)":"var(--down)";
+      const svg=spark(gen(d.seed,20), d.chg>=0?"#dc2626":"#16a34a", 200, 28);
+      return `<div class="icard ${activeInd===i?'on':''}" onclick="selInd(${i})">
+        <div class="top"><span class="nm">${d.nm}</span><span class="chg ${d.chg>=0?'up':'down'}">${(d.chg>0?'+':'')}${d.chg}%</span></div>
+        <div class="meta">${d.cnt} 檔 · 領漲 ${d.top>0?'+':''}${d.top}%</div>
+        <div class="spark">${svg}</div>
+      </div>`;
+    }).join("");
+  }
+  function selInd(i){
+    activeInd=i; renderGrid();
+    const d=data[i];
+    document.getElementById('detailTitle').style.display='block';
+    document.getElementById('detailTitle').textContent=`${d.nm} · 成分股績效（${d.cnt} 檔，示意 Top 8）`;
+    document.getElementById('detailWrap').style.display='block';
+    const stocks=Array.from({length:8}).map((_,k)=>{
+      const sym=2000+i*10+k; const price=+(20+Math.random()*1800).toFixed(1); const ch=+((Math.random()-0.45)*10).toFixed(2);
+      const col=ch>=0?"#dc2626":"#16a34a"; const nm=SAMPLE[(i+k)%SAMPLE.length];
+      return `<tr><td class="sym">${sym}<small>${nm}</small></td><td>${price}</td><td class="${ch>=0?'up':'down'}">${ch>0?'+':''}${ch}%</td><td>${+(8+Math.random()*30).toFixed(1)}</td><td>${(1+Math.random()*5).toFixed(1)}</td><td>${(5+Math.random()*30).toFixed(1)}</td><td class="spark-cell">${spark(gen(price,20),col,180,34)}</td></tr>`;
+    }).join("");
+    document.getElementById('detailBody').innerHTML=stocks;
+  }
+  function toggleSearch(){ const b=document.getElementById('searchBox'); const inp=b.querySelector('input'); const exp=b.classList.toggle('expanded'); b.classList.toggle('collapsed',!exp); if(exp){ inp.style.display='block'; inp.focus(); } else { inp.style.display='none'; } }
+  function doSearch(){ const v=document.getElementById('q').value.trim(); if(v) alert('將跳轉 '+v+' 至 Research 頁（React 階段實作）'); }
+  function toggleDark(){ const sw=document.getElementById("swDark"); const on=document.documentElement.getAttribute('data-theme')==='dark'; document.documentElement.setAttribute('data-theme', on?'light':'dark'); if(sw) sw.classList.toggle("on", !on); }
+  function openDrawer(){ document.getElementById("drawer").classList.add("open"); document.querySelector(".drawer-mask").classList.add("open"); }
+  function closeDrawer(){ document.getElementById("drawer").classList.remove("open"); document.querySelector(".drawer-mask").classList.remove("open"); }
+  function setLang(l){ document.getElementById("langZh").classList.toggle("on",l==="zh"); document.getElementById("langEn").classList.toggle("on",l==="en"); }
+  renderGrid(); loadIndustry();
+
+</body></html>
