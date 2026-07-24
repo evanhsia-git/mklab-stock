@@ -76,6 +76,16 @@
     return jsData('twii_kdata.js', 'TWII_KDATA');
   }
 
+  /**
+   * 指定日期的全市場收盤快照（data/history/{YYYYMMDD}.json，單檔含全部 1370+ 檔股票，~289KB）
+   * ⚠️ 僅在使用者主動觸發（如回測試算）時呼叫，不要在頁面載入時預先抓，避免不必要流量
+   * dateStr 格式：'20260716'（8 碼，無分隔符）
+   */
+  function historyOn(dateStr) {
+    if (!/^\d{8}$/.test(String(dateStr || ''))) return Promise.reject(new Error('historyOn: dateStr 需為 YYYYMMDD 格式'));
+    return json('history/' + dateStr).then(d => (d && Array.isArray(d.stocks)) ? d.stocks : []);
+  }
+
   /** 新鮮度計算：比對檔案 mtime 與現在 */
   function freshness(fileName) {
     // 靜態託管無 mtime API，改用「交易日歷」估算：
@@ -99,6 +109,7 @@
     stocks,
     indices,
     twiiKline,
+    historyOn,
     freshness,
     clearCache,
     BASE,

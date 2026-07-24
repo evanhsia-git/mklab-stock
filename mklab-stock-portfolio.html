@@ -1,0 +1,190 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW" data-theme="dark">
+<head>
+<base href="/mklab-stock/">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="mklab-stock — 台股/美股即時儀表板，大盤、產業、篩選、個股研究一站掌握">
+<title>mklab-stock</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
+<link rel="stylesheet" href="assets/css/mklab-theme.css">
+<link rel="stylesheet" href="assets/css/layout.css">
+<link rel="stylesheet" href="assets/css/component.css">
+<link rel="stylesheet" href="assets/css/mobile.css">
+<style>
+  .pf-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; margin-bottom: 16px; }
+  .pf-form input { padding: 6px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--ink); width: 100px; }
+  .pf-donut-wrap { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .pf-legend { font-size: 12px; }
+  .pf-legend div { display: flex; align-items: center; gap: 6px; margin: 3px 0; }
+  .pf-legend span.dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+</style>
+</head>
+<body>
+<header class="sticky-header" role="banner">
+  <nav id="mainNav" class="nav" aria-label="主導覽"></nav>
+  <div id="utilbar" class="utilbar">
+    <span class="brand" id="brand"></span>
+    <span class="spacer"></span>
+    <button class="mobile-menu-btn" onclick="MKLAB.Drawer.toggle()" aria-label="開啟選單">
+      <span class="hamburger">☰</span>
+    </button>
+  </div>
+  <div class="freshness" aria-live="polite">資料載入中…</div>
+</header>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+  <button class="close-x" onclick="MKLAB.Drawer.close()" aria-label="關閉抽屜">×</button>
+  <div class="drawer-content" id="drawerContent"></div>
+</aside>
+<div class="drawer-mask" onclick="MKLAB.Drawer.close()" aria-hidden="true"></div>
+<main class="wrap">
+
+<div class="section-title">投資組合損益追蹤</div>
+<div class="card">
+  <div class="row-input pf-form">
+    <input id="pfSym" placeholder="代號 2330">
+    <input id="pfShares" type="number" placeholder="張數">
+    <input id="pfCost" type="number" placeholder="成本價">
+    <button onclick="addHolding()">新增持股</button>
+  </div>
+  <p class="muted-small-top">同一檔股票重複新增會自動合併並計算加權平均成本。資料僅存在你目前瀏覽器（localStorage），換裝置或清除瀏覽器資料會遺失，請自行留存紀錄。</p>
+</div>
+
+<div class="pf-summary" id="pfSummary"></div>
+
+<div class="card">
+  <h3>持股佔比</h3>
+  <div class="pf-donut-wrap">
+    <svg id="pfDonut" width="160" height="160" viewBox="0 0 160 160"></svg>
+    <div class="pf-legend" id="pfLegend"></div>
+  </div>
+</div>
+
+<div class="table-wrap"><table id="pfTable"></table></div>
+<p class="muted-small-top" id="pfEmpty">尚未新增任何持股。</p>
+
+<script src="assets/js/data-client.js"></script>
+<script src="assets/js/mklab-core.js"></script>
+<script src="assets/js/mklab-wc.js"></script>
+<script>
+  let ALL = [];
+  let pfTable = null;
+  const DONUT_COLORS = ['#4f8ef7', '#f76c6c', '#f7c948', '#63d471', '#b978f7', '#f79b48', '#48c9f7', '#f748a6'];
+
+  function computeHoldings() {
+    const list = MKLAB.Portfolio.getAll();
+    const rows = list.map(h => {
+      const live = ALL.find(r => String(r.sym) === h.sym);
+      const price = live ? live.price : null;
+      const mktVal = price != null ? price * h.shares : null;
+      const costTotal = h.cost * h.shares;
+      const pnl = mktVal != null ? mktVal - costTotal : null;
+      const pnlPct = mktVal != null && costTotal ? (pnl / costTotal) * 100 : null;
+      return { sym: h.sym, name: live ? live.name : '(找不到)', shares: h.shares, cost: h.cost, price, mktVal, pnl, pnlPct };
+    });
+    const totalMktVal = rows.reduce((s, r) => s + (r.mktVal || 0), 0);
+    rows.forEach(r => { r.weight = totalMktVal ? (r.mktVal || 0) / totalMktVal * 100 : 0; });
+    return rows;
+  }
+
+  function renderSummary(rows) {
+    const totalMktVal = rows.reduce((s, r) => s + (r.mktVal || 0), 0);
+    const totalCost = rows.reduce((s, r) => s + r.cost * r.shares, 0);
+    const totalPnl = totalMktVal - totalCost;
+    const totalPnlPct = totalCost ? (totalPnl / totalCost) * 100 : 0;
+    const cards = [
+      { label: '總市值', val: Math.round(totalMktVal).toLocaleString(), cls: '' },
+      { label: '總成本', val: Math.round(totalCost).toLocaleString(), cls: '' },
+      { label: '總損益', val: (totalPnl >= 0 ? '+' : '') + Math.round(totalPnl).toLocaleString(), cls: totalPnl >= 0 ? 'up' : 'down' },
+      { label: '總報酬率', val: (totalPnlPct >= 0 ? '+' : '') + totalPnlPct.toFixed(2) + '%', cls: totalPnlPct >= 0 ? 'up' : 'down' },
+    ];
+    document.getElementById('pfSummary').innerHTML = cards.map(c =>
+      `<div class="card"><div class="card-title">${c.label}</div><div class="card-val ${c.cls}">${c.val}</div></div>`
+    ).join('');
+  }
+
+  function renderDonut(rows) {
+    const svg = document.getElementById('pfDonut');
+    const legend = document.getElementById('pfLegend');
+    const valid = rows.filter(r => r.mktVal > 0);
+    if (!valid.length) { svg.innerHTML = ''; legend.innerHTML = ''; return; }
+    const total = valid.reduce((s, r) => s + r.mktVal, 0);
+    let angle = 0;
+    const cx = 80, cy = 80, r = 70, ir = 40;
+    let paths = '';
+    valid.forEach((row, i) => {
+      const frac = row.mktVal / total;
+      const start = angle;
+      const end = angle + frac * 360;
+      angle = end;
+      const large = (end - start) > 180 ? 1 : 0;
+      const p1 = polar(cx, cy, r, start), p2 = polar(cx, cy, r, end);
+      const p3 = polar(cx, cy, ir, end), p4 = polar(cx, cy, ir, start);
+      paths += `<path d="M${p1.x},${p1.y} A${r},${r} 0 ${large} 1 ${p2.x},${p2.y} L${p3.x},${p3.y} A${ir},${ir} 0 ${large} 0 ${p4.x},${p4.y} Z" fill="${DONUT_COLORS[i % DONUT_COLORS.length]}"></path>`;
+    });
+    svg.innerHTML = paths;
+    legend.innerHTML = valid.map((row, i) =>
+      `<div><span class="dot" style="background:${DONUT_COLORS[i % DONUT_COLORS.length]}"></span>${row.sym} ${row.weight.toFixed(1)}%</div>`
+    ).join('');
+  }
+  function polar(cx, cy, r, deg) {
+    const rad = (deg - 90) * Math.PI / 180;
+    return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+  }
+
+  function renderTable(rows) {
+    document.getElementById('pfEmpty').style.display = rows.length ? 'none' : 'block';
+    if (!pfTable) {
+      pfTable = MKLAB.DataTable('pfTable', {
+        cols: ['sym', 'name', 'shares', 'cost', 'price', 'mktVal', 'pnl', 'pnlPct', 'weight', 'del'],
+        rows, pageSize: 0,
+        onDel: sym => { MKLAB.Portfolio.remove(sym); refresh(); },
+      });
+    } else {
+      pfTable.setRows(rows);
+    }
+  }
+
+  function refresh() {
+    const rows = computeHoldings();
+    renderSummary(rows);
+    renderDonut(rows);
+    renderTable(rows);
+  }
+
+  function addHolding() {
+    const sym = document.getElementById('pfSym').value.trim();
+    const shares = Number(document.getElementById('pfShares').value);
+    const cost = Number(document.getElementById('pfCost').value);
+    if (!sym || !shares || !cost) { alert('請完整輸入代號、張數、成本價'); return; }
+    if (!ALL.find(r => String(r.sym) === sym)) { alert('找不到股票代號 ' + sym); return; }
+    MKLAB.Portfolio.add(sym, shares, cost);
+    document.getElementById('pfSym').value = '';
+    document.getElementById('pfShares').value = '';
+    document.getElementById('pfCost').value = '';
+    refresh();
+  }
+
+  window.addEventListener('DOMContentLoaded', async function () {
+    MKLAB.initDrawer();
+    MKLAB.Shell.mount({ active: 'portfolio' });
+    try {
+      ALL = await MKLAB.data.stocks();
+      refresh();
+      const meta = await MKLAB.data.json('stocks');
+      MKLAB.setFreshness(meta && meta.meta && meta.meta.as_of);
+    } catch (e) {
+      console.warn('[portfolio] load failed:', e);
+      MKLAB.setFreshness(null);
+    }
+  });
+</script>
+</main>
+<footer class="footer" role="contentinfo">
+  <div class="footer-inner">
+    <span>mklab-stock · Web Components v2.0</span>
+    <a class="link" href="https://github.com/evanhsia-git/mklab-stock" target="_blank" rel="noopener">GitHub 倉庫 ↗</a>
+  </div>
+</footer>
+</body>
+</html>

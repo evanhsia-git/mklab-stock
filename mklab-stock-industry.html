@@ -40,6 +40,11 @@
 <div class="section-title">台灣 33 產業動態（漲跌績效 · 點擊產業看成分股）</div>
 <div class="grid" id="igrid"></div>
 
+<div class="section-title">產業輪動熱力圖（點擊格子可切換選取的產業）</div>
+<div class="table-wrap" style="overflow-x:auto;">
+  <table id="heatmap" class="heatmap-table"></table>
+</div>
+
 <div class="section-title">全產業列表（區間績效 %）</div>
 <div class="table-wrap">
   <table id="indPerfTable"></table>
@@ -84,7 +89,7 @@
     MKLAB.data.json('industry').then(d => {
       if (d && Array.isArray(d.industry) && d.industry.length) {
         data = d.industry.map((x, i) => ({ nm: x.nm, chg: x.chg, cnt: x.cnt, top: x.top, seed: +(20 + i * 37), w1: x.w1, m1: x.m1, m3: x.m3, m6: x.m6, ytd: x.ytd, y1: x.y1, y5: x.y5 }));
-        renderGrid(); renderPerf();
+        renderGrid(); renderPerf(); renderHeatmap();
         const asof = d.meta && d.meta.as_of;
         if (asof) MKLAB.setFreshness(asof);
       }
@@ -111,6 +116,30 @@
         </div>`;
       }).join("");
     }
+
+  const HEAT_COLS = [
+    { key: 'w1', label: '1週' }, { key: 'm1', label: '1月' }, { key: 'm3', label: '3月' },
+    { key: 'm6', label: '6月' }, { key: 'ytd', label: 'YTD' }, { key: 'y1', label: '1年' },
+  ];
+  function heatColor(v) {
+    if (v == null || isNaN(v)) return 'transparent';
+    const alpha = Math.min(1, Math.abs(v) / 10).toFixed(2);
+    const rgb = v >= 0 ? '220,38,38' : '22,163,74'; // 對應 --up/--down
+    return `rgba(${rgb},${alpha})`;
+  }
+  function renderHeatmap() {
+    let html = '<thead><tr><th>產業</th>' + HEAT_COLS.map(c => `<th>${c.label}</th>`).join('') + '</tr></thead><tbody>';
+    data.forEach((d, i) => {
+      html += `<tr style="cursor:pointer;${activeInd === i ? 'outline:2px solid var(--accent);' : ''}" onclick="selInd(${i})"><td>${d.nm}</td>`;
+      HEAT_COLS.forEach(c => {
+        const v = d[c.key];
+        html += `<td style="background:${heatColor(v)};text-align:center;">${v != null ? (v > 0 ? '+' : '') + v + '%' : '-'}</td>`;
+      });
+      html += '</tr>';
+    });
+    html += '</tbody>';
+    document.getElementById('heatmap').innerHTML = html;
+  }
 
   let perfTable = null;
   function renderPerf() {
@@ -160,7 +189,7 @@
   }
 
   function selInd(i) {
-    activeInd = i; renderGrid();
+    activeInd = i; renderGrid(); renderHeatmap();
     renderDetail(i);
   }
 
@@ -168,7 +197,7 @@
   function closeDrawer() { MKLAB.Drawer.close(); }
 
   window.addEventListener('DOMContentLoaded', function () {
-    renderGrid(); renderPerf();
+    renderGrid(); renderPerf(); renderHeatmap();
     loadIndustry();
     MKLAB.initDrawer();
     MKLAB.Shell.mount({ active: 'industry' });

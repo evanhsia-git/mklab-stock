@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW" data-theme="dark">
+<head>
+<base href="/mklab-stock/">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="mklab-stock — 台股/美股即時儀表板，大盤、產業、篩選、個股研究一站掌握">
+<title>mklab-stock</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
+<link rel="stylesheet" href="assets/css/mklab-theme.css">
+<link rel="stylesheet" href="assets/css/layout.css">
+<link rel="stylesheet" href="assets/css/component.css">
+<link rel="stylesheet" href="assets/css/mobile.css">
+</head>
+<body>
+<header class="sticky-header" role="banner">
+  <nav id="mainNav" class="nav" aria-label="主導覽"></nav>
+  <div id="utilbar" class="utilbar">
+    <span class="brand" id="brand"></span>
+    <span class="spacer"></span>
+    <button class="mobile-menu-btn" onclick="MKLAB.Drawer.toggle()" aria-label="開啟選單">
+      <span class="hamburger">☰</span>
+    </button>
+  </div>
+  <div class="freshness" aria-live="polite">資料載入中…</div>
+</header>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+  <button class="close-x" onclick="MKLAB.Drawer.close()" aria-label="關閉抽屜">×</button>
+  <div class="drawer-content" id="drawerContent"></div>
+</aside>
+<div class="drawer-mask" onclick="MKLAB.Drawer.close()" aria-hidden="true"></div>
+<main class="wrap">
+
+<div class="section-title">殖利率排行</div>
+<div class="row-input">
+  <select id="mktSel"><option value="">全部市場</option></select>
+  <select id="indSel"><option value="">全部產業</option></select>
+</div>
+<div class="table-wrap"><table id="divTable"></table></div>
+<div class="pager" id="divPager"></div>
+<p class="muted-small-top">殖利率依最新一期財報股利計算，僅供參考，不代表未來配息保證存在或金額不變。</p>
+
+<script src="assets/js/data-client.js"></script>
+<script src="assets/js/mklab-core.js"></script>
+<script src="assets/js/mklab-wc.js"></script>
+<script>
+  let ALL = [];
+  let divTable = null;
+
+  function applyFilter() {
+    const ind = document.getElementById('indSel').value;
+    const mkt = document.getElementById('mktSel').value;
+    let rows = ALL.filter(r => r.div != null);
+    if (ind) rows = rows.filter(r => r.ind === ind);
+    if (mkt) rows = rows.filter(r => r.market === mkt || (!r.market && mkt === 'TW'));
+    if (!divTable) {
+      divTable = MKLAB.DataTable('divTable', {
+        cols: ['sym', 'name', 'price', 'chg', 'div', 'pe', 'pb'],
+        rows, pageSize: 20, pagerId: 'divPager', defaultSort: 'div',
+      });
+    } else {
+      divTable.setRows(rows);
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', async function () {
+    MKLAB.initDrawer();
+    MKLAB.Shell.mount({ active: 'dividend' });
+    try {
+      ALL = await MKLAB.data.stocks();
+      const inds = Array.from(new Set(ALL.map(r => r.ind).filter(Boolean))).sort();
+      const indSel = document.getElementById('indSel');
+      inds.forEach(i => { const o = document.createElement('option'); o.value = i; o.textContent = i; indSel.appendChild(o); });
+      indSel.addEventListener('change', applyFilter);
+      document.getElementById('mktSel').addEventListener('change', applyFilter);
+      applyFilter();
+      const meta = await MKLAB.data.json('stocks');
+      MKLAB.setFreshness(meta && meta.meta && meta.meta.as_of);
+    } catch (e) {
+      console.warn('[dividend] load failed:', e);
+      MKLAB.setFreshness(null);
+    }
+  });
+</script>
+</main>
+<footer class="footer" role="contentinfo">
+  <div class="footer-inner">
+    <span>mklab-stock · Web Components v2.0</span>
+    <a class="link" href="https://github.com/evanhsia-git/mklab-stock" target="_blank" rel="noopener">GitHub 倉庫 ↗</a>
+  </div>
+</footer>
+</body>
+</html>

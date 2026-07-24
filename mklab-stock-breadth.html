@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW" data-theme="dark">
+<head>
+<base href="/mklab-stock/">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="mklab-stock — 台股/美股即時儀表板，大盤、產業、篩選、個股研究一站掌握">
+<title>mklab-stock</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
+<link rel="stylesheet" href="assets/css/mklab-theme.css">
+<link rel="stylesheet" href="assets/css/layout.css">
+<link rel="stylesheet" href="assets/css/component.css">
+<link rel="stylesheet" href="assets/css/mobile.css">
+<style>
+  .breadth-bar-row { display: flex; align-items: center; gap: 8px; margin: 6px 0; }
+  .breadth-bar-label { width: 64px; font-size: 12px; color: var(--muted); text-align: right; flex-shrink: 0; }
+  .breadth-bar-track { flex: 1; background: var(--bg); border-radius: 6px; overflow: hidden; height: 20px; }
+  .breadth-bar-fill { height: 100%; border-radius: 6px; }
+  .breadth-bar-count { width: 48px; font-size: 12px; color: var(--muted); flex-shrink: 0; }
+  .breadth-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; margin-bottom: 16px; }
+</style>
+</head>
+<body>
+<header class="sticky-header" role="banner">
+  <nav id="mainNav" class="nav" aria-label="主導覽"></nav>
+  <div id="utilbar" class="utilbar">
+    <span class="brand" id="brand"></span>
+    <span class="spacer"></span>
+    <button class="mobile-menu-btn" onclick="MKLAB.Drawer.toggle()" aria-label="開啟選單">
+      <span class="hamburger">☰</span>
+    </button>
+  </div>
+  <div class="freshness" aria-live="polite">資料載入中…</div>
+</header>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+  <button class="close-x" onclick="MKLAB.Drawer.close()" aria-label="關閉抽屜">×</button>
+  <div class="drawer-content" id="drawerContent"></div>
+</aside>
+<div class="drawer-mask" onclick="MKLAB.Drawer.close()" aria-hidden="true"></div>
+<main class="wrap">
+
+<div class="section-title">今日市場寬度</div>
+<div class="breadth-summary" id="breadthSummary"></div>
+
+<div class="section-title">漲跌幅分布</div>
+<div class="card" id="histWrap"></div>
+
+<div class="section-title">各產業上漲家數比排行</div>
+<div class="table-wrap"><table id="indBreadthTable"></table></div>
+<p class="muted-small-top">目前僅計算「當日」漲跌分布，52 週創高/創低家數需要後端先預先計算，暫不提供。</p>
+
+<script src="assets/js/data-client.js"></script>
+<script src="assets/js/mklab-core.js"></script>
+<script src="assets/js/mklab-wc.js"></script>
+<script>
+  const BUCKETS = [
+    { label: '< -7%',    test: v => v < -7 },
+    { label: '-7~-3%',   test: v => v >= -7 && v < -3 },
+    { label: '-3~-1%',   test: v => v >= -3 && v < -1 },
+    { label: '-1~0%',    test: v => v >= -1 && v < 0 },
+    { label: '0~1%',     test: v => v >= 0 && v < 1 },
+    { label: '1~3%',     test: v => v >= 1 && v < 3 },
+    { label: '3~7%',     test: v => v >= 3 && v < 7 },
+    { label: '> 7%',     test: v => v >= 7 },
+  ];
+
+  function renderSummary(stocks) {
+    const up = stocks.filter(r => r.chg > 0).length;
+    const down = stocks.filter(r => r.chg < 0).length;
+    const flat = stocks.filter(r => r.chg === 0).length;
+    const ratio = down > 0 ? (up / down).toFixed(2) : '∞';
+    const cards = [
+      { label: '上漲家數', val: up, cls: 'up' },
+      { label: '下跌家數', val: down, cls: 'down' },
+      { label: '平盤家數', val: flat, cls: '' },
+      { label: '漲跌家數比', val: ratio, cls: '' },
+    ];
+    document.getElementById('breadthSummary').innerHTML = cards.map(c =>
+      `<div class="card"><div class="card-title">${c.label}</div><div class="card-val ${c.cls}">${c.val}</div></div>`
+    ).join('');
+  }
+
+  function renderHistogram(stocks) {
+    const total = stocks.length || 1;
+    const counts = BUCKETS.map(b => stocks.filter(r => r.chg != null && b.test(r.chg)).length);
+    const max = Math.max(...counts, 1);
+    let html = '';
+    BUCKETS.forEach((b, i) => {
+      const pct = (counts[i] / max * 100).toFixed(1);
+      const color = b.label.startsWith('-') || b.label.startsWith('<') ? 'var(--down)' : (b.label.startsWith('>') || (!b.label.startsWith('0') && !b.label.startsWith('-')) ? 'var(--up)' : 'var(--muted)');
+      html += `<div class="breadth-bar-row">
+        <span class="breadth-bar-label">${b.label}</span>
+        <span class="breadth-bar-track"><span class="breadth-bar-fill" style="width:${pct}%;background:${color};"></span></span>
+        <span class="breadth-bar-count">${counts[i]} 檔</span>
+      </div>`;
+    });
+    document.getElementById('histWrap').innerHTML = html;
+  }
+
+  function renderIndBreadth(stocks) {
+    const byInd = {};
+    stocks.forEach(r => {
+      if (!r.ind) return;
+      byInd[r.ind] = byInd[r.ind] || { ind: r.ind, up: 0, total: 0 };
+      byInd[r.ind].total++;
+      if (r.chg > 0) byInd[r.ind].up++;
+    });
+    const rows = Object.values(byInd).map(d => ({ ...d, upRatio: d.total ? (d.up / d.total * 100) : 0 }));
+    rows.sort((a, b) => b.upRatio - a.upRatio);
+    let html = '<thead><tr><th>產業</th><th>上漲家數</th><th>總檔數</th><th>上漲比例</th></tr></thead><tbody>';
+    rows.forEach(r => {
+      html += `<tr><td>${r.ind}</td><td>${r.up}</td><td>${r.total}</td><td class="${r.upRatio >= 50 ? 'up' : 'down'}">${r.upRatio.toFixed(1)}%</td></tr>`;
+    });
+    html += '</tbody>';
+    document.getElementById('indBreadthTable').innerHTML = html;
+  }
+
+  window.addEventListener('DOMContentLoaded', async function () {
+    MKLAB.initDrawer();
+    MKLAB.Shell.mount({ active: 'breadth' });
+    try {
+      const stocks = await MKLAB.data.stocks();
+      renderSummary(stocks);
+      renderHistogram(stocks);
+      renderIndBreadth(stocks);
+      const meta = await MKLAB.data.json('stocks');
+      MKLAB.setFreshness(meta && meta.meta && meta.meta.as_of);
+    } catch (e) {
+      console.warn('[breadth] load failed:', e);
+      MKLAB.setFreshness(null);
+    }
+  });
+</script>
+</main>
+<footer class="footer" role="contentinfo">
+  <div class="footer-inner">
+    <span>mklab-stock · Web Components v2.0</span>
+    <a class="link" href="https://github.com/evanhsia-git/mklab-stock" target="_blank" rel="noopener">GitHub 倉庫 ↗</a>
+  </div>
+</footer>
+</body>
+</html>

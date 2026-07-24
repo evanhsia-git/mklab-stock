@@ -39,6 +39,17 @@
     eps:   { label:'EPS',     type:'num', sortable:true,  fmt:r=>r.eps!=null?Number(r.eps).toFixed(2):'-' },
     roe:   { label:'ROE',     type:'num', sortable:true,  fmt:r=>(r.roe!=null?Number(r.roe).toFixed(2):'-') },
     roa:   { label:'ROA',     type:'num', sortable:true,  fmt:r=>(r.roa!=null?Number(r.roa).toFixed(2):'-') },
+    div:   { label:'殖利率%', type:'num', sortable:true, defDir:-1, fmt:r=>r.div!=null?Number(r.div).toFixed(2)+'%':'-' },
+    shares:  { label:'張數',   type:'num', sortable:true, fmt:r=>r.shares!=null?Number(r.shares).toLocaleString():'-' },
+    cost:    { label:'成本價', type:'num', sortable:true, fmt:r=>r.cost!=null?Number(r.cost).toLocaleString(undefined,{maximumFractionDigits:2}):'-' },
+    mktVal:  { label:'市值',   type:'num', sortable:true, defDir:-1, fmt:r=>r.mktVal!=null?Math.round(r.mktVal).toLocaleString():'-' },
+    pnl:     { label:'損益',   type:'num', sortable:true, defDir:-1, fmt:r=>r.pnl!=null?(r.pnl>=0?'+':'')+Math.round(r.pnl).toLocaleString():'-' },
+    pnlPct:  { label:'損益%',  type:'pct', sortable:true, defDir:-1, fmt:r=>r.pnlPct!=null?cellPct(r.pnlPct):'-' },
+    weight:  { label:'佔比',   type:'num', sortable:true, defDir:-1, fmt:r=>r.weight!=null?Number(r.weight).toFixed(1)+'%':'-' },
+    notesBadge: { label:'📝', type:'html', sortable:false, fmt:r=>{
+      const c=(global.MKLAB && global.MKLAB.Notes ? global.MKLAB.Notes.get(r.sym) : []).length;
+      return c ? '<span class="badge-notes" title="'+c+' 篇筆記" onclick="location.href=\'mklab-stock-research.html?sym='+r.sym+'\'">📝'+c+'</span>' : '<span class="text-muted">-</span>';
+    } },
     trend: { label:'趨勢',    type:'str', sortable:true,  fmt:r=>(r.trend!=null?r.trend:(r.spct!=null?(r.spct>0?'+':'')+r.spct+'%':'-')) },
     spk:   { label:'趨勢',    type:'spark',sortable:false, fmt:r=>{ if(!r.spark||!r.spark.length) return '-'; const data=r.spark,min=Math.min(...data),max=Math.max(...data),rn=(max-min)||1; const p=data.map((d,i)=>`${(i/(data.length-1)*80).toFixed(1)},${(30-((d-min)/rn*30)).toFixed(1)}`).join(' '); const col=data[data.length-1]>=data[0]?'var(--up)':'var(--down)'; return `<div style="display:flex;justify-content:center"><svg viewBox="0 0 80 30" style="width:80px;height:30px;display:block"><polyline points="${p}" fill="none" stroke="${col}" stroke-width="1.5"/></svg></div>`; } },
     ind:   { label:'產業',    type:'str', sortable:true,  key:'ind', fmt:r=>(r.ind||r.nm||'-') },
@@ -443,6 +454,12 @@
     { key:'research',  label:'Research',  href:'mklab-stock-research.html' },
     { key:'industry',  label:'Industry',  href:'mklab-stock-industry.html' },
     { key:'watchlist', label:'Watchlist', href:'mklab-stock-watchlist.html' },
+    { key:'dividend',  label:'Dividend',  href:'mklab-stock-dividend.html' },
+    { key:'compare',   label:'Compare',   href:'mklab-stock-compare.html' },
+    { key:'breadth',   label:'Breadth',   href:'mklab-stock-breadth.html' },
+    { key:'backtest',  label:'Backtest',  href:'mklab-stock-backtest.html' },
+    { key:'portfolio', label:'Portfolio', href:'mklab-stock-portfolio.html' },
+    { key:'digest',    label:'Digest',    href:'mklab-stock-digest.html' },
   ];
   const SHELL_CFG = {
     brand: 'mklab-stock',
@@ -521,6 +538,60 @@
     f.textContent = '資料以 ' + formatAsOf(asof) + ' 收盤為準（Build-Time 自動更新）';
   }
 
+  // ============================================================
+  //  Notes（個股筆記，localStorage 共用模組，Research/Watchlist 共用）
+  // ============================================================
+  const NOTES_KEY = 'mk_notes';
+  function _loadNotes(){ try{ return JSON.parse(localStorage.getItem(NOTES_KEY)||'{}'); }catch(e){ return {}; } }
+  function _saveNotes(obj){ try{ localStorage.setItem(NOTES_KEY, JSON.stringify(obj)); }catch(e){} }
+  const Notes = {
+    get(sym){ const all=_loadNotes(); return all[sym]||[]; },
+    add(sym, text, tag){
+      if(!sym || !text || !text.trim()) return;
+      const all=_loadNotes();
+      all[sym]=all[sym]||[];
+      all[sym].unshift({ ts:new Date().toISOString(), text:text.trim(), tag:tag||'' });
+      _saveNotes(all);
+    },
+    remove(sym, ts){
+      const all=_loadNotes();
+      if(!all[sym]) return;
+      all[sym]=all[sym].filter(n=>n.ts!==ts);
+      _saveNotes(all);
+    },
+    countAll(){
+      const all=_loadNotes();
+      const out={};
+      Object.keys(all).forEach(sym=>{ out[sym]=all[sym].length; });
+      return out;
+    },
+  };
+
+  // ============================================================
+  //  Portfolio（投資組合，localStorage 共用模組）
+  // ============================================================
+  const PORTFOLIO_KEY = 'mk_portfolio_v1';
+  const Portfolio = {
+    getAll(){ try{ return JSON.parse(localStorage.getItem(PORTFOLIO_KEY)||'[]'); }catch(e){ return []; } },
+    save(list){ try{ localStorage.setItem(PORTFOLIO_KEY, JSON.stringify(list)); }catch(e){} },
+    add(sym, shares, cost, note){
+      if(!sym || !shares || !cost) return;
+      const list=Portfolio.getAll();
+      const i=list.findIndex(h=>h.sym===sym);
+      if(i>=0){
+        // 同一檔股票：加權平均成本後合併（v1 簡化為單一持股，不分批列示）
+        const old=list[i];
+        const totalShares=Number(old.shares)+Number(shares);
+        const totalCost=Number(old.shares)*Number(old.cost)+Number(shares)*Number(cost);
+        list[i]={ sym, shares:totalShares, cost:totalCost/totalShares, note:note||old.note||'' };
+      } else {
+        list.push({ sym, shares:Number(shares), cost:Number(cost), note:note||'' });
+      }
+      Portfolio.save(list);
+    },
+    remove(sym){ Portfolio.save(Portfolio.getAll().filter(h=>h.sym!==sym)); },
+  };
+
   // 關鍵：在 Drawer/Shell/Watch 全部定義完成後，再統一掛載到 global.MKLAB
   // 避免暫時性死區 (TDZ) ReferenceError，導致導覽列/抽屜/頂部功能全部消失
   global.MKLAB = global.MKLAB || {};
@@ -536,5 +607,7 @@
   global.MKLAB.setLang = function(l){ Drawer.setLang(l); };
   global.MKLAB.formatAsOf = formatAsOf;
   global.MKLAB.setFreshness = setFreshness;
+  global.MKLAB.Notes = Notes;
+  global.MKLAB.Portfolio = Portfolio;
 
 })(window);

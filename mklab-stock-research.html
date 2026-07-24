@@ -69,6 +69,23 @@
             </div>
           </div>
         </div>
+
+        <div class="card" id="notesCard" style="display:none;">
+          <h3 style="cursor:pointer;" onclick="toggleNotes()">📝 筆記 (<span id="notesCount">0</span>) <span id="notesToggleIcon">▾</span></h3>
+          <div id="notesBody" style="display:none;">
+            <div id="notesList"></div>
+            <div class="row-input" style="margin-top:10px;">
+              <input id="noteInput" placeholder="寫下買賣理由、目標價…">
+              <select id="noteTag" style="padding:6px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--ink);">
+                <option value="">無標籤</option>
+                <option value="buy">買進</option>
+                <option value="sell">賣出</option>
+                <option value="watch">觀察</option>
+              </select>
+              <button onclick="addNote()">新增</button>
+            </div>
+          </div>
+        </div>
   </div>
 </div>
 
@@ -164,6 +181,46 @@ function selectSym(sym) {
   // hide placeholder when table has data
   const placeholder = document.getElementById('finTablePlaceholder');
   if (placeholder) placeholder.style.display = 'none';
+
+  document.getElementById('notesCard').style.display = 'block';
+  renderNotes();
+}
+
+const TAG_LABEL = { buy: '買進', sell: '賣出', watch: '觀察' };
+function renderNotes() {
+  if (!currentSym) return;
+  const list = MKLAB.Notes.get(currentSym);
+  document.getElementById('notesCount').textContent = list.length;
+  document.getElementById('notesList').innerHTML = list.length
+    ? list.map(n => `
+      <div class="card" style="margin-bottom:8px;padding:10px;">
+        <div class="text-sm text-muted">${new Date(n.ts).toLocaleString()} ${n.tag ? '[' + (TAG_LABEL[n.tag] || n.tag) + ']' : ''}
+          <span class="del" style="float:right;cursor:pointer;" onclick="removeNote('${n.ts}')">✕</span>
+        </div>
+        <div>${n.text.replace(/</g, '&lt;')}</div>
+      </div>`).join('')
+    : '<p class="text-muted text-sm">尚無筆記</p>';
+}
+function toggleNotes() {
+  const body = document.getElementById('notesBody');
+  const icon = document.getElementById('notesToggleIcon');
+  const open = body.style.display !== 'none';
+  body.style.display = open ? 'none' : 'block';
+  icon.textContent = open ? '▾' : '▴';
+}
+function addNote() {
+  if (!currentSym) return;
+  const input = document.getElementById('noteInput');
+  const tag = document.getElementById('noteTag').value;
+  if (!input.value.trim()) return;
+  MKLAB.Notes.add(currentSym, input.value, tag);
+  input.value = '';
+  renderNotes();
+}
+function removeNote(ts) {
+  if (!currentSym) return;
+  MKLAB.Notes.remove(currentSym, ts);
+  renderNotes();
 }
 
 function loadKLine() {

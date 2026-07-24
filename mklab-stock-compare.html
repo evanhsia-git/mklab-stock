@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW" data-theme="dark">
+<head>
+<base href="/mklab-stock/">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="mklab-stock — 台股/美股即時儀表板，大盤、產業、篩選、個股研究一站掌握">
+<title>mklab-stock</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
+<link rel="stylesheet" href="assets/css/mklab-theme.css">
+<link rel="stylesheet" href="assets/css/layout.css">
+<link rel="stylesheet" href="assets/css/component.css">
+<link rel="stylesheet" href="assets/css/mobile.css">
+<style>
+  #cmpTable td, #cmpTable th { text-align: center; }
+  #cmpTable td:first-child, #cmpTable th:first-child { text-align: left; }
+  #cmpTable td.best { color: var(--up); font-weight: 700; }
+  .cmp-rm { cursor: pointer; color: var(--muted); margin-left: 4px; }
+</style>
+</head>
+<body>
+<header class="sticky-header" role="banner">
+  <nav id="mainNav" class="nav" aria-label="主導覽"></nav>
+  <div id="utilbar" class="utilbar">
+    <span class="brand" id="brand"></span>
+    <span class="spacer"></span>
+    <button class="mobile-menu-btn" onclick="MKLAB.Drawer.toggle()" aria-label="開啟選單">
+      <span class="hamburger">☰</span>
+    </button>
+  </div>
+  <div class="freshness" aria-live="polite">資料載入中…</div>
+</header>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+  <button class="close-x" onclick="MKLAB.Drawer.close()" aria-label="關閉抽屜">×</button>
+  <div class="drawer-content" id="drawerContent"></div>
+</aside>
+<div class="drawer-mask" onclick="MKLAB.Drawer.close()" aria-hidden="true"></div>
+<main class="wrap">
+
+<div class="section-title">個股比較（最多 4 檔）</div>
+<div class="row-input">
+  <input id="cmpInput" placeholder="輸入股票代號按 Enter 加入，如 2330">
+  <button onclick="addCompare()">加入</button>
+</div>
+<div class="symlist" id="cmpChips"></div>
+<div class="table-wrap"><table id="cmpTable"></table></div>
+<p class="muted-small-top" id="cmpEmpty">尚未加入任何股票，輸入代號開始比較。</p>
+
+<script src="assets/js/data-client.js"></script>
+<script src="assets/js/mklab-core.js"></script>
+<script src="assets/js/mklab-wc.js"></script>
+<script>
+  const CMP_KEY = 'mk_compare';
+  const METRICS = [
+    { key: 'price', label: '股價',    fmt: r => r.price != null ? Number(r.price).toLocaleString() : '-', better: null },
+    { key: 'chg',   label: '漲跌%',   fmt: r => MKLAB.cellPct(r.chg), better: 'max' },
+    { key: 'pe',    label: 'PE',      fmt: r => r.pe != null ? Number(r.pe).toFixed(2) : '-', better: 'min' },
+    { key: 'pb',    label: 'PB',      fmt: r => r.pb != null ? Number(r.pb).toFixed(2) : '-', better: 'min' },
+    { key: 'roe',   label: 'ROE',     fmt: r => r.roe != null ? Number(r.roe).toFixed(2) : '-', better: 'max' },
+    { key: 'roa',   label: 'ROA',     fmt: r => r.roa != null ? Number(r.roa).toFixed(2) : '-', better: 'max' },
+    { key: 'eps',   label: 'EPS',     fmt: r => r.eps != null ? Number(r.eps).toFixed(2) : '-', better: 'max' },
+    { key: 'div',   label: '殖利率%', fmt: r => r.div != null ? Number(r.div).toFixed(2) + '%' : '-', better: 'max' },
+    { key: 'market_cap', label: '市值(億)', fmt: r => r.market_cap != null ? (Number(r.market_cap) / 1e8).toFixed(1) : '-', better: 'max' },
+    { key: 'ind',   label: '產業',    fmt: r => r.ind || '-', better: null },
+  ];
+
+  let ALL = [];
+
+  function getList() { try { return JSON.parse(localStorage.getItem(CMP_KEY) || '[]'); } catch (e) { return []; } }
+  function saveList(list) { try { localStorage.setItem(CMP_KEY, JSON.stringify(list)); } catch (e) {} }
+
+  function addCompare() {
+    const input = document.getElementById('cmpInput');
+    const sym = input.value.trim();
+    input.value = '';
+    if (!sym) return;
+    let list = getList();
+    if (list.includes(sym)) return;
+    if (list.length >= 4) { alert('最多同時比較 4 檔，請先移除一檔再加入'); return; }
+    if (!ALL.find(r => String(r.sym) === sym)) { alert('找不到股票代號 ' + sym); return; }
+    list.push(sym);
+    saveList(list);
+    renderAll();
+  }
+
+  function removeCompare(sym) {
+    saveList(getList().filter(s => s !== sym));
+    renderAll();
+  }
+
+  function renderChips() {
+    const list = getList();
+    document.getElementById('cmpChips').innerHTML = list.map(sym => {
+      const r = ALL.find(x => String(x.sym) === sym);
+      return `<div>${sym} ${r ? r.name : ''}<span class="cmp-rm" onclick="removeCompare('${sym}')">✕</span></div>`;
+    }).join('');
+  }
+
+  function renderTable() {
+    const list = getList();
+    const rows = list.map(sym => ALL.find(r => String(r.sym) === sym)).filter(Boolean);
+    document.getElementById('cmpEmpty').style.display = rows.length ? 'none' : 'block';
+    if (!rows.length) { document.getElementById('cmpTable').innerHTML = ''; return; }
+    let html = '<thead><tr><th>指標</th>' + rows.map(r => `<th>${r.sym}<br><small>${r.name}</small></th>`).join('') + '</tr></thead><tbody>';
+    METRICS.forEach(m => {
+      const vals = rows.map(r => r[m.key === 'market_cap' ? 'market_cap' : m.key]);
+      let bestIdx = -1;
+      if (m.better === 'max') { let best = -Infinity; vals.forEach((v, i) => { if (v != null && v > best) { best = v; bestIdx = i; } }); }
+      if (m.better === 'min') { let best = Infinity; vals.forEach((v, i) => { if (v != null && v < best) { best = v; bestIdx = i; } }); }
+      html += '<tr><td>' + m.label + '</td>' + rows.map((r, i) => `<td class="${i === bestIdx ? 'best' : ''}">${m.fmt(r)}</td>`).join('') + '</tr>';
+    });
+    html += '</tbody>';
+    document.getElementById('cmpTable').innerHTML = html;
+  }
+
+  function renderAll() { renderChips(); renderTable(); }
+
+  window.addEventListener('DOMContentLoaded', async function () {
+    MKLAB.initDrawer();
+    MKLAB.Shell.mount({ active: 'compare' });
+    document.getElementById('cmpInput').addEventListener('keydown', e => { if (e.key === 'Enter') addCompare(); });
+    try {
+      ALL = await MKLAB.data.stocks();
+      // 支援網址帶參數 ?syms=2330,2317 直接開比較
+      const qs = new URLSearchParams(location.search);
+      const syms = qs.get('syms');
+      if (syms) {
+        const list = syms.split(',').map(s => s.trim()).filter(Boolean).slice(0, 4);
+        if (list.length) saveList(list);
+      }
+      renderAll();
+      const meta = await MKLAB.data.json('stocks');
+      MKLAB.setFreshness(meta && meta.meta && meta.meta.as_of);
+    } catch (e) {
+      console.warn('[compare] load failed:', e);
+      MKLAB.setFreshness(null);
+    }
+  });
+</script>
+</main>
+<footer class="footer" role="contentinfo">
+  <div class="footer-inner">
+    <span>mklab-stock · Web Components v2.0</span>
+    <a class="link" href="https://github.com/evanhsia-git/mklab-stock" target="_blank" rel="noopener">GitHub 倉庫 ↗</a>
+  </div>
+</footer>
+</body>
+</html>

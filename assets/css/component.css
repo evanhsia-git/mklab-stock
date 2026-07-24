@@ -112,3 +112,5 @@ html {
 .icard {
   min-height: 140px;
 }
+/* 個股筆記角標（Watchlist 共用） */
+.badge-notes { cursor: pointer; font-size: 12px; }

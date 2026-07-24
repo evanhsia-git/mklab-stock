@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW" data-theme="dark">
+<head>
+<base href="/mklab-stock/">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="mklab-stock — 台股/美股即時儀表板，大盤、產業、篩選、個股研究一站掌握">
+<title>mklab-stock</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
+<link rel="alternate" type="application/rss+xml" title="mklab-stock 每日市場摘要" href="rss.xml">
+<link rel="stylesheet" href="assets/css/mklab-theme.css">
+<link rel="stylesheet" href="assets/css/layout.css">
+<link rel="stylesheet" href="assets/css/component.css">
+<link rel="stylesheet" href="assets/css/mobile.css">
+</head>
+<body>
+<header class="sticky-header" role="banner">
+  <nav id="mainNav" class="nav" aria-label="主導覽"></nav>
+  <div id="utilbar" class="utilbar">
+    <span class="brand" id="brand"></span>
+    <span class="spacer"></span>
+    <button class="mobile-menu-btn" onclick="MKLAB.Drawer.toggle()" aria-label="開啟選單">
+      <span class="hamburger">☰</span>
+    </button>
+  </div>
+  <div class="freshness" aria-live="polite">資料載入中…</div>
+</header>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+  <button class="close-x" onclick="MKLAB.Drawer.close()" aria-label="關閉抽屜">×</button>
+  <div class="drawer-content" id="drawerContent"></div>
+</aside>
+<div class="drawer-mask" onclick="MKLAB.Drawer.close()" aria-hidden="true"></div>
+<main class="wrap">
+
+<div class="section-title">每日市場摘要 <a class="link" href="rss.xml" style="font-size:12px;">訂閱 RSS ↗</a></div>
+<div id="digestList"></div>
+<p class="muted-small-top" id="digestEmpty" style="display:none;">目前還沒有任何每日摘要，需等待 GitHub Actions 排程首次執行後才會有資料。</p>
+<p class="muted-small-top">摘要每個交易日收盤後自動產生，僅供研究參考，非投資建議。</p>
+
+<script src="assets/js/data-client.js"></script>
+<script src="assets/js/mklab-core.js"></script>
+<script src="assets/js/mklab-wc.js"></script>
+<script>
+  function digestCard(d) {
+    const m = d.market;
+    const arrow = m ? (m.chg_pct >= 0 ? 'up' : 'down') : '';
+    return `<div class="card">
+      <h3>${d.date}</h3>
+      ${m ? `<div class="kv"><span>${m.name || '大盤'}</span><b class="${arrow}">${m.close} (${m.chg_pct >= 0 ? '+' : ''}${m.chg_pct}%)</b></div>` : ''}
+      ${d.top_gainers && d.top_gainers.length ? `<p class="text-sm" style="margin-top:8px;"><b>漲幅前5：</b>${d.top_gainers.map(s => `${s.sym}${s.name || ''} <span class="up">+${s.chg}%</span>`).join('、')}</p>` : ''}
+      ${d.top_losers && d.top_losers.length ? `<p class="text-sm"><b>跌幅前5：</b>${d.top_losers.map(s => `${s.sym}${s.name || ''} <span class="down">${s.chg}%</span>`).join('、')}</p>` : ''}
+      ${d.industry_top && d.industry_top.length ? `<p class="text-sm"><b>產業領漲：</b>${d.industry_top.map(i => `${i.nm} +${i.chg}%`).join('、')}</p>` : ''}
+      ${d.top_score && d.top_score.length ? `<p class="text-sm"><b>綜合評分 TOP5：</b>${d.top_score.slice(0, 5).map(s => `${s.sym}${s.name || ''}(${s.score})`).join('、')}</p>` : ''}
+    </div>`;
+  }
+
+  window.addEventListener('DOMContentLoaded', async function () {
+    MKLAB.initDrawer();
+    MKLAB.Shell.mount({ active: 'digest' });
+    try {
+      const idx = await MKLAB.data.json('digest/index');
+      const dates = (idx && idx.dates) || [];
+      if (!dates.length) { document.getElementById('digestEmpty').style.display = 'block'; return; }
+      const digests = await Promise.all(dates.slice(0, 14).map(d => MKLAB.data.json('digest/' + d).catch(() => null)));
+      document.getElementById('digestList').innerHTML = digests.filter(Boolean).map(digestCard).join('');
+      const meta = await MKLAB.data.json('stocks');
+      MKLAB.setFreshness(meta && meta.meta && meta.meta.as_of);
+    } catch (e) {
+      console.warn('[digest] load failed:', e);
+      document.getElementById('digestEmpty').style.display = 'block';
+      MKLAB.setFreshness(null);
+    }
+  });
+</script>
+</main>
+<footer class="footer" role="contentinfo">
+  <div class="footer-inner">
+    <span>mklab-stock · Web Components v2.0</span>
+    <a class="link" href="https://github.com/evanhsia-git/mklab-stock" target="_blank" rel="noopener">GitHub 倉庫 ↗</a>
+  </div>
+</footer>
+</body>
+</html>

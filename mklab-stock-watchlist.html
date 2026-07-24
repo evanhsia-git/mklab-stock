@@ -103,7 +103,7 @@
     });
     if (!wlTable) {
       wlTable = MKLAB.DataTable('wlTable', {
-        cols: ['sym', 'name', 'price', 'chg', 'pe', 'pb', 'roe', 'alert', 'del'],
+        cols: ['sym', 'name', 'price', 'chg', 'pe', 'pb', 'roe', 'alert', 'notesBadge', 'del'],
         rows: rows,
         pageSize: 10, pagerId: 'wlPager',
         onDel: function(sym) { MKLAB.Watch.remove(sym); render(); },
