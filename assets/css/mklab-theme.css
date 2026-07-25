@@ -13,6 +13,11 @@
   --z-nav:1000; --z-utilbar:999; --z-freshness:998; --z-drawer:996; --z-mask:995; --z-tooltip:1050;
   /* 抽屜/彈層用的「墊高」背景色：需比 --surface 更深一層，避免抽屜在手機版透明看穿背景 */
   --bg-elevated:#1c2028;
+  /* 以下三個變數被 layout.css 的 transition/hover 效果引用，之前從未定義過，
+     導致卡片 hover 陰影、按鈕/輸入框 hover 變色、過場動畫全部靜默失效 */
+  --transition-fast:0.15s ease;
+  --shadow-lg:0 8px 24px rgba(0,0,0,.5);
+  --accent-hover:#2563eb;
 }
 [data-theme="light"] {
   --bg:#f7f8fa; --surface:#fff; --ink:#1a1d21; --fg:var(--ink); --primary:var(--accent); --card:var(--surface); --muted:#6b7280;
@@ -20,6 +25,8 @@
   --warn:#d97706; --row-hover:#eff6ff; --radius:10px;
   --shadow:0 1px 3px rgba(0,0,0,.08);
   --bg-elevated:#ffffff;
+  --shadow-lg:0 8px 24px rgba(0,0,0,.15);
+  --accent-hover:#1d4ed8;
 }
 
 /* ===== 基礎版面：全站共用 ===== */

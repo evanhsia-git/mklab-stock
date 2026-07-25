@@ -6,13 +6,28 @@ mklab-stock QA Gate — 品質門禁（零依賴、純 Python）
   1. Python 語法/匯入
   2. 資料完整性 (stocks.json, industry.json)
   3. JSON Schema
-  4. HTML 結構健康 (含 check_html_health.py 功能)
+  4. HTML 結構健康（直接 import skills/html-health/check_html_health.py 的
+     StructureChecker，不再各自維護一份重複邏輯——這個專案已經因為「同一件事
+     兩份程式各寫一次、行為慢慢分岔」出過好幾次事故）
   5. CSS Theme 變數一致性 (檢查 assets/css/mklab-theme.css)
   6. 禁止硬寫核心樣式
-  7. JavaScript 語法 (node --check)
-  8. Chart 驗證 (MANUAL)
-  9. 內部連結 HTTP 200 (本地檔案存在)
-  10. 視覺回歸 (MANUAL)
+  7. 【新增】CSS 屬性誤用 `=` 取代 `:`（真實事故：mklab-theme.css 一大段
+     `padding=14px` 這種寫法，整條宣告直接被瀏覽器判定語法錯誤忽略掉）
+  8. 【新增】CSS 自訂屬性 (--xxx) 有使用但從未定義（真實事故：--bg-elevated
+     被 var() 引用卻沒有任何地方定義，抽屜背景直接變透明）
+  9. 【新增】同一個 CSS 選擇器在多個檔案的「非 media query」層級重複定義
+     （真實事故：mklab-theme.css 和 component.css 各自寫了一份完全不同的
+     .drawer 基礎規則，兩份互相打架，連續好幾輪抽屜相關的怪異行為都源自這裡）
+  10. 【新增】MKLAB.DataTable 的 cols:[...] 跟 mklab-core.js 的 COLUMNS 定義
+      交叉比對（真實事故：cols 用了 COLUMNS 裡沒有的欄位名稱，DataTable()
+      建構子直接 throw，整張表格靜默消失）
+  11. 【新增】pagerId:'xxx' 跟對應的 <div id="xxx" class="pager"> 交叉比對
+      （真實事故：pagerId 指到不存在的容器 id，或容器忘記加 class="pager"
+      導致換頁鍵套用不到深色主題樣式、變成瀏覽器預設白底）
+  12. JavaScript 語法 (node --check)
+  13. Chart 驗證 (MANUAL)
+  14. 內部連結 HTTP 200 (本地檔案存在)
+  15. 視覺回歸 (MANUAL)
 
 退出碼：0=ALLOW DEPLOY, 1=BLOCK DEPLOY
 用法：python skills/qa-gate/qa_gate.py [--json qa-result.json]
@@ -24,11 +39,20 @@ import glob
 import json
 import subprocess
 import datetime
-from html.parser import HTMLParser
 from dataclasses import dataclass
 from typing import List
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# 直接重用 check_html_health.py 的 StructureChecker，不再各自維護一份重複邏輯
+sys.path.insert(0, os.path.join(ROOT, "skills", "html-health"))
+try:
+    from check_html_health import StructureChecker as _Health
+except Exception as _e:  # pragma: no cover
+    _Health = None
+    _HEALTH_IMPORT_ERROR = str(_e)
+else:
+    _HEALTH_IMPORT_ERROR = None
 
 
 @dataclass
@@ -47,117 +71,15 @@ class Check:
 
     def warn(self, detail, fix="", loc=""):
         self.status = "WARNING"; self.detail = detail; self.fix = fix; self.loc = loc
+        return self
 
     def error(self, detail, fix="", loc=""):
         self.status = "ERROR"; self.detail = detail; self.fix = fix; self.loc = loc
+        return self
 
     def manual(self, detail):
         self.status = "MANUAL"; self.detail = detail
-
-
-class _Health(HTMLParser):
-    """HTML 結構健康檢查 - 支援 Web Components、忽略 <code> 內標籤"""
-    VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input",
-            "link", "meta", "param", "source", "track", "wbr"}
-
-    def __init__(self):
-        super().__init__(convert_charrefs=True)
-        self.stack = []
-        self.body_children = 0
-        self.in_body = False
-        self.style_open = None
-        self.style_closed = True
-        self.saw_nav = self.saw_utilbar = self.saw_drawer = self.saw_content = False
-        self.errors = []
-        self.code_stack = []  # Track <code> elements
-
-    def handle_starttag(self, tag, attrs):
-        tag_lower = tag.lower()
-
-        # Track <code> elements
-        if tag_lower == "code":
-            self.code_stack.append(self.getpos()[0])
-            self.stack.append((tag, self.getpos()[0]))
-            return
-
-        # If inside any <code> element, ignore ALL tags
-        if self.code_stack:
-            return
-
-        if tag_lower == "style":
-            self.style_open = self.getpos()[0]
-            self.style_closed = False
-        if tag_lower == "body":
-            self.in_body = True
-            if not self.style_closed:
-                self.errors.append(f"line {self.getpos()[0]}: <body> 出現在 <style> 未關閉之後（style 開於 line {self.style_open}）→ body 被吞")
-        if self.in_body and tag_lower not in self.VOID:
-            self.body_children += 1
-        cls = dict(attrs).get("class") or ""
-        if tag_lower == "nav":
-            self.saw_nav = True
-        if "utilbar" in cls:
-            self.saw_utilbar = True
-        if "drawer" in cls:
-            self.saw_drawer = True
-        # Web Components 也算內容區塊（非 void，會有 start/end）
-        if tag_lower in ("table", "section") or tag_lower.startswith("mklab-"):
-            self.saw_content = True
-        if tag_lower not in self.VOID:
-            self.stack.append((tag, self.getpos()[0]))
-
-    def handle_endtag(self, tag):
-        tag_lower = tag.lower()
-
-        # Handle </code>
-        if tag_lower == "code":
-            if self.code_stack:
-                self.code_stack.pop()
-            for i in range(len(self.stack) - 1, -1, -1):
-                if self.stack[i][0] == "code":
-                    del self.stack[i]
-                    break
-            return
-
-        # If inside any <code> element, ignore ALL end tags
-        if self.code_stack:
-            return
-
-        if tag_lower == "style":
-            self.style_closed = True
-            for i in range(len(self.stack) - 1, -1, -1):
-                if self.stack[i][0] == "style":
-                    del self.stack[i]
-                    break
-            return
-        if tag_lower == "body":
-            self.in_body = False
-        for i in range(len(self.stack) - 1, -1, -1):
-            if self.stack[i][0] == tag:
-                del self.stack[i]
-                break
-
-    def report(self, fname):
-        msgs = []
-        base = os.path.basename(fname)
-        is_help = base.endswith("-help.html") or base == "help.html"
-        if self.stack:
-            msgs.append("未關閉標籤: " + ", ".join(f"{t}(line {ln})" for t, ln in self.stack))
-        if self.body_children == 0 and self.in_body is False and self.stack:
-            msgs.append("解析後 <body> 無子元素（網頁會空白）")
-        if not self.style_closed:
-            msgs.append(f"<style> 未關閉（開於 line {self.style_open}）")
-        if is_help:
-            return msgs
-        if not self.saw_nav:
-            msgs.append("缺少 <nav> 導航列")
-        if not self.saw_utilbar:
-            msgs.append("缺少 .utilbar 工具列")
-        if not self.saw_drawer:
-            msgs.append("缺少 .drawer 設定抽屜")
-        if not self.saw_content:
-            msgs.append("缺少 table/section/mklab-* 主要內容區塊")
-        return msgs
+        return self
 
 
 checks: List[Check] = []
@@ -322,25 +244,30 @@ def run():
     add(c)
 
     # ============================================================
-    # 四、HTML 驗證
+    # 四、HTML 驗證（結構完整性 + 樣板佔位符 + MKLAB script 依賴，邏輯來自 check_html_health.py）
     # ============================================================
     html_files = glob.glob(os.path.join(ROOT, "*.html"))
     html_fail = 0
-    for hf in html_files:
-        _h = _Health()
-        try:
-            _h.feed(open(hf, encoding="utf-8").read())
-        except Exception as e:
-            add(Check("HTML", f"解析: {os.path.basename(hf)}").error(f"解析異常: {e}", "修復 HTML", hf))
-            html_fail += 1
-            continue
-        msgs = _h.report(hf)
-        if msgs:
-            html_fail += 1
-            add(Check("HTML", f"結構: {os.path.basename(hf)}").error(
-                "; ".join(msgs), "修復 HTML 結構（缺 </style> / 未關閉標籤 / body 空白）", hf))
-    if html_fail == 0:
-        add(Check("HTML", "結構健康檢查").ok(f"全部 {len(html_files)} 個 HTML 通過"))
+    if _Health is None:
+        add(Check("HTML", "載入 check_html_health.py").error(
+            f"import 失敗: {_HEALTH_IMPORT_ERROR}", "確認 skills/html-health/check_html_health.py 存在且語法正確", ""))
+    else:
+        for hf in html_files:
+            _h = _Health()
+            src = open(hf, encoding="utf-8").read()
+            try:
+                _h.feed(src)
+            except Exception as e:
+                add(Check("HTML", f"解析: {os.path.basename(hf)}").error(f"解析異常: {e}", "修復 HTML", hf))
+                html_fail += 1
+                continue
+            msgs = _h.report(hf, src)
+            if msgs:
+                html_fail += 1
+                add(Check("HTML", f"結構: {os.path.basename(hf)}").error(
+                    "; ".join(msgs), "修復 HTML 結構（詳見說明；含未關閉/多餘閉合標籤、重複 id、未替換樣板、漏載 MKLAB script）", hf))
+        if html_fail == 0:
+            add(Check("HTML", "結構健康檢查").ok(f"全部 {len(html_files)} 個 HTML 通過"))
 
     # ============================================================
     # 五、CSS 驗證 (統一 Theme / 重複定義)
@@ -370,12 +297,164 @@ def run():
         # 僅檢查完整頁面（有 <html> 標籤的）
         if "<html" not in src.lower():
             continue
-        if re.search(r'style=["\'][^\'"]*(?:color|background|font-size|font-family)\s*:', src, re.I):
+        # (?<!-) 避免把 --bar-color / --dot-color 這種「合法的 CSS 自訂屬性名稱」
+        # 誤判成硬寫樣式（自訂屬性名稱字面上就會包含 color/background 這些字）
+        if re.search(r'style=["\'][^\'"]*(?<!-)(?:color|background|font-size|font-family)\s*:', src, re.I):
             inline_hard.append(os.path.basename(hf))
     if inline_hard:
-        c.warn(f"行內硬寫樣式: {inline_hard}", "改用 CSS class / Design Token", ", ".join(inline_hard))
+        c.warn(f"行內硬寫樣式: {inline_hard}", "改用 CSS class / Design Token；動態顏色請用 CSS 自訂屬性 (--xxx) 帶入，不要直接寫 style=\"background:...\"", ", ".join(inline_hard))
     else:
         c.ok("無行內硬寫核心樣式")
+    add(c)
+
+    css_dir = os.path.join(ROOT, "assets", "css")
+    css_files = sorted(glob.glob(os.path.join(css_dir, "*.css")))
+    css_sources = {}
+    css_sources_nocomment = {}
+    _comment_re = re.compile(r'/\*.*?\*/', re.S)
+    for cf in css_files:
+        with open(cf, encoding="utf-8") as f:
+            raw = f.read()
+        css_sources[cf] = raw
+        # 拿掉註解但保留行數對齊（換行符數量不變，避免行號報錯位移）
+        css_sources_nocomment[cf] = _comment_re.sub(lambda m: "\n" * m.group(0).count("\n"), raw)
+
+    # 新增：CSS 屬性誤用 `=` 取代 `:`（真實事故：padding=14px 整條宣告失效）
+    c = Check("CSS", "屬性誤用 = 取代 :（語法錯誤）", critical=True)
+    css_eq_bugs = []
+    # 排除合法的屬性選擇器如 input[type=number]，只抓「單字 = 值」這種明顯是打錯 : 的樣式
+    eq_re = re.compile(r'(?<!\[)\b([a-zA-Z-]{3,})=(?!["\'])([a-zA-Z0-9#.%\-]+)(?=[;\s}])')
+    for cf, src in css_sources_nocomment.items():
+        for m in eq_re.finditer(src):
+            prop = m.group(1)
+            # 排除 data-*、aria-* 等屬性選擇器語境，以及 type=number 這種已知合法用法
+            if prop in ("type", "data-theme"):
+                continue
+            lineno = src.count("\n", 0, m.start()) + 1
+            css_eq_bugs.append(f"{os.path.basename(cf)}:{lineno} `{prop}={m.group(2)}`")
+    if css_eq_bugs:
+        c.error(f"疑似 = 誤用取代 :（{len(css_eq_bugs)} 處）: {css_eq_bugs[:10]}", "改成 `屬性: 值;`", "; ".join(css_eq_bugs[:5]))
+    else:
+        c.ok("無 = 誤用")
+    add(c)
+
+    # 新增：CSS 自訂屬性 (--xxx) 有使用但從未定義（真實事故：--bg-elevated 未定義，抽屜背景變透明）
+    c = Check("CSS", "自訂屬性 (--xxx) 有使用但未定義", critical=True)
+    defined_vars, used_vars = set(), {}
+    var_def_re = re.compile(r'(--[a-zA-Z0-9-]+)\s*:')
+    var_use_re = re.compile(r'var\(\s*(--[a-zA-Z0-9-]+)')
+    for cf, src in css_sources_nocomment.items():
+        defined_vars.update(var_def_re.findall(src))
+        for m in var_use_re.finditer(src):
+            used_vars.setdefault(m.group(1), []).append(os.path.basename(cf))
+    # HTML 內的 inline style 也可能定義/使用自訂屬性（如熱力圖的 --cell-bg）
+    for hf in html_files:
+        src = open(hf, encoding="utf-8").read()
+        defined_vars.update(re.findall(r'style="[^"]*(--[a-zA-Z0-9-]+)\s*:', src))
+        for m in var_use_re.finditer(src):
+            used_vars.setdefault(m.group(1), []).append(os.path.basename(hf))
+    undefined = {k: v for k, v in used_vars.items() if k not in defined_vars}
+    if undefined:
+        detail = "; ".join(f"{k} (用於 {', '.join(sorted(set(v)))})" for k, v in undefined.items())
+        c.error(f"未定義的自訂屬性: {detail}", "在 assets/css/mklab-theme.css :root 或對應 HTML 補上定義", "")
+    else:
+        c.ok(f"{len(used_vars)} 個自訂屬性皆有定義")
+    add(c)
+
+    # 新增：同一選擇器在多個 CSS 檔的「非 media query」層級重複定義
+    # （真實事故：mklab-theme.css 和 component.css 各自寫了一份完全不同的 .drawer 基礎規則互相打架）
+    c = Check("CSS", "跨檔案重複的選擇器（非 @media 層級）", critical=False)
+
+    def _top_level_selectors(src):
+        """粗略移除 @media {...} 區塊後，抓出還在頂層的選擇器名稱"""
+        depth = 0
+        media_depth = None
+        out = []
+        i = 0
+        buf = ""
+        while i < len(src):
+            ch = src[i]
+            if src[i:i + 6] == "@media" and media_depth is None:
+                media_depth = depth
+            if ch == "{":
+                if media_depth is None:
+                    sel = buf.strip()
+                    if sel and not sel.startswith("@") and depth == 0:
+                        for s in sel.split(","):
+                            out.append(s.strip())
+                buf = ""
+                depth += 1
+            elif ch == "}":
+                depth -= 1
+                if media_depth is not None and depth == media_depth:
+                    media_depth = None
+                buf = ""
+            else:
+                buf += ch
+            i += 1
+        return out
+
+    sel_locations = {}
+    for cf, src in css_sources_nocomment.items():
+        for sel in _top_level_selectors(src):
+            if not sel or sel.startswith("/*") or sel.startswith("--"):
+                continue
+            sel_locations.setdefault(sel, set()).add(os.path.basename(cf))
+    cross_file_dups = {sel: files for sel, files in sel_locations.items() if len(files) > 1}
+    if cross_file_dups:
+        detail = "; ".join(f"`{sel}` 出現在 {sorted(files)}" for sel, files in list(cross_file_dups.items())[:8])
+        c.warn(f"{len(cross_file_dups)} 個選擇器跨檔重複: {detail}",
+               "確認是否為刻意 override，若非刻意請合併到單一檔案，避免後續互相打架", "")
+    else:
+        c.ok("無跨檔案的頂層選擇器重複")
+    add(c)
+
+    # 新增：MKLAB.DataTable 的 cols:[...] 跟 mklab-core.js 的 COLUMNS 交叉比對
+    # （真實事故：cols 用了不存在的欄位名，DataTable() constructor 直接 throw，表格靜默消失）
+    c = Check("JS", "DataTable cols 是否都在 COLUMNS 定義內", critical=True)
+    core_js_path = os.path.join(ROOT, "assets", "js", "mklab-core.js")
+    if os.path.exists(core_js_path):
+        core_src = open(core_js_path, encoding="utf-8").read()
+        m = re.search(r'const COLUMNS\s*=\s*\{(.*?)\n\s*\};', core_src, re.S)
+        columns_keys = set(re.findall(r'^\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*:\s*\{', m.group(1), re.M)) if m else set()
+        unknown = []
+        for hf in html_files:
+            src = open(hf, encoding="utf-8").read()
+            for cm in re.finditer(r'cols\s*:\s*\[([^\]]*)\]', src):
+                cols = re.findall(r'[\'"]([a-zA-Z_][a-zA-Z0-9_]*)[\'"]', cm.group(1))
+                for col in cols:
+                    if columns_keys and col not in columns_keys:
+                        unknown.append(f"{os.path.basename(hf)}: '{col}'")
+        if not columns_keys:
+            c.warn("解析不到 mklab-core.js 的 COLUMNS 定義，略過交叉比對", "確認 COLUMNS 物件格式未變", core_js_path)
+        elif unknown:
+            c.error(f"cols 用了 COLUMNS 沒有的欄位: {unknown[:10]}", "在 mklab-core.js 的 COLUMNS 補上該欄位，或修正 cols 拼字", "; ".join(unknown[:5]))
+        else:
+            c.ok("所有 cols 欄位都在 COLUMNS 定義內")
+    else:
+        c.error("找不到 assets/js/mklab-core.js", "確認檔案存在", core_js_path)
+    add(c)
+
+    # 新增：pagerId:'xxx' 是否都有對應的 <div id="xxx" class="pager">
+    # （真實事故：容器 id 打錯或整個沒建立，換頁鍵沒地方渲染；或忘記加 class="pager" 導致樣式跑掉變白底）
+    c = Check("HTML", "pagerId 是否都有對應的 .pager 容器", critical=True)
+    pager_problems = []
+    for hf in html_files:
+        src = open(hf, encoding="utf-8").read()
+        pager_ids = set(re.findall(r'pagerId\s*:\s*[\'"]([a-zA-Z0-9_-]+)[\'"]', src))
+        for pid in pager_ids:
+            div_m = re.search(r'<div\b[^>]*\bid=["\']' + re.escape(pid) + r'["\'][^>]*>', src)
+            if not div_m:
+                pager_problems.append(f"{os.path.basename(hf)}: pagerId='{pid}' 找不到對應的 <div id=\"{pid}\">")
+                continue
+            tag_src = div_m.group(0)
+            cls_m = re.search(r'class=["\']([^"\']*)["\']', tag_src)
+            if not cls_m or "pager" not in cls_m.group(1).split():
+                pager_problems.append(f"{os.path.basename(hf)}: #{pid} 缺少 class=\"pager\"（會退回瀏覽器預設樣式）")
+    if pager_problems:
+        c.error("; ".join(pager_problems[:10]), "補上容器 div 並加上 class=\"pager\"", "; ".join(pager_problems[:5]))
+    else:
+        c.ok("所有 pagerId 都有對應且正確的 .pager 容器")
     add(c)
 
     # ============================================================

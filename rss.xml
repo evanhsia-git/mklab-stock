@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>mklab-stock 每日市場摘要</title>
+    <link>https://evanhsia-git.github.io/mklab-stock/</link>
+    <description>台股每日收盤摘要：大盤、漲跌幅前5大、產業動態、綜合評分 TOP10（僅供研究參考，非投資建議）。此檔案由 skills/data/build_digest.py 於每個交易日收盤後自動產生並覆蓋，尚未有任何摘要資料時內容為空。</description>
+    <language>zh-tw</language>
+  </channel>
+</rss>
