@@ -114,3 +114,6 @@ html {
 }
 /* 個股筆記角標（Watchlist 共用） */
 .badge-notes { cursor: pointer; font-size: 12px; }
+
+/* 每日摘要頁 RSS 訂閱連結 */
+.rss-link { font-size: 12px; }
