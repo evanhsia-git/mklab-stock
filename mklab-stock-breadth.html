@@ -90,7 +90,7 @@
       const color = b.label.startsWith('-') || b.label.startsWith('<') ? 'var(--down)' : (b.label.startsWith('>') || (!b.label.startsWith('0') && !b.label.startsWith('-')) ? 'var(--up)' : 'var(--muted)');
       html += `<div class="breadth-bar-row">
         <span class="breadth-bar-label">${b.label}</span>
-        <span class="breadth-bar-track"><span class="breadth-bar-fill" style="width:${pct}%;background:${color};"></span></span>
+        <span class="breadth-bar-track"><span class="breadth-bar-fill" style="width:${pct}%;--bar-fill:${color};"></span></span>
         <span class="breadth-bar-count">${counts[i]} 檔</span>
       </div>`;
     });

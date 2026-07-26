@@ -93,9 +93,14 @@
       });
       this._series.setData(raw);
       this._chart.timeScale().fitContent();
+      // 初次掛載時 shadow DOM 容器寬度可能還沒 layout 完成，延遲一輪再校正一次
+      requestAnimationFrame(() => { if (this._chart) this._chart.timeScale().fitContent(); });
 
       window.addEventListener('resize', () => {
-        if (this._chart) this._chart.resize(this._container.clientWidth, this._height);
+        if (this._chart) {
+          this._chart.resize(this._container.clientWidth, this._height);
+          this._chart.timeScale().fitContent();
+        }
       });
     }
   }

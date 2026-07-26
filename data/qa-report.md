@@ -1,7 +1,7 @@
 # mklab-stock QA Gate 報告
-**時間**: 2026-07-25 07:20:38  
-**Critical ERROR**: 2  | **WARNING**: 3  
-**最終判定**: 🔴 BLOCK DEPLOY
+**時間**: 2026-07-26 13:33:51  
+**Critical ERROR**: 0  | **WARNING**: 3  
+**最終判定**: 🟢 ALLOW DEPLOY
 
 | 類別 | 項目 | 狀態 | 說明 | 修正建議 | 位置 |
 |------|------|------|------|----------|------|
@@ -31,10 +31,9 @@
 | Data | 前日波動異常 (>20% 閾值) | PASS | 無異常波動 |  |  |
 | JSON | stocks.json Schema | PASS | schema 完整 (1371 檔) |  |  |
 | JSON | industry.json Schema | PASS | 33 個產業 |  |  |
-| HTML | 結構: mklab-stock-backtest.html | ERROR | 缺少 table/section/mklab-* 主要內容區塊 | 修復 HTML 結構（詳見說明；含未關閉/多餘閉合標籤、重複 id、未替換樣板、漏載 MKLAB script） | /root/Documents/mklab-stock/mklab-stock-backtest.html |
-| HTML | 結構: mklab-stock-digest.html | ERROR | 缺少 table/section/mklab-* 主要內容區塊 | 修復 HTML 結構（詳見說明；含未關閉/多餘閉合標籤、重複 id、未替換樣板、漏載 MKLAB script） | /root/Documents/mklab-stock/mklab-stock-digest.html |
+| HTML | 結構健康檢查 | PASS | 全部 13 個 HTML 通過 |  |  |
 | CSS | 統一 Theme 變數 (var(--bg) 等) | PASS | Theme CSS 關鍵設計令牌完整 |  |  |
-| CSS | 禁止硬寫核心樣式 (違反 Design Token) | WARNING | 行內硬寫樣式: ['mklab-stock-backtest.html', 'mklab-stock-research.html', 'mklab-stock-breadth.html', 'mklab-stock-industry.htm | 改用 CSS class / Design Token；動態顏色請用 CSS 自訂屬性 (--xxx) 帶入，不要直接寫 style="background:. | mklab-stock-backtest.html, mklab-stock-research.html, mklab-stock-breadth.html, mklab-stock-industry.html, mklab-stock-digest.html, mklab-stock-portfolio.html |
+| CSS | 禁止硬寫核心樣式 (違反 Design Token) | WARNING | 行內硬寫樣式: ['mklab-stock-backtest.html', 'mklab-stock-research.html', 'mklab-stock-breadth.html', 'mklab-stock-industry.htm | 改用 CSS class / Design Token；動態顏色請用 CSS 自訂屬性 (--xxx) 帶入，不要直接寫 style="background:. | mklab-stock-backtest.html, mklab-stock-research.html, mklab-stock-breadth.html, mklab-stock-industry.html, mklab-stock-portfolio.html |
 | CSS | 屬性誤用 = 取代 :（語法錯誤） | PASS | 無 = 誤用 |  |  |
 | CSS | 自訂屬性 (--xxx) 有使用但未定義 | PASS | 18 個自訂屬性皆有定義 |  |  |
 | CSS | 跨檔案重複的選擇器（非 @media 層級） | WARNING | 38 個選擇器跨檔重複: `.icard .nm` 出現在 ['component.css', 'mklab-theme.css']; `.icard .chg` 出現在 ['component.css', 'mklab-theme.css | 確認是否為刻意 override，若非刻意請合併到單一檔案，避免後續互相打架 |  |
@@ -61,16 +60,12 @@
 ## 問題摘要
 - **[WARNING] Data/無髒值 (NaN/null/undefined/Infinity/空字串/非法'-')**: ?.capital_stock=None; ?.capital_stock=None; ?.capital_stock=None; ?.capital_stock=None; ?.capital_stock=None; ?.capital_stock=None; ?.capital_stock=None; ?.capital_stock=None; ?.eps=None; ?.capital_stock=None
   - 建議: 確認資料源是否涵蓋該標的（/root/Documents/mklab-stock/data/stocks.json）
-- **[ERROR] HTML/結構: mklab-stock-backtest.html**: 缺少 table/section/mklab-* 主要內容區塊
-  - 建議: 修復 HTML 結構（詳見說明；含未關閉/多餘閉合標籤、重複 id、未替換樣板、漏載 MKLAB script）（/root/Documents/mklab-stock/mklab-stock-backtest.html）
-- **[ERROR] HTML/結構: mklab-stock-digest.html**: 缺少 table/section/mklab-* 主要內容區塊
-  - 建議: 修復 HTML 結構（詳見說明；含未關閉/多餘閉合標籤、重複 id、未替換樣板、漏載 MKLAB script）（/root/Documents/mklab-stock/mklab-stock-digest.html）
-- **[WARNING] CSS/禁止硬寫核心樣式 (違反 Design Token)**: 行內硬寫樣式: ['mklab-stock-backtest.html', 'mklab-stock-research.html', 'mklab-stock-breadth.html', 'mklab-stock-industry.html', 'mklab-stock-digest.html', 'mklab-stock-portfolio.html']
-  - 建議: 改用 CSS class / Design Token；動態顏色請用 CSS 自訂屬性 (--xxx) 帶入，不要直接寫 style="background:..."（mklab-stock-backtest.html, mklab-stock-research.html, mklab-stock-breadth.html, mklab-stock-industry.html, mklab-stock-digest.html, mklab-stock-portfolio.html）
+- **[WARNING] CSS/禁止硬寫核心樣式 (違反 Design Token)**: 行內硬寫樣式: ['mklab-stock-backtest.html', 'mklab-stock-research.html', 'mklab-stock-breadth.html', 'mklab-stock-industry.html', 'mklab-stock-portfolio.html']
+  - 建議: 改用 CSS class / Design Token；動態顏色請用 CSS 自訂屬性 (--xxx) 帶入，不要直接寫 style="background:..."（mklab-stock-backtest.html, mklab-stock-research.html, mklab-stock-breadth.html, mklab-stock-industry.html, mklab-stock-portfolio.html）
 - **[WARNING] CSS/跨檔案重複的選擇器（非 @media 層級）**: 38 個選擇器跨檔重複: `.icard .nm` 出現在 ['component.css', 'mklab-theme.css']; `.icard .chg` 出現在 ['component.css', 'mklab-theme.css']; `.icard` 出現在 ['component.css', 'mklab-theme.css']; `.wrap` 出現在 ['layout.css', 'mklab-theme.css']; `.sticky-header` 出現在 ['layout.css', 'mklab-theme.css']; `.nav` 出現在 ['layout.css', 'mklab-theme.css']; `.nav a` 出現在 ['layout.css', 'mklab-theme.css']; `.nav a.active` 出現在 ['layout.css', 'mklab-theme.css']
   - 建議: 確認是否為刻意 override，若非刻意請合併到單一檔案，避免後續互相打架（）
 
-## 最終判定: BLOCK DEPLOY
+## 最終判定: ALLOW DEPLOY
 
 > 除非所有 Critical 項目皆通過，否則一律 BLOCK DEPLOY。
 > [MANUAL] 項目需 Agent 以瀏覽器工具實際載入頁面驗證（Chart/Console/視覺回歸），不計入自動阻擋，但須於部署前完成。

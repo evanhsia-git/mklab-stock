@@ -1,5 +1,18 @@
 /* mklab-theme.css — 全站共用樣式 (Design Token + nav/utilbar/freshness/table/pager/drawer/alert-note) */
 /* 修改此檔即可全站生效，避免每頁重複維護 */
+/*
+ * ⚠️ 已知的跨檔重複選擇器（2026-07 QA 排查記錄，詳細清單見 layout.css / component.css 開頭註解）：
+ * 載入順序 mklab-theme.css → layout.css → component.css → mobile.css，
+ * 本檔跟 layout.css 有 28 個選擇器重複但值不完全相同（layout.css 後載入、屬性衝突時它贏）；
+ * 跟 component.css 有 3 個 .icard 相關選擇器重複（.icard / .icard .nm / .icard .chg，
+ * 目前是互補關係——本檔管字體大小、component.css 管溢出省略號，並非真的衝突，可以保留）。
+ * 尚未合併，修改下列選擇器時請同時檢查另一份對應規則：
+ *   .brand .card .card-sm .cards .count .disclaimer .footer .freshness
+ *   .kline-toolbar .kline-toolbar button .kline-toolbar button.on .mh-layout
+ *   .nav .nav a .pager button .perf .perf h3 .row-input .row-input button
+ *   .section-title .section-title .hint .sticky-header .sym .sym small
+ *   .table-wrap .tv-box .utilbar .wrap
+ */
 
 /* ===== Design Token（深色為 default，淺色 override）===== */
 :root {

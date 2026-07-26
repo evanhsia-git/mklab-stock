@@ -263,7 +263,7 @@
     system: {
       version: 'dashboard v3.0',
       source:  'TWSE/TPEX/Yahoo/Stooq',
-      updated: '2026-07-13',
+      updated: null,
       status:  '● 正常運作',
     },
   };
@@ -371,7 +371,7 @@
             const dateStr = now.toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit' });
             const timeStr = now.toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
             const weekStr = ['日','一','二','三','四','五','六'][now.getDay()];
-            note.innerHTML = `版本：${sys.version}<br>資料源：${sys.source}<br>最後更新：${sys.updated}<br>當前時間：${dateStr} (週${weekStr}) ${timeStr}<br>狀態：<span class="up">${sys.status}</span>`;
+            note.innerHTML = `版本：${sys.version}<br>資料源：${sys.source}<br>最後更新：${sys.updated || '更新中…'}<br>當前時間：${dateStr} (週${weekStr}) ${timeStr}<br>狀態：<span class="up">${sys.status}</span>`;
           }, 60000); // 每分鐘
           // 立即執行一次
           try {
@@ -384,7 +384,7 @@
                 const dateStr = now.toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit' });
                 const timeStr = now.toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
                 const weekStr = ['日','一','二','三','四','五','六'][now.getDay()];
-                note.innerHTML = `版本：${sys.version}<br>資料源：${sys.source}<br>最後更新：${sys.updated}<br>當前時間：${dateStr} (週${weekStr}) ${timeStr}<br>狀態：<span class="up">${sys.status}</span>`;
+                note.innerHTML = `版本：${sys.version}<br>資料源：${sys.source}<br>最後更新：${sys.updated || '更新中…'}<br>當前時間：${dateStr} (週${weekStr}) ${timeStr}<br>狀態：<span class="up">${sys.status}</span>`;
               }
             }
           } catch(e) {

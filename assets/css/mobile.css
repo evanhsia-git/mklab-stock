@@ -13,6 +13,7 @@
   .icon-btn { width: 36px; height: 36px; }
   .section-title { font-size: 14px; margin: 16px 0 8px; }
   .card { padding: 12px 14px; border-radius: 10px; }
+  .grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
   .card-sm { padding: 10px 12px; }
   .card-val { font-size: 18px; }
   .card .chg { font-size: 12px; }

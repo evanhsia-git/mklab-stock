@@ -17,7 +17,7 @@
   .pf-donut-wrap { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
   .pf-legend { font-size: 12px; }
   .pf-legend div { display: flex; align-items: center; gap: 6px; margin: 3px 0; }
-  .pf-legend span.dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .pf-legend span.dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; background: var(--dot-fill, var(--accent)); }
 </style>
 </head>
 <body>
@@ -124,7 +124,7 @@
     });
     svg.innerHTML = paths;
     legend.innerHTML = valid.map((row, i) =>
-      `<div><span class="dot" style="background:${DONUT_COLORS[i % DONUT_COLORS.length]}"></span>${row.sym} ${row.weight.toFixed(1)}%</div>`
+      `<div><span class="dot" style="--dot-fill:${DONUT_COLORS[i % DONUT_COLORS.length]}"></span>${row.sym} ${row.weight.toFixed(1)}%</div>`
     ).join('');
   }
   function polar(cx, cy, r, deg) {

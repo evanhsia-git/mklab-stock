@@ -35,17 +35,17 @@
 <div class="card">
   <div class="kv">
     <span>股票代號</span>
-    <input id="btSym" placeholder="如 2330" style="padding:6px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--ink);">
+    <input id="btSym" placeholder="如 2330" class="field-input">
   </div>
   <div class="kv" style="margin-top:10px;">
     <span>買進日期</span>
-    <input id="btDate" type="date" style="padding:6px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--ink);">
+    <input id="btDate" type="date" class="field-input">
   </div>
   <div class="kv" style="margin-top:10px;">
     <span>投入金額（元）</span>
-    <input id="btAmount" type="number" value="100000" style="padding:6px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--ink);">
+    <input id="btAmount" type="number" value="100000" class="field-input">
   </div>
-  <button style="margin-top:14px;padding:8px 16px;background:var(--accent);color:#fff;border:none;border-radius:8px;cursor:pointer;" onclick="runBacktest()">開始試算</button>
+  <button class="btn-primary mt" onclick="runBacktest()">開始試算</button>
   <p class="muted-small-top" id="btMsg"></p>
 </div>
 

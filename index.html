@@ -43,9 +43,8 @@
     <mklab-kline id="marketKline" data-symbol="TWII" height="460"></mklab-kline>
   </div>
   <div class="perf">
-    <h3>績效表現</h3>
-    <div class="table-wrap"><table id="perfTable"></table></div>
-    <div class="pager" id="perfPager"></div>
+    <h3>績效表現（台灣加權指數 ^TWII）</h3>
+    <div class="cards" id="perfTable"></div>
   </div>
 </div>
 
@@ -68,8 +67,8 @@
   document.addEventListener('DOMContentLoaded', async () => {
     // Market page specific logic
     // Use yf symbols from indices-config.json to match data
-    const INDICES = ['^TWII', '^GSPC', '^IXIC', '^HSI', '^N225'];
-    const IDX_NAME = { '^TWII': '台股加權', '^GSPC': 'S&P 500', '^IXIC': '納指 100', '^HSI': '恆生', '^N225': '日經 225' };
+    const INDICES = ['^TWII', '^GSPC', '^IXIC', '^HSI', '^N225', '^KS11'];
+    const IDX_NAME = { '^TWII': '台股加權', '^GSPC': 'S&P 500', '^IXIC': '納指 100', '^HSI': '恆生', '^N225': '日經 225', '^KS11': '韓國 KOSPI' };
 
     // Render index cards
     function renderIndices() {
@@ -180,20 +179,43 @@
     }
 
     // Perf table（指數績效）與 cap10（市值前10大，排除 ETF）
-    let perfTable = null, cap10Table = null;
+    let cap10Table = null;
     const ETF_RE = /ETF|基金|指數|正[0-9]|反[0-9]|槓桿|反向|期貨|配息|高息|優息|收益|台灣50|中型100|科技|電子|摩台|摩澤|寶滬深|上證|上証|S&P|MSCI|日經|歐洲|印度|陸股|龍耀|鑫收|動能|升級|優股息|兆豐|元大|富邦|國泰|中信|統一|聯博|第一金|凱基/;
     function isETF(r) { return r.is_etf || ETF_RE.test(String(r.name || r.nm || '')); }
 
+    function pctChange(arr, idxBack) {
+      if (!arr || arr.length <= idxBack) return null;
+      const now = arr[arr.length - 1].close;
+      const then = arr[arr.length - 1 - idxBack].close;
+      if (now == null || then == null || !then) return null;
+      return (now - then) / then * 100;
+    }
+
     async function loadPerfTable() {
       try {
-        const data = await MKLAB.data.indices();
-        const rows = (data && data.indices) || [];
-        if (!perfTable) {
-          perfTable = MKLAB.DataTable('perfTable', { cols: ['name', 'close', 'chg_pct'], rows, pageSize: 10, pagerId: 'perfPager', defaultSort: 'chg_pct' });
-        } else {
-          perfTable.setRows(rows);
-        }
-      } catch (e) { console.warn('[Market] perf table failed:', e); }
+        let arr = window.TWII_KDATA;
+        if (!arr || !arr.length) arr = await MKLAB.data.twiiKline();
+        if (!arr || !arr.length) throw new Error('TWII K線資料為空');
+        const periods = [
+          { label: '1日', back: 1 },
+          { label: '5日', back: 5 },
+          { label: '1月', back: 21 },
+          { label: '3月', back: 63 },
+          { label: '6月', back: 126 },
+          { label: '1年', back: arr.length - 1 },
+        ];
+        const html = periods.map(p => {
+          const v = pctChange(arr, p.back);
+          const cls = v == null ? '' : (v >= 0 ? 'up' : 'down');
+          const txt = v == null ? '-' : (v >= 0 ? '+' : '') + v.toFixed(2) + '%';
+          return `<div class="card"><div class="card-title">${p.label}</div><div class="card-val ${cls}">${txt}</div></div>`;
+        }).join('');
+        document.getElementById('perfTable').outerHTML = `<div class="cards" id="perfTable">${html}</div>`;
+      } catch (e) {
+        console.warn('[Market] perf table failed:', e);
+        const el = document.getElementById('perfTable');
+        if (el) el.outerHTML = '<p class="muted-small-top">績效資料載入失敗：' + (e && e.message ? e.message : e) + '</p>';
+      }
     }
 
     async function loadCap10() {
@@ -201,7 +223,7 @@
         const all = await MKLAB.data.stocks();
         const rows = (Array.isArray(all) ? all : []).filter(r => !isETF(r));
         if (!cap10Table) {
-          cap10Table = MKLAB.DataTable('cap10', { cols: ['sym', 'name', 'price', 'chg', 'pe', 'pb', 'roe', 'cap'], rows, pageSize: 10, pagerId: 'cap10Pager', defaultSort: 'cap' });
+          cap10Table = MKLAB.DataTable('cap10', { cols: ['sym', 'name', 'price', 'chg', 'pe', 'pb', 'roe', 'cap'], rows, pageSize: 10, pagerId: 'cap10Pager', defaultSort: 'cap', fieldMap: { cap: 'market_cap' } });
         } else {
           cap10Table.setRows(rows);
         }
@@ -235,7 +257,7 @@
 </main>
 <footer class="footer" role="contentinfo">
   <div class="footer-inner">
-    <span>mklab-stock · Web Components v2.0</span>
+    <span class="disclaimer-footer">免責聲明：本網站所有資料與評分僅供研究與教育參考，不構成任何投資建議。使用者應自行判斷並承擔投資風險。</span>
     <a class="link" href="https://github.com/evanhsia-git/mklab-stock" target="_blank" rel="noopener">GitHub 倉庫 ↗</a>
   </div>
 </footer>

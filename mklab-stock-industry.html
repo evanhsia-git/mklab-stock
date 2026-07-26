@@ -133,7 +133,7 @@
       html += `<tr style="cursor:pointer;${activeInd === i ? 'outline:2px solid var(--accent);' : ''}" onclick="selInd(${i})"><td>${d.nm}</td>`;
       HEAT_COLS.forEach(c => {
         const v = d[c.key];
-        html += `<td style="background:${heatColor(v)};text-align:center;">${v != null ? (v > 0 ? '+' : '') + v + '%' : '-'}</td>`;
+        html += `<td class="heat-cell" style="--cell-bg:${heatColor(v)}">${v != null ? (v > 0 ? '+' : '') + v + '%' : '-'}</td>`;
       });
       html += '</tr>';
     });
