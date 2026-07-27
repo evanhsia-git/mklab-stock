@@ -17,9 +17,8 @@
   // 快取（避免重複 fetch）
   const _cache = {};
 
-  function _fetch(name) {
-    if (_cache[name]) return Promise.resolve(_cache[name]);
-    return fetch(BASE + name)
+  function _fetchOnce(name) {
+    return fetch(BASE + name, { cache: 'no-store' })
       .then(r => {
         if (!r.ok) throw new Error('HTTP ' + r.status + ' ' + name);
         return r.text().then(text => {
@@ -28,14 +27,34 @@
           try {
             return JSON.parse(text);
           } catch (e) {
-            // 常見成因：收到的不是預期的 JSON（例如意外拿到 404/錯誤頁的 HTML），
-            // 在 Safari 上直接呼叫 r.json() 只會看到一句很難懂的
-            // 「The string did not match the expected pattern」，看不出實際內容；
-            // 這裡改成把「實際收到什麼」印出來，方便直接定位問題
-            const snippet = text ? text.slice(0, 120).replace(/\s+/g, ' ') : '(空白內容)';
-            throw new Error(name + ' 不是有效的 JSON，實際收到：' + snippet);
+            // 常見成因：大檔案（如 stocks.json ~500KB+）在行動網路上傳輸到一半被截斷，
+            // 收到的內容前段看起來完全正常、只是後面被切斷，所以只印前 120 字看不出問題；
+            // 這裡改成把「收到的總長度」+「JSON.parse 實際錯誤訊息（含出錯位置）」都印出來，
+            // 且在 Safari 上直接呼叫 r.json() 只會看到很難懂的
+            // 「The string did not match the expected pattern」，看不出實際原因
+            const err = new Error(
+              name + ' 不是有效的 JSON（收到 ' + (text ? text.length : 0) + ' 字元）：' +
+              (e && e.message ? e.message : e)
+            );
+            err.rawText = text;
+            throw err;
           }
         });
+      });
+  }
+
+  function _fetch(name, _retries) {
+    if (_cache[name]) return Promise.resolve(_cache[name]);
+    const retries = _retries == null ? 2 : _retries;
+    return _fetchOnce(name)
+      .catch(e => {
+        // 自動重試：大檔案在行動網路上偶發性被截斷是常見狀況，通常重試就會自己好，
+        // 不需要每次都要使用者手動重新整理頁面
+        if (retries > 0) {
+          console.warn('[data-client] ' + name + ' 讀取失敗，重試中…（剩餘 ' + retries + ' 次）', e && e.message);
+          return new Promise(resolve => setTimeout(resolve, 400)).then(() => _fetch(name, retries - 1));
+        }
+        throw e;
       })
       .then(d => {
         // stocks.json 原始結構含 {meta, stocks}，回傳原始物件供 caller 自行取用

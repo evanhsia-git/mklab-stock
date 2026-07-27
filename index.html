@@ -227,7 +227,11 @@
         } else {
           cap10Table.setRows(rows);
         }
-      } catch (e) { console.warn('[Market] cap10 table failed:', e); }
+      } catch (e) {
+        console.warn('[Market] cap10 table failed:', e);
+        const el = document.getElementById('cap10');
+        if (el) el.outerHTML = '<p class="muted-small-top">市值前10大載入失敗：' + (e && e.message ? e.message : e) + '</p>';
+      }
     }
 
     // Initialize

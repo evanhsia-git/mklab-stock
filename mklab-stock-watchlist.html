@@ -143,16 +143,20 @@
   }
 
   window.addEventListener('DOMContentLoaded', function () {
-  MKLAB.data.stocks().then(d => {
+  MKLAB.data.json('stocks').then(meta => {
+    const d = meta && meta.stocks;
     if (d && Array.isArray(d)) {
       d.forEach(s => { priceMap[s.sym] = { price: s.price, chg: s.chg, pe: s.pe, pb: s.pb, roe: s.roe, alert: null, name: s.name }; });
     }
     render();
-    return MKLAB.data.json('stocks');
-  }).then(meta => {
-    const asof = meta && meta.meta && meta.meta.as_of;
-    MKLAB.setFreshness(asof);
-  }).catch(() => { render(); });
+    MKLAB.setFreshness(meta && meta.meta && meta.meta.as_of);
+  }).catch(e => {
+    console.warn('[watchlist] 資料載入失敗:', e);
+    render();
+    MKLAB.setFreshness(null);
+    const note = document.getElementById('addAlertNote');
+    if (note) note.textContent = '股票資料載入失敗：' + (e && e.message ? e.message : e) + '，請重新整理頁面再試一次';
+  });
 
   MKLAB.initDrawer();
   MKLAB.Shell.mount({ active: 'watchlist' });
