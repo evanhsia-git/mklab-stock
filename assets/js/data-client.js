@@ -22,9 +22,20 @@
     return fetch(BASE + name)
       .then(r => {
         if (!r.ok) throw new Error('HTTP ' + r.status + ' ' + name);
-        // 判斷 JSON vs JS（TWII_KDATA 是 JS 變數）
-        if (name.endsWith('.js')) return r.text();
-        return r.json();
+        return r.text().then(text => {
+          // 判斷 JSON vs JS（TWII_KDATA 是 JS 變數），JS 檔直接回傳原始文字
+          if (name.endsWith('.js')) return text;
+          try {
+            return JSON.parse(text);
+          } catch (e) {
+            // 常見成因：收到的不是預期的 JSON（例如意外拿到 404/錯誤頁的 HTML），
+            // 在 Safari 上直接呼叫 r.json() 只會看到一句很難懂的
+            // 「The string did not match the expected pattern」，看不出實際內容；
+            // 這裡改成把「實際收到什麼」印出來，方便直接定位問題
+            const snippet = text ? text.slice(0, 120).replace(/\s+/g, ' ') : '(空白內容)';
+            throw new Error(name + ' 不是有效的 JSON，實際收到：' + snippet);
+          }
+        });
       })
       .then(d => {
         // stocks.json 原始結構含 {meta, stocks}，回傳原始物件供 caller 自行取用
