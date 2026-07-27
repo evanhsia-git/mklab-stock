@@ -703,7 +703,7 @@ def run_daily():
         filled = sum(1 for s in need_fill if s.get("capital_stock") is not None or s.get("eps") is not None)
         LOG.info(f"yfinance 補齊完成：{filled}/{len(need_fill)} 檔有新資料")
 
-    # _yfinance_fill_missing(stocks)
+    _yfinance_fill_missing(stocks)
 
     meta = {
         "as_of": trade_date,
