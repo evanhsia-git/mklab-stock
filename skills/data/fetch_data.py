@@ -24,6 +24,7 @@ import json
 import os
 import sys
 import re
+import math
 import time
 import datetime as dt
 import urllib.request
@@ -335,6 +336,22 @@ def fetch_tpex_daily():
 
 
 # ===== yfinance ROE/ROA（備用、每週跑）=====
+def _sanitize_nan(obj):
+    """遞迴把 NaN/Infinity 換成 None，避免 json.dump 寫出不合法的 JSON token（如 NaN、Infinity）。
+    Python 的 json 模組預設會把 float('nan') 原樣寫成沒加引號的 NaN，是合法的 Python 但不是合法的 JSON，
+    瀏覽器端 JSON.parse() 會直接整份失敗。這是最後一道防線：不管前面哪個計算式漏接了 NaN，
+    寫檔前都會在這裡被攔下來，避免單一壞值拖垮整份資料檔。"""
+    if isinstance(obj, float):
+        if math.isnan(obj) or math.isinf(obj):
+            return None
+        return obj
+    if isinstance(obj, dict):
+        return {k: _sanitize_nan(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [_sanitize_nan(v) for v in obj]
+    return obj
+
+
 def fetch_yfinance_roe(sym_list):
     """yfinance 抓 ROE/ROA（免 key）。每檔 sleep 3s 防 ban。回傳 {sym: {roe, roa}}"""
     try:
@@ -355,10 +372,14 @@ def fetch_yfinance_roe(sym_list):
             ni = is_.loc["Net Income", col] if "Net Income" in is_.index else None
             ta = bs.loc["Total Assets", col] if "Total Assets" in bs.index else None
             rec = {}
-            if equity and ni and equity != 0:
-                rec["roe"] = round(ni / equity * 100, 2)
-            if ta and ni and ta != 0:
-                rec["roa"] = round(ni / ta * 100, 2)
+            if equity and ni and equity != 0 and not (math.isnan(equity) or math.isnan(ni)):
+                v = round(ni / equity * 100, 2)
+                if not math.isnan(v) and not math.isinf(v):
+                    rec["roe"] = v
+            if ta and ni and ta != 0 and not (math.isnan(ta) or math.isnan(ni)):
+                v = round(ni / ta * 100, 2)
+                if not math.isnan(v) and not math.isinf(v):
+                    rec["roa"] = v
             if rec:
                 out[sym] = rec
         except Exception as e:
@@ -715,7 +736,7 @@ def run_daily():
     }
 
     with open(os.path.join(OUT, "stocks.json"), "w", encoding="utf-8") as f:
-        json.dump({"meta": meta, "stocks": stocks}, f, ensure_ascii=False)
+        json.dump(_sanitize_nan({"meta": meta, "stocks": stocks}), f, ensure_ascii=False)
 
     # 當日 history 切片（收盤價 + PE/PB/殖利率）
     hist = [{
@@ -726,8 +747,8 @@ def run_daily():
     } for s in stocks]
     hpath = os.path.join(OUT, "history", f"{trade_date.replace('-', '')}.json")
     with open(hpath, "w", encoding="utf-8") as f:
-        json.dump({"trade_date": trade_date, "schema_version": SCHEMA_VERSION,
-                   "count": len(hist), "stocks": hist}, f, ensure_ascii=False)
+        json.dump(_sanitize_nan({"trade_date": trade_date, "schema_version": SCHEMA_VERSION,
+                   "count": len(hist), "stocks": hist}), f, ensure_ascii=False)
 
     # industry.json：若已有則保留（不覆寫，避免每天清空）
     ind_path = os.path.join(OUT, "industry.json")
@@ -771,7 +792,7 @@ def run_weekly():
             s["source"] = "Yahoo Finance"
     data["meta"]["roe_source"] = "yfinance (免 key, 每週六更新, 備用)"
     with open(p, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False)
+        json.dump(_sanitize_nan(data), f, ensure_ascii=False)
     LOG.stats["written"] = len(roe_map)
     LOG.stats["details"]["roe_updated"] = len(roe_map)
     LOG.info(f"ROE/ROA 補齊 {len(roe_map)} 檔（備用來源）")
@@ -929,7 +950,7 @@ def run_indices():
         "note": "收盤/漲跌% 每日更新；as_of 為該標的最後交易日（跨時區可能非同日）。巨集指標含 VIX、匯率、大宗商品、加密貨幣。",
     }
     with open(os.path.join(OUT, "indices.json"), "w", encoding="utf-8") as f:
-        json.dump({"meta": meta, "indices": indices, "etfs": etfs, "macro": macro}, f, ensure_ascii=False, indent=2)
+        json.dump(_sanitize_nan({"meta": meta, "indices": indices, "etfs": etfs, "macro": macro}), f, ensure_ascii=False, indent=2)
 
     LOG.stats["details"]["index_count"] = len(indices)
     LOG.stats["details"]["etf_count"] = len(etfs)
