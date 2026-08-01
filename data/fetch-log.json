@@ -1,15 +1,14 @@
 {
-  "mode": "indices",
+  "mode": "weekly",
   "success": true,
   "error": null,
-  "fetched": 36,
-  "written": 33,
+  "fetched": 1804,
+  "written": 1116,
   "skipped": false,
   "details": {
-    "index_count": 16,
-    "etf_count": 12
+    "roe_updated": 1116
   },
-  "end": "2026-07-31 19:38:02",
-  "duration_sec": 12.4,
-  "start": "2026-07-31 19:37:50"
+  "end": "2026-08-01 20:20:51",
+  "duration_sec": 3962.4,
+  "start": "2026-08-01 19:14:49"
 }
