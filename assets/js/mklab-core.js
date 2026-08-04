@@ -64,6 +64,72 @@
     cnt:   { label:'檔數',    type:'num', sortable:true,  fmt:r=>r.cnt!=null?r.cnt:'-' },
     alert: { label:'提醒',    type:'html',sortable:false, fmt:r=>r.alert?`<span class="alert">${r.alert}</span>`:'—' },
     del:   { label:'移除',    type:'act', sortable:false, fmt:(r,ctx)=>`<span class="del" onclick="${ctx.__cb}('${r.sym}')">✕</span>` },
+
+    // ============================================================
+    // 以下為預留欄位（2026-08）：資料管線尚未產出對應資料，
+    // 目前沒有任何頁面的 cols:[...] 引用它們，不會顯示在畫面上。
+    // 之後資料到位（GitHub fetch_data.py 補抓 / VPS 同步過來），
+    // 只要在想顯示的頁面的 cols 陣列加上對應欄位名稱即可開放，
+    // 不需要再回來改這裡的定義。
+    // ============================================================
+
+    // ── 財務體質（health_score 計算所需原料，MOPS 損益表/資產負債表）──
+    debt_ratio:    { label:'負債比%',  type:'num', sortable:true, fmt:r=>r.debt_ratio!=null?Number(r.debt_ratio).toFixed(2)+'%':'-' },
+    gross_margin:  { label:'毛利率%',  type:'num', sortable:true, defDir:-1, fmt:r=>r.gross_margin!=null?Number(r.gross_margin).toFixed(2)+'%':'-' },
+    net_margin:    { label:'淨利率%',  type:'num', sortable:true, defDir:-1, fmt:r=>r.net_margin!=null?Number(r.net_margin).toFixed(2)+'%':'-' },
+
+    // ── 股票健康度（VPS compute_health_score.py 同一套公式移植）──
+    health_score:  { label:'健康度',   type:'num', sortable:true, defDir:-1, fmt:r=>r.health_score!=null?Number(r.health_score).toFixed(1):'-' },
+    health_grade:  { label:'健康等級', type:'str', sortable:true, fmt:r=>r.health_grade||'-' },
+
+    // ── KD ──
+    k_value: { label:'K值', type:'num', sortable:true, fmt:r=>r.k_value!=null?Number(r.k_value).toFixed(1):'-' },
+    d_value: { label:'D值', type:'num', sortable:true, fmt:r=>r.d_value!=null?Number(r.d_value).toFixed(1):'-' },
+
+    // ── MACD ──
+    macd_dif:  { label:'MACD DIF',  type:'num', sortable:true, fmt:r=>r.macd_dif!=null?Number(r.macd_dif).toFixed(3):'-' },
+    macd_dea:  { label:'MACD DEA',  type:'num', sortable:true, fmt:r=>r.macd_dea!=null?Number(r.macd_dea).toFixed(3):'-' },
+    macd_hist: { label:'MACD 柱狀', type:'num', sortable:true, fmt:r=>r.macd_hist!=null?Number(r.macd_hist).toFixed(3):'-' },
+
+    // ── RSI（雙週期，跟既有的通用 rsi 欄位分開，避免混用）──
+    rsi_6:  { label:'RSI(6)',  type:'num', sortable:true, fmt:r=>r.rsi_6!=null?Number(r.rsi_6).toFixed(1):'-' },
+    rsi_14: { label:'RSI(14)', type:'num', sortable:true, fmt:r=>r.rsi_14!=null?Number(r.rsi_14).toFixed(1):'-' },
+
+    // ── 均線 ──
+    ma5:   { label:'MA5',   type:'num', sortable:true, fmt:r=>r.ma5!=null?Number(r.ma5).toLocaleString(undefined,{maximumFractionDigits:2}):'-' },
+    ma20:  { label:'MA20',  type:'num', sortable:true, fmt:r=>r.ma20!=null?Number(r.ma20).toLocaleString(undefined,{maximumFractionDigits:2}):'-' },
+    ma60:  { label:'MA60',  type:'num', sortable:true, fmt:r=>r.ma60!=null?Number(r.ma60).toLocaleString(undefined,{maximumFractionDigits:2}):'-' },
+    ma120: { label:'MA120', type:'num', sortable:true, fmt:r=>r.ma120!=null?Number(r.ma120).toLocaleString(undefined,{maximumFractionDigits:2}):'-' },
+    ma240: { label:'MA240(年線)', type:'num', sortable:true, fmt:r=>r.ma240!=null?Number(r.ma240).toLocaleString(undefined,{maximumFractionDigits:2}):'-' },
+
+    // ── 布林通道 ──
+    boll_upper: { label:'布林上軌', type:'num', sortable:true, fmt:r=>r.boll_upper!=null?Number(r.boll_upper).toLocaleString(undefined,{maximumFractionDigits:2}):'-' },
+    boll_mid:   { label:'布林中軌', type:'num', sortable:true, fmt:r=>r.boll_mid!=null?Number(r.boll_mid).toLocaleString(undefined,{maximumFractionDigits:2}):'-' },
+    boll_lower: { label:'布林下軌', type:'num', sortable:true, fmt:r=>r.boll_lower!=null?Number(r.boll_lower).toLocaleString(undefined,{maximumFractionDigits:2}):'-' },
+
+    // ── 乖離率 ──
+    bias_6:  { label:'乖離率(6)%',  type:'pct', sortable:true, fmt:r=>cellPct(r.bias_6) },
+    bias_20: { label:'乖離率(20)%', type:'pct', sortable:true, fmt:r=>cellPct(r.bias_20) },
+
+    // ── 均量 ──
+    vol_ma5:  { label:'均量(5)',  type:'num', sortable:true, defDir:-1, fmt:r=>r.vol_ma5!=null?Math.round(r.vol_ma5).toLocaleString():'-' },
+    vol_ma20: { label:'均量(20)', type:'num', sortable:true, defDir:-1, fmt:r=>r.vol_ma20!=null?Math.round(r.vol_ma20).toLocaleString():'-' },
+
+    // ── 波動度／量能／其他技術指標 ──
+    atr_14:     { label:'ATR(14)',   type:'num', sortable:true, defDir:-1, fmt:r=>r.atr_14!=null?Number(r.atr_14).toFixed(2):'-' },
+    obv:        { label:'OBV',       type:'num', sortable:true, defDir:-1, fmt:r=>r.obv!=null?Math.round(r.obv).toLocaleString():'-' },
+    williams_r: { label:'威廉指標',   type:'num', sortable:true, fmt:r=>r.williams_r!=null?Number(r.williams_r).toFixed(1):'-' },
+
+    // ── 52 週高低 ──
+    high_52w: { label:'52週高', type:'num', sortable:true, defDir:-1, fmt:r=>r.high_52w!=null?Number(r.high_52w).toLocaleString(undefined,{maximumFractionDigits:2}):'-' },
+    low_52w:  { label:'52週低', type:'num', sortable:true, fmt:r=>r.low_52w!=null?Number(r.low_52w).toLocaleString(undefined,{maximumFractionDigits:2}):'-' },
+
+    // ── 當日極端標記 ──
+    limit_up:   { label:'漲停', type:'html', sortable:false, fmt:r=>r.limit_up?'<span class="up">漲停</span>':'-' },
+    limit_down: { label:'跌停', type:'html', sortable:false, fmt:r=>r.limit_down?'<span class="down">跌停</span>':'-' },
+
+    // ── 除權息還原價 ──
+    adj_close: { label:'還原收盤', type:'num', sortable:true, fmt:r=>r.adj_close!=null?Number(r.adj_close).toLocaleString(undefined,{maximumFractionDigits:2}):'-' },
   };
 
   function cellPct(v){
