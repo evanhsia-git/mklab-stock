@@ -1,8 +1,14 @@
-mklab-stock 資料抓取 Log | 模式=weekly
-開始: 2026-08-15 18:19:11  結束: 2026-08-15 19:22:46  耗時: 3814.3s
+mklab-stock 資料抓取 Log | 模式=daily
+開始: 2026-08-17 17:30:40  結束: 2026-08-17 17:31:33  耗時: 53.7s
 成功: True  跳過: False
-抓取筆數: 1831  寫入筆數: 1117
+抓取筆數: 1378  寫入筆數: 1831
 --------------------------------------------------
-[INFO] 開始補 ROE/ROA（yfinance 免 key，sleep 3s 防 ban）
-[INFO] 待補 1831 檔
-[INFO] ROE/ROA 補齊 1117 檔（備用來源）
+[INFO] Actions 基準日 2026-08-17
+[WARN] 營益分析抓取失敗（ROE/ROA/EPS 留空，不中斷）：Expecting value: line 1 column 1 (char 0)
+[INFO] 資產負債表取得 0 檔股本
+[INFO] trade_date=2026-08-14, TWSE=1378
+[INFO] ETF 發行張數載入 90 檔
+[INFO] TPEX 每日收盤取得 10512 筆原始資料
+[INFO] TPEX ETF 候選筆數: 453
+[WARN] TPEX BWIBBU 抓取失敗（PE/PB 留空，不中斷）：Expecting value: line 1 column 1 (char 0)
+[INFO] 完成 → data/ (stocks=1831, history=2026-08-14, TWSE=1378)

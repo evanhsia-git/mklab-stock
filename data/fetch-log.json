@@ -1,14 +1,19 @@
 {
-  "mode": "weekly",
+  "mode": "daily",
   "success": true,
   "error": null,
-  "fetched": 1831,
-  "written": 1117,
+  "fetched": 1378,
+  "written": 1831,
   "skipped": false,
   "details": {
-    "roe_updated": 1117
+    "trade_date": "2026-08-14",
+    "history_file": "20260814.json",
+    "sources": {
+      "TWSE": 1378,
+      "TPEX": 453
+    }
   },
-  "end": "2026-08-15 19:22:46",
-  "duration_sec": 3814.3,
-  "start": "2026-08-15 18:19:11"
+  "end": "2026-08-17 17:31:33",
+  "duration_sec": 53.7,
+  "start": "2026-08-17 17:30:40"
 }
