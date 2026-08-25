@@ -1,6 +1,6 @@
 {
   "meta": {
-    "as_of": "2026-08-24",
+    "as_of": "2026-08-25",
     "source": "yfinance (免 key, 雲端 pip install)",
     "schema_version": "1.0.0",
     "index_count": 16,
@@ -14,100 +14,100 @@
       "name": "加權股價指數 (TAIEX)",
       "yf": "^TWII",
       "desc": "台灣大盤",
-      "close": 44762.32,
-      "prev_close": 45224.29,
-      "chg_pct": -1.02,
-      "as_of": "2026-08-24"
+      "close": 45169.46,
+      "prev_close": 44762.32,
+      "chg_pct": 0.91,
+      "as_of": "2026-08-25"
     },
     {
       "market": "US",
       "name": "S&P 500",
       "yf": "^GSPC",
       "desc": "美國最具代表性大型股",
-      "close": 7674.37,
-      "prev_close": 7641.16,
-      "chg_pct": 0.43,
-      "as_of": "2026-08-21"
+      "close": 7652.86,
+      "prev_close": 7674.37,
+      "chg_pct": -0.28,
+      "as_of": "2026-08-24"
     },
     {
       "market": "US",
       "name": "Nasdaq Composite",
       "yf": "^IXIC",
       "desc": "科技股為主",
-      "close": 26180.46,
-      "prev_close": 26067.17,
-      "chg_pct": 0.43,
-      "as_of": "2026-08-21"
+      "close": 25980.19,
+      "prev_close": 26180.46,
+      "chg_pct": -0.76,
+      "as_of": "2026-08-24"
     },
     {
       "market": "US",
       "name": "Dow Jones Industrial Average",
       "yf": "^DJI",
       "desc": "道瓊30",
-      "close": 53277.01,
-      "prev_close": 52759.21,
-      "chg_pct": 0.98,
-      "as_of": "2026-08-21"
+      "close": 53417.16,
+      "prev_close": 53277.01,
+      "chg_pct": 0.26,
+      "as_of": "2026-08-24"
     },
     {
       "market": "JP",
       "name": "Nikkei 225",
       "yf": "^N225",
       "desc": "日本最重要指數",
-      "close": 65528.09,
-      "prev_close": 66016.36,
-      "chg_pct": -0.74,
-      "as_of": "2026-08-24"
+      "close": 65856.43,
+      "prev_close": 65528.09,
+      "chg_pct": 0.5,
+      "as_of": "2026-08-25"
     },
     {
       "market": "CN",
       "name": "上海證券綜合指數",
       "yf": "000001.SS",
       "desc": "上證綜指",
-      "close": 3882.01,
-      "prev_close": 3905.2,
-      "chg_pct": -0.59,
-      "as_of": "2026-08-24"
+      "close": 3889.44,
+      "prev_close": 3882.01,
+      "chg_pct": 0.19,
+      "as_of": "2026-08-25"
     },
     {
       "market": "CN",
       "name": "滬深300",
       "yf": "000300.SS",
       "desc": "滬深300指數",
-      "close": 4563.13,
-      "prev_close": 4563.13,
+      "close": 4552.03,
+      "prev_close": 4552.03,
       "chg_pct": 0.0,
-      "as_of": "2026-08-24"
+      "as_of": "2026-08-25"
     },
     {
       "market": "CN",
       "name": "深證成指",
       "yf": "399001.SZ",
       "desc": "深證成份指數",
-      "close": 13794.29,
-      "prev_close": 14094.17,
-      "chg_pct": -2.13,
-      "as_of": "2026-08-24"
+      "close": 13745.87,
+      "prev_close": 13794.29,
+      "chg_pct": -0.35,
+      "as_of": "2026-08-25"
     },
     {
       "market": "CN",
       "name": "創業板指",
       "yf": "399006.SZ",
       "desc": "創業板指數",
-      "close": 3431.89,
-      "prev_close": 3431.89,
+      "close": 3397.52,
+      "prev_close": 3397.52,
       "chg_pct": 0.0,
-      "as_of": "2026-08-24"
+      "as_of": "2026-08-25"
     },
     {
       "market": "HK",
       "name": "恆生指數",
       "yf": "^HSI",
       "desc": "香港恆生指數",
-      "close": 25517.33,
-      "prev_close": 26009.46,
-      "chg_pct": -1.89,
-      "as_of": "2026-08-24"
+      "close": 25511.1,
+      "prev_close": 25517.33,
+      "chg_pct": -0.02,
+      "as_of": "2026-08-25"
     },
     {
       "market": "HK",
@@ -124,40 +124,40 @@
       "name": "Euro STOXX 50",
       "yf": "^STOXX50E",
       "desc": "歐元區50大藍籌",
-      "close": 6459.1,
-      "prev_close": 6462.22,
-      "chg_pct": -0.05,
-      "as_of": "2026-08-24"
+      "close": 6484.36,
+      "prev_close": 6447.98,
+      "chg_pct": 0.56,
+      "as_of": "2026-08-25"
     },
     {
       "market": "EU",
       "name": "DAX (德國)",
       "yf": "^GDAXI",
       "desc": "德國法蘭克福40大藍籌",
-      "close": 26142.07,
-      "prev_close": 26136.56,
-      "chg_pct": 0.02,
-      "as_of": "2026-08-24"
+      "close": 26297.35,
+      "prev_close": 26106.6,
+      "chg_pct": 0.73,
+      "as_of": "2026-08-25"
     },
     {
       "market": "EU",
       "name": "CAC 40 (法國)",
       "yf": "^FCHI",
       "desc": "法國巴黎40大藍籌",
-      "close": 8481.32,
-      "prev_close": 8484.43,
-      "chg_pct": -0.04,
-      "as_of": "2026-08-24"
+      "close": 8489.85,
+      "prev_close": 8453.01,
+      "chg_pct": 0.44,
+      "as_of": "2026-08-25"
     },
     {
       "market": "EU",
       "name": "FTSE 100 (英國)",
       "yf": "^FTSE",
       "desc": "英國倫敦藍籌",
-      "close": 10832.82,
-      "prev_close": 10816.6,
-      "chg_pct": 0.15,
-      "as_of": "2026-08-24"
+      "close": 10866.41,
+      "prev_close": 10854.3,
+      "chg_pct": 0.11,
+      "as_of": "2026-08-25"
     },
     {
       "market": "JP",
@@ -177,10 +177,10 @@
       "yf": "0050.TW",
       "tracks": "TW50",
       "since": 2003,
-      "close": 103.8,
-      "prev_close": 104.65,
-      "chg_pct": -0.81,
-      "as_of": "2026-08-24"
+      "close": 104.4,
+      "prev_close": 103.8,
+      "chg_pct": 0.58,
+      "as_of": "2026-08-25"
     },
     {
       "market": "TW",
@@ -188,10 +188,10 @@
       "yf": "006208.TW",
       "tracks": "TW50",
       "since": 2017,
-      "close": 238.2,
+      "close": 239.45,
       "prev_close": 239.3,
-      "chg_pct": -0.46,
-      "as_of": "2026-08-24"
+      "chg_pct": 0.06,
+      "as_of": "2026-08-25"
     },
     {
       "market": "TW",
@@ -199,10 +199,10 @@
       "yf": "0056.TW",
       "tracks": "高股息",
       "since": 2008,
-      "close": 52.3,
+      "close": 52.55,
       "prev_close": 52.4,
-      "chg_pct": -0.19,
-      "as_of": "2026-08-24"
+      "chg_pct": 0.29,
+      "as_of": "2026-08-25"
     },
     {
       "market": "TW",
@@ -221,10 +221,10 @@
       "yf": "SPY",
       "tracks": "S&P500",
       "since": 1993,
-      "close": 765.72,
-      "prev_close": 762.6,
-      "chg_pct": 0.41,
-      "as_of": "2026-08-21"
+      "close": 763.47,
+      "prev_close": 765.72,
+      "chg_pct": -0.29,
+      "as_of": "2026-08-24"
     },
     {
       "market": "US",
@@ -232,10 +232,10 @@
       "yf": "IVV",
       "tracks": "S&P500",
       "since": 2000,
-      "close": 769.31,
-      "prev_close": 766.34,
-      "chg_pct": 0.39,
-      "as_of": "2026-08-21"
+      "close": 767.13,
+      "prev_close": 769.31,
+      "chg_pct": -0.28,
+      "as_of": "2026-08-24"
     },
     {
       "market": "US",
@@ -243,10 +243,10 @@
       "yf": "VOO",
       "tracks": "S&P500",
       "since": 2010,
-      "close": 703.71,
-      "prev_close": 701.01,
-      "chg_pct": 0.39,
-      "as_of": "2026-08-21"
+      "close": 701.83,
+      "prev_close": 703.71,
+      "chg_pct": -0.27,
+      "as_of": "2026-08-24"
     },
     {
       "market": "US",
@@ -254,10 +254,10 @@
       "yf": "QQQ",
       "tracks": "Nasdaq100",
       "since": 1999,
-      "close": 713.44,
-      "prev_close": 710.93,
-      "chg_pct": 0.35,
-      "as_of": "2026-08-21"
+      "close": 706.32,
+      "prev_close": 713.44,
+      "chg_pct": -1.0,
+      "as_of": "2026-08-24"
     },
     {
       "market": "US",
@@ -265,10 +265,10 @@
       "yf": "TLT",
       "tracks": "US長債",
       "since": 2002,
-      "close": 82.05,
-      "prev_close": 82.34,
-      "chg_pct": -0.35,
-      "as_of": "2026-08-21"
+      "close": 82.56,
+      "prev_close": 82.05,
+      "chg_pct": 0.62,
+      "as_of": "2026-08-24"
     },
     {
       "market": "US",
@@ -276,10 +276,10 @@
       "yf": "GLD",
       "tracks": "黃金",
       "since": 2004,
-      "close": 423.36,
-      "prev_close": 415.26,
-      "chg_pct": 1.95,
-      "as_of": "2026-08-21"
+      "close": 426.69,
+      "prev_close": 423.36,
+      "chg_pct": 0.79,
+      "as_of": "2026-08-24"
     },
     {
       "market": "US",
@@ -287,10 +287,10 @@
       "yf": "EEM",
       "tracks": "新興市場",
       "since": 2003,
-      "close": 67.12,
-      "prev_close": 66.62,
-      "chg_pct": 0.75,
-      "as_of": "2026-08-21"
+      "close": 66.11,
+      "prev_close": 67.12,
+      "chg_pct": -1.5,
+      "as_of": "2026-08-24"
     },
     {
       "market": "US",
@@ -298,90 +298,90 @@
       "yf": "MCHI",
       "tracks": "中國大陸股",
       "since": 2011,
-      "close": 55.66,
-      "prev_close": 55.51,
-      "chg_pct": 0.27,
-      "as_of": "2026-08-21"
+      "close": 54.93,
+      "prev_close": 55.66,
+      "chg_pct": -1.31,
+      "as_of": "2026-08-24"
     }
   ],
   "macro": {
     "vix": {
       "label": "VIX 恐慌指數",
       "unit": "",
-      "value": 15.89,
-      "prev_value": 15.13,
-      "chg_pct": 5.02,
-      "as_of": "2026-08-24",
+      "value": 15.83,
+      "prev_value": 15.85,
+      "chg_pct": -0.13,
+      "as_of": "2026-08-25",
       "yf": "^VIX",
       "desc": "CBOE 波動率指數，衡量市場恐慌程度"
     },
     "usd_twd": {
       "label": "USD/TWD",
       "unit": "",
-      "value": 31.82,
-      "prev_value": 31.84,
-      "chg_pct": -0.05,
-      "as_of": "2026-08-24",
+      "value": 31.83,
+      "prev_value": 31.82,
+      "chg_pct": 0.03,
+      "as_of": "2026-08-25",
       "yf": "USDTWD=X",
       "desc": "美元兌台幣即期匯率"
     },
     "gold": {
       "label": "黃金",
       "unit": "USD/oz",
-      "value": 4702.3,
-      "prev_value": 4624.1,
-      "chg_pct": 1.69,
-      "as_of": "2026-08-24",
+      "value": 4695.7,
+      "prev_value": 4640.8,
+      "chg_pct": 1.18,
+      "as_of": "2026-08-25",
       "yf": "GC=F",
       "desc": "COMEX 黃金期貨近月合約"
     },
     "oil": {
       "label": "原油 WTI",
       "unit": "USD/bbl",
-      "value": 85.08,
-      "prev_value": 87.06,
-      "chg_pct": -2.27,
-      "as_of": "2026-08-24",
+      "value": 82.12,
+      "prev_value": 85.01,
+      "chg_pct": -3.4,
+      "as_of": "2026-08-25",
       "yf": "CL=F",
       "desc": "NYMEX WTI 原油期貨近月合約"
     },
     "btc": {
       "label": "比特幣",
       "unit": "USD",
-      "value": 77672.47,
-      "prev_value": 77755.27,
-      "chg_pct": -0.11,
-      "as_of": "2026-08-24",
+      "value": 79163.67,
+      "prev_value": 78964.48,
+      "chg_pct": 0.25,
+      "as_of": "2026-08-25",
       "yf": "BTC-USD",
       "desc": "比特幣兌美元現貨價格"
     },
     "copper": {
       "label": "銅期貨",
       "unit": "USD/lb",
-      "value": 6.61,
-      "prev_value": 6.58,
-      "chg_pct": 0.45,
-      "as_of": "2026-08-24",
+      "value": 6.64,
+      "prev_value": 6.6,
+      "chg_pct": 0.61,
+      "as_of": "2026-08-25",
       "yf": "HG=F",
       "desc": "COMEX 銅期貨近月合約 (領先經濟指標)"
     },
     "us10y": {
       "label": "美債10年殖利率",
       "unit": "%",
-      "value": 4.74,
-      "prev_value": 4.7,
-      "chg_pct": 0.89,
-      "as_of": "2026-08-21",
+      "value": 4.7,
+      "prev_value": 4.74,
+      "chg_pct": -0.72,
+      "as_of": "2026-08-24",
       "yf": "^TNX",
       "desc": "美國10年期公債殖利率 (×10，如 4.25% 顯示 42.5)"
     },
     "dxy": {
       "label": "美元指數",
       "unit": "",
-      "value": 98.99,
-      "prev_value": 98.8,
-      "chg_pct": 0.19,
-      "as_of": "2026-08-24",
+      "value": 98.97,
+      "prev_value": 99.0,
+      "chg_pct": -0.03,
+      "as_of": "2026-08-25",
       "yf": "DX-Y.NYB",
       "desc": "ICE 美元指數 (DXY)"
     }
