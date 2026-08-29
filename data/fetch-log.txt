@@ -1,46 +1,8 @@
-mklab-stock 資料抓取 Log | 模式=indices
-開始: 2026-08-29 04:57:57  結束: 2026-08-29 04:58:03  耗時: 6.0s
+mklab-stock 資料抓取 Log | 模式=weekly
+開始: 2026-08-29 22:55:33  結束: 2026-08-30 00:01:35  耗時: 3962.1s
 成功: True  跳過: False
-抓取筆數: 36  寫入筆數: 33
+抓取筆數: 1835  寫入筆數: 1116
 --------------------------------------------------
-[INFO] indices 模式基準日 2026-08-29，市場數=7 (新結構 markets)
-[INFO]   ^TWII 加權股價指數 (TAIEX): 45975.22 (0.31%, as_of=2026-08-27)
-[INFO]   ^GSPC S&P 500: 7711.76 (-0.25%, as_of=2026-08-28)
-[INFO]   ^IXIC Nasdaq Composite: 26402.42 (-0.52%, as_of=2026-08-28)
-[INFO]   ^DJI Dow Jones Industrial Average: 53559.99 (-0.02%, as_of=2026-08-28)
-[INFO]   ^N225 Nikkei 225: 66131.98 (-0.2%, as_of=2026-08-27)
-[INFO]   000001.SS 上海證券綜合指數: 3956.57 (1.13%, as_of=2026-08-27)
-[INFO]   000300.SS 滬深300: 4609.18 (0.0%, as_of=2026-08-28)
-[INFO]   399001.SZ 深證成指: 14048.88 (1.5%, as_of=2026-08-27)
-[INFO]   399006.SZ 創業板指: 3424.4 (0.0%, as_of=2026-08-28)
-[INFO]   ^HSI 恆生指數: 25565.74 (-0.34%, as_of=2026-08-27)
-[WARN] ^HSTECH (恆生科技指數) 未取得：^HSTECH empty
-[WARN]   ^HSTECH 恆生科技指數: 未取得（留 null）
-[INFO]   ^STOXX50E Euro STOXX 50: 6485.67 (0.95%, as_of=2026-08-28)
-[INFO]   ^GDAXI DAX (德國): 26569.99 (0.77%, as_of=2026-08-28)
-[INFO]   ^FCHI CAC 40 (法國): 8401.18 (0.98%, as_of=2026-08-28)
-[INFO]   ^FTSE FTSE 100 (英國): 10824.26 (0.29%, as_of=2026-08-28)
-[WARN] ^TPX (TOPIX) 未取得：^TPX empty
-[WARN]   ^TPX TOPIX: 未取得（留 null）
-[INFO]   0050.TW 元大台灣50: 105.9 (1.44%, as_of=2026-08-26)
-[INFO]   006208.TW 富邦台50: 242.85 (1.42%, as_of=2026-08-26)
-[INFO]   0056.TW 元大高股息: 53.25 (1.33%, as_of=2026-08-26)
-[WARN] 00891B.TW (富邦公司債) 未取得：00891B.TW empty
-[WARN]   00891B.TW 富邦公司債: 未取得（留 null）
-[INFO]   SPY SPDR S&P 500 ETF: 769.35 (-0.23%, as_of=2026-08-28)
-[INFO]   IVV iShares Core S&P 500: 773.0 (-0.23%, as_of=2026-08-28)
-[INFO]   VOO Vanguard S&P 500: 707.24 (-0.21%, as_of=2026-08-28)
-[INFO]   QQQ Invesco QQQ: 716.43 (-0.65%, as_of=2026-08-28)
-[INFO]   TLT iShares 20+ Year Treasury: 82.88 (-0.3%, as_of=2026-08-28)
-[INFO]   GLD SPDR Gold Shares: 408.89 (-3.24%, as_of=2026-08-28)
-[INFO]   EEM iShares MSCI Emerging Markets: 67.14 (-0.7%, as_of=2026-08-28)
-[INFO]   MCHI iShares MSCI China: 55.23 (0.6%, as_of=2026-08-28)
-[INFO]   vix (VIX 恐慌指數): 14.43 (-0.55%, as_of=2026-08-28)
-[INFO]   usd_twd (USD/TWD): 31.64 (-0.51%, as_of=2026-08-28)
-[INFO]   gold (黃金): 4505.6 (-2.26%, as_of=2026-08-28)
-[INFO]   oil (原油 WTI): 83.4 (-0.16%, as_of=2026-08-28)
-[INFO]   btc (比特幣): 77397.7 (-3.56%, as_of=2026-08-28)
-[INFO]   copper (銅期貨): 6.64 (0.81%, as_of=2026-08-28)
-[INFO]   us10y (美債10年殖利率): 4.72 (1.03%, as_of=2026-08-28)
-[INFO]   dxy (美元指數): 99.69 (0.54%, as_of=2026-08-28)
-[INFO] 完成 → data/indices.json (indices=16, etfs=12)
+[INFO] 開始補 ROE/ROA（yfinance 免 key，sleep 3s 防 ban）
+[INFO] 待補 1835 檔
+[INFO] ROE/ROA 補齊 1116 檔（備用來源）
