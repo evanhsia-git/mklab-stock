@@ -1,8 +1,7 @@
-mklab-stock 資料抓取 Log | 模式=daily
-開始: 2026-09-04 21:00:47  結束: 2026-09-04 21:00:50  耗時: 3.4s
-成功: False  跳過: False
-抓取筆數: 0  寫入筆數: 0
+mklab-stock 資料抓取 Log | 模式=twii
+開始: 2026-09-04 21:39:53  結束: 2026-09-04 21:39:54  耗時: 1.2s
+成功: True  跳過: False
+抓取筆數: 0  寫入筆數: 260
 --------------------------------------------------
-[INFO] Actions 基準日 2026-09-04
-[ERROR] TWSE 抓取失敗：Expecting value: line 1 column 1 (char 0)（可能休市/網路異常，不寫入）
-ERROR: TWSE 抓取失敗：Expecting value: line 1 column 1 (char 0)
+[INFO] 開始抓取 TWII 加權指數 K 線 (yfinance ^TWII, 260 日窗口)
+[INFO] TWII K 線寫入 260 天 → twii_kdata.js (2025-08-12~2026-09-04)

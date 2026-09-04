@@ -1,12 +1,15 @@
 {
-  "mode": "daily",
-  "success": false,
-  "error": "TWSE 抓取失敗：Expecting value: line 1 column 1 (char 0)",
+  "mode": "twii",
+  "success": true,
+  "error": null,
   "fetched": 0,
-  "written": 0,
+  "written": 260,
   "skipped": false,
-  "details": {},
-  "end": "2026-09-04 21:00:50",
-  "duration_sec": 3.4,
-  "start": "2026-09-04 21:00:47"
+  "details": {
+    "twii_days": 260,
+    "twii_range": "2025-08-12~2026-09-04"
+  },
+  "end": "2026-09-04 21:39:54",
+  "duration_sec": 1.2,
+  "start": "2026-09-04 21:39:53"
 }
