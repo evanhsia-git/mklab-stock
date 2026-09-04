@@ -1,8 +1,46 @@
-mklab-stock 資料抓取 Log | 模式=daily
-開始: 2026-09-04 21:00:47  結束: 2026-09-04 21:00:50  耗時: 3.4s
-成功: False  跳過: False
-抓取筆數: 0  寫入筆數: 0
+mklab-stock 資料抓取 Log | 模式=indices
+開始: 2026-09-04 21:39:54  結束: 2026-09-04 21:40:06  耗時: 12.9s
+成功: True  跳過: False
+抓取筆數: 36  寫入筆數: 33
 --------------------------------------------------
-[INFO] Actions 基準日 2026-09-04
-[ERROR] TWSE 抓取失敗：Expecting value: line 1 column 1 (char 0)（可能休市/網路異常，不寫入）
-ERROR: TWSE 抓取失敗：Expecting value: line 1 column 1 (char 0)
+[INFO] indices 模式基準日 2026-09-04，市場數=7 (新結構 markets)
+[INFO]   ^TWII 加權股價指數 (TAIEX): 46551.13 (1.51%, as_of=2026-09-04)
+[INFO]   ^GSPC S&P 500: 7741.07 (-0.09%, as_of=2026-09-04)
+[INFO]   ^IXIC Nasdaq Composite: 26609.58 (0.1%, as_of=2026-09-04)
+[INFO]   ^DJI Dow Jones Industrial Average: 53537.26 (-0.28%, as_of=2026-09-04)
+[INFO]   ^N225 Nikkei 225: 65020.94 (1.26%, as_of=2026-09-04)
+[INFO]   000001.SS 上海證券綜合指數: 3930.12 (-0.3%, as_of=2026-09-04)
+[INFO]   000300.SS 滬深300: 4548.05 (0.0%, as_of=2026-09-04)
+[INFO]   399001.SZ 深證成指: 13516.97 (-0.79%, as_of=2026-09-04)
+[INFO]   399006.SZ 創業板指: 3286.55 (0.0%, as_of=2026-09-04)
+[INFO]   ^HSI 恆生指數: 25650.87 (1.74%, as_of=2026-09-04)
+[WARN] ^HSTECH (恆生科技指數) 未取得：^HSTECH empty
+[WARN]   ^HSTECH 恆生科技指數: 未取得（留 null）
+[INFO]   ^STOXX50E Euro STOXX 50: 6382.87 (0.0%, as_of=2026-09-04)
+[INFO]   ^GDAXI DAX (德國): 26090.46 (0.34%, as_of=2026-09-04)
+[INFO]   ^FCHI CAC 40 (法國): 8258.93 (-0.33%, as_of=2026-09-04)
+[INFO]   ^FTSE FTSE 100 (英國): 10800.45 (-0.29%, as_of=2026-09-04)
+[WARN] ^TPX (TOPIX) 未取得：^TPX empty
+[WARN]   ^TPX TOPIX: 未取得（留 null）
+[INFO]   0050.TW 元大台灣50: 107.9 (1.03%, as_of=2026-09-04)
+[INFO]   006208.TW 富邦台50: 247.25 (0.84%, as_of=2026-09-04)
+[INFO]   0056.TW 元大高股息: 55.4 (0.54%, as_of=2026-09-04)
+[WARN] 00891B.TW (富邦公司債) 未取得：00891B.TW empty
+[WARN]   00891B.TW 富邦公司債: 未取得（留 null）
+[INFO]   SPY SPDR S&P 500 ETF: 772.47 (-0.09%, as_of=2026-09-04)
+[INFO]   IVV iShares Core S&P 500: 776.02 (-0.14%, as_of=2026-09-04)
+[INFO]   VOO Vanguard S&P 500: 710.08 (-0.09%, as_of=2026-09-04)
+[INFO]   QQQ Invesco QQQ: 720.34 (0.37%, as_of=2026-09-04)
+[INFO]   TLT iShares 20+ Year Treasury: 82.37 (0.37%, as_of=2026-09-04)
+[INFO]   GLD SPDR Gold Shares: 404.24 (-1.46%, as_of=2026-09-04)
+[INFO]   EEM iShares MSCI Emerging Markets: 68.1 (0.93%, as_of=2026-09-04)
+[INFO]   MCHI iShares MSCI China: 54.74 (0.68%, as_of=2026-09-04)
+[INFO]   vix (VIX 恐慌指數): 14.03 (-2.03%, as_of=2026-09-04)
+[INFO]   usd_twd (USD/TWD): 31.62 (-0.34%, as_of=2026-09-04)
+[INFO]   gold (黃金): 4461.0 (-0.68%, as_of=2026-09-04)
+[INFO]   oil (原油 WTI): 90.14 (-1.27%, as_of=2026-09-04)
+[INFO]   btc (比特幣): 79353.01 (-2.36%, as_of=2026-09-04)
+[INFO]   copper (銅期貨): 6.67 (1.45%, as_of=2026-09-04)
+[INFO]   us10y (美債10年殖利率): 4.78 (0.46%, as_of=2026-09-04)
+[INFO]   dxy (美元指數): 99.09 (0.09%, as_of=2026-09-04)
+[INFO] 完成 → data/indices.json (indices=16, etfs=12)
