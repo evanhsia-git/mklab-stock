@@ -1,0 +1,14 @@
+{
+  "mode": "weekly",
+  "success": true,
+  "error": null,
+  "fetched": 1827,
+  "written": 1116,
+  "skipped": false,
+  "details": {
+    "roe_updated": 1116
+  },
+  "end": "2026-09-05 22:20:53",
+  "duration_sec": 3972.8,
+  "start": "2026-09-05 21:14:40"
+}
