@@ -1037,6 +1037,28 @@ def fetch_industry_map():
         return {}
 
 
+def apply_industry_to_stocks(stocks, industry_map, codes, fallback):
+    """
+    Update the 'ind' field of each stock in stocks based on industry_map.
+    industry_map: dict {symbol: industry_code}
+    codes: dict {industry_code: industry_name}
+    fallback: default industry name if code not found
+    Modifies stocks list in place.
+    """
+    updated = 0
+    for s in stocks:
+        sym = s.get("sym")
+        if not sym:
+            continue
+        ind_code = industry_map.get(sym)
+        if ind_code is None:
+            # keep existing ind if no data
+            continue
+        ind_name = codes.get(ind_code, fallback)
+        if s.get("ind") != ind_name:
+            s["ind"] = ind_name
+            updated += 1
+    LOG.info(f"Applied industry classification to {updated} stocks")
 if __name__ == "__main__":
     try:
         if MODE == "weekly":
