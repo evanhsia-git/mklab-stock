@@ -790,6 +790,13 @@ def run_weekly():
             s["roa"] = roe_map[s["sym"]].get("roa")
             s["quality"] = "yfinance_fallback"
             s["source"] = "Yahoo Finance"
+    # ====== 新增：週更新產業別 ======
+    industry_map = fetch_industry_map()
+    if industry_map:
+        codes, fallback = load_codes()
+        apply_industry_to_stocks(stocks, industry_map, codes, fallback)
+    else:
+        LOG.warn("Industry map empty; skipping industry classification update")
     data["meta"]["roe_source"] = "yfinance (免 key, 每週六更新, 備用)"
     with open(p, "w", encoding="utf-8") as f:
         json.dump(_sanitize_nan(data), f, ensure_ascii=False)
