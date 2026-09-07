@@ -1012,6 +1012,31 @@ def run_twii():
         LOG.finish(False, error="TWII K 線未取得")
 
 
+def fetch_industry_map():
+    """
+    Retrieve industry code mapping from TWSE t187ap03_L.
+    Returns a dict {stock_symbol: industry_code}.
+    On failure, returns empty dict.
+    """
+    url = "https://openapi.twse.com.tw/v1/opendata/t187ap03_L"
+    try:
+        raw = fetch_json(url, timeout=30)
+        if not isinstance(raw, list):
+            LOG.warn("t187ap03_L response is not a list")
+            return {}
+        industry_map = {}
+        for r in raw:
+            sym = str(r.get("公司代號", "")).strip()
+            ind_code = str(r.get("產業別", "")).strip()
+            if sym and ind_code:
+                industry_map[sym] = ind_code
+        LOG.info(f"Fetched industry map for {len(industry_map)} stocks")
+        return industry_map
+    except Exception as e:
+        LOG.warn(f"Failed to fetch industry map: {e}")
+        return {}
+
+
 if __name__ == "__main__":
     try:
         if MODE == "weekly":
