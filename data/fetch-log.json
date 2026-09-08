@@ -1,19 +1,15 @@
 {
-  "mode": "daily",
+  "mode": "twii",
   "success": true,
   "error": null,
-  "fetched": 1382,
-  "written": 1813,
+  "fetched": 0,
+  "written": 260,
   "skipped": false,
   "details": {
-    "trade_date": "2026-09-07",
-    "history_file": "20260907.json",
-    "sources": {
-      "TWSE": 1382,
-      "TPEX": 431
-    }
+    "twii_days": 260,
+    "twii_range": "2025-08-14~2026-09-08"
   },
-  "end": "2026-09-08 21:10:23",
-  "duration_sec": 24.8,
-  "start": "2026-09-08 21:09:59"
+  "end": "2026-09-08 21:45:27",
+  "duration_sec": 0.8,
+  "start": "2026-09-08 21:45:26"
 }
