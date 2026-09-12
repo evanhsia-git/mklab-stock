@@ -1,7 +1,10 @@
-mklab-stock 資料抓取 Log | 模式=twii
-開始: 2026-09-11 21:42:26  結束: 2026-09-11 21:42:28  耗時: 1.6s
+mklab-stock 資料抓取 Log | 模式=weekly
+開始: 2026-09-12 21:20:24  結束: 2026-09-12 22:23:45  耗時: 3800.8s
 成功: True  跳過: False
-抓取筆數: 0  寫入筆數: 260
+抓取筆數: 1379  寫入筆數: 1116
 --------------------------------------------------
-[INFO] 開始抓取 TWII 加權指數 K 線 (yfinance ^TWII, 260 日窗口)
-[INFO] TWII K 線寫入 260 天 → twii_kdata.js (2025-08-19~2026-09-11)
+[INFO] 開始補 ROE/ROA（yfinance 免 key，sleep 3s 防 ban）
+[INFO] 待補 1379 檔
+[INFO] Fetched industry map for 1094 stocks
+[INFO] Applied industry classification to 19 stocks
+[INFO] ROE/ROA 補齊 1116 檔（備用來源）
