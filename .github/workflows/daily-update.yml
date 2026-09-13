@@ -7,6 +7,8 @@ on:
     - cron: "0 10 * * 6"
     # 每個工作日 UTC 09:30（台灣 17:30）：抓全球指數 + 代表 ETF 收盤/漲跌（yfinance）
     - cron: "30 9 * * 1-5"
+    # 每個工作日 UTC 10:00：產生市場摘要 + RSS
+    - cron: "0 10 * * 1-5"
   workflow_dispatch: {}
 
 permissions:
@@ -110,6 +112,28 @@ jobs:
           else
             git commit -m "data: TWII 加權指數 K 線更新 $(date +%Y-%m-%d) [skip ci]"
             # Use merge instead of rebase to avoid conflicts on log files
+            git pull --no-rebase origin main -X ours
+            git push
+          fi
+  digest:
+    if: github.event.schedule == '0 10 * * 1-5'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Build digest (static, no key)
+        run: python skills/data/build_digest.py
+      - name: Commit & push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/ rss.xml
+          if git diff --cached --quiet; then
+            echo "no changes"
+          else
+            git commit -m "data: 每日摘要更新 2026-09-13 [skip ci]"
             git pull --no-rebase origin main -X ours
             git push
           fi
