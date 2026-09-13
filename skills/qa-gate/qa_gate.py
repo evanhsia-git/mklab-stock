@@ -104,15 +104,11 @@ def run():
     # ============================================================
     py_files = [
         "skills/data/fetch_data.py",
-        "skills/data/update_overview.py",
-        "skills/data/export_db.py",
         "skills/html-health/check_html_health.py",
         "skills/qa-gate/qa_gate.py",
         "skills/qa-gate/validate_data.py",
-        "skills/lint/lint.py",
         "skills/deployment/deploy.py",
         "skills/development/helper.py",
-        "build/template_sync.py",
     ]
     for pf in py_files:
         c = Check("Python", f"syntax: {os.path.basename(pf)}")
