@@ -3,7 +3,22 @@
   <channel>
     <title>mklab-stock 每日市場摘要</title>
     <link>https://evanhsia-git.github.io/mklab-stock/</link>
-    <description>台股每日收盤摘要：大盤、漲跌幅前5大、產業動態、綜合評分 TOP10（僅供研究參考，非投資建議）。此檔案由 skills/data/build_digest.py 於每個交易日收盤後自動產生並覆蓋，尚未有任何摘要資料時內容為空。</description>
+    <description>台股每日收盤摘要：大盤、漲跌幅前5大、產業動態、綜合評分 TOP10（僅供研究參考，非投資建議）</description>
     <language>zh-tw</language>
+    <lastBuildDate>Mon, 14 Sep 2026 16:08:59 +0000</lastBuildDate>
+    <item>
+      <title>mklab-stock 每日摘要 2026-09-11</title>
+      <link>https://evanhsia-git.github.io/mklab-stock/mklab-stock-digest.html?date=20260911</link>
+      <guid isPermaLink="false">mklab-stock-digest-2026-09-11</guid>
+      <pubDate>Mon, 14 Sep 2026 16:08:59 +0000</pubDate>
+      <description>📉 加權股價指數 (TAIEX) 45862.52（-0.7%） / 漲幅前5：6706惠特 +10.0%、2468華經 +9.98%、3296勝德 +9.94%、3229晟鈦 +9.93%、3311閎暉 +9.89% / 跌幅前5：7711永擎 -10.0%、3661世芯-KY -9.99%、9921巨大 -9.97%、6994富威電力 -9.97%、9914美利達 -9.95% / 產業領漲：生技醫療業 +3.94%、塑膠工業 +3.46%、航運業 +1.99% / 綜合評分TOP：6669緯穎(78.2)、9946三發地產(74.4)、1432大魯閣(73.4)、6757台灣虎航(70.6)、2731雄獅(70.5)</description>
+    </item>
+    <item>
+      <title>mklab-stock 每日摘要 2026-09-09</title>
+      <link>https://evanhsia-git.github.io/mklab-stock/mklab-stock-digest.html?date=20260909</link>
+      <guid isPermaLink="false">mklab-stock-digest-2026-09-09</guid>
+      <pubDate>Thu, 10 Sep 2026 07:02:25 +0000</pubDate>
+      <description>📈 加權股價指數 (TAIEX) 47183.36（+0.16%） / 漲幅前5：2460建通 +9.96%、3229晟鈦 +9.96%、7788松川精密 +9.95%、2338光罩 +9.93%、6505台塑化 +9.92% / 跌幅前5：6949沛爾生醫*-創 -9.11%、4569六方科-KY -7.0%、6969成信實業*-創 -6.63%、4739康普 -5.48%、6515穎崴 -5.45% / 產業領漲：生技醫療業 +3.94%、塑膠工業 +3.46%、航運業 +1.99% / 綜合評分TOP：6669緯穎(79.0)、9946三發地產(74.9)、1432大魯閣(73.1)、2731雄獅(70.1)、2911麗嬰房(69.9)</description>
+    </item>
   </channel>
 </rss>
