@@ -2,7 +2,7 @@
   "meta": {
     "as_of": "20260916",
     "schema_version": "1.0.0",
-    "count": 33,
+    "count": 28,
     "source": "twse-33-industry(114.06.09)"
   },
   "industry": [
@@ -178,7 +178,7 @@
     {
       "nm": "半導體業",
       "chg": 0.0,
-      "cnt": 59,
+      "cnt": 151,
       "top": 0.0,
       "w1": null,
       "m1": null,
@@ -308,7 +308,7 @@
     {
       "nm": "觀光餐旅",
       "chg": 0.0,
-      "cnt": 92,
+      "cnt": 0,
       "top": 0.0,
       "w1": null,
       "m1": null,
@@ -321,7 +321,7 @@
     {
       "nm": "金融保險",
       "chg": 0.0,
-      "cnt": 82,
+      "cnt": 64,
       "top": 0.0,
       "w1": null,
       "m1": null,
@@ -425,7 +425,7 @@
     {
       "nm": "其他等",
       "chg": 0.0,
-      "cnt": 335,
+      "cnt": 824,
       "top": 0.0,
       "w1": null,
       "m1": null,
