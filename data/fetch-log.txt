@@ -1,14 +1,14 @@
 mklab-stock 資料抓取 Log | 模式=daily
-開始: 2026-09-16 15:42:09  結束: 2026-09-16 15:42:19  耗時: 9.7s
+開始: 2026-09-16 21:52:53  結束: 2026-09-16 21:53:56  耗時: 63.3s
 成功: True  跳過: False
-抓取筆數: 1379  寫入筆數: 1835
+抓取筆數: 1379  寫入筆數: 1836
 --------------------------------------------------
 [INFO] Actions 基準日 2026-09-16
 [WARN] 營益分析抓取失敗（ROE/ROA/EPS 留空，不中斷）：Expecting value: line 1 column 1 (char 0)
 [INFO] 資產負債表取得 0 檔股本
 [INFO] trade_date=2026-09-15, TWSE=1379
 [INFO] ETF 發行張數載入 90 檔
-[INFO] TPEX 每日收盤取得 11358 筆原始資料
-[INFO] TPEX ETF 候選筆數: 456
+[INFO] TPEX 每日收盤取得 11415 筆原始資料
+[INFO] TPEX ETF 候選筆數: 457
 [WARN] TPEX BWIBBU 抓取失敗（PE/PB 留空，不中斷）：Expecting value: line 1 column 1 (char 0)
-[INFO] 完成 → data/ (stocks=1835, history=2026-09-15, TWSE=1379)
+[INFO] 完成 → data/ (stocks=1836, history=2026-09-15, TWSE=1379)

@@ -3,17 +3,17 @@
   "success": true,
   "error": null,
   "fetched": 1379,
-  "written": 1835,
+  "written": 1836,
   "skipped": false,
   "details": {
     "trade_date": "2026-09-15",
     "history_file": "20260915.json",
     "sources": {
       "TWSE": 1379,
-      "TPEX": 456
+      "TPEX": 457
     }
   },
-  "end": "2026-09-16 15:42:19",
-  "duration_sec": 9.7,
-  "start": "2026-09-16 15:42:09"
+  "end": "2026-09-16 21:53:56",
+  "duration_sec": 63.3,
+  "start": "2026-09-16 21:52:53"
 }
