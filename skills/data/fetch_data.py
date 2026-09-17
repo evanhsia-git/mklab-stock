@@ -877,9 +877,9 @@ def run_indices():
             LOG.warn(f"{item.get('yf')} ({item.get('name')}) 未取得：{last_err}")
         return None
 
-    def build(group_key):
+    def build(items):
         out = []
-        for item in cfg.get(group_key, []):
+        for item in items:
             sym = item.get("yf")
             if not sym:
                 continue
@@ -909,11 +909,11 @@ def run_indices():
             out.append(row)
         return out
 
-    indices = build("indices")
-    etfs = build("etfs")
+    indices = build(indices_cfg)
+    etfs = build(etfs_cfg)
     
     # 抓取巨集經濟指標
-    macro_items = cfg.get("macro", [])
+    macro_items = macro_cfg
     macro = {}
     for item in macro_items:
         item_id = item.get("id")

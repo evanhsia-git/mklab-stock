@@ -199,9 +199,10 @@
     document.getElementById('detailWrap').style.display = 'block';
     if (!detailTable) {
       detailTable = MKLAB.DataTable('indDetailTable', {
-        cols: ['sym', 'name', 'price', 'chg', 'pe', 'pb', 'roe'],
+        cols: ['sym', 'name', 'price', 'chg', 'pe', 'pb', 'roe', 'cap'],
         rows: real, pageSize: 10, pagerId: 'indDetailPager',
         defaultSort: 'chg',
+        fieldMap: { cap: 'market_cap' },
       });
     } else {
       detailTable.setRows(real);

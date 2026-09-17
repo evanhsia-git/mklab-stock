@@ -144,3 +144,48 @@ html {
    透過 CSS 自訂屬性帶入，避免 style="background:..." 這種硬寫樣式 */
 .heat-cell { background: var(--cell-bg, transparent); text-align: center; }
 .breadth-bar-fill { background: var(--bar-fill, var(--muted)); }
+
+/* ===== 補齊 HTML 中使用但缺少定義的樣式（footer/utility/次要按鈕/比較頁移除鍵等） ===== */
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 6px 14px;
+}
+.hamburger { line-height: 1; }
+.heatmap-table { width: 100%; border-collapse: collapse; }
+
+/* 表格/清單裡的小型移除鍵（Compare 頁比較清單使用） */
+.cmp-rm {
+  margin-left: 6px;
+  cursor: pointer;
+  color: var(--muted);
+}
+.cmp-rm:hover { color: var(--down); }
+
+/* Screener 頁複選條件群組的間距 */
+.chk-mb { margin-bottom: 10px; }
+
+/* 通用排版 utility class（各頁面 placeholder / 說明文字共用） */
+.text-center { text-align: center; }
+.text-sm { font-size: 12px; }
+.py-2 { padding-top: 8px; padding-bottom: 8px; }
+.py-4 { padding-top: 16px; padding-bottom: 16px; }
+.py-6 { padding-top: 24px; padding-bottom: 24px; }
+.mt-2 { margin-top: 8px; }
+
+/* 通用次要按鈕（Research K 線工具列等使用；工具列本身有更明確的樣式時以工具列為準） */
+.btn {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+.btn:hover { background: var(--row-hover); }
+.btn-secondary { background: var(--surface); color: var(--ink); }
+.btn-ghost { background: transparent; color: var(--muted); }
+.btn-ghost:hover { background: var(--row-hover); color: var(--ink); }

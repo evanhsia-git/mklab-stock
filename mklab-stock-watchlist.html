@@ -50,11 +50,11 @@
   <br>
   <small>※ 現在僅示意，未實作實時報警；若有需求可自行擴充</small>
 </p>
-<div class="flex-row gap-2" style="margin-bottom:8px;">
-  <input id="alertTargetPrice" placeholder="目標價" class="form-input flex-1">
-  <span class="flex-center">~</span>
-  <input id="alertStopLossPrice" placeholder="停損價" class="form-input flex-1">
-  <button onclick="savePriceAlert()" class="btn btn-primary btn-sm">儲存</button>
+<div class="row-input" style="margin-bottom:8px;">
+  <input id="alertTargetPrice" placeholder="目標價">
+  <span>~</span>
+  <input id="alertStopLossPrice" placeholder="停損價">
+  <button onclick="savePriceAlert()">儲存</button>
 </div>
 <div id="addAlertNote" class="note-inline"></div>
 
