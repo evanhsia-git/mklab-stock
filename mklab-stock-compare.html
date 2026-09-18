@@ -20,14 +20,14 @@
 </head>
 <body>
 <header class="sticky-header" role="banner">
-  <nav id="mainNav" class="nav" aria-label="主導覽"></nav>
-  <div id="utilbar" class="utilbar">
+    <div id="utilbar" class="utilbar">
     <span class="brand" id="brand"></span>
     <span class="spacer"></span>
     <button class="mobile-menu-btn" onclick="MKLAB.Drawer.toggle()" aria-label="開啟選單">
       <span class="hamburger">☰</span>
     </button>
   </div>
+<nav id="mainNav" class="nav" aria-label="主導覽"></nav>
   <div class="freshness" aria-live="polite">資料載入中…</div>
 </header>
 <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
@@ -71,14 +71,14 @@
 
   function addCompare() {
     const input = document.getElementById('cmpInput');
-    const sym = input.value.trim();
+    const sym = input.value.trim().toUpperCase();
     input.value = '';
     if (!sym) return;
     let list = getList();
     if (list.includes(sym)) return;
     if (list.length >= 4) { alert('最多同時比較 4 檔，請先移除一檔再加入'); return; }
     if (!ALL.length) { alert('股票資料尚未載入完成，請稍等片刻或重新整理頁面再試'); return; }
-    if (!ALL.find(r => String(r.sym) === sym)) { alert('找不到股票代號 ' + sym); return; }
+    if (!ALL.find(r => String(r.sym).toUpperCase() === sym)) { alert('找不到股票代號 ' + sym); return; }
     list.push(sym);
     saveList(list);
     renderAll();
