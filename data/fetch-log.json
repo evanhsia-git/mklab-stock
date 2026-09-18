@@ -2,14 +2,14 @@
   "mode": "indices",
   "success": true,
   "error": null,
-  "fetched": 36,
-  "written": 33,
+  "fetched": 48,
+  "written": 41,
   "skipped": false,
   "details": {
-    "index_count": 16,
-    "etf_count": 12
+    "index_count": 21,
+    "etf_count": 19
   },
-  "end": "2026-09-16 22:16:25",
-  "duration_sec": 11.3,
-  "start": "2026-09-16 22:16:14"
+  "end": "2026-09-17 22:22:49",
+  "duration_sec": 9.3,
+  "start": "2026-09-17 22:22:39"
 }
