@@ -54,7 +54,7 @@
   <div class="kv" id="btResultBody"></div>
 </div>
 
-<p class="muted-small-top">⚠️ 此為兩點式試算（買進日 vs 最新一日收盤價），非完整走勢回測；資料以收盤為準，僅供教育參考，非投資建議。</p>
+<p class="muted-small-top">⚠️ 此為兩點式試算（買進日 vs 最新一日收盤價），非完整走勢回測；資料以收盤為準，僅供教育參考，非投資建議。歷史快照範圍為 2025-07-14 至今，若選擇範圍外或非交易日（週末／假日）的日期會試算失敗，請改選範圍內的交易日。</p>
 </section>
 
 <script src="assets/js/data-client.js"></script>
@@ -82,7 +82,7 @@
         MKLAB.data.historyOn(dateKey),
         MKLAB.data.stocks(),
       ]);
-      const buyRow = histRows.find(r => String(r.sym) === sym);
+      const buyRow = histRows.find(r => String(r.stock_id) === sym);
       const nowRow = latestRows.find(r => String(r.sym) === sym);
       if (!buyRow) { msgEl.textContent = '找不到該日期的資料，可能非交易日或超出資料範圍，請換個日期試試'; return; }
       if (!nowRow) { msgEl.textContent = '找不到該股票的最新資料，請確認代號正確'; return; }
@@ -118,6 +118,7 @@
     MKLAB.initDrawer();
     MKLAB.Shell.mount({ active: 'backtest' });
     document.getElementById('btDate').max = new Date().toISOString().slice(0, 10);
+    document.getElementById('btDate').min = '2025-07-14';
     try {
       const meta = await MKLAB.data.json('stocks');
       MKLAB.setFreshness(meta && meta.meta && meta.meta.as_of);

@@ -53,11 +53,17 @@
 <div class="pf-summary" id="pfSummary"></div>
 
 <div class="card">
-  <h3>持股佔比</h3>
-  <div class="pf-donut-wrap">
+  <h3 id="pfChartTitle">持股佔比</h3>
+  <div class="seg" id="pfChartTabs" style="max-width:340px;margin-bottom:12px;">
+    <button class="on" data-mode="holdings" onclick="setChartMode('holdings',this)">持股佔比</button>
+    <button data-mode="industry" onclick="setChartMode('industry',this)">產業分類</button>
+    <button data-mode="constituents" onclick="setChartMode('constituents',this)">成分股</button>
+  </div>
+  <div class="pf-donut-wrap" id="pfDonutWrap">
     <svg id="pfDonut" width="160" height="160" viewBox="0 0 160 160"></svg>
     <div class="pf-legend" id="pfLegend"></div>
   </div>
+  <div id="pfConstituentsNote" style="display:none;"></div>
 </div>
 
 <div class="table-wrap"><table id="pfTable"></table></div>
@@ -125,17 +131,17 @@
     ).join('');
   }
 
-  function renderDonut(rows) {
+  function renderDonutGeneric(groups) {
     const svg = document.getElementById('pfDonut');
     const legend = document.getElementById('pfLegend');
-    const valid = rows.filter(r => r.mktVal > 0);
+    const valid = groups.filter(g => g.value > 0);
     if (!valid.length) { svg.innerHTML = ''; legend.innerHTML = ''; return; }
-    const total = valid.reduce((s, r) => s + r.mktVal, 0);
+    const total = valid.reduce((s, g) => s + g.value, 0);
     let angle = 0;
     const cx = 80, cy = 80, r = 70, ir = 40;
     let paths = '';
-    valid.forEach((row, i) => {
-      const frac = row.mktVal / total;
+    valid.forEach((g, i) => {
+      const frac = g.value / total;
       const start = angle;
       const end = angle + frac * 360;
       angle = end;
@@ -145,9 +151,58 @@
       paths += `<path d="M${p1.x},${p1.y} A${r},${r} 0 ${large} 1 ${p2.x},${p2.y} L${p3.x},${p3.y} A${ir},${ir} 0 ${large} 0 ${p4.x},${p4.y} Z" fill="${DONUT_COLORS[i % DONUT_COLORS.length]}"></path>`;
     });
     svg.innerHTML = paths;
-    legend.innerHTML = valid.map((row, i) =>
-      `<div><span class="dot" style="--dot-fill:${DONUT_COLORS[i % DONUT_COLORS.length]}"></span>${row.sym} ${row.weight.toFixed(1)}%</div>`
+    legend.innerHTML = valid.map((g, i) =>
+      `<div><span class="dot" style="--dot-fill:${DONUT_COLORS[i % DONUT_COLORS.length]}"></span>${g.label} ${(g.value / total * 100).toFixed(1)}%</div>`
     ).join('');
+  }
+  function renderDonut(rows) {
+    renderDonutGeneric(rows.filter(r => r.mktVal > 0).map(r => ({ label: r.sym, value: r.mktVal })));
+  }
+  function renderIndustryDonut(rows) {
+    const byInd = {};
+    rows.forEach(r => {
+      if (!(r.mktVal > 0)) return;
+      const live = ALL.find(x => String(x.sym) === r.sym);
+      const ind = (live && live.ind) || '其他';
+      byInd[ind] = (byInd[ind] || 0) + r.mktVal;
+    });
+    const groups = Object.keys(byInd).map(k => ({ label: k, value: byInd[k] })).sort((a, b) => b.value - a.value);
+    renderDonutGeneric(groups);
+  }
+  // ETF 代號慣例以 00 開頭（如 0050、006208、00981A）；stocks.json 的 is_etf 欄位目前不可靠（例如
+  // 一般股票 2883 凱基金 被標成 true，真正的 ETF 0050/006208 卻是 false），故不採用該欄位判斷。
+  function isEtfSym(sym) { return /^00/.test(sym); }
+  function renderConstituents(rows) {
+    const note = document.getElementById('pfConstituentsNote');
+    const holdingsWithMkt = rows.filter(r => r.mktVal > 0);
+    const etfHoldings = holdingsWithMkt.filter(r => isEtfSym(r.sym));
+    if (!holdingsWithMkt.length) {
+      note.innerHTML = '<p class="muted-small-top">尚未新增任何持股。</p>';
+    } else if (!etfHoldings.length) {
+      note.innerHTML = '<p class="muted-small-top">目前持股中沒有偵測到 ETF（代號慣例以 00 開頭，如 0050、006208、00981A），持有 ETF 後才會顯示合併後的成分股佔比。</p>';
+    } else {
+      note.innerHTML = `
+        <p class="muted-small-top">偵測到你持有以下 ETF：${etfHoldings.map(r => r.sym + ' ' + (r.name || '')).join('、')}。</p>
+        <p class="muted-small-top">⚠️ 目前資料庫尚未包含各 ETF 實際持有的成分股與權重資料，因此還無法計算「合併後的整體成分股佔比」。這需要額外建置一個 ETF 成分股資料源（例如定期抓取各 ETF 公開說明書／月報揭露的持股明細並整理成 JSON），才能在這裡合併計算你所有 ETF 持股的成分股曝險比例；目前先提供分頁位置，待資料源建置後即可補上實際圖表。</p>
+      `;
+    }
+  }
+  function showDonutWrap(show) {
+    document.getElementById('pfDonutWrap').style.display = show ? 'flex' : 'none';
+    document.getElementById('pfConstituentsNote').style.display = show ? 'none' : 'block';
+  }
+  let pfChartMode = 'holdings';
+  function setChartMode(mode, btn) {
+    pfChartMode = mode;
+    document.querySelectorAll('#pfChartTabs button').forEach(b => b.classList.toggle('on', b === btn));
+    renderChart(computeHoldings());
+  }
+  function renderChart(rows) {
+    const titleMap = { holdings: '持股佔比', industry: '產業分類', constituents: '成分股（ETF 持股曝險）' };
+    document.getElementById('pfChartTitle').textContent = titleMap[pfChartMode];
+    if (pfChartMode === 'holdings') { showDonutWrap(true); renderDonut(rows); }
+    else if (pfChartMode === 'industry') { showDonutWrap(true); renderIndustryDonut(rows); }
+    else { showDonutWrap(false); renderConstituents(rows); }
   }
   function polar(cx, cy, r, deg) {
     const rad = (deg - 90) * Math.PI / 180;
@@ -170,7 +225,7 @@
   function refresh() {
     const rows = computeHoldings();
     renderSummary(rows);
-    renderDonut(rows);
+    renderChart(rows);
     renderTable(rows);
     refreshNotesArea(rows);
   }

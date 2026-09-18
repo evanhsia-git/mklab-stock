@@ -9,7 +9,13 @@
   padding: 16px 18px;
   box-shadow: var(--shadow);
   transition: box-shadow var(--transition-fast), transform var(--transition-fast);
-}.card .box{ position: relative; margin-top: 8px; height: 36px; }.card .chg{ font-size: 13px; font-weight: 600; }.card .chg.down{ color: var(--down); }.card .chg.up{ color: var(--up); }.card .tip{ position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--surface); padding: 2px 6px; border-radius: 4px; font-size: 10px; white-space: nowrap; display: none; pointer-events: none; }.card-sm{ padding: 12px 14px; }.card-sub{ font-size: 12px; color: var(--muted); margin-top: 4px; }.card-sub.down{ color: var(--down); }.card-sub.up{ color: var(--up); }.card-title{ font-weight: 600; margin-bottom: 8px; color: var(--ink); }.card-val{ font-size: 20px; font-weight: 700; color: var(--ink); }.card-val.down{ color: var(--down); }.card-val.up{ color: var(--up); }.card:hover{ box-shadow: var(--shadow-lg); transform: translateY(-2px); }.cards{
+}
+/* 頁面內連續堆疊的獨立卡片區塊（如 help/log/portfolio 頁的說明區塊）之間增加間距；
+   只作用在 .wrap 的直接子層，不影響 .cards/.pf-summary 等格線內的卡片（那些用 gap 控制間距） */
+.wrap > .card + .card {
+  margin-top: 20px;
+}
+.card .box{ position: relative; margin-top: 8px; height: 36px; }.card .chg{ font-size: 13px; font-weight: 600; }.card .chg.down{ color: var(--down); }.card .chg.up{ color: var(--up); }.card .tip{ position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--surface); padding: 2px 6px; border-radius: 4px; font-size: 10px; white-space: nowrap; display: none; pointer-events: none; }.card-sm{ padding: 12px 14px; }.card-sub{ font-size: 12px; color: var(--muted); margin-top: 4px; }.card-sub.down{ color: var(--down); }.card-sub.up{ color: var(--up); }.card-title{ font-weight: 600; margin-bottom: 8px; color: var(--ink); }.card-val{ font-size: 20px; font-weight: 700; color: var(--ink); }.card-val.down{ color: var(--down); }.card-val.up{ color: var(--up); }.card:hover{ box-shadow: var(--shadow-lg); transform: translateY(-2px); }.cards{
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 12px;
@@ -30,6 +36,7 @@
 }.footer .link{ color: var(--accent); }.freshness{
   font-size: 12px;
   color: var(--muted);
+  text-align: center;
   padding: 4px 0 8px;
   border-top: 1px solid var(--border);
   margin-top: -1px;
@@ -144,7 +151,7 @@
   padding: 16px 20px;
 }@media (max-width: 640px) {
   .cards{ grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }@media (max-width: 960px) {
-  .mh-layout{ grid-template-columns: 1fr; }[data-theme="light"] tbody tr:nth-child(even){ background: rgba(0,0,0,.025); }table{ width: 100%; border-collapse: collapse; }tbody tr:hover{ background: var(--row-hover); }tbody tr:nth-child(even){ background: rgba(255,255,255,.02); }th{
+  .mh-layout{ grid-template-columns: 1fr; }[data-theme="light"] tbody tr:nth-child(even){ background: rgba(0,0,0,.025); }table{ width: 100%; border-collapse: collapse; }tbody tr{ transition: background var(--transition-fast); }tbody tr:hover{ background: var(--row-hover); }tbody tr:nth-child(even){ background: rgba(255,255,255,.02); }th{
   font-size: 12px;
   color: var(--muted);
   font-weight: 600;
@@ -153,4 +160,4 @@
   position: sticky;
   top: 0;
   user-select: none;
-}th, td{ padding: 10px 8px; text-align: right; font-size: 13px; border-bottom: 1px solid var(--border); white-space: nowrap; }th.sorted-asc::after{ content: " ▲"; font-size: 10px; }th.sorted-desc::after{ content: " ▼"; font-size: 10px; }th:first-child, td:first-child{ text-align: left; }th:hover{ color: var(--ink); }
+}th, td{ padding: 12px 12px; text-align: right; font-size: 13px; border-bottom: 1px solid var(--border); white-space: nowrap; }th.sorted-asc::after{ content: " ▲"; font-size: 10px; }th.sorted-desc::after{ content: " ▼"; font-size: 10px; }th:first-child, td:first-child{ text-align: left; }th:hover{ color: var(--ink); }
