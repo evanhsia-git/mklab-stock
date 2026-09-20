@@ -295,20 +295,12 @@
       }
     }
 
-    // Initialize — Shell/Drawer 必須最先掛載（不等資料 fetch）
-    // 手機網路較慢時，深色主題／搜尋／選單等按鈕需立即可點擊
+    // Initialize
+    // Shell/Drawer 要優先掛載（不等資料 fetch），避免手機網路較慢時
+    // 深色主題／搜尋／選單等按鈕在資料載入完成前一直不存在、點了沒反應。
     if (window.MKLAB) {
       MKLAB.Shell?.mount({ active: 'market' });
       MKLAB.initDrawer?.();
-    }
-
-    // 更新 freshness（資料新鮮度指示器，統一格式）
-    try {
-      const meta = await MKLAB.data.json('stocks');
-      MKLAB.setFreshness(meta && meta.meta && meta.meta.as_of);
-    } catch (e) {
-      const fresh = document.querySelector('.freshness');
-      if (fresh) fresh.textContent = '無法載入即時資料，暫以示意資料顯示';
     }
 
     renderIndices();
@@ -319,6 +311,15 @@
     loadCap10();
     loadDailyPicks();
     loadEtf10();
+
+    // 更新 freshness（資料新鮮度指示器，統一格式）
+    try {
+      const meta = await MKLAB.data.json('stocks');
+      MKLAB.setFreshness(meta && meta.meta && meta.meta.as_of);
+    } catch (e) {
+      const fresh = document.querySelector('.freshness');
+      if (fresh) fresh.textContent = '無法載入即時資料，暫以示意資料顯示';
+    }
   });
 </script>
 </main>
