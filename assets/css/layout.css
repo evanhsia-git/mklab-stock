@@ -2,7 +2,10 @@
   font-weight: 700;
   font-size: 15px;
   color: var(--ink);
-}.card{
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}.brand:hover{ color: var(--accent); }.card{
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -10,9 +13,18 @@
   box-shadow: var(--shadow);
   transition: box-shadow var(--transition-fast), transform var(--transition-fast);
 }
-/* 頁面內連續堆疊的獨立卡片區塊（如 help/log/portfolio 頁的說明區塊）之間增加間距；
-   只作用在 .wrap 的直接子層，不影響 .cards/.pf-summary 等格線內的卡片（那些用 gap 控制間距） */
-.wrap > .card + .card {
+/* 統一全站「頁面主要區塊」之間的留白，取代原本各頁各自决定、常常忘記留間距的作法。
+   只作用在 .wrap 的直接子層（每頁最外層的區塊，如 .section-title/.card/.cards/.pf-summary/.table-wrap 等），
+   不影響區塊內部（例如 .cards/.pf-summary 用 grid gap 控制內部卡片間距、.card 內部段落）。
+   用 margin-top 而非 margin-bottom，並排除緊接在表格後面的分頁按鈕（.pager）——那個本來就該貼著表格。 */
+.wrap > * + * {
+  margin-top: 20px;
+}
+.wrap > .table-wrap + .pager {
+  margin-top: 10px;
+}
+/* Digest 頁：每日摘要卡片是放在單一 #digestList 容器裡（不是 .wrap 直接子層），另外加一條讓日期卡片之間留白 */
+#digestList > .card + .card {
   margin-top: 20px;
 }
 .card .box{ position: relative; margin-top: 8px; height: 36px; }.card .chg{ font-size: 13px; font-weight: 600; }.card .chg.down{ color: var(--down); }.card .chg.up{ color: var(--up); }.card .tip{ position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--surface); padding: 2px 6px; border-radius: 4px; font-size: 10px; white-space: nowrap; display: none; pointer-events: none; }.card-sm{ padding: 12px 14px; }.card-sub{ font-size: 12px; color: var(--muted); margin-top: 4px; }.card-sub.down{ color: var(--down); }.card-sub.up{ color: var(--up); }.card-title{ font-weight: 600; margin-bottom: 8px; color: var(--ink); }.card-val{ font-size: 20px; font-weight: 700; color: var(--ink); }.card-val.down{ color: var(--down); }.card-val.up{ color: var(--up); }.card:hover{ box-shadow: var(--shadow-lg); transform: translateY(-2px); }.cards{
@@ -150,8 +162,10 @@
   margin: 0 auto;
   padding: 16px 20px;
 }@media (max-width: 640px) {
-  .cards{ grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }@media (max-width: 960px) {
-  .mh-layout{ grid-template-columns: 1fr; }[data-theme="light"] tbody tr:nth-child(even){ background: rgba(0,0,0,.025); }table{ width: 100%; border-collapse: collapse; }tbody tr{ transition: background var(--transition-fast); }tbody tr:hover{ background: var(--row-hover); }tbody tr:nth-child(even){ background: rgba(255,255,255,.02); }th{
+  .cards{ grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
+}@media (max-width: 960px) {
+  .mh-layout{ grid-template-columns: 1fr; }
+}[data-theme="light"] tbody tr:nth-child(even){ background: rgba(0,0,0,.025); }table{ width: 100%; border-collapse: collapse; }tbody tr{ transition: background var(--transition-fast); }tbody tr:hover{ background: var(--row-hover); }tbody tr:nth-child(even){ background: rgba(255,255,255,.02); }th{
   font-size: 12px;
   color: var(--muted);
   font-weight: 600;

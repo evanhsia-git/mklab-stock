@@ -15,7 +15,7 @@
 <body>
 <header class="sticky-header" role="banner">
     <div id="utilbar" class="utilbar">
-    <span class="brand" id="brand"></span>
+    <a class="brand" id="brand" href="index.html" aria-label="回首頁"></a>
     <span class="spacer"></span>
     <button class="mobile-menu-btn" onclick="MKLAB.Drawer.toggle()" aria-label="開啟選單">
       <span class="hamburger">☰</span>
@@ -32,7 +32,13 @@
 <main class="wrap">
 <section id="backtestSection">
 <div class="section-title">歷史回測模擬器</div>
-<div class="card">
+
+<div class="seg" id="btModeTabs" style="max-width:280px;">
+  <button class="on" data-mode="lump" onclick="setBtMode('lump',this)">單筆投入</button>
+  <button data-mode="dca" onclick="setBtMode('dca',this)">定期定額</button>
+</div>
+
+<div class="card" id="btLumpForm">
   <div class="kv">
     <span>股票代號</span>
     <input id="btSym" placeholder="如 2330" class="field-input">
@@ -49,12 +55,46 @@
   <p class="muted-small-top" id="btMsg"></p>
 </div>
 
+<div class="card" id="btDcaForm" style="display:none;">
+  <div class="kv">
+    <span>股票代號</span>
+    <input id="dcaSym" placeholder="如 0050" class="field-input">
+  </div>
+  <div class="kv" style="margin-top:10px;">
+    <span>每期投入金額（元）</span>
+    <input id="dcaAmount" type="number" value="10000" class="field-input">
+  </div>
+  <div class="kv" style="margin-top:10px;">
+    <span>扣款頻率</span>
+    <select id="dcaFreq" class="field-input">
+      <option value="monthly">每月（起始日當天）</option>
+      <option value="weekly">每週（起始日同星期）</option>
+    </select>
+  </div>
+  <div class="kv" style="margin-top:10px;">
+    <span>起始日期</span>
+    <input id="dcaStart" type="date" class="field-input">
+  </div>
+  <div class="kv" style="margin-top:10px;">
+    <span>結束日期</span>
+    <input id="dcaEnd" type="date" class="field-input">
+  </div>
+  <button class="btn-primary mt" onclick="runDcaBacktest()">開始試算</button>
+  <p class="muted-small-top" id="dcaMsg"></p>
+</div>
+
 <div class="card" id="btResult" style="display:none;">
   <h3>試算結果</h3>
   <div class="kv" id="btResultBody"></div>
 </div>
 
-<p class="muted-small-top">⚠️ 此為兩點式試算（買進日 vs 最新一日收盤價），非完整走勢回測；資料以收盤為準，僅供教育參考，非投資建議。歷史快照範圍為 2025-07-14 至今，若選擇範圍外或非交易日（週末／假日）的日期會試算失敗，請改選範圍內的交易日。</p>
+<div class="card" id="dcaResult" style="display:none;">
+  <h3>定期定額試算結果</h3>
+  <div class="kv" id="dcaResultBody"></div>
+  <p class="muted-small-top" id="dcaSkippedNote"></p>
+</div>
+
+<p class="muted-small-top">⚠️ 此為兩點式／分期式試算（買進日或各期扣款日 vs 最新一日收盤價），非完整走勢回測；資料以收盤為準，僅供教育參考，非投資建議。歷史快照範圍為 2025-07-14 至今，若選擇範圍外或非交易日（週末／假日）的日期會試算失敗，請改選範圍內的交易日。定期定額試算時，若扣款日剛好遇到非交易日，會自動往前找最近一個有資料的交易日。</p>
 </section>
 
 <script src="assets/js/data-client.js"></script>
@@ -114,11 +154,128 @@
     }
   }
 
+  function setBtMode(mode, btn) {
+    document.querySelectorAll('#btModeTabs button').forEach(b => b.classList.toggle('on', b === btn));
+    document.getElementById('btLumpForm').style.display = mode === 'lump' ? 'block' : 'none';
+    document.getElementById('btDcaForm').style.display = mode === 'dca' ? 'block' : 'none';
+    document.getElementById('btResult').style.display = 'none';
+    document.getElementById('dcaResult').style.display = 'none';
+  }
+
+  // 找最近一個有資料的交易日快照（扣款日遇到週末/假日時往前找，最多回溯 7 天）
+  async function findNearestHistory(dateStr, maxLookback) {
+    maxLookback = maxLookback == null ? 7 : maxLookback;
+    let d = new Date(dateStr + 'T00:00:00');
+    for (let i = 0; i <= maxLookback; i++) {
+      const dk = d.getFullYear().toString() + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0');
+      try {
+        const rows = await MKLAB.data.historyOn(dk);
+        if (rows && rows.length) return { dateKey: dk, dateStr: d.toISOString().slice(0, 10), rows };
+      } catch (e) { /* 該日無快照，繼續往前找 */ }
+      d.setDate(d.getDate() - 1);
+    }
+    return null;
+  }
+
+  function addMonths(dateStr, n) {
+    const d = new Date(dateStr + 'T00:00:00');
+    d.setMonth(d.getMonth() + n);
+    return d.toISOString().slice(0, 10);
+  }
+  function addDays(dateStr, n) {
+    const d = new Date(dateStr + 'T00:00:00');
+    d.setDate(d.getDate() + n);
+    return d.toISOString().slice(0, 10);
+  }
+
+  async function runDcaBacktest() {
+    const sym = document.getElementById('dcaSym').value.trim();
+    const amount = Number(document.getElementById('dcaAmount').value);
+    const freq = document.getElementById('dcaFreq').value;
+    const startStr = document.getElementById('dcaStart').value;
+    const endStr = document.getElementById('dcaEnd').value;
+    const msgEl = document.getElementById('dcaMsg');
+    const resultEl = document.getElementById('dcaResult');
+    resultEl.style.display = 'none';
+    msgEl.textContent = '';
+
+    if (!sym) { msgEl.textContent = '請輸入股票代號'; return; }
+    if (!amount || amount <= 0) { msgEl.textContent = '請輸入有效的每期投入金額'; return; }
+    if (!startStr || !endStr) { msgEl.textContent = '請選擇起始與結束日期'; return; }
+    if (startStr > endStr) { msgEl.textContent = '起始日期必須早於結束日期'; return; }
+
+    // 產生扣款日期排程
+    const schedule = [];
+    let cur = startStr;
+    let guard = 0;
+    while (cur <= endStr && guard < 500) {
+      schedule.push(cur);
+      cur = freq === 'weekly' ? addDays(cur, 7) : addMonths(cur, 1);
+      guard++;
+    }
+    if (!schedule.length) { msgEl.textContent = '期間內沒有任何扣款日'; return; }
+
+    msgEl.textContent = `試算中…（共 ${schedule.length} 期）`;
+
+    try {
+      const latestRows = await MKLAB.data.stocks();
+      const nowRow = latestRows.find(r => String(r.sym) === sym);
+      if (!nowRow || !nowRow.price) { msgEl.textContent = '找不到該股票的最新資料，請確認代號正確'; return; }
+      const nowPrice = nowRow.price;
+
+      let totalShares = 0;
+      let totalInvested = 0;
+      let executed = 0;
+      let skipped = 0;
+      for (const schedDate of schedule) {
+        const found = await findNearestHistory(schedDate);
+        if (!found) { skipped++; continue; }
+        const row = found.rows.find(r => String(r.stock_id) === sym);
+        const price = row && (row.close != null ? row.close : row.price);
+        if (!price) { skipped++; continue; }
+        totalShares += amount / price;
+        totalInvested += amount;
+        executed++;
+      }
+
+      if (!executed) { msgEl.textContent = '所有排定的扣款日都找不到資料，請確認股票代號或調整日期範圍（資料範圍為 2025-07-14 至今）'; return; }
+
+      const mktVal = totalShares * nowPrice;
+      const pnl = mktVal - totalInvested;
+      const pnlPct = (pnl / totalInvested) * 100;
+      const avgCost = totalInvested / totalShares;
+
+      document.getElementById('dcaResultBody').innerHTML = `
+        <span>已執行期數</span><b>${executed} 期</b>
+        <span>累計投入</span><b>${Math.round(totalInvested).toLocaleString()} 元</b>
+        <span>平均成本</span><b>${avgCost.toFixed(2)}</b>
+        <span>目前價</span><b>${nowPrice.toLocaleString()}</b>
+        <span>目前市值</span><b>${Math.round(mktVal).toLocaleString()} 元</b>
+        <span>損益金額</span><b class="${pnl >= 0 ? 'up' : 'down'}">${pnl >= 0 ? '+' : ''}${Math.round(pnl).toLocaleString()} 元</b>
+        <span>報酬率</span><b class="${pnlPct >= 0 ? 'up' : 'down'}">${pnlPct >= 0 ? '+' : ''}${pnlPct.toFixed(2)}%</b>
+      `;
+      const skipNote = document.getElementById('dcaSkippedNote');
+      skipNote.textContent = skipped > 0 ? `⚠️ 有 ${skipped} 期排定的扣款日在資料範圍外或找不到快照，已略過未計入。` : '';
+      resultEl.style.display = 'block';
+      msgEl.textContent = '';
+    } catch (e) {
+      console.warn('[backtest][dca] failed:', e);
+      msgEl.textContent = '試算失敗，請稍後再試或調整日期範圍';
+    }
+  }
+
   window.addEventListener('DOMContentLoaded', async function () {
     MKLAB.initDrawer();
     MKLAB.Shell.mount({ active: 'backtest' });
-    document.getElementById('btDate').max = new Date().toISOString().slice(0, 10);
+    const todayStr = new Date().toISOString().slice(0, 10);
+    document.getElementById('btDate').max = todayStr;
     document.getElementById('btDate').min = '2025-07-14';
+    document.getElementById('dcaStart').min = '2025-07-14';
+    document.getElementById('dcaStart').max = todayStr;
+    document.getElementById('dcaEnd').min = '2025-07-14';
+    document.getElementById('dcaEnd').max = todayStr;
+    document.getElementById('dcaStart').value = '2025-07-14';
+    document.getElementById('dcaEnd').value = todayStr;
     try {
       const meta = await MKLAB.data.json('stocks');
       MKLAB.setFreshness(meta && meta.meta && meta.meta.as_of);
