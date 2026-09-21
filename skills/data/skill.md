@@ -1,7 +1,7 @@
 ---
 name: data
 title: mklab-stock Data Skill
-description: 資料抓取/匯出/結構管理。統一所有 JSON 於 data/，Schema 定義於 schema.md。當用戶要求「更新資料/抓收盤/匯出 DB/調整 schema」時使用。
+description: 資料抓取/每日摘要/結構管理。統一所有 JSON 於 data/，Schema 定義於 schema.md。當用戶要求「更新資料/抓收盤/產生每日摘要/調整 schema」時使用。
 version: 1.0
 ---
 
@@ -12,8 +12,7 @@ version: 1.0
 ## 腳本（自包含於本 Skill）
 
 - `fetch_data.py` — GitHub Actions 每日抓取（daily/weekly/indices/twii）
-- `update_overview.py` — 本機 DB 補齊 ROE/ROA
-- `export_db.py` — 本機 DB 灌種進 data/（一次性）
+- `build_digest.py` — 每日市場摘要 + RSS Feed 產生（只讀既有 data/*.json，不呼叫外部 API）
 
 ## 執行方式
 
@@ -22,8 +21,7 @@ python3 skills/data/fetch_data.py daily      # 每日收盤+PE/PB/殖利率
 python3 skills/data/fetch_data.py weekly     # 每週 yfinance 補 ROE/ROA
 python3 skills/data/fetch_data.py indices    # 全球指數+ETF
 python3 skills/data/fetch_data.py twii       # ^TWII K 線
-python3 skills/data/update_overview.py       # 本機補 ROE/ROA
-python3 skills/data/export_db.py             # 本機灌種（一次性）
+python3 skills/data/build_digest.py          # 每日摘要 + RSS
 ```
 
 ## 資料源優先順序

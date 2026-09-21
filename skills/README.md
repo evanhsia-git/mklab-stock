@@ -17,10 +17,9 @@
 |-------|------|------|
 | `qa-gate` | 品質門禁（Python/資料/JSON/HTML/CSS/JS/Chart/連結/視覺） | `qa-gate/skill.md` |
 | `html-health` | HTML 結構健康檢查（防空白頁） | `html-health/skill.md` |
-| `lint` | 程式碼/結構 Lint 規則 | `lint/skill.md` |
 | `design-system` | UI/Theme 規範 | `design-system/skill.md` |
 | `data` | 資料抓取/匯出/結構 | `data/skill.md` |
-| `deployment` | GitHub Pages 部署 | `deployment/skill.md` |
+| `deployment` | GitHub Pages 部署說明 | `deployment/skill.md` |
 | `development` | 開發輔助/編碼風格 | `development/skill.md` |
 
 ## 原則

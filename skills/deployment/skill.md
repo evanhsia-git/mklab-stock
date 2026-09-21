@@ -9,17 +9,12 @@ version: 1.0
 
 本專案 GitHub Pages 原生部署，零 Node.js Build。
 
-## 腳本
-
-- `deploy.py` — 部署輔助（檢查 QA 通過、觸發說明）
-
 ## 流程
 
-1. 資料更新：`skills/data/fetch_data.py`
-2. 模板同步：`build/template_sync.py`
-3. 品質門禁：`skills/qa-gate/qa_gate.py` → ALLOW DEPLOY
-4. 推送 main → GitHub Actions 自動部署至 GitHub Pages
-5. 手動項目（Chart/視覺）由 Agent 以瀏覽器確認
+1. 資料更新：`skills/data/fetch_data.py`、`skills/data/build_digest.py`
+2. 品質門禁：`skills/qa-gate/qa_gate.py` → ALLOW DEPLOY
+3. 推送 main → GitHub Pages 依 Settings → Pages 設定自動發布（無需額外部署腳本）
+4. 手動項目（Chart/視覺）由 Agent 以瀏覽器確認
 
 ## 原則
 

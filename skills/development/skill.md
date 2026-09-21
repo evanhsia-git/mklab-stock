@@ -13,17 +13,16 @@ version: 1.0
 - **Minimal Changes**：禁止無關重構、大量重新命名、過度拆分
 - **不過度工程化**：最少資料夾、最少重複程式碼
 - **Long-term Maintainable**：AI Agent 易理解
-- **保持向下相容**：不破壞 GitHub Pages / Fork First / Web Components / GrapesJS
+- **保持向下相容**：不破壞 GitHub Pages / Fork First / Web Components
 
 ## 新功能流程
 
 1. 判斷是否可重複利用的 Skill
 2. 是 → 建立 `skills/xxx/`（skill.md + Python + checklist + config 同資料夾）
 3. 否 → 放入最相關的現有 Skill
-4. 修改根目錄 HTML（唯一來源）
-5. 跑 `build/template_sync.py` 同步共用區塊
-6. 跑 QA（qa-gate / html-health / lint）
-7. 產生 Repository Health Report
+4. 修改根目錄 HTML（唯一來源；共用導覽列/抽屜由 `assets/js/mklab-core.js` 的 Shell.mount() 統一注入，不需另外同步）
+5. 跑 QA（qa-gate / html-health）
+6. 產生 Repository Health Report
 
 ## 禁止
 

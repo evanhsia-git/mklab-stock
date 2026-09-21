@@ -7,15 +7,15 @@ mklab-stock GitHub Actions 每日資料抓取腳本（Build-Time, 雲端免 key�
   - 次源 TPEX OpenAPI（官方、免 key）抓上櫃/興櫃
   - ROE/ROA/EPS/股本 由 TWSE 營益分析/資產負債表（免 key）補齊
   - 產業分類用 data/industry-codes.json（33 類官方對照）
-  - 產出 schema 與 scripts/export_db.py（本機灌種）完全一致，確保歷史銜接
+  - 產出 schema 與 data/schema.md 定義一致，確保歷史銜接
   - Graceful Degradation：單檔失敗不中斷，欄位給 null
   - 休市判斷：TWSE 回傳空/非最新交易日 → 標註跳過
 
 四種模式：
-  python scripts/fetch_data.py daily      # 每日：TWSE+TPEX 收盤+PE/PB/殖利率+營益分析（快，~2min）
-  python scripts/fetch_data.py weekly     # 每週六：yfinance 補 ROE/ROA（備用、sleep 3s 防 ban，~70min）
-  python scripts/fetch_data.py indices    # 每工作日：yfinance 抓全球指數+代表性 ETF 收盤/漲跌
-  python scripts/fetch_data.py twii       # 每工作日：yfinance 抓 ^TWII K 線 (260 日窗口)
+  python skills/data/fetch_data.py daily      # 每日：TWSE+TPEX 收盤+PE/PB/殖利率+營益分析（快，~2min）
+  python skills/data/fetch_data.py weekly     # 每週六：yfinance 補 ROE/ROA（備用、sleep 3s 防 ban，~70min）
+  python skills/data/fetch_data.py indices    # 每工作日：yfinance 抓全球指數+代表性 ETF 收盤/漲跌
+  python skills/data/fetch_data.py twii       # 每工作日：yfinance 抓 ^TWII K 線 (260 日窗口)
 
 資料來源優先順序：TWSE → TPEX → Yahoo Finance (yfinance) → FinMind（Optional，不再依賴）
 """
@@ -760,7 +760,7 @@ def run_daily():
 
     with open(os.path.join(OUT, "schema-version.json"), "w", encoding="utf-8") as f:
         json.dump({"schema_version": SCHEMA_VERSION, "generated_at": stamp,
-                   "generator": "scripts/fetch_data.py (GitHub Actions, daily)"}, f, ensure_ascii=False, indent=2)
+                   "generator": "skills/data/fetch_data.py (GitHub Actions, daily)"}, f, ensure_ascii=False, indent=2)
 
     LOG.stats["written"] = len(stocks)
     LOG.stats["details"]["trade_date"] = trade_date

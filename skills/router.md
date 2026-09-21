@@ -6,11 +6,10 @@
 |----------|-----------|----------|
 | 修改後要部署 / Push 前驗證 | `qa-gate` | `qa-gate/qa_gate.py` |
 | HTML 結構疑慮（空白頁/缺標籤） | `html-health` | `html-health/check_html_health.py` |
-| 程式碼風格/結構檢查 | `lint` | `lint/lint.py` |
 | 調整顏色/字體/版面/Design Token | `design-system` | —（規範） |
-| 抓資料/更新 JSON/匯出 DB | `data` | `data/fetch_data.py`、`data/update_overview.py`、`data/export_db.py` |
-| 部署到 GitHub Pages | `deployment` | `deployment/deploy.py` |
-| 新建功能/重構/編碼風格 | `development` | `development/helper.py` |
+| 抓資料/更新 JSON/產生每日摘要 | `data` | `data/fetch_data.py`、`data/build_digest.py` |
+| 部署到 GitHub Pages | `deployment` | —（GitHub Pages 依 `main` 分支變動自動發布，無需手動腳本，見 `deployment/github-pages.md`） |
+| 新建功能/重構/編碼風格 | `development` | —（規範，見 `development/coding-style.md`） |
 
 ## 多重 Skill 場景
 
