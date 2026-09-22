@@ -84,7 +84,7 @@
   function loadIndustry() {
     MKLAB.data.json('industry').then(d => {
       if (d && Array.isArray(d.industry) && d.industry.length) {
-        data = d.industry.map((x, i) => ({ nm: x.nm, chg: x.chg, cnt: x.cnt, top: x.top, seed: +(20 + i * 37), w1: x.w1, m1: x.m1, m3: x.m3, m6: x.m6, ytd: x.ytd, y1: x.y1, y5: x.y5 }));
+        data = d.industry.map((x, i) => ({ nm: x.nm, chg: x.chg, cnt: x.cnt, top: x.top, w1: x.w1, m1: x.m1, m3: x.m3, m6: x.m6, ytd: x.ytd, y1: x.y1, y5: x.y5 }));
         renderGrid(); renderPerf(); renderHeatmap();
         const asof = d.meta && d.meta.as_of;
         if (asof) MKLAB.setFreshness(asof);
@@ -104,10 +104,10 @@
   function renderGrid() {
       document.getElementById('igrid').innerHTML = data.map((d, i) => {
         const col = d.chg >= 0 ? "var(--up)" : "var(--down)";
-        const svg = spark(gen(d.seed, 20), d.chg >= 0 ? "#dc2626" : "#16a34a", 200, 28);
+        const svg = "<span style='opacity:0.3'>—</span>";  // 方案 B: 無歷史資料不顯示隨機 spark
         return `<div class="icard ${activeInd === i ? 'on' : ''}" onclick="selInd(${i})">
           <div class="top"><span class="nm text-wrap">${d.nm}</span><span class="chg text-wrap ${d.chg >= 0 ? 'up' : 'down'}">${fmtPct(d.chg)}</span></div>
-          <div class="meta text-wrap">${d.cnt} 檔 · 領漲 ${d.top > 0 ? '+' : ''}${d.top}%</div>
+          <div class="meta text-wrap">${d.cnt} 檔 · 領漲 ${fmtPct(d.top)}</div>
           <div class="spark">${svg}</div>
         </div>`;
       }).join("");
