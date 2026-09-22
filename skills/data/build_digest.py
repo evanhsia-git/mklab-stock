@@ -176,10 +176,19 @@ def build_rss():
 
 
 def build_index():
-    """靜態站無法列目錄，維護一個 index.json 讓前端知道有哪些摘要日期可讀"""
+    """靜態站無法列目錄，維護一個 index.json 讓前端知道有哪些摘要日期可讀；
+    同時刪除超出保留範圍的舊檔案，避免 digest/ 資料夾隨時間無限增長（孤兒檔案永遠不會被前端讀到）。"""
     files = sorted(glob.glob(os.path.join(DIGEST_DIR, '*.json')))
-    dates = sorted({os.path.basename(f)[:-5] for f in files if os.path.basename(f) != 'index.json'}, reverse=True)
-    dates = dates[:60]
+    all_dates = sorted({os.path.basename(f)[:-5] for f in files if os.path.basename(f) != 'index.json'}, reverse=True)
+    dates = all_dates[:60]
+    dropped = set(all_dates) - set(dates)
+    for d in dropped:
+        try:
+            os.remove(os.path.join(DIGEST_DIR, d + '.json'))
+        except OSError:
+            pass
+    if dropped:
+        print(f'[build_digest] 已清除 {len(dropped)} 個超出保留範圍（60 筆）的舊摘要檔案')
     index_path = os.path.join(DIGEST_DIR, 'index.json')
     with open(index_path, 'w', encoding='utf-8') as f:
         json.dump({'dates': dates}, f, ensure_ascii=False, indent=2)

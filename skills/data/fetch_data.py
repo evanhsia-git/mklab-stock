@@ -36,7 +36,7 @@ os.makedirs(os.path.join(OUT, "history"), exist_ok=True)
 
 # ===== 結構化 Log 系統（供 GitHub Actions 留存 + 使用者確認抓取成功）=====
 class RunLogger:
-    """收集本輪抓取的結構化記錄，最後輸出總結並寫入 data/fetch-log.{json,txt}。"""
+    """收集本輪抓取的結構化記錄，最後輸出總結並寫入 data/fetch-log.json。"""
     def __init__(self, mode):
         self.mode = mode
         self.start = dt.datetime.now(dt.timezone(dt.timedelta(hours=8)))
@@ -82,20 +82,10 @@ class RunLogger:
         self._write_files()
 
     def _write_files(self):
-        # 機器可讀
+        # 單一機器可讀檔案：摘要統計 + 完整過程 log 合併成一份，不再拆成 json/txt 兩份重複內容
+        self.stats["log_lines"] = [f"[{l}] {m}" for l, m in self.entries]
         with open(os.path.join(OUT, "fetch-log.json"), "w", encoding="utf-8") as f:
             json.dump(self.stats, f, ensure_ascii=False, indent=2)
-        # 人讀（含過程條目）
-        lines = [f"mklab-stock 資料抓取 Log | 模式={self.mode}",
-                 f"開始: {self.stats['start']}  結束: {self.stats['end']}  耗時: {self.stats['duration_sec']}s",
-                 f"成功: {self.stats['success']}  跳過: {self.stats.get('skipped', False)}",
-                 f"抓取筆數: {self.stats['fetched']}  寫入筆數: {self.stats['written']}",
-                 "-" * 50]
-        lines += [f"[{l}] {m}" for l, m in self.entries]
-        if self.stats.get("error"):
-            lines.append(f"ERROR: {self.stats['error']}")
-        with open(os.path.join(OUT, "fetch-log.txt"), "w", encoding="utf-8") as f:
-            f.write("\n".join(lines) + "\n")
 
 
 # ===== API 端點 =====
@@ -521,16 +511,13 @@ def run_daily():
         eps = prof.get("eps") if prof.get("eps") is not None else ex.get("eps")
         capital_stock = bal.get("capital_stock") if bal.get("capital_stock") is not None else ex.get("capital_stock")
 
-        # ETF 標記：使用代號判斷（TWSE ETF 代號通常以 00 開頭）
-        is_etf = sid.startswith('00') or bool(re.search(r"ETF|基金|指數|正[0-9]|反[0-9]|槓桿|反向|期貨|配息|高息|優息|收益", name or ""))
+        # ETF 標記
+        is_etf = bool(re.search(r"ETF|基金|指數|正[0-9]|反[0-9]|槓桿|反向|期貨|配息|高息|優息|收益", name or ""))
 
         # 資料來源標記
         source = "TWSE"
         quality = "official"
         last_updated = trade_date
-
-        # security_type: 'etf' or 'stock'
-        security_type = 'etf' if is_etf else 'stock'
 
         stocks.append({
             "sym": sid,
@@ -541,7 +528,6 @@ def run_daily():
             "roe": roe, "roa": roa, "eps": eps, "capital_stock": capital_stock,
             "market_cap": mc, "ind": ex.get("ind"),
             "is_etf": is_etf,
-            "security_type": security_type,
             "chg": chg,
             "rank": ex.get("rank"),
             "source": source,
@@ -643,7 +629,6 @@ def run_daily():
                 mc = round(close * shares)
 
         is_etf = True  # TPEX 這裡都是 ETF
-        security_type = 'etf'
 
         source = "TPEX"
         quality = "official"
@@ -763,9 +748,7 @@ def run_daily():
             json.dump({"meta": {**meta, "count": len(ind_out)},
                        "industry": ind_out}, f, ensure_ascii=False)
 
-    with open(os.path.join(OUT, "schema-version.json"), "w", encoding="utf-8") as f:
-        json.dump({"schema_version": SCHEMA_VERSION, "generated_at": stamp,
-                   "generator": "skills/data/fetch_data.py (GitHub Actions, daily)"}, f, ensure_ascii=False, indent=2)
+    LOG.stats["details"]["schema_version"] = SCHEMA_VERSION
 
     LOG.stats["written"] = len(stocks)
     LOG.stats["details"]["trade_date"] = trade_date
@@ -1083,7 +1066,7 @@ if __name__ == "__main__":
             run_daily()
     except Exception as e:
         # 任何未被個別函式攔截的非預期例外，先寫入結構化 log 再往外拋，
-        # 避免 GitHub Actions 只看到裸露的 traceback、卻沒有 fetch-log.json/txt 可查。
+        # 避免 GitHub Actions 只看到裸露的 traceback、卻沒有 fetch-log.json 可查。
         LOG.error(f"未預期例外，執行中止：{e}")
         LOG.finish(False, error=f"未預期例外：{e}")
         raise
