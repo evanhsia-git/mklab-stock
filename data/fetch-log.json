@@ -1,15 +1,19 @@
 {
-  "mode": "indices",
+  "mode": "daily",
   "success": true,
   "error": null,
-  "fetched": 48,
-  "written": 41,
+  "fetched": 1377,
+  "written": 1838,
   "skipped": false,
   "details": {
-    "index_count": 21,
-    "etf_count": 19
+    "trade_date": "2026-09-18",
+    "history_file": "20260918.json",
+    "sources": {
+      "TWSE": 1377,
+      "TPEX": 461
+    }
   },
-  "end": "2026-09-21 23:58:22",
-  "duration_sec": 9.3,
-  "start": "2026-09-21 23:58:13"
+  "end": "2026-09-21 14:19:08",
+  "duration_sec": 13.3,
+  "start": "2026-09-21 14:18:55"
 }

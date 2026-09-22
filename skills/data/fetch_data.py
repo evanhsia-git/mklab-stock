@@ -521,13 +521,16 @@ def run_daily():
         eps = prof.get("eps") if prof.get("eps") is not None else ex.get("eps")
         capital_stock = bal.get("capital_stock") if bal.get("capital_stock") is not None else ex.get("capital_stock")
 
-        # ETF 標記
-        is_etf = bool(re.search(r"ETF|基金|指數|正[0-9]|反[0-9]|槓桿|反向|期貨|配息|高息|優息|收益", name or ""))
+        # ETF 標記：使用代號判斷（TWSE ETF 代號通常以 00 開頭）
+        is_etf = sid.startswith('00') or bool(re.search(r"ETF|基金|指數|正[0-9]|反[0-9]|槓桿|反向|期貨|配息|高息|優息|收益", name or ""))
 
         # 資料來源標記
         source = "TWSE"
         quality = "official"
         last_updated = trade_date
+
+        # security_type: 'etf' or 'stock'
+        security_type = 'etf' if is_etf else 'stock'
 
         stocks.append({
             "sym": sid,
@@ -538,6 +541,7 @@ def run_daily():
             "roe": roe, "roa": roa, "eps": eps, "capital_stock": capital_stock,
             "market_cap": mc, "ind": ex.get("ind"),
             "is_etf": is_etf,
+            "security_type": security_type,
             "chg": chg,
             "rank": ex.get("rank"),
             "source": source,
@@ -639,6 +643,7 @@ def run_daily():
                 mc = round(close * shares)
 
         is_etf = True  # TPEX 這裡都是 ETF
+        security_type = 'etf'
 
         source = "TPEX"
         quality = "official"
