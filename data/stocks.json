@@ -42842,7 +42842,12 @@
       "avg_daily_volume": 0,
       "beneficiary_count": 0,
       "issuer": "",
-      "capital_stock": 0
+      "capital_stock": 0,
+      "price": null,
+      "open": null,
+      "high": null,
+      "low": null,
+      "volume": 0
     },
     {
       "sym": "00886",
@@ -42860,7 +42865,12 @@
       "avg_daily_volume": 0,
       "beneficiary_count": 0,
       "issuer": "",
-      "capital_stock": 0
+      "capital_stock": 0,
+      "price": null,
+      "open": null,
+      "high": null,
+      "low": null,
+      "volume": 0
     },
     {
       "sym": "009815",
@@ -42878,7 +42888,12 @@
       "avg_daily_volume": 0,
       "beneficiary_count": 0,
       "issuer": "",
-      "capital_stock": 0
+      "capital_stock": 0,
+      "price": null,
+      "open": null,
+      "high": null,
+      "low": null,
+      "volume": 0
     },
     {
       "sym": "009823",
@@ -42896,7 +42911,12 @@
       "avg_daily_volume": 0,
       "beneficiary_count": 0,
       "issuer": "",
-      "capital_stock": 0
+      "capital_stock": 0,
+      "price": null,
+      "open": null,
+      "high": null,
+      "low": null,
+      "volume": 0
     },
     {
       "sym": "009806",
@@ -42914,7 +42934,12 @@
       "avg_daily_volume": 0,
       "beneficiary_count": 0,
       "issuer": "",
-      "capital_stock": 0
+      "capital_stock": 0,
+      "price": null,
+      "open": null,
+      "high": null,
+      "low": null,
+      "volume": 0
     },
     {
       "sym": "009814",
@@ -42932,7 +42957,12 @@
       "avg_daily_volume": 0,
       "beneficiary_count": 0,
       "issuer": "",
-      "capital_stock": 0
+      "capital_stock": 0,
+      "price": null,
+      "open": null,
+      "high": null,
+      "low": null,
+      "volume": 0
     },
     {
       "sym": "00955",
@@ -42950,7 +42980,12 @@
       "avg_daily_volume": 0,
       "beneficiary_count": 0,
       "issuer": "",
-      "capital_stock": 0
+      "capital_stock": 0,
+      "price": null,
+      "open": null,
+      "high": null,
+      "low": null,
+      "volume": 0
     },
     {
       "sym": "00888",
@@ -42968,7 +43003,12 @@
       "avg_daily_volume": 0,
       "beneficiary_count": 0,
       "issuer": "",
-      "capital_stock": 0
+      "capital_stock": 0,
+      "price": null,
+      "open": null,
+      "high": null,
+      "low": null,
+      "volume": 0
     }
   ]
 }
