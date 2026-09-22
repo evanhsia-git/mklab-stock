@@ -74,17 +74,13 @@
   }
   function gen(seed, n) { const o = []; let p = seed; for (let i = 0; i < n; i++) { p += (Math.random() - 0.45) * seed * 0.02; o.push(+p.toFixed(2)); } return o; }
 
-  let data = INDUSTRIES.map((nm, i) => {
-    const chg = +((Math.random() - 0.45) * 6).toFixed(2);
-    const cnt = +(8 + Math.random() * 40).toFixed(0);
-    const top = +((Math.random() - 0.45) * 5).toFixed(2);
-    const genp = () => +((Math.random() - 0.45) * 10).toFixed(2);
-    return { nm, chg, cnt, top, seed: +(20 + i * 37), w1: genp(), m1: genp(), m3: genp(), m6: genp(), ytd: genp(), y1: genp(), y5: genp() };
-  });
+  // 方案 B：由 data/industry.json 載入真實值；若 y1/y5 無歷史資料顯示 '-'
+  let data = [];
 
   let ALL_STOCKS = [];
   let stocksLoaded = false;
 
+  function fmtPct(v) { return (v == null || typeof v === 'undefined' || Number.isNaN(v)) ? '-' : (v>0 ? '+' : '') + v.toFixed(2) + '%'; }
   function loadIndustry() {
     MKLAB.data.json('industry').then(d => {
       if (d && Array.isArray(d.industry) && d.industry.length) {
@@ -110,7 +106,7 @@
         const col = d.chg >= 0 ? "var(--up)" : "var(--down)";
         const svg = spark(gen(d.seed, 20), d.chg >= 0 ? "#dc2626" : "#16a34a", 200, 28);
         return `<div class="icard ${activeInd === i ? 'on' : ''}" onclick="selInd(${i})">
-          <div class="top"><span class="nm text-wrap">${d.nm}</span><span class="chg text-wrap ${d.chg >= 0 ? 'up' : 'down'}">${(d.chg > 0 ? '+' : '')}${d.chg}%</span></div>
+          <div class="top"><span class="nm text-wrap">${d.nm}</span><span class="chg text-wrap ${d.chg >= 0 ? 'up' : 'down'}">${fmtPct(d.chg)}</span></div>
           <div class="meta text-wrap">${d.cnt} 檔 · 領漲 ${d.top > 0 ? '+' : ''}${d.top}%</div>
           <div class="spark">${svg}</div>
         </div>`;
@@ -153,7 +149,7 @@
       html += `<tr style="cursor:pointer;${activeInd === i ? 'outline:2px solid var(--accent);' : ''}" onclick="selInd(${i})"><td>${d.nm}</td>`;
       HEAT_COLS.forEach(c => {
         const v = d[c.key];
-        html += `<td class="heat-cell" style="--cell-bg:${heatColor(v)}">${v != null ? (v > 0 ? '+' : '') + v + '%' : '-'}</td>`;
+        html += `<td class="heat-cell" style="--cell-bg:${heatColor(v)}">${fmtPct(v)}</td>`;
       });
       html += '</tr>';
     });
