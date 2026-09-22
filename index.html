@@ -244,6 +244,7 @@
     }
 
     let dailyPicksTable = null;
+    let cap10Table = null;
     async function loadDailyPicks() {
       try {
         const all = await MKLAB.data.stocks();
@@ -269,7 +270,9 @@
     async function loadCap10() {
       try {
         const all = await MKLAB.data.stocks();
-        const rows = (Array.isArray(all) ? all : []).filter(r => !isETF(r));
+        const rows = (Array.isArray(all) ? all : []).filter(r => !isETF(r))
+          .sort((a, b) => (b.market_cap || 0) - (a.market_cap || 0))
+          .slice(0, 10);
         if (!cap10Table) {
           cap10Table = MKLAB.DataTable('cap10', { cols: ['sym', 'name', 'price', 'chg', 'pe', 'pb', 'roe', 'cap'], rows, pageSize: 10, pagerId: 'cap10Pager', defaultSort: 'cap', fieldMap: { cap: 'market_cap' } });
         } else {

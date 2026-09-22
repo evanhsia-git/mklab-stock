@@ -172,10 +172,10 @@
         defaultSort: 'chg',
       });
       // tbody 元素本身不會被 render() 重建（只換 innerHTML），故只需綁一次委託即可持續生效（含換頁/排序後）
-      const tbody = document.querySelector('#indPerfTable tbody');
-      if (tbody) {
-        tbody.style.cursor = 'pointer';
-        tbody.addEventListener('click', function (e) {
+      const table = document.getElementById('indPerfTable');
+      if (table) {
+        table.style.cursor = 'pointer';
+        table.addEventListener('click', function (e) {
           const tr = e.target.closest('tr');
           if (!tr) return;
           const nm = tr.firstElementChild && tr.firstElementChild.textContent.trim();
