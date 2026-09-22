@@ -34394,7 +34394,11 @@
       "open": null,
       "high": null,
       "low": null,
-      "volume": 0
+      "volume": 0,
+      "eps": null,
+      "roe": null,
+      "net_margin": null,
+      "gross_margin": null
     },
     {
       "sym": "6176",
@@ -35221,7 +35225,11 @@
       "open": null,
       "high": null,
       "low": null,
-      "volume": 0
+      "volume": 0,
+      "eps": null,
+      "roe": null,
+      "net_margin": null,
+      "gross_margin": null
     },
     {
       "sym": "00896",
@@ -36044,7 +36052,11 @@
       "open": null,
       "high": null,
       "low": null,
-      "volume": 0
+      "volume": 0,
+      "eps": null,
+      "roe": null,
+      "net_margin": null,
+      "gross_margin": null
     },
     {
       "sym": "00894",
@@ -42686,7 +42698,11 @@
       "open": null,
       "high": null,
       "low": null,
-      "volume": 0
+      "volume": 0,
+      "eps": null,
+      "roe": null,
+      "net_margin": null,
+      "gross_margin": null
     },
     {
       "sym": "009807",
@@ -42709,7 +42725,11 @@
       "open": null,
       "high": null,
       "low": null,
-      "volume": 0
+      "volume": 0,
+      "eps": null,
+      "roe": null,
+      "net_margin": null,
+      "gross_margin": null
     },
     {
       "sym": "00887",
@@ -42732,7 +42752,11 @@
       "open": null,
       "high": null,
       "low": null,
-      "volume": 0
+      "volume": 0,
+      "eps": null,
+      "roe": null,
+      "net_margin": null,
+      "gross_margin": null
     },
     {
       "sym": "00858",
@@ -42755,7 +42779,11 @@
       "open": null,
       "high": null,
       "low": null,
-      "volume": 0
+      "volume": 0,
+      "eps": null,
+      "roe": null,
+      "net_margin": null,
+      "gross_margin": null
     },
     {
       "sym": "00877",
@@ -42778,7 +42806,11 @@
       "open": null,
       "high": null,
       "low": null,
-      "volume": 0
+      "volume": 0,
+      "eps": null,
+      "roe": null,
+      "net_margin": null,
+      "gross_margin": null
     },
     {
       "sym": "009822",
@@ -42801,7 +42833,11 @@
       "open": null,
       "high": null,
       "low": null,
-      "volume": 0
+      "volume": 0,
+      "eps": null,
+      "roe": null,
+      "net_margin": null,
+      "gross_margin": null
     },
     {
       "sym": "009825",
@@ -42824,7 +42860,11 @@
       "open": null,
       "high": null,
       "low": null,
-      "volume": 0
+      "volume": 0,
+      "eps": null,
+      "roe": null,
+      "net_margin": null,
+      "gross_margin": null
     },
     {
       "sym": "00928",
