@@ -104,7 +104,8 @@
   function renderGrid() {
       document.getElementById('igrid').innerHTML = data.map((d, i) => {
         const col = d.chg >= 0 ? "var(--up)" : "var(--down)";
-        const svg = "<span style='opacity:0.3'>—</span>";  // 方案 B: 無歷史資料不顯示隨機 spark
+        const sparkData = [d.w1, d.m1, d.m3, d.m6, d.ytd, d.y1, d.y5].map(v => v === null ? 0 : v);
+        const svg = spark(sparkData, d.chg >= 0 ? "var(--up)" : "var(--down)", 60, 20);
         return `<div class="icard ${activeInd === i ? 'on' : ''}" onclick="selInd(${i})">
           <div class="top"><span class="nm text-wrap">${d.nm}</span><span class="chg text-wrap ${d.chg >= 0 ? 'up' : 'down'}">${fmtPct(d.chg)}</span></div>
           <div class="meta text-wrap">${d.cnt} 檔 · 領漲 ${fmtPct(d.top)}</div>
