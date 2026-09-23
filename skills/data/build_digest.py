@@ -92,7 +92,7 @@ def build_digest():
     # 產業表現前 3 / 後 3
     ind_top, ind_bottom = [], []
     if industry_data and isinstance(industry_data.get('industry'), list):
-        inds = sorted(industry_data['industry'], key=lambda i: i.get('chg', 0), reverse=True)
+        inds = sorted(industry_data['industry'], key=lambda i: (i.get('chg') if i.get('chg') is not None else 0), reverse=True)
         ind_top = inds[:3]
         ind_bottom = inds[-3:][::-1]
 

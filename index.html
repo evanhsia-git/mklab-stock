@@ -187,12 +187,17 @@
     }
 
     // ETF 標記現在使用 new security_type 欄位：'etf' vs 'stock'。
-    // 向下相容：如果有 security_type，就用它；否则用 is_etf 旗標與名稱正規表達式。
+    // 向下相容：如果有 security_type，就用它；否则用 is_etf 旗標。
     function isETF(r) {
       if (r.security_type) {
         return r.security_type === 'etf';
       }
-      return r.is_etf || ETF_RE.test(String(r.name || r.nm || ''));
+      // 若無 security_type，再看舊欄位（以便舊資料兼容）
+      if (r.is_etf !== undefined) {
+        return r.is_etf === true;
+      }
+      // 預設皆視為個股（非 ETF），避免誤判
+      return false;
     }
 
     function pctChange(arr, idxBack) {
