@@ -64,16 +64,6 @@
 <script src="assets/js/mklab-wc.js"></script>
 <script>
   const INDUSTRIES = ["水泥工業","食品工業","塑膠工業","紡織纖維","電機機械","電器電纜","化學工業","生技醫療業","玻璃陶瓷","造紙工業","鋼鐵工業","橡膠工業","汽車工業","半導體業","電腦及週邊設備業","光電業","通訊網路業","電子零組件業","電子通路業","資訊服務業","其他電子業","建材營造","航運業","觀光餐旅","金融保險","貿易百貨","油電燃氣業","綜合","綠能環保","數位雲端","運動休閒","居家生活","其他等"];
-  const SAMPLE = ["台積電","鴻海","聯發科","台達電","中華電","國泰金","台塑化","聯電","富邦金","中信金","兆豐金","玉山金","廣達","緯創","日月光","南亞科","大立光","統一","台泥","中鋼","長榮","華航","彰銀","第一金","元大金"];
-
-  function rnd(seed) { let s = seed; return () => { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; }; }
-  function spark(data, color, w, h) {
-    const min = Math.min(...data), max = Math.max(...data), r = (max - min) || 1;
-    const p = data.map((d, i) => `${(i / (data.length - 1) * w).toFixed(1)},${(h - ((d - min) / r * h)).toFixed(1)}`).join(" ");
-    return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><polyline points="${p}" fill="none" stroke="${color}" stroke-width="1.5"/></svg>`;
-  }
-  function gen(seed, n) { const o = []; let p = seed; for (let i = 0; i < n; i++) { p += (Math.random() - 0.45) * seed * 0.02; o.push(+p.toFixed(2)); } return o; }
-
   // 方案 B：由 data/industry.json 載入真實值；若 y1/y5 無歷史資料顯示 '-'
   let data = [];
 
@@ -104,8 +94,7 @@
   function renderGrid() {
       document.getElementById('igrid').innerHTML = data.map((d, i) => {
         const col = d.chg >= 0 ? "var(--up)" : "var(--down)";
-        const sparkData = [d.w1, d.m1, d.m3, d.m6, d.ytd, d.y1, d.y5].map(v => v === null ? 0 : v);
-        const svg = spark(sparkData, d.chg >= 0 ? "var(--up)" : "var(--down)", 60, 20);
+        const svg = "<span style='opacity:0.3'>—</span>";  // 方案 B: 無歷史資料不顯示隨機 spark
         return `<div class="icard ${activeInd === i ? 'on' : ''}" onclick="selInd(${i})">
           <div class="top"><span class="nm text-wrap">${d.nm}</span><span class="chg text-wrap ${d.chg >= 0 ? 'up' : 'down'}">${fmtPct(d.chg)}</span></div>
           <div class="meta text-wrap">${d.cnt} 檔 · 領漲 ${fmtPct(d.top)}</div>

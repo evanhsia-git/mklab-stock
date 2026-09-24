@@ -171,7 +171,13 @@
   }
   // ETF 代號慣例以 00 開頭（如 0050、006208、00981A）；stocks.json 的 is_etf 欄位目前不可靠（例如
   // 一般股票 2883 凱基金 被標成 true，真正的 ETF 0050/006208 卻是 false），故不採用該欄位判斷。
-  function isEtfSym(sym) { return /^00/.test(sym); }
+  // ETF 判斷優先用 stocks.json 的 security_type 欄位（'etf' vs 'stock'，與 index.html 的 isETF() 邏輯一致）；
+  // 若該欄位不存在（舊資料相容），才退回代號慣例（00 開頭，如 0050、006208、00981A）。
+  function isEtfSym(sym) {
+    const live = ALL.find(x => String(x.sym) === sym);
+    if (live && live.security_type) return live.security_type === 'etf';
+    return /^00/.test(sym);
+  }
   function renderConstituents(rows) {
     const note = document.getElementById('pfConstituentsNote');
     const holdingsWithMkt = rows.filter(r => r.mktVal > 0);
