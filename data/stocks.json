@@ -3501,15 +3501,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 92900000000.0,
+      "market_cap": 93900000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.74,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "1476",
@@ -3901,15 +3901,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 78800000000.0,
+      "market_cap": 79300000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 2.0,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "3023",
@@ -4026,15 +4026,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 73400000000.0,
+      "market_cap": 78400000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 2.06,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "3450",
@@ -4126,15 +4126,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 71200000000.0,
+      "market_cap": 71100000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.47,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "8454",
@@ -4251,15 +4251,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 69500000000.0,
+      "market_cap": 70400000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.38,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "3406",
@@ -4401,15 +4401,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 67200000000.0,
+      "market_cap": 67100000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.23,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "9910",
@@ -4701,15 +4701,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 58800000000.0,
+      "market_cap": 59500000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.37,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "6278",
@@ -5051,15 +5051,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 53200000000.0,
+      "market_cap": 53300000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.35,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "6831",
@@ -5126,15 +5126,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 52400000000.0,
+      "market_cap": 53700000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.84,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2597",
@@ -5226,15 +5226,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 51900000000.0,
+      "market_cap": 53600000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.95,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "6890",
@@ -5351,15 +5351,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 50900000000.0,
+      "market_cap": 50800000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.7,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "5522",
@@ -5526,15 +5526,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 48900000000.0,
+      "market_cap": 49700000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.04,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "4583",
@@ -5601,15 +5601,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 47900000000.0,
+      "market_cap": 49500000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.44,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2923",
@@ -5651,15 +5651,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 47200000000.0,
+      "market_cap": 48600000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.51,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "4763",
@@ -5951,15 +5951,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 44500000000.0,
+      "market_cap": 44600000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.0,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "6197",
@@ -6126,15 +6126,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 41800000000.0,
+      "market_cap": 42100000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.52,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2428",
@@ -6326,15 +6326,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 39700000000.0,
+      "market_cap": 40100000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.73,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2211",
@@ -6376,15 +6376,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 39400000000.0,
+      "market_cap": 40000000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.7,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "5469",
@@ -6651,15 +6651,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 37600000000.0,
+      "market_cap": 38500000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.98,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "8033",
@@ -6776,15 +6776,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 36500000000.0,
+      "market_cap": 37600000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 2.2,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "6670",
@@ -6951,15 +6951,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 35300000000.0,
+      "market_cap": 35500000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.37,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "3016",
@@ -7501,15 +7501,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 30100000000.0,
+      "market_cap": 29700000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.25,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "1434",
@@ -7576,15 +7576,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 29300000000.0,
+      "market_cap": 29500000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.77,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "6166",
@@ -7653,13 +7653,13 @@
       "capital_stock": 0,
       "market_cap": 29100000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.07,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "9958",
@@ -7801,15 +7801,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 28400000000.0,
+      "market_cap": 28200000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.45,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2072",
@@ -7926,15 +7926,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 27500000000.0,
+      "market_cap": 27700000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 2.9,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "1227",
@@ -8376,15 +8376,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 25500000000.0,
+      "market_cap": 25700000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.31,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2374",
@@ -8426,15 +8426,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 25200000000.0,
+      "market_cap": 24400000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 2.03,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2478",
@@ -9701,15 +9701,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 19900000000.0,
+      "market_cap": 20200000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.2,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2402",
@@ -10226,15 +10226,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 17500000000.0,
+      "market_cap": 17600000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.82,
       "rank": null,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2338",
@@ -10628,13 +10628,13 @@
       "capital_stock": 0,
       "market_cap": 16800000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.12,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2704",
@@ -11053,13 +11053,13 @@
       "capital_stock": 0,
       "market_cap": 15900000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.18,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2485",
@@ -11151,15 +11151,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 15700000000.0,
+      "market_cap": 16400000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 3.16,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "8114",
@@ -11226,15 +11226,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 15500000000.0,
+      "market_cap": 16500000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 4.62,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "3135",
@@ -11351,15 +11351,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 15100000000.0,
+      "market_cap": 15000000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 2.0,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2231",
@@ -11526,15 +11526,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 14900000000.0,
+      "market_cap": 14700000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.49,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "6589",
@@ -11826,15 +11826,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 14400000000.0,
+      "market_cap": 14700000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.47,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2495",
@@ -11901,15 +11901,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 14300000000.0,
+      "market_cap": 14900000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.23,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2832",
@@ -12001,15 +12001,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 14100000000.0,
+      "market_cap": 13900000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.58,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00896",
@@ -12028,13 +12028,13 @@
       "capital_stock": 0,
       "market_cap": 14100000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.18,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "3209",
@@ -12101,15 +12101,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 13800000000.0,
+      "market_cap": 14000000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.31,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2511",
@@ -12478,13 +12478,13 @@
       "capital_stock": 0,
       "market_cap": 13300000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.2,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "6189",
@@ -12651,15 +12651,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 13100000000.0,
+      "market_cap": 12900000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.76,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2524",
@@ -12778,13 +12778,13 @@
       "capital_stock": 0,
       "market_cap": 12800000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.1,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "1307",
@@ -12951,15 +12951,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 12700000000.0,
+      "market_cap": 13500000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.0,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "4989",
@@ -13026,15 +13026,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 12600000000.0,
+      "market_cap": 12300000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -1.33,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00997A",
@@ -13051,15 +13051,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 12600000000.0,
+      "market_cap": 12900000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 2.14,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "6153",
@@ -13151,15 +13151,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 12500000000.0,
+      "market_cap": 12600000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.73,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "1597",
@@ -13476,15 +13476,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 11900000000.0,
+      "market_cap": 12000000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.21,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2547",
@@ -13628,13 +13628,13 @@
       "capital_stock": 0,
       "market_cap": 11700000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.09,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "1709",
@@ -13851,15 +13851,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 11500000000.0,
+      "market_cap": 11000000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.05,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2331",
@@ -14001,15 +14001,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 11300000000.0,
+      "market_cap": 11500000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.1,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2630",
@@ -14078,13 +14078,13 @@
       "capital_stock": 0,
       "market_cap": 11200000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 2.66,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "1103",
@@ -14176,15 +14176,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 11100000000.0,
+      "market_cap": 11300000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.06,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00965",
@@ -14203,13 +14203,13 @@
       "capital_stock": 0,
       "market_cap": 11000000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.99,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "6706",
@@ -14251,15 +14251,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 10900000000.0,
+      "market_cap": 11500000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 2.09,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "5306",
@@ -14403,13 +14403,13 @@
       "capital_stock": 0,
       "market_cap": 10800000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.11,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2612",
@@ -14501,15 +14501,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 10600000000.0,
+      "market_cap": 10700000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.52,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "4306",
@@ -14726,15 +14726,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 10200000000.0,
+      "market_cap": 10300000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.47,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "3312",
@@ -14951,15 +14951,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 9900000000.0,
+      "market_cap": 9800000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.06,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "3004",
@@ -15076,15 +15076,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 9800000000.0,
+      "market_cap": 10000000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.81,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "5285",
@@ -15576,15 +15576,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 9100000000.0,
+      "market_cap": 9200000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.13,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "8215",
@@ -15703,13 +15703,13 @@
       "capital_stock": 0,
       "market_cap": 9000000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.16,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "1604",
@@ -16078,13 +16078,13 @@
       "capital_stock": 0,
       "market_cap": 8600000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.2,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "009828",
@@ -16103,13 +16103,13 @@
       "capital_stock": 0,
       "market_cap": 8500000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 2.66,
       "rank": null,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "6235",
@@ -16251,15 +16251,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 8400000000.0,
+      "market_cap": 8500000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.8,
       "rank": null,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "6112",
@@ -16401,15 +16401,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 8200000000.0,
+      "market_cap": 8500000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 2.71,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "9927",
@@ -17076,15 +17076,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 7300000000.0,
+      "market_cap": 7400000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.39,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00895",
@@ -17101,15 +17101,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 7300000000.0,
+      "market_cap": 7500000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.37,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "009821",
@@ -17126,15 +17126,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 7300000000.0,
+      "market_cap": 7600000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.07,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "1515",
@@ -17301,15 +17301,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 7200000000.0,
+      "market_cap": 7100000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.14,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2365",
@@ -17426,15 +17426,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 7100000000.0,
+      "market_cap": 7200000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.0,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2417",
@@ -17676,15 +17676,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 6900000000.0,
+      "market_cap": 7000000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.34,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "6923",
@@ -17853,13 +17853,13 @@
       "capital_stock": 0,
       "market_cap": 6800000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 2.56,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00946",
@@ -17878,13 +17878,13 @@
       "capital_stock": 0,
       "market_cap": 6800000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.07,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "6184",
@@ -18051,15 +18051,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 6700000000.0,
+      "market_cap": 6900000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.36,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2397",
@@ -18426,15 +18426,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 6400000000.0,
+      "market_cap": 6600000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 2.77,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "6224",
@@ -18701,15 +18701,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 6200000000.0,
+      "market_cap": 6400000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 2.91,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "009803",
@@ -18726,15 +18726,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 6200000000.0,
+      "market_cap": 6300000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.51,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "9905",
@@ -19051,15 +19051,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 5900000000.0,
+      "market_cap": 6100000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 2.43,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00861",
@@ -19076,15 +19076,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 5900000000.0,
+      "market_cap": 6100000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 2.21,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "009819",
@@ -19101,15 +19101,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 5900000000.0,
+      "market_cap": 6000000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.82,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "4572",
@@ -19228,13 +19228,13 @@
       "capital_stock": 0,
       "market_cap": 5800000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 2.22,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "4912",
@@ -19426,15 +19426,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 5700000000.0,
+      "market_cap": 5900000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.91,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2008",
@@ -19601,15 +19601,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 5500000000.0,
+      "market_cap": 5700000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 2.76,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "1310",
@@ -19726,15 +19726,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 5400000000.0,
+      "market_cap": 5200000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.55,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2453",
@@ -20276,15 +20276,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 5100000000.0,
+      "market_cap": 5300000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.88,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "3530",
@@ -20651,15 +20651,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 4800000000.0,
+      "market_cap": 4900000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.44,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "3501",
@@ -20953,13 +20953,13 @@
       "capital_stock": 0,
       "market_cap": 4500000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.05,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00994A",
@@ -20976,15 +20976,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 4500000000.0,
+      "market_cap": 4600000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.72,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "4564",
@@ -21201,15 +21201,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 4400000000.0,
+      "market_cap": 4300000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.71,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "0055",
@@ -21228,13 +21228,13 @@
       "capital_stock": 0,
       "market_cap": 4400000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.49,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "3046",
@@ -21351,15 +21351,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 4300000000.0,
+      "market_cap": 4400000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.09,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "6201",
@@ -21553,13 +21553,13 @@
       "capital_stock": 0,
       "market_cap": 4200000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.09,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00951",
@@ -21578,13 +21578,13 @@
       "capital_stock": 0,
       "market_cap": 4200000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.05,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "1786",
@@ -21951,15 +21951,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 4000000000.0,
+      "market_cap": 4200000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 2.05,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00996A",
@@ -21978,13 +21978,13 @@
       "capital_stock": 0,
       "market_cap": 4000000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 2.04,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "1617",
@@ -22328,13 +22328,13 @@
       "capital_stock": 0,
       "market_cap": 3800000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.07,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "006205",
@@ -22353,13 +22353,13 @@
       "capital_stock": 0,
       "market_cap": 3800000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.47,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00625K",
@@ -22378,13 +22378,13 @@
       "capital_stock": 0,
       "market_cap": 3800000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": null,
       "rank": null,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00665L",
@@ -22401,15 +22401,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 3800000000.0,
+      "market_cap": 3700000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.66,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00688L",
@@ -22428,13 +22428,13 @@
       "capital_stock": 0,
       "market_cap": 3800000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.0,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00715L",
@@ -22451,15 +22451,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 3800000000.0,
+      "market_cap": 3400000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.46,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00991B",
@@ -22478,13 +22478,13 @@
       "capital_stock": 0,
       "market_cap": 3800000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.07,
       "rank": null,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "3047",
@@ -22603,13 +22603,13 @@
       "capital_stock": 0,
       "market_cap": 3700000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.59,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "009813",
@@ -22628,13 +22628,13 @@
       "capital_stock": 0,
       "market_cap": 3700000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.49,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2429",
@@ -22926,15 +22926,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 3600000000.0,
+      "market_cap": 3700000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.27,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00930",
@@ -22951,15 +22951,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 3600000000.0,
+      "market_cap": 3800000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.32,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "009829",
@@ -22976,15 +22976,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 3600000000.0,
+      "market_cap": 3500000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.67,
       "rank": null,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2364",
@@ -23053,13 +23053,13 @@
       "capital_stock": 0,
       "market_cap": 3500000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.05,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "6582",
@@ -23353,13 +23353,13 @@
       "capital_stock": 0,
       "market_cap": 3400000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.05,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "3025",
@@ -24026,15 +24026,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 3100000000.0,
+      "market_cap": 3200000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.42,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "7631",
@@ -24328,13 +24328,13 @@
       "capital_stock": 0,
       "market_cap": 3000000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.28,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00913",
@@ -24353,13 +24353,13 @@
       "capital_stock": 0,
       "market_cap": 3000000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.83,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00981T",
@@ -24378,13 +24378,13 @@
       "capital_stock": 0,
       "market_cap": 3000000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.08,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "3437",
@@ -24878,13 +24878,13 @@
       "capital_stock": 0,
       "market_cap": 2800000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.71,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00902",
@@ -24903,13 +24903,13 @@
       "capital_stock": 0,
       "market_cap": 2800000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.48,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00938",
@@ -24928,13 +24928,13 @@
       "capital_stock": 0,
       "market_cap": 2800000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.37,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "6558",
@@ -25378,13 +25378,13 @@
       "capital_stock": 0,
       "market_cap": 2700000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.78,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00907",
@@ -25403,13 +25403,13 @@
       "capital_stock": 0,
       "market_cap": 2700000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.44,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00916",
@@ -25428,13 +25428,13 @@
       "capital_stock": 0,
       "market_cap": 2700000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.23,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00926",
@@ -25453,13 +25453,13 @@
       "capital_stock": 0,
       "market_cap": 2700000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.72,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "4720",
@@ -25651,15 +25651,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 2600000000.0,
+      "market_cap": 2700000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.86,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00636",
@@ -25678,13 +25678,13 @@
       "capital_stock": 0,
       "market_cap": 2600000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.88,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00636K",
@@ -25703,13 +25703,13 @@
       "capital_stock": 0,
       "market_cap": 2600000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.04,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00987A",
@@ -25728,13 +25728,13 @@
       "capital_stock": 0,
       "market_cap": 2600000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.37,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "6128",
@@ -26253,13 +26253,13 @@
       "capital_stock": 0,
       "market_cap": 2400000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.72,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "4108",
@@ -26678,13 +26678,13 @@
       "capital_stock": 0,
       "market_cap": 2300000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.58,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00954",
@@ -26703,13 +26703,13 @@
       "capital_stock": 0,
       "market_cap": 2300000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.21,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2434",
@@ -26953,13 +26953,13 @@
       "capital_stock": 0,
       "market_cap": 2200000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.57,
       "rank": null,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "1735",
@@ -27228,13 +27228,13 @@
       "capital_stock": 0,
       "market_cap": 2100000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.17,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00912",
@@ -27253,13 +27253,13 @@
       "capital_stock": 0,
       "market_cap": 2100000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.27,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2025",
@@ -27553,13 +27553,13 @@
       "capital_stock": 0,
       "market_cap": 2000000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.13,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00661",
@@ -27578,13 +27578,13 @@
       "capital_stock": 0,
       "market_cap": 2000000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.48,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00730",
@@ -27603,13 +27603,13 @@
       "capital_stock": 0,
       "market_cap": 2000000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.07,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00731",
@@ -27628,13 +27628,13 @@
       "capital_stock": 0,
       "market_cap": 2000000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.4,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "009817",
@@ -27653,13 +27653,13 @@
       "capital_stock": 0,
       "market_cap": 2000000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.0,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2642",
@@ -27903,13 +27903,13 @@
       "capital_stock": 0,
       "market_cap": 1900000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.74,
       "rank": null,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00655L",
@@ -27928,13 +27928,13 @@
       "capital_stock": 0,
       "market_cap": 1900000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 2.34,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00932",
@@ -27953,13 +27953,13 @@
       "capital_stock": 0,
       "market_cap": 1900000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.11,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "9944",
@@ -28201,15 +28201,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 1800000000.0,
+      "market_cap": 1700000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.96,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00897",
@@ -28226,15 +28226,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 1800000000.0,
+      "market_cap": 1900000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.9,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00911",
@@ -28251,15 +28251,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 1800000000.0,
+      "market_cap": 1700000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 3.43,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "6243",
@@ -28453,13 +28453,13 @@
       "capital_stock": 0,
       "market_cap": 1700000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.07,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "3011",
@@ -28676,15 +28676,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 1600000000.0,
+      "market_cap": 1500000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.43,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00650L",
@@ -28703,13 +28703,13 @@
       "capital_stock": 0,
       "market_cap": 1600000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.83,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00693U",
@@ -28726,15 +28726,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 1600000000.0,
+      "market_cap": 1500000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.26,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00962",
@@ -28753,13 +28753,13 @@
       "capital_stock": 0,
       "market_cap": 1600000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.2,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "4190",
@@ -28903,13 +28903,13 @@
       "capital_stock": 0,
       "market_cap": 1500000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.77,
       "rank": null,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00917",
@@ -28928,13 +28928,13 @@
       "capital_stock": 0,
       "market_cap": 1500000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.3,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00963",
@@ -28953,13 +28953,13 @@
       "capital_stock": 0,
       "market_cap": 1500000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.39,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "6671",
@@ -29203,13 +29203,13 @@
       "capital_stock": 0,
       "market_cap": 1400000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.65,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00763U",
@@ -29228,13 +29228,13 @@
       "capital_stock": 0,
       "market_cap": 1400000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.51,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00921",
@@ -29253,13 +29253,13 @@
       "capital_stock": 0,
       "market_cap": 1400000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.25,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "8466",
@@ -29651,15 +29651,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 1300000000.0,
+      "market_cap": 1500000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.55,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00643K",
@@ -29676,15 +29676,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 1300000000.0,
+      "market_cap": 1500000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.0,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00898",
@@ -29703,13 +29703,13 @@
       "capital_stock": 0,
       "market_cap": 1300000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.44,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00960",
@@ -29728,13 +29728,13 @@
       "capital_stock": 0,
       "market_cap": 1300000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.4,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "009808",
@@ -29753,13 +29753,13 @@
       "capital_stock": 0,
       "market_cap": 1300000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.69,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "3308",
@@ -30078,13 +30078,13 @@
       "capital_stock": 0,
       "market_cap": 1200000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -2.08,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00944",
@@ -30103,13 +30103,13 @@
       "capital_stock": 0,
       "market_cap": 1200000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.55,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "009812",
@@ -30128,13 +30128,13 @@
       "capital_stock": 0,
       "market_cap": 1200000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.39,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2380",
@@ -30403,13 +30403,13 @@
       "capital_stock": 0,
       "market_cap": 1100000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.19,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00676R",
@@ -30428,13 +30428,13 @@
       "capital_stock": 0,
       "market_cap": 1100000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.19,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "009801",
@@ -30453,13 +30453,13 @@
       "capital_stock": 0,
       "market_cap": 1100000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.48,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00989A",
@@ -30476,15 +30476,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 1100000000.0,
+      "market_cap": 1200000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 2.63,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "1418",
@@ -30626,15 +30626,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 1000000000.0,
+      "market_cap": 1100000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.12,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00903",
@@ -30653,13 +30653,13 @@
       "capital_stock": 0,
       "market_cap": 1000000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 2.59,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00964",
@@ -30678,13 +30678,13 @@
       "capital_stock": 0,
       "market_cap": 1000000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.07,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00971",
@@ -30703,13 +30703,13 @@
       "capital_stock": 0,
       "market_cap": 1000000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.48,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00983A",
@@ -30728,13 +30728,13 @@
       "capital_stock": 0,
       "market_cap": 1000000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.6,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00983D",
@@ -30753,13 +30753,13 @@
       "capital_stock": 0,
       "market_cap": 1000000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.1,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "5907",
@@ -30903,13 +30903,13 @@
       "capital_stock": 0,
       "market_cap": 900000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.99,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00737",
@@ -30928,13 +30928,13 @@
       "capital_stock": 0,
       "market_cap": 900000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.56,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00875",
@@ -30953,13 +30953,13 @@
       "capital_stock": 0,
       "market_cap": 900000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 2.66,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00943",
@@ -30976,15 +30976,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 900000000.0,
+      "market_cap": 800000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.48,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "009818",
@@ -31001,15 +31001,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 900000000.0,
+      "market_cap": 1000000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 2.63,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2939",
@@ -31178,13 +31178,13 @@
       "capital_stock": 0,
       "market_cap": 800000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.39,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "8201",
@@ -31378,13 +31378,13 @@
       "capital_stock": 0,
       "market_cap": 700000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.0,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00739",
@@ -31403,13 +31403,13 @@
       "capital_stock": 0,
       "market_cap": 700000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.2,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00982D",
@@ -31428,13 +31428,13 @@
       "capital_stock": 0,
       "market_cap": 700000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.21,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "1512",
@@ -31703,13 +31703,13 @@
       "capital_stock": 0,
       "market_cap": 600000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -1.27,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00709",
@@ -31728,13 +31728,13 @@
       "capital_stock": 0,
       "market_cap": 600000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.23,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "009809",
@@ -31753,13 +31753,13 @@
       "capital_stock": 0,
       "market_cap": 600000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.48,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00986A",
@@ -31778,13 +31778,13 @@
       "capital_stock": 0,
       "market_cap": 600000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.31,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2838A",
@@ -31853,13 +31853,13 @@
       "capital_stock": 0,
       "market_cap": 500000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.91,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00653L",
@@ -31878,13 +31878,13 @@
       "capital_stock": 0,
       "market_cap": 500000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.02,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00657",
@@ -31903,13 +31903,13 @@
       "capital_stock": 0,
       "market_cap": 500000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.62,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00657K",
@@ -31928,13 +31928,13 @@
       "capital_stock": 0,
       "market_cap": 500000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.37,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00668",
@@ -31953,13 +31953,13 @@
       "capital_stock": 0,
       "market_cap": 500000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.17,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00668K",
@@ -31978,13 +31978,13 @@
       "capital_stock": 0,
       "market_cap": 500000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.79,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00700",
@@ -32003,13 +32003,13 @@
       "capital_stock": 0,
       "market_cap": 500000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.94,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00908",
@@ -32028,13 +32028,13 @@
       "capital_stock": 0,
       "market_cap": 500000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.27,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00920",
@@ -32053,13 +32053,13 @@
       "capital_stock": 0,
       "market_cap": 500000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.57,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "1522A",
@@ -32153,13 +32153,13 @@
       "capital_stock": 0,
       "market_cap": 400000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.44,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00674R",
@@ -32178,13 +32178,13 @@
       "capital_stock": 0,
       "market_cap": 400000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.57,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00678",
@@ -32203,13 +32203,13 @@
       "capital_stock": 0,
       "market_cap": 400000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.07,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00714",
@@ -32228,13 +32228,13 @@
       "capital_stock": 0,
       "market_cap": 400000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.43,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00851",
@@ -32253,13 +32253,13 @@
       "capital_stock": 0,
       "market_cap": 400000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 2.45,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00899",
@@ -32278,13 +32278,13 @@
       "capital_stock": 0,
       "market_cap": 400000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.09,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00956",
@@ -32303,13 +32303,13 @@
       "capital_stock": 0,
       "market_cap": 400000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.37,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "009810",
@@ -32328,13 +32328,13 @@
       "capital_stock": 0,
       "market_cap": 400000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.99,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2002A",
@@ -32428,13 +32428,13 @@
       "capital_stock": 0,
       "market_cap": 300000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.0,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00660",
@@ -32453,13 +32453,13 @@
       "capital_stock": 0,
       "market_cap": 300000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.81,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00686R",
@@ -32476,15 +32476,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 300000000.0,
+      "market_cap": 200000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.0,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00972",
@@ -32503,13 +32503,13 @@
       "capital_stock": 0,
       "market_cap": 300000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.32,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00982T",
@@ -32528,13 +32528,13 @@
       "capital_stock": 0,
       "market_cap": 300000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.17,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2836A",
@@ -32603,13 +32603,13 @@
       "capital_stock": 0,
       "market_cap": 200000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.75,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00651R",
@@ -32628,13 +32628,13 @@
       "capital_stock": 0,
       "market_cap": 200000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.95,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00681R",
@@ -32653,13 +32653,13 @@
       "capital_stock": 0,
       "market_cap": 200000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.14,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00682U",
@@ -32678,13 +32678,13 @@
       "capital_stock": 0,
       "market_cap": 200000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.1,
       "rank": null,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00683L",
@@ -32701,15 +32701,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 200000000.0,
+      "market_cap": 300000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.41,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00689R",
@@ -32728,13 +32728,13 @@
       "capital_stock": 0,
       "market_cap": 200000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.31,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00702",
@@ -32753,13 +32753,13 @@
       "capital_stock": 0,
       "market_cap": 200000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.33,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00703",
@@ -32778,13 +32778,13 @@
       "capital_stock": 0,
       "market_cap": 200000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 1.16,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00707R",
@@ -32803,13 +32803,13 @@
       "capital_stock": 0,
       "market_cap": 200000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.0,
       "rank": null,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00736",
@@ -32828,13 +32828,13 @@
       "capital_stock": 0,
       "market_cap": 200000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.28,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00771",
@@ -32853,13 +32853,13 @@
       "capital_stock": 0,
       "market_cap": 200000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.4,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00783",
@@ -32878,13 +32878,13 @@
       "capital_stock": 0,
       "market_cap": 200000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.35,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00852L",
@@ -32903,13 +32903,13 @@
       "capital_stock": 0,
       "market_cap": 200000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.63,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "6958A",
@@ -32951,15 +32951,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": 168400000,
+      "market_cap": 5383000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -1.86,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00403A",
@@ -32976,15 +32976,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 100000000.0,
+      "market_cap": 152900000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 2.0,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00634R",
@@ -33003,13 +33003,13 @@
       "capital_stock": 0,
       "market_cap": 100000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -1.26,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00654R",
@@ -33028,13 +33028,13 @@
       "capital_stock": 0,
       "market_cap": 100000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.29,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00656R",
@@ -33053,13 +33053,13 @@
       "capital_stock": 0,
       "market_cap": 100000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.0,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00662",
@@ -33076,15 +33076,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 100000000.0,
+      "market_cap": 115500000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 2.01,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00666R",
@@ -33103,13 +33103,13 @@
       "capital_stock": 0,
       "market_cap": 100000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.76,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00684R",
@@ -33128,13 +33128,13 @@
       "capital_stock": 0,
       "market_cap": 100000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.13,
       "rank": null,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00713",
@@ -33151,15 +33151,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 100000000.0,
+      "market_cap": 107300000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.08,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00881",
@@ -33176,15 +33176,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 100000000.0,
+      "market_cap": 157200000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.77,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00918",
@@ -33201,15 +33201,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 100000000.0,
+      "market_cap": 158000000000.0,
       "ind": "其他等",
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.26,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00929",
@@ -33226,15 +33226,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": 0,
-      "market_cap": 100000000.0,
+      "market_cap": 155200000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.24,
       "rank": 0,
       "source": "TWSE",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2883",
@@ -33301,15 +33301,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 40839000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.3,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00687B",
@@ -33376,15 +33376,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 49930000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.35,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "6176",
@@ -33451,15 +33451,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 38900000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.31,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00724B",
@@ -33501,15 +33501,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 4989000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.19,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2254",
@@ -33601,15 +33601,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 14154000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.0,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00859B",
@@ -33626,15 +33626,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 1434000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.0,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00725B",
@@ -33726,15 +33726,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 81400000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.27,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00751B",
@@ -33776,15 +33776,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 9742000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.1,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00696B",
@@ -33801,15 +33801,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 17249000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.29,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "8105",
@@ -33851,15 +33851,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 29025000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.23,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "1563",
@@ -33901,15 +33901,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 55651000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.3,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00948B",
@@ -33926,15 +33926,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 38815000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.22,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00981D",
@@ -33951,15 +33951,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 5306000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.0,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "7812",
@@ -34026,15 +34026,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 87366000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.26,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00990B",
@@ -34051,15 +34051,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 902000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": null,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00864B",
@@ -34076,15 +34076,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 5125000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.02,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00853B",
@@ -34101,15 +34101,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 4694000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.38,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00970B",
@@ -34126,15 +34126,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 3508000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.22,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00867B",
@@ -34151,15 +34151,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 16749000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.2,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "3356",
@@ -34226,15 +34226,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 1077000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.0,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00966B",
@@ -34251,15 +34251,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 1563000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.3,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00857B",
@@ -34276,15 +34276,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 13412000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": null,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00968B",
@@ -34301,15 +34301,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 7086000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.34,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2883B",
@@ -34351,15 +34351,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 88982000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.29,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00980D",
@@ -34376,15 +34376,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 1962000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.05,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00768B",
@@ -34401,15 +34401,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 37742000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.23,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "5236",
@@ -34451,15 +34451,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 3111000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.1,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00862B",
@@ -34476,15 +34476,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 26789000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.26,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00695B",
@@ -34501,15 +34501,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 1422000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.23,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00849B",
@@ -34526,15 +34526,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 17999000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.03,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00987B",
@@ -34551,15 +34551,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 1153000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.06,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00723B",
@@ -34576,15 +34576,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 44534000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.17,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00697B",
@@ -34601,15 +34601,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 2294000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.26,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00848B",
@@ -34626,15 +34626,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 4502000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.0,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00847B",
@@ -34651,15 +34651,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 93000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.21,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00863B",
@@ -34676,15 +34676,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 15604000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.03,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00884B",
@@ -34701,15 +34701,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 2148000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.32,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00984B",
@@ -34726,15 +34726,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 1843000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.13,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00694B",
@@ -34751,15 +34751,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 1227000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.19,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00942B",
@@ -34776,15 +34776,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 27850000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.22,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00761B",
@@ -34826,15 +34826,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 483000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.0,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00989B",
@@ -34851,15 +34851,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 1105000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.2,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "6947",
@@ -34926,15 +34926,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 35882000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.51,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00791B",
@@ -34951,15 +34951,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 15847000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.18,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00789B",
@@ -34976,15 +34976,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 21039000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.41,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00760B",
@@ -35001,15 +35001,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 22509000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.0,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "73089U",
@@ -35051,15 +35051,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 2499000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.29,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00983B",
@@ -35076,15 +35076,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 385000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.4,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00842B",
@@ -35101,15 +35101,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 632000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.24,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00756B",
@@ -35126,15 +35126,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 39981000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.13,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "7689",
@@ -35176,15 +35176,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 277000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.1,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00958B",
@@ -35201,15 +35201,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 1065000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": null,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00844B",
@@ -35226,15 +35226,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 6476000000.000001,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.16,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00782B",
@@ -35251,15 +35251,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 614000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.2,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00987D",
@@ -35276,15 +35276,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 939000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.3,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00799B",
@@ -35301,15 +35301,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 740000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.35,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00727B",
@@ -35326,15 +35326,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 2235000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.08,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00986D",
@@ -35351,15 +35351,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 2027000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.07,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "73088U",
@@ -35426,15 +35426,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 4610000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.22,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00780B",
@@ -35451,15 +35451,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 8836000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.19,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00726B",
@@ -35476,15 +35476,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 37799000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.16,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00754B",
@@ -35501,15 +35501,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 40893000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.1,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00890B",
@@ -35526,15 +35526,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 567000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.16,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00846B",
@@ -35551,15 +35551,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 2582000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.12,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00845B",
@@ -35576,15 +35576,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 7643000000.000001,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.28,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2887H",
@@ -35626,15 +35626,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 9317000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.06,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00778B",
@@ -35651,15 +35651,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 50301000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.06,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00781B",
@@ -35676,15 +35676,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 235000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.38,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00834B",
@@ -35701,15 +35701,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 765000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.39,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00734B",
@@ -35726,15 +35726,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 383000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.13,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00750B",
@@ -35751,15 +35751,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 4689000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.22,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00749B",
@@ -35776,15 +35776,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 34032000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.33,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00777B",
@@ -35801,15 +35801,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 64530999999.99999,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.19,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00980T",
@@ -35826,15 +35826,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 911000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.08,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00840B",
@@ -35851,15 +35851,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 1700000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.03,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00779B",
@@ -35876,15 +35876,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 34805000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.22,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00841B",
@@ -35901,15 +35901,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 1928000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.18,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00860B",
@@ -35926,15 +35926,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 100000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": -0.13,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2237",
@@ -35976,15 +35976,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 2433000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.15,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "01010T",
@@ -36026,15 +36026,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 1185000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.12,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "2887F",
@@ -36101,15 +36101,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 70054000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.1,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "7835",
@@ -36176,15 +36176,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 1596000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.23,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "73055U",
@@ -36376,15 +36376,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 488999999.99999994,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.22,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00986B",
@@ -36401,15 +36401,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 199000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.53,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "1459",
@@ -36626,15 +36626,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 17576000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": null,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00786B",
@@ -36651,15 +36651,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 618000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.06,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00787B",
@@ -36676,15 +36676,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 353000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.0,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "1101B",
@@ -37101,15 +37101,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 18000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.22,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "72959U",
@@ -37476,15 +37476,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 719000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.55,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "00982B",
@@ -37501,15 +37501,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 242000000.0,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.43,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "72954U",
@@ -38076,15 +38076,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 254999999.99999997,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": null,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "73013U",
@@ -38576,15 +38576,15 @@
       "roa": null,
       "eps": null,
       "capital_stock": null,
-      "market_cap": null,
+      "market_cap": 15419999999.999998,
       "ind": null,
-      "is_etf": false,
+      "is_etf": true,
       "chg": 0.66,
       "rank": null,
       "source": "TPEX",
       "quality": "official",
       "last_updated": "2026-09-22",
-      "security_type": "stock"
+      "security_type": "etf"
     },
     {
       "sym": "73124U",
