@@ -51,7 +51,7 @@
     <div class="card" id="infoCard"><p class="text-muted text-center">請選擇個股</p></div>
 
     <div class="card">
-      <h3 id="chartTitle">歷史價格圖（TWII 加權指數 · 近 1 年）</h3>
+      <h3 id="chartTitle">大盤走勢參考（TWII 加權指數 · 近 1 年，非個股價格走勢）</h3>
       <div class="kline-toolbar">
         <button onclick="klAddIndicator('MACD')" class="btn btn-secondary btn-sm">MACD</button>
         <button onclick="klAddIndicator('KDJ')" class="btn btn-secondary btn-sm">KD</button>
@@ -149,7 +149,7 @@ function selectSym(sym) {
       kv('EPS', m.eps != null ? m.eps : '-') +
       kv('ROA', (m.roa != null ? m.roa.toFixed(1) : '-') + '%') +
     '</div>';
-  document.getElementById('chartTitle').textContent = '歷史價格圖（' + sym + ' ' + (m.name || '') + ' · TWII 加權指數參考）';
+  document.getElementById('chartTitle').textContent = '大盤走勢參考（TWII 加權指數 · 近 1 年，非個股價格走勢）';
   loadKLine();
   const finRow = Object.assign({ sym: sym }, m);
   if (!finTable) {
