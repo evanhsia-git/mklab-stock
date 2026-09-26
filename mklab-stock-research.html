@@ -99,7 +99,7 @@ function loadAll() {
   return MKLAB.data.stocks().then(d => {
     if (d && Array.isArray(d) && d.length) {
       const o = {};
-      d.forEach(s => { if (s.sym) o[s.sym] = { name: s.name, price: s.price, chg: s.chg, pe: s.pe, pb: s.pb, roe: s.roe, roa: s.roa, eps: s.eps }; });
+      d.forEach(s => { if (s.sym) o[s.sym] = { name: s.name, price: s.price, chg: s.chg, pe: s.pe, pb: s.pb, roe: s.roe, roa: s.roa, eps: s.eps, rsi14: s.rsi14, ma5: s.ma5, ma10: s.ma10, ma20: s.ma20, ma30: s.ma30, macd_dif: s.macd_dif, macd_dea: s.macd_dea, macd_hist: s.macd_hist, kd_k: s.kd_k, kd_d: s.kd_d }; });
       STOCKS = Object.assign({}, STATIC, o);
     } else {
       STOCKS = Object.assign({}, STATIC);
@@ -148,6 +148,14 @@ function selectSym(sym) {
       kv('ROE', (m.roe != null ? m.roe.toFixed(1) : '-') + '%') +
       kv('EPS', m.eps != null ? m.eps : '-') +
       kv('ROA', (m.roa != null ? m.roa.toFixed(1) : '-') + '%') +
+    '</div>' +
+    '<div class="kv" style="margin-top:8px;">' +
+      kv('RSI(14)', m.rsi14 != null ? m.rsi14 : '-') +
+      kv('MA5', m.ma5 != null ? m.ma5 : '-') +
+      kv('MA20', m.ma20 != null ? m.ma20 : '-') +
+      kv('MACD柱狀', m.macd_hist != null ? m.macd_hist : '-') +
+      kv('KD-K', m.kd_k != null ? m.kd_k : '-') +
+      kv('KD-D', m.kd_d != null ? m.kd_d : '-') +
     '</div>';
   document.getElementById('chartTitle').textContent = '大盤走勢參考（TWII 加權指數 · 近 1 年，非個股價格走勢）';
   loadKLine();
