@@ -25,6 +25,8 @@ jobs:
           python-version: "3.11"
       - name: Fetch daily (TWSE OpenAPI, 雲端免 key)
         run: python skills/data/fetch_data.py daily
+      - name: Compute technical indicators (MA/RSI/MACD/KD, 純本地計算不對外請求)
+        run: python skills/data/compute_indicators.py
       - name: Commit & push
         run: |
           git config user.name "github-actions[bot]"
