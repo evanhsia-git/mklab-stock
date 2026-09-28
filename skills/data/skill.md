@@ -13,6 +13,8 @@ version: 1.0
 
 - `fetch_data.py` — GitHub Actions 每日抓取（daily/weekly/indices/twii）
 - `build_digest.py` — 每日市場摘要 + RSS Feed 產生（只讀既有 data/*.json，不呼叫外部 API）
+- `fetch_us_data.py` — 美股個股/ETF 市值前 30 大抓取（僅 yfinance），輸出至獨立的 `data/us/`
+  資料夾，與台股資料完全分開管理、互不呼叫、互不匯入（排程也獨立：UTC 22:00）
 - `compute_indicators.py` — 技術指標計算（MA5/10/20/30、RSI14、MACD、KD），純讀取本地
   `data/history/*.json` 逐日快照做數學計算，不對外發送任何請求，計算結果直接寫回
   `data/stocks.json` 既有紀錄，不新增任何前端下載檔案
@@ -26,6 +28,7 @@ python3 skills/data/fetch_data.py indices    # 全球指數+ETF
 python3 skills/data/fetch_data.py twii       # ^TWII K 線
 python3 skills/data/compute_indicators.py    # MA/RSI/MACD/KD（緊接在 daily 之後執行）
 python3 skills/data/build_digest.py          # 每日摘要 + RSS
+python3 skills/data/fetch_us_data.py all     # 美股個股+ETF 前30大（獨立於台股管線）
 ```
 
 ## 資料源優先順序
@@ -36,3 +39,4 @@ TWSE → TPEX → Yahoo Finance (yfinance) → FinMind（選用，不依賴）
 
 - `data/stocks.json`（含 MA/RSI/MACD/KD 技術指標欄位）/ `data/industry.json` / `data/indices.json`
 - `data/history/YYYYMMDD.json` 每日切片
+- `data/us/us-stocks.json` / `data/us/us-etfs.json`（美股專用，與台股資料完全分開）

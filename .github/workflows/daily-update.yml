@@ -9,6 +9,9 @@ on:
     - cron: "30 9 * * 1-5"
     # 每個工作日 UTC 10:00：產生市場摘要 + RSS
     - cron: "0 10 * * 1-5"
+    # 每個工作日 UTC 22:00（美股收盤後，不論冬夏令時皆已收盤完畢）：抓美股個股/ETF 前30大
+    # 與台股排程完全分開的獨立時段，互不影響
+    - cron: "0 22 * * 1-5"
   workflow_dispatch: {}
 
 permissions:
@@ -136,6 +139,31 @@ jobs:
             echo "no changes"
           else
             git commit -m "data: 每日摘要更新 2026-09-13 [skip ci]"
+            git pull --no-rebase origin main -X ours
+            git push
+          fi
+
+  us-market:
+    if: github.event.schedule == '0 22 * * 1-5'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install yfinance
+        run: pip install yfinance
+      - name: Fetch US top-30 stocks & ETFs (yfinance, 免 key, 與台股資料完全獨立管理)
+        run: python skills/data/fetch_us_data.py all
+      - name: Commit & push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/us/
+          if git diff --cached --quiet; then
+            echo "no changes"
+          else
+            git commit -m "data: 美股市值/ETF規模前30大更新 $(date +%Y-%m-%d) [skip ci]"
             git pull --no-rebase origin main -X ours
             git push
           fi

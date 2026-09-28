@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW" data-theme="dark">
+<head>
+<base href="/mklab-stock/">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="mklab-stock — 美股市值前 30 大個股與 ETF 規模前 30 大，資料獨立於台股管線之外">
+<title>mklab-stock</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
+<link rel="stylesheet" href="assets/css/mklab-theme.css">
+<link rel="stylesheet" href="assets/css/layout.css">
+<link rel="stylesheet" href="assets/css/component.css">
+<link rel="stylesheet" href="assets/css/mobile.css">
+</head>
+<body>
+<header class="sticky-header" role="banner">
+    <div id="utilbar" class="utilbar">
+    <a class="brand" id="brand" href="index.html" aria-label="回首頁"></a>
+    <span class="spacer"></span>
+    <button class="mobile-menu-btn" onclick="MKLAB.Drawer.toggle()" aria-label="開啟選單">
+      <span class="hamburger">☰</span>
+    </button>
+  </div>
+<nav id="mainNav" class="nav" aria-label="主導覽"></nav>
+  <div class="freshness" aria-live="polite">資料載入中…</div>
+</header>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+  <button class="close-x" onclick="MKLAB.Drawer.close()" aria-label="關閉抽屜">×</button>
+  <div class="drawer-content" id="drawerContent"></div>
+</aside>
+<div class="drawer-mask" onclick="MKLAB.Drawer.close()" aria-hidden="true"></div>
+<main class="wrap">
+
+<div class="section-title">美股市值前 30 大</div>
+<div class="table-wrap"><table id="usStockTable"></table></div>
+<div class="pager" id="usStockPager"></div>
+
+<div class="section-title">美股 ETF 規模前 30 大</div>
+<div class="table-wrap"><table id="usEtfTable"></table></div>
+<div class="pager" id="usEtfPager"></div>
+
+<p class="muted-small-top">⚠️ 美股資料來源為 Yahoo Finance（yfinance），非官方交易所資料，排序依候選池即時市值/基金規模計算，僅供研究參考，非投資建議。資料管線與台股完全分開維護（<code>data/us/</code>），互不影響。</p>
+
+<script src="assets/js/data-client.js"></script>
+<script src="assets/js/mklab-core.js"></script>
+<script src="assets/js/mklab-wc.js"></script>
+<script>
+  let usStockTable = null;
+  let usEtfTable = null;
+
+  window.addEventListener('DOMContentLoaded', async function () {
+    MKLAB.initDrawer();
+    MKLAB.Shell.mount({ active: 'us' });
+
+    try {
+      const stockDoc = await MKLAB.data.json('us/us-stocks');
+      const stocks = (stockDoc && Array.isArray(stockDoc.stocks)) ? stockDoc.stocks : [];
+      usStockTable = MKLAB.DataTable('usStockTable', {
+        cols: ['sym', 'name', 'price', 'chg', 'pe', 'pb', 'roe', 'div', 'cap_fmt'],
+        rows: stocks, pageSize: 10, pagerId: 'usStockPager',
+        defaultSort: 'cap_fmt', fieldMap: { cap_fmt: 'market_cap' },
+      });
+      MKLAB.setFreshness(stockDoc && stockDoc.meta && stockDoc.meta.as_of);
+    } catch (e) {
+      console.warn('[us] stocks load failed:', e);
+      const t = document.getElementById('usStockTable');
+      if (t) t.outerHTML = '<p class="muted-small-top">美股個股資料載入失敗：' + (e && e.message ? e.message : e) + '</p>';
+    }
+
+    try {
+      const etfDoc = await MKLAB.data.json('us/us-etfs');
+      const etfs = (etfDoc && Array.isArray(etfDoc.etfs)) ? etfDoc.etfs : [];
+      usEtfTable = MKLAB.DataTable('usEtfTable', {
+        cols: ['sym', 'name', 'price', 'chg', 'expense_ratio', 'yield', 'assets_fmt'],
+        rows: etfs, pageSize: 10, pagerId: 'usEtfPager',
+        defaultSort: 'assets_fmt', fieldMap: { assets_fmt: 'net_assets' },
+      });
+    } catch (e) {
+      console.warn('[us] etfs load failed:', e);
+      const t = document.getElementById('usEtfTable');
+      if (t) t.outerHTML = '<p class="muted-small-top">美股 ETF 資料載入失敗：' + (e && e.message ? e.message : e) + '</p>';
+    }
+  });
+</script>
+</main>
+<footer class="footer" role="contentinfo">
+  <div class="footer-inner">
+    <span class="disclaimer-footer">免責聲明：本網站所有資料與評分僅供研究與教育參考，不構成任何投資建議。使用者應自行判斷並承擔投資風險。</span>
+    <a class="link" href="https://github.com/evanhsia-git/mklab-stock" target="_blank" rel="noopener">GitHub 倉庫 ↗</a>
+  </div>
+</footer>
+</body>
+</html>

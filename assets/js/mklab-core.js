@@ -55,6 +55,10 @@
     ind:   { label:'產業',    type:'str', sortable:true,  key:'ind', fmt:r=>(r.ind||r.nm||'-') },
     rsi:   { label:'RSI',     type:'num', sortable:true,  fmt:r=>r.rsi!=null?r.rsi:'-' },
     cap:   { label:'市值(億)',type:'num', sortable:true,  fmt:r=>{ const v = r.market_cap!=null ? r.market_cap/1e8 : (r.cap!=null?r.cap:null); return v!=null ? Number(v).toFixed(2) : '-'; } },
+    cap_fmt:    { label:'市值(USD)', type:'num', sortable:true, defDir:-1, fmt:r=>r.market_cap!=null?fmtUsdCap(r.market_cap):'-' },
+    assets_fmt: { label:'規模(USD)', type:'num', sortable:true, defDir:-1, fmt:r=>r.net_assets!=null?fmtUsdCap(r.net_assets):'-' },
+    expense_ratio: { label:'內扣費用率', type:'num', sortable:true, fmt:r=>r.expense_ratio!=null?Number(r.expense_ratio).toFixed(2)+'%':'-' },
+    yield: { label:'配息率', type:'num', sortable:true, defDir:-1, fmt:r=>r.yield!=null?Number(r.yield).toFixed(2)+'%':'-' },
     w1:    { label:'1週',     type:'pct', sortable:true,  fmt:r=>cellPct(r.w1) },
     m1:    { label:'1月',     type:'pct', sortable:true,  fmt:r=>cellPct(r.m1) },
     m3:    { label:'3月',     type:'pct', sortable:true,  fmt:r=>cellPct(r.m3) },
@@ -136,6 +140,15 @@
     if(v==null) return '-';
     const n=Number(v);
     return (n>0?'+':'')+n.toFixed(2)+'%';
+  }
+  // 美股市值/ETF規模用：把大數字格式化成易讀的 T(兆)/B(十億)/M(百萬)（美股慣例單位，跟台股「億」不同，不混用）
+  function fmtUsdCap(n){
+    if(n==null) return '-';
+    n = Number(n);
+    if(n >= 1e12) return '$' + (n/1e12).toFixed(2) + 'T';
+    if(n >= 1e9)  return '$' + (n/1e9).toFixed(2) + 'B';
+    if(n >= 1e6)  return '$' + (n/1e6).toFixed(1) + 'M';
+    return '$' + n.toLocaleString();
   }
 
   function getVal(col, row, fieldMap){
@@ -519,6 +532,7 @@
     { key:'screener',  label:'Screener',  href:'mklab-stock-screener.html' },
     { key:'research',  label:'Research',  href:'mklab-stock-research.html' },
     { key:'industry',  label:'Industry',  href:'mklab-stock-industry.html' },
+    { key:'us',        label:'US',        href:'mklab-stock-us.html' },
     { key:'watchlist', label:'Watchlist', href:'mklab-stock-watchlist.html' },
     { key:'dividend',  label:'Dividend',  href:'mklab-stock-dividend.html' },
     { key:'compare',   label:'Compare',   href:'mklab-stock-compare.html' },

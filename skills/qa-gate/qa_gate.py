@@ -104,6 +104,7 @@ def run():
     # ============================================================
     py_files = [
         "skills/data/fetch_data.py",
+        "skills/data/fetch_us_data.py",
         "skills/data/build_digest.py",
         "skills/data/compute_indicators.py",
         "skills/html-health/check_html_health.py",

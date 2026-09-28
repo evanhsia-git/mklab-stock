@@ -11,7 +11,7 @@
 - **GitHub-Native / Fork-First**：任何人 fork 本倉庫、開啟 GitHub Pages 即可獨立運作，不需申請任何 API key。
 - **Build-Time 優先**：所有資料由 GitHub Actions 排程預先算好寫入 `data/*.json`，前端只負責讀取與呈現，不在瀏覽器端呼叫任何第三方金融 API。
 
-## 頁面（11 個功能頁 + 說明/日誌）
+## 頁面（12 個功能頁 + 說明/日誌）
 
 | 頁面 | 檔名 | 說明 |
 |------|------|------|
@@ -26,6 +26,7 @@
 | Backtest（回測） | `mklab-stock-backtest.html` | 兩點式試算（買進日 vs 最新一日收盤價）試算報酬，非完整走勢回測，僅供教育參考 |
 | Portfolio（投資組合） | `mklab-stock-portfolio.html` | 持股損益追蹤、持股佔比圓餅圖、個股筆記（資料存於瀏覽器 localStorage） |
 | Digest（每日摘要） | `mklab-stock-digest.html` | 每日市場摘要，提供 RSS 訂閱（`rss.xml`） |
+| US（美股） | `mklab-stock-us.html` | 美股市值前 30 大個股 + ETF 規模前 30 大（資料源 yfinance，與台股資料完全分開管理於 `data/us/`） |
 | Help（說明） | `mklab-stock-help.html` | 使用說明、資料來源、資料更新頻率、評分標準、免責聲明 |
 | Log（開發日誌） | `mklab-stock-log.html` | 開發歷程記錄 |
 
@@ -58,6 +59,7 @@
 | 每週六 10:00 | 18:00 | 補齊 ROE/ROA（yfinance，含防 ban 延遲） |
 | 週一至週五 09:30 | 17:30 | 抓全球指數＋代表 ETF 收盤／漲跌（yfinance） |
 | 週一至週五 10:00 | 18:00 | 產生每日市場摘要 + RSS（`data/digest/`、`rss.xml`） |
+| 週一至週五 22:00 | 隔日 06:00 | 抓美股個股/ETF 前 30 大（yfinance，獨立於台股排程，輸出至 `data/us/`） |
 
 - 週末／國定假日／突發休市自動跳過（資料源本身無交易日資料）。
 - 資料以收盤為準，非即時；各頁頂部黃色提示列會顯示實際資料日。
@@ -98,6 +100,7 @@ mklab-stock/
 ├── mklab-stock-backtest.html     # Backtest 回測
 ├── mklab-stock-portfolio.html    # Portfolio 投資組合
 ├── mklab-stock-digest.html       # Digest 每日摘要
+├── mklab-stock-us.html           # US 美股（前 30 大個股/ETF）
 ├── mklab-stock-help.html         # Help 說明
 ├── mklab-stock-log.html          # Log 開發日誌
 ├── rss.xml                       # Digest 頁 RSS 訂閱來源
@@ -122,7 +125,10 @@ mklab-stock/
 │   ├── schema-version.json          # schema 版號
 │   ├── twii_kdata.js                # 加權指數 K 線（window.TWII_KDATA）
 │   ├── digest/                      # 每日市場摘要（逐日 JSON + index.json）
-│   └── history/                     # 每日股價切片（逐日 JSON，OHLCV+PE/PB/DY）
+│   ├── history/                     # 每日股價切片（逐日 JSON，OHLCV+PE/PB/DY）
+│   └── us/                          # 美股專用資料（與上面台股資料完全分開管理）
+│       ├── us-stocks.json            # 美股市值前 30 大
+│       └── us-etfs.json              # 美股 ETF 規模前 30 大
 ├── docs/                          # 設計依據／資料欄位說明／規範文件
 ├── skills/                        # Skills First — 每個 Skill 自包含（qa-gate/html-health/lint/data/deployment/design-system/development）
 ├── vendor/                        # 第三方 JS（lightweight-charts.min.js）
