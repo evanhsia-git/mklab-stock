@@ -62,6 +62,7 @@
 <div class="section-title">ETF 市值前 10 大</div>
 <div class="table-wrap"><table id="etf10"></table></div>
 <div class="pager" id="etf10Pager"></div>
+<p class="muted-small-top">資料來源：<a class="link" href="https://wwwc.twse.com.tw/zh/ETFortune/products" target="_blank" rel="noopener">TWSE ETF投資篩選器／CSV下載</a>、<a class="link" href="https://info.tpex.org.tw/ETF/zh/filter.html" target="_blank" rel="noopener">TPEx ETF投資篩選器／CSV下載</a>（上市/上櫃日期、發行人、受益人數為使用者手動匯出 CSV 後解析，非即時資料）。</p>
 
 <div id="page-market">
   <!-- Market page content rendered by default -->
@@ -294,9 +295,21 @@
     async function loadEtf10() {
       try {
         const all = await MKLAB.data.stocks();
-        const rows = (Array.isArray(all) ? all : []).filter(r => isETF(r));
+        let rows = (Array.isArray(all) ? all : []).filter(r => isETF(r));
+        // 合併 ETF 補充資料（上市/上櫃日期、發行人、受益人數）；缺這份檔案或合不到都不影響原本的市值排行照常顯示
+        try {
+          const metaDoc = await MKLAB.data.json('etf-meta');
+          const metaMap = {};
+          (metaDoc && Array.isArray(metaDoc.etfs) ? metaDoc.etfs : []).forEach(m => { metaMap[m.sym] = m; });
+          rows = rows.map(r => {
+            const m = metaMap[r.sym];
+            return m ? Object.assign({}, r, { listing_date: m.listing_date, issuer: m.issuer, beneficiaries: m.beneficiaries }) : r;
+          });
+        } catch (e) {
+          console.warn('[Market] etf-meta 合併失敗（不影響原本市值排行顯示）:', e);
+        }
         if (!etf10Table) {
-          etf10Table = MKLAB.DataTable('etf10', { cols: ['sym', 'name', 'price', 'chg', 'div', 'cap'], rows, pageSize: 10, pagerId: 'etf10Pager', defaultSort: 'cap', fieldMap: { cap: 'market_cap' } });
+          etf10Table = MKLAB.DataTable('etf10', { cols: ['sym', 'name', 'price', 'chg', 'div', 'cap', 'issuer', 'listing_date'], rows, pageSize: 10, pagerId: 'etf10Pager', defaultSort: 'cap', fieldMap: { cap: 'market_cap' } });
         } else {
           etf10Table.setRows(rows);
         }

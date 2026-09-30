@@ -126,9 +126,11 @@ mklab-stock/
 │   ├── twii_kdata.js                # 加權指數 K 線（window.TWII_KDATA）
 │   ├── digest/                      # 每日市場摘要（逐日 JSON + index.json）
 │   ├── history/                     # 每日股價切片（逐日 JSON，OHLCV+PE/PB/DY）
-│   └── us/                          # 美股專用資料（與上面台股資料完全分開管理）
-│       ├── us-stocks.json            # 美股市值前 30 大
-│       └── us-etfs.json              # 美股 ETF 規模前 30 大
+│   ├── us/                          # 美股專用資料（與上面台股資料完全分開管理）
+│   │   ├── us-stocks.json            # 美股市值前 30 大
+│   │   └── us-etfs.json              # 美股 ETF 規模前 30 大
+│   ├── etf-meta.json                # ETF 上市/上櫃日期、發行人、受益人數（半自動，見下方說明）
+│   └── raw/                         # 人工匯出的原始 CSV（twse_etf.csv／tpex_etf.csv），僅供 parse_etf_meta.py 讀取
 ├── docs/                          # 設計依據／資料欄位說明／規範文件
 ├── skills/                        # Skills First — 每個 Skill 自包含（qa-gate/html-health/lint/data/deployment/design-system/development）
 ├── vendor/                        # 第三方 JS（lightweight-charts.min.js）
