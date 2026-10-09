@@ -1,31 +1,19 @@
 {
-  "mode": "daily",
+  "mode": "twii",
   "success": true,
   "error": null,
-  "fetched": 1380,
-  "written": 1849,
+  "fetched": 0,
+  "written": 260,
   "skipped": false,
   "details": {
-    "schema_version": "1.0.0",
-    "trade_date": "2026-10-08",
-    "history_file": "20261008.json",
-    "sources": {
-      "TWSE": 1380,
-      "TPEX": 469
-    }
+    "twii_days": 260,
+    "twii_range": "2025-09-11~2026-10-08"
   },
-  "end": "2026-10-09 23:40:21",
-  "duration_sec": 35.6,
-  "start": "2026-10-09 23:39:45",
+  "end": "2026-10-10 00:24:54",
+  "duration_sec": 1.0,
+  "start": "2026-10-10 00:24:53",
   "log_lines": [
-    "[INFO] Actions 基準日 2026-10-09",
-    "[WARN] 營益分析抓取失敗（ROE/ROA/EPS 留空，不中斷）：Expecting value: line 1 column 1 (char 0)",
-    "[INFO] 資產負債表取得 0 檔股本",
-    "[INFO] trade_date=2026-10-08, TWSE=1380",
-    "[INFO] ETF 發行張數載入 90 檔",
-    "[INFO] TPEX 每日收盤取得 12221 筆原始資料",
-    "[INFO] TPEX ETF 候選筆數: 469",
-    "[WARN] TPEX BWIBBU 抓取失敗（PE/PB 留空，不中斷）：Expecting value: line 1 column 1 (char 0)",
-    "[INFO] 完成 → data/ (stocks=1849, history=2026-10-08, TWSE=1380)"
+    "[INFO] 開始抓取 TWII 加權指數 K 線 (yfinance ^TWII, 260 日窗口)",
+    "[INFO] TWII K 線寫入 260 天 → twii_kdata.js (2025-09-11~2026-10-08)"
   ]
 }
