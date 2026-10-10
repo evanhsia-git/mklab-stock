@@ -46,7 +46,8 @@
       <label onclick="tpl('quality')">品質策略</label>
       <label onclick="tpl('growth')">成長策略</label>
       <label onclick="tpl('momentum')">動能策略</label>
-      <label onclick="tpl('dividend')">高股息策略</label>
+      <label onclick="tpl('dividend')">高股息策略（殖利率≥5%）</label>
+      <label onclick="tpl('dividend10')">超高股息策略（殖利率≥10%）</label>
     </div>
 
     <h3>多條件篩選（滑動即時更新）</h3>
@@ -54,7 +55,13 @@
       <div class="lab">估值</div>
       <div class="cond"><div class="row"><label>PE≤</label><input type="range" id="f_pe" min="0" max="60" value="20" oninput="sync('f_pe');apply()"><span class="rv" id="v_pe">20</span></div></div>
       <div class="cond"><div class="row"><label>PB≤</label><input type="range" id="f_pb" min="0" max="20" value="20" oninput="sync('f_pb');apply()"><span class="rv" id="v_pb">不限</span></div></div>
-      <div class="cond"><div class="row"><label>殖利率≥</label><input type="range" id="f_div" min="0" max="10" value="0" step="0.5" oninput="sync('f_div');apply()"><span class="rv" id="v_div">0</span></div></div>
+      <div class="cond"><div class="row"><label>殖利率≥</label><input type="range" id="f_div" min="0" max="20" value="0" step="0.5" oninput="sync('f_div');syncDivNum();apply()"><span class="rv" id="v_div">0</span><input type="number" id="f_divNum" min="0" max="20" step="0.5" value="0" style="width:56px;margin-left:6px;" oninput="syncDivFromNum();apply()">%</div></div>
+    </div>
+    <div class="grp">
+      <div class="lab">產業</div>
+      <div class="cond"><div class="row"><label>產業別</label>
+        <select id="f_ind" onchange="apply()"><option value="any">不限</option></select>
+      </div></div>
     </div>
     <div class="grp">
       <div class="lab">獲利品質</div>
@@ -90,7 +97,7 @@
     <div class="pager" id="pager"></div>
 
     <div class="strategy-note">
-      <h3>五大策略範本說明</h3>
+      <h3>策略範本說明</h3>
       <div class="table-wrap">
         <table>
           <thead><tr><th>流派</th><th>進場邏輯</th><th>出場 / 停損</th><th>適用標的</th></tr></thead>
@@ -99,7 +106,8 @@
             <tr><td>價值</td><td>PE≤12、PB≤1.5、殖利率≥5%、ROE≥15%</td><td>本益比回歸均值或護城河破壞</td><td>金融 / 傳產 / 收益型</td></tr>
             <tr><td>成長</td><td>ROE≥20%、ROA≥8%</td><td>獲利能力連兩季下滑即減碼</td><td>半導體 / AI / 新興產業</td></tr>
             <tr><td>品質</td><td>ROE≥15%、ROA≥8%、低負債</td><td>獲利能力連兩季下滑即減碼</td><td>穩健大型權值股</td></tr>
-            <tr><td>高股息</td><td>殖利率≥5%、連續 5 年配息、配息率穩定</td><td>除息後填息失敗或配息驟降</td><td>電信 / 金融 / 公用事業</td></tr>
+            <tr><td>高股息</td><td>殖利率≥5%</td><td>除息後填息失敗或配息驟降</td><td>電信 / 金融 / 公用事業</td></tr>
+            <tr><td>超高股息</td><td>殖利率≥10%</td><td>殖利率異常偏高常伴隨股價重挫，進場前請確認原因</td><td>景氣循環股 / 部分高息ETF</td></tr>
           </tbody>
         </table>
       </div>
@@ -123,22 +131,42 @@
     const atMin=UNBOUNDED_AT_MIN.includes(id) && v<=parseFloat(el.min);
     span.textContent = (atMax||atMin) ? '不限' : v;
   }
+  // 殖利率滑桿與旁邊的數字輸入框雙向同步，讓使用者拉桿或直接打數字都能設定（如「10%以上」）
+  function syncDivNum(){
+    const slider=document.getElementById('f_div'), num=document.getElementById('f_divNum');
+    if(slider && num) num.value = slider.value;
+  }
+  function syncDivFromNum(){
+    const slider=document.getElementById('f_div'), num=document.getElementById('f_divNum');
+    if(!slider || !num) return;
+    let v=parseFloat(num.value); if(isNaN(v)) v=0;
+    v=Math.max(0, Math.min(20, v));
+    slider.value=v; num.value=v;
+    sync('f_div');
+  }
   const TPLS={
-    blank:    { f_pe:60, f_pb:20,  f_div:0, f_roe:0,  f_roa:0, f_rsi:0,  f_chg:-10, f_cap:0, f_ma:'any' },
-    value:    { f_pe:12, f_pb:1.5, f_div:5, f_roe:15, f_roa:0, f_rsi:0,  f_chg:-10, f_cap:0, f_ma:'any' },
-    quality:  { f_pe:60, f_pb:20,  f_div:0, f_roe:15, f_roa:8, f_rsi:0,  f_chg:-10, f_cap:0, f_ma:'any' },
-    growth:   { f_pe:60, f_pb:20,  f_div:0, f_roe:20, f_roa:8, f_rsi:0,  f_chg:-10, f_cap:0, f_ma:'any' },
-    momentum: { f_pe:60, f_pb:20,  f_div:0, f_roe:0,  f_roa:0, f_rsi:60, f_chg:1,   f_cap:0, f_ma:'ma5' },
-    dividend: { f_pe:60, f_pb:20,  f_div:5, f_roe:0,  f_roa:0, f_rsi:0,  f_chg:-10, f_cap:0, f_ma:'any' }
+    blank:    { f_pe:60, f_pb:20,  f_div:0,  f_roe:0,  f_roa:0, f_rsi:0,  f_chg:-10, f_cap:0, f_ma:'any', f_ind:'any' },
+    value:    { f_pe:12, f_pb:1.5, f_div:5,  f_roe:15, f_roa:0, f_rsi:0,  f_chg:-10, f_cap:0, f_ma:'any', f_ind:'any' },
+    quality:  { f_pe:60, f_pb:20,  f_div:0,  f_roe:15, f_roa:8, f_rsi:0,  f_chg:-10, f_cap:0, f_ma:'any', f_ind:'any' },
+    growth:   { f_pe:60, f_pb:20,  f_div:0,  f_roe:20, f_roa:8, f_rsi:0,  f_chg:-10, f_cap:0, f_ma:'any', f_ind:'any' },
+    momentum: { f_pe:60, f_pb:20,  f_div:0,  f_roe:0,  f_roa:0, f_rsi:60, f_chg:1,   f_cap:0, f_ma:'ma5', f_ind:'any' },
+    dividend: { f_pe:60, f_pb:20,  f_div:5,  f_roe:0,  f_roa:0, f_rsi:0,  f_chg:-10, f_cap:0, f_ma:'any', f_ind:'any' },
+    dividend10: { f_pe:60, f_pb:20, f_div:10, f_roe:0, f_roa:0, f_rsi:0,  f_chg:-10, f_cap:0, f_ma:'any', f_ind:'any' }
   };
-  function tpl(name){ const t=TPLS[name]; if(!t)return; for(const k in t){ const el=document.getElementById(k); if(el){ el.value=t[k]; sync(k); } } apply(); }
+  function tpl(name){ const t=TPLS[name]; if(!t)return; for(const k in t){ const el=document.getElementById(k); if(el){ el.value=t[k]; sync(k); } } syncDivNum(); apply(); }
   let current=[]; // 真實資料由 loadScreener() 非同步載入前，維持空陣列，不使用假資料佔位
   let dataLoaded=false;
   function loadScreener(){
     MKLAB.data.stocks().then(d=>{
       if(d && Array.isArray(d) && d.length){
-        current=d.map(s=>({sym:s.sym,name:s.name,price:s.price,chg:s.chg,pe:s.pe,pb:s.pb,roe:s.roe,roa:s.roa,rsi:s.rsi14,ma5:s.ma5,ma10:s.ma10,ma30:s.ma30,cap:(s.market_cap!=null?(s.market_cap/1e8):0),div:(s.div||0)}));
+        current=d.map(s=>({sym:s.sym,name:s.name,price:s.price,chg:s.chg,pe:s.pe,pb:s.pb,roe:s.roe,roa:s.roa,rsi:s.rsi14,ma5:s.ma5,ma10:s.ma10,ma30:s.ma30,cap:(s.market_cap!=null?(s.market_cap/1e8):0),div:(s.div||0),ind:s.ind}));
         dataLoaded=true;
+        // 填充產業下拉選單（不重複、排序後的產業清單）
+        const indSel=document.getElementById('f_ind');
+        if(indSel){
+          const inds=[...new Set(current.map(s=>s.ind).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'zh-Hant'));
+          indSel.innerHTML='<option value="any">不限</option>'+inds.map(i=>`<option value="${i}">${i}</option>`).join('');
+        }
         apply();
         return MKLAB.data.json('stocks');
       }
@@ -162,16 +190,16 @@
     requestAnimationFrame(()=>{ _applyScheduled=false; applyNow(); });
   }
   function applyNow(){
-    const g=id=>parseFloat(document.getElementById(id).value)||0; const pe=g('f_pe'),pb=g('f_pb'),div=g('f_div'),roe=g('f_roe'),roa=g('f_roa'),rsi=g('f_rsi'),chg=g('f_chg'),cap=g('f_cap'); const ma=document.getElementById('f_ma').value;
+    const g=id=>parseFloat(document.getElementById(id).value)||0; const pe=g('f_pe'),pb=g('f_pb'),div=g('f_div'),roe=g('f_roe'),roa=g('f_roa'),rsi=g('f_rsi'),chg=g('f_chg'),cap=g('f_cap'); const ma=document.getElementById('f_ma').value; const indEl=document.getElementById('f_ind'); const ind=indEl?indEl.value:'any';
     const ge=(a,b)=> a==null ? true : a>=b;
     const leU=(a,val,max)=> a==null ? true : (val>=max ? true : a<=val);
     const geU=(a,val,min)=> a==null ? true : (val<=min ? true : a>=val);
     const aboveMa=(s,key)=> s[key]==null ? true : s.price>=s[key];
-    const rows=current.filter(s=> leU(s.pe,pe,60)&&leU(s.pb,pb,20)&&ge(s.div,div)&&ge(s.roe,roe)&&ge(s.roa,roa)&&ge(s.rsi,rsi)&&geU(s.chg,chg,-10)&&ge(s.cap,cap)&&(ma==='any'||(ma==='ma5'&&aboveMa(s,'ma5'))||(ma==='ma10'&&aboveMa(s,'ma10'))||(ma==='ma30'&&aboveMa(s,'ma30'))));
+    const rows=current.filter(s=> leU(s.pe,pe,60)&&leU(s.pb,pb,20)&&ge(s.div,div)&&ge(s.roe,roe)&&ge(s.roa,roa)&&ge(s.rsi,rsi)&&geU(s.chg,chg,-10)&&ge(s.cap,cap)&&(ma==='any'||(ma==='ma5'&&aboveMa(s,'ma5'))||(ma==='ma10'&&aboveMa(s,'ma10'))||(ma==='ma30'&&aboveMa(s,'ma30')))&&(ind==='any'||s.ind===ind));
     const label = dataLoaded ? `符合：${rows.length} / ${current.length} 檔` : '資料載入中…';
     document.getElementById('count').textContent=label;
     if(!resTable){
-      resTable = MKLAB.DataTable('resTable', { cols:['sym','name','price','chg','pe','pb','roe','cap'], rows:rows, pageSize:PER, pagerId:'pager', defaultSort:'roe' });
+      resTable = MKLAB.DataTable('resTable', { cols:['sym','name','price','chg','pe','pb','roe','div','cap'], rows:rows, pageSize:PER, pagerId:'pager', defaultSort:'roe' });
     } else {
       resTable.setRows(rows);
     }

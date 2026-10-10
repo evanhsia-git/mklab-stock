@@ -11,16 +11,15 @@
 - **GitHub-Native / Fork-First**：任何人 fork 本倉庫、開啟 GitHub Pages 即可獨立運作，不需申請任何 API key。
 - **Build-Time 優先**：所有資料由 GitHub Actions 排程預先算好寫入 `data/*.json`，前端只負責讀取與呈現，不在瀏覽器端呼叫任何第三方金融 API。
 
-## 頁面（12 個功能頁 + 說明/日誌）
+## 頁面（11 個功能頁 + 說明/日誌）
 
 | 頁面 | 檔名 | 說明 |
 |------|------|------|
 | Market（首頁） | `index.html` | 全球主要股市卡（台股/美股/日經/恆生/歐股/KOSPI）、Market Health 走勢圖、市場情緒與原物料、市值前 10 大、綜合評分 TOP 10、ETF 市值前 10 大 |
-| Screener（篩選） | `mklab-stock-screener.html` | 多條件篩選（PE / PB / ROE / EPS / 漲跌%）+ 策略模板（價值 / 品質 / 成長 / 動能 / 高股息） |
+| Screener（篩選） | `mklab-stock-screener.html` | 多條件篩選（PE / PB / ROE / ROA / RSI / 均線 / 漲跌% / 殖利率 / 產業別）+ 策略模板（價值 / 品質 / 成長 / 動能 / 高股息 / 超高股息），已整合原 Dividend 頁的殖利率排行功能 |
 | Research（研究） | `mklab-stock-research.html` | 個股深度研究：K 線圖、MACD / KD 指標、財報摘要 |
 | Industry（產業） | `mklab-stock-industry.html` | 依臺證所 33 個官方產業大類，查看漲跌績效、產業輪動熱力圖、成分股（含市值欄） |
 | Watchlist（自選） | `mklab-stock-watchlist.html` | 新增自選股代號排序追蹤；目標價／停損價提醒設定（示意，資料存於瀏覽器 localStorage） |
-| Dividend（股息） | `mklab-stock-dividend.html` | 全市場殖利率排行 |
 | Compare（比較） | `mklab-stock-compare.html` | 最多同時比較 4 檔個股的關鍵指標，自動標示最優欄位（股票代號不分大小寫） |
 | Breadth（市場寬度） | `mklab-stock-breadth.html` | 今日市場寬度（上漲/下跌家數）與漲跌幅分布 |
 | Backtest（回測） | `mklab-stock-backtest.html` | 兩點式試算（買進日 vs 最新一日收盤價）試算報酬，非完整走勢回測，僅供教育參考 |
@@ -94,7 +93,6 @@ mklab-stock/
 ├── mklab-stock-research.html     # Research 研究
 ├── mklab-stock-industry.html     # Industry 產業
 ├── mklab-stock-watchlist.html    # Watchlist 自選
-├── mklab-stock-dividend.html     # Dividend 股息
 ├── mklab-stock-compare.html      # Compare 比較
 ├── mklab-stock-breadth.html      # Breadth 市場寬度
 ├── mklab-stock-backtest.html     # Backtest 回測

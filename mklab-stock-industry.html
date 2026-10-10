@@ -91,14 +91,30 @@
 
   let activeInd = null;
 
+  // 用產業已有的「多時間窗口報酬率」（1週/1月/3月/6月/YTD，來自 data/industry.json，
+  // 跟下方「產業輪動熱力圖」同一份真實資料）畫一條簡單趨勢線，不是逐日股價走勢，
+  // 但完全是真實資料，不是亂數假資料。歷史資料不足兩個有效時間窗口時顯示 '—'。
+  function industrySpark(d) {
+    const pts = [d.w1, d.m1, d.m3, d.m6, d.ytd].filter(v => v != null && !isNaN(v));
+    if (pts.length < 2) return "<span style='opacity:0.3'>—</span>";
+    const min = Math.min(...pts), max = Math.max(...pts), range = (max - min) || 1;
+    const w = 100, h = 28, pad = 2;
+    const coords = pts.map((v, i) => {
+      const x = (i / (pts.length - 1)) * (w - pad * 2) + pad;
+      const y = h - pad - ((v - min) / range) * (h - pad * 2);
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    }).join(' ');
+    const color = pts[pts.length - 1] >= pts[0] ? 'var(--up)' : 'var(--down)';
+    return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><polyline points="${coords}" fill="none" stroke="${color}" stroke-width="1.5"/></svg>`;
+  }
+
   function renderGrid() {
       document.getElementById('igrid').innerHTML = data.map((d, i) => {
-        const col = d.chg >= 0 ? "var(--up)" : "var(--down)";
-        const svg = "<span style='opacity:0.3'>—</span>";  // 方案 B: 無歷史資料不顯示隨機 spark
+        const svg = industrySpark(d);
         return `<div class="icard ${activeInd === i ? 'on' : ''}" onclick="selInd(${i})">
           <div class="top"><span class="nm text-wrap">${d.nm}</span><span class="chg text-wrap ${d.chg >= 0 ? 'up' : 'down'}">${fmtPct(d.chg)}</span></div>
           <div class="meta text-wrap">${d.cnt} 檔 · 領漲 ${fmtPct(d.top)}</div>
-          <div class="spark">${svg}</div>
+          <div class="spark" title="近期報酬率趨勢（1週/1月/3月/6月/YTD）">${svg}</div>
         </div>`;
       }).join("");
     }

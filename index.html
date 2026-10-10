@@ -294,22 +294,30 @@
     let etf10Table = null;
     async function loadEtf10() {
       try {
-        const all = await MKLAB.data.stocks();
-        let rows = (Array.isArray(all) ? all : []).filter(r => isETF(r));
-        // 合併 ETF 補充資料（上市/上櫃日期、發行人、受益人數）；缺這份檔案或合不到都不影響原本的市值排行照常顯示
+        // 市值前10大的「哪些是ETF、怎麼排名」改成以 data/etf-meta.json 為準（官方 CSV 解析出的
+        // 359 檔真正 ETF 清單，依資產規模排序），不再用 stocks.json 的 isETF() 判斷——那個判斷
+        // 會誤收一般股票（如 2883 凱基金控）、特別股（2883B）、權證等非 ETF 證券，市值排名也不準確。
+        const metaDoc = await MKLAB.data.json('etf-meta');
+        const metaList = (metaDoc && Array.isArray(metaDoc.etfs)) ? metaDoc.etfs.slice() : [];
+        metaList.sort((a, b) => (b.net_assets_100m || 0) - (a.net_assets_100m || 0));
+
+        // 用 sym 對照 stocks.json 補上即時股價/漲跌/殖利率；stocks.json 沒有對應資料就顯示 '-'，不報錯
+        let priceMap = {};
         try {
-          const metaDoc = await MKLAB.data.json('etf-meta');
-          const metaMap = {};
-          (metaDoc && Array.isArray(metaDoc.etfs) ? metaDoc.etfs : []).forEach(m => { metaMap[m.sym] = m; });
-          rows = rows.map(r => {
-            const m = metaMap[r.sym];
-            return m ? Object.assign({}, r, { listing_date: m.listing_date, issuer: m.issuer, beneficiaries: m.beneficiaries }) : r;
-          });
+          const all = await MKLAB.data.stocks();
+          (Array.isArray(all) ? all : []).forEach(r => { priceMap[r.sym] = r; });
         } catch (e) {
-          console.warn('[Market] etf-meta 合併失敗（不影響原本市值排行顯示）:', e);
+          console.warn('[Market] stocks.json 合併即時股價失敗（不影響 ETF 排行本身）:', e);
         }
+        const rows = metaList.map(m => {
+          const live = priceMap[m.sym] || {};
+          return Object.assign({}, m, {
+            price: live.price, chg: live.chg, div: live.div,
+          });
+        });
+
         if (!etf10Table) {
-          etf10Table = MKLAB.DataTable('etf10', { cols: ['sym', 'name', 'price', 'chg', 'div', 'cap', 'issuer', 'listing_date'], rows, pageSize: 10, pagerId: 'etf10Pager', defaultSort: 'cap', fieldMap: { cap: 'market_cap' } });
+          etf10Table = MKLAB.DataTable('etf10', { cols: ['sym', 'name', 'price', 'chg', 'div', 'net_assets_100m', 'issuer', 'listing_date'], rows, pageSize: 10, pagerId: 'etf10Pager', defaultSort: 'net_assets_100m' });
         } else {
           etf10Table.setRows(rows);
         }
