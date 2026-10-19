@@ -1,21 +1,30 @@
 {
-  "mode": "weekly",
+  "mode": "daily",
   "success": true,
   "error": null,
-  "fetched": 1859,
-  "written": 1116,
+  "fetched": 1380,
+  "written": 1380,
   "skipped": false,
   "details": {
-    "roe_updated": 1116
+    "schema_version": "1.0.0",
+    "trade_date": "2026-10-16",
+    "history_file": "20261016.json",
+    "sources": {
+      "TWSE": 1380
+    }
   },
-  "end": "2026-10-17 22:32:58",
-  "duration_sec": 3948.0,
-  "start": "2026-10-17 21:27:10",
+  "end": "2026-10-20 00:01:10",
+  "duration_sec": 11.2,
+  "start": "2026-10-20 00:00:58",
   "log_lines": [
-    "[INFO] 開始補 ROE/ROA（yfinance 免 key，sleep 3s 防 ban）",
-    "[INFO] 待補 1859 檔",
-    "[INFO] Fetched industry map for 1096 stocks",
-    "[INFO] Applied industry classification to 1 stocks",
-    "[INFO] ROE/ROA 補齊 1116 檔（備用來源）"
+    "[INFO] Actions 基準日 2026-10-20",
+    "[WARN] 營益分析抓取失敗（ROE/ROA/EPS 留空，不中斷）：Expecting value: line 1 column 1 (char 0)",
+    "[INFO] 資產負債表取得 0 檔股本",
+    "[INFO] trade_date=2026-10-16, TWSE=1380",
+    "[INFO] ETF 發行張數載入 90 檔",
+    "[WARN] TPEX 每日收盤抓取失敗：IncompleteRead(786030 bytes read, 4209615 more expected)",
+    "[INFO] TPEX ETF 候選筆數: 0",
+    "[WARN] TPEX BWIBBU 抓取失敗（PE/PB 留空，不中斷）：Expecting value: line 1 column 1 (char 0)",
+    "[INFO] 完成 → data/ (stocks=1380, history=2026-10-16, TWSE=1380)"
   ]
 }
