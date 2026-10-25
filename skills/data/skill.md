@@ -18,7 +18,9 @@ version: 1.0
   **半自動、不在排程裡**：這兩個網站表格是前端 JS 動態載入，沒有公開 JSON API，且使用條款
   禁止自動化擷取，改用網站本身提供的「CSV 下載」功能手動匯出，故本腳本需要人工先放好 CSV
   再執行，不會被 daily-update.yml 自動呼叫
-- `fetch_us_data.py` — 美股個股/ETF 市值前 30 大抓取（僅 yfinance），輸出至獨立的 `data/us/`
+- `fetch_us_universe.py` — 美股四大指數（道瓊/那斯達克100/S&P500/SOX）成分股清單，
+  輸出 `data/us/index-universe.json`；資料源 Wikipedia（CC BY-SA，無官方免費API時的合規替代方案）
+- `fetch_us_data.py` — 美股個股/ETF 市值前 30 大抓取（會優先讀取 index-universe.json 當候選池，沒有則退回內建清單）（僅 yfinance），輸出至獨立的 `data/us/`
   資料夾，與台股資料完全分開管理、互不呼叫、互不匯入（排程也獨立：UTC 22:00）
 - `compute_indicators.py` — 技術指標計算（MA5/10/20/30、RSI14、MACD、KD），純讀取本地
   `data/history/*.json` 逐日快照做數學計算，不對外發送任何請求，計算結果直接寫回

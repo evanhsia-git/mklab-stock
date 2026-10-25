@@ -91,6 +91,7 @@
       <button onclick="loadSymbol()">加入</button>
     </div>
     <div class="count" id="count"></div>
+    <button onclick="exportResultsCSV()" class="btn-secondary" style="margin-bottom:10px;">⬇ 匯出目前篩選結果 CSV</button>
     <div class="table-wrap">
       <table id="resTable"></table>
     </div>
@@ -156,6 +157,21 @@
   function tpl(name){ const t=TPLS[name]; if(!t)return; for(const k in t){ const el=document.getElementById(k); if(el){ el.value=t[k]; sync(k); } } syncDivNum(); apply(); }
   let current=[]; // 真實資料由 loadScreener() 非同步載入前，維持空陣列，不使用假資料佔位
   let dataLoaded=false;
+  let lastFilteredRows=[];
+
+  function exportResultsCSV(){
+    if (!lastFilteredRows.length) { alert('目前沒有符合篩選條件的資料可以匯出'); return; }
+    const etfCount = current.filter(s=>/^00/.test(s.sym)).length;
+    MKLAB.exportCSV(lastFilteredRows, ['sym','name','price','chg','pe','pb','roe','div','cap'], {
+      filename: 'mklab-stock-screener-' + new Date().toISOString().slice(0,10),
+      totalCount: current.length,
+      stockCount: current.length - etfCount,
+      etfCount: etfCount,
+      source: 'TWSE OpenAPI（上市）+ TPEx OpenAPI（上櫃），收盤價/PE/PB/殖利率/ROE/ROA 由 GitHub Actions 每日排程抓取；RSI/均線由歷史收盤價在 Build-Time 計算',
+      sourceUrl: 'https://openapi.twse.com.tw/ ， https://www.tpex.org.tw/openapi/',
+      method: '本頁 Screener 依目前設定的篩選條件（PE/PB/殖利率/ROE/ROA/RSI/均線/漲幅/市值/產業）從全市場資料庫篩選後匯出，僅匯出目前符合條件的結果',
+    });
+  }
   function loadScreener(){
     MKLAB.data.stocks().then(d=>{
       if(d && Array.isArray(d) && d.length){
@@ -196,6 +212,7 @@
     const geU=(a,val,min)=> a==null ? true : (val<=min ? true : a>=val);
     const aboveMa=(s,key)=> s[key]==null ? true : s.price>=s[key];
     const rows=current.filter(s=> leU(s.pe,pe,60)&&leU(s.pb,pb,20)&&ge(s.div,div)&&ge(s.roe,roe)&&ge(s.roa,roa)&&ge(s.rsi,rsi)&&geU(s.chg,chg,-10)&&ge(s.cap,cap)&&(ma==='any'||(ma==='ma5'&&aboveMa(s,'ma5'))||(ma==='ma10'&&aboveMa(s,'ma10'))||(ma==='ma30'&&aboveMa(s,'ma30')))&&(ind==='any'||s.ind===ind));
+    lastFilteredRows = rows;
     const label = dataLoaded ? `符合：${rows.length} / ${current.length} 檔` : '資料載入中…';
     document.getElementById('count').textContent=label;
     if(!resTable){

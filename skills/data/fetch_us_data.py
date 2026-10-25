@@ -57,8 +57,27 @@ US_ETF_CANDIDATES = [
 ]
 
 
+UNIVERSE_PATH = os.path.join(OUT_DIR, "index-universe.json")
+
+
 def _log(msg):
     print(f"[fetch_us_data] {msg}", flush=True)
+
+
+def _load_stock_candidates():
+    """優先用 fetch_us_universe.py 產生的四大指數成分股清單（涵蓋面更完整、更即時），
+    該檔案不存在（例如還沒跑過 fetch_us_universe.py）時，退回內建的 US_STOCK_CANDIDATES。"""
+    if os.path.exists(UNIVERSE_PATH):
+        try:
+            with open(UNIVERSE_PATH, encoding="utf-8") as f:
+                doc = json.load(f)
+            syms = sorted((doc.get("membership") or {}).keys())
+            if syms:
+                _log(f"候選池改用 data/us/index-universe.json（四大指數去重合計 {len(syms)} 檔）")
+                return syms
+        except Exception as e:
+            _log(f"⚠️ 讀取 index-universe.json 失敗，退回內建候選池：{e}")
+    return US_STOCK_CANDIDATES
 
 
 def _fetch_one_stock(yf, sym):
@@ -129,15 +148,16 @@ def run_stocks():
         _log("❌ yfinance 未安裝，無法抓美股資料")
         return False
 
+    candidates = _load_stock_candidates()
     stamp = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
-    _log(f"開始抓美股個股候選池（{len(US_STOCK_CANDIDATES)} 檔候選，取市值前 {TOP_N} 大）")
+    _log(f"開始抓美股個股候選池（{len(candidates)} 檔候選，取市值前 {TOP_N} 大）")
 
     results = []
-    for i, sym in enumerate(US_STOCK_CANDIDATES):
+    for i, sym in enumerate(candidates):
         row = _fetch_one_stock(yf, sym)
         if row and row.get("market_cap") is not None:
             results.append(row)
-        if i < len(US_STOCK_CANDIDATES) - 1:
+        if i < len(candidates) - 1:
             time.sleep(SLEEP_SEC)
 
     results.sort(key=lambda r: r["market_cap"], reverse=True)
@@ -148,7 +168,7 @@ def run_stocks():
             "as_of": stamp,
             "source": "Yahoo Finance (yfinance)",
             "note": "候選池排序取前 30 大市值；非官方美股交易所資料，僅供研究參考，非投資建議。",
-            "candidate_pool_size": len(US_STOCK_CANDIDATES),
+            "candidate_pool_size": len(candidates),
             "count": len(top),
         },
         "stocks": top,

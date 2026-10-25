@@ -682,6 +682,47 @@
   global.MKLAB.DataTable = create;
   global.MKLAB.cellPct = cellPct;
   global.MKLAB.drawerHTML = drawerHTML;
+  // 全站共用的 CSV 匯出：rows=資料陣列，colIds=要匯出的欄位(對應 COLUMNS 的 id)，
+  // opts 可帶 filename / source(資料來源文字) / sourceUrl / method(產生方式說明) /
+  // totalCount / stockCount / etfCount，這些資訊會寫成 CSV 開頭的註解行（# 開頭），
+  // 讓使用者下載後打開就能看到這份資料庫目前的規模與來源，不用額外去查。
+  function exportCSV(rows, colIds, opts){
+    opts = opts || {};
+    const cols = colIds.map(id => Object.assign({id:id}, COLUMNS[id] || {label:id, fmt:r=>r[id]}));
+    const esc = v => {
+      v = (v==null) ? '' : String(v);
+      return /[,"\n]/.test(v) ? '"' + v.replace(/"/g,'""') + '"' : v;
+    };
+    const header = cols.map(c => esc(c.label)).join(',');
+    const lines = rows.map(r => cols.map(c => esc(c.fmt ? c.fmt(r) : r[c.id])).join(','));
+
+    const note = [
+      '# mklab-stock 資料匯出',
+      '# 匯出時間：' + new Date().toLocaleString('zh-TW'),
+      '# 本次匯出筆數：' + rows.length,
+    ];
+    if (opts.totalCount != null) note.push('# 目前資料庫總筆數：' + opts.totalCount);
+    if (opts.stockCount != null) note.push('# 其中一般個股：' + opts.stockCount + ' 檔');
+    if (opts.etfCount != null) note.push('# 其中 ETF：' + opts.etfCount + ' 檔');
+    if (opts.source) note.push('# 資料來源：' + opts.source);
+    if (opts.sourceUrl) note.push('# 來源網址：' + opts.sourceUrl);
+    if (opts.method) note.push('# 產生方式：' + opts.method);
+    note.push('# 僅供研究與教育參考，不構成任何投資建議');
+
+    // 開頭加 UTF-8 BOM，避免 Excel 開啟中文 CSV 變亂碼
+    const csv = '\uFEFF' + note.join('\n') + '\n#\n' + header + '\n' + lines.join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = (opts.filename || 'mklab-stock-export') + '.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+  global.MKLAB.exportCSV = exportCSV;
+
   global.MKLAB.Drawer = Drawer;
   global.MKLAB.Watch = Watch;
   global.MKLAB.Shell = Shell;

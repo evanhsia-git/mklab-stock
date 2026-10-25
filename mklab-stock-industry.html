@@ -84,6 +84,7 @@
     MKLAB.data.stocks().then(d => {
       if (d && Array.isArray(d)) {
         ALL_STOCKS = d; stocksLoaded = true;
+        renderGrid(); // 個股資料就緒後重新渲染卡片，補上真正的領漲/領跌
         if (activeInd != null) renderDetail(activeInd);
       }
     }).catch(() => {});
@@ -108,12 +109,26 @@
     return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><polyline points="${coords}" fill="none" stroke="${color}" stroke-width="1.5"/></svg>`;
   }
 
+  // 從 ALL_STOCKS（全市場個股即時資料）即時算出該產業的領漲/領跌各一檔，
+  // 取代 industry.json 裡原本沒有算出數值的 top 欄位（一直是 null、沒在用）。
+  function computeMovers(indName) {
+    const stocks = ALL_STOCKS.filter(s => s.ind === indName && s.chg != null);
+    if (!stocks.length) return null;
+    const sorted = stocks.slice().sort((a, b) => b.chg - a.chg);
+    return { gainer: sorted[0], loser: sorted[sorted.length - 1] };
+  }
+
   function renderGrid() {
       document.getElementById('igrid').innerHTML = data.map((d, i) => {
         const svg = industrySpark(d);
+        const movers = stocksLoaded ? computeMovers(d.nm) : null;
+        const moversHtml = movers
+          ? `<span class="up">▲${movers.gainer.sym} ${fmtPct(movers.gainer.chg)}</span> <span class="down">▼${movers.loser.sym} ${fmtPct(movers.loser.chg)}</span>`
+          : '領漲/領跌 資料載入中…';
         return `<div class="icard ${activeInd === i ? 'on' : ''}" onclick="selInd(${i})">
           <div class="top"><span class="nm text-wrap">${d.nm}</span><span class="chg text-wrap ${d.chg >= 0 ? 'up' : 'down'}">${fmtPct(d.chg)}</span></div>
-          <div class="meta text-wrap">${d.cnt} 檔 · 領漲 ${fmtPct(d.top)}</div>
+          <div class="meta text-wrap">${d.cnt} 檔</div>
+          <div class="meta text-wrap" style="font-size:11px;">${moversHtml}</div>
           <div class="spark" title="近期報酬率趨勢（1週/1月/3月/6月/YTD）">${svg}</div>
         </div>`;
       }).join("");
