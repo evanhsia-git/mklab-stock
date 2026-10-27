@@ -1,0 +1,4468 @@
+{
+  "meta": {
+    "as_of": "2026-09-29",
+    "rules_version": "1.0.0",
+    "count": 359,
+    "category_counts": {
+      "active": 32,
+      "high_dividend": 33,
+      "market_cap": 9,
+      "passive": 147,
+      "theme": 50,
+      "leveraged": 21,
+      "inverse": 20,
+      "bond": 110
+    },
+    "labels": {
+      "market_cap": "市值型",
+      "high_dividend": "高配息型",
+      "active": "主動型",
+      "passive": "被動型",
+      "bond": "債券型",
+      "leveraged": "槓桿型",
+      "inverse": "反向型",
+      "theme": "主題型",
+      "monthly_pay": "月配型",
+      "quarterly_pay": "季配型",
+      "annual_pay": "年配型",
+      "no_pay": "不配息型"
+    },
+    "note": "同一檔 ETF 可屬於多個分類；pay_frequency 目前未填（待配息資料）"
+  },
+  "etfs": [
+    {
+      "sym": "00400A",
+      "name": "主動國泰動能高息",
+      "market": "TWSE",
+      "categories": [
+        "active",
+        "high_dividend"
+      ],
+      "category_reasons": {
+        "active": "代號結尾 A",
+        "high_dividend": "名稱含「高息」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00401A",
+      "name": "主動摩根台灣鑫收",
+      "market": "TWSE",
+      "categories": [
+        "active"
+      ],
+      "category_reasons": {
+        "active": "代號結尾 A"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00402A",
+      "name": "主動安聯美國科技",
+      "market": "TWSE",
+      "categories": [
+        "active"
+      ],
+      "category_reasons": {
+        "active": "代號結尾 A"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00403A",
+      "name": "主動統一升級50",
+      "market": "TWSE",
+      "categories": [
+        "active"
+      ],
+      "category_reasons": {
+        "active": "代號結尾 A"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00404A",
+      "name": "主動聯博動能50",
+      "market": "TWSE",
+      "categories": [
+        "active"
+      ],
+      "category_reasons": {
+        "active": "代號結尾 A"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00405A",
+      "name": "主動富邦台灣龍耀",
+      "market": "TWSE",
+      "categories": [
+        "active"
+      ],
+      "category_reasons": {
+        "active": "代號結尾 A"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00406A",
+      "name": "主動中信台灣收益",
+      "market": "TWSE",
+      "categories": [
+        "active",
+        "high_dividend"
+      ],
+      "category_reasons": {
+        "active": "代號結尾 A",
+        "high_dividend": "名稱含「收益」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00407A",
+      "name": "主動凱基台灣",
+      "market": "TWSE",
+      "categories": [
+        "active"
+      ],
+      "category_reasons": {
+        "active": "代號結尾 A"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00408A",
+      "name": "主動第一金優股息",
+      "market": "TWSE",
+      "categories": [
+        "active"
+      ],
+      "category_reasons": {
+        "active": "代號結尾 A"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00409A",
+      "name": "主動復華全球50",
+      "market": "TWSE",
+      "categories": [
+        "active"
+      ],
+      "category_reasons": {
+        "active": "代號結尾 A"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00410A",
+      "name": "主動永豐科技趨勢",
+      "market": "TWSE",
+      "categories": [
+        "active"
+      ],
+      "category_reasons": {
+        "active": "代號結尾 A"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "0050",
+      "name": "元大台灣50",
+      "market": "TWSE",
+      "categories": [
+        "market_cap",
+        "passive"
+      ],
+      "category_reasons": {
+        "market_cap": "明確代號清單",
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "0051",
+      "name": "元大中型100",
+      "market": "TWSE",
+      "categories": [
+        "market_cap",
+        "passive"
+      ],
+      "category_reasons": {
+        "market_cap": "明確代號清單",
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "0052",
+      "name": "富邦科技",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "0053",
+      "name": "元大電子",
+      "market": "TWSE",
+      "categories": [
+        "theme"
+      ],
+      "category_reasons": {
+        "theme": "名稱含「電子」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "0055",
+      "name": "元大MSCI金融",
+      "market": "TWSE",
+      "categories": [
+        "theme"
+      ],
+      "category_reasons": {
+        "theme": "名稱含「金融」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "0056",
+      "name": "元大高股息",
+      "market": "TWSE",
+      "categories": [
+        "high_dividend",
+        "passive"
+      ],
+      "category_reasons": {
+        "high_dividend": "明確代號清單",
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "0057",
+      "name": "富邦摩台",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "0061",
+      "name": "元大寶滬深",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "006203",
+      "name": "元大MSCI台灣",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "006204",
+      "name": "永豐臺灣加權",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "006205",
+      "name": "富邦上証(新臺幣)",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "006206",
+      "name": "元大上證50",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "006207",
+      "name": "復華滬深(原簡稱:FH滬深)",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "006208",
+      "name": "富邦台50",
+      "market": "TWSE",
+      "categories": [
+        "market_cap",
+        "passive"
+      ],
+      "category_reasons": {
+        "market_cap": "明確代號清單",
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00625K",
+      "name": "富邦上証+R(人民幣)",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00631L",
+      "name": "元大台灣50正2",
+      "market": "TWSE",
+      "categories": [
+        "leveraged"
+      ],
+      "category_reasons": {
+        "leveraged": "代號結尾 L"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00632R",
+      "name": "元大台灣50反1",
+      "market": "TWSE",
+      "categories": [
+        "inverse"
+      ],
+      "category_reasons": {
+        "inverse": "代號結尾 R"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00633L",
+      "name": "富邦上証正2",
+      "market": "TWSE",
+      "categories": [
+        "leveraged"
+      ],
+      "category_reasons": {
+        "leveraged": "代號結尾 L"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00634R",
+      "name": "富邦上証反1",
+      "market": "TWSE",
+      "categories": [
+        "inverse"
+      ],
+      "category_reasons": {
+        "inverse": "代號結尾 R"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00635U",
+      "name": "期元大S&P黃金",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00636",
+      "name": "國泰中國A50(新臺幣)",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00636K",
+      "name": "國泰中國A50+U(美元)",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00637L",
+      "name": "元大滬深300正2",
+      "market": "TWSE",
+      "categories": [
+        "leveraged"
+      ],
+      "category_reasons": {
+        "leveraged": "代號結尾 L"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00638R",
+      "name": "元大滬深300反1",
+      "market": "TWSE",
+      "categories": [
+        "inverse"
+      ],
+      "category_reasons": {
+        "inverse": "代號結尾 R"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00639",
+      "name": "富邦深100",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00640L",
+      "name": "富邦日本正2",
+      "market": "TWSE",
+      "categories": [
+        "leveraged"
+      ],
+      "category_reasons": {
+        "leveraged": "代號結尾 L"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00641R",
+      "name": "富邦日本反1",
+      "market": "TWSE",
+      "categories": [
+        "inverse"
+      ],
+      "category_reasons": {
+        "inverse": "代號結尾 R"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00642U",
+      "name": "期元大S&P石油",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00643",
+      "name": "群益深証中小(新臺幣)",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00643K",
+      "name": "群益深証中小+R(人民幣)",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00645",
+      "name": "富邦日本",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00646",
+      "name": "元大S&P500",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00647L",
+      "name": "元大S&P500正2",
+      "market": "TWSE",
+      "categories": [
+        "leveraged"
+      ],
+      "category_reasons": {
+        "leveraged": "代號結尾 L"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00648R",
+      "name": "元大S&P500反1",
+      "market": "TWSE",
+      "categories": [
+        "inverse"
+      ],
+      "category_reasons": {
+        "inverse": "代號結尾 R"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00650L",
+      "name": "復華香港正2(原簡稱:FH香港正2)",
+      "market": "TWSE",
+      "categories": [
+        "leveraged"
+      ],
+      "category_reasons": {
+        "leveraged": "代號結尾 L"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00651R",
+      "name": "復華香港反1(原簡稱:FH香港反1)",
+      "market": "TWSE",
+      "categories": [
+        "inverse"
+      ],
+      "category_reasons": {
+        "inverse": "代號結尾 R"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00652",
+      "name": "富邦印度",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00653L",
+      "name": "富邦印度正2",
+      "market": "TWSE",
+      "categories": [
+        "leveraged"
+      ],
+      "category_reasons": {
+        "leveraged": "代號結尾 L"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00654R",
+      "name": "富邦印度反1",
+      "market": "TWSE",
+      "categories": [
+        "inverse"
+      ],
+      "category_reasons": {
+        "inverse": "代號結尾 R"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00655L",
+      "name": "國泰中國A50正2",
+      "market": "TWSE",
+      "categories": [
+        "leveraged"
+      ],
+      "category_reasons": {
+        "leveraged": "代號結尾 L"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00656R",
+      "name": "國泰中國A50反1",
+      "market": "TWSE",
+      "categories": [
+        "inverse"
+      ],
+      "category_reasons": {
+        "inverse": "代號結尾 R"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00657",
+      "name": "國泰日經225(新臺幣)",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00657K",
+      "name": "國泰日經225+U(美元)",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00660",
+      "name": "元大歐洲50",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00661",
+      "name": "元大日經225",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00662",
+      "name": "富邦NASDAQ",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00663L",
+      "name": "國泰臺灣加權正2",
+      "market": "TWSE",
+      "categories": [
+        "leveraged"
+      ],
+      "category_reasons": {
+        "leveraged": "代號結尾 L"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00664R",
+      "name": "國泰臺灣加權反一",
+      "market": "TWSE",
+      "categories": [
+        "inverse"
+      ],
+      "category_reasons": {
+        "inverse": "代號結尾 R"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00665L",
+      "name": "富邦恒生國企正2",
+      "market": "TWSE",
+      "categories": [
+        "leveraged"
+      ],
+      "category_reasons": {
+        "leveraged": "代號結尾 L"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00666R",
+      "name": "富邦恒生國企反1",
+      "market": "TWSE",
+      "categories": [
+        "inverse"
+      ],
+      "category_reasons": {
+        "inverse": "代號結尾 R"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00668",
+      "name": "國泰美國道瓊(新臺幣)",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00668K",
+      "name": "國泰美國道瓊+U(美元)",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00669R",
+      "name": "國泰美國道瓊反1",
+      "market": "TWSE",
+      "categories": [
+        "inverse"
+      ],
+      "category_reasons": {
+        "inverse": "代號結尾 R"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00670L",
+      "name": "富邦NASDAQ正2",
+      "market": "TWSE",
+      "categories": [
+        "leveraged"
+      ],
+      "category_reasons": {
+        "leveraged": "代號結尾 L"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00671R",
+      "name": "富邦NASDAQ反1",
+      "market": "TWSE",
+      "categories": [
+        "inverse"
+      ],
+      "category_reasons": {
+        "inverse": "代號結尾 R"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00673R",
+      "name": "期元大S&P原油反1",
+      "market": "TWSE",
+      "categories": [
+        "inverse"
+      ],
+      "category_reasons": {
+        "inverse": "代號結尾 R"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00674R",
+      "name": "期元大S&P黃金反1",
+      "market": "TWSE",
+      "categories": [
+        "inverse"
+      ],
+      "category_reasons": {
+        "inverse": "代號結尾 R"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00675L",
+      "name": "富邦臺灣加權正2",
+      "market": "TWSE",
+      "categories": [
+        "leveraged"
+      ],
+      "category_reasons": {
+        "leveraged": "代號結尾 L"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00676R",
+      "name": "富邦臺灣加權反1",
+      "market": "TWSE",
+      "categories": [
+        "inverse"
+      ],
+      "category_reasons": {
+        "inverse": "代號結尾 R"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00678",
+      "name": "群益那斯達克生技(原簡稱:群益NBI生技)",
+      "market": "TWSE",
+      "categories": [
+        "theme"
+      ],
+      "category_reasons": {
+        "theme": "名稱含「生技」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00680L",
+      "name": "元大美債20正2",
+      "market": "TWSE",
+      "categories": [
+        "bond",
+        "leveraged"
+      ],
+      "category_reasons": {
+        "leveraged": "代號結尾 L",
+        "bond": "名稱含「債」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00681R",
+      "name": "元大美債20反1",
+      "market": "TWSE",
+      "categories": [
+        "bond",
+        "inverse"
+      ],
+      "category_reasons": {
+        "inverse": "代號結尾 R",
+        "bond": "名稱含「債」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00682U",
+      "name": "期元大美元指數",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00683L",
+      "name": "期元大美元指正2",
+      "market": "TWSE",
+      "categories": [
+        "leveraged"
+      ],
+      "category_reasons": {
+        "leveraged": "代號結尾 L"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00684R",
+      "name": "期元大美元指反1",
+      "market": "TWSE",
+      "categories": [
+        "inverse"
+      ],
+      "category_reasons": {
+        "inverse": "代號結尾 R"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00685L",
+      "name": "群益臺灣加權正2",
+      "market": "TWSE",
+      "categories": [
+        "leveraged"
+      ],
+      "category_reasons": {
+        "leveraged": "代號結尾 L"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00686R",
+      "name": "群益臺灣加權反1",
+      "market": "TWSE",
+      "categories": [
+        "inverse"
+      ],
+      "category_reasons": {
+        "inverse": "代號結尾 R"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00688L",
+      "name": "國泰20年美債正2",
+      "market": "TWSE",
+      "categories": [
+        "bond",
+        "leveraged"
+      ],
+      "category_reasons": {
+        "leveraged": "代號結尾 L",
+        "bond": "名稱含「債」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00689R",
+      "name": "國泰20年美債反1",
+      "market": "TWSE",
+      "categories": [
+        "bond",
+        "inverse"
+      ],
+      "category_reasons": {
+        "inverse": "代號結尾 R",
+        "bond": "名稱含「債」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00690",
+      "name": "兆豐藍籌30",
+      "market": "TWSE",
+      "categories": [
+        "market_cap",
+        "passive"
+      ],
+      "category_reasons": {
+        "market_cap": "明確代號清單",
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00692",
+      "name": "富邦公司治理",
+      "market": "TWSE",
+      "categories": [
+        "market_cap",
+        "passive"
+      ],
+      "category_reasons": {
+        "market_cap": "明確代號清單",
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00693U",
+      "name": "期街口S&P黃豆",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00700",
+      "name": "富邦恒生國企",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00701",
+      "name": "國泰股利精選30",
+      "market": "TWSE",
+      "categories": [
+        "high_dividend",
+        "passive"
+      ],
+      "category_reasons": {
+        "high_dividend": "名稱含「股利」",
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00702",
+      "name": "國泰標普低波高息",
+      "market": "TWSE",
+      "categories": [
+        "high_dividend",
+        "passive"
+      ],
+      "category_reasons": {
+        "high_dividend": "名稱含「高息」",
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00703",
+      "name": "台新MSCI中國",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00706L",
+      "name": "期元大S&P日圓正2",
+      "market": "TWSE",
+      "categories": [
+        "leveraged"
+      ],
+      "category_reasons": {
+        "leveraged": "代號結尾 L"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00707R",
+      "name": "期元大S&P日圓反1",
+      "market": "TWSE",
+      "categories": [
+        "inverse"
+      ],
+      "category_reasons": {
+        "inverse": "代號結尾 R"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00708L",
+      "name": "期元大S&P黃金正2",
+      "market": "TWSE",
+      "categories": [
+        "leveraged"
+      ],
+      "category_reasons": {
+        "leveraged": "代號結尾 L"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00709",
+      "name": "富邦歐洲",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00710B",
+      "name": "復華彭博非投等債(原簡稱:FH彭博非投等債)",
+      "market": "TWSE",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00711B",
+      "name": "復華彭博新興債(原簡稱:FH彭博新興債)",
+      "market": "TWSE",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00712",
+      "name": "復華富時不動產(原簡稱:FH富時不動產)",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00713",
+      "name": "元大台灣高息低波",
+      "market": "TWSE",
+      "categories": [
+        "high_dividend",
+        "passive"
+      ],
+      "category_reasons": {
+        "high_dividend": "名稱含「高息」",
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00714",
+      "name": "群益道瓊美國地產",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00715L",
+      "name": "期街口布蘭特正2",
+      "market": "TWSE",
+      "categories": [
+        "leveraged"
+      ],
+      "category_reasons": {
+        "leveraged": "代號結尾 L"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00717",
+      "name": "富邦美國特別股",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00728",
+      "name": "第一金工業30",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00730",
+      "name": "富邦臺灣優質高息",
+      "market": "TWSE",
+      "categories": [
+        "high_dividend",
+        "passive"
+      ],
+      "category_reasons": {
+        "high_dividend": "名稱含「高息」",
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00731",
+      "name": "復華富時高息低波(原簡稱:FH富時高息低波)",
+      "market": "TWSE",
+      "categories": [
+        "high_dividend",
+        "passive"
+      ],
+      "category_reasons": {
+        "high_dividend": "名稱含「高息」",
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00733",
+      "name": "富邦臺灣中小",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00735",
+      "name": "國泰臺韓科技",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00736",
+      "name": "國泰新興市場",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00737",
+      "name": "國泰AI機器人",
+      "market": "TWSE",
+      "categories": [
+        "theme"
+      ],
+      "category_reasons": {
+        "theme": "名稱含「AI」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00738U",
+      "name": "期元大道瓊白銀",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00739",
+      "name": "元大MSCI A股",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00752",
+      "name": "中信中國50",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00753L",
+      "name": "中信中國50正2",
+      "market": "TWSE",
+      "categories": [
+        "leveraged"
+      ],
+      "category_reasons": {
+        "leveraged": "代號結尾 L"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00757",
+      "name": "統一FANG+",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00762",
+      "name": "元大全球AI",
+      "market": "TWSE",
+      "categories": [
+        "theme"
+      ],
+      "category_reasons": {
+        "theme": "名稱含「AI」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00763U",
+      "name": "期街口道瓊銅",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00770",
+      "name": "國泰北美科技",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00771",
+      "name": "元大US高息特別股",
+      "market": "TWSE",
+      "categories": [
+        "high_dividend",
+        "passive"
+      ],
+      "category_reasons": {
+        "high_dividend": "名稱含「高息」",
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00775B",
+      "name": "台新投等債15+",
+      "market": "TWSE",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00783",
+      "name": "富邦中証500",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00830",
+      "name": "國泰費城半導體",
+      "market": "TWSE",
+      "categories": [
+        "theme"
+      ],
+      "category_reasons": {
+        "theme": "名稱含「半導體」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00850",
+      "name": "元大臺灣ESG永續",
+      "market": "TWSE",
+      "categories": [
+        "market_cap",
+        "theme"
+      ],
+      "category_reasons": {
+        "market_cap": "明確代號清單",
+        "theme": "名稱含「ESG」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00851",
+      "name": "台新全球AI",
+      "market": "TWSE",
+      "categories": [
+        "theme"
+      ],
+      "category_reasons": {
+        "theme": "名稱含「AI」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00852L",
+      "name": "國泰美國道瓊正2",
+      "market": "TWSE",
+      "categories": [
+        "leveraged"
+      ],
+      "category_reasons": {
+        "leveraged": "代號結尾 L"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00861",
+      "name": "元大全球未來通訊",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00865B",
+      "name": "國泰US短期公債",
+      "market": "TWSE",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00875",
+      "name": "國泰網路資安",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00876",
+      "name": "元大全球5G",
+      "market": "TWSE",
+      "categories": [
+        "theme"
+      ],
+      "category_reasons": {
+        "theme": "名稱含「5G」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00878",
+      "name": "國泰永續高股息",
+      "market": "TWSE",
+      "categories": [
+        "high_dividend",
+        "passive"
+      ],
+      "category_reasons": {
+        "high_dividend": "明確代號清單",
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00881",
+      "name": "國泰台灣科技龍頭",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00882",
+      "name": "中信中國高股息",
+      "market": "TWSE",
+      "categories": [
+        "high_dividend",
+        "passive"
+      ],
+      "category_reasons": {
+        "high_dividend": "名稱含「高股息」",
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00885",
+      "name": "富邦越南",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00891",
+      "name": "中信關鍵半導體",
+      "market": "TWSE",
+      "categories": [
+        "theme"
+      ],
+      "category_reasons": {
+        "theme": "名稱含「半導體」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00892",
+      "name": "富邦台灣半導體",
+      "market": "TWSE",
+      "categories": [
+        "theme"
+      ],
+      "category_reasons": {
+        "theme": "名稱含「半導體」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00893",
+      "name": "國泰智能電動車",
+      "market": "TWSE",
+      "categories": [
+        "theme"
+      ],
+      "category_reasons": {
+        "theme": "名稱含「電動車」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00894",
+      "name": "中信小資高價30",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00895",
+      "name": "富邦未來車",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00896",
+      "name": "中信綠能及電動車",
+      "market": "TWSE",
+      "categories": [
+        "theme"
+      ],
+      "category_reasons": {
+        "theme": "名稱含「電動車」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00897",
+      "name": "富邦基因免疫生技",
+      "market": "TWSE",
+      "categories": [
+        "theme"
+      ],
+      "category_reasons": {
+        "theme": "名稱含「生技」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00898",
+      "name": "國泰基因免疫革命",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00899",
+      "name": "FT潔淨能源",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00900",
+      "name": "富邦特選高股息30",
+      "market": "TWSE",
+      "categories": [
+        "high_dividend",
+        "passive"
+      ],
+      "category_reasons": {
+        "high_dividend": "名稱含「高股息」",
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00901",
+      "name": "永豐智能車供應鏈",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00902",
+      "name": "中信電池及儲能",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00903",
+      "name": "富邦元宇宙",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00904",
+      "name": "台新臺灣半導體30",
+      "market": "TWSE",
+      "categories": [
+        "theme"
+      ],
+      "category_reasons": {
+        "theme": "名稱含「半導體」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00905",
+      "name": "FT臺灣Smart",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00907",
+      "name": "永豐優息存股",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00908",
+      "name": "富邦入息REITs+",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00909",
+      "name": "國泰數位支付服務",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00910",
+      "name": "第一金太空衛星",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00911",
+      "name": "兆豐洲際半導體",
+      "market": "TWSE",
+      "categories": [
+        "theme"
+      ],
+      "category_reasons": {
+        "theme": "名稱含「半導體」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00912",
+      "name": "中信臺灣智慧 50",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00913",
+      "name": "兆豐台灣晶圓製造",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00915",
+      "name": "凱基優選高股息30",
+      "market": "TWSE",
+      "categories": [
+        "high_dividend",
+        "passive"
+      ],
+      "category_reasons": {
+        "high_dividend": "名稱含「高股息」",
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00916",
+      "name": "國泰全球品牌50",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00917",
+      "name": "中信特選金融",
+      "market": "TWSE",
+      "categories": [
+        "theme"
+      ],
+      "category_reasons": {
+        "theme": "名稱含「金融」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00918",
+      "name": "大華優利高填息30",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00919",
+      "name": "群益台灣精選高息",
+      "market": "TWSE",
+      "categories": [
+        "high_dividend",
+        "passive"
+      ],
+      "category_reasons": {
+        "high_dividend": "明確代號清單",
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00920",
+      "name": "富邦ESG綠色電力",
+      "market": "TWSE",
+      "categories": [
+        "theme"
+      ],
+      "category_reasons": {
+        "theme": "名稱含「ESG」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00921",
+      "name": "兆豐龍頭等權重",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00922",
+      "name": "國泰台灣領袖50",
+      "market": "TWSE",
+      "categories": [
+        "market_cap",
+        "passive"
+      ],
+      "category_reasons": {
+        "market_cap": "明確代號清單",
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00923",
+      "name": "群益台ESG低碳50(原簡稱:群益台灣ESG低碳)",
+      "market": "TWSE",
+      "categories": [
+        "market_cap",
+        "theme"
+      ],
+      "category_reasons": {
+        "market_cap": "明確代號清單",
+        "theme": "名稱含「ESG」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00924",
+      "name": "復華S&P500成長",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00926",
+      "name": "凱基全球菁英55",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00927",
+      "name": "群益半導體收益",
+      "market": "TWSE",
+      "categories": [
+        "high_dividend",
+        "theme"
+      ],
+      "category_reasons": {
+        "high_dividend": "名稱含「收益」",
+        "theme": "名稱含「半導體」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00929",
+      "name": "復華台灣科技優息",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00930",
+      "name": "永豐ESG低碳高息",
+      "market": "TWSE",
+      "categories": [
+        "high_dividend",
+        "theme"
+      ],
+      "category_reasons": {
+        "high_dividend": "名稱含「高息」",
+        "theme": "名稱含「ESG」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00932",
+      "name": "兆豐永續高息等權",
+      "market": "TWSE",
+      "categories": [
+        "high_dividend",
+        "passive"
+      ],
+      "category_reasons": {
+        "high_dividend": "名稱含「高息」",
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00934",
+      "name": "中信成長高股息",
+      "market": "TWSE",
+      "categories": [
+        "high_dividend",
+        "passive"
+      ],
+      "category_reasons": {
+        "high_dividend": "名稱含「高股息」",
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00935",
+      "name": "野村臺灣新科技50",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00936",
+      "name": "台新永續高息中小",
+      "market": "TWSE",
+      "categories": [
+        "high_dividend",
+        "passive"
+      ],
+      "category_reasons": {
+        "high_dividend": "名稱含「高息」",
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00938",
+      "name": "凱基優選30",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00939",
+      "name": "統一台灣高息動能",
+      "market": "TWSE",
+      "categories": [
+        "high_dividend",
+        "passive"
+      ],
+      "category_reasons": {
+        "high_dividend": "名稱含「高息」",
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00940",
+      "name": "元大台灣價值高息",
+      "market": "TWSE",
+      "categories": [
+        "high_dividend",
+        "passive"
+      ],
+      "category_reasons": {
+        "high_dividend": "名稱含「高息」",
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00941",
+      "name": "中信上游半導體",
+      "market": "TWSE",
+      "categories": [
+        "theme"
+      ],
+      "category_reasons": {
+        "theme": "名稱含「半導體」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00943",
+      "name": "兆豐電子高息等權",
+      "market": "TWSE",
+      "categories": [
+        "high_dividend",
+        "theme"
+      ],
+      "category_reasons": {
+        "high_dividend": "名稱含「高息」",
+        "theme": "名稱含「電子」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00944",
+      "name": "野村趨勢動能高息",
+      "market": "TWSE",
+      "categories": [
+        "high_dividend",
+        "passive"
+      ],
+      "category_reasons": {
+        "high_dividend": "名稱含「高息」",
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00945B",
+      "name": "凱基美國非投等債",
+      "market": "TWSE",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00946",
+      "name": "群益科技高息成長",
+      "market": "TWSE",
+      "categories": [
+        "high_dividend",
+        "passive"
+      ],
+      "category_reasons": {
+        "high_dividend": "名稱含「高息」",
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00947",
+      "name": "台新臺灣IC設計",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00949",
+      "name": "復華日本龍頭",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00951",
+      "name": "台新日本半導體",
+      "market": "TWSE",
+      "categories": [
+        "theme"
+      ],
+      "category_reasons": {
+        "theme": "名稱含「半導體」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00952",
+      "name": "凱基台灣AI 50",
+      "market": "TWSE",
+      "categories": [
+        "theme"
+      ],
+      "category_reasons": {
+        "theme": "名稱含「AI」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00953B",
+      "name": "群益優選非投等債",
+      "market": "TWSE",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00954",
+      "name": "中信日本半導體",
+      "market": "TWSE",
+      "categories": [
+        "theme"
+      ],
+      "category_reasons": {
+        "theme": "名稱含「半導體」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00956",
+      "name": "中信日經高股息",
+      "market": "TWSE",
+      "categories": [
+        "high_dividend",
+        "passive"
+      ],
+      "category_reasons": {
+        "high_dividend": "名稱含「高股息」",
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00960",
+      "name": "野村全球航運龍頭",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00961",
+      "name": "FT臺灣永續高息",
+      "market": "TWSE",
+      "categories": [
+        "high_dividend",
+        "passive"
+      ],
+      "category_reasons": {
+        "high_dividend": "名稱含「高息」",
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00962",
+      "name": "台新AI優息動能",
+      "market": "TWSE",
+      "categories": [
+        "theme"
+      ],
+      "category_reasons": {
+        "theme": "名稱含「AI」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00963",
+      "name": "中信全球高股息",
+      "market": "TWSE",
+      "categories": [
+        "high_dividend",
+        "passive"
+      ],
+      "category_reasons": {
+        "high_dividend": "名稱含「高股息」",
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00964",
+      "name": "中信亞太高股息",
+      "market": "TWSE",
+      "categories": [
+        "high_dividend",
+        "passive"
+      ],
+      "category_reasons": {
+        "high_dividend": "名稱含「高股息」",
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00965",
+      "name": "元大航太防衛科技",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00971",
+      "name": "野村美國研發龍頭",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00972",
+      "name": "野村日本動能高息",
+      "market": "TWSE",
+      "categories": [
+        "high_dividend",
+        "passive"
+      ],
+      "category_reasons": {
+        "high_dividend": "名稱含「高息」",
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "009800",
+      "name": "中信NASDAQ",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "009801",
+      "name": "中信美國創新科技",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "009802",
+      "name": "富邦旗艦50",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "009803",
+      "name": "玉山市值動能50",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "009804",
+      "name": "聯邦台精彩50",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "009805",
+      "name": "台新美國電力基建",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "009808",
+      "name": "華南永昌優選50",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "009809",
+      "name": "富邦淨零ESG50",
+      "market": "TWSE",
+      "categories": [
+        "theme"
+      ],
+      "category_reasons": {
+        "theme": "名稱含「ESG」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00980A",
+      "name": "主動野村臺灣優選",
+      "market": "TWSE",
+      "categories": [
+        "active"
+      ],
+      "category_reasons": {
+        "active": "代號結尾 A"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "009810",
+      "name": "玉山全球藍籌100",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "009811",
+      "name": "統一美國50",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "009812",
+      "name": "野村日本東證",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "009813",
+      "name": "貝萊德標普卓越50",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "009816",
+      "name": "凱基台灣TOP50",
+      "market": "TWSE",
+      "categories": [
+        "market_cap",
+        "passive"
+      ],
+      "category_reasons": {
+        "market_cap": "明確代號清單",
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "009817",
+      "name": "國泰日本不動產",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "009818",
+      "name": "華南永昌NASDAQxT",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "009819",
+      "name": "中信數據及電力",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00981A",
+      "name": "主動統一台股增長",
+      "market": "TWSE",
+      "categories": [
+        "active"
+      ],
+      "category_reasons": {
+        "active": "代號結尾 A"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00981T",
+      "name": "平衡凱基雙核收息",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "009820",
+      "name": "元大納斯達克精選",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "009821",
+      "name": "野村稀土關鍵資源",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "009824",
+      "name": "群益美國科技巨頭",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "009826",
+      "name": "貝萊德世界股票",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "009827",
+      "name": "玉山未來全球算力",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "009828",
+      "name": "中信台日韓PCB",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "009829",
+      "name": "大華韓國KOSPI50",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00982A",
+      "name": "主動群益台灣強棒",
+      "market": "TWSE",
+      "categories": [
+        "active"
+      ],
+      "category_reasons": {
+        "active": "代號結尾 A"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00982D",
+      "name": "主動富邦動態入息",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00982T",
+      "name": "平衡兆豐台美動能",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00983A",
+      "name": "主動中信ARK創新",
+      "market": "TWSE",
+      "categories": [
+        "active"
+      ],
+      "category_reasons": {
+        "active": "代號結尾 A"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00983D",
+      "name": "主動富邦複合收益",
+      "market": "TWSE",
+      "categories": [
+        "high_dividend",
+        "passive"
+      ],
+      "category_reasons": {
+        "high_dividend": "名稱含「收益」",
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00984A",
+      "name": "主動安聯台灣高息",
+      "market": "TWSE",
+      "categories": [
+        "active",
+        "high_dividend"
+      ],
+      "category_reasons": {
+        "active": "代號結尾 A",
+        "high_dividend": "名稱含「高息」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00984D",
+      "name": "主動聯博全球非投",
+      "market": "TWSE",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00985A",
+      "name": "主動野村台灣50",
+      "market": "TWSE",
+      "categories": [
+        "active"
+      ],
+      "category_reasons": {
+        "active": "代號結尾 A"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00985B",
+      "name": "群益ESG投等債0-5",
+      "market": "TWSE",
+      "categories": [
+        "bond",
+        "theme"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B",
+        "theme": "名稱含「ESG」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00986A",
+      "name": "主動台新龍頭成長",
+      "market": "TWSE",
+      "categories": [
+        "active"
+      ],
+      "category_reasons": {
+        "active": "代號結尾 A"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00987A",
+      "name": "主動台新優勢成長",
+      "market": "TWSE",
+      "categories": [
+        "active"
+      ],
+      "category_reasons": {
+        "active": "代號結尾 A"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00988A",
+      "name": "主動統一全球創新",
+      "market": "TWSE",
+      "categories": [
+        "active"
+      ],
+      "category_reasons": {
+        "active": "代號結尾 A"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00989A",
+      "name": "主動摩根美國科技",
+      "market": "TWSE",
+      "categories": [
+        "active"
+      ],
+      "category_reasons": {
+        "active": "代號結尾 A"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00990A",
+      "name": "主動元大AI新經濟",
+      "market": "TWSE",
+      "categories": [
+        "active",
+        "theme"
+      ],
+      "category_reasons": {
+        "active": "代號結尾 A",
+        "theme": "名稱含「AI」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00991A",
+      "name": "主動復華未來50",
+      "market": "TWSE",
+      "categories": [
+        "active"
+      ],
+      "category_reasons": {
+        "active": "代號結尾 A"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00991B",
+      "name": "貝萊德A級公司債",
+      "market": "TWSE",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00992A",
+      "name": "主動群益科技創新",
+      "market": "TWSE",
+      "categories": [
+        "active"
+      ],
+      "category_reasons": {
+        "active": "代號結尾 A"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00993A",
+      "name": "主動安聯台灣",
+      "market": "TWSE",
+      "categories": [
+        "active"
+      ],
+      "category_reasons": {
+        "active": "代號結尾 A"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00994A",
+      "name": "主動第一金台股優",
+      "market": "TWSE",
+      "categories": [
+        "active"
+      ],
+      "category_reasons": {
+        "active": "代號結尾 A"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00995A",
+      "name": "主動中信台灣卓越",
+      "market": "TWSE",
+      "categories": [
+        "active"
+      ],
+      "category_reasons": {
+        "active": "代號結尾 A"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00996A",
+      "name": "主動兆豐台灣豐收",
+      "market": "TWSE",
+      "categories": [
+        "active"
+      ],
+      "category_reasons": {
+        "active": "代號結尾 A"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00997A",
+      "name": "主動群益美國增長",
+      "market": "TWSE",
+      "categories": [
+        "active"
+      ],
+      "category_reasons": {
+        "active": "代號結尾 A"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00999A",
+      "name": "主動野村臺灣高息",
+      "market": "TWSE",
+      "categories": [
+        "active",
+        "high_dividend"
+      ],
+      "category_reasons": {
+        "active": "代號結尾 A",
+        "high_dividend": "名稱含「高息」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00411A",
+      "name": "主動統一前沿科技",
+      "market": "TPEx",
+      "categories": [
+        "active"
+      ],
+      "category_reasons": {
+        "active": "代號結尾 A"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "006201",
+      "name": "元大富櫃50",
+      "market": "TPEx",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00679B",
+      "name": "元大美債20年",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00687B",
+      "name": "國泰20年美債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00687C",
+      "name": "國泰20年美債+櫃U(美元)",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "名稱含「債」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00694B",
+      "name": "富邦美債1-3",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00695B",
+      "name": "富邦美債7-10",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00696B",
+      "name": "富邦美債20年",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00697B",
+      "name": "元大美債7-10",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00719B",
+      "name": "元大美債1-3",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00720B",
+      "name": "元大投資級公司債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00722B",
+      "name": "群益投資級電信債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00723B",
+      "name": "群益投資級科技債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00724B",
+      "name": "群益投資級金融債",
+      "market": "TPEx",
+      "categories": [
+        "bond",
+        "theme"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B",
+        "theme": "名稱含「金融」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00725B",
+      "name": "國泰投資級公司債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00726B",
+      "name": "國泰新興投等債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00727B",
+      "name": "國泰優選非投等債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00734B",
+      "name": "台新JPM新興債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00740B",
+      "name": "富邦全球投等債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00741B",
+      "name": "富邦全球非投等債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00746B",
+      "name": "富邦A級公司債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00749B",
+      "name": "凱基新興債10+",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00750B",
+      "name": "凱基科技債10+",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00751B",
+      "name": "元大AAA至A公司債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00754B",
+      "name": "群益AAA-AA公司債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00755B",
+      "name": "群益投資級公用債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00756B",
+      "name": "群益投等新興公債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00758B",
+      "name": "復華能源債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00759B",
+      "name": "復華製藥債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00760B",
+      "name": "復華新興企業債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00761B",
+      "name": "國泰A級公司債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00764B",
+      "name": "群益25年美債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00768B",
+      "name": "復華20年美債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00772B",
+      "name": "中信高評級公司債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00773B",
+      "name": "中信優先金融債",
+      "market": "TPEx",
+      "categories": [
+        "bond",
+        "theme"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B",
+        "theme": "名稱含「金融」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00777B",
+      "name": "凱基AAA至A公司債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00778B",
+      "name": "凱基金融債20+",
+      "market": "TPEx",
+      "categories": [
+        "bond",
+        "theme"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B",
+        "theme": "名稱含「金融」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00779B",
+      "name": "凱基美債25+",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00780B",
+      "name": "國泰A級金融債",
+      "market": "TPEx",
+      "categories": [
+        "bond",
+        "theme"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B",
+        "theme": "名稱含「金融」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00781B",
+      "name": "國泰A級科技債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00782B",
+      "name": "國泰A級公用債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00785B",
+      "name": "富邦金融投等債",
+      "market": "TPEx",
+      "categories": [
+        "bond",
+        "theme"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B",
+        "theme": "名稱含「金融」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00786B",
+      "name": "元大10年IG銀行債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00787B",
+      "name": "元大10年IG醫療債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00788B",
+      "name": "元大10年IG電能債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00789B",
+      "name": "復華公司債A3",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00791B",
+      "name": "復華信用債1-5Y",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00792B",
+      "name": "群益A級公司債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00795B",
+      "name": "中信美國公債20年",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00799B",
+      "name": "國泰A級醫療債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00834B",
+      "name": "第一金金融債10+",
+      "market": "TPEx",
+      "categories": [
+        "bond",
+        "theme"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B",
+        "theme": "名稱含「金融」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00836B",
+      "name": "永豐10年A公司債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00840B",
+      "name": "凱基IG精選15+",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00841B",
+      "name": "凱基AAA-AA公司債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00842B",
+      "name": "台新美元銀行債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00844B",
+      "name": "台新15年IG金融債",
+      "market": "TPEx",
+      "categories": [
+        "bond",
+        "theme"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B",
+        "theme": "名稱含「金融」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00845B",
+      "name": "富邦新興投等債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00846B",
+      "name": "富邦歐洲銀行債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00847B",
+      "name": "中信美國市政債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00848B",
+      "name": "中信新興亞洲債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00849B",
+      "name": "中信EM主權債0-5",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00853B",
+      "name": "統一美債10年Aa-A",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00856B",
+      "name": "永豐1-3年美公債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00857B",
+      "name": "永豐20年美公債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00858",
+      "name": "永豐美國500大",
+      "market": "TPEx",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00859B",
+      "name": "群益0-1年美債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00860B",
+      "name": "群益1-5Y投資級債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00862B",
+      "name": "中信投資級公司債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00863B",
+      "name": "中信全球電信債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00864B",
+      "name": "中信美國公債0-1",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00867B",
+      "name": "台新A-BBB電信債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00870B",
+      "name": "元大15年EM主權債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00877",
+      "name": "復華中國5G",
+      "market": "TPEx",
+      "categories": [
+        "theme"
+      ],
+      "category_reasons": {
+        "theme": "名稱含「5G」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00884B",
+      "name": "中信低碳新興債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00886",
+      "name": "永豐美國科技",
+      "market": "TPEx",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00887",
+      "name": "永豐中國科技50大",
+      "market": "TPEx",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00888",
+      "name": "永豐台灣ESG",
+      "market": "TPEx",
+      "categories": [
+        "theme"
+      ],
+      "category_reasons": {
+        "theme": "名稱含「ESG」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00890B",
+      "name": "凱基ESG BBB債15+",
+      "market": "TPEx",
+      "categories": [
+        "bond",
+        "theme"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B",
+        "theme": "名稱含「ESG」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00928",
+      "name": "中信上櫃ESG30",
+      "market": "TPEx",
+      "categories": [
+        "theme"
+      ],
+      "category_reasons": {
+        "theme": "名稱含「ESG」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00931B",
+      "name": "統一美債20年",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00933B",
+      "name": "國泰10Y+金融債",
+      "market": "TPEx",
+      "categories": [
+        "bond",
+        "theme"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B",
+        "theme": "名稱含「金融」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00937B",
+      "name": "群益ESG投等債20+",
+      "market": "TPEx",
+      "categories": [
+        "bond",
+        "theme"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B",
+        "theme": "名稱含「ESG」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00942B",
+      "name": "台新美A公司債20+",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00948B",
+      "name": "中信優息投資級債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00950B",
+      "name": "凱基A級公司債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00955",
+      "name": "中信日本商社",
+      "market": "TPEx",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00957B",
+      "name": "兆豐US優選投等債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00958B",
+      "name": "永豐ESG銀行債15+",
+      "market": "TPEx",
+      "categories": [
+        "bond",
+        "theme"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B",
+        "theme": "名稱含「ESG」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00959B",
+      "name": "大華投等美債15Y+",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00966B",
+      "name": "統一ESG投等債15+",
+      "market": "TPEx",
+      "categories": [
+        "bond",
+        "theme"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B",
+        "theme": "名稱含「ESG」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00967B",
+      "name": "元大優息美債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00968B",
+      "name": "元大優息投等債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00969B",
+      "name": "元大零息超長美債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00970B",
+      "name": "台新BBB投等債20+",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "009806",
+      "name": "台新標普500",
+      "market": "TPEx",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "009807",
+      "name": "台新標普科技精選",
+      "market": "TPEx",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00980B",
+      "name": "台新特選IG債10+",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00980D",
+      "name": "主動聯博投等入息",
+      "market": "TPEx",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00980T",
+      "name": "平衡凱基美國TOP",
+      "market": "TPEx",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "009814",
+      "name": "富邦標普500",
+      "market": "TPEx",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "009815",
+      "name": "大華美國MAG7+",
+      "market": "TPEx",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00981B",
+      "name": "第一金優選非投債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00981D",
+      "name": "主動中信非投等債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "名稱含「債」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "009822",
+      "name": "華南永昌未來金融",
+      "market": "TPEx",
+      "categories": [
+        "theme"
+      ],
+      "category_reasons": {
+        "theme": "名稱含「金融」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "009823",
+      "name": "群益 S&P500",
+      "market": "TPEx",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "009825",
+      "name": "聯邦美國金融創新",
+      "market": "TPEx",
+      "categories": [
+        "theme"
+      ],
+      "category_reasons": {
+        "theme": "名稱含「金融」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00982B",
+      "name": "FT投資級債20+",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00983B",
+      "name": "大華優利美公債20",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00984B",
+      "name": "大華優利美A債15",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00985D",
+      "name": "主動貝萊德優投等",
+      "market": "TPEx",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00986B",
+      "name": "FT金融債10+",
+      "market": "TPEx",
+      "categories": [
+        "bond",
+        "theme"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B",
+        "theme": "名稱含「金融」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00986D",
+      "name": "主動復華金融債息",
+      "market": "TPEx",
+      "categories": [
+        "bond",
+        "theme"
+      ],
+      "category_reasons": {
+        "bond": "名稱含「債」",
+        "theme": "名稱含「金融」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00987B",
+      "name": "野村10+澳洲公債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00987D",
+      "name": "主動統一美債量化",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "名稱含「債」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00988B",
+      "name": "玉山嚴選非投債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00989B",
+      "name": "台新美國非投等債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00990B",
+      "name": "國泰收益非投等債",
+      "market": "TPEx",
+      "categories": [
+        "bond",
+        "high_dividend"
+      ],
+      "category_reasons": {
+        "bond": "代號結尾 B",
+        "high_dividend": "名稱含「收益」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00998A",
+      "name": "主動復華金融股息",
+      "market": "TPEx",
+      "categories": [
+        "active",
+        "theme"
+      ],
+      "category_reasons": {
+        "active": "代號結尾 A",
+        "theme": "名稱含「金融」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "註：ETF證券代號第六碼為K、C者，表示該ETF以外幣交易，其資產規模(億元)及年初至今日均成交值(百萬元)為其加掛幣別；其一交易單位(張)應為100受益權或其整倍數，請詳其公開說明書。",
+      "name": null,
+      "market": "TPEx",
+      "categories": [
+        "passive"
+      ],
+      "category_reasons": {
+        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+      },
+      "pay_frequency": null
+    }
+  ]
+}

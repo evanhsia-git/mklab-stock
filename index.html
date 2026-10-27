@@ -60,8 +60,21 @@
 <p class="muted-small-top">評分公式：ROE(最高40) + 本益比(最高20，越低越好) + 股價淨值比(最高15，越低越好) + EPS(最高10) + 當日漲跌(最高15)，滿分100，詳見說明頁「綜合評分計算標準」。任一欄位缺漏則不列入計算，僅供研究參考，非投資建議。</p>
 
 <div class="section-title">ETF 市值前 10 大</div>
+<div class="seg" id="etfCatTabs" style="margin-bottom:10px;flex-wrap:wrap;">
+  <button class="on" data-cat="all" onclick="setEtfCat('all',this)">全部</button>
+  <button data-cat="market_cap" onclick="setEtfCat('market_cap',this)">市值型</button>
+  <button data-cat="high_dividend" onclick="setEtfCat('high_dividend',this)">高配息型</button>
+  <button data-cat="active" onclick="setEtfCat('active',this)">主動型</button>
+  <button data-cat="passive" onclick="setEtfCat('passive',this)">被動型</button>
+  <button data-cat="bond" onclick="setEtfCat('bond',this)">債券型</button>
+  <button data-cat="leveraged" onclick="setEtfCat('leveraged',this)">槓桿型</button>
+  <button data-cat="inverse" onclick="setEtfCat('inverse',this)">反向型</button>
+  <button data-cat="theme" onclick="setEtfCat('theme',this)">主題型</button>
+</div>
+<div class="count" id="etfCatCount"></div>
 <div class="table-wrap"><table id="etf10"></table></div>
 <div class="pager" id="etf10Pager"></div>
+<p class="muted-small-top">分類依使用者指定規則（代號清單、結尾字母 A/B/L/R、名稱關鍵字）自動標註，同一檔可同時屬於多類（如 00937B 同時是債券型）。月配/季配/年配等配息頻率欄位待配息資料來源補上後再開放。</p>
 <p class="muted-small-top">資料來源：<a class="link" href="https://wwwc.twse.com.tw/zh/ETFortune/products" target="_blank" rel="noopener">TWSE ETF投資篩選器／CSV下載</a>、<a class="link" href="https://info.tpex.org.tw/ETF/zh/filter.html" target="_blank" rel="noopener">TPEx ETF投資篩選器／CSV下載</a>（上市/上櫃日期、發行人、受益人數為使用者手動匯出 CSV 後解析，非即時資料）。</p>
 
 <div id="page-market">
@@ -292,6 +305,31 @@
     }
 
     let etf10Table = null;
+    let etfAllRows = [];   // 完整 ETF 清單（已合併股價＋分類），篩選時從這裡取，不會被分頁裁切
+    let etfCatFilter = 'all';
+
+    // 依目前選的分類篩選 etfAllRows，並重畫表格；'all' 代表不篩選
+    function applyEtfCat() {
+      const rows = etfCatFilter === 'all'
+        ? etfAllRows
+        : etfAllRows.filter(r => (r.categories || []).includes(etfCatFilter));
+      const countEl = document.getElementById('etfCatCount');
+      if (countEl) countEl.textContent = `符合：${rows.length} / ${etfAllRows.length} 檔`;
+      if (!etf10Table) {
+        etf10Table = MKLAB.DataTable('etf10', { cols: ['sym', 'name', 'price', 'chg', 'div', 'net_assets_100m', 'issuer', 'listing_date'], rows, pageSize: 10, pagerId: 'etf10Pager', defaultSort: 'net_assets_100m' });
+      } else {
+        etf10Table.setRows(rows);
+      }
+    }
+
+    function setEtfCat(cat, btn) {
+      etfCatFilter = cat;
+      document.querySelectorAll('#etfCatTabs button').forEach(b => b.classList.toggle('on', b === btn));
+      applyEtfCat();
+    }
+    // onclick 屬性需要從 window 找到函式，但這段定義在 DOMContentLoaded 的閉包內，必須明確掛到 window
+    window.setEtfCat = setEtfCat;
+
     async function loadEtf10() {
       try {
         // 市值前10大的「哪些是ETF、怎麼排名」改成以 data/etf-meta.json 為準（官方 CSV 解析出的
@@ -309,18 +347,24 @@
         } catch (e) {
           console.warn('[Market] stocks.json 合併即時股價失敗（不影響 ETF 排行本身）:', e);
         }
-        const rows = metaList.map(m => {
+        // 合併分類標籤（data/etf-classified.json，由 skills/data/classify_etf.py 產生）
+        let catMap = {};
+        try {
+          const catDoc = await MKLAB.data.json('etf-classified');
+          (catDoc && Array.isArray(catDoc.etfs) ? catDoc.etfs : []).forEach(c => { catMap[c.sym] = c.categories || []; });
+        } catch (e) {
+          console.warn('[Market] etf-classified 載入失敗（不影響 ETF 排行，分類篩選暫不可用）:', e);
+        }
+
+        etfAllRows = metaList.map(m => {
           const live = priceMap[m.sym] || {};
           return Object.assign({}, m, {
             price: live.price, chg: live.chg, div: live.div,
+            categories: catMap[m.sym] || [],
           });
         });
 
-        if (!etf10Table) {
-          etf10Table = MKLAB.DataTable('etf10', { cols: ['sym', 'name', 'price', 'chg', 'div', 'net_assets_100m', 'issuer', 'listing_date'], rows, pageSize: 10, pagerId: 'etf10Pager', defaultSort: 'net_assets_100m' });
-        } else {
-          etf10Table.setRows(rows);
-        }
+        applyEtfCat();
       } catch (e) {
         console.warn('[Market] etf10 table failed:', e);
         const el = document.getElementById('etf10');
