@@ -78,6 +78,16 @@
       <select id="noteSymSelect" class="field-input" onchange="renderNotes()"></select>
     </div>
     <div id="notesList" style="margin-top:10px;"></div>
+    <div class="row-input" style="margin-top:10px;flex-wrap:wrap;">
+      <select id="tradeType" class="field-input">
+        <option value="buy">買進</option>
+        <option value="sell">賣出</option>
+      </select>
+      <input id="tradeDate" type="date" class="field-input">
+      <input id="tradePrice" type="number" step="0.01" min="0" placeholder="成交價">
+      <input id="tradeShares" type="number" step="1" min="0" placeholder="股數（股）">
+      <button class="btn-primary" onclick="addTrade()">記錄交易</button>
+    </div>
     <div class="row-input" style="margin-top:10px;">
       <input id="noteInput" placeholder="寫下買賣理由、目標價…">
       <select id="noteTag" class="field-input">
@@ -265,8 +275,26 @@
             <span class="del" style="float:right;cursor:pointer;" onclick="removeNote('${n.ts}')">✕</span>
           </div>
           <div>${n.text.replace(/</g, '&lt;')}</div>
+          ${n.trade ? `<div class="text-sm" style="margin-top:4px;">交易日 ${n.trade.date}｜成交價 ${n.trade.price}｜股數 ${n.trade.shares} 股｜金額 ${Math.round(n.trade.price*n.trade.shares).toLocaleString()}</div>` : ''}
         </div>`).join('')
       : '<p class="text-muted text-sm">尚無筆記</p>';
+  }
+  function addTrade() {
+    const sym = document.getElementById('noteSymSelect').value;
+    if (!sym) return;
+    const type = document.getElementById('tradeType').value;
+    const date = document.getElementById('tradeDate').value;
+    const price = Number(document.getElementById('tradePrice').value);
+    const shares = Number(document.getElementById('tradeShares').value);
+    if (!date) { alert('請選擇交易日期'); return; }
+    if (!(price > 0)) { alert('請輸入大於 0 的成交價'); return; }
+    if (!(shares > 0)) { alert('請輸入大於 0 的股數'); return; }
+    const label = type === 'buy' ? '買進' : '賣出';
+    const note = `${label} ${sym} ${shares} 股 @ ${price}（${date}）`;
+    MKLAB.Notes.add(sym, note, type, { date: date, price: price, shares: shares });
+    document.getElementById('tradePrice').value = '';
+    document.getElementById('tradeShares').value = '';
+    renderNotes();
   }
   function addNote() {
     const sym = document.getElementById('noteSymSelect').value;

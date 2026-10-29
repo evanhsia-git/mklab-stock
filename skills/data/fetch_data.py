@@ -725,6 +725,11 @@ def run_daily():
         "note": "收盤/漲跌每日更新；ROE/ROA/EPS/股本 由 TWSE 營益分析/資產負債表（官方免 key）補齊；ETF 含於上市清單；上限 2000 檔",
     }
 
+    # 排除 U 尾代號（期貨型 ETF 與認購權證 7xxxxU），依使用者要求，資料庫與 CSV 都不納入
+    stocks = [s for s in stocks if not str(s.get("sym", "")).endswith("U")]
+    meta["count"] = len(stocks)
+    meta["note"] = meta["note"] + "；已排除 U 尾代號（期貨型 ETF / 認購權證）"
+
     with open(os.path.join(OUT, "stocks.json"), "w", encoding="utf-8") as f:
         json.dump(_sanitize_nan({"meta": meta, "stocks": stocks}), f, ensure_ascii=False)
 

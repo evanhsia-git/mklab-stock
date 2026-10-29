@@ -13,6 +13,7 @@ mklab-stock 技術指標計算（Build-Time，完全基於 data/history/ 既有�
 用法：
   python3 skills/data/compute_indicators.py
 """
+import datetime as dt
 import glob
 import json
 import os
@@ -41,6 +42,8 @@ def load_series():
             continue
         for row in d.get("stocks", []):
             sym = row.get("stock_id")
+            if sym is None or str(sym).endswith("U"):  # 排除 U 尾（期貨 ETF / 認購權證）
+                continue
             close = row.get("close")
             if sym is None or close is None:
                 continue
@@ -112,6 +115,25 @@ def calc_kd(highs, lows, closes, n=9):
     return round(k, 1), round(d, 1)
 
 
+def calc_chg_1m(rows):
+    """一個月漲跌幅（%）：最新收盤 vs 不晚於 30 個日曆天前的最近一個交易日收盤。
+    rows 為 (date, open, high, low, close)，已依日期由舊到新排序。
+    找不到基準日（歷史不足）回傳 None，不推測。"""
+    if len(rows) < 2:
+        return None
+    latest_date, latest_close = rows[-1][0], rows[-1][4]
+    latest = dt.datetime.strptime(latest_date, "%Y%m%d").date()
+    target = latest - dt.timedelta(days=30)
+    base = None
+    for r in rows:
+        d = dt.datetime.strptime(r[0], "%Y%m%d").date()
+        if d <= target:
+            base = r[4]
+    if base is None or base == 0:
+        return None
+    return round((latest_close - base) / base * 100, 2)
+
+
 def main():
     print("[compute_indicators] 讀取 data/history/ ...")
     series = load_series()
@@ -129,12 +151,14 @@ def main():
             row["rsi14"] = None
             row["macd_dif"] = row["macd_dea"] = row["macd_hist"] = None
             row["kd_k"] = row["kd_d"] = None
+            row["chg_1m"] = None
             continue
 
         closes = [r[4] for r in rows]
         highs = [r[2] for r in rows]
         lows = [r[3] for r in rows]
 
+        row["chg_1m"] = calc_chg_1m(rows)
         row["ma5"] = sma(closes, 5)
         row["ma10"] = sma(closes, 10)
         row["ma20"] = sma(closes, 20)

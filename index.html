@@ -274,7 +274,7 @@
           .sort((a, b) => b.score - a.score)
           .slice(0, 10);
         if (!dailyPicksTable) {
-          dailyPicksTable = MKLAB.DataTable('dailyPicks', { cols: ['sym', 'name', 'price', 'chg', 'pe', 'pb', 'roe', 'score'], rows: scored, pageSize: 0, defaultSort: 'score' });
+          dailyPicksTable = MKLAB.DataTable('dailyPicks', { cols: ['sym', 'name', 'price', 'chg', 'chg_1m', 'pe', 'pb', 'roe', 'score'], rows: scored, pageSize: 0, defaultSort: 'score' });
         } else {
           dailyPicksTable.setRows(scored);
         }
@@ -293,7 +293,7 @@
           .sort((a, b) => (b.market_cap || 0) - (a.market_cap || 0))
           .slice(0, 10);
         if (!cap10Table) {
-          cap10Table = MKLAB.DataTable('cap10', { cols: ['sym', 'name', 'price', 'chg', 'pe', 'pb', 'roe', 'cap'], rows, pageSize: 10, pagerId: 'cap10Pager', defaultSort: 'cap', fieldMap: { cap: 'market_cap' } });
+          cap10Table = MKLAB.DataTable('cap10', { cols: ['sym', 'name', 'price', 'chg', 'chg_1m', 'pe', 'pb', 'roe', 'cap'], rows, pageSize: 10, pagerId: 'cap10Pager', defaultSort: 'cap', fieldMap: { cap: 'market_cap' } });
         } else {
           cap10Table.setRows(rows);
         }
@@ -316,7 +316,7 @@
       const countEl = document.getElementById('etfCatCount');
       if (countEl) countEl.textContent = `符合：${rows.length} / ${etfAllRows.length} 檔`;
       if (!etf10Table) {
-        etf10Table = MKLAB.DataTable('etf10', { cols: ['sym', 'name', 'price', 'chg', 'div', 'net_assets_100m', 'issuer', 'listing_date'], rows, pageSize: 10, pagerId: 'etf10Pager', defaultSort: 'net_assets_100m' });
+        etf10Table = MKLAB.DataTable('etf10', { cols: ['sym', 'name', 'price', 'chg', 'chg_1m', 'div', 'net_assets_100m', 'listing_date'], rows, pageSize: 10, pagerId: 'etf10Pager', defaultSort: 'net_assets_100m' });
       } else {
         etf10Table.setRows(rows);
       }
@@ -359,7 +359,7 @@
         etfAllRows = metaList.map(m => {
           const live = priceMap[m.sym] || {};
           return Object.assign({}, m, {
-            price: live.price, chg: live.chg, div: live.div,
+            price: live.price, chg: live.chg, chg_1m: live.chg_1m, div: live.div,
             categories: catMap[m.sym] || [],
           });
         });

@@ -35,8 +35,12 @@
 <div class="drawer-mask" onclick="MKLAB.Drawer.close()" aria-hidden="true"></div>
 <main class="wrap">
 
+<div class="seg" id="scrTabs" style="margin-bottom:14px;max-width:320px;">
+  <button class="on" data-tab="stock" onclick="setScrTab('stock',this)">個股篩選</button>
+  <button data-tab="etf" onclick="setScrTab('etf',this)">ETF 篩選</button>
+</div>
 
-
+<div id="scrStockPane">
 <div class="layout">
   <div class="panel">
     <h3>策略模板（一鍵套用）</h3>
@@ -91,7 +95,6 @@
       <button onclick="loadSymbol()">加入</button>
     </div>
     <div class="count" id="count"></div>
-    <button onclick="exportResultsCSV()" class="btn-secondary" style="margin-bottom:10px;">⬇ 匯出目前篩選結果 CSV</button>
     <div class="table-wrap">
       <table id="resTable"></table>
     </div>
@@ -115,8 +118,31 @@
       <p class="muted-small-top">RSI(14)、均線（MA5/10/30）已改用 `data/history/` 的歷史收盤價逐日計算，非即時盤中資料，以前一交易日收盤為準。⚠️ EPS 成長率目前資料庫尚未提供（需追蹤至少兩期歷史 EPS），「成長」策略暫以 ROE／ROA 篩選替代，待相關資料源建置後會補上。</p>
     </div>
     <div class="disclaimer">篩選前端即時過濾，資料源為 Build-Time 預算產生的 data/stocks.json。每頁 10 檔。</div>
+</div><!-- /scrStockPane -->
+
   </div>
 </div>
+<div id="scrEtfPane" style="display:none;">
+<div class="layout">
+  <div class="panel">
+    <h3>ETF 類型代碼</h3>
+    <div class="chk chk-mb" id="etfCatChecks"></div>
+    <div class="grp" style="margin-top:12px;">
+      <div class="lab">搜尋</div>
+      <input id="etfSearch" placeholder="輸入代號或名稱，如 A、0050、高息" oninput="applyEtfScr()" style="width:100%;">
+    </div>
+    <div class="grp" style="margin-top:12px;">
+      <div class="lab">說明</div>
+      <p class="muted-small-top">同一檔 ETF 可同時屬於多個類型（如 00937B 同時是債券型與…）。代碼：L 槓桿、R 反向、B 債券、C 債券外幣、T 平衡、A 主動式、D 主動債券、市值型、高息型、主題型。已排除 U 尾期貨型。</p>
+    </div>
+  </div>
+  <div>
+    <div class="count" id="etfScrCount"></div>
+    <div class="table-wrap"><table id="etfScrTable"></table></div>
+    <div class="pager" id="etfScrPager"></div>
+  </div>
+</div>
+</div><!-- /scrEtfPane -->
 
 <script src="assets/js/data-client.js"></script>
 <script src="assets/js/mklab-core.js"></script>
@@ -158,18 +184,30 @@
   let current=[]; // 真實資料由 loadScreener() 非同步載入前，維持空陣列，不使用假資料佔位
   let dataLoaded=false;
   let lastFilteredRows=[];
+  let etfClassifiedSyms=[]; // 權威 ETF 清單（已排除 U 尾），由 data/etf-classified.json 載入
+  let dataAsOf=null;        // 資料庫更新時間，由 stocks.json meta.as_of 載入
 
   function exportResultsCSV(){
     if (!lastFilteredRows.length) { alert('目前沒有符合篩選條件的資料可以匯出'); return; }
-    const etfCount = current.filter(s=>/^00/.test(s.sym)).length;
+    // ETF 判斷一律以 data/etf-classified.json（已排除 U 尾期貨型）為準，不用「00 開頭」猜測
+    const etfSet = new Set(etfClassifiedSyms);
+    const dbStockCount = current.filter(s=>!etfSet.has(s.sym)).length;
+    const dbEtfCount = current.filter(s=>etfSet.has(s.sym)).length;
+    const exportedEtf = lastFilteredRows.filter(s=>etfSet.has(s.sym)).length;
+    const exportedStock = lastFilteredRows.length - exportedEtf;
+    const stamp = new Date().toLocaleString('zh-TW', { hour12: false });
     MKLAB.exportCSV(lastFilteredRows, ['sym','name','price','chg','pe','pb','roe','div','cap'], {
       filename: 'mklab-stock-screener-' + new Date().toISOString().slice(0,10),
-      totalCount: current.length,
-      stockCount: current.length - etfCount,
-      etfCount: etfCount,
-      source: 'TWSE OpenAPI（上市）+ TPEx OpenAPI（上櫃），收盤價/PE/PB/殖利率/ROE/ROA 由 GitHub Actions 每日排程抓取；RSI/均線由歷史收盤價在 Build-Time 計算',
-      sourceUrl: 'https://openapi.twse.com.tw/ ， https://www.tpex.org.tw/openapi/',
-      method: '本頁 Screener 依目前設定的篩選條件（PE/PB/殖利率/ROE/ROA/RSI/均線/漲幅/市值/產業）從全市場資料庫篩選後匯出，僅匯出目前符合條件的結果',
+      dbUpdated: dataAsOf || stamp,
+      dbTotalCount: current.length,
+      dbStockCount: dbStockCount,
+      dbEtfCount: dbEtfCount,
+      exportedCount: lastFilteredRows.length,
+      exportedStockCount: exportedStock,
+      exportedEtfCount: exportedEtf,
+      source: 'TWSE OpenAPI（上市）+ TPEx OpenAPI（上櫃）；收盤價/PE/PB/殖利率/ROE/ROA 由 GitHub Actions 每日排程抓取；RSI/均線由歷史收盤價 Build-Time 計算；ETF 清單來源為 TWSE/TPEx ETF 投資篩選器 CSV',
+      sourceUrl: 'https://openapi.twse.com.tw/ ， https://www.tpex.org.tw/openapi/ ， https://wwwc.twse.com.tw/zh/ETFortune/products ， https://info.tpex.org.tw/ETF/zh/filter.html',
+      method: '本頁 Screener 依目前篩選條件從資料庫篩選後匯出；資料庫已排除 U 尾期貨型；本檔為目前符合條件的全部列（非分頁）',
     });
   }
   function loadScreener(){
@@ -177,6 +215,7 @@
       if(d && Array.isArray(d) && d.length){
         current=d.map(s=>({sym:s.sym,name:s.name,price:s.price,chg:s.chg,pe:s.pe,pb:s.pb,roe:s.roe,roa:s.roa,rsi:s.rsi14,ma5:s.ma5,ma10:s.ma10,ma30:s.ma30,cap:(s.market_cap!=null?(s.market_cap/1e8):0),div:(s.div||0),ind:s.ind}));
         dataLoaded=true;
+        MKLAB.data.json('etf-classified').then(cd=>{ etfClassifiedSyms=(cd&&cd.etfs?cd.etfs:[]).map(x=>x.sym); }).catch(()=>{});
         // 填充產業下拉選單（不重複、排序後的產業清單）
         const indSel=document.getElementById('f_ind');
         if(indSel){
@@ -187,7 +226,7 @@
         return MKLAB.data.json('stocks');
       }
     }).then(meta=>{
-      MKLAB.setFreshness(meta&&meta.meta&&meta.meta.as_of);
+      dataAsOf=(meta&&meta.meta&&meta.meta.as_of)||null; MKLAB.setFreshness(dataAsOf);
     }).catch(()=>{ MKLAB.setFreshness(null); });
   }
   const PER=10;
@@ -223,9 +262,93 @@
   }
   function openDrawer(){ MKLAB.Drawer.open(); }
   function closeDrawer(){ MKLAB.Drawer.close(); }
+  // ===== 頂部分頁：個股篩選 / ETF 篩選 =====
+  function setScrTab(tab, btn){
+    document.querySelectorAll('#scrTabs button').forEach(b=>b.classList.toggle('on', b===btn));
+    document.getElementById('scrStockPane').style.display = tab==='stock' ? '' : 'none';
+    document.getElementById('scrEtfPane').style.display = tab==='etf' ? '' : 'none';
+    if (tab==='etf') applyEtfScr();
+  }
+  window.setScrTab = setScrTab;
+
+  // ===== ETF 篩選 =====
+  const ETF_CAT_OPTIONS = [
+    ['market_cap','市值型'], ['dividend_high','高息型'], ['theme','主題型'],
+    ['active','主動式 A'], ['leveraged','槓桿型 L'], ['inverse','反向型 R'],
+    ['bond','債券型 B'], ['bond_fx','債券外幣型 C'], ['balanced','平衡型 T'],
+    ['active_bond','主動債券 D'], ['unclassified','待確認 K'],
+  ];
+  let etfScrAll = [];       // 合併股價後的完整 ETF 清單（已排除 U 尾）
+  let etfScrCats = new Set(); // 目前勾選的分類（空集合 = 不限）
+  let etfScrTable = null;
+
+  function renderEtfCatChecks(){
+    const el = document.getElementById('etfCatChecks');
+    if (!el) return;
+    el.innerHTML = ETF_CAT_OPTIONS.map(([k,label]) =>
+      `<label><input type="checkbox" value="${k}" ${etfScrCats.has(k)?'checked':''} onchange="toggleEtfCat('${k}', this.checked)"> ${label}</label>`
+    ).join('');
+  }
+  function toggleEtfCat(k, on){
+    if (on) etfScrCats.add(k); else etfScrCats.delete(k);
+    applyEtfScr();
+  }
+  window.toggleEtfCat = toggleEtfCat;
+
+  function applyEtfScr(){
+    const q = (document.getElementById('etfSearch')||{value:''}).value.trim().toUpperCase();
+    let rows = etfScrAll;
+    if (etfScrCats.size){
+      rows = rows.filter(r => r.categories.some(c => etfScrCats.has(c)));
+    }
+    if (q){
+      rows = rows.filter(r =>
+        (r.sym||'').toUpperCase().includes(q) ||
+        (r.name||'').toUpperCase().includes(q) ||
+        (r.categories||[]).some(c => (ETF_LABEL_MAP[c]||'').toUpperCase().includes(q) || c.toUpperCase().includes(q))
+      );
+    }
+    const countEl = document.getElementById('etfScrCount');
+    if (countEl) countEl.textContent = `符合：${rows.length} / ${etfScrAll.length} 檔`;
+    if (!etfScrTable){
+      etfScrTable = MKLAB.DataTable('etfScrTable', { cols:['sym','name','price','chg','div','net_assets_100m','listing_date'], rows, pageSize:PER, pagerId:'etfScrPager', defaultSort:'net_assets_100m' });
+    } else {
+      etfScrTable.setRows(rows);
+    }
+  }
+  window.applyEtfScr = applyEtfScr;
+
+  const ETF_LABEL_MAP = Object.fromEntries(ETF_CAT_OPTIONS);
+
+  async function loadEtfScreener(){
+    try {
+      const [meta, cls, stockDoc] = await Promise.all([
+        MKLAB.data.json('etf-meta'),
+        MKLAB.data.json('etf-classified'),
+        MKLAB.data.json('stocks').catch(()=>null),
+      ]);
+      const catMap = {};
+      ((cls&&cls.etfs)||[]).forEach(c => { catMap[c.sym] = c.categories || []; });
+      const priceMap = {};
+      ((stockDoc&&stockDoc.stocks)||[]).forEach(s => { priceMap[s.sym] = s; });
+      // 只保留權威分類清單內的 ETF（已排除 U 尾）
+      etfScrAll = ((meta&&meta.etfs)||[])
+        .filter(m => catMap[m.sym])
+        .map(m => {
+          const live = priceMap[m.sym] || {};
+          return Object.assign({}, m, { price: live.price, chg: live.chg, div: live.div, categories: catMap[m.sym] });
+        });
+      renderEtfCatChecks();
+      applyEtfScr();
+    } catch (e) {
+      console.warn('[screener] ETF 篩選載入失敗:', e);
+    }
+  }
+  MKLAB.registerExport('匯出目前篩選結果 CSV', exportResultsCSV);
   window.addEventListener('DOMContentLoaded', function () {
     apply(); // 初次渲染（此時 MKLAB 已定義）
     loadScreener();
+    loadEtfScreener();
     MKLAB.initDrawer();
     MKLAB.Shell.mount({ active: 'screener' });
   });

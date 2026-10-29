@@ -61,6 +61,7 @@
     yield: { label:'配息率', type:'num', sortable:true, defDir:-1, fmt:r=>r.yield!=null?Number(r.yield).toFixed(2)+'%':'-' },
     listing_date: { label:'上市/上櫃日期', type:'str', sortable:true, fmt:r=>r.listing_date||'-' },
     issuer: { label:'發行人', type:'str', sortable:true, fmt:r=>r.issuer||'-' },
+    chg_1m: { label:'月漲跌%', type:'pct', sortable:true, defDir:-1, fmt:r=>r.chg_1m!=null?(r.chg_1m>0?'+':'')+Number(r.chg_1m).toFixed(2)+'%':'-' },
     beneficiaries: { label:'受益人數', type:'num', sortable:true, defDir:-1, fmt:r=>r.beneficiaries!=null?Number(r.beneficiaries).toLocaleString():'-' },
     net_assets_100m: { label:'資產規模(億元)', type:'num', sortable:true, defDir:-1, fmt:r=>r.net_assets_100m!=null?Number(r.net_assets_100m).toLocaleString():'-' },
     w1:    { label:'1週',     type:'pct', sortable:true,  fmt:r=>cellPct(r.w1) },
@@ -363,6 +364,13 @@
     if(c.appearance.lang){
       h += `<div class="row"><span>語言</span><div class="seg"><button id="langZh" class="${lang==='zh'?'on':''}" onclick="MKLAB.setLang('zh')">中文</button><button id="langEn" class="${lang==='en'?'on':''}" onclick="MKLAB.setLang('en')">EN</button></div></div>`;
     }
+    // 資料匯出：只有頁面註冊了匯出動作（MKLAB.registerExport）才會出現在設定抽屜裡
+    if (MKLAB._exportActions && MKLAB._exportActions.length) {
+      h += '<h4>資料匯出</h4>';
+      MKLAB._exportActions.forEach((a, i) => {
+        h += `<div class="row"><button class="btn-secondary" onclick="MKLAB._runExport(${i})">${a.label}</button></div>`;
+      });
+    }
     h += '<h4>說明</h4>';
     h += `<div class="row"><a href="${c.help.doc}">功能說明（使用/資料源/評分標準）↗</a></div>`;
     h += `<div class="row"><a href="${c.help.log}">開發日誌 ↗</a></div>`;
@@ -539,7 +547,6 @@
     { key:'us',        label:'US',        href:'mklab-stock-us.html' },
     { key:'watchlist', label:'Watchlist', href:'mklab-stock-watchlist.html' },
     { key:'compare',   label:'Compare',   href:'mklab-stock-compare.html' },
-    { key:'breadth',   label:'Breadth',   href:'mklab-stock-breadth.html' },
     { key:'backtest',  label:'Backtest',  href:'mklab-stock-backtest.html' },
     { key:'portfolio', label:'Portfolio', href:'mklab-stock-portfolio.html' },
     { key:'digest',    label:'Digest',    href:'mklab-stock-digest.html' },
@@ -629,12 +636,20 @@
   function _saveNotes(obj){ try{ localStorage.setItem(NOTES_KEY, JSON.stringify(obj)); }catch(e){} }
   const Notes = {
     get(sym){ const all=_loadNotes(); return all[sym]||[]; },
-    add(sym, text, tag){
+    add(sym, text, tag, trade){
       if(!sym || !text || !text.trim()) return;
       const all=_loadNotes();
       all[sym]=all[sym]||[];
-      all[sym].unshift({ ts:new Date().toISOString(), text:text.trim(), tag:tag||'' });
+      const rec = { ts:new Date().toISOString(), text:text.trim(), tag:tag||'' };
+      // 交易紀錄（買進/賣出）：額外保存交易日期、價格、股數，供持股與損益計算使用
+      if (trade) rec.trade = { date: trade.date, price: Number(trade.price), shares: Number(trade.shares) };
+      all[sym].unshift(rec);
       _saveNotes(all);
+    },
+    // 讀取某股票的交易紀錄（只含有 trade 欄位者），依交易日期由舊到新
+    trades(sym){
+      return (_loadNotes()[sym]||[]).filter(n=>n.trade)
+        .sort((a,b)=>String(a.trade.date).localeCompare(String(b.trade.date)));
     },
     remove(sym, ts){
       const all=_loadNotes();
@@ -697,13 +712,15 @@
     const lines = rows.map(r => cols.map(c => esc(c.fmt ? c.fmt(r) : r[c.id])).join(','));
 
     const note = [
-      '# mklab-stock 資料匯出',
-      '# 匯出時間：' + new Date().toLocaleString('zh-TW'),
-      '# 本次匯出筆數：' + rows.length,
+      '# mklab-stock 資料庫匯出',
+      '# 資料庫更新日期時間：' + (opts.dbUpdated || '未知'),
+      '# 資料庫總筆數：' + (opts.dbTotalCount != null ? opts.dbTotalCount : '-') +
+        '（一般個股 ' + (opts.dbStockCount != null ? opts.dbStockCount : '-') +
+        ' 檔，ETF ' + (opts.dbEtfCount != null ? opts.dbEtfCount : '-') + ' 檔；已排除 U 尾期貨型）',
+      '# 本檔匯出筆數：' + rows.length +
+        '（一般個股 ' + (opts.exportedStockCount != null ? opts.exportedStockCount : '-') +
+        ' 檔，ETF ' + (opts.exportedEtfCount != null ? opts.exportedEtfCount : '-') + ' 檔）',
     ];
-    if (opts.totalCount != null) note.push('# 目前資料庫總筆數：' + opts.totalCount);
-    if (opts.stockCount != null) note.push('# 其中一般個股：' + opts.stockCount + ' 檔');
-    if (opts.etfCount != null) note.push('# 其中 ETF：' + opts.etfCount + ' 檔');
     if (opts.source) note.push('# 資料來源：' + opts.source);
     if (opts.sourceUrl) note.push('# 來源網址：' + opts.sourceUrl);
     if (opts.method) note.push('# 產生方式：' + opts.method);
@@ -722,6 +739,16 @@
     URL.revokeObjectURL(url);
   }
   global.MKLAB.exportCSV = exportCSV;
+
+  // 頁面可以註冊「匯出動作」，會自動出現在設定抽屜的「資料匯出」區塊裡
+  MKLAB._exportActions = [];
+  MKLAB.registerExport = function(label, fn){
+    MKLAB._exportActions.push({ label: label, fn: fn });
+  };
+  MKLAB._runExport = function(i){
+    const a = MKLAB._exportActions[i];
+    if (a && typeof a.fn === 'function') a.fn();
+  };
 
   global.MKLAB.Drawer = Drawer;
   global.MKLAB.Watch = Watch;

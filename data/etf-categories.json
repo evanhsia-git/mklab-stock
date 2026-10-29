@@ -1,37 +1,42 @@
 {
   "meta": {
-    "description": "ETF 分類規則（人工規則 + 代號/名稱關鍵字比對）。依使用者指定的分類原則建立，未來會補上細部分類。",
-    "version": "1.0.0",
-    "rule_priority": "由上到下，先命中的規則優先；同一檔 ETF 可以同時屬於多個分類（如：市值型 + 月配息）",
-    "note": "分類結果由 skills/data/classify_etf.py 讀取本檔產生 data/etf-classified.json；本檔是規則設定，修改規則不需要改程式碼"
+    "description": "ETF 分類規則（依使用者指定的類型代碼）。改規則不需改程式，由 skills/data/classify_etf.py 讀取。",
+    "version": "2.0.0",
+    "rule_priority": "代號結尾字母規則 > 明確代號清單 > 名稱關鍵字規則 > 預設類別。同一檔可同時屬於多類。",
+    "note": "U 尾期貨型依使用者要求排除，不列入資料庫。K 尾（外幣+人民幣避險）不在使用者清單內，暫歸「待確認」。"
   },
+  "excluded_suffix": ["U"],
+  "suffix_rules": [
+    { "suffix": "L", "category": "leveraged", "note": "代號結尾 L：槓桿型（如 00631L 元大台灣50正2）" },
+    { "suffix": "R", "category": "inverse", "note": "代號結尾 R：反向型（如 00681R 元大美債20反1）" },
+    { "suffix": "B", "category": "bond", "note": "代號結尾 B：債券型（如 00679B 元大美債20年）" },
+    { "suffix": "C", "category": "bond_fx", "note": "代號結尾 C：債券外幣型（如 00687C 國泰20年美債+櫃U）" },
+    { "suffix": "V", "category": "futures_fx", "note": "代號結尾 V：期貨外幣型（目前資料庫無此類）" },
+    { "suffix": "T", "category": "balanced", "note": "代號結尾 T：平衡型（如 00981T 平衡凱基雙核收息）" },
+    { "suffix": "A", "category": "active", "note": "代號結尾 A：主動式（如 00981A 主動統一台股增長）" },
+    { "suffix": "D", "category": "active_bond", "note": "代號結尾 D：主動債券型（如 00982D 主動富邦動態入息）" },
+    { "suffix": "K", "category": "unclassified", "note": "代號結尾 K：外幣+人民幣避險型，不在使用者類型清單內，待確認" }
+  ],
   "explicit_codes": {
     "market_cap": ["0050", "006208", "009816", "00692", "00850", "0051", "00690", "00922", "00923"],
-    "high_dividend": ["0056", "00878", "00919"]
+    "dividend_high": ["0056", "00878", "00919"]
   },
   "name_keywords": {
-    "high_dividend": ["高息", "高股息", "高配息", "股利", "收益", "配息"],
-    "bond": ["債", "公債", "公司債", "投等債", "投資等級債", "美債", "新興債", "高收益債"],
-    "theme": ["半導體", "AI", "人工智慧", "電動車", "生技", "金融", "電子", "5G", "綠能", "ESG", "車用"]
+    "dividend_high": ["高息", "高股息", "高配息", "股利", "收益", "配息"],
+    "theme": ["半導體", "AI", "人工智慧", "電動車", "生技", "金融", "電子", "5G", "綠能", "ESG", "車用", "航運", "鋼鐵", "電力", "基建"]
   },
-  "suffix_rules": [
-    { "suffix": "A", "category": "active", "note": "代號結尾為 A 者視為主動型（如 00981A、00403A）" },
-    { "suffix": "B", "category": "bond", "note": "代號結尾為 B 者視為債券型（如 00679B、00937B）" },
-    { "suffix": "L", "category": "leveraged", "note": "代號結尾為 L 者視為槓桿型（如 00631L）" },
-    { "suffix": "R", "category": "inverse", "note": "代號結尾為 R 者視為反向型（如 00632R）" }
-  ],
   "category_labels": {
     "market_cap": "市值型",
-    "high_dividend": "高配息型",
-    "active": "主動型",
-    "passive": "被動型",
-    "bond": "債券型",
+    "dividend_high": "高息型",
+    "theme": "主題型",
     "leveraged": "槓桿型",
     "inverse": "反向型",
-    "theme": "主題型",
-    "monthly_pay": "月配型",
-    "quarterly_pay": "季配型",
-    "annual_pay": "年配型",
-    "no_pay": "不配息型"
+    "bond": "債券型",
+    "bond_fx": "債券外幣型",
+    "futures_fx": "期貨外幣型",
+    "balanced": "平衡型",
+    "active": "主動式",
+    "active_bond": "主動債券",
+    "unclassified": "待確認"
   }
 }

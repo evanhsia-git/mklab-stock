@@ -37,6 +37,16 @@
 
 
 
+<div class="section-title">今日市場寬度</div>
+<div class="breadth-summary" id="breadthSummary"></div>
+
+<div class="section-title">漲跌幅分布</div>
+<div class="card" id="histWrap"></div>
+
+<div class="section-title">各產業上漲家數比排行</div>
+<div class="table-wrap"><table id="indBreadthTable"></table></div>
+<p class="muted-small-top">目前僅計算「當日」漲跌分布，52 週創高/創低家數需要後端先預先計算，暫不提供。</p>
+
 <div class="section-title">台灣 33 產業動態（漲跌績效 · 點擊產業看成分股）</div>
 <div class="grid" id="igrid"></div>
 
@@ -64,6 +74,85 @@
 <script src="assets/js/mklab-wc.js"></script>
 <script>
   const INDUSTRIES = ["水泥工業","食品工業","塑膠工業","紡織纖維","電機機械","電器電纜","化學工業","生技醫療業","玻璃陶瓷","造紙工業","鋼鐵工業","橡膠工業","汽車工業","半導體業","電腦及週邊設備業","光電業","通訊網路業","電子零組件業","電子通路業","資訊服務業","其他電子業","建材營造","航運業","觀光餐旅","金融保險","貿易百貨","油電燃氣業","綜合","綠能環保","數位雲端","運動休閒","居家生活","其他等"];
+  // ===== 市場寬度（原 mklab-stock-breadth.html，併入本頁）=====
+  // 包在獨立區塊內，BUCKETS 與 render 函式不會和產業頁的變數互相覆蓋
+  const BreadthPanel = (function () {
+    const BUCKETS = [
+      { label: '< -7%',    test: v => v < -7 },
+      { label: '-7~-3%',   test: v => v >= -7 && v < -3 },
+      { label: '-3~-1%',   test: v => v >= -3 && v < -1 },
+      { label: '-1~0%',    test: v => v >= -1 && v < 0 },
+      { label: '0~1%',     test: v => v >= 0 && v < 1 },
+      { label: '1~3%',     test: v => v >= 1 && v < 3 },
+      { label: '3~7%',     test: v => v >= 3 && v < 7 },
+      { label: '> 7%',     test: v => v >= 7 },
+    ];
+
+    function renderSummary(stocks) {
+      const up = stocks.filter(r => r.chg > 0).length;
+      const down = stocks.filter(r => r.chg < 0).length;
+      const flat = stocks.filter(r => r.chg === 0).length;
+      const ratio = down > 0 ? (up / down).toFixed(2) : '∞';
+      const cards = [
+        { label: '上漲家數', val: up, cls: 'up' },
+        { label: '下跌家數', val: down, cls: 'down' },
+        { label: '平盤家數', val: flat, cls: '' },
+        { label: '漲跌家數比', val: ratio, cls: '' },
+      ];
+      document.getElementById('breadthSummary').innerHTML = cards.map(c =>
+        `<div class="card"><div class="card-title">${c.label}</div><div class="card-val ${c.cls}">${c.val}</div></div>`
+      ).join('');
+    }
+
+    function renderHistogram(stocks) {
+      const counts = BUCKETS.map(b => stocks.filter(r => r.chg != null && b.test(r.chg)).length);
+      const max = Math.max(...counts, 1);
+      let html = '';
+      BUCKETS.forEach((b, i) => {
+        const pct = (counts[i] / max * 100).toFixed(1);
+        const color = b.label.startsWith('-') || b.label.startsWith('<') ? 'var(--down)' : (b.label.startsWith('>') || (!b.label.startsWith('0') && !b.label.startsWith('-')) ? 'var(--up)' : 'var(--muted)');
+        html += `<div class="breadth-bar-row">
+          <span class="breadth-bar-label">${b.label}</span>
+          <span class="breadth-bar-track"><span class="breadth-bar-fill" style="width:${pct}%;--bar-fill:${color};"></span></span>
+          <span class="breadth-bar-count">${counts[i]} 檔</span>
+        </div>`;
+      });
+      document.getElementById('histWrap').innerHTML = html;
+    }
+
+    function renderIndBreadth(stocks) {
+      const byInd = {};
+      stocks.forEach(r => {
+        if (!r.ind) return;
+        byInd[r.ind] = byInd[r.ind] || { ind: r.ind, up: 0, total: 0 };
+        byInd[r.ind].total++;
+        if (r.chg > 0) byInd[r.ind].up++;
+      });
+      const rows = Object.values(byInd).map(d => ({ ...d, upRatio: d.total ? (d.up / d.total * 100) : 0 }));
+      rows.sort((a, b) => b.upRatio - a.upRatio);
+      let html = '<thead><tr><th>產業</th><th>上漲家數</th><th>總檔數</th><th>上漲比例</th></tr></thead><tbody>';
+      rows.forEach(r => {
+        html += `<tr><td>${r.ind}</td><td>${r.up}</td><td>${r.total}</td><td class="${r.upRatio >= 50 ? 'up' : 'down'}">${r.upRatio.toFixed(1)}%</td></tr>`;
+      });
+      html += '</tbody>';
+      document.getElementById('indBreadthTable').innerHTML = html;
+    }
+
+    // 由產業頁的啟動流程呼叫；stocks 由同一次 MKLAB.data.stocks() 取得，不重複請求
+    function render(stocks) {
+      try {
+        renderSummary(stocks);
+        renderHistogram(stocks);
+        renderIndBreadth(stocks);
+      } catch (e) {
+        console.warn('[industry/breadth] render failed:', e);
+        const el = document.getElementById('breadthSummary');
+        if (el) el.innerHTML = '<p class="muted-small-top">市場寬度載入失敗：' + (e && e.message ? e.message : e) + '</p>';
+      }
+    }
+    return { render };
+  })();
+
   // 方案 B：由 data/industry.json 載入真實值；若 y1/y5 無歷史資料顯示 '-'
   let data = [];
 
@@ -85,6 +174,7 @@
       if (d && Array.isArray(d)) {
         ALL_STOCKS = d; stocksLoaded = true;
         renderGrid(); // 個股資料就緒後重新渲染卡片，補上真正的領漲/領跌
+        BreadthPanel.render(d); // 市場寬度：沿用同一份個股資料，不重複請求
         if (activeInd != null) renderDetail(activeInd);
       }
     }).catch(() => {});

@@ -1,33 +1,45 @@
 {
   "meta": {
     "as_of": "2026-09-29",
-    "rules_version": "1.0.0",
-    "count": 359,
+    "rules_version": "2.0.0",
+    "count": 353,
+    "excluded_count": 6,
+    "excluded_syms": [
+      "00635U",
+      "00642U",
+      "00682U",
+      "00693U",
+      "00738U",
+      "00763U"
+    ],
     "category_counts": {
       "active": 32,
-      "high_dividend": 33,
-      "market_cap": 9,
-      "passive": 147,
-      "theme": 50,
+      "dividend_high": 33,
+      "market_cap": 103,
+      "theme": 53,
+      "unclassified": 5,
       "leveraged": 21,
       "inverse": 20,
-      "bond": 110
+      "bond": 102,
+      "balanced": 3,
+      "active_bond": 8,
+      "bond_fx": 1
     },
     "labels": {
       "market_cap": "市值型",
-      "high_dividend": "高配息型",
-      "active": "主動型",
-      "passive": "被動型",
-      "bond": "債券型",
+      "dividend_high": "高息型",
+      "theme": "主題型",
       "leveraged": "槓桿型",
       "inverse": "反向型",
-      "theme": "主題型",
-      "monthly_pay": "月配型",
-      "quarterly_pay": "季配型",
-      "annual_pay": "年配型",
-      "no_pay": "不配息型"
+      "bond": "債券型",
+      "bond_fx": "債券外幣型",
+      "futures_fx": "期貨外幣型",
+      "balanced": "平衡型",
+      "active": "主動式",
+      "active_bond": "主動債券",
+      "unclassified": "待確認"
     },
-    "note": "同一檔 ETF 可屬於多個分類；pay_frequency 目前未填（待配息資料）"
+    "note": "已排除 U 尾期貨型；同一檔可屬多類；pay_frequency 待配息資料來源補上"
   },
   "etfs": [
     {
@@ -36,11 +48,11 @@
       "market": "TWSE",
       "categories": [
         "active",
-        "high_dividend"
+        "dividend_high"
       ],
       "category_reasons": {
         "active": "代號結尾 A",
-        "high_dividend": "名稱含「高息」"
+        "dividend_high": "名稱含「高息」"
       },
       "pay_frequency": null
     },
@@ -110,11 +122,11 @@
       "market": "TWSE",
       "categories": [
         "active",
-        "high_dividend"
+        "dividend_high"
       ],
       "category_reasons": {
         "active": "代號結尾 A",
-        "high_dividend": "名稱含「收益」"
+        "dividend_high": "名稱含「收益」"
       },
       "pay_frequency": null
     },
@@ -171,12 +183,10 @@
       "name": "元大台灣50",
       "market": "TWSE",
       "categories": [
-        "market_cap",
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "market_cap": "明確代號清單",
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "明確代號清單"
       },
       "pay_frequency": null
     },
@@ -185,12 +195,10 @@
       "name": "元大中型100",
       "market": "TWSE",
       "categories": [
-        "market_cap",
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "market_cap": "明確代號清單",
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "明確代號清單"
       },
       "pay_frequency": null
     },
@@ -199,10 +207,10 @@
       "name": "富邦科技",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -235,12 +243,10 @@
       "name": "元大高股息",
       "market": "TWSE",
       "categories": [
-        "high_dividend",
-        "passive"
+        "dividend_high"
       ],
       "category_reasons": {
-        "high_dividend": "明確代號清單",
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "dividend_high": "明確代號清單"
       },
       "pay_frequency": null
     },
@@ -249,10 +255,10 @@
       "name": "富邦摩台",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -261,10 +267,10 @@
       "name": "元大寶滬深",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -273,10 +279,10 @@
       "name": "元大MSCI台灣",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -285,10 +291,10 @@
       "name": "永豐臺灣加權",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -297,10 +303,10 @@
       "name": "富邦上証(新臺幣)",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -309,10 +315,10 @@
       "name": "元大上證50",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -321,10 +327,10 @@
       "name": "復華滬深(原簡稱:FH滬深)",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -333,12 +339,10 @@
       "name": "富邦台50",
       "market": "TWSE",
       "categories": [
-        "market_cap",
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "market_cap": "明確代號清單",
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "明確代號清單"
       },
       "pay_frequency": null
     },
@@ -347,10 +351,10 @@
       "name": "富邦上証+R(人民幣)",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "unclassified"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "unclassified": "代號結尾 K"
       },
       "pay_frequency": null
     },
@@ -403,26 +407,14 @@
       "pay_frequency": null
     },
     {
-      "sym": "00635U",
-      "name": "期元大S&P黃金",
-      "market": "TWSE",
-      "categories": [
-        "passive"
-      ],
-      "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
-      },
-      "pay_frequency": null
-    },
-    {
       "sym": "00636",
       "name": "國泰中國A50(新臺幣)",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -431,10 +423,10 @@
       "name": "國泰中國A50+U(美元)",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "unclassified"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "unclassified": "代號結尾 K"
       },
       "pay_frequency": null
     },
@@ -467,10 +459,10 @@
       "name": "富邦深100",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -499,26 +491,14 @@
       "pay_frequency": null
     },
     {
-      "sym": "00642U",
-      "name": "期元大S&P石油",
-      "market": "TWSE",
-      "categories": [
-        "passive"
-      ],
-      "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
-      },
-      "pay_frequency": null
-    },
-    {
       "sym": "00643",
       "name": "群益深証中小(新臺幣)",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -527,10 +507,10 @@
       "name": "群益深証中小+R(人民幣)",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "unclassified"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "unclassified": "代號結尾 K"
       },
       "pay_frequency": null
     },
@@ -539,10 +519,10 @@
       "name": "富邦日本",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -551,10 +531,10 @@
       "name": "元大S&P500",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -611,10 +591,10 @@
       "name": "富邦印度",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -671,10 +651,10 @@
       "name": "國泰日經225(新臺幣)",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -683,10 +663,10 @@
       "name": "國泰日經225+U(美元)",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "unclassified"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "unclassified": "代號結尾 K"
       },
       "pay_frequency": null
     },
@@ -695,10 +675,10 @@
       "name": "元大歐洲50",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -707,10 +687,10 @@
       "name": "元大日經225",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -719,10 +699,10 @@
       "name": "富邦NASDAQ",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -779,10 +759,10 @@
       "name": "國泰美國道瓊(新臺幣)",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -791,10 +771,10 @@
       "name": "國泰美國道瓊+U(美元)",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "unclassified"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "unclassified": "代號結尾 K"
       },
       "pay_frequency": null
     },
@@ -899,12 +879,10 @@
       "name": "元大美債20正2",
       "market": "TWSE",
       "categories": [
-        "bond",
         "leveraged"
       ],
       "category_reasons": {
-        "leveraged": "代號結尾 L",
-        "bond": "名稱含「債」"
+        "leveraged": "代號結尾 L"
       },
       "pay_frequency": null
     },
@@ -913,24 +891,10 @@
       "name": "元大美債20反1",
       "market": "TWSE",
       "categories": [
-        "bond",
         "inverse"
       ],
       "category_reasons": {
-        "inverse": "代號結尾 R",
-        "bond": "名稱含「債」"
-      },
-      "pay_frequency": null
-    },
-    {
-      "sym": "00682U",
-      "name": "期元大美元指數",
-      "market": "TWSE",
-      "categories": [
-        "passive"
-      ],
-      "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "inverse": "代號結尾 R"
       },
       "pay_frequency": null
     },
@@ -987,12 +951,10 @@
       "name": "國泰20年美債正2",
       "market": "TWSE",
       "categories": [
-        "bond",
         "leveraged"
       ],
       "category_reasons": {
-        "leveraged": "代號結尾 L",
-        "bond": "名稱含「債」"
+        "leveraged": "代號結尾 L"
       },
       "pay_frequency": null
     },
@@ -1001,12 +963,10 @@
       "name": "國泰20年美債反1",
       "market": "TWSE",
       "categories": [
-        "bond",
         "inverse"
       ],
       "category_reasons": {
-        "inverse": "代號結尾 R",
-        "bond": "名稱含「債」"
+        "inverse": "代號結尾 R"
       },
       "pay_frequency": null
     },
@@ -1015,12 +975,10 @@
       "name": "兆豐藍籌30",
       "market": "TWSE",
       "categories": [
-        "market_cap",
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "market_cap": "明確代號清單",
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "明確代號清單"
       },
       "pay_frequency": null
     },
@@ -1029,24 +987,10 @@
       "name": "富邦公司治理",
       "market": "TWSE",
       "categories": [
-        "market_cap",
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "market_cap": "明確代號清單",
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
-      },
-      "pay_frequency": null
-    },
-    {
-      "sym": "00693U",
-      "name": "期街口S&P黃豆",
-      "market": "TWSE",
-      "categories": [
-        "passive"
-      ],
-      "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "明確代號清單"
       },
       "pay_frequency": null
     },
@@ -1055,10 +999,10 @@
       "name": "富邦恒生國企",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1067,12 +1011,10 @@
       "name": "國泰股利精選30",
       "market": "TWSE",
       "categories": [
-        "high_dividend",
-        "passive"
+        "dividend_high"
       ],
       "category_reasons": {
-        "high_dividend": "名稱含「股利」",
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "dividend_high": "名稱含「股利」"
       },
       "pay_frequency": null
     },
@@ -1081,12 +1023,10 @@
       "name": "國泰標普低波高息",
       "market": "TWSE",
       "categories": [
-        "high_dividend",
-        "passive"
+        "dividend_high"
       ],
       "category_reasons": {
-        "high_dividend": "名稱含「高息」",
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "dividend_high": "名稱含「高息」"
       },
       "pay_frequency": null
     },
@@ -1095,10 +1035,10 @@
       "name": "台新MSCI中國",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1143,10 +1083,10 @@
       "name": "富邦歐洲",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1179,10 +1119,10 @@
       "name": "復華富時不動產(原簡稱:FH富時不動產)",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1191,12 +1131,10 @@
       "name": "元大台灣高息低波",
       "market": "TWSE",
       "categories": [
-        "high_dividend",
-        "passive"
+        "dividend_high"
       ],
       "category_reasons": {
-        "high_dividend": "名稱含「高息」",
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "dividend_high": "名稱含「高息」"
       },
       "pay_frequency": null
     },
@@ -1205,10 +1143,10 @@
       "name": "群益道瓊美國地產",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1229,10 +1167,10 @@
       "name": "富邦美國特別股",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1241,10 +1179,10 @@
       "name": "第一金工業30",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1253,12 +1191,10 @@
       "name": "富邦臺灣優質高息",
       "market": "TWSE",
       "categories": [
-        "high_dividend",
-        "passive"
+        "dividend_high"
       ],
       "category_reasons": {
-        "high_dividend": "名稱含「高息」",
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "dividend_high": "名稱含「高息」"
       },
       "pay_frequency": null
     },
@@ -1267,12 +1203,10 @@
       "name": "復華富時高息低波(原簡稱:FH富時高息低波)",
       "market": "TWSE",
       "categories": [
-        "high_dividend",
-        "passive"
+        "dividend_high"
       ],
       "category_reasons": {
-        "high_dividend": "名稱含「高息」",
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "dividend_high": "名稱含「高息」"
       },
       "pay_frequency": null
     },
@@ -1281,10 +1215,10 @@
       "name": "富邦臺灣中小",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1293,10 +1227,10 @@
       "name": "國泰臺韓科技",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1305,10 +1239,10 @@
       "name": "國泰新興市場",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1325,26 +1259,14 @@
       "pay_frequency": null
     },
     {
-      "sym": "00738U",
-      "name": "期元大道瓊白銀",
-      "market": "TWSE",
-      "categories": [
-        "passive"
-      ],
-      "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
-      },
-      "pay_frequency": null
-    },
-    {
       "sym": "00739",
       "name": "元大MSCI A股",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1353,10 +1275,10 @@
       "name": "中信中國50",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1377,10 +1299,10 @@
       "name": "統一FANG+",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1397,26 +1319,14 @@
       "pay_frequency": null
     },
     {
-      "sym": "00763U",
-      "name": "期街口道瓊銅",
-      "market": "TWSE",
-      "categories": [
-        "passive"
-      ],
-      "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
-      },
-      "pay_frequency": null
-    },
-    {
       "sym": "00770",
       "name": "國泰北美科技",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1425,12 +1335,10 @@
       "name": "元大US高息特別股",
       "market": "TWSE",
       "categories": [
-        "high_dividend",
-        "passive"
+        "dividend_high"
       ],
       "category_reasons": {
-        "high_dividend": "名稱含「高息」",
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "dividend_high": "名稱含「高息」"
       },
       "pay_frequency": null
     },
@@ -1451,10 +1359,10 @@
       "name": "富邦中証500",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1513,10 +1421,10 @@
       "name": "元大全球未來通訊",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1537,10 +1445,10 @@
       "name": "國泰網路資安",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1561,12 +1469,10 @@
       "name": "國泰永續高股息",
       "market": "TWSE",
       "categories": [
-        "high_dividend",
-        "passive"
+        "dividend_high"
       ],
       "category_reasons": {
-        "high_dividend": "明確代號清單",
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "dividend_high": "明確代號清單"
       },
       "pay_frequency": null
     },
@@ -1575,10 +1481,10 @@
       "name": "國泰台灣科技龍頭",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1587,12 +1493,10 @@
       "name": "中信中國高股息",
       "market": "TWSE",
       "categories": [
-        "high_dividend",
-        "passive"
+        "dividend_high"
       ],
       "category_reasons": {
-        "high_dividend": "名稱含「高股息」",
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "dividend_high": "名稱含「高股息」"
       },
       "pay_frequency": null
     },
@@ -1601,10 +1505,10 @@
       "name": "富邦越南",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1649,10 +1553,10 @@
       "name": "中信小資高價30",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1661,10 +1565,10 @@
       "name": "富邦未來車",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1697,10 +1601,10 @@
       "name": "國泰基因免疫革命",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1709,10 +1613,10 @@
       "name": "FT潔淨能源",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1721,12 +1625,10 @@
       "name": "富邦特選高股息30",
       "market": "TWSE",
       "categories": [
-        "high_dividend",
-        "passive"
+        "dividend_high"
       ],
       "category_reasons": {
-        "high_dividend": "名稱含「高股息」",
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "dividend_high": "名稱含「高股息」"
       },
       "pay_frequency": null
     },
@@ -1735,10 +1637,10 @@
       "name": "永豐智能車供應鏈",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1747,10 +1649,10 @@
       "name": "中信電池及儲能",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1759,10 +1661,10 @@
       "name": "富邦元宇宙",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1783,10 +1685,10 @@
       "name": "FT臺灣Smart",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1795,10 +1697,10 @@
       "name": "永豐優息存股",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1807,10 +1709,10 @@
       "name": "富邦入息REITs+",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1819,10 +1721,10 @@
       "name": "國泰數位支付服務",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1831,10 +1733,10 @@
       "name": "第一金太空衛星",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1855,10 +1757,10 @@
       "name": "中信臺灣智慧 50",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1867,10 +1769,10 @@
       "name": "兆豐台灣晶圓製造",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1879,12 +1781,10 @@
       "name": "凱基優選高股息30",
       "market": "TWSE",
       "categories": [
-        "high_dividend",
-        "passive"
+        "dividend_high"
       ],
       "category_reasons": {
-        "high_dividend": "名稱含「高股息」",
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "dividend_high": "名稱含「高股息」"
       },
       "pay_frequency": null
     },
@@ -1893,10 +1793,10 @@
       "name": "國泰全球品牌50",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1917,10 +1817,10 @@
       "name": "大華優利高填息30",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1929,12 +1829,10 @@
       "name": "群益台灣精選高息",
       "market": "TWSE",
       "categories": [
-        "high_dividend",
-        "passive"
+        "dividend_high"
       ],
       "category_reasons": {
-        "high_dividend": "明確代號清單",
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "dividend_high": "明確代號清單"
       },
       "pay_frequency": null
     },
@@ -1955,10 +1853,10 @@
       "name": "兆豐龍頭等權重",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -1967,12 +1865,10 @@
       "name": "國泰台灣領袖50",
       "market": "TWSE",
       "categories": [
-        "market_cap",
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "market_cap": "明確代號清單",
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "明確代號清單"
       },
       "pay_frequency": null
     },
@@ -1995,10 +1891,10 @@
       "name": "復華S&P500成長",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -2007,10 +1903,10 @@
       "name": "凱基全球菁英55",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -2019,11 +1915,11 @@
       "name": "群益半導體收益",
       "market": "TWSE",
       "categories": [
-        "high_dividend",
+        "dividend_high",
         "theme"
       ],
       "category_reasons": {
-        "high_dividend": "名稱含「收益」",
+        "dividend_high": "名稱含「收益」",
         "theme": "名稱含「半導體」"
       },
       "pay_frequency": null
@@ -2033,10 +1929,10 @@
       "name": "復華台灣科技優息",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -2045,11 +1941,11 @@
       "name": "永豐ESG低碳高息",
       "market": "TWSE",
       "categories": [
-        "high_dividend",
+        "dividend_high",
         "theme"
       ],
       "category_reasons": {
-        "high_dividend": "名稱含「高息」",
+        "dividend_high": "名稱含「高息」",
         "theme": "名稱含「ESG」"
       },
       "pay_frequency": null
@@ -2059,12 +1955,10 @@
       "name": "兆豐永續高息等權",
       "market": "TWSE",
       "categories": [
-        "high_dividend",
-        "passive"
+        "dividend_high"
       ],
       "category_reasons": {
-        "high_dividend": "名稱含「高息」",
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "dividend_high": "名稱含「高息」"
       },
       "pay_frequency": null
     },
@@ -2073,12 +1967,10 @@
       "name": "中信成長高股息",
       "market": "TWSE",
       "categories": [
-        "high_dividend",
-        "passive"
+        "dividend_high"
       ],
       "category_reasons": {
-        "high_dividend": "名稱含「高股息」",
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "dividend_high": "名稱含「高股息」"
       },
       "pay_frequency": null
     },
@@ -2087,10 +1979,10 @@
       "name": "野村臺灣新科技50",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -2099,12 +1991,10 @@
       "name": "台新永續高息中小",
       "market": "TWSE",
       "categories": [
-        "high_dividend",
-        "passive"
+        "dividend_high"
       ],
       "category_reasons": {
-        "high_dividend": "名稱含「高息」",
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "dividend_high": "名稱含「高息」"
       },
       "pay_frequency": null
     },
@@ -2113,10 +2003,10 @@
       "name": "凱基優選30",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -2125,12 +2015,10 @@
       "name": "統一台灣高息動能",
       "market": "TWSE",
       "categories": [
-        "high_dividend",
-        "passive"
+        "dividend_high"
       ],
       "category_reasons": {
-        "high_dividend": "名稱含「高息」",
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "dividend_high": "名稱含「高息」"
       },
       "pay_frequency": null
     },
@@ -2139,12 +2027,10 @@
       "name": "元大台灣價值高息",
       "market": "TWSE",
       "categories": [
-        "high_dividend",
-        "passive"
+        "dividend_high"
       ],
       "category_reasons": {
-        "high_dividend": "名稱含「高息」",
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "dividend_high": "名稱含「高息」"
       },
       "pay_frequency": null
     },
@@ -2165,11 +2051,11 @@
       "name": "兆豐電子高息等權",
       "market": "TWSE",
       "categories": [
-        "high_dividend",
+        "dividend_high",
         "theme"
       ],
       "category_reasons": {
-        "high_dividend": "名稱含「高息」",
+        "dividend_high": "名稱含「高息」",
         "theme": "名稱含「電子」"
       },
       "pay_frequency": null
@@ -2179,12 +2065,10 @@
       "name": "野村趨勢動能高息",
       "market": "TWSE",
       "categories": [
-        "high_dividend",
-        "passive"
+        "dividend_high"
       ],
       "category_reasons": {
-        "high_dividend": "名稱含「高息」",
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "dividend_high": "名稱含「高息」"
       },
       "pay_frequency": null
     },
@@ -2205,12 +2089,10 @@
       "name": "群益科技高息成長",
       "market": "TWSE",
       "categories": [
-        "high_dividend",
-        "passive"
+        "dividend_high"
       ],
       "category_reasons": {
-        "high_dividend": "名稱含「高息」",
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "dividend_high": "名稱含「高息」"
       },
       "pay_frequency": null
     },
@@ -2219,10 +2101,10 @@
       "name": "台新臺灣IC設計",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -2231,10 +2113,10 @@
       "name": "復華日本龍頭",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -2291,12 +2173,10 @@
       "name": "中信日經高股息",
       "market": "TWSE",
       "categories": [
-        "high_dividend",
-        "passive"
+        "dividend_high"
       ],
       "category_reasons": {
-        "high_dividend": "名稱含「高股息」",
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "dividend_high": "名稱含「高股息」"
       },
       "pay_frequency": null
     },
@@ -2305,10 +2185,10 @@
       "name": "野村全球航運龍頭",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "theme"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "theme": "名稱含「航運」"
       },
       "pay_frequency": null
     },
@@ -2317,12 +2197,10 @@
       "name": "FT臺灣永續高息",
       "market": "TWSE",
       "categories": [
-        "high_dividend",
-        "passive"
+        "dividend_high"
       ],
       "category_reasons": {
-        "high_dividend": "名稱含「高息」",
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "dividend_high": "名稱含「高息」"
       },
       "pay_frequency": null
     },
@@ -2343,12 +2221,10 @@
       "name": "中信全球高股息",
       "market": "TWSE",
       "categories": [
-        "high_dividend",
-        "passive"
+        "dividend_high"
       ],
       "category_reasons": {
-        "high_dividend": "名稱含「高股息」",
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "dividend_high": "名稱含「高股息」"
       },
       "pay_frequency": null
     },
@@ -2357,12 +2233,10 @@
       "name": "中信亞太高股息",
       "market": "TWSE",
       "categories": [
-        "high_dividend",
-        "passive"
+        "dividend_high"
       ],
       "category_reasons": {
-        "high_dividend": "名稱含「高股息」",
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "dividend_high": "名稱含「高股息」"
       },
       "pay_frequency": null
     },
@@ -2371,10 +2245,10 @@
       "name": "元大航太防衛科技",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -2383,10 +2257,10 @@
       "name": "野村美國研發龍頭",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -2395,12 +2269,10 @@
       "name": "野村日本動能高息",
       "market": "TWSE",
       "categories": [
-        "high_dividend",
-        "passive"
+        "dividend_high"
       ],
       "category_reasons": {
-        "high_dividend": "名稱含「高息」",
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "dividend_high": "名稱含「高息」"
       },
       "pay_frequency": null
     },
@@ -2409,10 +2281,10 @@
       "name": "中信NASDAQ",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -2421,10 +2293,10 @@
       "name": "中信美國創新科技",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -2433,10 +2305,10 @@
       "name": "富邦旗艦50",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -2445,10 +2317,10 @@
       "name": "玉山市值動能50",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -2457,10 +2329,10 @@
       "name": "聯邦台精彩50",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -2469,10 +2341,10 @@
       "name": "台新美國電力基建",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "theme"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "theme": "名稱含「電力」"
       },
       "pay_frequency": null
     },
@@ -2481,10 +2353,10 @@
       "name": "華南永昌優選50",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -2517,10 +2389,10 @@
       "name": "玉山全球藍籌100",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -2529,10 +2401,10 @@
       "name": "統一美國50",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -2541,10 +2413,10 @@
       "name": "野村日本東證",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -2553,10 +2425,10 @@
       "name": "貝萊德標普卓越50",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -2565,12 +2437,10 @@
       "name": "凱基台灣TOP50",
       "market": "TWSE",
       "categories": [
-        "market_cap",
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "market_cap": "明確代號清單",
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "明確代號清單"
       },
       "pay_frequency": null
     },
@@ -2579,10 +2449,10 @@
       "name": "國泰日本不動產",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -2591,10 +2461,10 @@
       "name": "華南永昌NASDAQxT",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -2603,10 +2473,10 @@
       "name": "中信數據及電力",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "theme"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "theme": "名稱含「電力」"
       },
       "pay_frequency": null
     },
@@ -2627,10 +2497,10 @@
       "name": "平衡凱基雙核收息",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "balanced"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "balanced": "代號結尾 T"
       },
       "pay_frequency": null
     },
@@ -2639,10 +2509,10 @@
       "name": "元大納斯達克精選",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -2651,10 +2521,10 @@
       "name": "野村稀土關鍵資源",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -2663,10 +2533,10 @@
       "name": "群益美國科技巨頭",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -2675,10 +2545,10 @@
       "name": "貝萊德世界股票",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -2687,10 +2557,10 @@
       "name": "玉山未來全球算力",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -2699,10 +2569,10 @@
       "name": "中信台日韓PCB",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -2711,10 +2581,10 @@
       "name": "大華韓國KOSPI50",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -2735,10 +2605,10 @@
       "name": "主動富邦動態入息",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "active_bond"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "active_bond": "代號結尾 D"
       },
       "pay_frequency": null
     },
@@ -2747,10 +2617,10 @@
       "name": "平衡兆豐台美動能",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "balanced"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "balanced": "代號結尾 T"
       },
       "pay_frequency": null
     },
@@ -2771,12 +2641,12 @@
       "name": "主動富邦複合收益",
       "market": "TWSE",
       "categories": [
-        "high_dividend",
-        "passive"
+        "active_bond",
+        "dividend_high"
       ],
       "category_reasons": {
-        "high_dividend": "名稱含「收益」",
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "active_bond": "代號結尾 D",
+        "dividend_high": "名稱含「收益」"
       },
       "pay_frequency": null
     },
@@ -2786,11 +2656,11 @@
       "market": "TWSE",
       "categories": [
         "active",
-        "high_dividend"
+        "dividend_high"
       ],
       "category_reasons": {
         "active": "代號結尾 A",
-        "high_dividend": "名稱含「高息」"
+        "dividend_high": "名稱含「高息」"
       },
       "pay_frequency": null
     },
@@ -2799,10 +2669,10 @@
       "name": "主動聯博全球非投",
       "market": "TWSE",
       "categories": [
-        "passive"
+        "active_bond"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "active_bond": "代號結尾 D"
       },
       "pay_frequency": null
     },
@@ -2996,11 +2866,11 @@
       "market": "TWSE",
       "categories": [
         "active",
-        "high_dividend"
+        "dividend_high"
       ],
       "category_reasons": {
         "active": "代號結尾 A",
-        "high_dividend": "名稱含「高息」"
+        "dividend_high": "名稱含「高息」"
       },
       "pay_frequency": null
     },
@@ -3021,10 +2891,10 @@
       "name": "元大富櫃50",
       "market": "TPEx",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -3057,10 +2927,10 @@
       "name": "國泰20年美債+櫃U(美元)",
       "market": "TPEx",
       "categories": [
-        "bond"
+        "bond_fx"
       ],
       "category_reasons": {
-        "bond": "名稱含「債」"
+        "bond_fx": "代號結尾 C"
       },
       "pay_frequency": null
     },
@@ -3791,10 +3661,10 @@
       "name": "永豐美國500大",
       "market": "TPEx",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -3911,10 +3781,10 @@
       "name": "永豐美國科技",
       "market": "TPEx",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -3923,10 +3793,10 @@
       "name": "永豐中國科技50大",
       "market": "TPEx",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -4049,10 +3919,10 @@
       "name": "中信日本商社",
       "market": "TPEx",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -4161,10 +4031,10 @@
       "name": "台新標普500",
       "market": "TPEx",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -4173,10 +4043,10 @@
       "name": "台新標普科技精選",
       "market": "TPEx",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -4197,10 +4067,10 @@
       "name": "主動聯博投等入息",
       "market": "TPEx",
       "categories": [
-        "passive"
+        "active_bond"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "active_bond": "代號結尾 D"
       },
       "pay_frequency": null
     },
@@ -4209,10 +4079,10 @@
       "name": "平衡凱基美國TOP",
       "market": "TPEx",
       "categories": [
-        "passive"
+        "balanced"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "balanced": "代號結尾 T"
       },
       "pay_frequency": null
     },
@@ -4221,10 +4091,10 @@
       "name": "富邦標普500",
       "market": "TPEx",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -4233,10 +4103,10 @@
       "name": "大華美國MAG7+",
       "market": "TPEx",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -4257,10 +4127,10 @@
       "name": "主動中信非投等債",
       "market": "TPEx",
       "categories": [
-        "bond"
+        "active_bond"
       ],
       "category_reasons": {
-        "bond": "名稱含「債」"
+        "active_bond": "代號結尾 D"
       },
       "pay_frequency": null
     },
@@ -4281,10 +4151,10 @@
       "name": "群益 S&P500",
       "market": "TPEx",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     },
@@ -4341,10 +4211,10 @@
       "name": "主動貝萊德優投等",
       "market": "TPEx",
       "categories": [
-        "passive"
+        "active_bond"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "active_bond": "代號結尾 D"
       },
       "pay_frequency": null
     },
@@ -4367,11 +4237,11 @@
       "name": "主動復華金融債息",
       "market": "TPEx",
       "categories": [
-        "bond",
+        "active_bond",
         "theme"
       ],
       "category_reasons": {
-        "bond": "名稱含「債」",
+        "active_bond": "代號結尾 D",
         "theme": "名稱含「金融」"
       },
       "pay_frequency": null
@@ -4393,10 +4263,10 @@
       "name": "主動統一美債量化",
       "market": "TPEx",
       "categories": [
-        "bond"
+        "active_bond"
       ],
       "category_reasons": {
-        "bond": "名稱含「債」"
+        "active_bond": "代號結尾 D"
       },
       "pay_frequency": null
     },
@@ -4430,11 +4300,11 @@
       "market": "TPEx",
       "categories": [
         "bond",
-        "high_dividend"
+        "dividend_high"
       ],
       "category_reasons": {
         "bond": "代號結尾 B",
-        "high_dividend": "名稱含「收益」"
+        "dividend_high": "名稱含「收益」"
       },
       "pay_frequency": null
     },
@@ -4457,10 +4327,10 @@
       "name": null,
       "market": "TPEx",
       "categories": [
-        "passive"
+        "market_cap"
       ],
       "category_reasons": {
-        "passive": "非主動/槓桿/反向/主題，視為被動指數型"
+        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     }

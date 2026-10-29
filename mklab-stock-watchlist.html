@@ -99,6 +99,9 @@
   function render() {
     const rows = MKLAB.Watch.decorate(priceMap).map(r => {
       r.alert = calcAlert(r.sym, r.chg);
+      // 美股列標示幣別（USD），避免與台股 NT$ 價格混淆；台股維持原樣
+      const pm = priceMap[r.sym];
+      if (pm && pm.market === 'US') r.name = (r.name || '') + ' (US$)';
       return r;
     });
     if (!wlTable) {
@@ -146,8 +149,17 @@
   MKLAB.data.json('stocks').then(meta => {
     const d = meta && meta.stocks;
     if (d && Array.isArray(d)) {
-      d.forEach(s => { priceMap[s.sym] = { price: s.price, chg: s.chg, pe: s.pe, pb: s.pb, roe: s.roe, alert: null, name: s.name }; });
+      d.forEach(s => { priceMap[s.sym] = { price: s.price, chg: s.chg, pe: s.pe, pb: s.pb, roe: s.roe, alert: null, name: s.name, market: 'TW' }; });
     }
+    // 美股：獨立檔案 data/us/us-stocks.json，只加入「台股沒有的代號」，避免蓋掉台股同代號資料
+    return MKLAB.data.json('us/us-stocks').catch(() => null).then(us => {
+      const ud = us && Array.isArray(us.stocks) ? us.stocks : [];
+      ud.forEach(s => {
+        if (!priceMap[s.sym]) priceMap[s.sym] = { price: s.price, chg: s.chg, pe: s.pe, pb: s.pb, roe: s.roe, alert: null, name: s.name, market: 'US', currency: s.currency || 'USD' };
+      });
+      return meta;
+    });
+  }).then(meta => {
     render();
     MKLAB.setFreshness(meta && meta.meta && meta.meta.as_of);
   }).catch(e => {
