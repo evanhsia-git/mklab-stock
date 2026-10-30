@@ -40,7 +40,7 @@
 <div class="section-title">Market Health & Exposure（^TWII · 近 1 年）</div>
 <div class="mh-layout">
   <div class="tv-box">
-    <mklab-kline id="marketKline" data-symbol="TWII" height="460"></mklab-kline>
+    <div id="marketKline" style="height:460px;"></div>
   </div>
   <div class="perf">
     <h3>績效表現（台灣加權指數 ^TWII）</h3>
@@ -82,6 +82,8 @@
 
 <script src="assets/js/data-client.js"></script>
 <script src="assets/js/mklab-core.js"></script>
+<script src="vendor/echarts.min.js"></script>
+<script src="assets/js/mklab-chart.js"></script>
 <script src="assets/js/mklab-wc.js"></script>
 <script src="vendor/lightweight-charts.min.js"></script>
 <script>
@@ -371,6 +373,11 @@
       }
     }
 
+
+    // 市場 K 線（ECharts，資料為 TWII 加權指數歷史 K 線）
+    MKLAB.data.jsData('twii_kdata.js', 'TWII_KDATA')
+      .then(raw => { if (raw && raw.length) MKLAB.chart.createKline(document.getElementById('marketKline'), raw, {}); })
+      .catch(e => console.warn('[Market] K 線載入失敗:', e));
     // Initialize
     // Shell/Drawer 要優先掛載（不等資料 fetch），避免手機網路較慢時
     // 深色主題／搜尋／選單等按鈕在資料載入完成前一直不存在、點了沒反應。

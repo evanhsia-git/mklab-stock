@@ -43,6 +43,7 @@
   <button onclick="addCompare()">加入</button>
 </div>
 <div class="symlist" id="cmpChips"></div>
+<div id="metricChecks" class="muted-small-top" style="margin:8px 0;"></div>
 <div class="table-wrap"><table id="cmpTable"></table></div>
 <p class="muted-small-top" id="cmpEmpty">尚未加入任何股票，輸入代號開始比較。</p>
 
@@ -61,8 +62,32 @@
     { key: 'eps',   label: 'EPS',     fmt: r => r.eps != null ? Number(r.eps).toFixed(2) : '-', better: 'max' },
     { key: 'div',   label: '殖利率%', fmt: r => r.div != null ? Number(r.div).toFixed(2) + '%' : '-', better: 'max' },
     { key: 'market_cap', label: '市值(億)', fmt: r => r.market_cap != null ? (Number(r.market_cap) / 1e8).toFixed(1) : '-', better: 'max' },
+    { key: 'chg_1m', label: '月漲跌%', fmt: r => MKLAB.cellPct(r.chg_1m), better: 'max' },
+    { key: 'chg_1y', label: '年漲跌%', fmt: r => MKLAB.cellPct(r.chg_1y), better: 'max' },
+    { key: 'pos52w_level', label: '52週位階(1-5)', fmt: r => r.pos52w_level != null ? r.pos52w_level : '-', better: 'max' },
     { key: 'ind',   label: '產業',    fmt: r => r.ind || '-', better: null },
   ];
+  // 勾選欄位：使用者勾選要比較的指標（選擇會記在本機瀏覽器），預設勾選常用的前八項
+  const METRIC_KEY = 'mklab-cmp-metrics';
+  const DEFAULT_METRICS = ['price','chg','pe','pb','roe','div','chg_1y','market_cap'];
+  function getSelMetrics() {
+    try { const s = JSON.parse(localStorage.getItem(METRIC_KEY) || 'null'); if (Array.isArray(s)) return s; } catch (e) {}
+    return DEFAULT_METRICS.slice();
+  }
+  function setSelMetrics(list) { try { localStorage.setItem(METRIC_KEY, JSON.stringify(list)); } catch (e) {} }
+  function renderMetricChecks() {
+    const sel = getSelMetrics();
+    document.getElementById('metricChecks').innerHTML = METRICS.map(m =>
+      `<label style="margin-right:12px;white-space:nowrap;"><input type="checkbox" value="${m.key}" ${sel.includes(m.key)?'checked':''} onchange="toggleMetric('${m.key}', this.checked)"> ${m.label}</label>`
+    ).join('');
+  }
+  function toggleMetric(key, on) {
+    let sel = getSelMetrics();
+    sel = on ? Array.from(new Set(sel.concat([key]))) : sel.filter(k => k !== key);
+    setSelMetrics(sel);
+    renderTable();
+  }
+  window.toggleMetric = toggleMetric;
 
   let ALL = [];
 
@@ -103,7 +128,8 @@
     document.getElementById('cmpEmpty').style.display = rows.length ? 'none' : 'block';
     if (!rows.length) { document.getElementById('cmpTable').innerHTML = ''; return; }
     let html = '<thead><tr><th>指標</th>' + rows.map(r => `<th>${r.sym}<br><small>${r.name}</small></th>`).join('') + '</tr></thead><tbody>';
-    METRICS.forEach(m => {
+    const selMetrics = getSelMetrics();
+    METRICS.filter(m => selMetrics.includes(m.key)).forEach(m => {
       const vals = rows.map(r => r[m.key === 'market_cap' ? 'market_cap' : m.key]);
       let bestIdx = -1;
       if (m.better === 'max') { let best = -Infinity; vals.forEach((v, i) => { if (v != null && v > best) { best = v; bestIdx = i; } }); }
@@ -114,7 +140,7 @@
     document.getElementById('cmpTable').innerHTML = html;
   }
 
-  function renderAll() { renderChips(); renderTable(); }
+  function renderAll() { renderMetricChecks(); renderChips(); renderTable(); }
 
   window.addEventListener('DOMContentLoaded', async function () {
     MKLAB.initDrawer();

@@ -57,7 +57,8 @@
         <button onclick="klAddIndicator('KDJ')" class="btn btn-secondary btn-sm">KD</button>
         <button onclick="klClear()" class="btn btn-ghost btn-sm">清除</button>
       </div>
-      <mklab-kline id="tvChart" height="400"></mklab-kline>
+      <div id="tvChart" style="height:440px;"></div>
+      <div id="klStats" class="muted-small-top">拖曳工具列 ▭ 圖示可框選區間查看統計</div>
     </div>
 
     <div class="card">
@@ -78,6 +79,8 @@
 <script src="assets/js/mklab-core.js"></script>
 <script src="assets/js/mklab-wc.js"></script>
 <script src="vendor/lightweight-charts.min.js"></script>
+<script src="vendor/echarts.min.js"></script>
+<script src="assets/js/mklab-chart.js"></script>
 <script>
 // Static fallback data
 const STATIC = {
@@ -275,6 +278,36 @@ window.addEventListener('DOMContentLoaded', function () {
   </div>
 </footer>
 
+<script>
+  // ===== K 線（ECharts 版，取代 lightweight-charts；KD/MACD 切換與清除按鈕皆可運作）=====
+  let klInst = null;
+  const klIndState = { MACD: false, KD: false };
+  function klShowBrush(s) {
+    const box = document.getElementById('klStats');
+    if (!box) return;
+    box.textContent = s
+      ? `區間 ${s.from} ～ ${s.to}（${s.days} 日）｜漲跌 ${s.change > 0 ? '+' : ''}${s.change}%｜最高 ${s.high}｜最低 ${s.low}`
+      : '拖曳工具列 ▭ 圖示可框選區間查看統計';
+  }
+  function loadKLine() {
+    const raw = window.TWII_KDATA;
+    const el = document.getElementById('tvChart');
+    if (!el) return;
+    if (!raw || !raw.length) { el.textContent = '資料載入中…'; return; }
+    if (klInst) { klInst.dispose(); klInst = null; }
+    el.innerHTML = '';
+    klInst = MKLAB.chart.createKline(el, raw, { indicators: klIndState, onBrush: klShowBrush });
+  }
+  function klAddIndicator(name) {
+    const key = name === 'KDJ' ? 'KD' : name;
+    klIndState[key] = true;
+    if (klInst) klInst.setIndicator(key, true);
+  }
+  function klClear() {
+    klIndState.KD = false; klIndState.MACD = false;
+    if (klInst) klInst.clearIndicators();
+  }
+</script>
 <script>
   // 原本從未載入 twii_kdata.js，導致 K 線與 KD/MACD 按鈕都沒有資料可用；這裡在頁面就緒後先載入再繪圖
   window.addEventListener('DOMContentLoaded', function () {

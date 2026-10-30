@@ -1,0 +1,97 @@
+{
+  "repaired_at": "2026-10-30T14:26:59.878952+08:00",
+  "rule": "high 缺失超過 50% 的快照視為非交易日或來源不完整，予以刪除",
+  "removed_count": 18,
+  "removed": [
+    {
+      "file": "20250929.json",
+      "rows": 1368,
+      "missing_high_low": 1368
+    },
+    {
+      "file": "20251006.json",
+      "rows": 1368,
+      "missing_high_low": 1368
+    },
+    {
+      "file": "20251010.json",
+      "rows": 1368,
+      "missing_high_low": 1368
+    },
+    {
+      "file": "20251024.json",
+      "rows": 1368,
+      "missing_high_low": 1368
+    },
+    {
+      "file": "20251225.json",
+      "rows": 1368,
+      "missing_high_low": 1368
+    },
+    {
+      "file": "20260101.json",
+      "rows": 1368,
+      "missing_high_low": 1368
+    },
+    {
+      "file": "20260212.json",
+      "rows": 1368,
+      "missing_high_low": 1368
+    },
+    {
+      "file": "20260213.json",
+      "rows": 1368,
+      "missing_high_low": 1368
+    },
+    {
+      "file": "20260216.json",
+      "rows": 1368,
+      "missing_high_low": 1368
+    },
+    {
+      "file": "20260217.json",
+      "rows": 1368,
+      "missing_high_low": 1368
+    },
+    {
+      "file": "20260218.json",
+      "rows": 1368,
+      "missing_high_low": 1368
+    },
+    {
+      "file": "20260219.json",
+      "rows": 1368,
+      "missing_high_low": 1368
+    },
+    {
+      "file": "20260220.json",
+      "rows": 1368,
+      "missing_high_low": 1368
+    },
+    {
+      "file": "20260227.json",
+      "rows": 1368,
+      "missing_high_low": 1368
+    },
+    {
+      "file": "20260403.json",
+      "rows": 1368,
+      "missing_high_low": 1368
+    },
+    {
+      "file": "20260406.json",
+      "rows": 1368,
+      "missing_high_low": 1368
+    },
+    {
+      "file": "20260501.json",
+      "rows": 1368,
+      "missing_high_low": 1368
+    },
+    {
+      "file": "20260619.json",
+      "rows": 1368,
+      "missing_high_low": 1368
+    }
+  ]
+}
