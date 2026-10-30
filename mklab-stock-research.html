@@ -274,5 +274,14 @@ window.addEventListener('DOMContentLoaded', function () {
     <a class="link" href="https://github.com/evanhsia-git/mklab-stock" target="_blank" rel="noopener">GitHub 倉庫 ↗</a>
   </div>
 </footer>
+
+<script>
+  // 原本從未載入 twii_kdata.js，導致 K 線與 KD/MACD 按鈕都沒有資料可用；這裡在頁面就緒後先載入再繪圖
+  window.addEventListener('DOMContentLoaded', function () {
+    MKLAB.data.jsData('twii_kdata.js', 'TWII_KDATA')
+      .then(function () { loadKLine(); })
+      .catch(function (e) { console.warn('[research] K 線資料載入失敗:', e); });
+  });
+</script>
 </body>
 </html>

@@ -147,6 +147,21 @@ def calc_chg_1m(rows):
     return round((latest_close - base) / base * 100, 2)
 
 
+def calc_chg_1y(rows):
+    """年漲跌幅（%）：最新收盤 vs 不晚於 365 個日曆天前的最近一個交易日收盤。找不到基準回傳 None。"""
+    if len(rows) < 2:
+        return None
+    latest = dt.datetime.strptime(rows[-1][0], "%Y%m%d").date()
+    target = latest - dt.timedelta(days=365)
+    base = None
+    for r in rows:
+        if dt.datetime.strptime(r[0], "%Y%m%d").date() <= target:
+            base = r[4]
+    if base is None or base == 0:
+        return None
+    return round((rows[-1][4] - base) / base * 100, 2)
+
+
 def calc_pos52(rows):
     """52 週位階：以最近約一年的收盤價算最高/最低，將目前收盤落在 5 個等寬區間之一（1~5）。
     歷史覆蓋不足 300 天（例如新上市）回傳 None，不推測。"""
@@ -189,6 +204,7 @@ def main():
             row["macd_dif"] = row["macd_dea"] = row["macd_hist"] = None
             row["kd_k"] = row["kd_d"] = None
             row["chg_1m"] = None
+            row["chg_1y"] = None
             row.update({"high52w": None, "low52w": None, "pos52w_level": None})
             continue
 
@@ -197,6 +213,7 @@ def main():
         lows = [r[3] for r in rows]
 
         row["chg_1m"] = calc_chg_1m(rows)
+        row["chg_1y"] = calc_chg_1y(rows)
         row.update(calc_pos52(rows))
         row["ma5"] = sma(closes, 5)
         row["ma10"] = sma(closes, 10)

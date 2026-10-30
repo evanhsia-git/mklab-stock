@@ -273,7 +273,7 @@
           .sort((a, b) => b.score - a.score)
           .slice(0, 10);
         if (!dailyPicksTable) {
-          dailyPicksTable = MKLAB.DataTable('dailyPicks', { cols: ['sym', 'name', 'price', 'chg', 'chg_1m', 'pos52', 'pe', 'pb', 'roe', 'score'], rows: scored, pageSize: 0, defaultSort: 'score', fieldMap: { pos52: 'pos52w_level' } });
+          dailyPicksTable = MKLAB.DataTable('dailyPicks', { cols: ['sym', 'name', 'price', 'chg', 'chg_1m', 'chg_1y', 'pos52', 'pe', 'pb', 'roe', 'score'], rows: scored, pageSize: 0, defaultSort: 'score', fieldMap: { pos52: 'pos52w_level' } });
         } else {
           dailyPicksTable.setRows(scored);
         }
@@ -290,9 +290,9 @@
         const all = await MKLAB.data.stocks();
         const rows = (Array.isArray(all) ? all : []).filter(r => !isETF(r))
           .sort((a, b) => (b.market_cap || 0) - (a.market_cap || 0))
-          .slice(0, 10);
+          .slice(0, 30);
         if (!cap10Table) {
-          cap10Table = MKLAB.DataTable('cap10', { cols: ['sym', 'name', 'price', 'chg', 'chg_1m', 'pos52', 'pe', 'pb', 'roe', 'cap'], rows, pageSize: 10, pagerId: 'cap10Pager', defaultSort: 'cap', fieldMap: { cap: 'market_cap', pos52: 'pos52w_level' } });
+          cap10Table = MKLAB.DataTable('cap10', { cols: ['sym', 'name', 'price', 'chg', 'chg_1m', 'chg_1y', 'pos52', 'pe', 'pb', 'roe', 'cap'], rows, pageSize: 10, pagerId: 'cap10Pager', defaultSort: 'cap', fieldMap: { cap: 'market_cap', pos52: 'pos52w_level' } });
         } else {
           cap10Table.setRows(rows);
         }
@@ -315,7 +315,7 @@
       const countEl = document.getElementById('etfCatCount');
       if (countEl) countEl.textContent = `符合：${rows.length} / ${etfAllRows.length} 檔`;
       if (!etf10Table) {
-        etf10Table = MKLAB.DataTable('etf10', { cols: ['sym', 'name', 'price', 'chg', 'chg_1m', 'div', 'net_assets_100m', 'listing_date'], rows, pageSize: 10, pagerId: 'etf10Pager', defaultSort: 'net_assets_100m' });
+        etf10Table = MKLAB.DataTable('etf10', { cols: ['sym', 'name', 'price', 'chg', 'chg_1m', 'chg_1y', 'pos52', 'div', 'net_assets_100m', 'listing_date'], rows, pageSize: 10, pagerId: 'etf10Pager', defaultSort: 'net_assets_100m', fieldMap: { pos52: 'pos52w_level' } });
       } else {
         etf10Table.setRows(rows);
       }
@@ -358,7 +358,7 @@
         etfAllRows = metaList.map(m => {
           const live = priceMap[m.sym] || {};
           return Object.assign({}, m, {
-            price: live.price, chg: live.chg, chg_1m: live.chg_1m, div: live.div,
+            price: live.price, chg: live.chg, chg_1m: live.chg_1m, chg_1y: live.chg_1y, pos52w_level: live.pos52w_level, div: live.div,
             categories: catMap[m.sym] || [],
           });
         });
