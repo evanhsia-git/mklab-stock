@@ -114,6 +114,10 @@ LOG = RunLogger(MODE)
 
 
 # ===== 工具函式 =====
+# 官方財報／股利欄位（由 import_official_fundamentals.py 寫入），每日重建時必須保留
+OFFICIAL_KEYS = ["roe_off", "roa_off", "eps_off", "fund_period", "fund_asof", "fund_src",
+                 "div_cash_latest", "div_latest_year", "div_streak_years", "div_years_available"]
+
 def keep_record(code):
     """過濾機制：只留數字開頭、長度<=6 的上市/上櫃/ETF 代號。
     排除：期貨(TXF)/指數(TWII)等非數字開頭、異常長度。
@@ -529,7 +533,7 @@ def run_daily():
             "market_cap": mc, "ind": ex.get("ind"),
             "is_etf": is_etf,
             "chg": chg,
-            "rank": ex.get("rank"),
+            "rank": ex.get("rank"), **{k: ex.get(k) for k in OFFICIAL_KEYS},
             "source": source,
             "quality": quality,
             "last_updated": last_updated,
@@ -644,7 +648,7 @@ def run_daily():
             "market_cap": mc, "ind": ex.get("ind"),
             "is_etf": is_etf,
             "chg": chg,
-            "rank": ex.get("rank"),
+            "rank": ex.get("rank"), **{k: ex.get(k) for k in OFFICIAL_KEYS},
             "source": source,
             "quality": quality,
             "last_updated": last_updated,

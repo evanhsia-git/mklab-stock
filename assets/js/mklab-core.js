@@ -70,6 +70,8 @@
       return `<span class="pos52" title="52週位階 ${lv}/5（${(lv-1)*20}%~${lv*20}%）">${cells}</span>`;
     } },
     ind: { label:'產業', type:'str', sortable:true, fmt:r=>r.ind||'-' },
+    div_streak: { label:'連續配息(年)', type:'num', sortable:true, defDir:-1, fmt:r=>r.div_streak_years!=null?r.div_streak_years:'-' },
+    div_cash: { label:'最近現金股利(元)', type:'num', sortable:true, defDir:-1, fmt:r=>r.div_cash_latest!=null?Number(r.div_cash_latest).toFixed(2):'-' },
     rsi14: { label:'RSI(14)', type:'num', sortable:true, fmt:r=>r.rsi14!=null?r.rsi14:'-' },
     ma5: { label:'MA5', type:'num', sortable:true, fmt:r=>r.ma5!=null?r.ma5:'-' },
     ma20: { label:'MA20', type:'num', sortable:true, fmt:r=>r.ma20!=null?r.ma20:'-' },

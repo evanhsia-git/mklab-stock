@@ -95,6 +95,7 @@
       <button onclick="loadSymbol()">加入</button>
     </div>
     <div class="count" id="count"></div>
+    <p class="muted-small-top" id="fundNote"></p>
     <div class="table-wrap">
       <table id="resTable"></table>
     </div>
@@ -213,7 +214,7 @@
   function loadScreener(){
     MKLAB.data.stocks().then(d=>{
       if(d && Array.isArray(d) && d.length){
-        current=d.map(s=>({sym:s.sym,name:s.name,price:s.price,chg:s.chg,pe:s.pe,pb:s.pb,roe:s.roe,roa:s.roa,rsi:s.rsi14,pos52w_level:s.pos52w_level,ma5:s.ma5,ma10:s.ma10,ma30:s.ma30,cap:(s.market_cap!=null?(s.market_cap/1e8):0),div:(s.div||0),ind:s.ind}));
+        current=d.map(s=>({sym:s.sym,name:s.name,price:s.price,chg:s.chg,pe:s.pe,pb:s.pb,roe:s.roe,roa:s.roa,rsi:s.rsi14,pos52w_level:s.pos52w_level,div_streak_years:s.div_streak_years,div_cash_latest:s.div_cash_latest,ma5:s.ma5,ma10:s.ma10,ma30:s.ma30,cap:(s.market_cap!=null?(s.market_cap/1e8):0),div:(s.div||0),ind:s.ind}));
         dataLoaded=true;
         MKLAB.data.json('etf-classified').then(cd=>{ etfClassifiedSyms=(cd&&cd.etfs?cd.etfs:[]).map(x=>x.sym); }).catch(()=>{});
         // 填充產業下拉選單（不重複、排序後的產業清單）
@@ -227,6 +228,9 @@
       }
     }).then(meta=>{
       dataAsOf=(meta&&meta.meta&&meta.meta.as_of)||null; MKLAB.setFreshness(dataAsOf);
+      const fu=meta&&meta.meta&&meta.meta.fundamentals;
+      const fn=document.getElementById('fundNote');
+      if(fn&&fu) fn.textContent=`財報（ROE/ROA/EPS）來源：TWSE 官方，${fu.financial_period||''}累計數年化，出表日 ${fu.financial_asof_roc_date||''}，匯入時間 ${fu.imported_at||''}。股利欄位來源：TWSE 股利分派（股利年度 ${(fu.dividend_years||'見資料檔')}）。`;
     }).catch(()=>{ MKLAB.setFreshness(null); });
   }
   const PER=10;
@@ -255,7 +259,7 @@
     const label = dataLoaded ? `符合：${rows.length} / ${current.length} 檔` : '資料載入中…';
     document.getElementById('count').textContent=label;
     if(!resTable){
-      resTable = MKLAB.DataTable('resTable', { cols:['sym','name','price','chg','pos52','pe','pb','roe','div','cap'], rows:rows, pageSize:PER, pagerId:'pager', defaultSort:'roe', fieldMap:{pos52:'pos52w_level'} });
+      resTable = MKLAB.DataTable('resTable', { cols:['sym','name','price','chg','pos52','pe','pb','roe','div','div_streak','div_cash','cap'], rows:rows, pageSize:PER, pagerId:'pager', defaultSort:'roe', fieldMap:{pos52:'pos52w_level'} });
     } else {
       resTable.setRows(rows);
     }
