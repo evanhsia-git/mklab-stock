@@ -744,10 +744,16 @@ def run_daily():
         "pe_ratio": s["pe"], "pb_ratio": s["pb"], "dividend_yield": s["div"],
         "industry": s["ind"],
     } for s in stocks]
-    hpath = os.path.join(OUT, "history", f"{trade_date.replace('-', '')}.json")
-    with open(hpath, "w", encoding="utf-8") as f:
-        json.dump(_sanitize_nan({"trade_date": trade_date, "schema_version": SCHEMA_VERSION,
-                   "count": len(hist), "stocks": hist}), f, ensure_ascii=False)
+    # 防護：休市日或來源資料不完整時，TWSE 會回傳舊資料且缺少高低價；這種日子不是交易日，
+    # 不可寫入 history（否則回測與指標會讀到錯誤收盤值）。
+    miss_hl = sum(1 for s in stocks if s.get("high") is None)
+    if stocks and miss_hl / len(stocks) > 0.5:
+        LOG.warn(f"{trade_date} 高低價缺失 {miss_hl}/{len(stocks)}，疑似休市或來源不完整，不寫入 history 切片")
+    else:
+        hpath = os.path.join(OUT, "history", f"{trade_date.replace('-', '')}.json")
+        with open(hpath, "w", encoding="utf-8") as f:
+            json.dump(_sanitize_nan({"trade_date": trade_date, "schema_version": SCHEMA_VERSION,
+                       "count": len(hist), "stocks": hist}), f, ensure_ascii=False)
 
     # industry.json：若已有則保留（不覆寫，避免每天清空）
     ind_path = os.path.join(OUT, "industry.json")
