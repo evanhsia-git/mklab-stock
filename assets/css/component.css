@@ -189,3 +189,8 @@ html {
 .btn-secondary { background: var(--surface); color: var(--ink); }
 .btn-ghost { background: transparent; color: var(--muted); }
 .btn-ghost:hover { background: var(--row-hover); color: var(--ink); }
+
+/* 52 週位階：5 格小方塊，點亮目前所在區間 */
+.pos52{ display:inline-flex; gap:2px; vertical-align:middle; }
+.pos52 i{ display:inline-block; width:10px; height:8px; border-radius:2px; background:var(--border); }
+.pos52 i.on{ background:var(--accent); }

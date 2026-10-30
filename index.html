@@ -63,9 +63,8 @@
 <div class="seg" id="etfCatTabs" style="margin-bottom:10px;flex-wrap:wrap;">
   <button class="on" data-cat="all" onclick="setEtfCat('all',this)">全部</button>
   <button data-cat="market_cap" onclick="setEtfCat('market_cap',this)">市值型</button>
-  <button data-cat="high_dividend" onclick="setEtfCat('high_dividend',this)">高配息型</button>
+  <button data-cat="dividend_high" onclick="setEtfCat('dividend_high',this)">高股息型</button>
   <button data-cat="active" onclick="setEtfCat('active',this)">主動型</button>
-  <button data-cat="passive" onclick="setEtfCat('passive',this)">被動型</button>
   <button data-cat="bond" onclick="setEtfCat('bond',this)">債券型</button>
   <button data-cat="leveraged" onclick="setEtfCat('leveraged',this)">槓桿型</button>
   <button data-cat="inverse" onclick="setEtfCat('inverse',this)">反向型</button>
@@ -274,7 +273,7 @@
           .sort((a, b) => b.score - a.score)
           .slice(0, 10);
         if (!dailyPicksTable) {
-          dailyPicksTable = MKLAB.DataTable('dailyPicks', { cols: ['sym', 'name', 'price', 'chg', 'chg_1m', 'pe', 'pb', 'roe', 'score'], rows: scored, pageSize: 0, defaultSort: 'score' });
+          dailyPicksTable = MKLAB.DataTable('dailyPicks', { cols: ['sym', 'name', 'price', 'chg', 'chg_1m', 'pos52', 'pe', 'pb', 'roe', 'score'], rows: scored, pageSize: 0, defaultSort: 'score', fieldMap: { pos52: 'pos52w_level' } });
         } else {
           dailyPicksTable.setRows(scored);
         }
@@ -293,7 +292,7 @@
           .sort((a, b) => (b.market_cap || 0) - (a.market_cap || 0))
           .slice(0, 10);
         if (!cap10Table) {
-          cap10Table = MKLAB.DataTable('cap10', { cols: ['sym', 'name', 'price', 'chg', 'chg_1m', 'pe', 'pb', 'roe', 'cap'], rows, pageSize: 10, pagerId: 'cap10Pager', defaultSort: 'cap', fieldMap: { cap: 'market_cap' } });
+          cap10Table = MKLAB.DataTable('cap10', { cols: ['sym', 'name', 'price', 'chg', 'chg_1m', 'pos52', 'pe', 'pb', 'roe', 'cap'], rows, pageSize: 10, pagerId: 'cap10Pager', defaultSort: 'cap', fieldMap: { cap: 'market_cap', pos52: 'pos52w_level' } });
         } else {
           cap10Table.setRows(rows);
         }

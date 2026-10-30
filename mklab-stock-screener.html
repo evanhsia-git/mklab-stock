@@ -133,7 +133,7 @@
     </div>
     <div class="grp" style="margin-top:12px;">
       <div class="lab">說明</div>
-      <p class="muted-small-top">同一檔 ETF 可同時屬於多個類型（如 00937B 同時是債券型與…）。代碼：L 槓桿、R 反向、B 債券、C 債券外幣、T 平衡、A 主動式、D 主動債券、市值型、高息型、主題型。已排除 U 尾期貨型。</p>
+      <p class="muted-small-top">同一檔 ETF 可同時屬於多個類型（如 00937B 同時是債券型與…）。代碼：L 槓桿、R 反向、B 債券、C 債券外幣、T 平衡、A 主動式、D 主動債券、市值型、高股息型、主題型。已排除 U 尾期貨型。</p>
     </div>
   </div>
   <div>
@@ -213,7 +213,7 @@
   function loadScreener(){
     MKLAB.data.stocks().then(d=>{
       if(d && Array.isArray(d) && d.length){
-        current=d.map(s=>({sym:s.sym,name:s.name,price:s.price,chg:s.chg,pe:s.pe,pb:s.pb,roe:s.roe,roa:s.roa,rsi:s.rsi14,ma5:s.ma5,ma10:s.ma10,ma30:s.ma30,cap:(s.market_cap!=null?(s.market_cap/1e8):0),div:(s.div||0),ind:s.ind}));
+        current=d.map(s=>({sym:s.sym,name:s.name,price:s.price,chg:s.chg,pe:s.pe,pb:s.pb,roe:s.roe,roa:s.roa,rsi:s.rsi14,pos52w_level:s.pos52w_level,ma5:s.ma5,ma10:s.ma10,ma30:s.ma30,cap:(s.market_cap!=null?(s.market_cap/1e8):0),div:(s.div||0),ind:s.ind}));
         dataLoaded=true;
         MKLAB.data.json('etf-classified').then(cd=>{ etfClassifiedSyms=(cd&&cd.etfs?cd.etfs:[]).map(x=>x.sym); }).catch(()=>{});
         // 填充產業下拉選單（不重複、排序後的產業清單）
@@ -255,7 +255,7 @@
     const label = dataLoaded ? `符合：${rows.length} / ${current.length} 檔` : '資料載入中…';
     document.getElementById('count').textContent=label;
     if(!resTable){
-      resTable = MKLAB.DataTable('resTable', { cols:['sym','name','price','chg','pe','pb','roe','div','cap'], rows:rows, pageSize:PER, pagerId:'pager', defaultSort:'roe' });
+      resTable = MKLAB.DataTable('resTable', { cols:['sym','name','price','chg','pos52','pe','pb','roe','div','cap'], rows:rows, pageSize:PER, pagerId:'pager', defaultSort:'roe', fieldMap:{pos52:'pos52w_level'} });
     } else {
       resTable.setRows(rows);
     }
@@ -273,7 +273,7 @@
 
   // ===== ETF 篩選 =====
   const ETF_CAT_OPTIONS = [
-    ['market_cap','市值型'], ['dividend_high','高息型'], ['theme','主題型'],
+    ['market_cap','市值型'], ['dividend_high','高股息型'], ['theme','主題型'],
     ['active','主動式 A'], ['leveraged','槓桿型 L'], ['inverse','反向型 R'],
     ['bond','債券型 B'], ['bond_fx','債券外幣型 C'], ['balanced','平衡型 T'],
     ['active_bond','主動債券 D'], ['unclassified','待確認 K'],

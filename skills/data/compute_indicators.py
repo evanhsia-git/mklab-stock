@@ -23,7 +23,7 @@ HISTORY_DIR = os.path.join(ROOT, "data", "history")
 STOCKS_PATH = os.path.join(ROOT, "data", "stocks.json")
 
 # 90 個交易日：足以算出 MA30 / RSI14 / MACD(12,26,9) / KD(9)，並留一些讓 EMA 收斂的緩衝
-LOOKBACK_DAYS = 90
+LOOKBACK_DAYS = 280  # 52 週位階需要約 1 年的交易日（原 90 日，改為 280 以覆蓋 52 週）
 MIN_FOR_MACD = 35  # 26 日 EMA + 9 日訊號線緩衝
 MIN_FOR_RSI = 15   # 14 期漲跌幅 + 1
 MIN_FOR_KD = 9
@@ -54,7 +54,20 @@ def load_series():
             h = h if h is not None else close
             l = l if l is not None else close
             series.setdefault(sym, []).append((date, o, h, l, close))
-    return series
+    return {sym: clean_spikes(rows) for sym, rows in series.items()}
+
+
+def clean_spikes(rows):
+    """過濾歷史收盤的單點離群值（典型錯誤資料：某日與前後兩日都差超過 25%，且前後兩日彼此接近）。
+    以前後兩日的平均取代該點。只用於指標計算，不改寫 data/history/ 原始快照。
+    rows 為 (date, open, high, low, close) 清單，回傳新的清單。"""
+    out = list(rows)
+    for i in range(1, len(out) - 1):
+        p, x, q = out[i-1][4], out[i][4], out[i+1][4]
+        if p and x and q and abs(x/p-1) > 0.25 and abs(x/q-1) > 0.25 and abs(p/q-1) < 0.1:
+            d, o, h, l, _ = out[i]
+            out[i] = (d, o, h, l, round((p + q) / 2, 2))
+    return out
 
 
 def sma(closes, n):
@@ -134,6 +147,30 @@ def calc_chg_1m(rows):
     return round((latest_close - base) / base * 100, 2)
 
 
+def calc_pos52(rows):
+    """52 週位階：以最近約一年的收盤價算最高/最低，將目前收盤落在 5 個等寬區間之一（1~5）。
+    歷史覆蓋不足 300 天（例如新上市）回傳 None，不推測。"""
+    empty = {"high52w": None, "low52w": None, "pos52w_level": None}
+    if len(rows) < 2:
+        return empty
+    last = dt.datetime.strptime(rows[-1][0], "%Y%m%d").date()
+    cutoff = last - dt.timedelta(days=365)
+    win = [r for r in rows if dt.datetime.strptime(r[0], "%Y%m%d").date() > cutoff]
+    if not win:
+        return empty
+    first = dt.datetime.strptime(win[0][0], "%Y%m%d").date()
+    if (last - first).days < 300:
+        return empty
+    closes = [r[4] for r in win]
+    hi, lo, cur = max(closes), min(closes), closes[-1]
+    if hi == lo:
+        level = 3
+    else:
+        pos = (cur - lo) / (hi - lo)
+        level = min(int(pos * 5), 4) + 1  # 0-20%→1, 20-40%→2, 40-60%→3, 60-80%→4, 80-100%→5
+    return {"high52w": round(hi, 2), "low52w": round(lo, 2), "pos52w_level": level}
+
+
 def main():
     print("[compute_indicators] 讀取 data/history/ ...")
     series = load_series()
@@ -152,6 +189,7 @@ def main():
             row["macd_dif"] = row["macd_dea"] = row["macd_hist"] = None
             row["kd_k"] = row["kd_d"] = None
             row["chg_1m"] = None
+            row.update({"high52w": None, "low52w": None, "pos52w_level": None})
             continue
 
         closes = [r[4] for r in rows]
@@ -159,6 +197,7 @@ def main():
         lows = [r[3] for r in rows]
 
         row["chg_1m"] = calc_chg_1m(rows)
+        row.update(calc_pos52(rows))
         row["ma5"] = sma(closes, 5)
         row["ma10"] = sma(closes, 10)
         row["ma20"] = sma(closes, 20)

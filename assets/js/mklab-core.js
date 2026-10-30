@@ -62,6 +62,19 @@
     listing_date: { label:'上市/上櫃日期', type:'str', sortable:true, fmt:r=>r.listing_date||'-' },
     issuer: { label:'發行人', type:'str', sortable:true, fmt:r=>r.issuer||'-' },
     chg_1m: { label:'月漲跌%', type:'pct', sortable:true, defDir:-1, fmt:r=>r.chg_1m!=null?(r.chg_1m>0?'+':'')+Number(r.chg_1m).toFixed(2)+'%':'-' },
+    // 52 週位階：5 個等寬區間（0-20/20-40/40-60/60-80/80-100%），以 5 格小方塊顯示目前所在區間
+    pos52: { label:'52週位階', type:'html', sortable:true, defDir:-1, fmt:r=>{
+      if (r.pos52w_level==null) return '<span class="text-muted">-</span>';
+      const lv = Number(r.pos52w_level);
+      const cells = [1,2,3,4,5].map(i => `<i class="${i<=lv?'on':''}"></i>`).join('');
+      return `<span class="pos52" title="52週位階 ${lv}/5（${(lv-1)*20}%~${lv*20}%）">${cells}</span>`;
+    } },
+    ind: { label:'產業', type:'str', sortable:true, fmt:r=>r.ind||'-' },
+    rsi14: { label:'RSI(14)', type:'num', sortable:true, fmt:r=>r.rsi14!=null?r.rsi14:'-' },
+    ma5: { label:'MA5', type:'num', sortable:true, fmt:r=>r.ma5!=null?r.ma5:'-' },
+    ma20: { label:'MA20', type:'num', sortable:true, fmt:r=>r.ma20!=null?r.ma20:'-' },
+    pos52w_level: { label:'52週位階(1-5)', type:'num', sortable:true, fmt:r=>r.pos52w_level!=null?r.pos52w_level:'-' },
+    market_cap: { label:'市值(元)', type:'num', sortable:true, fmt:r=>r.market_cap!=null?r.market_cap:'-' },
     beneficiaries: { label:'受益人數', type:'num', sortable:true, defDir:-1, fmt:r=>r.beneficiaries!=null?Number(r.beneficiaries).toLocaleString():'-' },
     net_assets_100m: { label:'資產規模(億元)', type:'num', sortable:true, defDir:-1, fmt:r=>r.net_assets_100m!=null?Number(r.net_assets_100m).toLocaleString():'-' },
     w1:    { label:'1週',     type:'pct', sortable:true,  fmt:r=>cellPct(r.w1) },
@@ -749,6 +762,28 @@
     const a = MKLAB._exportActions[i];
     if (a && typeof a.fn === 'function') a.fn();
   };
+
+  // 全站共用：整份股票資料庫一鍵 CSV（所有頁面的設定抽屜都會出現）
+  MKLAB.registerExport('下載股票資料庫 CSV（全部）', async function(){
+    const rows = await MKLAB.data.stocks();
+    const meta = await MKLAB.data.json('stocks').catch(() => null);
+    const cls = await MKLAB.data.json('etf-classified').catch(() => null);
+    const etfSet = new Set(((cls && cls.etfs) || []).map(e => e.sym));
+    const etfN = rows.filter(r => etfSet.has(r.sym)).length;
+    exportCSV(rows, ['sym','name','ind','price','chg','chg_1m','pe','pb','roe','roa','div','market_cap','pos52w_level','rsi14','ma5','ma20'], {
+      filename: 'mklab-stock-database-' + new Date().toISOString().slice(0,10),
+      dbUpdated: (meta && meta.meta && meta.meta.as_of) || '未知',
+      dbTotalCount: rows.length,
+      dbStockCount: rows.length - etfN,
+      dbEtfCount: etfN,
+      exportedCount: rows.length,
+      exportedStockCount: rows.length - etfN,
+      exportedEtfCount: etfN,
+      source: 'TWSE OpenAPI（上市）+ TPEx OpenAPI（上櫃）；ROE/ROA/EPS 目前來源為 yfinance（第三方，待官方化）；RSI/MA/52週位階/月漲跌由歷史收盤價計算',
+      sourceUrl: 'https://openapi.twse.com.tw/ ， https://www.tpex.org.tw/openapi/',
+      method: '整份 data/stocks.json，已排除 U 尾期貨型與認購權證；52週位階 1-5 為 52 週收盤區間的 5 等分位置',
+    });
+  });
 
   global.MKLAB.Drawer = Drawer;
   global.MKLAB.Watch = Watch;

@@ -105,6 +105,7 @@ def run():
     py_files = [
         "skills/data/fetch_data.py",
         "skills/data/fetch_us_data.py",
+        "skills/data/probe_twse_openapi.py",
         "skills/data/fetch_us_universe.py",
         "skills/data/build_digest.py",
         "skills/data/compute_indicators.py",
