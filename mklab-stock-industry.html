@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="mklab-stock — 台股/美股即時儀表板，大盤、產業、篩選、個股研究一站掌握">
-<title>mklab-stock</title>
+<title>mklab-stock｜Industry 產業與市場寬度</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
 <link rel="stylesheet" href="assets/css/mklab-theme.css">
 <link rel="stylesheet" href="assets/css/layout.css">
@@ -164,8 +164,19 @@
       if (d && Array.isArray(d.industry) && d.industry.length) {
         data = d.industry.map((x, i) => ({ nm: x.nm, chg: x.chg, cnt: x.cnt, top: x.top, w1: x.w1, m1: x.m1, m3: x.m3, m6: x.m6, ytd: x.ytd, y1: x.y1, y5: x.y5 }));
         renderGrid(); renderPerf(); renderHeatmap();
-        const asof = d.meta && d.meta.as_of;
-        if (asof) MKLAB.setFreshness(asof);
+        // 資料日期以「股票行情」為準；產業統計若不是同一天，明確標示尚未更新
+        MKLAB.data.json('stocks').then(sd => {
+          const sAsof = sd && sd.meta && sd.meta.as_of;
+          const iAsof = d.meta && d.meta.as_of;
+          MKLAB.setFreshness(sAsof || iAsof);
+          if (sAsof && iAsof && String(iAsof).replace(/-/g,'') !== String(sAsof).replace(/-/g,'')) {
+            const note = document.createElement('div');
+            note.className = 'muted-small-top';
+            note.textContent = '⚠️ 產業統計日期（' + iAsof + '）與行情日期（' + sAsof + '）不同，統計尚未更新';
+            const sec = document.querySelector('.section-title');
+            if (sec) sec.parentNode.insertBefore(note, sec);
+          }
+        }).catch(() => MKLAB.setFreshness(null));
       }
     }).catch(e => { console.warn('[industry] loadIndustry failed:', e); });
 

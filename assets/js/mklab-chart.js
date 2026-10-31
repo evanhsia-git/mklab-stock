@@ -57,16 +57,23 @@
       if (state.KD) panels.push('KD');
       if (state.MACD) panels.push('MACD');
       const n = 1 + panels.length;
-      const priceH = panels.length === 0 ? 78 : (panels.length === 1 ? 56 : 46);
-      const subH = panels.length === 0 ? 0 : (panels.length === 1 ? 18 : 16);
+      const narrow = el.clientWidth && el.clientWidth < 520;
+      const legendTop = narrow ? 30 : 0;
+      // 版面高度（百分比）：上方留給圖例與工具列，下方留給縮放滑桿與時間軸
+      const topStart = narrow ? 20 : 8;
+      const avail = narrow ? 70 : 80;
+      const sub = panels.length;
+      const priceH = sub === 0 ? avail : (sub === 1 ? avail * 0.6 : avail * 0.46);
+      const gap = 4;
+      const subH = sub === 0 ? 0 : (avail - priceH - gap * sub) / sub;
       const grids = [], xAxes = [], yAxes = [], series = [];
       const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
       const txt = isDark ? '#9aa0a6' : '#6b7280';
       const split = isDark ? '#2a2f3a' : '#e5e7eb';
-      let top = 8;
-      grids.push({ left: 60, right: 24, top: top + '%', height: priceH + '%' });
-      top += priceH + 6;
-      panels.forEach(() => { grids.push({ left: 60, right: 24, top: top + '%', height: subH + '%' }); top += subH + 6; });
+      let top = topStart;
+      grids.push({ left: narrow ? 44 : 60, right: narrow ? 10 : 24, top: top + '%', height: priceH + '%' });
+      top += priceH + gap;
+      panels.forEach(() => { grids.push({ left: narrow ? 44 : 60, right: narrow ? 10 : 24, top: top + '%', height: subH + '%' }); top += subH + gap; });
       grids.forEach((g, gi) => {
         xAxes.push({ type: 'category', data: dates, gridIndex: gi, boundaryGap: true, axisLine: { lineStyle: { color: split } },
           axisLabel: { show: gi === n - 1, color: txt }, axisTick: { show: false }, splitLine: { show: false },
@@ -96,9 +103,9 @@
         animation: false,
         tooltip: { trigger: 'axis', axisPointer: { type: 'cross' } },
         axisPointer: { link: [{ xAxisIndex: 'all' }] },
-        toolbox: { right: 16, top: 0, feature: { brush: { type: ['lineX', 'clear'] }, restore: {}, dataZoom: { yAxisIndex: 'none' } } },
+        toolbox: { right: 4, top: 0, itemSize: narrow ? 14 : 16, itemGap: narrow ? 6 : 10, feature: { brush: { type: ['lineX', 'clear'] }, restore: {} } },
         brush: { xAxisIndex: all, brushLink: 'all', outOfBrush: { colorAlpha: 0.35 } },
-        legend: { top: 0, left: 60, textStyle: { color: txt }, data: ['大盤', 'MA5', 'MA20', 'MA60'].concat(panels.includes('KD') ? ['K', 'D'] : []).concat(panels.includes('MACD') ? ['DIF', 'DEA'] : []) },
+        legend: { top: legendTop, left: narrow ? 4 : 60, right: narrow ? 4 : undefined, itemWidth: narrow ? 14 : 25, itemHeight: narrow ? 8 : 14, itemGap: narrow ? 8 : 10, textStyle: { color: txt, fontSize: narrow ? 11 : 12 }, data: ['大盤', 'MA5', 'MA20', 'MA60'].concat(panels.includes('KD') ? ['K', 'D'] : []).concat(panels.includes('MACD') ? ['DIF', 'DEA'] : []) },
         grid: grids, xAxis: xAxes, yAxis: yAxes,
         dataZoom: [
           { type: 'inside', xAxisIndex: all, start: 60, end: 100 },

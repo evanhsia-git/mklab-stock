@@ -95,7 +95,7 @@ TWSE_PROFITABILITY = "https://openapi.twse.com.tw/v1/opendata/t187ap06_L"  # 營
 TWSE_BALANCE     = "https://openapi.twse.com.tw/v1/opendata/t187ap05_L"     # 資產負債表：股本（可能已失效，備用用 yfinance）
 TWSE_INCOME      = "https://openapi.twse.com.tw/v1/opendata/t187ap03_L"     # 綜合損益表：淨利（可能已失效，備用用 yfinance）
 
-# TPEX：僅抓 ETF（上櫃 ETF、債券 ETF、槓桿/反向 ETF）
+# TPEX：上櫃一般股票 + ETF（P0-4 修正：不再只抓 ETF）
 TPEX_DAILY       = "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes?l=zh-tw"
 TPEX_BWIBBU      = "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_pe_ratio?l=zh-tw"  # 可能無 BWIBBU，暫用 PE ratio
 
@@ -115,7 +115,7 @@ LOG = RunLogger(MODE)
 
 # ===== 工具函式 =====
 # 官方財報／股利欄位（由 import_official_fundamentals.py 寫入），每日重建時必須保留
-OFFICIAL_KEYS = ["roe_off", "roa_off", "eps_off", "fund_period", "fund_asof", "fund_src",
+OFFICIAL_KEYS = ["listing_date", "company_short", "ind_src", "roe_off", "roa_off", "eps_off", "fund_period", "fund_asof", "fund_src",
                  "div_cash_latest", "div_latest_year", "div_streak_years", "div_years_available"]
 
 def keep_record(code):
@@ -540,7 +540,7 @@ def run_daily():
         })
         sources["TWSE"] += 1
 
-    # --- 處理 TPEX ETF ---
+    # --- 處理 TPEX（一般股票 + ETF）---
     # 抓取 TPEX 每日收盤，過濾出 ETF（名稱含關鍵字或代碼格式）
     tpex_raw = fetch_tpex_daily()
     tpex_etf_candidates = []
@@ -551,6 +551,9 @@ def run_daily():
         is_etf = bool(re.search(r"ETF|基金|指數|正[0-9]|反[0-9]|槓桿|反向|期貨|配息|高息|優息|收益", name or ""))
         # 代碼格式：5-6 位數字+字母尾碼（如 00679B）
         is_etf_code = len(sid) >= 5 and any(c.isalpha() for c in sid)
+        # P0-4：上櫃一般股票與 ETF 都保留（原本只保留 ETF，導致上櫃一般股票幾乎全部遺漏）
+        # ETF / 一般股票的最終分類由 compute_indicators.py 依官方 ETF 清單統一判定
+        # 範圍：上櫃只收 ETF（TPEx 一般股票不納入）；ETF 判定同原本的 is_etf / 代號規則
         if keep_record(sid) and (is_etf or is_etf_code):
             tpex_etf_candidates.append(r)
     LOG.info(f"TPEX ETF 候選筆數: {len(tpex_etf_candidates)}")

@@ -65,7 +65,7 @@
 
 ## 目前資料規模（依 `data/stocks.json` meta，會隨每日更新變動）
 
-- 個股／ETF 檔數：**1,835 檔**（上市 TWSE 1,379 檔＋上櫃 TPEX 456 檔）
+- 個股／ETF 檔數：**1,485 檔（TWSE 1380 + TPEx 105；ETF 336、一般股票 1146、待確認 3；數量以 data/stocks.json 實際筆數為準，TPEx 修正後下一次排程執行會更新）
 - 歷史股價切片：`data/history/` 逐日 JSON，目前約 **300+ 個交易日**
 - 產業分類：**33 個官方大類**（`data/industry-codes.json`）
 - 全球指數／ETF：`data/indices-config.json` 設定、`data/indices.json` 輸出
@@ -113,7 +113,7 @@ mklab-stock/
 │       ├── data-client.js        # 統一資料層（快取／新鮮度提示）
 │       └── mklab-wc.js           # Web Components（K 線圖等）
 ├── data/                         # Build-Time 產生的 JSON，前端只讀
-│   ├── stocks.json                 # 全市場個股最新一日（1,835 檔全欄位）
+│   ├── stocks.json                 # 全市場個股最新一日（1,485 檔（TWSE 1380 + TPEx 105；ETF 336、一般股票 1146、待確認 3；數量以 data/stocks.json 實際筆數為準，TPEx 修正後下一次排程執行會更新）
 │   ├── industry.json               # 33 產業聚合績效
 │   ├── industry-codes.json         # 臺證所 33 產業代碼對照表
 │   ├── indices.json                 # 全球指數／ETF 收盤

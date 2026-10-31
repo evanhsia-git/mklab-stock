@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="mklab-stock — 台股/美股即時儀表板，大盤、產業、篩選、個股研究一站掌握">
-<title>mklab-stock</title>
+<title>mklab-stock｜Research 個股研究</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
 <link rel="stylesheet" href="assets/css/mklab-theme.css">
 <link rel="stylesheet" href="assets/css/layout.css">
@@ -81,13 +81,8 @@
 <script src="assets/js/mklab-chart.js"></script>
 <script>
 // Static fallback data
-const STATIC = {
-  "2330":{name:"台積電",price:1050,chg:+1.2,pe:24.1,pb:5.2,roe:28.1,roa:15.3,eps:43.6},
-  "2317":{name:"鴻海",price:215,chg:+0.9,pe:18.3,pb:2.1,roe:14.2,roa:6.8,eps:11.7},
-  "2454":{name:"聯發科",price:1280,chg:-0.5,pe:30.2,pb:4.8,roe:22.5,roa:14.0,eps:42.4},
-  "2308":{name:"台達電",price:368,chg:+0.7,pe:26.5,pb:3.9,roe:16.5,roa:9.2,eps:13.9},
-  "2412":{name:"中華電",price:122,chg:+0.1,pe:22.0,pb:2.3,roe:10.5,roa:4.1,eps:5.5},
-};
+// P0-5：已移除硬編碼測試行情（原含台積電 1050、鴻海 215 等假價格），不得作為正式 fallback
+const STATIC = {};
 
 let STOCKS = {};
 let finTable = null;
@@ -110,9 +105,12 @@ function loadAll() {
     const q = new URLSearchParams(location.search).get('sym');
     if (q && STOCKS[q]) selectSym(q);
     else loadKLine();
-  }).catch(() => {
+  }).catch((e) => {
     STOCKS = Object.assign({}, STATIC);
     renderList();
+    const box = document.getElementById('symList');
+    if (box && !Object.keys(STOCKS).length) box.innerHTML = '<div class="text-muted text-sm">股票資料載入失敗，請稍後重新整理（不顯示任何替代行情）</div>';
+    MKLAB.setFreshness(null);
     loadKLine();
   });
 }
@@ -211,6 +209,14 @@ function selectSym(sym) {
     klIndState.KD = false; klIndState.MACD = false;
     if (klInst) klInst.clearIndicators();
   }
+</script>
+<script>
+  // 啟動流程（原本遺失，導致導覽列、個股清單、資料日期與個股資訊都不顯示）
+  window.addEventListener('DOMContentLoaded', function () {
+    MKLAB.initDrawer();
+    MKLAB.Shell.mount({ active: 'research' });
+    loadAll();
+  });
 </script>
 <script>
   // 原本從未載入 twii_kdata.js，導致 K 線與 KD/MACD 按鈕都沒有資料可用；這裡在頁面就緒後先載入再繪圖

@@ -226,6 +226,25 @@ def main():
         row["kd_k"], row["kd_d"] = k, d
         updated += 1
 
+    # P0-1：ETF / 一般股票分類以官方 ETF 清單為唯一依據（data/etf-meta.json）。
+    # 清單內 → etf；代號像 ETF（00 開頭）但不在清單 → unverified（待確認，不計入 ETF 也不計入一般股）；其餘 → stock
+    etf_official = set()
+    try:
+        etf_official = {e["sym"] for e in json.load(open(os.path.join(ROOT, "data", "etf-meta.json"), encoding="utf-8")).get("etfs", [])}
+    except (OSError, json.JSONDecodeError):
+        pass
+    for row in stocks_doc.get("stocks", []):
+        sym = str(row.get("sym", ""))
+        if sym in etf_official:
+            row["security_type"], row["is_etf"] = "etf", True
+        elif sym.startswith("00"):
+            row["security_type"], row["is_etf"] = "unverified", False
+        elif not (len(sym) == 4 and sym.isdigit()):
+            # 非普通股代碼（特別股如 2883B、債券/權證等）：不列入個股與產業統計
+            row["security_type"], row["is_etf"] = "other", False
+        else:
+            row["security_type"], row["is_etf"] = "stock", False
+
     with open(STOCKS_PATH, "w", encoding="utf-8") as f:
         json.dump(stocks_doc, f, ensure_ascii=False, indent=None, separators=(",", ":"))
 

@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="mklab-stock — 台股/美股即時儀表板，大盤、產業、篩選、個股研究一站掌握">
-<title>mklab-stock</title>
+<title>mklab-stock｜Screener 篩選</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
 <link rel="stylesheet" href="assets/css/mklab-theme.css">
 <link rel="stylesheet" href="assets/css/layout.css">
@@ -213,7 +213,7 @@
   function loadScreener(){
     MKLAB.data.stocks().then(d=>{
       if(d && Array.isArray(d) && d.length){
-        current=d.map(s=>({sym:s.sym,name:s.name,price:s.price,chg:s.chg,pe:s.pe,pb:s.pb,roe:s.roe,roa:s.roa,rsi:s.rsi14,pos52w_level:s.pos52w_level,div_streak_years:s.div_streak_years,div_cash_latest:s.div_cash_latest,ma5:s.ma5,ma10:s.ma10,ma30:s.ma30,cap:(s.market_cap!=null?(s.market_cap/1e8):0),div:(s.div||0),ind:s.ind}));
+        current=d.filter(s=>(s.security_type||"stock")==="stock").map(s=>({sym:s.sym,name:s.name,price:s.price,chg:s.chg,pe:s.pe,pb:s.pb,roe:s.roe,roa:s.roa,rsi:s.rsi14,pos52w_level:s.pos52w_level,div_streak_years:s.div_streak_years,div_cash_latest:s.div_cash_latest,ma5:s.ma5,ma10:s.ma10,ma30:s.ma30,cap:(s.market_cap!=null?(s.market_cap/1e8):0),div:(s.div||0),ind:s.ind}));
         dataLoaded=true;
         MKLAB.data.json('etf-classified').then(cd=>{ etfClassifiedSyms=(cd&&cd.etfs?cd.etfs:[]).map(x=>x.sym); }).catch(()=>{});
         // 填充產業下拉選單（不重複、排序後的產業清單）
@@ -247,13 +247,28 @@
     _applyScheduled=true;
     requestAnimationFrame(()=>{ _applyScheduled=false; applyNow(); });
   }
+  // P0-2：篩選函式。條件未啟用（使用預設「不限」值）時不過濾；條件啟用時，缺值一律不通過，
+  // 負 PE（虧損）不符合任何 PE 上限條件。ETF 不在個股篩選範圍內（由 loadScreener 排除）。
+  function passStock(s, f){
+    if (f.pe < 60){ if (s.pe == null || s.pe <= 0 || s.pe > f.pe) return false; }
+    if (f.pb < 20){ if (s.pb == null || s.pb > f.pb) return false; }
+    if (f.div > 0 && (s.div == null || s.div < f.div)) return false;
+    if (f.roe > 0 && (s.roe == null || s.roe < f.roe)) return false;
+    if (f.roa > 0 && (s.roa == null || s.roa < f.roa)) return false;
+    if (f.rsi > 0 && (s.rsi == null || s.rsi < f.rsi)) return false;
+    if (f.chg > -10 && (s.chg == null || s.chg < f.chg)) return false;
+    if (f.cap > 0 && (s.cap == null || s.cap < f.cap)) return false;
+    if (f.ma !== 'any'){ if (s.price == null || s[f.ma] == null || s.price < s[f.ma]) return false; }
+    if (f.ind !== 'any' && s.ind !== f.ind) return false;
+    return true;
+  }
   function applyNow(){
     const g=id=>parseFloat(document.getElementById(id).value)||0; const pe=g('f_pe'),pb=g('f_pb'),div=g('f_div'),roe=g('f_roe'),roa=g('f_roa'),rsi=g('f_rsi'),chg=g('f_chg'),cap=g('f_cap'); const ma=document.getElementById('f_ma').value; const indEl=document.getElementById('f_ind'); const ind=indEl?indEl.value:'any';
     const ge=(a,b)=> a==null ? true : a>=b;
     const leU=(a,val,max)=> a==null ? true : (val>=max ? true : a<=val);
     const geU=(a,val,min)=> a==null ? true : (val<=min ? true : a>=val);
     const aboveMa=(s,key)=> s[key]==null ? true : s.price>=s[key];
-    const rows=current.filter(s=> leU(s.pe,pe,60)&&leU(s.pb,pb,20)&&ge(s.div,div)&&ge(s.roe,roe)&&ge(s.roa,roa)&&ge(s.rsi,rsi)&&geU(s.chg,chg,-10)&&ge(s.cap,cap)&&(ma==='any'||(ma==='ma5'&&aboveMa(s,'ma5'))||(ma==='ma10'&&aboveMa(s,'ma10'))||(ma==='ma30'&&aboveMa(s,'ma30')))&&(ind==='any'||s.ind===ind));
+    const rows=current.filter(s=>passStock(s,{pe,pb,div,roe,roa,rsi,chg,cap,ma,ind}));
     lastFilteredRows = rows;
     const label = dataLoaded ? `符合：${rows.length} / ${current.length} 檔` : '資料載入中…';
     document.getElementById('count').textContent=label;
