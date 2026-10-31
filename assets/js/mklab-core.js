@@ -639,7 +639,7 @@
   function setFreshness(asof) {
     const f = document.querySelector('.freshness');
     if (!f) return;
-    if (!asof) { f.textContent = '無法載入即時資料，暫以示意資料顯示'; return; }
+    if (!asof) { f.textContent = '無法載入收盤資料，暫以示意資料顯示'; return; }
     f.textContent = '資料以 ' + formatAsOf(asof) + ' 收盤為準（Build-Time 自動更新）';
   }
 

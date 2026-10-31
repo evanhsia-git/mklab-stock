@@ -4,7 +4,7 @@
 <base href="/mklab-stock/">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="mklab-stock — 台股/美股即時儀表板，大盤、產業、篩選、個股研究一站掌握">
+<meta name="description" content="mklab-stock — 台股/美股收盤資料儀表板，大盤、產業、篩選、個股研究一站掌握">
 <title>mklab-stock｜Research 個股研究</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
 <link rel="stylesheet" href="assets/css/mklab-theme.css">
@@ -62,7 +62,7 @@
     </div>
 
     <div class="card">
-          <h3>財報摘要</h3>
+          <h3>基本面指標（非完整財報）</h3>
           <div class="table-wrap" style="position:relative;">
             <table id="finTable"></table>
             <div id="finTablePlaceholder" class="text-muted text-center py-4" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;">
@@ -153,8 +153,8 @@ function selectSym(sym) {
       kv('KD-K', m.kd_k != null ? m.kd_k : '-') +
       kv('KD-D', m.kd_d != null ? m.kd_d : '-') +
     '</div>';
-  document.getElementById('chartTitle').textContent = '大盤走勢參考（TWII 加權指數 · 近 1 年，非個股價格走勢）';
-  loadKLine();
+  // 個股 K 線：載入 data/kline/{代號}.json；無檔案時退回大盤走勢並明確標示
+  loadStockKLine(sym, STOCKS[sym] && STOCKS[sym].name);
   const finRow = Object.assign({ sym: sym }, m);
   if (!finTable) {
     finTable = MKLAB.DataTable('finTable', {
@@ -180,6 +180,26 @@ function selectSym(sym) {
   </div>
 </footer>
 
+<script>
+  // 個股 K 線（data/kline/{代號}.json，Build-Time 產生；取代大盤走勢顯示）
+  function loadStockKLine(sym, name) {
+    const el = document.getElementById('tvChart');
+    const title = document.getElementById('chartTitle');
+    fetch('data/kline/' + encodeURIComponent(sym) + '.json', { cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function (doc) {
+        const data = doc.rows.map(function (x) { return { time: x[0], open: x[1], high: x[2], low: x[3], close: x[4] }; });
+        if (title) title.textContent = '個股走勢：' + sym + ' ' + (name || '') + '（近 1 年，收盤資料 ' + doc.asof + '）';
+        if (klInst) { klInst.dispose(); klInst = null; }
+        el.innerHTML = '';
+        klInst = MKLAB.chart.createKline(el, data, { indicators: klIndState, onBrush: klShowBrush });
+      })
+      .catch(function () {
+        if (title) title.textContent = '大盤走勢參考（TWII 加權指數 · 近 1 年，無此個股走勢檔）';
+        loadKLine();
+      });
+  }
+</script>
 <script>
   // ===== K 線（ECharts 版，取代 lightweight-charts；KD/MACD 切換與清除按鈕皆可運作）=====
   let klInst = null;
