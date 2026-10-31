@@ -737,8 +737,16 @@ def run_daily():
     meta["count"] = len(stocks)
     meta["note"] = meta["note"] + "；已排除 U 尾代號（期貨型 ETF / 認購權證）"
 
-    with open(os.path.join(OUT, "stocks.json"), "w", encoding="utf-8") as f:
-        json.dump(_sanitize_nan({"meta": meta, "stocks": stocks}), f, ensure_ascii=False)
+    _prev_asof = None
+    try:
+        _prev_asof = str(json.load(open(os.path.join(OUT, "stocks.json"), encoding="utf-8")).get("meta", {}).get("as_of") or "")[:10]
+    except Exception:
+        pass
+    if _prev_asof and _prev_asof > str(trade_date)[:10]:
+        LOG.warn(f"既有 stocks.json 日期 {_prev_asof} 比本次資料 {trade_date} 新，不以舊資料覆蓋")
+    else:
+        with open(os.path.join(OUT, "stocks.json"), "w", encoding="utf-8") as f:
+            json.dump(_sanitize_nan({"meta": meta, "stocks": stocks}), f, ensure_ascii=False)
 
     # 當日 history 切片（收盤價 + PE/PB/殖利率）
     hist = [{
@@ -754,9 +762,12 @@ def run_daily():
         LOG.warn(f"{trade_date} 高低價缺失 {miss_hl}/{len(stocks)}，疑似休市或來源不完整，不寫入 history 切片")
     else:
         hpath = os.path.join(OUT, "history", f"{trade_date.replace('-', '')}.json")
-        with open(hpath, "w", encoding="utf-8") as f:
-            json.dump(_sanitize_nan({"trade_date": trade_date, "schema_version": SCHEMA_VERSION,
-                       "count": len(hist), "stocks": hist}), f, ensure_ascii=False)
+        if os.path.exists(hpath):
+            LOG.warn(f"{trade_date} 歷史快照已存在，不覆蓋（防止重複寫入或舊資料覆蓋）")
+        else:
+            with open(hpath, "w", encoding="utf-8") as f:
+                json.dump(_sanitize_nan({"trade_date": trade_date, "schema_version": SCHEMA_VERSION,
+                           "count": len(hist), "stocks": hist}), f, ensure_ascii=False)
 
     # industry.json：若已有則保留（不覆寫，避免每天清空）
     ind_path = os.path.join(OUT, "industry.json")

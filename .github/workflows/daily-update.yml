@@ -19,7 +19,7 @@ permissions:
 
 jobs:
   daily:
-    if: github.event.schedule == '0 9 * * 1-5'
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 9 * * 1-5'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -30,6 +30,12 @@ jobs:
         run: python skills/data/fetch_data.py daily
       - name: Compute technical indicators (MA/RSI/MACD/KD, 純本地計算不對外請求)
         run: python skills/data/compute_indicators.py
+      - name: Integrate official company info (產業/上市日期，排除 TPEx 非 ETF)
+        run: python skills/data/integrate_official_company.py
+      - name: Build per-stock K-line files (data/kline)
+        run: python skills/data/build_kline.py
+      - name: Recompute industry aggregates (產業每日重算，不使用舊統計)
+        run: python skills/data/compute_industry.py
       - name: Commit & push
         run: |
           git config user.name "github-actions[bot]"
@@ -45,7 +51,7 @@ jobs:
           fi
 
   weekly-roe:
-    if: github.event.schedule == '0 10 * * 6'
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 10 * * 6'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -70,7 +76,7 @@ jobs:
           fi
 
   indices:
-    if: github.event.schedule == '30 9 * * 1-5'
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '30 9 * * 1-5'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -95,7 +101,7 @@ jobs:
           fi
 
   twii-kline:
-    if: github.event.schedule == '30 9 * * 1-5'
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '30 9 * * 1-5'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -121,7 +127,7 @@ jobs:
             git push
           fi
   digest:
-    if: github.event.schedule == '0 10 * * 1-5'
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 10 * * 1-5'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -144,7 +150,7 @@ jobs:
           fi
 
   us-market:
-    if: github.event.schedule == '0 22 * * 1-5'
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 22 * * 1-5'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

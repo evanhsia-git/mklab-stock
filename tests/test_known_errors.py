@@ -126,6 +126,19 @@ check("範圍：TPEx 只保留官方 ETF", len(tpex_non_etf) == 0, f"非 ETF {le
 st_rows = [s for s in S if s.get('security_type') == 'stock']
 check("一般股票具備上市日期（官方）", all(s.get('listing_date') for s in st_rows), f"缺 {sum(1 for s in st_rows if not s.get('listing_date'))} 檔")
 
+
+# 個股 K 線檔：每檔行情都有對應 K 線，且最後一筆與行情收盤一致
+import os as _os
+kl_missing=[x['sym'] for x in S if not _os.path.exists(f"data/kline/{x['sym']}.json")]
+check("個股 K 線檔覆蓋所有股票", len(kl_missing)==0, f"缺 {len(kl_missing)} 檔")
+bad_last=[]
+for x in S[:200]:
+    pth=f"data/kline/{x['sym']}.json"
+    if _os.path.exists(pth):
+        kd=json.load(open(pth,encoding='utf-8'))
+        if kd['rows'] and abs(kd['rows'][-1][4]-x['price'])>1e-6: bad_last.append(x['sym'])
+check("個股 K 線最新收盤與行情一致（抽樣 200 檔）", len(bad_last)==0, f"不一致 {bad_last[:5]}")
+
 # 輸出
 w = max(len(n) for n, _, _ in results)
 for n, st, d in results:

@@ -7,6 +7,11 @@ on:
       - '**.html'
       - 'data/**'
       - 'skills/**'
+      - 'assets/js/**'
+      - 'assets/css/**'
+      - '**.json'
+      - '**.js'
+      - '**.css'
       - '.github/workflows/qa-gate.yml'
   pull_request:
     paths:
@@ -14,6 +19,11 @@ on:
       - '**.html'
       - 'data/**'
       - 'skills/**'
+      - 'assets/js/**'
+      - 'assets/css/**'
+      - '**.json'
+      - '**.js'
+      - '**.css'
 
 permissions:
   contents: read

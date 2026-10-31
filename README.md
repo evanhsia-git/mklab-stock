@@ -65,7 +65,7 @@
 
 ## 目前資料規模（依 `data/stocks.json` meta，會隨每日更新變動）
 
-- 個股／ETF 檔數：**1,485 檔（TWSE 1380 + TPEx 105；ETF 336、一般股票 1146、待確認 3；數量以 data/stocks.json 實際筆數為準，TPEx 修正後下一次排程執行會更新）
+- 個股／ETF 檔數：**1,482 檔（ETF 336、一般股票 1091、待確認 2、其他 53；範圍：TWSE 一般股票、TWSE/TPEx 標準 ETF；數量以 data/stocks.json 為準）
 - 歷史股價切片：`data/history/` 逐日 JSON，目前約 **300+ 個交易日**
 - 產業分類：**33 個官方大類**（`data/industry-codes.json`）
 - 全球指數／ETF：`data/indices-config.json` 設定、`data/indices.json` 輸出
