@@ -52,7 +52,7 @@ def classify_one(etf, rules):
             labels[rule["category"]] = f"尾碼 {last}"
     # 明確代號
     for cat, codes in rules.get("explicit_codes", {}).items():
-        if sym in codes:
+        if sym.upper() in {x.upper() for x in codes}:
             labels.setdefault(cat, "明確代號清單")
     # 名稱關鍵字
     kw = rules.get("name_keywords", {})

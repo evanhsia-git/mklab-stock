@@ -2,8 +2,8 @@
 """
 美股、全球指數與市場情緒的每日收盤資料庫（月檔）。
 儲存結構（依使用者指定）：
-  data/us-history-2026/us-history-10.json        美股指數（2026 年 10 月）
-  data/global-history-2026/global-history-10.json 全球指數與市場情緒（2026 年 10 月）
+  data/us-history-2026/us-history-2026-10.json        美股指數（2026 年 10 月）
+  data/global-history-2026/global-history-2026-10.json 全球指數與市場情緒（2026 年 10 月）
 每個月一個檔案，檔內每個交易日一列；同一日重跑會覆寫該日（upsert），不會重複。
 來源：yfinance（非官方備援）。抓不到的代號保留為 missing，不填假值。
 用法：python3 skills/data/fetch_global_history.py [YYYY-MM-DD]（省略則用最近交易日）
@@ -18,7 +18,7 @@ GLOBAL = {"^TWII": "台股加權", "^HSI": "恆生", "^N225": "日經225", "^KS1
 def month_path(base, prefix, date):
     folder = os.path.join(ROOT, "data", f"{prefix}-history-{date.year}")
     os.makedirs(folder, exist_ok=True)
-    return os.path.join(folder, f"{prefix}-history-{date.month:02d}.json")
+    return os.path.join(folder, f"{prefix}-history-{date.year}-{date.month:02d}.json")
 
 def upsert(path, date_str, tickers, missing, source):
     doc = json.load(open(path, encoding="utf-8")) if os.path.exists(path) else {"rows": []}
