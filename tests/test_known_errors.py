@@ -9,6 +9,8 @@ def check(name, ok, detail=""):
 stocks_doc = json.load(open('data/stocks.json', encoding='utf-8'))
 S = stocks_doc['stocks']
 etf_official = {e['sym'] for e in json.load(open('data/etf-meta.json', encoding='utf-8'))['etfs']}
+if os.path.exists('data/etf-supplement.json'):
+    etf_official |= {e['sym'] for e in json.load(open('data/etf-supplement.json', encoding='utf-8'))['etfs']}
 
 # P0-1 ETF 分類
 types = collections.Counter(s.get('security_type') for s in S)
@@ -138,6 +140,15 @@ for x in S[:200]:
         kd=json.load(open(pth,encoding='utf-8'))
         if kd['rows'] and abs(kd['rows'][-1][4]-x['price'])>1e-6: bad_last.append(x['sym'])
 check("個股 K 線最新收盤與行情一致（抽樣 200 檔）", len(bad_last)==0, f"不一致 {bad_last[:5]}")
+
+
+# ETF 分類新規則
+cl={e['sym']:e['categories'] for e in json.load(open('data/etf-classified.json',encoding='utf-8'))['etfs']}
+check("分類：0050 為被動市值型", 'market_cap' in cl.get('0050',[]))
+check("分類：00850/00923 為被動市值型+主題型", all(x in cl.get(k,[]) for k in ['00850','00923'] for x in ['market_cap','theme']))
+check("分類：0052、00757 為主題型", 'theme' in cl.get('0052',[]) and 'theme' in cl.get('00757',[]))
+check("分類：A 尾碼寬基為主動市值型", all('active_cap' in cl.get(k,[]) for k in ['00985A','00991A','00994A','00403A','00415A']))
+check("分類：K/C/M/S/V 尾碼為外幣型", all('fx' in v for k,v in cl.items() if k[-1:] in 'KCMSV'))
 
 # 輸出
 w = max(len(n) for n, _, _ in results)

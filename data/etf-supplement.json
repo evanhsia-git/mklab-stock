@@ -1,0 +1,23 @@
+{
+  "meta": {
+    "note": "使用者提供、官方 CSV 尚未收錄的 ETF（上市日較新）。待更新官方清單後可移除。"
+  },
+  "etfs": [
+    {
+      "sym": "00415A",
+      "name": "主動群益核心50",
+      "market": "TWSE",
+      "listing_date": "2026-10-20",
+      "issuer": "群益投信",
+      "source": "使用者提供"
+    },
+    {
+      "sym": "00412A",
+      "name": "主動安聯亞半導體",
+      "market": "TWSE",
+      "listing_date": null,
+      "issuer": "安聯投信",
+      "source": "使用者提供"
+    }
+  ]
+}

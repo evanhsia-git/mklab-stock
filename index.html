@@ -62,13 +62,16 @@
 <div class="section-title">ETF 市值前 10 大</div>
 <div class="seg" id="etfCatTabs" style="margin-bottom:10px;flex-wrap:wrap;">
   <button class="on" data-cat="all" onclick="setEtfCat('all',this)">全部</button>
-  <button data-cat="market_cap" onclick="setEtfCat('market_cap',this)">市值型</button>
+  <button data-cat="market_cap" onclick="setEtfCat('market_cap',this)">被動市值型</button>
+  <button data-cat="active_cap" onclick="setEtfCat('active_cap',this)">主動市值型</button>
   <button data-cat="dividend_high" onclick="setEtfCat('dividend_high',this)">高股息型</button>
+  <button data-cat="theme" onclick="setEtfCat('theme',this)">主題型</button>
+  <button data-cat="tech" onclick="setEtfCat('tech',this)">科技型</button>
   <button data-cat="active" onclick="setEtfCat('active',this)">主動型</button>
   <button data-cat="bond" onclick="setEtfCat('bond',this)">債券型</button>
   <button data-cat="leveraged" onclick="setEtfCat('leveraged',this)">槓桿型</button>
   <button data-cat="inverse" onclick="setEtfCat('inverse',this)">反向型</button>
-  <button data-cat="theme" onclick="setEtfCat('theme',this)">主題型</button>
+  <button data-cat="fx" onclick="setEtfCat('fx',this)">外幣型</button>
 </div>
 <div class="count" id="etfCatCount"></div>
 <div class="table-wrap"><table id="etf10"></table></div>

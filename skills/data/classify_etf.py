@@ -42,28 +42,35 @@ def classify_one(etf, rules):
     sym = etf["sym"]
     name = etf.get("name") or ""
     labels = {}
-
-    # 規則2：代號結尾字母
+    last = sym[-1:]
+    # 外幣型（尾碼 K/C/M/S/V）
+    if last in rules.get("fx_suffix", []):
+        labels["fx"] = f"尾碼 {last}（外幣）"
+    # 尾碼規則
     for rule in rules.get("suffix_rules", []):
-        if sym.endswith(rule["suffix"]):
-            labels[rule["category"]] = f"代號結尾 {rule['suffix']}"
-
-    # 規則3：明確代號清單
+        if last == rule["suffix"]:
+            labels[rule["category"]] = f"尾碼 {last}"
+    # 明確代號
     for cat, codes in rules.get("explicit_codes", {}).items():
         if sym in codes:
             labels.setdefault(cat, "明確代號清單")
-
-    # 規則4：名稱關鍵字
-    for cat, words in rules.get("name_keywords", {}).items():
+    # 名稱關鍵字
+    kw = rules.get("name_keywords", {})
+    for cat, words in kw.items():
         for w in words:
             if w and w in name:
                 labels.setdefault(cat, f"名稱含「{w}」")
                 break
-
-    # 規則5：沒有任何其他標籤的一般指數型，歸市值型
-    if not labels:
-        labels["market_cap"] = "一般指數型，預設市值型"
-
+    # 科技型 → 同時為主題型
+    if "tech" in labels:
+        labels.setdefault("theme", "科技型歸主題型")
+    # 主動市值型：A 尾碼且非高息/主題
+    if "active" in labels and "dividend_high" not in labels and "theme" not in labels:
+        labels["active_cap"] = "主動且寬基（A 尾碼）"
+    # 被動市值型：預設（非主動、非槓桿/反向/債券/主題/高息/平衡/外幣）
+    non_passive = {"active","leveraged","inverse","bond","theme","tech","dividend_high","balanced","fx","active_bond","active_cap"}
+    if not (set(labels) & non_passive):
+        labels["market_cap"] = "一般指數型，預設被動市值型"
     return labels
 
 
@@ -73,7 +80,9 @@ def main():
     out = []
     excluded = []
     counts = {}
-    for etf in meta.get("etfs", []):
+    supp_path = os.path.join(ROOT, "data", "etf-supplement.json")
+    supp = json.load(open(supp_path, encoding="utf-8")).get("etfs", []) if os.path.exists(supp_path) else []
+    for etf in meta.get("etfs", []) + [s for s in supp if s["sym"] not in {e["sym"] for e in meta.get("etfs", [])}]:
         if is_excluded(etf["sym"], rules):
             excluded.append(etf["sym"])
             continue

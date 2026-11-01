@@ -291,10 +291,8 @@
 
   // ===== ETF 篩選 =====
   const ETF_CAT_OPTIONS = [
-    ['market_cap','市值型'], ['dividend_high','高股息型'], ['theme','主題型'],
-    ['active','主動式 A'], ['leveraged','槓桿型 L'], ['inverse','反向型 R'],
-    ['bond','債券型 B'], ['bond_fx','債券外幣型 C'], ['balanced','平衡型 T'],
-    ['active_bond','主動債券 D'], ['unclassified','待確認 K'],
+    ['market_cap','被動市值型'], ['active_cap','主動市值型'], ['dividend_high','高股息型'], ['theme','主題型'], ['tech','科技型'],
+    ['active','主動型'], ['bond','債券型'], ['leveraged','槓桿型'], ['inverse','反向型'], ['fx','外幣型'],
   ];
   let etfScrAll = [];       // 合併股價後的完整 ETF 清單（已排除 U 尾）
   let etfScrCats = new Set(); // 目前勾選的分類（空集合 = 不限）

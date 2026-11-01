@@ -231,6 +231,9 @@ def main():
     etf_official = set()
     try:
         etf_official = {e["sym"] for e in json.load(open(os.path.join(ROOT, "data", "etf-meta.json"), encoding="utf-8")).get("etfs", [])}
+        _sp = os.path.join(ROOT, "data", "etf-supplement.json")
+        if os.path.exists(_sp):
+            etf_official |= {e["sym"] for e in json.load(open(_sp, encoding="utf-8")).get("etfs", [])}
     except (OSError, json.JSONDecodeError):
         pass
     for row in stocks_doc.get("stocks", []):
