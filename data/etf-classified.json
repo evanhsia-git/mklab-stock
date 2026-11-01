@@ -2,7 +2,7 @@
   "meta": {
     "as_of": "2026-09-29",
     "rules_version": "2.0.0",
-    "count": 353,
+    "count": 352,
     "excluded_count": 6,
     "excluded_syms": [
       "00635U",
@@ -4319,18 +4319,6 @@
       "category_reasons": {
         "active": "代號結尾 A",
         "theme": "名稱含「金融」"
-      },
-      "pay_frequency": null
-    },
-    {
-      "sym": "註：ETF證券代號第六碼為K、C者，表示該ETF以外幣交易，其資產規模(億元)及年初至今日均成交值(百萬元)為其加掛幣別；其一交易單位(張)應為100受益權或其整倍數，請詳其公開說明書。",
-      "name": null,
-      "market": "TPEx",
-      "categories": [
-        "market_cap"
-      ],
-      "category_reasons": {
-        "market_cap": "一般指數型，預設市值型"
       },
       "pay_frequency": null
     }

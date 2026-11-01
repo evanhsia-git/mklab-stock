@@ -4,7 +4,7 @@
     "source": "TWSE ETF投資篩選器 + TPEx ETF投資篩選器（使用者手動 CSV 匯出，非自動排程）",
     "twse_source_url": "https://wwwc.twse.com.tw/zh/ETFortune/products",
     "tpex_source_url": "https://info.tpex.org.tw/ETF/zh/filter.html",
-    "count": 359,
+    "count": 358,
     "note": "上市/上櫃日期、發行人為低頻變動欄位；資產規模、受益人數為 CSV 匯出當下的快照值，並非即時資料，更新方式見本腳本檔頭說明。"
   },
   "etfs": [
@@ -5019,20 +5019,6 @@
       "beneficiaries": 24867,
       "ytd_return_pct": 0,
       "issuer": "復華投信"
-    },
-    {
-      "sym": "註：ETF證券代號第六碼為K、C者，表示該ETF以外幣交易，其資產規模(億元)及年初至今日均成交值(百萬元)為其加掛幣別；其一交易單位(張)應為100受益權或其整倍數，請詳其公開說明書。",
-      "name": null,
-      "market": "TPEx",
-      "listing_date": null,
-      "tracking_index": null,
-      "net_assets_100m": null,
-      "close": null,
-      "avg_value_1m": null,
-      "avg_volume": null,
-      "beneficiaries": null,
-      "ytd_return_pct": null,
-      "issuer": null
     }
   ]
 }
