@@ -14,9 +14,9 @@
       "TPEX": 542
     }
   },
-  "end": "2026-11-02 19:23:33",
-  "duration_sec": 21.1,
-  "start": "2026-11-02 19:23:12",
+  "end": "2026-11-02 23:01:37",
+  "duration_sec": 88.7,
+  "start": "2026-11-02 23:00:08",
   "log_lines": [
     "[INFO] Actions 基準日 2026-11-02",
     "[WARN] 營益分析抓取失敗（ROE/ROA/EPS 留空，不中斷）：Expecting value: line 1 column 1 (char 0)",
