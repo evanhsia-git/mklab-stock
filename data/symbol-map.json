@@ -327,6 +327,146 @@
       "exchange": "TWSE",
       "name": "元大高股息",
       "industry": "金融保險業"
+    },
+    "006201": {
+      "twse": null,
+      "tpex": "006201",
+      "yfinance": "006201.TWO",
+      "market": "TW",
+      "type": "etf",
+      "exchange": "TPEX",
+      "name": "元大富櫃50",
+      "industry": null
+    },
+    "00858": {
+      "twse": null,
+      "tpex": "00858",
+      "yfinance": "00858.TWO",
+      "market": "TW",
+      "type": "etf",
+      "exchange": "TPEX",
+      "name": "永豐美國500大",
+      "industry": null
+    },
+    "00877": {
+      "twse": null,
+      "tpex": "00877",
+      "yfinance": "00877.TWO",
+      "market": "TW",
+      "type": "etf",
+      "exchange": "TPEX",
+      "name": "復華中國5G",
+      "industry": null
+    },
+    "00886": {
+      "twse": null,
+      "tpex": "00886",
+      "yfinance": "00886.TWO",
+      "market": "TW",
+      "type": "etf",
+      "exchange": "TPEX",
+      "name": "永豐美國科技",
+      "industry": null
+    },
+    "00887": {
+      "twse": null,
+      "tpex": "00887",
+      "yfinance": "00887.TWO",
+      "market": "TW",
+      "type": "etf",
+      "exchange": "TPEX",
+      "name": "永豐中國科技50大",
+      "industry": null
+    },
+    "00888": {
+      "twse": null,
+      "tpex": "00888",
+      "yfinance": "00888.TWO",
+      "market": "TW",
+      "type": "etf",
+      "exchange": "TPEX",
+      "name": "永豐台灣ESG",
+      "industry": null
+    },
+    "00928": {
+      "twse": null,
+      "tpex": "00928",
+      "yfinance": "00928.TWO",
+      "market": "TW",
+      "type": "etf",
+      "exchange": "TPEX",
+      "name": "中信上櫃ESG30",
+      "industry": null
+    },
+    "00955": {
+      "twse": null,
+      "tpex": "00955",
+      "yfinance": "00955.TWO",
+      "market": "TW",
+      "type": "etf",
+      "exchange": "TPEX",
+      "name": "中信日本商社",
+      "industry": null
+    },
+    "009806": {
+      "twse": null,
+      "tpex": "009806",
+      "yfinance": "009806.TWO",
+      "market": "TW",
+      "type": "etf",
+      "exchange": "TPEX",
+      "name": "台新標普500",
+      "industry": null
+    },
+    "009807": {
+      "twse": null,
+      "tpex": "009807",
+      "yfinance": "009807.TWO",
+      "market": "TW",
+      "type": "etf",
+      "exchange": "TPEX",
+      "name": "台新標普科技精選",
+      "industry": null
+    },
+    "009814": {
+      "twse": null,
+      "tpex": "009814",
+      "yfinance": "009814.TWO",
+      "market": "TW",
+      "type": "etf",
+      "exchange": "TPEX",
+      "name": "富邦標普500",
+      "industry": null
+    },
+    "009815": {
+      "twse": null,
+      "tpex": "009815",
+      "yfinance": "009815.TWO",
+      "market": "TW",
+      "type": "etf",
+      "exchange": "TPEX",
+      "name": "大華美國MAG7+",
+      "industry": null
+    },
+    "009822": {
+      "twse": null,
+      "tpex": "009822",
+      "yfinance": "009822.TWO",
+      "market": "TW",
+      "type": "etf",
+      "exchange": "TPEX",
+      "name": "華南永昌未來金融",
+      "industry": null
+    },
+    "009823": {
+      "twse": null,
+      "tpex": "009823",
+      "yfinance": "009823.TWO",
+      "market": "TW",
+      "type": "etf",
+      "exchange": "TPEX",
+      "name": "群益 S&P500",
+      "industry": null
     }
   },
   "indices": {

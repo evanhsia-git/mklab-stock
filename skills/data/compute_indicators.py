@@ -57,6 +57,24 @@ def load_series():
     return {sym: clean_spikes(rows) for sym, rows in series.items()}
 
 
+def load_kline_rows(sym):
+    """讀 data/kline/{代號}.json → [(YYYYMMDD, open, high, low, close), ...]。
+
+    為什麼指標要參考 K 線檔：history/ 只有近約一年的快照，但 K 線檔可能含有更長的歷史
+    （skills/data/backfill_etf_history.py 回補的「上市以來」日線只存在 K 線檔，history/
+    裡該代號可能只有 1~2 天）。指標一律用兩者中較長的那一份，才是資訊最完整的算法。
+    """
+    path = os.path.join(ROOT, "data", "kline", f"{sym}.json")
+    if not os.path.exists(path):
+        return []
+    try:
+        with open(path, encoding="utf-8") as f:
+            rows = json.load(f).get("rows", [])
+    except (OSError, json.JSONDecodeError):
+        return []
+    return [(str(r[0]).replace("-", ""), r[1], r[2], r[3], r[4]) for r in rows]
+
+
 def clean_spikes(rows):
     """過濾歷史收盤的單點離群值（典型錯誤資料：某日與前後兩日都差超過 25%，且前後兩日彼此接近）。
     以前後兩日的平均取代該點。只用於指標計算，不改寫 data/history/ 原始快照。
@@ -198,6 +216,11 @@ def main():
     for row in stocks_doc.get("stocks", []):
         sym = row.get("sym")
         rows = series.get(sym)
+        # K 線檔可能比 history/（僅近一年）更長（回補的上市以來資料），取較長的一份算指標。
+        # 不這樣做的話，history/ 只有 1~2 天的代號會被算成全部 null，把回補的指標蓋掉。
+        krows = load_kline_rows(sym)
+        if len(krows) > len(rows or []):
+            rows = krows
         if not rows:
             row["ma5"] = row["ma10"] = row["ma20"] = row["ma30"] = None
             row["rsi14"] = None

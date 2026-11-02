@@ -7,6 +7,27 @@
 import datetime as dt, json, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from compute_indicators import load_series
+
+
+def merge_kline_rows(path, new_rows):
+    """與既有 K 線檔合併（以日期為鍵，新資料優先）。
+
+    為什麼需要：本檔只從 data/history/（約 366 天）重建 K 線，若某代號的既有檔案含有
+    更長的歷史（例如 skills/data/backfill_etf_history.py 補的「上市以來」日線），
+    直接覆寫會把長歷史截短成一年。合併可確保既有較早的資料不會被每日重建吃掉。
+    """
+    if not os.path.exists(path):
+        return new_rows
+    try:
+        old = json.load(open(path, encoding="utf-8")).get("rows", [])
+    except (OSError, json.JSONDecodeError):
+        return new_rows
+    if not old:
+        return new_rows
+    by_date = {r[0]: r for r in old}
+    for r in new_rows:
+        by_date[r[0]] = r  # 重建結果來自官方歷史快照，優先於既有值
+    return [by_date[d] for d in sorted(by_date)]
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 OUT = os.path.join(ROOT, "data", "kline")
 os.makedirs(OUT, exist_ok=True)
@@ -27,7 +48,9 @@ for s in doc["stocks"]:
         out.append([f"{d[:4]}-{d[4:6]}-{d[6:8]}", o if o is not None else c, h if h is not None else c, l if l is not None else c, c])
     if not out:
         continue
-    with open(os.path.join(OUT, f"{s['sym']}.json"), "w", encoding="utf-8") as f:
+    path = os.path.join(OUT, f"{s['sym']}.json")
+    out = merge_kline_rows(path, out)  # 不讓只有近一年的重建結果截短既有長歷史
+    with open(path, "w", encoding="utf-8") as f:
         json.dump({"sym": s["sym"], "asof": asof, "fields": ["date", "open", "high", "low", "close"], "rows": out}, f, ensure_ascii=False, separators=(",", ":"))
     n += 1; total += len(out)
 print(f"個股 K 線檔 {n} 檔，共 {total} 筆（資料日 {asof}）")

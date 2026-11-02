@@ -3459,12 +3459,13 @@
       "listing_date": "2011-01-27",
       "tracking_index": "櫃買富櫃五十指數",
       "net_assets_100m": 9.9,
-      "close": null,
+      "close": 39.91,
       "avg_value_1m": 13.07,
-      "avg_volume": 317118,
+      "avg_volume": 219729,
       "beneficiaries": 4914,
       "ytd_return_pct": 58.32,
-      "issuer": "元大投信"
+      "issuer": "元大投信",
+      "price_asof": "2026-11-02"
     },
     {
       "sym": "00679B",
@@ -4327,12 +4328,13 @@
       "listing_date": "2019-09-30",
       "tracking_index": "STOXX美國500股票指數",
       "net_assets_100m": 43.94,
-      "close": null,
+      "close": 36.35,
       "avg_value_1m": 25.94,
-      "avg_volume": 759028,
+      "avg_volume": 346118,
       "beneficiaries": 18266,
       "ytd_return_pct": 7.38,
-      "issuer": "永豐投信"
+      "issuer": "永豐投信",
+      "price_asof": "2026-11-02"
     },
     {
       "sym": "00859B",
@@ -4439,12 +4441,13 @@
       "listing_date": "2020-07-22",
       "tracking_index": "中証5G通信主題指數",
       "net_assets_100m": 45.39,
-      "close": null,
+      "close": 25.16,
       "avg_value_1m": 139.5,
-      "avg_volume": 3965473,
+      "avg_volume": 3041763,
       "beneficiaries": 13867,
       "ytd_return_pct": 0.23,
-      "issuer": "復華投信"
+      "issuer": "復華投信",
+      "price_asof": "2026-11-02"
     },
     {
       "sym": "00884B",
@@ -4467,12 +4470,13 @@
       "listing_date": "2021-03-31",
       "tracking_index": "美國科技股票指數",
       "net_assets_100m": 2.23,
-      "close": null,
+      "close": 49.09,
       "avg_value_1m": 1.23,
-      "avg_volume": 28885,
+      "avg_volume": 30633,
       "beneficiaries": 1166,
       "ytd_return_pct": 30.42,
-      "issuer": "永豐投信"
+      "issuer": "永豐投信",
+      "price_asof": "2026-10-30"
     },
     {
       "sym": "00887",
@@ -4481,12 +4485,13 @@
       "listing_date": "2021-03-31",
       "tracking_index": "中証科技50 指數",
       "net_assets_100m": 60.14,
-      "close": null,
+      "close": 12.78,
       "avg_value_1m": 129.32,
-      "avg_volume": 8369817,
+      "avg_volume": 4388844,
       "beneficiaries": 20212,
       "ytd_return_pct": 7,
-      "issuer": "永豐投信"
+      "issuer": "永豐投信",
+      "price_asof": "2026-11-02"
     },
     {
       "sym": "00888",
@@ -4495,12 +4500,13 @@
       "listing_date": "2021-03-31",
       "tracking_index": "富時台灣ESG 優質指數",
       "net_assets_100m": 228.89,
-      "close": null,
+      "close": 30.86,
       "avg_value_1m": 292.39,
-      "avg_volume": 9172569,
+      "avg_volume": 9673267,
       "beneficiaries": 107320,
       "ytd_return_pct": 52.68,
-      "issuer": "永豐投信"
+      "issuer": "永豐投信",
+      "price_asof": "2026-11-02"
     },
     {
       "sym": "00890B",
@@ -4523,12 +4529,13 @@
       "listing_date": "2023-05-24",
       "tracking_index": "臺灣指數公司特選上櫃 ESG 30 指數",
       "net_assets_100m": 14.59,
-      "close": null,
+      "close": 29.4,
       "avg_value_1m": 32.09,
-      "avg_volume": 1017158,
+      "avg_volume": 595030,
       "beneficiaries": 7058,
       "ytd_return_pct": 47.81,
-      "issuer": "中信投信"
+      "issuer": "中信投信",
+      "price_asof": "2026-11-02"
     },
     {
       "sym": "00931B",
@@ -4621,12 +4628,13 @@
       "listing_date": "2024-08-20",
       "tracking_index": "NYSE FactSet 日本商社及批發指數",
       "net_assets_100m": 76.73,
-      "close": null,
+      "close": 16.2,
       "avg_value_1m": 146.5,
-      "avg_volume": 9561699,
+      "avg_volume": 2826502,
       "beneficiaries": 33298,
       "ytd_return_pct": 24.37,
-      "issuer": "中信投信"
+      "issuer": "中信投信",
+      "price_asof": "2026-11-02"
     },
     {
       "sym": "00957B",
@@ -4747,12 +4755,13 @@
       "listing_date": "2025-05-28",
       "tracking_index": "標普500指數",
       "net_assets_100m": 1.64,
-      "close": null,
+      "close": 13.95,
       "avg_value_1m": 1.55,
-      "avg_volume": 122141,
+      "avg_volume": 128174,
       "beneficiaries": 1087,
       "ytd_return_pct": 15.19,
-      "issuer": "台新投信"
+      "issuer": "台新投信",
+      "price_asof": "2026-11-02"
     },
     {
       "sym": "009807",
@@ -4761,12 +4770,13 @@
       "listing_date": "2025-05-28",
       "tracking_index": "科技精選行業指數",
       "net_assets_100m": 1.98,
-      "close": null,
+      "close": 16.8,
       "avg_value_1m": 1.74,
-      "avg_volume": 118649,
+      "avg_volume": 59107,
       "beneficiaries": 1121,
       "ytd_return_pct": -100,
-      "issuer": "台新投信"
+      "issuer": "台新投信",
+      "price_asof": "2026-11-02"
     },
     {
       "sym": "00980B",
@@ -4817,12 +4827,13 @@
       "listing_date": "2025-12-19",
       "tracking_index": "標普500指數",
       "net_assets_100m": 17.72,
-      "close": null,
+      "close": 11.53,
       "avg_value_1m": 20.25,
-      "avg_volume": 1923912,
+      "avg_volume": 748339,
       "beneficiaries": 13502,
       "ytd_return_pct": 14.68,
-      "issuer": "富邦投信"
+      "issuer": "富邦投信",
+      "price_asof": "2026-11-02"
     },
     {
       "sym": "009815",
@@ -4831,12 +4842,13 @@
       "listing_date": "2026-01-26",
       "tracking_index": "彭博TPEx Magnificent 7 Plus 美國大型科技指數",
       "net_assets_100m": 49.23,
-      "close": null,
+      "close": 11.52,
       "avg_value_1m": 90.53,
-      "avg_volume": 8797445,
+      "avg_volume": 1830203,
       "beneficiaries": 28865,
       "ytd_return_pct": 0,
-      "issuer": "大華銀投信"
+      "issuer": "大華銀投信",
+      "price_asof": "2026-11-02"
     },
     {
       "sym": "00981B",
@@ -4873,12 +4885,13 @@
       "listing_date": "2026-06-03",
       "tracking_index": "彭博TPEx全球未來金融優選30指數",
       "net_assets_100m": 5.84,
-      "close": null,
+      "close": 8.48,
       "avg_value_1m": 11.28,
-      "avg_volume": 1156483,
+      "avg_volume": 526500,
       "beneficiaries": 4781,
       "ytd_return_pct": 0,
-      "issuer": "華南永昌投信"
+      "issuer": "華南永昌投信",
+      "price_asof": "2026-11-02"
     },
     {
       "sym": "009823",
@@ -4887,12 +4900,13 @@
       "listing_date": "2026-06-25",
       "tracking_index": "標普 500 指數",
       "net_assets_100m": 34.73,
-      "close": null,
+      "close": 10.65,
       "avg_value_1m": 61.66,
-      "avg_volume": 5978373,
+      "avg_volume": 3479471,
       "beneficiaries": 33137,
       "ytd_return_pct": 0,
-      "issuer": "群益投信"
+      "issuer": "群益投信",
+      "price_asof": "2026-11-02"
     },
     {
       "sym": "009825",
