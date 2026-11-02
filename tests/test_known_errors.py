@@ -29,7 +29,9 @@ check("P0-4 來源計數與股票清單一致", stocks_doc['meta'].get('count') 
 hist_files = sorted(glob.glob('data/history/*.json'))
 latest = json.load(open(hist_files[-1], encoding='utf-8'))
 hmap = {r['stock_id']: r['close'] for r in latest['stocks']}
-mism = [s['sym'] for s in S if s['sym'] in hmap and s.get('price') is not None and abs(hmap[s['sym']] - s['price']) > 1e-6]
+# close 可能為 None（停牌／當日無成交，例如 20261030 有 13 檔）→ 必須先判 None，否則 TypeError 直接崩潰
+mism = [s['sym'] for s in S if s['sym'] in hmap and hmap[s['sym']] is not None
+        and s.get('price') is not None and abs(hmap[s['sym']] - s['price']) > 1e-6]
 check("P0-3 stocks.json 價格與 history 最新交易日一致", len(mism) == 0, f"不一致 {len(mism)} 檔")
 check("P0-3 stocks.json 日期與 history 最新交易日一致", stocks_doc['meta']['as_of'].replace('-', '') == os.path.basename(hist_files[-1])[:8])
 dates = [os.path.basename(f)[:8] for f in hist_files]
@@ -186,6 +188,12 @@ _pr=json.load(open('data/index-proxy.json',encoding='utf-8'))
 check("VOO 設定為每月更新", any(f['key']=='VOO' and f.get('freq')=='monthly' for f in _pr['funds']))
 check("ETF 資料網址已記錄（VOO/VTI/VUG/VTV/BND）", {e['ticker'] for e in json.load(open('data/etf-source-urls.json',encoding='utf-8'))['etfs']}=={'VOO','VTI','VUG','VTV','BND'})
 check("說明頁含 ETF 資料網址表", 'ETF 資料來源網址' in open('mklab-stock-help.html',encoding='utf-8').read())
+
+# 排程註冊一致性：job 的 if 條件引用的 cron 必須真的註冊在 on.schedule，否則該 job 永遠不會自動執行
+# （曾發生：global-history「30 22」與 index-holdings「45 22」兩個 job 條件有寫、排程從來沒註冊 → 從未自動跑過）
+_reg = set(re.findall(r'^\s+- cron:\s*"([^"]+)"', wf2, re.M))
+_ref = set(re.findall(r"github\.event\.schedule\s*==\s*'([^']+)'", wf2))
+check("排程：job 引用的 cron 都已註冊在 on.schedule", _ref <= _reg and bool(_ref), f"未註冊 {sorted(_ref - _reg)}")
 
 # 輸出
 w = max(len(n) for n, _, _ in results)
