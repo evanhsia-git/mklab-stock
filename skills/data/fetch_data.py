@@ -544,6 +544,16 @@ def run_daily():
     # 抓取 TPEX 每日收盤，過濾出 ETF（名稱含關鍵字或代碼格式）
     tpex_raw = fetch_tpex_daily()
     tpex_etf_candidates = []
+    # 官方 ETF 清單（TWSE/TPEx 投資篩選器 CSV + 補充）為上櫃 ETF 的權威依據：
+    # 名稱或代碼規則抓不到的純數字 ETF（如 006201 元大富櫃50、00858 永豐美國500大）也必須保留
+    _etf_ref = set()
+    for _fn in ("etf-meta.json", "etf-supplement.json"):
+        _fp = os.path.join(OUT, _fn)
+        if os.path.exists(_fp):
+            try:
+                _etf_ref |= {e["sym"] for e in json.load(open(_fp, encoding="utf-8")).get("etfs", [])}
+            except (OSError, json.JSONDecodeError):
+                pass
     for r in tpex_raw:
         sid = r.get("SecuritiesCompanyCode", "").strip()
         name = r.get("CompanyName", "").strip()
@@ -554,7 +564,7 @@ def run_daily():
         # P0-4：上櫃一般股票與 ETF 都保留（原本只保留 ETF，導致上櫃一般股票幾乎全部遺漏）
         # ETF / 一般股票的最終分類由 compute_indicators.py 依官方 ETF 清單統一判定
         # 範圍：上櫃只收 ETF（TPEx 一般股票不納入）；ETF 判定同原本的 is_etf / 代號規則
-        if keep_record(sid) and (is_etf or is_etf_code):
+        if keep_record(sid) and (sid in _etf_ref or is_etf or is_etf_code):
             tpex_etf_candidates.append(r)
     LOG.info(f"TPEX ETF 候選筆數: {len(tpex_etf_candidates)}")
 

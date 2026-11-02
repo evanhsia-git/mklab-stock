@@ -27,6 +27,7 @@ mklab-stock ETF 補充資料解析腳本（半自動，非 GitHub Actions 排程
   python3 skills/data/parse_etf_meta.py
 """
 import csv
+import re
 import datetime as dt
 import io
 import json
@@ -46,6 +47,11 @@ TPEX_SOURCE_URL = "https://info.tpex.org.tw/ETF/zh/filter.html"
 def _clean_sym(raw):
     # CSV 裡代號是 Excel 防止前導零被吃掉的寫法：="00400A"
     return raw.strip().lstrip("=").strip('"')
+
+
+def _is_code(sym):
+    """只接受 4~6 碼數字加可選字母尾碼的代號；註解列、標題列一律排除。"""
+    return bool(re.match(r"^[0-9]{4,6}[A-Z]?$", sym))
 
 
 def _num(raw):
@@ -76,6 +82,8 @@ def parse_twse():
         if not row or not row[0].strip():
             continue
         sym = _clean_sym(row[0])
+        if not _is_code(sym):
+            continue
         listing_date = row[2].strip().replace(".", "-") if len(row) > 2 and row[2].strip() else None
         out.append({
             "sym": sym,
@@ -109,6 +117,8 @@ def parse_tpex():
         if not row or not row[0].strip():
             continue
         sym = _clean_sym(row[0])
+        if not _is_code(sym):
+            continue
         raw_date = row[2].strip() if len(row) > 2 else ""
         listing_date = None
         if len(raw_date) == 8 and raw_date.isdigit():

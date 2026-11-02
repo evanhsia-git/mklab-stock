@@ -51,6 +51,7 @@
   <small>※ 現在僅示意，未實作實時報警；若有需求可自行擴充</small>
 </p>
 <div class="row-input" style="margin-bottom:8px;">
+  <input id="alertSym" placeholder="代號（自選股）" style="width:110px;">
   <input id="alertTargetPrice" placeholder="目標價">
   <span>~</span>
   <input id="alertStopLossPrice" placeholder="停損價">
@@ -97,7 +98,7 @@
 
   function render() {
     const rows = MKLAB.Watch.decorate(priceMap).map(r => {
-      r.alert = calcAlert(r.sym, r.chg);
+      r.alert = alertText(r);
       // 美股列標示幣別（USD），避免與台股 NT$ 價格混淆；台股維持原樣
       const pm = priceMap[r.sym];
       if (pm && pm.market === 'US') r.name = (r.name || '') + ' (US$)';
@@ -134,14 +135,32 @@
   function openDrawer() { MKLAB.Drawer.open(); }
   function closeDrawer() { MKLAB.Drawer.close(); }
 
+  // 價格提醒：存在本機瀏覽器（localStorage），只對自選股有效；表格的「提醒」欄會判斷是否觸發
+  const ALERT_KEY = 'mklab-price-alerts';
+  function loadAlerts() { try { return JSON.parse(localStorage.getItem(ALERT_KEY) || '{}'); } catch (e) { return {}; } }
   function savePriceAlert() {
-    const t = document.getElementById('alertTargetPrice').value;
-    const s = document.getElementById('alertStopLossPrice').value;
     const note = document.getElementById('addAlertNote');
-    if (note) {
-      if (t || s) note.textContent = '⚠️ 價格提醒功能尚未啟用（開發中），本次輸入未儲存、不會觸發提醒';
-      else note.textContent = '請至少輸入目標價或停損價';
+    const sym = (document.getElementById('alertSym').value || '').trim().toUpperCase();
+    const t = parseFloat(document.getElementById('alertTargetPrice').value);
+    const s = parseFloat(document.getElementById('alertStopLossPrice').value);
+    const say = m => { if (note) note.textContent = m; };
+    if (!sym) return say('請輸入自選股代號');
+    if (!MKLAB.Watch.list().some(x => x.sym === sym)) return say('代號 ' + sym + ' 不在自選股中，請先加入自選股');
+    if (!(t > 0) && !(s > 0)) return say('請至少輸入目標價或停損價（須為大於 0 的數字）');
+    const all = loadAlerts();
+    all[sym] = { target: t > 0 ? t : null, stop: s > 0 ? s : null, saved_at: new Date().toISOString() };
+    localStorage.setItem(ALERT_KEY, JSON.stringify(all));
+    say('已儲存 ' + sym + '：目標價 ' + (t > 0 ? t : '—') + ' / 停損價 ' + (s > 0 ? s : '—') + '（儲存於本機瀏覽器）');
+    render();
+  }
+  // 提醒文字：依最新收盤價判斷是否達目標價或停損價；未設定則沿用原本的異常漲跌提示
+  function alertText(r) {
+    const a = loadAlerts()[r.sym];
+    if (a && r.price != null) {
+      if (a.target != null && r.price >= a.target) return '🎯 達目標價';
+      if (a.stop != null && r.price <= a.stop) return '🛑 觸停損價';
     }
+    return calcAlert(r.sym, r.chg);
   }
 
   window.addEventListener('DOMContentLoaded', function () {

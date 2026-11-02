@@ -150,6 +150,14 @@ check("分類：0052、00757 為主題型", 'theme' in cl.get('0052',[]) and 'th
 check("分類：A 尾碼寬基為主動市值型", all('active_cap' in cl.get(k,[]) for k in ['00985A','00991A','00994A','00403A','00415A']))
 check("分類：K/C/M/S/V 尾碼為外幣型", all('fx' in v for k,v in cl.items() if k[-1:] in 'KCMSV'))
 
+
+# TPEx ETF 篩選：官方清單內代號必須保留（修正純數字 ETF 漏抓）
+fd=open('skills/data/fetch_data.py',encoding='utf-8').read()
+check("TPEx ETF 篩選納入官方清單代號", "sid in _etf_ref" in fd and "etf-meta.json" in fd)
+# 價格提醒：儲存邏輯存在且會判斷是否觸發
+wl=open('mklab-stock-watchlist.html',encoding='utf-8').read()
+check("Watchlist 價格提醒已實作（儲存與觸發判斷）", "function alertText" in wl and "mklab-price-alerts" in wl and "尚未啟用" not in wl)
+
 # 輸出
 w = max(len(n) for n, _, _ in results)
 for n, st, d in results:

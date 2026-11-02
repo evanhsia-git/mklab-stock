@@ -1,8 +1,8 @@
 {
   "meta": {
-    "as_of": "2026-09-29",
+    "as_of": "2026-11-02",
     "rules_version": "4.0.0",
-    "count": 354,
+    "count": 357,
     "excluded_count": 6,
     "excluded_syms": [
       "00635U",
@@ -13,13 +13,13 @@
       "00763U"
     ],
     "category_counts": {
-      "active": 34,
+      "active": 35,
       "dividend_high": 33,
-      "active_cap": 22,
-      "tech": 31,
-      "theme": 76,
+      "active_cap": 23,
+      "tech": 32,
+      "theme": 77,
       "global": 80,
-      "market_cap": 90,
+      "market_cap": 91,
       "fx": 6,
       "leveraged": 21,
       "inverse": 20,
@@ -207,6 +207,50 @@
       "pay_frequency": null
     },
     {
+      "sym": "00412A",
+      "name": "主動安聯亞半導體",
+      "market": "TWSE",
+      "categories": [
+        "active",
+        "tech",
+        "theme"
+      ],
+      "category_reasons": {
+        "active": "尾碼 A",
+        "theme": "名稱含「半導體」",
+        "tech": "名稱含「半導體」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00415A",
+      "name": "主動群益核心50",
+      "market": "TWSE",
+      "categories": [
+        "active",
+        "active_cap"
+      ],
+      "category_reasons": {
+        "active": "尾碼 A",
+        "active_cap": "主動且寬基（A 尾碼）"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00416A",
+      "name": "主動台新臺灣中小",
+      "market": "TWSE",
+      "categories": [
+        "active",
+        "active_cap"
+      ],
+      "category_reasons": {
+        "active": "尾碼 A",
+        "active_cap": "主動且寬基（A 尾碼）"
+      },
+      "pay_frequency": null
+    },
+    {
       "sym": "0050",
       "name": "元大台灣50",
       "market": "TWSE",
@@ -246,13 +290,15 @@
     },
     {
       "sym": "0053",
-      "name": "元大電子",
+      "name": "元大科技市值",
       "market": "TWSE",
       "categories": [
+        "tech",
         "theme"
       ],
       "category_reasons": {
-        "theme": "名稱含「電子」"
+        "tech": "名稱含「科技」",
+        "theme": "科技型歸主題型"
       },
       "pay_frequency": null
     },
@@ -2815,6 +2861,30 @@
       "pay_frequency": null
     },
     {
+      "sym": "009831",
+      "name": "FT核心AI電力算力",
+      "market": "TWSE",
+      "categories": [
+        "theme"
+      ],
+      "category_reasons": {
+        "theme": "名稱含「AI」"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "009832",
+      "name": "兆豐美國黃金礦業",
+      "market": "TWSE",
+      "categories": [
+        "market_cap"
+      ],
+      "category_reasons": {
+        "market_cap": "一般指數型，預設被動市值型"
+      },
+      "pay_frequency": null
+    },
+    {
       "sym": "00983A",
       "name": "主動中信ARK創新",
       "market": "TWSE",
@@ -3847,18 +3917,6 @@
       "pay_frequency": null
     },
     {
-      "sym": "00847B",
-      "name": "中信美國市政債",
-      "market": "TPEx",
-      "categories": [
-        "bond"
-      ],
-      "category_reasons": {
-        "bond": "尾碼 B"
-      },
-      "pay_frequency": null
-    },
-    {
       "sym": "00848B",
       "name": "中信新興亞洲債",
       "market": "TPEx",
@@ -4595,6 +4653,18 @@
       "pay_frequency": null
     },
     {
+      "sym": "00992B",
+      "name": "街口優息非投債",
+      "market": "TPEx",
+      "categories": [
+        "bond"
+      ],
+      "category_reasons": {
+        "bond": "尾碼 B"
+      },
+      "pay_frequency": null
+    },
+    {
       "sym": "00998A",
       "name": "主動復華金融股息",
       "market": "TPEx",
@@ -4605,36 +4675,6 @@
       "category_reasons": {
         "active": "尾碼 A",
         "theme": "名稱含「金融」"
-      },
-      "pay_frequency": null
-    },
-    {
-      "sym": "00415A",
-      "name": "主動群益核心50",
-      "market": "TWSE",
-      "categories": [
-        "active",
-        "active_cap"
-      ],
-      "category_reasons": {
-        "active": "尾碼 A",
-        "active_cap": "主動且寬基（A 尾碼）"
-      },
-      "pay_frequency": null
-    },
-    {
-      "sym": "00412A",
-      "name": "主動安聯亞半導體",
-      "market": "TWSE",
-      "categories": [
-        "active",
-        "tech",
-        "theme"
-      ],
-      "category_reasons": {
-        "active": "尾碼 A",
-        "theme": "名稱含「半導體」",
-        "tech": "名稱含「半導體」"
       },
       "pay_frequency": null
     }
