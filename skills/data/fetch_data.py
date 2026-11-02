@@ -157,10 +157,31 @@ def ind_name(codes, fallback, raw):
     return nm if nm else fallback
 
 
-def fetch_json(url, timeout=60):
-    req = urllib.request.Request(url, headers={"User-Agent": "mklab-stock/1.0"})
-    with urllib.request.urlopen(req, timeout=timeout) as r:
-        return json.loads(r.read().decode("utf-8"))
+def fetch_json(url, timeout=60, attempts=3):
+    """抓 JSON，附重試。
+
+    TPEX 全量收盤檔約 5MB，偶爾被截斷成 http.client.IncompleteRead —— 曾在 10-30
+    讓整個 job 掉了 119 檔上櫃股（只留 TWSE）。因此：重試 3 次、指數退避；
+    且若截斷留下的 partial bytes 剛好是合法 JSON 就直接採用，不白白丟掉整份資料。
+    """
+    last = None
+    for i in range(attempts):
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": "mklab-stock/1.0"})
+            with urllib.request.urlopen(req, timeout=timeout) as r:
+                raw = r.read()
+            return json.loads(raw.decode("utf-8"))
+        except Exception as e:          # IncompleteRead / URLError / timeout / JSON 截斷
+            last = e
+            partial = getattr(e, "partial", None)
+            if partial:
+                try:
+                    return json.loads(partial.decode("utf-8"))
+                except Exception:
+                    pass
+            if i + 1 < attempts:
+                time.sleep(2 * (i + 1))
+    raise last
 
 
 def fetch_json_with_fallback(urls, timeout=60):
@@ -319,7 +340,7 @@ def fetch_tpex_bwibbu():
 def fetch_tpex_daily():
     """抓 TPEX 每日收盤，回傳 list of dict（同 TWSE 格式）。失敗回傳空 list。"""
     try:
-        raw = fetch_json(TPEX_DAILY, timeout=60)
+        raw = fetch_json(TPEX_DAILY, timeout=120)   # 全量約 5MB，60s 容易截斷
         if not isinstance(raw, list):
             return []
         LOG.info(f"TPEX 每日收盤取得 {len(raw)} 筆原始資料")
@@ -521,7 +542,9 @@ def run_daily():
         # 資料來源標記
         source = "TWSE"
         quality = "official"
-        last_updated = trade_date
+        # 治本：每筆記錄自己的價格日期。TWSE 記錄一律等於 trade_date。
+        price_asof = trade_date
+        last_updated = price_asof
 
         stocks.append({
             "sym": sid,
@@ -536,6 +559,7 @@ def run_daily():
             "rank": ex.get("rank"), **{k: ex.get(k) for k in OFFICIAL_KEYS},
             "source": source,
             "quality": quality,
+            "price_asof": price_asof,
             "last_updated": last_updated,
         })
         sources["TWSE"] += 1
@@ -632,6 +656,15 @@ def run_daily():
                 if high is None: high = close
                 if low is None: low = close
 
+        # 治本：TPEX 常發布 T-0（當天），TWSE 只有 T-1/T-2，兩者本質上不同日。
+        # 以該筆自己的 Date 當 price_asof，絕不覆寫成 trade_date ——
+        # 否則週一的上櫃價會被標成上週五（曾造成 118 筆錯標 3 天）。
+        _tpex_date = str(r.get("Date") or "").strip()
+        try:
+            price_asof = parse_date(_tpex_date) if _tpex_date else trade_date
+        except Exception:
+            price_asof = trade_date
+
         ex = existing.get(sid, {})
         bb_tpex = bwibbu_tpex.get(sid, {})
         # TPEX 沒有營益分析/資產負債表 API，沿用既有資料
@@ -649,7 +682,7 @@ def run_daily():
 
         source = "TPEX"
         quality = "official"
-        last_updated = trade_date
+        last_updated = price_asof
 
         tpex_stocks.append({
             "sym": sid,
@@ -664,6 +697,7 @@ def run_daily():
             "rank": ex.get("rank"), **{k: ex.get(k) for k in OFFICIAL_KEYS},
             "source": source,
             "quality": quality,
+            "price_asof": price_asof,
             "last_updated": last_updated,
             "_est_mc": est_mc({"price": close, "volume": volume, "market_cap": mc}),
         })
@@ -747,6 +781,13 @@ def run_daily():
     meta["count"] = len(stocks)
     meta["note"] = meta["note"] + "；已排除 U 尾代號（期貨型 ETF / 認購權證）"
 
+    # 揭露各 price_asof 的筆數：一眼看出有沒有把別天的價格混進這個快照
+    _pa = {}
+    for _s in stocks:
+        _k = _s.get("price_asof")
+        _pa[_k] = _pa.get(_k, 0) + 1
+    meta["price_asof_counts"] = _pa
+
     _prev_asof = None
     try:
         _prev_asof = str(json.load(open(os.path.join(OUT, "stocks.json"), encoding="utf-8")).get("meta", {}).get("as_of") or "")[:10]
@@ -759,12 +800,14 @@ def run_daily():
             json.dump(_sanitize_nan({"meta": meta, "stocks": stocks}), f, ensure_ascii=False)
 
     # 當日 history 切片（收盤價 + PE/PB/殖利率）
+    # 只納入價格日期等於快照日期的記錄：一份 dated snapshot 不可以混進別天的價格。
+    # TPEX 常領先 TWSE 一天以上，混入會讓回測/指標/前端讀到錯日期的收盤。
     hist = [{
         "stock_id": s["sym"], "stock_name": s["name"], "close": s["price"],
         "open": s["open"], "high": s["high"], "low": s["low"], "volume": s["volume"],
         "pe_ratio": s["pe"], "pb_ratio": s["pb"], "dividend_yield": s["div"],
         "industry": s["ind"],
-    } for s in stocks]
+    } for s in stocks if s.get("price_asof") == trade_date]
     # 防護：休市日或來源資料不完整時，TWSE 會回傳舊資料且缺少高低價；這種日子不是交易日，
     # 不可寫入 history（否則回測與指標會讀到錯誤收盤值）。
     miss_hl = sum(1 for s in stocks if s.get("high") is None)
