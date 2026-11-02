@@ -29,6 +29,9 @@ permissions:
 
 jobs:
   daily:
+    concurrency:
+      group: mklab-git-push
+      cancel-in-progress: false
     if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 9 * * 1-5'
     runs-on: ubuntu-latest
     steps:
@@ -61,6 +64,9 @@ jobs:
           fi
 
   weekly-roe:
+    concurrency:
+      group: mklab-git-push
+      cancel-in-progress: false
     if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 10 * * 6'
     runs-on: ubuntu-latest
     steps:
@@ -86,6 +92,9 @@ jobs:
           fi
 
   indices:
+    concurrency:
+      group: mklab-git-push
+      cancel-in-progress: false
     if: github.event_name == 'workflow_dispatch' || github.event.schedule == '30 9 * * 1-5'
     runs-on: ubuntu-latest
     steps:
@@ -111,6 +120,9 @@ jobs:
           fi
 
   twii-kline:
+    concurrency:
+      group: mklab-git-push
+      cancel-in-progress: false
     if: github.event_name == 'workflow_dispatch' || github.event.schedule == '30 9 * * 1-5'
     runs-on: ubuntu-latest
     steps:
@@ -137,6 +149,9 @@ jobs:
             git push
           fi
   digest:
+    concurrency:
+      group: mklab-git-push
+      cancel-in-progress: false
     if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 10 * * 1-5'
     runs-on: ubuntu-latest
     steps:
@@ -160,6 +175,9 @@ jobs:
           fi
 
   us-market:
+    concurrency:
+      group: mklab-git-push
+      cancel-in-progress: false
     if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 22 * * 1-5'
     runs-on: ubuntu-latest
     steps:
@@ -185,6 +203,9 @@ jobs:
           fi
 
   global-history:
+    concurrency:
+      group: mklab-git-push
+      cancel-in-progress: false
     if: github.event_name == 'workflow_dispatch' || github.event.schedule == '30 22 * * 1-5'
     runs-on: ubuntu-latest
     steps:
@@ -208,6 +229,9 @@ jobs:
           fi
 
   index-holdings:
+    concurrency:
+      group: mklab-git-push
+      cancel-in-progress: false
     if: github.event_name == 'workflow_dispatch' || github.event.schedule == '45 22 * * 1-5'
     runs-on: ubuntu-latest
     steps:
