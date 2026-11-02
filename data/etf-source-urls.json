@@ -1,0 +1,33 @@
+{
+  "meta": {
+    "description": "ETF 資料網址（參考紀錄，未來需要時使用）",
+    "template": "https://investor.vanguard.com/irr/funds/profile/{TICKER}-AdditionalFundData"
+  },
+  "etfs": [
+    {
+      "ticker": "VOO",
+      "issuer": "Vanguard",
+      "url": "https://investor.vanguard.com/irr/funds/profile/VOO-AdditionalFundData"
+    },
+    {
+      "ticker": "VTI",
+      "issuer": "Vanguard",
+      "url": "https://investor.vanguard.com/irr/funds/profile/VTI-AdditionalFundData"
+    },
+    {
+      "ticker": "VUG",
+      "issuer": "Vanguard",
+      "url": "https://investor.vanguard.com/irr/funds/profile/VUG-AdditionalFundData"
+    },
+    {
+      "ticker": "VTV",
+      "issuer": "Vanguard",
+      "url": "https://investor.vanguard.com/irr/funds/profile/VTV-AdditionalFundData"
+    },
+    {
+      "ticker": "BND",
+      "issuer": "Vanguard",
+      "url": "https://investor.vanguard.com/irr/funds/profile/BND-AdditionalFundData"
+    }
+  ]
+}

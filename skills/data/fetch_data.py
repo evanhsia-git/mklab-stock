@@ -807,7 +807,9 @@ def run_weekly():
         run_daily()
     data = json.load(open(p, encoding="utf-8"))
     stocks = data.get("stocks", [])
-    syms = [s["sym"] for s in stocks]
+    # 只補「沒有 TWSE 官方財報」的一般股票；官方 ROE/ROA/EPS 已有者與 ETF 不需要 yfinance（大幅縮短執行時間）
+    syms = [s["sym"] for s in stocks
+            if s.get("fund_src") != "TWSE_OFFICIAL" and s.get("security_type", "stock") == "stock"]
     LOG.stats["fetched"] = len(syms)
     LOG.info(f"待補 {len(syms)} 檔")
     roe_map = fetch_yfinance_roe(syms)

@@ -1,4 +1,8 @@
 name: daily-update
+concurrency:
+  group: data-update
+  cancel-in-progress: false
+
 on:
   schedule:
     # 台灣收盤後 17:00 = UTC 09:00（週一至週五）：抓收盤+PE/PB/殖利率

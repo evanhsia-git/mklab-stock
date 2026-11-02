@@ -166,7 +166,7 @@ _cfg=json.load(open('data/index-proxy.json',encoding='utf-8'))
 check("指數替代 ETF 設定含 VOO/DIA/QQQ/SOXX", {f['key'] for f in _cfg['funds']}=={'VOO','DIA','QQQ','SOXX'})
 _voo=[f for f in _cfg['funds'] if f['key']=='VOO'][0]
 if os.path.exists('data/raw/official/VOO_holdings.csv'):
-    _d,_u=_fih.load_source(_voo['sources'][0]); _h=_fih.parse_bytes(_d,_u)
+    _man=[x for x in _voo['sources'] if x.startswith('manual_upload:')][0]; _d,_u=_fih.load_source(_man); _h=_fih.parse_bytes(_d,_u)
     check("VOO 持股檔解析並通過驗證（真實檔）", len(_h)>=480 and (_fih.validate(_voo,_h) or True))
 check("持股解析：iShares 型表頭", len(_fih.parse_table([["Ticker","Name","Weight (%)"],["NVDA","NVIDIA","8.5"]]))==1)
 _bad_ok=False
@@ -175,6 +175,17 @@ try:
 except ValueError:
     _bad_ok=True
 check("持股驗證：權重加總異常會被擋下（真實邏輯）", _bad_ok)
+
+
+# 排程：資料 job 併發排隊；每週 ROE 只補非官方的一般股票
+wf2=open('.github/workflows/daily-update.yml',encoding='utf-8').read()
+check("排程併發控制（避免同時 push 互相拒絕）", "concurrency:" in wf2 and "group: data-update" in wf2)
+fd2=open('skills/data/fetch_data.py',encoding='utf-8').read()
+check("每週 ROE 補值排除官方財報與 ETF", 'fund_src") != "TWSE_OFFICIAL"' in fd2)
+_pr=json.load(open('data/index-proxy.json',encoding='utf-8'))
+check("VOO 設定為每月更新", any(f['key']=='VOO' and f.get('freq')=='monthly' for f in _pr['funds']))
+check("ETF 資料網址已記錄（VOO/VTI/VUG/VTV/BND）", {e['ticker'] for e in json.load(open('data/etf-source-urls.json',encoding='utf-8'))['etfs']}=={'VOO','VTI','VUG','VTV','BND'})
+check("說明頁含 ETF 資料網址表", 'ETF 資料來源網址' in open('mklab-stock-help.html',encoding='utf-8').read())
 
 # 輸出
 w = max(len(n) for n, _, _ in results)

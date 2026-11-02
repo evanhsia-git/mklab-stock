@@ -59,6 +59,13 @@ def load_source(src):
     return data, src
 
 def parse_bytes(data, src):
+    if data.lstrip()[:1] == b"<":  # HTML：逐一檢查每個表格
+        import pandas as pd
+        for t in pd.read_html(io.StringIO(data.decode("utf-8", errors="replace"))):
+            res = parse_table([list(t.columns)] + t.fillna("").values.tolist())
+            if res:
+                return res
+        return []
     if src.lower().endswith((".xlsx", ".xls")) or data[:2] == b"PK":
         import pandas as pd
         df = pd.read_excel(io.BytesIO(data), header=None)
@@ -85,6 +92,12 @@ def main():
     for fund in cfg["funds"]:
         key = fund["key"]
         out_path = os.path.join(OUT_DIR, f"{key}.json")
+        if fund.get("freq") == "monthly" and os.path.exists(out_path):
+            last = json.load(open(out_path, encoding="utf-8")).get("fetched_at", "")[:10]
+            if last and (dt.date.today() - dt.date.fromisoformat(last)).days < 25:
+                log(f"⏭ {key}：每月更新，{last} 已抓過，略過")
+                ok += 1
+                continue
         done = False
         for src in fund["sources"]:
             try:
