@@ -1,7 +1,7 @@
 {
   "month": "2026-11",
   "source": "yfinance（非官方備援）",
-  "updated_at": "2026-11-02T23:02:18.622515+08:00",
+  "updated_at": "2026-11-03T00:41:10.119228+08:00",
   "rows": [
     {
       "date": "2026-11-02",
@@ -28,6 +28,38 @@
         }
       },
       "missing": []
+    },
+    {
+      "date": "2026-11-03",
+      "close": {
+        "^DJI": {
+          "name": "道瓊工業",
+          "close": null
+        },
+        "^GSPC": {
+          "name": "S&P 500",
+          "close": null
+        },
+        "^IXIC": {
+          "name": "那斯達克綜合",
+          "close": null
+        },
+        "^NDX": {
+          "name": "那斯達克100",
+          "close": null
+        },
+        "^SOX": {
+          "name": "費城半導體",
+          "close": null
+        }
+      },
+      "missing": [
+        "^DJI",
+        "^GSPC",
+        "^IXIC",
+        "^NDX",
+        "^SOX"
+      ]
     }
   ]
 }
