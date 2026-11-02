@@ -35,8 +35,8 @@ jobs:
     # 若要讓它真正「阻擋不合規的 push/merge」，請在分支保護規則加入此 status check：
     #   Settings → Branches → main → Require status checks to pass before merging → 勾選 "qa-gate / qa-gate"
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
       - name: Quality Gate
@@ -61,7 +61,7 @@ jobs:
           PY
       - name: 上傳報告
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: qa-report
           path: |
