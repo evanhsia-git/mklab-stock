@@ -6,7 +6,11 @@ node_modules/
 .vscode/
 
 # 原始日線資料（保留外部，不進 repo）
-data/raw/
+data/raw/*
+!data/raw/official/
+!data/raw/twse_etf.csv
+!data/raw/tpex_etf.csv
+
 data/daily-*.csv
 
 # 但 Build-Time 生成的 JSON（含 history 切片）要進 repo（Static-First / Fork-First）

@@ -14,7 +14,8 @@ CODES = json.load(open(os.path.join(ROOT, "data", "industry-codes.json"), encodi
 CODES = dict(CODES); CODES["91"] = "存託憑證"
 SRC = glob.glob(os.path.join(ROOT, "data", "raw", "official", "t187ap03_L*.csv"))
 if not SRC:
-    raise SystemExit("找不到 t187ap03_L CSV")
+    print("[integrate] 找不到 t187ap03_L CSV，略過公司基本資料整合（不中斷排程）")
+    raise SystemExit(0)
 rows = list(csv.reader(open(SRC[0], encoding="utf-8-sig")))
 h = rows[0]
 ci = {k: h.index(k) for k in ["公司代號", "公司簡稱", "產業別", "上市日期", "出表日期"]}

@@ -1,0 +1,21 @@
+{
+  "meta": {
+    "description": "四大指數的替代 ETF（發行人公開持股，較易取得）。權重為 ETF 持股權重，與指數權重略有差異。",
+    "updated": "2026-11-02"
+  },
+  "funds": [
+    {"key": "VOO", "index": "S&P 500", "issuer": "Vanguard", "expected_min": 480, "expected_max": 540,
+     "sources": ["manual_upload:data/raw/official/VOO_holdings.csv"],
+     "note": "Vanguard 持股每月公布（約月底後 15 日）；自動抓取網址未確認，暫以手動上傳檔為備援"},
+    {"key": "DIA", "index": "道瓊工業指數", "issuer": "State Street (SSGA)", "expected_min": 28, "expected_max": 32,
+     "sources": ["https://www.ssga.com/us/en/intermediary/etfs/library-content/products/fund-data/etfs/us/holdings-daily-us-dia.xlsx",
+                 "https://www.ssga.com/us/en/intermediary/etfs/library-content/products/fund-data/etfs/us/holdings-daily-us-en-dia.xlsx"],
+     "note": "SSGA 每日公布，格式為 XLSX"},
+    {"key": "QQQ", "index": "那斯達克100", "issuer": "Invesco", "expected_min": 95, "expected_max": 115,
+     "sources": ["https://www.invesco.com/us/financial-products/etfs/holdings/main/holdings/0?audienceType=Investor&ticker=QQQ"],
+     "note": "Invesco 每日公布；網址格式需由 Actions 日誌確認"},
+    {"key": "SOXX", "index": "費城半導體（近似）", "issuer": "iShares (BlackRock)", "expected_min": 28, "expected_max": 36,
+     "sources": ["https://www.ishares.com/us/products/239705/ishares-phlx-semiconductor-etf/1467271812596.ajax?fileType=csv&fileName=SOXX_holdings&dataType=fund"],
+     "note": "iShares 每日公布 CSV；SOXX 追蹤 ICE/PHLX 半導體類指數，與 SOX 非完全相同"}
+  ]
+}

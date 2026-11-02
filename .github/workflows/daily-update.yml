@@ -196,3 +196,26 @@ jobs:
             git pull --no-rebase origin main -X ours
             git push
           fi
+
+  index-holdings:
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '45 22 * * 1-5'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install parsers
+        run: pip install pandas openpyxl
+      - name: Fetch index-proxy ETF holdings (DIA/QQQ/SOXX 自動，VOO 手動備援)
+        run: python skills/data/fetch_index_holdings.py
+      - name: Commit & push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/index-holdings/
+          if git diff --cached --quiet; then echo "no changes"; else
+            git commit -m "data: 指數替代 ETF 持股更新 $(date +%Y-%m-%d) [skip ci]"
+            git pull --no-rebase origin main -X ours
+            git push
+          fi

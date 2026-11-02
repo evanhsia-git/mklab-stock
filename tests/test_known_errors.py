@@ -158,6 +158,24 @@ check("TPEx ETF 篩選納入官方清單代號", "sid in _etf_ref" in fd and "et
 wl=open('mklab-stock-watchlist.html',encoding='utf-8').read()
 check("Watchlist 價格提醒已實作（儲存與觸發判斷）", "function alertText" in wl and "mklab-price-alerts" in wl and "尚未啟用" not in wl)
 
+
+# 指數替代 ETF 持股：設定與解析
+import importlib.util as _ilu
+_spec=_ilu.spec_from_file_location("fih","skills/data/fetch_index_holdings.py"); _fih=_ilu.module_from_spec(_spec); _spec.loader.exec_module(_fih)
+_cfg=json.load(open('data/index-proxy.json',encoding='utf-8'))
+check("指數替代 ETF 設定含 VOO/DIA/QQQ/SOXX", {f['key'] for f in _cfg['funds']}=={'VOO','DIA','QQQ','SOXX'})
+_voo=[f for f in _cfg['funds'] if f['key']=='VOO'][0]
+if os.path.exists('data/raw/official/VOO_holdings.csv'):
+    _d,_u=_fih.load_source(_voo['sources'][0]); _h=_fih.parse_bytes(_d,_u)
+    check("VOO 持股檔解析並通過驗證（真實檔）", len(_h)>=480 and (_fih.validate(_voo,_h) or True))
+check("持股解析：iShares 型表頭", len(_fih.parse_table([["Ticker","Name","Weight (%)"],["NVDA","NVIDIA","8.5"]]))==1)
+_bad_ok=False
+try:
+    _fih.validate(_voo,[{'ticker':'A%d'%i,'name':'','weight_pct':1.0} for i in range(500)])
+except ValueError:
+    _bad_ok=True
+check("持股驗證：權重加總異常會被擋下（真實邏輯）", _bad_ok)
+
 # 輸出
 w = max(len(n) for n, _, _ in results)
 for n, st, d in results:
