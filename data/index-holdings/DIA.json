@@ -1,0 +1,161 @@
+{
+ "fund": "DIA",
+ "index": "道瓊工業指數",
+ "issuer": "State Street (SSGA)",
+ "count": 30,
+ "source": "https://www.ssga.com/us/en/intermediary/etfs/library-content/products/fund-data/etfs/us/holdings-daily-us-en-dia.xlsx",
+ "fetched_at": "2026-11-03T00:40:23.743840+08:00",
+ "weight_total_pct": 99.95,
+ "holdings": [
+  {
+   "ticker": "GS",
+   "name": "GOLDMAN SACHS GROUP INC",
+   "weight_pct": 10.264493
+  },
+  {
+   "ticker": "CAT",
+   "name": "CATERPILLAR INC",
+   "weight_pct": 7.14573
+  },
+  {
+   "ticker": "MSFT",
+   "name": "MICROSOFT CORP",
+   "weight_pct": 5.988644
+  },
+  {
+   "ticker": "AMGN",
+   "name": "AMGEN INC",
+   "weight_pct": 5.347221
+  },
+  {
+   "ticker": "V",
+   "name": "VISA INC CLASS A SHARES",
+   "weight_pct": 4.745729
+  },
+  {
+   "ticker": "UNH",
+   "name": "UNITEDHEALTH GROUP INC",
+   "weight_pct": 4.669768
+  },
+  {
+   "ticker": "TRV",
+   "name": "TRAVELERS COS INC/THE",
+   "weight_pct": 4.546417
+  },
+  {
+   "ticker": "AAPL",
+   "name": "APPLE INC",
+   "weight_pct": 3.954449
+  },
+  {
+   "ticker": "JPM",
+   "name": "JPMORGAN CHASE + CO",
+   "weight_pct": 3.867358
+  },
+  {
+   "ticker": "SHW",
+   "name": "SHERWIN WILLIAMS CO/THE",
+   "weight_pct": 3.816526
+  },
+  {
+   "ticker": "HD",
+   "name": "HOME DEPOT INC",
+   "weight_pct": 3.777398
+  },
+  {
+   "ticker": "AXP",
+   "name": "AMERICAN EXPRESS CO",
+   "weight_pct": 3.66162
+  },
+  {
+   "ticker": "GOOGL",
+   "name": "ALPHABET INC CL A",
+   "weight_pct": 3.211018
+  },
+  {
+   "ticker": "JNJ",
+   "name": "JOHNSON + JOHNSON",
+   "weight_pct": 3.134827
+  },
+  {
+   "ticker": "MCD",
+   "name": "MCDONALD S CORP",
+   "weight_pct": 2.961792
+  },
+  {
+   "ticker": "IBM",
+   "name": "INTL BUSINESS MACHINES CORP",
+   "weight_pct": 2.958235
+  },
+  {
+   "ticker": "AMZN",
+   "name": "AMAZON.COM INC",
+   "weight_pct": 2.75789
+  },
+  {
+   "ticker": "CVX",
+   "name": "CHEVRON CORP",
+   "weight_pct": 2.702469
+  },
+  {
+   "ticker": "CRM",
+   "name": "SALESFORCE INC",
+   "weight_pct": 2.629606
+  },
+  {
+   "ticker": "HON",
+   "name": "HONEYWELL INTERNATIONAL INC",
+   "weight_pct": 2.505222
+  },
+  {
+   "ticker": "NVDA",
+   "name": "NVIDIA CORP",
+   "weight_pct": 2.348137
+  },
+  {
+   "ticker": "MMM",
+   "name": "3M CO",
+   "weight_pct": 2.00046
+  },
+  {
+   "ticker": "BA",
+   "name": "BOEING CO/THE",
+   "weight_pct": 1.968446
+  },
+  {
+   "ticker": "PG",
+   "name": "PROCTER + GAMBLE CO/THE",
+   "weight_pct": 1.853931
+  },
+  {
+   "ticker": "MRK",
+   "name": "MERCK + CO. INC.",
+   "weight_pct": 1.715664
+  },
+  {
+   "ticker": "WMT",
+   "name": "WALMART INC",
+   "weight_pct": 1.417213
+  },
+  {
+   "ticker": "DIS",
+   "name": "WALT DISNEY CO/THE",
+   "weight_pct": 1.272978
+  },
+  {
+   "ticker": "CSCO",
+   "name": "CISCO SYSTEMS INC",
+   "weight_pct": 1.199198
+  },
+  {
+   "ticker": "KO",
+   "name": "COCA COLA CO/THE",
+   "weight_pct": 1.079519
+  },
+  {
+   "ticker": "NKE",
+   "name": "NIKE INC  CL B",
+   "weight_pct": 0.443718
+  }
+ ]
+}
