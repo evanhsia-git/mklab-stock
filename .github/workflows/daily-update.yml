@@ -1,7 +1,16 @@
 name: daily-update
+
+# 這裡是「整條 workflow（run）」的層級：同時只允許一個 run，新的 run 取代等待中的舊 run
+# （排程重疊時希望「跳過被取代的那個」，所以刻意保持 queue 預設值 single）
 concurrency:
   group: data-update
   cancel-in-progress: false
+
+# 下面每個 job 另有 job 級 concurrency（group: mklab-git-push），用途是序列化 git push、避免 race。
+# ⚠️ 但 job 級 concurrency 的 queue 預設是 single：同一個 group 只能有「1 個執行中 + 1 個 pending」，
+#    新的 pending 會直接取消上一個 pending。workflow_dispatch 一次觸發 8 個 job 時，
+#    只有 2 個能存活，其餘 6 個在 2 秒內被自己人取消（run #234 的 6 個 error 就是這個，非真失敗）。
+#    因此每個 job 都必須加上 `queue: max`（最多 100 個排隊），讓 sibling job 排隊而非互相取消。
 
 on:
   schedule:
@@ -31,12 +40,13 @@ jobs:
   daily:
     concurrency:
       group: mklab-git-push
+      queue: max
       cancel-in-progress: false
     if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 9 * * 1-5'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
       - name: Fetch daily (TWSE OpenAPI, 雲端免 key)
@@ -66,12 +76,13 @@ jobs:
   weekly-roe:
     concurrency:
       group: mklab-git-push
+      queue: max
       cancel-in-progress: false
     if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 10 * * 6'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
       - name: Install yfinance
@@ -94,12 +105,13 @@ jobs:
   indices:
     concurrency:
       group: mklab-git-push
+      queue: max
       cancel-in-progress: false
     if: github.event_name == 'workflow_dispatch' || github.event.schedule == '30 9 * * 1-5'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
       - name: Install yfinance
@@ -122,12 +134,13 @@ jobs:
   twii-kline:
     concurrency:
       group: mklab-git-push
+      queue: max
       cancel-in-progress: false
     if: github.event_name == 'workflow_dispatch' || github.event.schedule == '30 9 * * 1-5'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
       - name: Install yfinance
@@ -151,12 +164,13 @@ jobs:
   digest:
     concurrency:
       group: mklab-git-push
+      queue: max
       cancel-in-progress: false
     if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 10 * * 1-5'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
       - name: Build digest (static, no key)
@@ -169,7 +183,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "no changes"
           else
-            git commit -m "data: 每日摘要更新 2026-09-13 [skip ci]"
+            git commit -m "data: 每日摘要更新 $(date +%Y-%m-%d) [skip ci]"
             git pull --no-rebase origin main -X ours
             git push
           fi
@@ -177,12 +191,13 @@ jobs:
   us-market:
     concurrency:
       group: mklab-git-push
+      queue: max
       cancel-in-progress: false
     if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 22 * * 1-5'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
       - name: Install yfinance
@@ -205,12 +220,13 @@ jobs:
   global-history:
     concurrency:
       group: mklab-git-push
+      queue: max
       cancel-in-progress: false
     if: github.event_name == 'workflow_dispatch' || github.event.schedule == '30 22 * * 1-5'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
       - name: Install yfinance
@@ -231,12 +247,13 @@ jobs:
   index-holdings:
     concurrency:
       group: mklab-git-push
+      queue: max
       cancel-in-progress: false
     if: github.event_name == 'workflow_dispatch' || github.event.schedule == '45 22 * * 1-5'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
       - name: Install parsers
