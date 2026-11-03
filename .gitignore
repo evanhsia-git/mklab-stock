@@ -10,6 +10,8 @@ data/raw/*
 !data/raw/official/
 !data/raw/twse_etf.csv
 !data/raw/tpex_etf.csv
+# TWSE OpenAPI 143 端點完整清單（參考文件，非抓取產物；規格來源 swagger.json）
+!data/raw/twse-openapi-full.md
 
 data/daily-*.csv
 

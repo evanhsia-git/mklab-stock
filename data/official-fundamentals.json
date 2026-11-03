@@ -2,15 +2,15 @@
   "meta": {
     "source": "TWSE OpenAPI／MOPS opendata 官方檔案（由 fetch_official_fundamentals.py 下載）",
     "files": {
-      "_fetch_log.json": "2026-11-03 14:28:20 UTC+08:00",
-      "t187ap45_latest.json": "2026-11-03 14:28:20 UTC+08:00",
-      "t187ap03_L_latest.csv": "2026-11-03 14:28:14 UTC+08:00",
+      "_fetch_log.json": "2026-11-03 17:03:14 UTC+08:00",
+      "t187ap45_latest.json": "2026-11-03 17:01:35 UTC+08:00",
+      "t187ap03_L_latest.csv": "2026-11-03 17:01:29 UTC+08:00",
       "VOO_holdings.csv": "2026-11-02 11:13:21 UTC+08:00",
-      "t187ap06_L_latest.csv": "2026-11-03 14:28:16 UTC+08:00",
-      "t187ap07_L_latest.csv": "2026-11-03 14:28:18 UTC+08:00",
-      "t187ap47_latest.json": "2026-11-03 14:28:20 UTC+08:00"
+      "t187ap06_L_latest.csv": "2026-11-03 17:01:32 UTC+08:00",
+      "t187ap07_L_latest.csv": "2026-11-03 17:03:14 UTC+08:00",
+      "t187ap47_latest.json": "2026-11-03 17:01:36 UTC+08:00"
     },
-    "imported_at": "2026-11-03 14:41:04 UTC+08:00",
+    "imported_at": "2026-11-03 18:24:39 UTC+08:00",
     "financial_period": "2026Q2",
     "financial_periods": {
       "2026Q2": 999,
