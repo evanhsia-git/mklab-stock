@@ -220,6 +220,54 @@ check("CI：推送合併衝突取遠端（-X theirs），不得用 -X ours（舊
       '-X ours' not in wf2 and '-X ours' not in _ci_push and '-X theirs' in _ci_push)
 check("CI：推送有重試（被其他 job 插隊時不會直接失敗）", 'until [' in _ci_push and 'git push origin HEAD:main' in _ci_push)
 
+# 資料新鮮度守門：重現 2026-11-03 事故
+# （過時 checkout 的整檔重寫在 merge 時勝出，讓 stocks.json 由 11-02 退回 10-30，
+#   造成 stocks.json 與 history/industry 不一致）→ 推送前必須比對日期、只採最新版本。
+def _freshness_guard_ok():
+    import shutil as _sh
+    t = tempfile.mkdtemp()
+
+    def git(*a, cwd=t):
+        return subprocess.run(["git", *a], cwd=cwd, capture_output=True, text=True)
+    try:
+        git("init", "-q", "--bare", "--initial-branch=main", "origin.git")
+        seed = os.path.join(t, "seed")
+        os.makedirs(os.path.join(seed, "data")); os.makedirs(os.path.join(seed, "scripts"))
+        with open(os.path.join(seed, "data/stocks.json"), "w") as f:
+            f.write('{"meta":{"as_of":"2026-10-30"},"stocks":[{"sym":"2330","price":100}]}')
+        git("init", "-q", "-b", "main", cwd=seed)
+        for fn in ("ci_commit_push.sh", "ci_data_freshness.py"):
+            _sh.copy(os.path.join("scripts", fn), os.path.join(seed, "scripts", fn))
+        idn = ["-c", "user.email=t@t", "-c", "user.name=t"]
+        git(*idn, "add", "-A", cwd=seed); git(*idn, "commit", "-q", "-m", "seed", cwd=seed)
+        git("remote", "add", "origin", os.path.join(t, "origin.git"), cwd=seed)
+        git("push", "-q", "origin", "main", cwd=seed)
+        # B：過時 job 先推（日期仍是 10-30 的整檔重寫）
+        b = os.path.join(t, "B"); git("clone", "-q", os.path.join(t, "origin.git"), "B", cwd=t)
+        p = os.path.join(b, "data/stocks.json")
+        d = json.load(open(p, encoding="utf-8")); d["stocks"][0]["roe_off"] = 39.8
+        json.dump(d, open(p, "w", encoding="utf-8"))
+        git(*idn, "add", "-A", cwd=b); git(*idn, "commit", "-q", "-m", "B 過時重寫", cwd=b)
+        git("push", "-q", "origin", "main", cwd=b)
+        # A：本機已是較新的 11-02，用共用腳本推送
+        a = os.path.join(t, "A"); git("clone", "-q", os.path.join(t, "origin.git"), "A", cwd=t)
+        p = os.path.join(a, "data/stocks.json")
+        d = json.load(open(p, encoding="utf-8")); d["meta"]["as_of"] = "2026-11-02"; d["stocks"][0]["price"] = 2370
+        json.dump(d, open(p, "w", encoding="utf-8"))
+        r = subprocess.run(["bash", "scripts/ci_commit_push.sh", "A 每日更新", "data/"],
+                           cwd=a, capture_output=True, text=True, timeout=300)
+        final = json.loads(git("show", "main:data/stocks.json", cwd=os.path.join(t, "origin.git")).stdout)
+        ok = r.returncode == 0 and final["meta"]["as_of"] == "2026-11-02" and final["stocks"][0]["price"] == 2370
+        return ok, f"rc={r.returncode} 遠端 as_of={final['meta']['as_of']} price={final['stocks'][0]['price']}"
+    except Exception as e:
+        return False, f"{type(e).__name__}: {e}"
+    finally:
+        _sh.rmtree(t, ignore_errors=True)
+
+
+_fresh_ok, _fresh_detail = _freshness_guard_ok()
+check("CI：資料新鮮度守門（過時整檔重寫不得讓資料倒退）", _fresh_ok, _fresh_detail)
+
 # 指數替代 ETF 來源（2026-11-02：data/index-holdings/ 曾經 0 檔，job 卻顯示 success）
 _pr2 = {f['key']: f for f in _cfg['funds']}
 check("指數替代 ETF：已移除實測 404 的 SSGA 舊網址（無 -en- 的 holdings-daily-us-dia.xlsx）",
@@ -256,8 +304,22 @@ check("指數替代 ETF：完全沒有產出時回傳非 0（不再假裝 succes
 # 所以必須與既有快照 upsert 合併，否則一份 53 家的批次會蓋掉 1,052 家的完整快照。
 _fof = _ilu.module_from_spec(_s2 := _ilu.spec_from_file_location("_fof", "skills/data/fetch_official_fundamentals.py"))
 _s2.loader.exec_module(_fof)
-_bad_ep = [u for _, u, *_ in _fof.SOURCES if "openapi.twse.com.tw" in u and ("t187ap06_L" in u or "t187ap07_L" in u)]
-check("官方財報：t187ap06/07 不得使用已失效的 openapi 端點", not _bad_ep, f"{_bad_ep}")
+_flat = [(pre, u) for pre, urls, *_ in _fof.SOURCES for u in (urls if isinstance(urls, list) else [urls])]
+# 無後綴的 t187ap06_L / t187ap07_L 已失效（實測回傳 1KB HTML 非 JSON）；可用的是產業後綴版
+_bad_ep = [u for _, u in _flat if u.rstrip("/").endswith(("t187ap06_L", "t187ap07_L"))]
+check("官方財報：不得使用已失效的無後綴 openapi 財報端點（回傳 HTML）", not _bad_ep, f"{_bad_ep}")
+check("官方財報：損益/資產負債涵蓋全部產業檔，只抓 ci 會讓金融保險類永遠沒有官方財報",
+      all(sum(1 for p, _ in _flat if p == pre) == len(_fof.INDUSTRIES) for pre in ("t187ap06_L", "t187ap07_L")),
+      f"06={sum(1 for p,_ in _flat if p=='t187ap06_L')} 07={sum(1 for p,_ in _flat if p=='t187ap07_L')} 產業={_fof.INDUSTRIES}")
+# 沒開始申報的產業檔會回傳「只有出表日期、公司代號空白」的空殼列：必須濾掉，且不得併入它的欄位
+_orig_dl = _fof.download
+_fof.download = lambda u: json.dumps([{"出表日期": "1151103", "公司代號": "", "營業收入": ""}]).encode()
+try:
+    _sk, _sr, _sp = _fof.fetch_all(["u-ci", "u-fh"], "json", "公司代號")
+finally:
+    _fof.download = _orig_dl
+check("官方財報：空殼產業檔不會污染資料列與欄位", _sr == [] and _sk == [] and _sp == [{"url": "u-ci", "rows": 0}, {"url": "u-fh", "rows": 0}] and
+      _sk == [], f"{_sp}")
 check("官方財報：增量來源（06/07）必須標記為 upsert 合併",
       all(inc for pre, _, _, _, _, _, _, inc in _fof.SOURCES if pre in ("t187ap06_L", "t187ap07_L")))
 _snap = _fof.existing_snapshot("t187ap06_L", "csv")  # 不寫死檔名：跑過下載後舊檔會被 _latest 取代
