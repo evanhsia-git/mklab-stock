@@ -220,6 +220,54 @@ check("CI：推送合併衝突取遠端（-X theirs），不得用 -X ours（舊
       '-X ours' not in wf2 and '-X ours' not in _ci_push and '-X theirs' in _ci_push)
 check("CI：推送有重試（被其他 job 插隊時不會直接失敗）", 'until [' in _ci_push and 'git push origin HEAD:main' in _ci_push)
 
+# 資料新鮮度守門：重現 2026-11-03 事故
+# （過時 checkout 的整檔重寫在 merge 時勝出，讓 stocks.json 由 11-02 退回 10-30，
+#   造成 stocks.json 與 history/industry 不一致）→ 推送前必須比對日期、只採最新版本。
+def _freshness_guard_ok():
+    import shutil as _sh
+    t = tempfile.mkdtemp()
+
+    def git(*a, cwd=t):
+        return subprocess.run(["git", *a], cwd=cwd, capture_output=True, text=True)
+    try:
+        git("init", "-q", "--bare", "--initial-branch=main", "origin.git")
+        seed = os.path.join(t, "seed")
+        os.makedirs(os.path.join(seed, "data")); os.makedirs(os.path.join(seed, "scripts"))
+        with open(os.path.join(seed, "data/stocks.json"), "w") as f:
+            f.write('{"meta":{"as_of":"2026-10-30"},"stocks":[{"sym":"2330","price":100}]}')
+        git("init", "-q", "-b", "main", cwd=seed)
+        for fn in ("ci_commit_push.sh", "ci_data_freshness.py"):
+            _sh.copy(os.path.join("scripts", fn), os.path.join(seed, "scripts", fn))
+        idn = ["-c", "user.email=t@t", "-c", "user.name=t"]
+        git(*idn, "add", "-A", cwd=seed); git(*idn, "commit", "-q", "-m", "seed", cwd=seed)
+        git("remote", "add", "origin", os.path.join(t, "origin.git"), cwd=seed)
+        git("push", "-q", "origin", "main", cwd=seed)
+        # B：過時 job 先推（日期仍是 10-30 的整檔重寫）
+        b = os.path.join(t, "B"); git("clone", "-q", os.path.join(t, "origin.git"), "B", cwd=t)
+        p = os.path.join(b, "data/stocks.json")
+        d = json.load(open(p, encoding="utf-8")); d["stocks"][0]["roe_off"] = 39.8
+        json.dump(d, open(p, "w", encoding="utf-8"))
+        git(*idn, "add", "-A", cwd=b); git(*idn, "commit", "-q", "-m", "B 過時重寫", cwd=b)
+        git("push", "-q", "origin", "main", cwd=b)
+        # A：本機已是較新的 11-02，用共用腳本推送
+        a = os.path.join(t, "A"); git("clone", "-q", os.path.join(t, "origin.git"), "A", cwd=t)
+        p = os.path.join(a, "data/stocks.json")
+        d = json.load(open(p, encoding="utf-8")); d["meta"]["as_of"] = "2026-11-02"; d["stocks"][0]["price"] = 2370
+        json.dump(d, open(p, "w", encoding="utf-8"))
+        r = subprocess.run(["bash", "scripts/ci_commit_push.sh", "A 每日更新", "data/"],
+                           cwd=a, capture_output=True, text=True, timeout=300)
+        final = json.loads(git("show", "main:data/stocks.json", cwd=os.path.join(t, "origin.git")).stdout)
+        ok = r.returncode == 0 and final["meta"]["as_of"] == "2026-11-02" and final["stocks"][0]["price"] == 2370
+        return ok, f"rc={r.returncode} 遠端 as_of={final['meta']['as_of']} price={final['stocks'][0]['price']}"
+    except Exception as e:
+        return False, f"{type(e).__name__}: {e}"
+    finally:
+        _sh.rmtree(t, ignore_errors=True)
+
+
+_fresh_ok, _fresh_detail = _freshness_guard_ok()
+check("CI：資料新鮮度守門（過時整檔重寫不得讓資料倒退）", _fresh_ok, _fresh_detail)
+
 # 指數替代 ETF 來源（2026-11-02：data/index-holdings/ 曾經 0 檔，job 卻顯示 success）
 _pr2 = {f['key']: f for f in _cfg['funds']}
 check("指數替代 ETF：已移除實測 404 的 SSGA 舊網址（無 -en- 的 holdings-daily-us-dia.xlsx）",
