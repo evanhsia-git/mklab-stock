@@ -1,7 +1,7 @@
 {
   "month": "2026-11",
   "source": "yfinance（非官方備援）",
-  "updated_at": "2026-11-03T00:41:11.322946+08:00",
+  "updated_at": "2026-11-03T11:39:43.357884+08:00",
   "rows": [
     {
       "date": "2026-11-02",
@@ -52,11 +52,11 @@
       "close": {
         "^TWII": {
           "name": "台股加權",
-          "close": null
+          "close": 44066.51953125
         },
         "^HSI": {
           "name": "恆生",
-          "close": null
+          "close": 23529.91015625
         },
         "^N225": {
           "name": "日經225",
@@ -64,7 +64,7 @@
         },
         "^KS11": {
           "name": "韓國KOSPI",
-          "close": null
+          "close": 5661.1201171875
         },
         "^VIX": {
           "name": "VIX恐慌指數",
@@ -72,7 +72,7 @@
         },
         "TWD=X": {
           "name": "美元兌台幣",
-          "close": null
+          "close": 32.71699905395508
         },
         "GC=F": {
           "name": "黃金",
@@ -84,19 +84,14 @@
         },
         "BTC-USD": {
           "name": "比特幣",
-          "close": null
+          "close": 76628.8125
         }
       },
       "missing": [
-        "^TWII",
-        "^HSI",
         "^N225",
-        "^KS11",
         "^VIX",
-        "TWD=X",
         "GC=F",
-        "CL=F",
-        "BTC-USD"
+        "CL=F"
       ]
     }
   ]
