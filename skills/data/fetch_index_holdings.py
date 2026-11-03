@@ -91,8 +91,13 @@ def parse_invesco(doc):
     其中股票部位 101 檔、權重約 99.8%，且每日更新（不需瀏覽器、免 key）。
     只取股票部位：Currency／Currency Collateral／Synthetic Cash／Index Future 是現金與衍生性部位。
     """
+    hlist = (doc or {}).get("holdings")
+    if not isinstance(hlist, list):  # TickerInside 的 holdings 是 dict，交給 parse_tickerinside
+        return []
     out = []
-    for h in (doc or {}).get("holdings") or []:
+    for h in hlist:
+        if not isinstance(h, dict):
+            continue
         tk = str(h.get("ticker") or "").strip().upper()
         wt = _num(h.get("percentageOfTotalNetAssets"))
         st = str(h.get("securityTypeName") or "")
@@ -103,28 +108,78 @@ def parse_invesco(doc):
         out.append({"ticker": tk, "name": str(h.get("issuerName") or "").strip(), "weight_pct": round(wt, 4)})
     return out
 
-def source_asof(data):
-    """來源自帶的持股基準日：Vanguard holdingDetails.asOfDate（MM/DD/YYYY）或
-    Invesco effectiveDate（已是 ISO）→ ISO 日期。"""
+def parse_tickerinside(doc):
+    """TickerInside 共用備援（https://tickerinside.com/api/v1/fund/{ticker}.json）。
+
+    holdings 是 {代號: 權重%} 的扁平字典（如 {"AMD": 9.2357}）而非陣列，因此 parse_bytes
+    必須先問過 parse_invesco（它只吃 list）再交給這裡；若順序顛倒或沒檢查型別，會直接爆
+    AttributeError: 'str' object has no attribute 'get'（2026-11-03 實際踩到，SOXX 因此靜默退回備援）。
+    source_layer 說明資料來自發行人持股檔（issuer）或 SEC N-PORT 季報（sec_nport）。
+    不同 ETF 的新鮮度不同：實測 SOXX／DIA 為 issuer 當期，VOO／QQQ 是 N-PORT（較舊）。
+    使用條款要求標註來源，cite_as 是其建議字串（由 source_attribution 取出寫進產出）。
+    """
+    h = (doc or {}).get("holdings")
+    if not isinstance(h, dict):  # 扁平字典才是這個來源；陣列格式交給其他解析器
+        return []
+    out = []
+    for tk, wt in h.items():
+        tku = str(tk).strip().upper()
+        w = _num(wt)
+        if not tku or w is None or not re.match(r"^[A-Z][A-Z0-9.\-]{0,6}$", tku):
+            continue
+        out.append({"ticker": tku, "name": "", "weight_pct": round(w, 4)})
+    return out
+
+def _json_doc(data):
     if data.lstrip()[:1] != b"{":
         return None
     try:
         doc = json.loads(data.decode("utf-8-sig", errors="replace"))
     except Exception:
         return None
-    try:
-        s = str((doc.get("holdingDetails") or {}).get("asOfDate") or "").strip()
-        if s:
-            return dt.datetime.strptime(s, "%m/%d/%Y").date().isoformat()
-        e = str(doc.get("effectiveDate") or "").strip()
-        return dt.date.fromisoformat(e).isoformat() if e else None
-    except Exception:
+    return doc if isinstance(doc, dict) else None
+
+def source_asof(data):
+    """來源自帶的持股基準日 → ISO 日期。
+
+    Vanguard holdingDetails.asOfDate（MM/DD/YYYY）、Invesco effectiveDate（ISO）、
+    TickerInside holdings_asof（ISO）。月更新或多來源混用的基金必須記錄這個日期，
+    否則看不出手上的權重是哪一版（例如 N-PORT 季報與發行人當期資料差好幾個月）。
+    """
+    doc = _json_doc(data)
+    if not doc:
         return None
+    s = str((doc.get("holdingDetails") or {}).get("asOfDate") or "").strip()
+    if s:
+        try:
+            return dt.datetime.strptime(s, "%m/%d/%Y").date().isoformat()
+        except Exception:
+            return None
+    for key in ("effectiveDate", "holdings_asof", "as_of"):
+        v = str(doc.get(key) or "").strip()
+        if v:
+            try:
+                return dt.date.fromisoformat(v[:10]).isoformat()
+            except Exception:
+                continue
+    return None
+
+def source_attribution(data):
+    """來源要求標註的文字（TickerInside 條款要求標明來源，cite_as 為其建議字串）。"""
+    doc = _json_doc(data)
+    if not doc:
+        return None
+    cite = str(doc.get("cite_as") or "").strip()
+    if cite:
+        return cite
+    if isinstance(doc.get("holdings"), dict) and doc.get("source_layer"):
+        return "TickerInside (tickerinside.com)"
+    return None
 
 def parse_bytes(data, src):
-    if data.lstrip()[:1] == b"{":  # JSON（Vanguard 的 {TICKER}-AdditionalFundData、Invesco 持股 API）
+    if data.lstrip()[:1] == b"{":  # JSON（Vanguard、Invesco 官方 API、TickerInside 備援）
         doc = json.loads(data.decode("utf-8-sig", errors="replace"))
-        for parser in (parse_vanguard, parse_invesco):
+        for parser in (parse_vanguard, parse_invesco, parse_tickerinside):
             res = parser(doc)
             if res:
                 return res
@@ -192,6 +247,9 @@ def main():
                 asof = source_asof(data)  # 來源自帶的持股基準日（月更新的來源需要知道是哪一版）
                 if asof:
                     doc["holdings_asof"] = asof
+                attr = source_attribution(data)  # 來源要求標註時一併寫進產出（如 TickerInside 條款）
+                if attr:
+                    doc["attribution"] = attr
                 json.dump(doc, open(out_path, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
                 log(f"✅ {key}：{len(holdings)} 檔，來源 {used[:90]}")
                 ok += 1; done = True

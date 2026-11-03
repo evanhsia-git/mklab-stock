@@ -3,8 +3,9 @@
     "description": "四大指數的替代 ETF（發行人公開持股，較易取得）。權重為 ETF 持股權重，與指數權重略有差異。",
     "updated": "2026-11-03",
     "schedule": "每月 2 日由 index-holdings job 自動抓取（四檔皆為每月更新）；VOO 來源失敗時用手動檔備援",
-    "source_notes": "發行商端點常加 bot 牆（Invesco 406、iShares/BlackRock 403）或改用 JavaScript 載入表格，因此每個基金設定多個來源依序嘗試；stockanalysis.com 是伺服器端渲染、免 key 的穩定備援，但免費層只提供前 25 大持股（權重加總可能低於 100%）→ 用 min_weight_total 明確標示該基金的合理門檻，而不是全面放寬驗證。發行商端點也可能是 JSON（非表格）：Vanguard 的 {TICKER}-AdditionalFundData 由 parse_vanguard 解析，Invesco 的 dng-api 持股 API 由 parse_invesco 解析。2026-11-03 逐檔實測：SSGA 帶 -en- 的 XLSX 可用（30 檔 99.95%）、Vanguard VOO JSON 可用（501 檔 98.71%）、Invesco 官方持股 API 可用（QQQ 101 檔、權重 99.8%、當日 effectiveDate）、stockanalysis.com SOXX 24 檔 95.82% 可用；iShares 直連 CSV 被 Akamai 擋（403）僅保留為備援。",
-    "notes": "expected_min/max 為「該來源實際能取得的檔數範圍」，不是指數成分股總數。同一檔基金的不同來源完整度可能差很多（QQQ 官方 API 約 101 檔、免費備援只有前 25 大），因此來源可各自覆寫 expected_min/max 與 min_weight_total，讓部分資料不會靜默通過、完整來源也不會被誤判失敗。"
+    "source_notes": "來源依序嘗試，每個基金至少三個層次：發行人官方端點 → 共同備援 TickerInside → stockanalysis.com。發行商端點可能是表格也可能是 JSON：SSGA 給 XLSX（檔名必須有 -en-）、Vanguard 的 {TICKER}-AdditionalFundData 給 JSON（parse_vanguard）、Invesco 網站背後的 dng-api 給 JSON（parse_invesco）、TickerInside 給 {代號: 權重的字典}（parse_tickerinside）。2026-11-03 逐檔實測：SSGA DIA 可用（30 檔 99.95%）、Vanguard VOO 可用（501 檔 98.71%）、Invesco 官方 API 可用（QQQ 101 檔 99.84%、當日 effectiveDate）、TickerInside 四檔皆可用（DIA 30 檔／SOXX 30 檔為發行人當期資料；VOO 504 檔／QQQ 102 檔來自 SEC N-PORT，資料日期較舊）、stockanalysis.com 只有前 25 大（免費層）。iShares/BlackRock 對伺服器全面封鎖（產品頁與 CSV 皆 403），Invesco 官方持股頁對非瀏覽器 406 且表格由 JS 載入。",
+    "notes": "expected_min/max 為「該來源實際能取得的檔數範圍」，不是指數成分股總數。同一檔基金的不同來源完整度與新鮮度可能差很多（QQQ 官方 API 約 101 檔且為當日、stockanalysis 只有前 25 大；TickerInside 的 VOO/QQQ 是 N-PORT 季報），因此來源可各自覆寫 expected_min/max 與 min_weight_total，讓部分資料不會靜默通過、完整來源也不會被誤判失敗。使用 TickerInside 的資料時必須標註來源（其條款要求，cite_as 會被寫進產出的 attribution 欄位）。",
+    "sec_edgar": "美國財報（營收 Revenue、淨利 Net Income、EPS、資產負債表、現金流量表、10-K/10-Q）可用 SEC EDGAR 官方 API：companyfacts https://data.sec.gov/api/xbrl/companyfacts/CIK##########.json（一次取回公司所有 XBRL 科目與期間）、companyconcept https://data.sec.gov/api/xbrl/companyconcept/CIK##########/us-gaap/{tag}.json（單一科目）、frames https://data.sec.gov/api/xbrl/frames/us-gaap/{tag}/USD/CY2024.json（跨公司同期比較）、submissions https://data.sec.gov/submissions/CIK##########.json（申報清單，含 10-K/10-Q 與 filing 連結）。實測注意：SEC 要求 UA 必須含可聯絡的 email（官方規定），自訂 UA 缺 email 一律 403 —— 目前 CI 沒有可用 email，因此尚未接入，需要的話提供一個聯絡 email 即可。"
   },
   "funds": [
     {
@@ -16,9 +17,16 @@
       "min_weight_total": 90,
       "sources": [
         "https://investor.vanguard.com/irr/funds/profile/VOO-AdditionalFundData",
-        "manual_upload:data/raw/official/VOO_holdings.csv"
+        "manual_upload:data/raw/official/VOO_holdings.csv",
+        {
+          "url": "https://tickerinside.com/api/v1/fund/voo.json",
+          "expected_min": 480,
+          "expected_max": 540,
+          "min_weight_total": 90,
+          "note": "共同備援：實測 504 檔、source_layer=sec_nport、holdings_asof 2026-06-30（N-PORT 季報，較官方端點舊）→ 只在官方端點與手動檔都失敗時才使用"
+        }
       ],
-      "note": "Vanguard 每月公布（回應為 JSON，holdingDetails.asOfDate 為持股基準日）。自動來源優先：parse_vanguard 解析 holdingDetails.equityHoldings（實測 501 檔、權重 98.71%、基準日 2026-09-30），只取股票部位（排除現金與期貨），失敗時才退回手動檔 manual_upload。驗證門檻 480~540 檔、權重 ≥90%。",
+      "note": "Vanguard 每月公布（回應為 JSON，holdingDetails.asOfDate 為持股基準日）。自動來源優先：parse_vanguard 解析 holdingDetails.equityHoldings（實測 501 檔、權重 98.71%、基準日 2026-09-30），只取股票部位（排除現金與期貨），失敗時退回手動檔，最後才是 TickerInside。驗證門檻 480~540 檔、權重 ≥90%。",
       "freq": "monthly"
     },
     {
@@ -31,9 +39,16 @@
       "sources": [
         "https://www.ssga.com/us/en/intermediary/etfs/library-content/products/fund-data/etfs/us/holdings-daily-us-en-dia.xlsx",
         "https://www.ssga.com/library-content/products/fund-data/etfs/us/holdings-daily-us-en-dia.xlsx",
+        {
+          "url": "https://tickerinside.com/api/v1/fund/dia.json",
+          "expected_min": 28,
+          "expected_max": 32,
+          "min_weight_total": 90,
+          "note": "共同備援：實測完整 30 檔、source_layer=issuer、holdings_asof 2026-11-02"
+        },
         "https://stockanalysis.com/etf/dia/holdings/"
       ],
-      "note": "SSGA 每日公布 XLSX，完整 30 檔（實測 99.95%）。檔名必須有 -en-；無 -en- 的舊網址實測為 404（2026-11-02），已移除、勿再加回。",
+      "note": "SSGA 每日公布 XLSX，完整 30 檔（實測 99.95%）。檔名必須有 -en-；無 -en- 的舊網址實測為 404（2026-11-02），已移除、勿再加回。第二個 SSGA 網址是較短的路徑變體，失敗時接 TickerInside（30 檔、發行人層）再退到 stockanalysis。",
       "freq": "monthly"
     },
     {
@@ -49,31 +64,57 @@
           "expected_min": 95,
           "expected_max": 115,
           "min_weight_total": 95,
-          "note": "Invesco 官方持股 API（CUSIP 46090E103）：實測 106 筆、股票部位 101 檔、權重 99.8%、effectiveDate 為當日；免 key、免瀏覽器"
+          "note": "Invesco 官方持股 API（CUSIP 46090E103）：實測 106 筆、股票部位 101 檔、權重 99.84%、effectiveDate 為當日；免 key、免瀏覽器"
+        },
+        {
+          "url": "https://tickerinside.com/api/v1/fund/qqq.json",
+          "expected_min": 95,
+          "expected_max": 115,
+          "min_weight_total": 90,
+          "note": "共同備援：實測 102 檔、source_layer=sec_nport、holdings_asof 2026-06-30（季報，較舊）"
         },
         {
           "url": "https://stockanalysis.com/etf/qqq/holdings/",
           "expected_min": 20,
           "expected_max": 30,
           "min_weight_total": 60,
-          "note": "免費備援，只提供前 25 大（權重約 71%）→ 門檻與主要來源不同"
+          "note": "免費備援，只提供前 25 大（權重約 71%）→ 門檻與前兩個來源不同"
         }
       ],
-      "note": "官方持股頁面（www.invesco.com/us/financial-products/etfs/holdings/...）對非瀏覽器一律 406 且表格由 JS 載入，但網站背後的公開 API dng-api.invesco.com 可直接取得完整持股（免 key、不需瀏覽器）→ 已改為主要來源。stockanalysis.com 降為備援。因為主要來源與備援的完整度差很多，兩者用各自的門檻驗證（逐來源覆寫 expected_min/max 與 min_weight_total）。",
+      "note": "官方持股頁面（www.invesco.com/us/financial-products/etfs/holdings/...）對非瀏覽器一律 406 且表格由 JS 載入，但網站背後的公開 API dng-api.invesco.com 可直接取得完整持股（免 key、不需瀏覽器）→ 主要來源。同名的 action=download 變體實測回傳 HTML（不是 CSV），不可用。TickerInside 為第二層（完整但為 N-PORT 季報），stockanalysis 為最後備援。三者完整度不同，各用自己的門檻驗證。",
       "freq": "monthly"
     },
     {
       "key": "SOXX",
       "index": "費城半導體（近似）",
       "issuer": "iShares (BlackRock)",
-      "expected_min": 20,
-      "expected_max": 36,
+      "expected_min": 28,
+      "expected_max": 32,
       "min_weight_total": 90,
       "sources": [
-        "https://stockanalysis.com/etf/soxx/holdings/",
-        "https://www.ishares.com/us/products/239705/ishares-phlx-semiconductor-etf/1467271812596.ajax?fileType=csv&fileName=SOXX_holdings&dataType=fund"
+        {
+          "url": "https://tickerinside.com/api/v1/fund/soxx.json",
+          "expected_min": 28,
+          "expected_max": 32,
+          "min_weight_total": 90,
+          "note": "主要來源：實測完整 30 檔、source_layer=issuer、holdings_asof 2026-10-30（發行人當期資料，優於 stockanalysis 的前 24 大）"
+        },
+        {
+          "url": "https://stockanalysis.com/etf/soxx/holdings/",
+          "expected_min": 20,
+          "expected_max": 30,
+          "min_weight_total": 90,
+          "note": "備援：實測 24 檔、權重 95.82%"
+        },
+        {
+          "url": "https://www.ishares.com/us/products/239705/ishares-semiconductor-etf/latest-holdings.csv",
+          "expected_min": 28,
+          "expected_max": 32,
+          "min_weight_total": 90,
+          "note": "iShares 官方最新持股 CSV（保留為參考）；2026-11-03 實測伺服器端一律 403（Akamai），瀏覽器也拿不到 → 目前不可用"
+        }
       ],
-      "note": "iShares 直連 CSV 被 Akamai 擋（實測 403）→ 主要來源為 stockanalysis.com（前 24 大，實測 95.82%）。SOXX 追蹤 ICE/PHLX 半導體類指數，與 SOX 非完全相同。",
+      "note": "iShares 官方 CSV 對伺服器全面封鎖（產品頁與 latest-holdings.csv 皆 403，連瀏覽器都是空殼）→ 改用 TickerInside（完整 30 檔、發行人層、有資料日期）。SOXX 追蹤 ICE/PHLX 半導體類指數，與 SOX 非完全相同。",
       "freq": "monthly"
     }
   ]

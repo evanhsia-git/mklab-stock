@@ -63,14 +63,32 @@
 | `indices` | 全球指數、全球 ETF、總經指標；台股加權指數 K 線 | 指數 16、ETF 12、總經 8，共 36 個代號；`^TWII` 近 260 日 | 週一至週五 17:30 | yfinance（第三方） | `data/indices.json`、`data/twii_kdata.js` |
 | `us-market` | 美股市值前 30 大個股、ETF 規模前 30 大 | 候選池約 60 檔個股、40 檔 ETF，取前 30 | 週一至週五 06:00（隔日） | yfinance（第三方） | `data/us/us-stocks.json`、`data/us/us-etfs.json` |
 | `global-history` | 美股指數、全球指數與市場情緒的每日收盤，累積為月檔 | 14 個代號（美股 5、全球與情緒 9），每日新增一筆 | 週一至週五 06:30（隔日） | yfinance（第三方） | `data/us-history-YYYY/us-history-YYYY-MM.json`、`data/global-history-YYYY/global-history-YYYY-MM.json` |
-| `index-holdings` | 四大指數替代 ETF 的持股與權重 | DIA（約 30）、QQQ（約 100）、SOXX（約 30）、VOO（約 500） | 每月 2 日 06:45（隔日） | State Street、Invesco、iShares 官網；Vanguard 官網（VOO，失敗時用手動檔） | `data/index-holdings/*.json` |
+| `index-holdings` | 四大指數替代 ETF 的持股與權重 | DIA（約 30）、QQQ（約 100）、SOXX（約 30）、VOO（約 500） | 每月 2 日 06:45（隔日） | SSGA 官方 XLSX（DIA）、Vanguard 官方 JSON（VOO，失敗時用手動檔）、Invesco 網站背後的公開 API（QQQ，JSON）、TickerInside 共同備援（SOXX 主要來源，四檔皆備援）；iShares 官方 CSV 對伺服器 403 | `data/index-holdings/*.json` |
 | `official-fundamentals` | TWSE 官方財報、股利、基金與公司基本資料自動下載並匯入 | 損益、資產負債表（1,052 家上市公司）、股利（1,115 家）、基金（275 檔）、公司基本資料（1,099 家） | 每月 20 日 18:00 | TWSE OpenAPI（`t187ap03_L`、`t187ap45_L`、`t187ap47_L`）＋ MOPS opendata（`t187ap06_L`、`t187ap07_L`，當日增量批次與既有快照 upsert 合併） | `data/raw/official/`、`data/official-fundamentals.json`、`data/etf-official.json`、`data/stocks.json` 的 ROE／ROA／EPS 與產業欄位 |
 
 ### 資料來源分類
 
 - **官方來源**：TWSE、TPEx 的收盤行情、PE、殖利率、產業分類、官方財報與股利、ETF 清單。
 - **第三方來源（yfinance）**：ROE／ROA 補充、全球指數與 ETF、美股前 30 大、全球與情緒的月檔、台股加權指數 K 線。非官方，偶爾失敗或限流；失敗時保留上一版，不寫入假值。
-- **發行人官網**：DIA、QQQ、SOXX、VOO 的持股明細。
+- **發行人官網與公開 API**：DIA（SSGA XLSX）、VOO（Vanguard JSON）、QQQ（Invesco `dng-api` JSON）、SOXX（iShares 官方 CSV 對伺服器 403）。
+- **共同備援（TickerInside）**：四檔指數替代 ETF 都有；在 VOO／QQQ 是 SEC N-PORT 季報（較舊），只在官方來源失敗時使用；SOXX 因官方 CSV 被封鎖，以它為主要來源。
+- **尚未接入**：SEC EDGAR（美國財報營收、淨利、EPS、資產負債表、現金流量表、10-K／10-Q）。端點與格式已實測確認，但 SEC 要求請求 UA 必須含聯絡 email，目前 CI 沒有 → 需要一個聯絡 email 才能接入。
+
+### ETF 持股自動獲取來源鏈（`index-holdings`）
+
+四檔都是每月更新一次（`freq=monthly`，抓到後 25 天內自動跳過），來源依序嘗試：
+
+| ETF | 主要來源 | 備援（依序） | 2026-11-03 實測產出 |
+|---|---|---|---|
+| VOO | Vanguard 官方 JSON（`holdingDetails.equityHoldings`） | 手動檔 `VOO_holdings.csv` → TickerInside | 501 檔、98.71%、基準日 2026-09-30 |
+| DIA | SSGA 官方 XLSX（檔名必須含 `-en-`） | TickerInside → stockanalysis | 30 檔、99.95% |
+| QQQ | Invesco `dng-api` 官方 API（CUSIP 46090E103） | TickerInside → stockanalysis | 101 檔、99.84%、基準日當日 |
+| SOXX | TickerInside（發行人當期資料） | stockanalysis → iShares 官方 URL（僅參考） | 30 檔、99.85%、基準日 2026-11-02 |
+
+- 解析器：`parse_vanguard`／`parse_invesco`／`parse_tickerinside`（JSON 來源）、`parse_table`（HTML／CSV／XLSX）。只取股票部位，排除現金、期貨與交換等部位。
+- 每個來源可各自覆寫驗證門檻（`{"url": …, "expected_min": …}`）：官方來源與免費備援的完整度差很多（QQQ 官方 101 檔 vs 免費層前 25 大），共用一組門檻會讓部分資料靜默通過。
+- 產出檔記錄 `source`、`holdings_asof`（來源提供的持股基準日）與 `attribution`（來源條款要求標註時，如 TickerInside）。
+- 完整來源清單、格式與實測狀態（含不可用原因）記在 `data/etf-source-urls.json`；生效的來源順序與門檻在 `data/index-proxy.json`。
 
 ### 已確認的設計決策
 

@@ -326,6 +326,27 @@ check("指數替代 ETF：QQQ 產出為官方完整持股（≥95 檔、權重 �
       _qfile['count'] >= 95 and _qfile['weight_total_pct'] >= 95 and 'dng-api.invesco.com' in _qfile['source'],
       f"{_qfile['count']} 檔 {_qfile['weight_total_pct']}% {str(_qfile['source'])[:46]}")
 
+# TickerInside 共同備援（2026-11-03）：holdings 是 {代號: 權重} 的扁平字典，
+# 與 Invesco 的陣列格式不同 → 解析順序與型別檢查必須正確，否則整條來源鏈會爆
+# （實際踩到：parse_invesco 對 dict 迭代出字串 key → AttributeError，SOXX 靜默退回備援）。
+_tj = {"ticker": "SOXX", "holdings_asof": "2026-11-02", "source_layer": "issuer",
+       "cite_as": "TickerInside, iShares Semiconductor ETF (https://tickerinside.com/etf/soxx/)",
+       "holdings": {"AMD": 9.2357, "NVDA": 7.9824}}
+_tb = json.dumps(_tj).encode()
+_th = _fih.parse_bytes(_tb, "https://tickerinside.com/api/v1/fund/soxx.json")
+check("指數替代 ETF：TickerInside 扁平字典格式可解析（與 Invesco 陣列格式不衝突）",
+      [x['ticker'] for x in _th] == ["AMD", "NVDA"] and _th[0]['weight_pct'] == 9.2357, f"{_th}")
+check("指數替代 ETF：TickerInside 的 holdings_asof 可解析為 ISO 日期", _fih.source_asof(_tb) == '2026-11-02')
+check("指數替代 ETF：來源要求標註時寫入 attribution（TickerInside 條款要求）",
+      'TickerInside' in (_fih.source_attribution(_tb) or ''), f"{_fih.source_attribution(_tb)}")
+check("指數替代 ETF：四檔皆設定 TickerInside 共同備援",
+      all(any('tickerinside.com' in s for s in _su(f['sources'])) for f in _pr2.values()),
+      f"{[f['key'] for f in _pr2.values() if not any('tickerinside.com' in s for s in _su(f['sources']))]}")
+_soxx_file = json.load(open('data/index-holdings/SOXX.json', encoding='utf-8'))
+check("指數替代 ETF：SOXX 產出為完整 30 檔（官方 CSV 被封鎖下改用 TickerInside）",
+      _soxx_file['count'] >= 28 and _soxx_file['weight_total_pct'] >= 90 and 'tickerinside' in _soxx_file['source'],
+      f"{_soxx_file['count']} 檔 {_soxx_file['weight_total_pct']}% {str(_soxx_file['source'])[:44]}")
+
 # 逐來源門檻：同一檔基金的官方來源與免費備援完整度差很多，必須各自驗證，
 # 否則不是備援永遠失敗，就是部分資料（前 25 大）靜默通過。
 _srcs = _pr2['QQQ']['sources']

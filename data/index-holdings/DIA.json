@@ -4,7 +4,7 @@
  "issuer": "State Street (SSGA)",
  "count": 30,
  "source": "https://www.ssga.com/us/en/intermediary/etfs/library-content/products/fund-data/etfs/us/holdings-daily-us-en-dia.xlsx",
- "fetched_at": "2026-11-03T21:48:07.231853+08:00",
+ "fetched_at": "2026-11-03T23:37:28.142314+08:00",
  "weight_total_pct": 99.95,
  "holdings": [
   {

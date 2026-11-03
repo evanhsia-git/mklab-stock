@@ -1,9 +1,10 @@
 {
   "meta": {
-    "description": "ETF 資料網址（參考紀錄，未來需要時使用）",
+    "description": "市場資料來源登記表：mklab-stock 實際自動抓取的來源鏈、備援、以及參考用網址（每筆皆附 2026-11-03 實測狀態）",
     "template": "https://investor.vanguard.com/irr/funds/profile/{TICKER}-AdditionalFundData",
     "updated": "2026-11-03",
-    "note": "VOO 已由 index-holdings job 每月自動抓取（fetch_index_holdings.py 的 parse_vanguard 解析此端點的 JSON；股東持股每月公布一次，不需頻繁抓取）；VTI／VUG／VTV／BND 僅登記備用，尚未納入自動流程。"
+    "note": "VOO 已由 index-holdings job 每月自動抓取（parse_vanguard 解析此端點的 JSON；持股每月公布一次，不需頻繁抓取）；VTI／VUG／VTV／BND 僅登記備用，尚未納入自動流程。實際生效的來源順序與驗證門檻以 data/index-proxy.json 為準，本檔為來源清單與實測狀態。",
+    "auto_fetch_schedule": "index-holdings job 每月 2 日執行；四檔皆 freq=monthly，抓到後 25 天內自動跳過"
   },
   "etfs": [
     {
@@ -31,5 +32,192 @@
       "issuer": "Vanguard",
       "url": "https://investor.vanguard.com/irr/funds/profile/BND-AdditionalFundData"
     }
-  ]
+  ],
+  "vanguard_note": "Vanguard 的 {TICKER}-AdditionalFundData 一律回傳 JSON（不是表格），持股在 holdingDetails.equityHoldings，基準日為 holdingDetails.asOfDate（每月公布一次）。VOO 已納入自動流程；VTI／VUG／VTV／BND 僅登記備用，日後啟用只需在 data/index-proxy.json 加一筆（同一個解析器即可用）。",
+  "index_proxy_auto": [
+    {
+      "ticker": "DIA",
+      "name": "SPDR Dow Jones Industrial Average ETF",
+      "issuer": "State Street (SSGA)",
+      "status": "自動取得（完整）",
+      "result": "30 檔、權重 99.95%",
+      "sources": [
+        {
+          "url": "https://www.ssga.com/us/en/intermediary/etfs/library-content/products/fund-data/etfs/us/holdings-daily-us-en-dia.xlsx",
+          "format": "XLSX",
+          "role": "主要",
+          "tested": "200 OK、18KB，完整 30 檔"
+        },
+        {
+          "url": "https://www.ssga.com/library-content/products/fund-data/etfs/us/holdings-daily-us-en-dia.xlsx",
+          "format": "XLSX",
+          "role": "備援（短路徑變體）",
+          "tested": "200 OK，同一份檔案"
+        },
+        {
+          "url": "https://tickerinside.com/api/v1/fund/dia.json",
+          "format": "JSON",
+          "role": "共同備援",
+          "tested": "200 OK、30 檔、source_layer=issuer、holdings_asof 2026-11-02"
+        },
+        {
+          "url": "https://stockanalysis.com/etf/dia/holdings/",
+          "format": "HTML",
+          "role": "最後備援",
+          "tested": "可用（伺服器端渲染；免費層只有前 25 大）"
+        }
+      ]
+    },
+    {
+      "ticker": "VOO",
+      "name": "Vanguard S&P 500 ETF",
+      "issuer": "Vanguard",
+      "status": "自動取得（完整）",
+      "result": "501 檔、權重 98.71%、基準日 2026-09-30",
+      "sources": [
+        {
+          "url": "https://investor.vanguard.com/irr/funds/profile/VOO-AdditionalFundData",
+          "format": "JSON",
+          "role": "主要",
+          "tested": "200 OK、約 420KB，501 檔（holdingDetails.equityHoldings）"
+        },
+        {
+          "url": "manual_upload:data/raw/official/VOO_holdings.csv",
+          "format": "CSV（人工上傳）",
+          "role": "備援",
+          "tested": "493 檔、98.63%（Vanguard 網站的 Holdings details 複製檔）"
+        },
+        {
+          "url": "https://tickerinside.com/api/v1/fund/voo.json",
+          "format": "JSON",
+          "role": "共同備援",
+          "tested": "200 OK、504 檔，但 source_layer=sec_nport、資料日期 2026-06-30（季報，較舊）"
+        },
+        {
+          "url": "https://tickerinside.com/api/v1/fund/voo.csv",
+          "format": "CSV",
+          "role": "參考（同源 CSV）",
+          "tested": "200 OK，欄位 fund,holdings_as_of,source_layer,ticker,weight_pct"
+        }
+      ]
+    },
+    {
+      "ticker": "QQQ",
+      "name": "Invesco QQQ Trust, Series 1",
+      "issuer": "Invesco",
+      "status": "自動取得（完整）",
+      "result": "101 檔、權重 99.84%、基準日 2026-11-03（當日）",
+      "sources": [
+        {
+          "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46090E103/holdings/fund?idType=cusip&productType=ETF",
+          "format": "JSON",
+          "role": "主要（網站背後的公開 API）",
+          "tested": "200 OK、106 筆（股票部位 101 檔）、effectiveDate 為當日；免 key、免瀏覽器。CUSIP 46090E103"
+        },
+        {
+          "url": "https://tickerinside.com/api/v1/fund/qqq.json",
+          "format": "JSON",
+          "role": "共同備援",
+          "tested": "200 OK、102 檔，但 source_layer=sec_nport、資料日期 2026-06-30（季報，較舊）"
+        },
+        {
+          "url": "https://stockanalysis.com/etf/qqq/holdings/",
+          "format": "HTML",
+          "role": "最後備援",
+          "tested": "可用但只有前 25 大（權重 71.25%）"
+        },
+        {
+          "url": "https://www.invesco.com/us/financial-products/etfs/holdings/main/holdings/0?audienceType=Investor&action=download&ticker=QQQ",
+          "format": "宣稱 CSV（實際回傳網頁）",
+          "role": "不可用",
+          "tested": "非瀏覽器請求回 200，但 Content-Type 是 text/html（415KB 網頁），不是 CSV；表格由 JS 載入 → 不能用 pandas.read_csv() 解析"
+        },
+        {
+          "url": "https://www.invesco.com/us/financial-products/etfs/holdings/main/holdings/0?audienceType=Investor&ticker=QQQ",
+          "format": "HTML",
+          "role": "不可用",
+          "tested": "同一頁面：0 個 <table>、內文不含任何代號（資料靠 XHR 載入）"
+        }
+      ]
+    },
+    {
+      "ticker": "SOXX",
+      "name": "iShares Semiconductor ETF",
+      "issuer": "iShares (BlackRock)",
+      "status": "自動取得（完整，經共同備援）",
+      "result": "30 檔、權重 99.85%、基準日 2026-11-02",
+      "sources": [
+        {
+          "url": "https://tickerinside.com/api/v1/fund/soxx.json",
+          "format": "JSON",
+          "role": "主要",
+          "tested": "200 OK、完整 30 檔、source_layer=issuer、holdings_asof 2026-11-02"
+        },
+        {
+          "url": "https://stockanalysis.com/etf/soxx/holdings/",
+          "format": "HTML",
+          "role": "備援",
+          "tested": "24 檔、95.82%"
+        },
+        {
+          "url": "https://www.ishares.com/us/products/239705/ishares-semiconductor-etf/latest-holdings.csv",
+          "format": "CSV（官方）",
+          "role": "官方來源（目前不可用）",
+          "tested": "403 Forbidden（Akamai）；瀏覽器開啟亦為空殼頁"
+        },
+        {
+          "url": "https://www.ishares.com/us/products/239705/ishares-phlx-semiconductor-etf/1467271812596.ajax?fileType=csv&fileName=SOXX_holdings&dataType=fund",
+          "format": "CSV（舊式官方）",
+          "role": "官方來源（目前不可用）",
+          "tested": "403 Forbidden（Akamai）"
+        }
+      ]
+    }
+  ],
+  "common_fallback": {
+    "name": "TickerInside",
+    "url_template": "https://tickerinside.com/api/v1/fund/{ticker}.json",
+    "csv_template": "https://tickerinside.com/api/v1/fund/{ticker}.csv",
+    "format": "JSON：holdings 為「代號: 權重%」的扁平字典，另有 holdings_asof、source_layer、cite_as；CSV 欄位為 fund,holdings_as_of,source_layer,ticker,weight_pct",
+    "coverage": "支援大量美國 ETF；四檔指數替代 ETF 皆可用",
+    "freshness": "不同 ETF 差很多：SOXX／DIA 為發行人當期資料（issuer），VOO／QQQ 來自 SEC N-PORT 季報（sec_nport，較舊）→ 使用時必須讀 holdings_asof，不要假設每日更新",
+    "license_note": "使用條款要求標註來源（cite_as 為建議字串）；程式會把 attribution 寫進 data/index-holdings/*.json 的 attribution 欄位",
+    "role": "四檔的共同備援；SOXX 因官方 CSV 被封鎖而以此為主要來源"
+  },
+  "sec_edgar": {
+    "doc_url": "https://www.sec.gov/search-filings/edgar-application-programming-interfaces",
+    "provides": [
+      "公司營收（Revenues）",
+      "淨利（NetIncomeLoss）",
+      "EPS（EarningsPerShareBasic／Diluted）",
+      "資產負債表（Assets／Liabilities／StockholdersEquity 等）",
+      "現金流量表（NetCashProvidedByUsedInOperatingActivities 等）",
+      "季報 10-Q、年報 10-K（申報清單與文件連結）"
+    ],
+    "endpoints": [
+      {
+        "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK##########.json",
+        "purpose": "一次取回該公司所有 XBRL 科目與各期間數字（營收、淨利、EPS、資產負債、現金流量）"
+      },
+      {
+        "url": "https://data.sec.gov/api/xbrl/companyconcept/CIK##########/us-gaap/{tag}.json",
+        "purpose": "單一科目（如 us-gaap/Revenues）的歷史序列"
+      },
+      {
+        "url": "https://data.sec.gov/api/xbrl/frames/us-gaap/{tag}/USD/CY2024.json",
+        "purpose": "跨公司同期比較（例：某一年所有公司的 Revenues）"
+      },
+      {
+        "url": "https://data.sec.gov/submissions/CIK##########.json",
+        "purpose": "申報清單（10-K／10-Q 的日期與文件連結）"
+      },
+      {
+        "url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK={cik}&type=10-K",
+        "purpose": "人工查詢頁（browse-edgar）"
+      }
+    ],
+    "cik_note": "CIK 為 10 碼零填充（例：Apple = 0000320193）；ETF／基金也有 CIK（例：Invesco QQQ Trust = 0001067839）。",
+    "tested": "2026-11-03 實測：自訂 UA（未含 email）一律 403 Forbidden —— SEC 明文規定 UA 必須含可聯絡的 email；帶瀏覽器 UA 可通過，但正式接入應使用合規 UA。",
+    "status": "尚未接入 mklab-stock。若要自動取得美國財報（營收／淨利／EPS／資產負債／現金流量／10-K／10-Q），只需提供一個聯絡 email 放進請求 UA，其餘（端點、格式、CIK）都已確認。"
+  }
 }

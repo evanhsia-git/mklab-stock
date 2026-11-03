@@ -4,7 +4,7 @@
  "issuer": "Invesco",
  "count": 101,
  "source": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46090E103/holdings/fund?idType=cusip&productType=ETF",
- "fetched_at": "2026-11-03T22:48:25.221371+08:00",
+ "fetched_at": "2026-11-03T23:35:15.037292+08:00",
  "weight_total_pct": 99.84,
  "holdings": [
   {
