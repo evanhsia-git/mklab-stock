@@ -72,7 +72,7 @@
 - **第三方來源（yfinance）**：ROE／ROA 補充、全球指數與 ETF、美股前 30 大、全球與情緒的月檔、台股加權指數 K 線。非官方，偶爾失敗或限流；失敗時保留上一版，不寫入假值。
 - **發行人官網與公開 API**：DIA（SSGA XLSX）、VOO（Vanguard JSON）、QQQ（Invesco `dng-api` JSON）、SOXX（iShares 官方 CSV 對伺服器 403）。
 - **共同備援（TickerInside）**：四檔指數替代 ETF 都有；在 VOO／QQQ 是 SEC N-PORT 季報（較舊），只在官方來源失敗時使用；SOXX 因官方 CSV 被封鎖，以它為主要來源。
-- **尚未接入**：SEC EDGAR（美國財報營收、淨利、EPS、資產負債表、現金流量表、10-K／10-Q）。端點與格式已實測確認，但 SEC 要求請求 UA 必須含聯絡 email，目前 CI 沒有 → 需要一個聯絡 email 才能接入。
+- **尚未接入（程式面）**：SEC EDGAR（美國財報營收、淨利、EPS、資產負債表、現金流量表、10-K／10-Q）。官方存取規則：**不需要 API key**；HTTP Header 必須提供合規 User-Agent（程式名稱＋版本＋可聯絡 Email，例 `MKLAB Stock evan.hsia@gmail.com`，SEC 不接受隨意編造的信箱，用途是服務異常時能聯絡）；**每秒請求數不得超過 10 次**，本專案更保守，建議控制在 2～3 次/秒。端點、格式與 CIK 皆已確認，接入前提只剩選定要抓的美股標的與存放位置（例如 `data/us/us-fundamentals.json`）。
 
 ### ETF 持股自動獲取來源鏈（`index-holdings`）
 
@@ -83,9 +83,11 @@
 | VOO | Vanguard 官方 JSON（`holdingDetails.equityHoldings`） | 手動檔 `VOO_holdings.csv` → TickerInside | 501 檔、98.71%、基準日 2026-09-30 |
 | DIA | SSGA 官方 XLSX（檔名必須含 `-en-`） | TickerInside → stockanalysis | 30 檔、99.95% |
 | QQQ | Invesco `dng-api` 官方 API（CUSIP 46090E103） | TickerInside → stockanalysis | 101 檔、99.84%、基準日當日 |
-| SOXX | TickerInside（發行人當期資料） | stockanalysis → iShares 官方 URL（僅參考） | 30 檔、99.85%、基準日 2026-11-02 |
+| SOXX | 官方 iShares 下載檔（人工放入 `data/raw/official/SOXX_holdings.xls`，45 天內有效） | TickerInside → stockanalysis → iShares URL（僅參考） | 30 檔、99.83%、基準日 2026-11-02 |
 
-- 解析器：`parse_vanguard`／`parse_invesco`／`parse_tickerinside`（JSON 來源）、`parse_table`（HTML／CSV／XLSX）。只取股票部位，排除現金、期貨與交換等部位。
+- 解析器：`parse_vanguard`／`parse_invesco`／`parse_tickerinside`（JSON 來源）、`parse_spreadsheetml`（iShares 的 `.xls` 其實是 Excel 2003 XML）、`parse_table`（HTML／CSV／XLSX）。只取股票部位，排除現金、期貨與交換等部位（有 `Asset Class` 欄時由 `filter_equity_only` 過濾）。
+- **HTTP 200 不等於成功**：下載後同時驗證 status、Content-Type 與 body 開頭，符合格式才進解析流程（`check_content_type`）。實例：Invesco 的 `action=download` 宣稱是 CSV，實際回傳 415KB HTML 網頁；iShares 的 `.xls` 其實是 XML，`pandas.read_html`／`read_excel` 都讀不了。
+- **部分官方來源是「IP 型封鎖」**：iShares／BlackRock 對資料中心 IP 一律 403（連瀏覽器都擋），GitHub Actions runner 拿不到 → 改用人工放入 + 45 天期限（`max_age_days`，過期自動讓位給自動來源）。
 - 每個來源可各自覆寫驗證門檻（`{"url": …, "expected_min": …}`）：官方來源與免費備援的完整度差很多（QQQ 官方 101 檔 vs 免費層前 25 大），共用一組門檻會讓部分資料靜默通過。
 - 產出檔記錄 `source`、`holdings_asof`（來源提供的持股基準日）與 `attribution`（來源條款要求標註時，如 TickerInside）。
 - 完整來源清單、格式與實測狀態（含不可用原因）記在 `data/etf-source-urls.json`；生效的來源順序與門檻在 `data/index-proxy.json`。

@@ -144,13 +144,19 @@
       "ticker": "SOXX",
       "name": "iShares Semiconductor ETF",
       "issuer": "iShares (BlackRock)",
-      "status": "自動取得（完整，經共同備援）",
-      "result": "30 檔、權重 99.85%、基準日 2026-11-02",
+      "status": "完整（主要來源為官方檔案的人工上傳，自動來源待命）",
+      "result": "30 檔、權重 99.83%、基準日 2026-11-02（官方檔案版本）",
       "sources": [
+        {
+          "url": "manual_upload:data/raw/official/SOXX_holdings.xls",
+          "format": "Excel 2003 XML（SpreadsheetML，官方下載檔）",
+          "role": "主要（人工放入，max_age_days=45）",
+          "tested": "2026-11-03 由 Ivan 下載提供；解析為 30 檔、權重 99.83%、基準日 2026-11-02。檔名雖為 .xls，實際是 <?xml> 的 SpreadsheetML：pandas.read_html 讀不到、read_excel 回 format cannot be determined，且內容含未轉義的 &（官方連結屬性）→ 以 xml.etree 解析並修掉 &；只取 Asset Class=Equity（濾掉 USD CASH／XTSLA／WFFUT／IXTZ6）。"
+        },
         {
           "url": "https://tickerinside.com/api/v1/fund/soxx.json",
           "format": "JSON",
-          "role": "主要",
+          "role": "自動備援（人工檔過期或不存在時接手）",
           "tested": "200 OK、完整 30 檔、source_layer=issuer、holdings_asof 2026-11-02"
         },
         {
@@ -162,8 +168,8 @@
         {
           "url": "https://www.ishares.com/us/products/239705/ishares-semiconductor-etf/latest-holdings.csv",
           "format": "CSV（官方）",
-          "role": "官方來源（目前不可用）",
-          "tested": "403 Forbidden（Akamai）；瀏覽器開啟亦為空殼頁"
+          "role": "官方來源（CI 不可用，需人工下載）",
+          "tested": "403 Access Denied（Akamai，465 bytes）：curl 預設／瀏覽器 UA／完整瀏覽器標頭全部 403，連本機真實（headless）瀏覽器也回 Access Denied（Reference #18.4752cd17…）。原因是來源 IP 屬資料中心（本機 172.104.105.71 Linode），GitHub Actions runner 同理 → 官方檔案只能人工下載（見上方 manual_upload 來源）。使用者自己的瀏覽器可正常下載。"
         },
         {
           "url": "https://www.ishares.com/us/products/239705/ishares-phlx-semiconductor-etf/1467271812596.ajax?fileType=csv&fileName=SOXX_holdings&dataType=fund",
@@ -217,7 +223,18 @@
       }
     ],
     "cik_note": "CIK 為 10 碼零填充（例：Apple = 0000320193）；ETF／基金也有 CIK（例：Invesco QQQ Trust = 0001067839）。",
-    "tested": "2026-11-03 實測：自訂 UA（未含 email）一律 403 Forbidden —— SEC 明文規定 UA 必須含可聯絡的 email；帶瀏覽器 UA 可通過，但正式接入應使用合規 UA。",
-    "status": "尚未接入 mklab-stock。若要自動取得美國財報（營收／淨利／EPS／資產負債／現金流量／10-K／10-Q），只需提供一個聯絡 email 放進請求 UA，其餘（端點、格式、CIK）都已確認。"
+    "access_rules": {
+      "api_key": "不需要申請 API key",
+      "user_agent": "HTTP Header 必須提供合規的 User-Agent，內容要能識別請求程式與聯絡方式：程式名稱＋版本＋可聯絡的 Email。SEC 會在服務使用異常時依此聯絡資料使用者，因此不接受隨意編造的聯絡信箱。",
+      "user_agent_example": "MKLAB Stock evan.hsia@gmail.com",
+      "example_headers": {
+        "User-Agent": "MKLAB Stock evan.hsia@gmail.com",
+        "Accept-Encoding": "gzip, deflate",
+        "Host": "data.sec.gov"
+      },
+      "rate_limit": "SEC 規定每秒請求數不得超過 10 次；mklab-stock 更保守，建議控制在每秒 2～3 次（本專案各 job 的抓取間隔原本就遠低於此）。"
+    },
+    "tested": "2026-11-03 實測：自訂 UA（未含 email）一律 403 Forbidden —— 符合 SEC 的規定（UA 必須含可聯絡 email）；帶瀏覽器 UA 可通過，但正式接入必須使用合規 UA。",
+    "status": "尚未接入 mklab-stock（程式面）。接入條件已備齊：合規 UA「MKLAB Stock evan.hsia@gmail.com」、速率上限 2～3 req/s、端點與 CIK 均已確認。若要啟用，需先決定要抓哪些美股標的與存放位置（例如 data/us/us-fundamentals.json）與對應 job。"
   }
 }

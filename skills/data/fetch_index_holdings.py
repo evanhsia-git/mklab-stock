@@ -166,9 +166,24 @@ def source_asof(data):
     """來源自帶的持股基準日 → ISO 日期。
 
     Vanguard holdingDetails.asOfDate（MM/DD/YYYY）、Invesco effectiveDate（ISO）、
-    TickerInside holdings_asof（ISO）。月更新或多來源混用的基金必須記錄這個日期，
-    否則看不出手上的權重是哪一版（例如 N-PORT 季報與發行人當期資料差好幾個月）。
+    TickerInside holdings_asof（ISO）、SpreadsheetML 的「Fund Holdings as of」（Nov 02, 2026）。
+    月更新或多來源混用的基金必須記錄這個日期，否則看不出手上的權重是哪一版
+    （例如 N-PORT 季報與發行人當期資料差好幾個月）。
     """
+    if data.lstrip()[:5].lower() == b"<?xml":  # SpreadsheetML（iShares 的 .xls 下載檔）
+        try:
+            for r in parse_spreadsheetml(data):
+                for j, c in enumerate(r):
+                    if str(c).strip().lower() in ("fund holdings as of", "holdings as of"):
+                        v = str(r[j + 1] if len(r) > j + 1 else "").strip()
+                        for fmt in ("%b %d, %Y", "%m/%d/%Y", "%Y-%m-%d"):
+                            try:
+                                return dt.datetime.strptime(v, fmt).date().isoformat()
+                            except ValueError:
+                                continue
+        except Exception:
+            return None
+        return None
     doc = _json_doc(data)
     if not doc:
         return None
@@ -199,21 +214,113 @@ def source_attribution(data):
         return "TickerInside (tickerinside.com)"
     return None
 
+def parse_spreadsheetml(data):
+    """Excel 2003 XML（SpreadsheetML）→ 列陣列。
+
+    iShares 的「.xls」下載檔其實是 SpreadsheetML（開頭是 <?xml ...>），
+    pandas.read_html 讀不到（不是 HTML 表格）、read_excel 也會說 format cannot be determined
+    → 直接用 xml.etree 解析。結構：<Row><Cell><Data>值</Data></Cell>…</Row>，
+    Cell 可能帶 ss:Index 表示跳欄（要補空字串，否則欄位會錯位）。
+    """
+    import xml.etree.ElementTree as ET
+    NS = "{urn:schemas-microsoft-com:office:spreadsheet}"
+    text = data.decode("utf-8-sig", errors="replace")
+    # 官方檔內的連結屬性含未轉義的 &（例：href="…?type=ishares&style=All"），Excel 容忍但
+    # 標準 XML 解析器會直接 ParseError → 只把「不是實體」的 & 轉成 &amp; 再解析。
+    text = re.sub(r"&(?!#\d+;|#x[0-9a-fA-F]+;|[A-Za-z][A-Za-z0-9]*;)", "&amp;", text)
+    root = ET.fromstring(text)
+    out = []
+    for row in root.iter(NS + "Row"):
+        cells = []
+        for c in row.findall(NS + "Cell"):
+            idx = c.get(NS + "Index")
+            if idx:
+                while len(cells) < int(idx) - 1:
+                    cells.append("")
+            cells.append(c.findtext(NS + "Data", default=""))
+        out.append(cells)
+    return out
+
+_CASHY = ("cash", "money market", "futures", "collateral", "currency", "swap", "option", "derivative")
+
+def filter_equity_only(rows):
+    """若表格有 Asset Class／資產類別欄，濾掉現金、貨幣市場、期貨、擔保品等非股票列。
+
+    實例：iShares 的官方 SOXX 檔案除了 30 檔股票，還有 USD CASH、XTSLA（貨幣市場基金）、
+    WFFUT（現金擔保品）、IXTZ6（期貨）共 4 列（權重合計 0.17%）—— 不濾掉會被當成成分股。
+    判斷方式：值是 equity／stock／ADR 類 → 保留；明顯是現金與衍生性商品 → 丟棄；
+    無法判斷 → 保留（不確定時不要誤刪）。
+    """
+    hdr = None
+    for i, r in enumerate(rows):
+        for j, c in enumerate(r):
+            if str(c).strip().lower() in ("asset class", "資產類別"):
+                hdr = (i, j)
+                break
+        if hdr:
+            break
+    if not hdr:
+        return rows
+    i, j = hdr
+    out = rows[:i + 1]
+    for r in rows[i + 1:]:
+        if len(r) <= j:
+            continue
+        v = str(r[j]).strip().lower()
+        if any(k in v for k in _CASHY):
+            continue
+        out.append(r)
+    return out
+
+def _preview(data, n=100):
+    """回應開頭 n 個字元（診斷用）。HTTP 200 不代表內容正確，錯誤訊息要能直接看出拿到什麼。"""
+    return data[:n].decode("utf-8", "replace").replace("\n", " ").replace("\r", " ").strip()
+
+def check_content_type(src, data):
+    """來源宣告為 CSV，但回應是 HTML／JSON 時直接報錯並附開頭內容。
+
+    為什麼要這個：HTTP 200 只代表「有回應」，不代表「內容是我們要的」。
+    實例（2026-11-03 實測）：Invesco 的 action=download 宣稱是持股 CSV，
+    實際回傳 415KB 的 HTML 網頁（表格由 JS 載入）→ pandas.read_csv() 當然解析不了。
+    因此下載後要同時看 status、Content-Type 與 body 開頭，符合格式才進解析流程。
+    """
+    head = data.lstrip()[:1]
+    if not src.lower().endswith(".csv") and "action=download" not in src.lower():
+        return
+    if head in (b"<", b"{"):
+        kind = "HTML 網頁" if head == b"<" else "JSON"
+        raise ValueError(f"來源宣告為 CSV，但實際回傳{kind}（不是 CSV）｜開頭：{_preview(data)}")
+
 def parse_bytes(data, src):
+    check_content_type(src, data)
     if data.lstrip()[:1] == b"{":  # JSON（Vanguard、Invesco 官方 API、TickerInside 備援）
         doc = json.loads(data.decode("utf-8-sig", errors="replace"))
         for parser in (parse_vanguard, parse_invesco, parse_tickerinside):
             res = parser(doc)
             if res:
                 return res
-        return []
-    if data.lstrip()[:1] == b"<":  # HTML：逐一檢查每個表格
+        raise ValueError(f"JSON 內找不到可用的持股結構｜開頭：{_preview(data)}")
+    if data.lstrip()[:5].lower() == b"<?xml":  # Excel 2003 XML（iShares 的 .xls 下載檔）
+        res = parse_table(filter_equity_only(parse_spreadsheetml(data)))
+        if not res:
+            raise ValueError(f"SpreadsheetML 解析不到持股欄位｜開頭：{_preview(data)}")
+        return res
+    if data.lstrip()[:1] == b"<":  # HTML：逐一檢查每個表格（解析器依序嘗試，環境不一定每個都有）
         import pandas as pd
-        for t in pd.read_html(io.StringIO(data.decode("utf-8", errors="replace"))):
-            res = parse_table([list(t.columns)] + t.fillna("").values.tolist())
-            if res:
-                return res
-        return []
+        text = data.decode("utf-8", errors="replace")
+        last = None
+        for flavor in ("lxml", "bs4", "html5lib"):
+            try:
+                tables = pd.read_html(io.StringIO(text), flavor=flavor)
+            except Exception as e:  # 缺解析器或頁面沒有表格 → 換下一個
+                last = f"{flavor}: {e}"
+                continue
+            for t in tables:
+                res = parse_table(filter_equity_only([list(t.columns)] + t.fillna("").values.tolist()))
+                if res:
+                    return res
+            last = f"{flavor}: 有 {len(tables)} 個表格但沒有可辨識的持股欄位"
+        raise ValueError(f"HTML 解析不到持股表格（{last}）｜開頭：{_preview(data)}")
     if src.lower().endswith((".xlsx", ".xls")) or data[:2] == b"PK":
         import pandas as pd
         df = pd.read_excel(io.BytesIO(data), header=None)
@@ -221,7 +328,10 @@ def parse_bytes(data, src):
     else:
         text = data.decode("utf-8-sig", errors="replace")
         rows = list(csv.reader(io.StringIO(text)))
-    return parse_table(rows)
+    res = parse_table(filter_equity_only(rows))
+    if not res:
+        raise ValueError(f"表格解析不到持股欄位（需同時有代號欄與權重欄）｜開頭：{_preview(data)}")
+    return res
 
 def validate(fund, holdings):
     n = len(holdings)

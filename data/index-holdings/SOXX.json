@@ -3,161 +3,160 @@
  "index": "費城半導體（近似）",
  "issuer": "iShares (BlackRock)",
  "count": 30,
- "source": "https://tickerinside.com/api/v1/fund/soxx.json",
- "fetched_at": "2026-11-04T00:28:41.598429+08:00",
- "weight_total_pct": 99.85,
+ "source": "manual_upload:data/raw/official/SOXX_holdings.xls",
+ "fetched_at": "2026-11-04T00:50:19.617171+08:00",
+ "weight_total_pct": 99.83,
  "holdings": [
   {
    "ticker": "AMD",
-   "name": "",
-   "weight_pct": 9.2357
+   "name": "ADVANCED MICRO DEVICES",
+   "weight_pct": 8.88037
   },
   {
    "ticker": "NVDA",
-   "name": "",
-   "weight_pct": 7.9824
-  },
-  {
-   "ticker": "MU",
-   "name": "",
-   "weight_pct": 7.9474
+   "name": "NVIDIA",
+   "weight_pct": 8.19481
   },
   {
    "ticker": "AVGO",
-   "name": "",
-   "weight_pct": 7.5828
+   "name": "BROADCOM INC",
+   "weight_pct": 7.79088
+  },
+  {
+   "ticker": "MU",
+   "name": "MICRON TECHNOLOGY",
+   "weight_pct": 7.78531
   },
   {
    "ticker": "INTC",
-   "name": "",
-   "weight_pct": 6.327
+   "name": "INTEL CORPORATION",
+   "weight_pct": 5.99905
   },
   {
    "ticker": "TXN",
-   "name": "",
-   "weight_pct": 4.965
+   "name": "TEXAS INSTRUMENT",
+   "weight_pct": 5.1824
   },
   {
    "ticker": "ADI",
-   "name": "",
-   "weight_pct": 4.9597
+   "name": "ANALOG DEVICES",
+   "weight_pct": 5.10406
   },
   {
    "ticker": "QCOM",
-   "name": "",
-   "weight_pct": 4.1623
-  },
-  {
-   "ticker": "MRVL",
-   "name": "",
-   "weight_pct": 3.9956
+   "name": "QUALCOMM",
+   "weight_pct": 4.25639
   },
   {
    "ticker": "KLAC",
-   "name": "",
-   "weight_pct": 3.8756
+   "name": "KLA",
+   "weight_pct": 3.907
   },
   {
    "ticker": "NXPI",
-   "name": "",
-   "weight_pct": 3.8048
+   "name": "NXP SEMICONDUCTORS NV",
+   "weight_pct": 3.90124
   },
   {
    "ticker": "AMAT",
-   "name": "",
-   "weight_pct": 3.6644
+   "name": "APPLIED MATERIAL INC",
+   "weight_pct": 3.65799
   },
   {
    "ticker": "MPWR",
-   "name": "",
-   "weight_pct": 3.4193
+   "name": "MONOLITHIC POWER SYSTEMS INC",
+   "weight_pct": 3.6499
+  },
+  {
+   "ticker": "MRVL",
+   "name": "MARVELL TECHNOLOGY",
+   "weight_pct": 3.62569
   },
   {
    "ticker": "LRCX",
-   "name": "",
-   "weight_pct": 3.4152
+   "name": "LAM RESEARCH",
+   "weight_pct": 3.37927
   },
   {
    "ticker": "TSM",
-   "name": "",
-   "weight_pct": 3.2223
+   "name": "TAIWAN SEMICONDUCTOR MANUFACTURING",
+   "weight_pct": 3.28838
   },
   {
    "ticker": "SKHY",
-   "name": "",
-   "weight_pct": 2.9874
-  },
-  {
-   "ticker": "TER",
-   "name": "",
-   "weight_pct": 2.5353
+   "name": "SK HYNIX AMERICAN DEPOSITARY SHARE",
+   "weight_pct": 3.07484
   },
   {
    "ticker": "MCHP",
-   "name": "",
-   "weight_pct": 2.4562
+   "name": "MICROCHIP TECHNOLOGY INC",
+   "weight_pct": 2.51311
+  },
+  {
+   "ticker": "TER",
+   "name": "TERADYNE",
+   "weight_pct": 2.50762
   },
   {
    "ticker": "ALAB",
-   "name": "",
-   "weight_pct": 2.19
+   "name": "ASTERA LABS",
+   "weight_pct": 2.02142
   },
   {
    "ticker": "ON",
-   "name": "",
-   "weight_pct": 1.6502
+   "name": "ON SEMICONDUCTOR CORP",
+   "weight_pct": 1.67844
   },
   {
    "ticker": "ASML",
-   "name": "",
-   "weight_pct": 1.5211
+   "name": "ASML HOLDING ADR REPRESENTING",
+   "weight_pct": 1.54133
   },
   {
    "ticker": "CRDO",
-   "name": "",
-   "weight_pct": 1.5187
+   "name": "CREDO TECHNOLOGY GROUP HOLDING LTD",
+   "weight_pct": 1.46434
   },
   {
    "ticker": "ENTG",
-   "name": "",
-   "weight_pct": 1.3962
+   "name": "ENTEGRIS INC",
+   "weight_pct": 1.42503
   },
   {
    "ticker": "TSEM",
-   "name": "",
-   "weight_pct": 1.0407
-  },
-  {
-   "ticker": "MTSI",
-   "name": "",
-   "weight_pct": 0.9928
+   "name": "TOWER SEMICONDUCTOR",
+   "weight_pct": 1.00947
   },
   {
    "ticker": "ASX",
-   "name": "",
-   "weight_pct": 0.9545
+   "name": "ASE TECHNOLOGY HOLDING ADR REPRESE",
+   "weight_pct": 0.98416
+  },
+  {
+   "ticker": "MTSI",
+   "name": "MACOM TECHNOLOGY SOLUTIONS",
+   "weight_pct": 0.97841
   },
   {
    "ticker": "CBRS",
-   "name": "",
-   "weight_pct": 0.6243
+   "name": "CEREBRAS SYSTEMS INC CLASS A",
+   "weight_pct": 0.57286
   },
   {
    "ticker": "UMC",
-   "name": "",
-   "weight_pct": 0.556
+   "name": "UNITED MICRO ELECTRONICS ADR REP",
+   "weight_pct": 0.56798
   },
   {
    "ticker": "STM",
-   "name": "",
-   "weight_pct": 0.4392
+   "name": "STMICROELECTRONICS ADR",
+   "weight_pct": 0.46089
   },
   {
    "ticker": "ARM",
-   "name": "",
-   "weight_pct": 0.426
+   "name": "ARM HOLDINGS AMERICAN DEPOSITARY S",
+   "weight_pct": 0.42313
   }
  ],
- "holdings_asof": "2026-11-02",
- "attribution": "TickerInside, iShares Semiconductor ETF (SOXX), holdings from the issuer's file of 2026-10-30, https://tickerinside.com/etf/soxx/, CC BY 4.0"
+ "holdings_asof": "2026-11-02"
 }

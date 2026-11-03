@@ -93,12 +93,12 @@
       "min_weight_total": 90,
       "sources": [
         {
-          "url": "manual_upload:data/raw/official/SOXX_holdings.csv",
+          "url": "manual_upload:data/raw/official/SOXX_holdings.xls",
           "max_age_days": 45,
           "expected_min": 25,
           "expected_max": 35,
           "min_weight_total": 90,
-          "note": "官方 iShares CSV 的人工上傳檔（可選）：iShares／BlackRock 整個網域對資料中心 IP 一律 403（Akamai 依來源 IP 判斷，連真實瀏覽器都回 Access Denied），CI 永遠拿不到 → 只能人工下載後放入。max_age_days=45：超過 45 天未更新就自動跳過，讓下面的自動來源接手，避免舊檔把自動來源擋住；檔案不存在時也只是跳過，不影響流程。"
+          "note": "官方 iShares 下載檔（人工放入，2026-11-03 由 Ivan 提供）：iShares／BlackRock 整個網域對資料中心 IP 一律 403（Akamai 依來源 IP 判斷，連真實瀏覽器都回 Access Denied），CI 永遠拿不到 → 只能人工下載後放入。檔案雖名為 .xls，實際是 Excel 2003 XML（SpreadsheetML），由 parse_spreadsheetml 解析（xml.etree，並修掉官方檔內未轉義的 &），只取 Asset Class = Equity（濾掉 USD CASH／XTSLA／WFFUT／IXTZ6 等現金與期貨列），「Fund Holdings as of」會寫入 holdings_asof。max_age_days=45：超過 45 天未更新自動跳過，讓下面的自動來源接手；檔案不存在時也只是跳過。"
         },
         {
           "url": "https://tickerinside.com/api/v1/fund/soxx.json",

@@ -343,9 +343,36 @@ check("指數替代 ETF：四檔皆設定 TickerInside 共同備援",
       all(any('tickerinside.com' in s for s in _su(f['sources'])) for f in _pr2.values()),
       f"{[f['key'] for f in _pr2.values() if not any('tickerinside.com' in s for s in _su(f['sources']))]}")
 _soxx_file = json.load(open('data/index-holdings/SOXX.json', encoding='utf-8'))
-check("指數替代 ETF：SOXX 產出為完整 30 檔（官方 CSV 被封鎖下改用 TickerInside）",
-      _soxx_file['count'] >= 28 and _soxx_file['weight_total_pct'] >= 90 and 'tickerinside' in _soxx_file['source'],
+check("指數替代 ETF：SOXX 產出為完整 30 檔，且來源是設定中的來源之一",
+      _soxx_file['count'] >= 28 and _soxx_file['weight_total_pct'] >= 90
+      and _soxx_file['source'] in _su(_pr2['SOXX']['sources']),
       f"{_soxx_file['count']} 檔 {_soxx_file['weight_total_pct']}% {str(_soxx_file['source'])[:44]}")
+
+# iShares 官方下載檔（.xls 其實是 Excel 2003 XML／SpreadsheetML）：pandas 兩種 reader 都讀不了，
+# 且官方檔內含未轉義的 & → 必須自行用 xml.etree 解析、並濾掉現金／期貨列
+_sml = b'''<?xml version="1.0"?><ss:Workbook xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"><ss:Worksheet><ss:Table>
+<ss:Row><ss:Cell><ss:Data ss:Type="String">iShares Semiconductor ETF</ss:Data></ss:Cell></ss:Row>
+<ss:Row><ss:Cell><ss:Data ss:Type="String">Fund Holdings as of</ss:Data></ss:Cell><ss:Cell><ss:Data ss:Type="String">Nov 02, 2026</ss:Data></ss:Cell></ss:Row>
+<ss:Row><ss:Cell><ss:Data ss:Type="String">Ticker</ss:Data></ss:Cell><ss:Cell><ss:Data ss:Type="String">Name</ss:Data></ss:Cell><ss:Cell><ss:Data ss:Type="String">Asset Class</ss:Data></ss:Cell><ss:Cell><ss:Data ss:Type="String">Weight (%)</ss:Data></ss:Cell></ss:Row>
+<ss:Row><ss:Cell><ss:Data ss:Type="String">AMD</ss:Data></ss:Cell><ss:Cell><ss:Data ss:Type="String">ADVANCED MICRO DEVICES</ss:Data></ss:Cell><ss:Cell><ss:Data ss:Type="String">Equity</ss:Data></ss:Cell><ss:Cell><ss:Data ss:Type="String">8.88</ss:Data></ss:Cell></ss:Row>
+<ss:Row><ss:Cell><ss:Data ss:Type="String">NVDA</ss:Data></ss:Cell><ss:Cell><ss:Data ss:Type="String">NVIDIA</ss:Data></ss:Cell><ss:Cell><ss:Data ss:Type="String">Equity</ss:Data></ss:Cell><ss:Cell><ss:Data ss:Type="String">8.19</ss:Data></ss:Cell></ss:Row>
+<ss:Row><ss:Cell><ss:Data ss:Type="String">USD</ss:Data></ss:Cell><ss:Cell><ss:Data ss:Type="String">USD CASH</ss:Data></ss:Cell><ss:Cell><ss:Data ss:Type="String">Cash</ss:Data></ss:Cell><ss:Cell><ss:Data ss:Type="String">0.11</ss:Data></ss:Cell></ss:Row>
+<ss:Row><ss:Cell><ss:Data ss:Type="String">IXTZ6</ss:Data></ss:Cell><ss:Cell><ss:Data ss:Type="String">EMINI TECH</ss:Data></ss:Cell><ss:Cell><ss:Data ss:Type="String">Futures</ss:Data></ss:Cell><ss:Cell><ss:Data ss:Type="String">0.00</ss:Data></ss:Cell></ss:Row>
+</ss:Table></ss:Worksheet></ss:Workbook>'''
+_sh = _fih.parse_bytes(_sml, "manual_upload:x.xls")
+check("指數替代 ETF：SpreadsheetML（iShares .xls）可解析且濾掉現金／期貨列",
+      [x['ticker'] for x in _sh] == ["AMD", "NVDA"], f"{[(x['ticker'], x['weight_pct']) for x in _sh]}")
+check("指數替代 ETF：SpreadsheetML 的「Fund Holdings as of」可解析為 ISO 日期",
+      _fih.source_asof(_sml) == '2026-11-02', f"{_fih.source_asof(_sml)}")
+check("指數替代 ETF：SpreadsheetML 內未轉義的 & 不會讓解析失敗（官方檔的實際情況）",
+      len(_fih.parse_bytes(_sml.replace(b'>iShares Semiconductor ETF<',
+                                        b'><a href="x?type=a&style=b">y</a><'), "manual_upload:x.xls")) == 2)
+if os.path.exists('data/raw/official/SOXX_holdings.xls'):
+    _sf = open('data/raw/official/SOXX_holdings.xls', 'rb').read()
+    _sr = _fih.parse_bytes(_sf, "manual_upload:data/raw/official/SOXX_holdings.xls")
+    check("指數替代 ETF：官方 SOXX 檔案（真實檔）解析為 30 檔且不含現金列",
+          len(_sr) == 30 and not any(x['ticker'] in ('USD', 'XTSLA', 'WFFUT', 'IXTZ6') for x in _sr),
+          f"{len(_sr)} 檔、權重 {sum(x['weight_pct'] for x in _sr):.2f}%、asof {_fih.source_asof(_sf)}")
 
 # 人工上傳檔的新鮮度守門（iShares 官方檔案對資料中心 IP 一律 403 → 只能人工放入；
 # 但舊的人工檔不能永遠排在前面把自動來源擋掉）
