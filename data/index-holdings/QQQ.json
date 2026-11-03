@@ -2,135 +2,516 @@
  "fund": "QQQ",
  "index": "那斯達克100",
  "issuer": "Invesco",
- "count": 25,
- "source": "https://stockanalysis.com/etf/qqq/holdings/",
- "fetched_at": "2026-11-03T00:05:22.328311+08:00",
- "weight_total_pct": 71.25,
+ "count": 101,
+ "source": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46090E103/holdings/fund?idType=cusip&productType=ETF",
+ "fetched_at": "2026-11-03T22:48:25.221371+08:00",
+ "weight_total_pct": 99.84,
  "holdings": [
   {
    "ticker": "AAPL",
-   "name": "Apple Inc.",
-   "weight_pct": 8.16
+   "name": "Apple Inc",
+   "weight_pct": 8.1328
   },
   {
    "ticker": "NVDA",
-   "name": "NVIDIA Corporation",
-   "weight_pct": 8.0
+   "name": "NVIDIA Corp",
+   "weight_pct": 8.021
   },
   {
    "ticker": "MSFT",
-   "name": "Microsoft Corporation",
-   "weight_pct": 6.29
-  },
-  {
-   "ticker": "MU",
-   "name": "Micron Technology, Inc.",
-   "weight_pct": 4.47
+   "name": "Microsoft Corp",
+   "weight_pct": 6.2024
   },
   {
    "ticker": "AMZN",
-   "name": "Amazon.com, Inc.",
-   "weight_pct": 4.21
+   "name": "Amazon.com Inc",
+   "weight_pct": 4.3637
   },
   {
-   "ticker": "AMD",
-   "name": "Advanced Micro Devices, Inc.",
-   "weight_pct": 3.69
+   "ticker": "MU",
+   "name": "Micron Technology Inc",
+   "weight_pct": 4.2807
   },
   {
    "ticker": "TSLA",
-   "name": "Tesla, Inc.",
-   "weight_pct": 3.41
+   "name": "Tesla Inc",
+   "weight_pct": 3.494
+  },
+  {
+   "ticker": "AMD",
+   "name": "Advanced Micro Devices Inc",
+   "weight_pct": 3.4653
   },
   {
    "ticker": "META",
-   "name": "Meta Platforms, Inc.",
-   "weight_pct": 2.97
+   "name": "Meta Platforms Inc",
+   "weight_pct": 2.9715
   },
   {
    "ticker": "WMT",
-   "name": "Walmart Inc.",
-   "weight_pct": 2.69
+   "name": "Walmart Inc",
+   "weight_pct": 2.8236
   },
   {
    "ticker": "GOOGL",
-   "name": "Alphabet Inc.",
-   "weight_pct": 2.66
+   "name": "Alphabet Inc",
+   "weight_pct": 2.6964
   },
   {
    "ticker": "SPCX",
-   "name": "Space Exploration Technologies Corp.",
-   "weight_pct": 2.59
-  },
-  {
-   "ticker": "AVGO",
-   "name": "Broadcom Inc.",
-   "weight_pct": 2.52
+   "name": "Space Exploration Technologies Corp",
+   "weight_pct": 2.66
   },
   {
    "ticker": "GOOG",
-   "name": "Alphabet Inc.",
-   "weight_pct": 2.49
+   "name": "Alphabet Inc",
+   "weight_pct": 2.531
+  },
+  {
+   "ticker": "AVGO",
+   "name": "Broadcom Inc",
+   "weight_pct": 2.525
   },
   {
    "ticker": "COST",
-   "name": "Costco Wholesale Corporation",
-   "weight_pct": 2.01
+   "name": "Costco Wholesale Corp",
+   "weight_pct": 2.1013
   },
   {
    "ticker": "PLTR",
-   "name": "Palantir Technologies Inc.",
-   "weight_pct": 1.9
+   "name": "Palantir Technologies Inc",
+   "weight_pct": 1.8657
   },
   {
    "ticker": "CSCO",
-   "name": "Cisco Systems, Inc.",
-   "weight_pct": 1.84
+   "name": "Cisco Systems Inc",
+   "weight_pct": 1.821
   },
   {
    "ticker": "INTC",
-   "name": "Intel Corporation",
-   "weight_pct": 1.55
+   "name": "Intel Corp",
+   "weight_pct": 1.4328
   },
   {
    "ticker": "AMAT",
-   "name": "Applied Materials, Inc.",
-   "weight_pct": 1.39
-  },
-  {
-   "ticker": "LRCX",
-   "name": "Lam Research Corporation",
-   "weight_pct": 1.34
+   "name": "Applied Materials Inc",
+   "weight_pct": 1.3515
   },
   {
    "ticker": "PANW",
-   "name": "Palo Alto Networks, Inc.",
-   "weight_pct": 1.34
+   "name": "Palo Alto Networks Inc",
+   "weight_pct": 1.3035
+  },
+  {
+   "ticker": "LRCX",
+   "name": "Lam Research Corp",
+   "weight_pct": 1.2948
   },
   {
    "ticker": "TXN",
-   "name": "Texas Instruments Incorporated",
-   "weight_pct": 1.23
+   "name": "Texas Instruments Inc",
+   "weight_pct": 1.2605
   },
   {
    "ticker": "NFLX",
-   "name": "Netflix, Inc.",
-   "weight_pct": 1.16
-  },
-  {
-   "ticker": "CRWD",
-   "name": "CrowdStrike Holdings, Inc.",
-   "weight_pct": 1.15
+   "name": "Netflix Inc",
+   "weight_pct": 1.1804
   },
   {
    "ticker": "AMGN",
-   "name": "Amgen Inc.",
-   "weight_pct": 1.13
+   "name": "Amgen Inc",
+   "weight_pct": 1.1443
+  },
+  {
+   "ticker": "CRWD",
+   "name": "Crowdstrike Holdings Inc",
+   "weight_pct": 1.1259
   },
   {
    "ticker": "LIN",
-   "name": "Linde plc",
-   "weight_pct": 1.06
+   "name": "Linde PLC",
+   "weight_pct": 1.0894
+  },
+  {
+   "ticker": "GILD",
+   "name": "Gilead Sciences Inc",
+   "weight_pct": 0.9604
+  },
+  {
+   "ticker": "ADI",
+   "name": "Analog Devices Inc",
+   "weight_pct": 0.9097
+  },
+  {
+   "ticker": "KLAC",
+   "name": "KLA Corp",
+   "weight_pct": 0.9097
+  },
+  {
+   "ticker": "PEP",
+   "name": "PepsiCo Inc",
+   "weight_pct": 0.8714
+  },
+  {
+   "ticker": "SHOP",
+   "name": "Shopify Inc",
+   "weight_pct": 0.8586
+  },
+  {
+   "ticker": "TMUS",
+   "name": "T-Mobile US Inc",
+   "weight_pct": 0.7811
+  },
+  {
+   "ticker": "QCOM",
+   "name": "QUALCOMM Inc",
+   "weight_pct": 0.774
+  },
+  {
+   "ticker": "SNDK",
+   "name": "Sandisk Corp",
+   "weight_pct": 0.7158
+  },
+  {
+   "ticker": "ISRG",
+   "name": "Intuitive Surgical Inc",
+   "weight_pct": 0.7018
+  },
+  {
+   "ticker": "MRVL",
+   "name": "Marvell Technology Inc",
+   "weight_pct": 0.6835
+  },
+  {
+   "ticker": "ASML",
+   "name": "ASML Holding NV",
+   "weight_pct": 0.6533
+  },
+  {
+   "ticker": "VRTX",
+   "name": "Vertex Pharmaceuticals Inc",
+   "weight_pct": 0.6374
+  },
+  {
+   "ticker": "STX",
+   "name": "Seagate Technology Holdings PLC",
+   "weight_pct": 0.6119
+  },
+  {
+   "ticker": "WDC",
+   "name": "Western Digital Corp",
+   "weight_pct": 0.555
+  },
+  {
+   "ticker": "SBUX",
+   "name": "Starbucks Corp",
+   "weight_pct": 0.5411
+  },
+  {
+   "ticker": "ADP",
+   "name": "Automatic Data Processing Inc",
+   "weight_pct": 0.5396
+  },
+  {
+   "ticker": "BKNG",
+   "name": "Booking Holdings Inc",
+   "weight_pct": 0.5252
+  },
+  {
+   "ticker": "MAR",
+   "name": "Marriott International Inc/MD",
+   "weight_pct": 0.4936
+  },
+  {
+   "ticker": "ADBE",
+   "name": "Adobe Inc",
+   "weight_pct": 0.4545
+  },
+  {
+   "ticker": "REGN",
+   "name": "Regeneron Pharmaceuticals Inc",
+   "weight_pct": 0.442
+  },
+  {
+   "ticker": "INTU",
+   "name": "Intuit Inc",
+   "weight_pct": 0.4379
+  },
+  {
+   "ticker": "CSX",
+   "name": "CSX Corp",
+   "weight_pct": 0.4348
+  },
+  {
+   "ticker": "MNST",
+   "name": "Monster Beverage Corp",
+   "weight_pct": 0.427
+  },
+  {
+   "ticker": "FTNT",
+   "name": "Fortinet Inc",
+   "weight_pct": 0.421
+  },
+  {
+   "ticker": "CEG",
+   "name": "Constellation Energy Corp",
+   "weight_pct": 0.4145
+  },
+  {
+   "ticker": "CDNS",
+   "name": "Cadence Design Systems Inc",
+   "weight_pct": 0.4126
+  },
+  {
+   "ticker": "CTAS",
+   "name": "Cintas Corp",
+   "weight_pct": 0.4089
+  },
+  {
+   "ticker": "SNPS",
+   "name": "Synopsys Inc",
+   "weight_pct": 0.4061
+  },
+  {
+   "ticker": "MRNA",
+   "name": "Moderna Inc",
+   "weight_pct": 0.4009
+  },
+  {
+   "ticker": "ARM",
+   "name": "ARM Holdings PLC",
+   "weight_pct": 0.3902
+  },
+  {
+   "ticker": "MELI",
+   "name": "MercadoLibre Inc",
+   "weight_pct": 0.3865
+  },
+  {
+   "ticker": "MDLZ",
+   "name": "Mondelez International Inc",
+   "weight_pct": 0.3852
+  },
+  {
+   "ticker": "CMCSA",
+   "name": "Comcast Corp",
+   "weight_pct": 0.3841
+  },
+  {
+   "ticker": "DASH",
+   "name": "DoorDash Inc",
+   "weight_pct": 0.3535
+  },
+  {
+   "ticker": "ROST",
+   "name": "Ross Stores Inc",
+   "weight_pct": 0.3363
+  },
+  {
+   "ticker": "ORLY",
+   "name": "O'Reilly Automotive Inc",
+   "weight_pct": 0.3336
+  },
+  {
+   "ticker": "DDOG",
+   "name": "Datadog Inc",
+   "weight_pct": 0.329
+  },
+  {
+   "ticker": "ABNB",
+   "name": "Airbnb Inc",
+   "weight_pct": 0.3264
+  },
+  {
+   "ticker": "AEP",
+   "name": "American Electric Power Co Inc",
+   "weight_pct": 0.3226
+  },
+  {
+   "ticker": "HON",
+   "name": "Honeywell International Inc",
+   "weight_pct": 0.3224
+  },
+  {
+   "ticker": "APP",
+   "name": "AppLovin Corp",
+   "weight_pct": 0.3168
+  },
+  {
+   "ticker": "NXPI",
+   "name": "NXP Semiconductors NV",
+   "weight_pct": 0.2949
+  },
+  {
+   "ticker": "LITE",
+   "name": "Lumentum Holdings Inc",
+   "weight_pct": 0.2791
+  },
+  {
+   "ticker": "MPWR",
+   "name": "Monolithic Power Systems Inc",
+   "weight_pct": 0.2779
+  },
+  {
+   "ticker": "FAST",
+   "name": "Fastenal Co",
+   "weight_pct": 0.2755
+  },
+  {
+   "ticker": "FANG",
+   "name": "Diamondback Energy Inc",
+   "weight_pct": 0.2543
+  },
+  {
+   "ticker": "PDD",
+   "name": "PDD Holdings Inc",
+   "weight_pct": 0.248
+  },
+  {
+   "ticker": "PCAR",
+   "name": "PACCAR Inc",
+   "weight_pct": 0.2459
+  },
+  {
+   "ticker": "ADSK",
+   "name": "Autodesk Inc",
+   "weight_pct": 0.245
+  },
+  {
+   "ticker": "IDXX",
+   "name": "IDEXX Laboratories Inc",
+   "weight_pct": 0.2405
+  },
+  {
+   "ticker": "BKR",
+   "name": "Baker Hughes Co",
+   "weight_pct": 0.2394
+  },
+  {
+   "ticker": "PYPL",
+   "name": "PayPal Holdings Inc",
+   "weight_pct": 0.2285
+  },
+  {
+   "ticker": "CCEP",
+   "name": "Coca-Cola Europacific Partners PLC",
+   "weight_pct": 0.2285
+  },
+  {
+   "ticker": "KDP",
+   "name": "Keurig Dr Pepper Inc",
+   "weight_pct": 0.2277
+  },
+  {
+   "ticker": "HONA",
+   "name": "Honeywell Aerospace Inc",
+   "weight_pct": 0.2275
+  },
+  {
+   "ticker": "XEL",
+   "name": "Xcel Energy Inc",
+   "weight_pct": 0.2253
+  },
+  {
+   "ticker": "EXC",
+   "name": "Exelon Corp",
+   "weight_pct": 0.2179
+  },
+  {
+   "ticker": "MSTR",
+   "name": "Strategy Inc",
+   "weight_pct": 0.2168
+  },
+  {
+   "ticker": "ROP",
+   "name": "Roper Technologies Inc",
+   "weight_pct": 0.2156
+  },
+  {
+   "ticker": "TRI",
+   "name": "Thomson Reuters Corp",
+   "weight_pct": 0.2094
+  },
+  {
+   "ticker": "FER",
+   "name": "Ferrovial NV",
+   "weight_pct": 0.1895
+  },
+  {
+   "ticker": "PAYX",
+   "name": "Paychex Inc",
+   "weight_pct": 0.1886
+  },
+  {
+   "ticker": "MCHP",
+   "name": "Microchip Technology Inc",
+   "weight_pct": 0.1878
+  },
+  {
+   "ticker": "TER",
+   "name": "Teradyne Inc",
+   "weight_pct": 0.1855
+  },
+  {
+   "ticker": "ALAB",
+   "name": "Astera Labs Inc",
+   "weight_pct": 0.1812
+  },
+  {
+   "ticker": "WDAY",
+   "name": "Workday Inc",
+   "weight_pct": 0.1765
+  },
+  {
+   "ticker": "ODFL",
+   "name": "Old Dominion Freight Line Inc",
+   "weight_pct": 0.1661
+  },
+  {
+   "ticker": "GEHC",
+   "name": "GE HealthCare Technologies Inc",
+   "weight_pct": 0.1634
+  },
+  {
+   "ticker": "TTWO",
+   "name": "Take-Two Interactive Software Inc",
+   "weight_pct": 0.1633
+  },
+  {
+   "ticker": "AXON",
+   "name": "Axon Enterprise Inc",
+   "weight_pct": 0.1571
+  },
+  {
+   "ticker": "NBIS",
+   "name": "Nebius Group NV",
+   "weight_pct": 0.1533
+  },
+  {
+   "ticker": "DXCM",
+   "name": "Dexcom Inc",
+   "weight_pct": 0.1454
+  },
+  {
+   "ticker": "RKLB",
+   "name": "Rocket Lab Corp",
+   "weight_pct": 0.1416
+  },
+  {
+   "ticker": "CPRT",
+   "name": "Copart Inc",
+   "weight_pct": 0.1344
+  },
+  {
+   "ticker": "CRWV",
+   "name": "CoreWeave Inc",
+   "weight_pct": 0.1047
+  },
+  {
+   "ticker": "ALNY",
+   "name": "Alnylam Pharmaceuticals Inc",
+   "weight_pct": 0.0961
   }
- ]
+ ],
+ "holdings_asof": "2026-11-03"
 }

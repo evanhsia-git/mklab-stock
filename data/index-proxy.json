@@ -3,8 +3,8 @@
     "description": "四大指數的替代 ETF（發行人公開持股，較易取得）。權重為 ETF 持股權重，與指數權重略有差異。",
     "updated": "2026-11-03",
     "schedule": "每月 2 日由 index-holdings job 自動抓取（四檔皆為每月更新）；VOO 來源失敗時用手動檔備援",
-    "source_notes": "發行商端點常加 bot 牆（Invesco 406、iShares/BlackRock 403）或改用 JavaScript 載入表格，因此每個基金設定多個來源依序嘗試；stockanalysis.com 是伺服器端渲染、免 key 的穩定備援，但免費層只提供前 25 大持股（權重加總可能低於 100%）→ 用 min_weight_total 明確標示該基金的合理門檻，而不是全面放寬驗證。Vanguard 的 {TICKER}-AdditionalFundData 回傳 JSON（非表格），由 parse_vanguard 解析。2026-11-03 逐檔實測：SSGA 帶 -en- 的 XLSX 可用（30 檔 99.95%）、Vanguard VOO JSON 可用（501 檔 98.71%）、stockanalysis.com QQQ 25 檔 71.25% / SOXX 24 檔 95.82% 可用；Invesco 官方頁與 iShares 直連 CSV 皆不可用，僅保留為備援。",
-    "notes": "expected_min/max 為「該來源實際能取得的檔數範圍」，不是指數成分股總數（例：QQQ 指數有 100 檔，但可達來源只提供前 25 大 → 範圍 20~30 並以 min_weight_total 標示權重門檻）。"
+    "source_notes": "發行商端點常加 bot 牆（Invesco 406、iShares/BlackRock 403）或改用 JavaScript 載入表格，因此每個基金設定多個來源依序嘗試；stockanalysis.com 是伺服器端渲染、免 key 的穩定備援，但免費層只提供前 25 大持股（權重加總可能低於 100%）→ 用 min_weight_total 明確標示該基金的合理門檻，而不是全面放寬驗證。發行商端點也可能是 JSON（非表格）：Vanguard 的 {TICKER}-AdditionalFundData 由 parse_vanguard 解析，Invesco 的 dng-api 持股 API 由 parse_invesco 解析。2026-11-03 逐檔實測：SSGA 帶 -en- 的 XLSX 可用（30 檔 99.95%）、Vanguard VOO JSON 可用（501 檔 98.71%）、Invesco 官方持股 API 可用（QQQ 101 檔、權重 99.8%、當日 effectiveDate）、stockanalysis.com SOXX 24 檔 95.82% 可用；iShares 直連 CSV 被 Akamai 擋（403）僅保留為備援。",
+    "notes": "expected_min/max 為「該來源實際能取得的檔數範圍」，不是指數成分股總數。同一檔基金的不同來源完整度可能差很多（QQQ 官方 API 約 101 檔、免費備援只有前 25 大），因此來源可各自覆寫 expected_min/max 與 min_weight_total，讓部分資料不會靜默通過、完整來源也不會被誤判失敗。"
   },
   "funds": [
     {
@@ -40,13 +40,26 @@
       "key": "QQQ",
       "index": "那斯達克100",
       "issuer": "Invesco",
-      "expected_min": 20,
-      "expected_max": 30,
-      "min_weight_total": 60,
+      "expected_min": 95,
+      "expected_max": 115,
+      "min_weight_total": 95,
       "sources": [
-        "https://stockanalysis.com/etf/qqq/holdings/"
+        {
+          "url": "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46090E103/holdings/fund?idType=cusip&productType=ETF",
+          "expected_min": 95,
+          "expected_max": 115,
+          "min_weight_total": 95,
+          "note": "Invesco 官方持股 API（CUSIP 46090E103）：實測 106 筆、股票部位 101 檔、權重 99.8%、effectiveDate 為當日；免 key、免瀏覽器"
+        },
+        {
+          "url": "https://stockanalysis.com/etf/qqq/holdings/",
+          "expected_min": 20,
+          "expected_max": 30,
+          "min_weight_total": 60,
+          "note": "免費備援，只提供前 25 大（權重約 71%）→ 門檻與主要來源不同"
+        }
       ],
-      "note": "Invesco 官方持股頁對非瀏覽器一律 406、且持股由 JS 載入（Actions 取得 HTML 卻解析 0 檔）→ 改用 stockanalysis.com（伺服器端渲染）。免費層僅前 25 大，權重加總約 71%，故 min_weight_total=60；指數實際 100 檔，勿把 expected_min 設成 95（會永遠驗證失敗）。",
+      "note": "官方持股頁面（www.invesco.com/us/financial-products/etfs/holdings/...）對非瀏覽器一律 406 且表格由 JS 載入，但網站背後的公開 API dng-api.invesco.com 可直接取得完整持股（免 key、不需瀏覽器）→ 已改為主要來源。stockanalysis.com 降為備援。因為主要來源與備援的完整度差很多，兩者用各自的門檻驗證（逐來源覆寫 expected_min/max 與 min_weight_total）。",
       "freq": "monthly"
     },
     {

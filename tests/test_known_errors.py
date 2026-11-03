@@ -166,9 +166,11 @@ import importlib.util as _ilu
 _spec=_ilu.spec_from_file_location("fih","skills/data/fetch_index_holdings.py"); _fih=_ilu.module_from_spec(_spec); _spec.loader.exec_module(_fih)
 _cfg=json.load(open('data/index-proxy.json',encoding='utf-8'))
 check("指數替代 ETF 設定含 VOO/DIA/QQQ/SOXX", {f['key'] for f in _cfg['funds']}=={'VOO','DIA','QQQ','SOXX'})
+def _su(srcs):  # 來源可能是字串，或 {"url": ..., "expected_min": ...} 物件
+    return [s["url"] if isinstance(s, dict) else s for s in srcs]
 _voo=[f for f in _cfg['funds'] if f['key']=='VOO'][0]
 if os.path.exists('data/raw/official/VOO_holdings.csv'):
-    _man=[x for x in _voo['sources'] if x.startswith('manual_upload:')][0]; _d,_u=_fih.load_source(_man); _h=_fih.parse_bytes(_d,_u)
+    _man=[x for x in _su(_voo['sources']) if x.startswith('manual_upload:')][0]; _d,_u=_fih.load_source(_man); _h=_fih.parse_bytes(_d,_u)
     check("VOO 持股檔解析並通過驗證（真實檔）", len(_h)>=480 and (_fih.validate(_voo,_h) or True))
 check("持股解析：iShares 型表頭", len(_fih.parse_table([["Ticker","Name","Weight (%)"],["NVDA","NVIDIA","8.5"]]))==1)
 _bad_ok=False
@@ -271,7 +273,7 @@ check("CI：資料新鮮度守門（過時整檔重寫不得讓資料倒退）",
 # 指數替代 ETF 來源（2026-11-02：data/index-holdings/ 曾經 0 檔，job 卻顯示 success）
 _pr2 = {f['key']: f for f in _cfg['funds']}
 check("指數替代 ETF：已移除實測 404 的 SSGA 舊網址（無 -en- 的 holdings-daily-us-dia.xlsx）",
-      not any(s.endswith('holdings-daily-us-dia.xlsx') for f in _pr2.values() for s in f['sources']))
+      not any(s.endswith('holdings-daily-us-dia.xlsx') for f in _pr2.values() for s in _su(f['sources'])))
 check("指數替代 ETF：每檔都明確設定 min_weight_total（來源只提供部分持股時，逐檔設定門檻而非放寬全體）",
       all('min_weight_total' in f for f in _pr2.values()))
 _floor_ok = False
@@ -306,6 +308,52 @@ _voo_file = json.load(open('data/index-holdings/VOO.json', encoding='utf-8'))
 check("指數替代 ETF：VOO 產出記錄來源與持股基準日",
       str(_voo_file.get('source', '')).startswith('http') and bool(_voo_file.get('holdings_asof')),
       f"source={str(_voo_file.get('source'))[:52]} asof={_voo_file.get('holdings_asof')}")
+
+# QQQ 官方來源（2026-11-03）：官方持股頁對非瀏覽器 406 且表格由 JS 載入，
+# 但網站背後的公開 API（dng-api.invesco.com）可直接取得完整持股 → 舊版只能靠免費備援的前 25 大（權重 71%）
+_ij = {"effectiveDate": "2026-11-03", "totalNumberOfHoldings": 5, "holdings": [
+    {"ticker": "AAPL", "issuerName": "Apple Inc", "percentageOfTotalNetAssets": 8.132807, "securityTypeName": "Common Stock"},
+    {"ticker": "NVDA", "issuerName": "NVIDIA Corp", "percentageOfTotalNetAssets": 8.021035, "securityTypeName": "Common Stock"},
+    {"ticker": "", "issuerName": "US DOLLAR", "percentageOfTotalNetAssets": 0.5, "securityTypeName": "Currency"},
+    {"ticker": "ESZ6", "issuerName": "S&P500 EMINI FUT", "percentageOfTotalNetAssets": 0.03, "securityTypeName": "Index Future"}]}
+_ib = json.dumps(_ij).encode()
+_ih = _fih.parse_bytes(_ib, "https://dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/46090E103/holdings/fund")
+check("指數替代 ETF：Invesco 官方 API JSON 可解析（只取股票部位、排除現金與期貨）",
+      [x['ticker'] for x in _ih] == ["AAPL", "NVDA"] and _ih[0]['weight_pct'] == 8.1328, f"{_ih}")
+check("指數替代 ETF：Invesco effectiveDate 可解析為 ISO 日期", _fih.source_asof(_ib) == '2026-11-03')
+_qfile = json.load(open('data/index-holdings/QQQ.json', encoding='utf-8'))
+check("指數替代 ETF：QQQ 產出為官方完整持股（≥95 檔、權重 ≥95%、來源為官方 API）",
+      _qfile['count'] >= 95 and _qfile['weight_total_pct'] >= 95 and 'dng-api.invesco.com' in _qfile['source'],
+      f"{_qfile['count']} 檔 {_qfile['weight_total_pct']}% {str(_qfile['source'])[:46]}")
+
+# 逐來源門檻：同一檔基金的官方來源與免費備援完整度差很多，必須各自驗證，
+# 否則不是備援永遠失敗，就是部分資料（前 25 大）靜默通過。
+_srcs = _pr2['QQQ']['sources']
+check("指數替代 ETF：QQQ 來源各自覆寫門檻（官方 ≥95 檔、備援 <95 檔）",
+      any(isinstance(s, dict) and s.get('expected_min', 0) >= 95 for s in _srcs)
+      and any(isinstance(s, dict) and s.get('expected_min', 0) < 95 for s in _srcs),
+      f"{[(s.get('expected_min'), s.get('expected_max')) for s in _srcs if isinstance(s, dict)]}")
+
+# 逐來源門檻的實際行為（用 manual_upload 假來源，不打網路）：
+# 基金門檻 95~115 檔，但來源自己覆寫成 1~5 檔 → 必須通過（2 檔權重 5%）
+_td2 = tempfile.mkdtemp()
+with open(os.path.join(_td2, "small.csv"), "w", encoding="utf-8-sig") as _f:
+    _f.write("Ticker,Name,Weight (%)\nAAA,Alpha,3\nBBB,Beta,2\n")
+_cfg2 = os.path.join(_td2, "cfg.json")
+json.dump({"funds": [{"key": "ZZZ", "index": "x", "issuer": "y", "expected_min": 95, "expected_max": 115,
+                      "min_weight_total": 95, "sources": [{"url": "manual_upload:small.csv", "expected_min": 1,
+                                                            "expected_max": 5, "min_weight_total": 4}]}]},
+          open(_cfg2, "w", encoding="utf-8"), ensure_ascii=False)
+_oldg = (_fih.CFG, _fih.OUT_DIR, _fih.ROOT)
+try:
+    setattr(_fih, "CFG", _cfg2)
+    setattr(_fih, "OUT_DIR", os.path.join(_td2, "out"))
+    setattr(_fih, "ROOT", _td2)
+    _rc2 = _fih.main()
+finally:
+    for _k, _v in zip(("CFG", "OUT_DIR", "ROOT"), _oldg):
+        setattr(_fih, _k, _v)
+check("指數替代 ETF：逐來源門檻生效（基金門檻 95~115，來源覆寫 1~5 時可通過）", _rc2 == 0, f"rc={_rc2}")
 
 # 完全沒有產出時必須回傳非 0（否則 job 綠色但目錄 0 檔，只能靠人翻日誌）
 _tmpd = tempfile.mkdtemp()

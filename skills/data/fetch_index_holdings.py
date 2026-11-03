@@ -7,6 +7,7 @@
 exit code：只要有任一基金「所有來源皆失敗且沒有既有版本」→ 回傳 1（job 變紅），
 避免像 2026-11-02 之前那樣產出 0 檔卻仍顯示 success。
 驗證門檻由 data/index-proxy.json 逐檔設定：expected_min/max（檔數）與 min_weight_total（權重加總下限，預設 90）。
+每個來源也可以寫成物件（{"url": ..., "expected_min": ...}）覆寫門檻，讓「官方完整來源」與「免費部分來源」各自用正確的標準驗證。
 """
 import csv, datetime as dt, io, json, os, re, sys, urllib.request
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -82,23 +83,51 @@ def parse_vanguard(doc):
                     "weight_pct": wt})
     return out
 
+def parse_invesco(doc):
+    """Invesco 官方持股 API（dng-api.invesco.com/cache/v1/accounts/en_US/shareclasses/{CUSIP}/holdings/fund）。
+
+    回傳 JSON：{effectiveDate, totalNumberOfHoldings, holdings:[{ticker, issuerName,
+    percentageOfTotalNetAssets, securityTypeName, ...}]}。實測 QQQ（CUSIP 46090E103）106 筆、
+    其中股票部位 101 檔、權重約 99.8%，且每日更新（不需瀏覽器、免 key）。
+    只取股票部位：Currency／Currency Collateral／Synthetic Cash／Index Future 是現金與衍生性部位。
+    """
+    out = []
+    for h in (doc or {}).get("holdings") or []:
+        tk = str(h.get("ticker") or "").strip().upper()
+        wt = _num(h.get("percentageOfTotalNetAssets"))
+        st = str(h.get("securityTypeName") or "")
+        if not tk or wt is None or not re.match(r"^[A-Z][A-Z0-9.\-]{0,6}$", tk):
+            continue
+        if st and not ("Common Stock" in st or "Depository Receipt" in st or st == "Equity"):
+            continue  # 排除現金、期貨、交換等非股票部位
+        out.append({"ticker": tk, "name": str(h.get("issuerName") or "").strip(), "weight_pct": round(wt, 4)})
+    return out
+
 def source_asof(data):
-    """來源自帶的持股基準日（Vanguard holdingDetails.asOfDate，如 09/30/2026）→ ISO 日期。"""
+    """來源自帶的持股基準日：Vanguard holdingDetails.asOfDate（MM/DD/YYYY）或
+    Invesco effectiveDate（已是 ISO）→ ISO 日期。"""
     if data.lstrip()[:1] != b"{":
         return None
     try:
-        s = str(((json.loads(data.decode("utf-8-sig", errors="replace")).get("holdingDetails") or {})
-                 .get("asOfDate")) or "").strip()
-        return dt.datetime.strptime(s, "%m/%d/%Y").date().isoformat()
+        doc = json.loads(data.decode("utf-8-sig", errors="replace"))
+    except Exception:
+        return None
+    try:
+        s = str((doc.get("holdingDetails") or {}).get("asOfDate") or "").strip()
+        if s:
+            return dt.datetime.strptime(s, "%m/%d/%Y").date().isoformat()
+        e = str(doc.get("effectiveDate") or "").strip()
+        return dt.date.fromisoformat(e).isoformat() if e else None
     except Exception:
         return None
 
 def parse_bytes(data, src):
-    if data.lstrip()[:1] == b"{":  # JSON（如 Vanguard 的 {TICKER}-AdditionalFundData）
+    if data.lstrip()[:1] == b"{":  # JSON（Vanguard 的 {TICKER}-AdditionalFundData、Invesco 持股 API）
         doc = json.loads(data.decode("utf-8-sig", errors="replace"))
-        res = parse_vanguard(doc)
-        if res:
-            return res
+        for parser in (parse_vanguard, parse_invesco):
+            res = parser(doc)
+            if res:
+                return res
         return []
     if data.lstrip()[:1] == b"<":  # HTML：逐一檢查每個表格
         import pandas as pd
@@ -145,11 +174,16 @@ def main():
                 ok += 1
                 continue
         done = False
-        for src in fund["sources"]:
+        for spec in fund["sources"]:
+            # 來源可以是字串，也可以是物件（{"url": ..., "expected_min": ...}）以替單一來源覆寫門檻。
+            # 例：QQQ 官方 API 提供約 101 檔，免費備援只提供前 25 大 → 兩者門檻必須不同，
+            # 否則不是備援永遠失敗，就是部分資料靜默通過驗證。
+            src = spec["url"] if isinstance(spec, dict) else spec
+            eff = {**fund, **{k: v for k, v in spec.items() if k != "url"}} if isinstance(spec, dict) else fund
             try:
                 data, used = load_source(src)
                 holdings = parse_bytes(data, used)
-                validate(fund, holdings)
+                validate(eff, holdings)
                 doc = {"fund": key, "index": fund["index"], "issuer": fund["issuer"],
                        "count": len(holdings), "source": used,
                        "fetched_at": dt.datetime.now(TZ).isoformat(),
