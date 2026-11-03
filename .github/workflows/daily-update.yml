@@ -60,18 +60,7 @@ jobs:
       - name: Recompute industry aggregates (產業每日重算，不使用舊統計)
         run: python skills/data/compute_industry.py
       - name: Commit & push
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/
-          if git diff --cached --quiet; then
-            echo "no changes"
-          else
-            git commit -m "data: 每日更新 $(date +%Y-%m-%d) [skip ci]"
-            # Use merge instead of rebase to avoid conflicts on log files
-            git pull --no-rebase origin main -X ours
-            git push
-          fi
+        run: 'bash scripts/ci_commit_push.sh "data: 每日更新 $(date +%Y-%m-%d) [skip ci]" data/'
 
   weekly-roe:
     concurrency:
@@ -90,17 +79,7 @@ jobs:
       - name: Fetch ROE/ROA (yfinance, 免 key, sleep 3s 防 ban)
         run: python skills/data/fetch_data.py weekly
       - name: Commit & push
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/
-          if git diff --cached --quiet; then
-            echo "no changes"
-          else
-            git commit -m "data: 每週 ROE/ROA 更新 $(date +%Y-%m-%d) [skip ci]"
-            git pull --no-rebase origin main -X ours
-            git push
-          fi
+        run: 'bash scripts/ci_commit_push.sh "data: 每週 ROE/ROA 更新 $(date +%Y-%m-%d) [skip ci]" data/'
 
   indices:
     concurrency:
@@ -119,17 +98,7 @@ jobs:
       - name: Fetch global indices + ETFs (yfinance, 免 key)
         run: python skills/data/fetch_data.py indices
       - name: Commit & push
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/
-          if git diff --cached --quiet; then
-            echo "no changes"
-          else
-            git commit -m "data: 全球指數/ETF 更新 $(date +%Y-%m-%d) [skip ci]"
-            git pull --no-rebase origin main -X ours
-            git push
-          fi
+        run: 'bash scripts/ci_commit_push.sh "data: 全球指數/ETF 更新 $(date +%Y-%m-%d) [skip ci]" data/'
 
   twii-kline:
     concurrency:
@@ -148,19 +117,7 @@ jobs:
       - name: Fetch TWII 加權指數 K 線 (yfinance ^TWII, 260 日窗口)
         run: python skills/data/fetch_data.py twii
       - name: Commit & push
-        run: |
-          set -x
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/
-          if git diff --cached --quiet; then
-            echo "no changes"
-          else
-            git commit -m "data: TWII 加權指數 K 線更新 $(date +%Y-%m-%d) [skip ci]"
-            # Use merge instead of rebase to avoid conflicts on log files
-            git pull --no-rebase origin main -X ours
-            git push
-          fi
+        run: 'bash scripts/ci_commit_push.sh "data: TWII 加權指數 K 線更新 $(date +%Y-%m-%d) [skip ci]" data/'
   digest:
     concurrency:
       group: mklab-git-push
@@ -176,17 +133,7 @@ jobs:
       - name: Build digest (static, no key)
         run: python skills/data/build_digest.py
       - name: Commit & push
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/ rss.xml
-          if git diff --cached --quiet; then
-            echo "no changes"
-          else
-            git commit -m "data: 每日摘要更新 $(date +%Y-%m-%d) [skip ci]"
-            git pull --no-rebase origin main -X ours
-            git push
-          fi
+        run: 'bash scripts/ci_commit_push.sh "data: 每日摘要更新 $(date +%Y-%m-%d) [skip ci]" data/ rss.xml'
 
   us-market:
     concurrency:
@@ -205,17 +152,7 @@ jobs:
       - name: Fetch US top-30 stocks & ETFs (yfinance, 免 key, 與台股資料完全獨立管理)
         run: python skills/data/fetch_us_data.py all
       - name: Commit & push
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/us/
-          if git diff --cached --quiet; then
-            echo "no changes"
-          else
-            git commit -m "data: 美股市值/ETF規模前30大更新 $(date +%Y-%m-%d) [skip ci]"
-            git pull --no-rebase origin main -X ours
-            git push
-          fi
+        run: 'bash scripts/ci_commit_push.sh "data: 美股市值/ETF規模前30大更新 $(date +%Y-%m-%d) [skip ci]" data/us/'
 
   global-history:
     concurrency:
@@ -234,15 +171,7 @@ jobs:
       - name: Fetch US / global / sentiment daily closes (月檔，yfinance 備援)
         run: python skills/data/fetch_global_history.py
       - name: Commit & push
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/us-history-* data/global-history-*
-          if git diff --cached --quiet; then echo "no changes"; else
-            git commit -m "data: 美股/全球月檔更新 $(date +%Y-%m-%d) [skip ci]"
-            git pull --no-rebase origin main -X ours
-            git push
-          fi
+        run: 'bash scripts/ci_commit_push.sh "data: 美股/全球月檔更新 $(date +%Y-%m-%d) [skip ci]" data/us-history-* data/global-history-*'
 
   index-holdings:
     concurrency:
@@ -261,12 +190,4 @@ jobs:
       - name: Fetch index-proxy ETF holdings (DIA/QQQ/SOXX 自動，VOO 手動備援)
         run: python skills/data/fetch_index_holdings.py
       - name: Commit & push
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/index-holdings/
-          if git diff --cached --quiet; then echo "no changes"; else
-            git commit -m "data: 指數替代 ETF 持股更新 $(date +%Y-%m-%d) [skip ci]"
-            git pull --no-rebase origin main -X ours
-            git push
-          fi
+        run: 'bash scripts/ci_commit_push.sh "data: 指數替代 ETF 持股更新 $(date +%Y-%m-%d) [skip ci]" data/index-holdings/'

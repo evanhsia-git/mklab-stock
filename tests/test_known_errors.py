@@ -1,5 +1,5 @@
 """已知錯誤防錯測試：直接驗證實際資料與程式碼（不是只檢查程式可執行）。執行：python3 tests/test_known_errors.py"""
-import glob, json, os, re, subprocess, sys, collections
+import glob, json, os, re, subprocess, sys, collections, tempfile
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 results = []
@@ -194,6 +194,55 @@ check("說明頁含 ETF 資料網址表", 'ETF 資料來源網址' in open('mkla
 _reg = set(re.findall(r'^\s+- cron:\s*"([^"]+)"', wf2, re.M))
 _ref = set(re.findall(r"github\.event\.schedule\s*==\s*'([^']+)'", wf2))
 check("排程：job 引用的 cron 都已註冊在 on.schedule", _ref <= _reg and bool(_ref), f"未註冊 {sorted(_ref - _reg)}")
+
+# CI 併發與推送（2026-11-02）
+# 曾發生：為了序列化 push 而給 8 個 job 加上同一個 job 級 concurrency group，但 queue 預設 single
+# （同 group 只能 1 執行中 + 1 pending），workflow_dispatch 一次觸發 8 個 job 時 6 個 sibling
+# 在 2 秒內被 "Canceling since a higher priority waiting request for mklab-git-push exists" 取消。
+_group_ct = len(re.findall(r'^\s+group:\s*mklab-git-push\s*$', wf2, re.M))
+_queue_ct = len(re.findall(r'^\s+queue:\s*max\s*$', wf2, re.M))
+check("CI：job 級 concurrency 每個 group 都必須有 queue: max（否則 sibling job 互相取消）",
+      _group_ct == 8 and _queue_ct == 8, f"group={_group_ct} queue:max={_queue_ct}")
+
+# 推送邏輯單一實作：8 個 job 共用 scripts/ci_commit_push.sh，且不得再用會被舊 checkout 覆蓋新資料的 -X ours
+_ci_push_raw = open('scripts/ci_commit_push.sh', encoding='utf-8').read()
+_ci_push = re.sub(r'^\s*#.*$', '', _ci_push_raw, flags=re.M)  # 註解裡會提到 -X ours 這個「錯誤示範」，比對要排除註解
+check("CI：8 個 commit 步驟都走共用腳本 scripts/ci_commit_push.sh（不再各 job 各寫一套）",
+      wf2.count('bash scripts/ci_commit_push.sh') == 8 and 'git config user.name' not in wf2)
+check("CI：推送合併衝突取遠端（-X theirs），不得用 -X ours（舊 checkout 會把遠端較新資料覆蓋回舊的）",
+      '-X ours' not in wf2 and '-X ours' not in _ci_push and '-X theirs' in _ci_push)
+check("CI：推送有重試（被其他 job 插隊時不會直接失敗）", 'until [' in _ci_push and 'git push origin HEAD:main' in _ci_push)
+
+# 指數替代 ETF 來源（2026-11-02：data/index-holdings/ 曾經 0 檔，job 卻顯示 success）
+_pr2 = {f['key']: f for f in _cfg['funds']}
+check("指數替代 ETF：已移除實測 404 的 SSGA 舊網址（無 -en- 的 holdings-daily-us-dia.xlsx）",
+      not any(s.endswith('holdings-daily-us-dia.xlsx') for f in _pr2.values() for s in f['sources']))
+check("指數替代 ETF：每檔都明確設定 min_weight_total（來源只提供部分持股時，逐檔設定門檻而非放寬全體）",
+      all('min_weight_total' in f for f in _pr2.values()))
+_floor_ok = False
+try:
+    _fih.validate({'key': 'X', 'expected_min': 1, 'expected_max': 10, 'min_weight_total': 90,
+                   'issuer': '', 'index': ''}, [{'ticker': 'AAA', 'name': '', 'weight_pct': 50.0}])
+except ValueError:
+    _floor_ok = True
+check("指數替代 ETF：低於該基金 min_weight_total 會被擋下", _floor_ok)
+
+# 完全沒有產出時必須回傳非 0（否則 job 綠色但目錄 0 檔，只能靠人翻日誌）
+_tmpd = tempfile.mkdtemp()
+_bad_cfg = os.path.join(_tmpd, 'cfg.json')
+json.dump({"funds": [{"key": "ZZZ", "index": "x", "issuer": "y", "expected_min": 1, "expected_max": 2,
+                      "sources": ["manual_upload:data/raw/official/__不存在的檔案__.csv"]}]},
+          open(_bad_cfg, 'w', encoding='utf-8'), ensure_ascii=False)
+_old_cfg, _old_out = _fih.CFG, _fih.OUT_DIR
+try:
+    setattr(_fih, 'CFG', _bad_cfg)
+    setattr(_fih, 'OUT_DIR', os.path.join(_tmpd, 'out'))
+    _rc = _fih.main()
+finally:
+    setattr(_fih, 'CFG', _old_cfg)
+    setattr(_fih, 'OUT_DIR', _old_out)
+check("指數替代 ETF：完全沒有產出時回傳非 0（不再假裝 success）", _rc == 1, f"rc={_rc}")
+
 
 # 輸出
 w = max(len(n) for n, _, _ in results)

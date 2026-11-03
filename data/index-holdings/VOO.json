@@ -3,8 +3,8 @@
  "index": "S&P 500",
  "issuer": "Vanguard",
  "count": 493,
- "source": "/home/runner/work/mklab-stock/mklab-stock/data/raw/official/VOO_holdings.csv",
- "fetched_at": "2026-11-03T00:40:22.444366+08:00",
+ "source": "/root/mklab-stock/data/raw/official/VOO_holdings.csv",
+ "fetched_at": "2026-11-03T00:05:21.499870+08:00",
  "weight_total_pct": 98.63,
  "holdings": [
   {

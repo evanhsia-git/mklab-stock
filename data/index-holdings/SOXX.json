@@ -1,0 +1,131 @@
+{
+ "fund": "SOXX",
+ "index": "費城半導體（近似）",
+ "issuer": "iShares (BlackRock)",
+ "count": 24,
+ "source": "https://stockanalysis.com/etf/soxx/holdings/",
+ "fetched_at": "2026-11-03T00:05:22.378221+08:00",
+ "weight_total_pct": 95.82,
+ "holdings": [
+  {
+   "ticker": "AMD",
+   "name": "Advanced Micro Devices, Inc.",
+   "weight_pct": 9.24
+  },
+  {
+   "ticker": "NVDA",
+   "name": "NVIDIA Corporation",
+   "weight_pct": 7.98
+  },
+  {
+   "ticker": "MU",
+   "name": "Micron Technology, Inc.",
+   "weight_pct": 7.95
+  },
+  {
+   "ticker": "AVGO",
+   "name": "Broadcom Inc.",
+   "weight_pct": 7.58
+  },
+  {
+   "ticker": "INTC",
+   "name": "Intel Corporation",
+   "weight_pct": 6.33
+  },
+  {
+   "ticker": "TXN",
+   "name": "Texas Instruments Incorporated",
+   "weight_pct": 4.96
+  },
+  {
+   "ticker": "ADI",
+   "name": "Analog Devices, Inc.",
+   "weight_pct": 4.96
+  },
+  {
+   "ticker": "QCOM",
+   "name": "QUALCOMM Incorporated",
+   "weight_pct": 4.16
+  },
+  {
+   "ticker": "MRVL",
+   "name": "Marvell Technology, Inc.",
+   "weight_pct": 4.0
+  },
+  {
+   "ticker": "KLAC",
+   "name": "KLA Corporation",
+   "weight_pct": 3.88
+  },
+  {
+   "ticker": "NXPI",
+   "name": "NXP Semiconductors N.V.",
+   "weight_pct": 3.8
+  },
+  {
+   "ticker": "AMAT",
+   "name": "Applied Materials, Inc.",
+   "weight_pct": 3.66
+  },
+  {
+   "ticker": "MPWR",
+   "name": "Monolithic Power Systems, Inc.",
+   "weight_pct": 3.42
+  },
+  {
+   "ticker": "LRCX",
+   "name": "Lam Research Corporation",
+   "weight_pct": 3.42
+  },
+  {
+   "ticker": "TSM",
+   "name": "Taiwan Semiconductor Manufacturing Company Limited",
+   "weight_pct": 3.22
+  },
+  {
+   "ticker": "SKHY",
+   "name": "SK hynix Inc.",
+   "weight_pct": 2.99
+  },
+  {
+   "ticker": "TER",
+   "name": "Teradyne, Inc.",
+   "weight_pct": 2.54
+  },
+  {
+   "ticker": "MCHP",
+   "name": "Microchip Technology Incorporated",
+   "weight_pct": 2.46
+  },
+  {
+   "ticker": "ALAB",
+   "name": "Astera Labs, Inc.",
+   "weight_pct": 2.19
+  },
+  {
+   "ticker": "ON",
+   "name": "ON Semiconductor Corporation",
+   "weight_pct": 1.65
+  },
+  {
+   "ticker": "ASML",
+   "name": "ASML Holding N.V.",
+   "weight_pct": 1.52
+  },
+  {
+   "ticker": "CRDO",
+   "name": "Credo Technology Group Holding Ltd",
+   "weight_pct": 1.52
+  },
+  {
+   "ticker": "ENTG",
+   "name": "Entegris, Inc.",
+   "weight_pct": 1.4
+  },
+  {
+   "ticker": "MTSI",
+   "name": "MACOM Technology Solutions Holdings, Inc.",
+   "weight_pct": 0.99
+  }
+ ]
+}

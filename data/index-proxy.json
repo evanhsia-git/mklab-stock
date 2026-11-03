@@ -1,7 +1,8 @@
 {
   "meta": {
     "description": "四大指數的替代 ETF（發行人公開持股，較易取得）。權重為 ETF 持股權重，與指數權重略有差異。",
-    "updated": "2026-11-02"
+    "updated": "2026-11-02",
+    "source_notes": "發行商端點常加 bot 牆（Invesco 406、iShares/BlackRock 403）或改用 JavaScript 載入表格，因此每個基金設定多個來源依序嘗試；stockanalysis.com 是伺服器端渲染、免 key 的穩定備援，但免費層只提供前 25 大持股（權重加總可能低於 100%）→ 用 min_weight_total 明確標示該基金的合理門檻，而不是全面放寬驗證。"
   },
   "funds": [
     {
@@ -10,48 +11,54 @@
       "issuer": "Vanguard",
       "expected_min": 480,
       "expected_max": 540,
+      "min_weight_total": 90,
       "sources": [
-        "https://investor.vanguard.com/irr/funds/profile/VOO-AdditionalFundData",
-        "manual_upload:data/raw/official/VOO_holdings.csv"
+        "manual_upload:data/raw/official/VOO_holdings.csv",
+        "https://investor.vanguard.com/irr/funds/profile/VOO-AdditionalFundData"
       ],
-      "note": "Vanguard 持股每月公布；每月更新一次即可（不需每日抓取）",
+      "note": "Vanguard 持股每月公布；每月更新一次即可。手動檔優先（Vanguard 端點回傳 JSON 非表格，解析不到時會自動退回手動檔）。",
       "freq": "monthly"
     },
     {
       "key": "DIA",
       "index": "道瓊工業指數",
       "issuer": "State Street (SSGA)",
-      "expected_min": 28,
+      "expected_min": 20,
       "expected_max": 32,
+      "min_weight_total": 90,
       "sources": [
-        "https://www.ssga.com/us/en/intermediary/etfs/library-content/products/fund-data/etfs/us/holdings-daily-us-dia.xlsx",
-        "https://www.ssga.com/us/en/intermediary/etfs/library-content/products/fund-data/etfs/us/holdings-daily-us-en-dia.xlsx"
+        "https://www.ssga.com/us/en/intermediary/etfs/library-content/products/fund-data/etfs/us/holdings-daily-us-en-dia.xlsx",
+        "https://www.ssga.com/library-content/products/fund-data/etfs/us/holdings-daily-us-en-dia.xlsx",
+        "https://stockanalysis.com/etf/dia/holdings/"
       ],
-      "note": "SSGA 每日公布，格式為 XLSX",
+      "note": "SSGA 每日公布 XLSX，完整 30 檔。檔名必須有 -en-（無 -en- 的舊網址實測為 404，2026-11-02）。",
       "freq": "daily"
     },
     {
       "key": "QQQ",
       "index": "那斯達克100",
       "issuer": "Invesco",
-      "expected_min": 95,
-      "expected_max": 115,
+      "expected_min": 20,
+      "expected_max": 30,
+      "min_weight_total": 60,
       "sources": [
-        "https://www.invesco.com/us/financial-products/etfs/holdings/main/holdings/0?audienceType=Investor&ticker=QQQ"
+        "https://stockanalysis.com/etf/qqq/holdings/"
       ],
-      "note": "Invesco 每日公布；網址格式需由 Actions 日誌確認",
+      "note": "Invesco 官方持股頁對非瀏覽器一律 406、且持股由 JS 載入（Actions 取得 HTML 卻解析 0 檔）→ 改用 stockanalysis.com。免費層僅前 25 大，權重加總約 71%，故 min_weight_total=60。",
       "freq": "daily"
     },
     {
       "key": "SOXX",
       "index": "費城半導體（近似）",
       "issuer": "iShares (BlackRock)",
-      "expected_min": 28,
+      "expected_min": 20,
       "expected_max": 36,
+      "min_weight_total": 90,
       "sources": [
+        "https://stockanalysis.com/etf/soxx/holdings/",
         "https://www.ishares.com/us/products/239705/ishares-phlx-semiconductor-etf/1467271812596.ajax?fileType=csv&fileName=SOXX_holdings&dataType=fund"
       ],
-      "note": "iShares 每日公布 CSV；SOXX 追蹤 ICE/PHLX 半導體類指數，與 SOX 非完全相同",
+      "note": "iShares 直連 CSV 被 Akamai 擋（403）→ 主要來源改 stockanalysis.com（前 24 大，權重加總 95.8%）。SOXX 追蹤 ICE/PHLX 半導體類指數，與 SOX 非完全相同。",
       "freq": "daily"
     }
   ]

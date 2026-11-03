@@ -4,6 +4,9 @@
 流程：依 data/index-proxy.json 逐一嘗試來源 → 解析 → 驗證（檔數範圍、權重加總 90~101%、代號格式）
 → 通過才寫入 data/index-holdings/{基金}.json；任何一步失敗都保留上一版，並在日誌中說明原因。
 不寫入假資料。手動檔（manual_upload:）存在時才會使用。
+exit code：只要有任一基金「所有來源皆失敗且沒有既有版本」→ 回傳 1（job 變紅），
+避免像 2026-11-02 之前那樣產出 0 檔卻仍顯示 success。
+驗證門檻由 data/index-proxy.json 逐檔設定：expected_min/max（檔數）與 min_weight_total（權重加總下限，預設 90）。
 """
 import csv, datetime as dt, io, json, os, re, sys, urllib.request
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -51,10 +54,12 @@ def fetch_bytes(url):
 
 def load_source(src):
     if src.startswith("manual_upload:"):
-        p = os.path.join(ROOT, src.split(":", 1)[1])
+        rel = src.split(":", 1)[1]
+        p = os.path.join(ROOT, rel)
         if not os.path.exists(p):
-            raise FileNotFoundError(f"手動檔不存在：{src.split(':',1)[1]}")
-        return open(p, "rb").read(), p
+            raise FileNotFoundError(f"手動檔不存在：{rel}")
+        # 來源字串寫回 repo 相對路徑，不要把機器的絕對路徑（/home/runner/... 或本機路徑）寫進資料檔
+        return open(p, "rb").read(), f"manual_upload:{rel}"
     data = fetch_bytes(src)
     return data, src
 
@@ -80,8 +85,12 @@ def validate(fund, holdings):
     if not (fund["expected_min"] <= n <= fund["expected_max"]):
         raise ValueError(f"檔數 {n} 不在預期範圍 {fund['expected_min']}~{fund['expected_max']}")
     total = sum(h["weight_pct"] for h in holdings)
-    if not (90 <= total <= 101):
-        raise ValueError(f"權重加總 {total:.2f}% 異常（應約 100%）")
+    floor = fund.get("min_weight_total", 90)
+    if not (floor <= total <= 101):
+        raise ValueError(
+            f"權重加總 {total:.2f}% 異常（該基金門檻 {floor}~101%）；"
+            "若來源本身只提供部分持股，請在 index-proxy.json 明確設定 min_weight_total，不要放寬全體門檻"
+        )
     if len({h['ticker'] for h in holdings}) != n:
         raise ValueError("代號重複")
 
@@ -89,6 +98,7 @@ def main():
     cfg = json.load(open(CFG, encoding="utf-8"))
     os.makedirs(OUT_DIR, exist_ok=True)
     ok = 0
+    missing = []  # 連既有版本都沒有 → 真的沒有任何產出，最後讓 exit code 非 0
     for fund in cfg["funds"]:
         key = fund["key"]
         out_path = os.path.join(OUT_DIR, f"{key}.json")
@@ -116,8 +126,17 @@ def main():
             except Exception as e:
                 log(f"⚠️ {key} 來源失敗（{src[:90]}）：{type(e).__name__}: {e}")
         if not done:
-            log(f"❌ {key}：所有來源皆失敗，保留上一版（{'有' if os.path.exists(out_path) else '無'}既有資料）")
+            if os.path.exists(out_path):
+                log(f"❌ {key}：所有來源皆失敗，保留上一版（有既有資料）")
+            else:
+                missing.append(key)
+                log(f"❌ {key}：所有來源皆失敗且無既有資料 → 這個基金完全沒有產出")
     log(f"完成：{ok}/{len(cfg['funds'])} 檔成功")
+    if missing:
+        # 過去這裡無條件 return 0，導致「三個來源全掛、目錄 0 檔」的 job 依然顯示 ✅ success，
+        # 只能靠人去翻日誌才發現。真的沒有任何產出時必須讓 job 變紅。
+        log(f"❌ 完全沒有資料的基金：{', '.join(missing)}")
+        return 1
     return 0
 
 if __name__ == "__main__":
