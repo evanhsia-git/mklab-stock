@@ -256,8 +256,22 @@ check("指數替代 ETF：完全沒有產出時回傳非 0（不再假裝 succes
 # 所以必須與既有快照 upsert 合併，否則一份 53 家的批次會蓋掉 1,052 家的完整快照。
 _fof = _ilu.module_from_spec(_s2 := _ilu.spec_from_file_location("_fof", "skills/data/fetch_official_fundamentals.py"))
 _s2.loader.exec_module(_fof)
-_bad_ep = [u for _, u, *_ in _fof.SOURCES if "openapi.twse.com.tw" in u and ("t187ap06_L" in u or "t187ap07_L" in u)]
-check("官方財報：t187ap06/07 不得使用已失效的 openapi 端點", not _bad_ep, f"{_bad_ep}")
+_flat = [(pre, u) for pre, urls, *_ in _fof.SOURCES for u in (urls if isinstance(urls, list) else [urls])]
+# 無後綴的 t187ap06_L / t187ap07_L 已失效（實測回傳 1KB HTML 非 JSON）；可用的是產業後綴版
+_bad_ep = [u for _, u in _flat if u.rstrip("/").endswith(("t187ap06_L", "t187ap07_L"))]
+check("官方財報：不得使用已失效的無後綴 openapi 財報端點（回傳 HTML）", not _bad_ep, f"{_bad_ep}")
+check("官方財報：損益/資產負債涵蓋全部產業檔，只抓 ci 會讓金融保險類永遠沒有官方財報",
+      all(sum(1 for p, _ in _flat if p == pre) == len(_fof.INDUSTRIES) for pre in ("t187ap06_L", "t187ap07_L")),
+      f"06={sum(1 for p,_ in _flat if p=='t187ap06_L')} 07={sum(1 for p,_ in _flat if p=='t187ap07_L')} 產業={_fof.INDUSTRIES}")
+# 沒開始申報的產業檔會回傳「只有出表日期、公司代號空白」的空殼列：必須濾掉，且不得併入它的欄位
+_orig_dl = _fof.download
+_fof.download = lambda u: json.dumps([{"出表日期": "1151103", "公司代號": "", "營業收入": ""}]).encode()
+try:
+    _sk, _sr, _sp = _fof.fetch_all(["u-ci", "u-fh"], "json", "公司代號")
+finally:
+    _fof.download = _orig_dl
+check("官方財報：空殼產業檔不會污染資料列與欄位", _sr == [] and _sk == [] and _sp == [{"url": "u-ci", "rows": 0}, {"url": "u-fh", "rows": 0}] and
+      _sk == [], f"{_sp}")
 check("官方財報：增量來源（06/07）必須標記為 upsert 合併",
       all(inc for pre, _, _, _, _, _, _, inc in _fof.SOURCES if pre in ("t187ap06_L", "t187ap07_L")))
 _snap = _fof.existing_snapshot("t187ap06_L", "csv")  # 不寫死檔名：跑過下載後舊檔會被 _latest 取代
