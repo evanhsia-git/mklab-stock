@@ -93,11 +93,19 @@
       "min_weight_total": 90,
       "sources": [
         {
+          "url": "manual_upload:data/raw/official/SOXX_holdings.csv",
+          "max_age_days": 45,
+          "expected_min": 25,
+          "expected_max": 35,
+          "min_weight_total": 90,
+          "note": "官方 iShares CSV 的人工上傳檔（可選）：iShares／BlackRock 整個網域對資料中心 IP 一律 403（Akamai 依來源 IP 判斷，連真實瀏覽器都回 Access Denied），CI 永遠拿不到 → 只能人工下載後放入。max_age_days=45：超過 45 天未更新就自動跳過，讓下面的自動來源接手，避免舊檔把自動來源擋住；檔案不存在時也只是跳過，不影響流程。"
+        },
+        {
           "url": "https://tickerinside.com/api/v1/fund/soxx.json",
           "expected_min": 28,
           "expected_max": 32,
           "min_weight_total": 90,
-          "note": "主要來源：實測完整 30 檔、source_layer=issuer、holdings_asof 2026-10-30（發行人當期資料，優於 stockanalysis 的前 24 大）"
+          "note": "主要自動來源：實測完整 30 檔、source_layer=issuer、holdings_asof 2026-11-02（發行人當期資料，優於 stockanalysis 的前 24 大）"
         },
         {
           "url": "https://stockanalysis.com/etf/soxx/holdings/",
@@ -114,7 +122,7 @@
           "note": "iShares 官方最新持股 CSV（保留為參考）；2026-11-03 實測伺服器端一律 403（Akamai），瀏覽器也拿不到 → 目前不可用"
         }
       ],
-      "note": "iShares 官方 CSV 對伺服器全面封鎖（產品頁與 latest-holdings.csv 皆 403，連瀏覽器都是空殼）→ 改用 TickerInside（完整 30 檔、發行人層、有資料日期）。SOXX 追蹤 ICE/PHLX 半導體類指數，與 SOX 非完全相同。",
+      "note": "iShares／BlackRock 官方來源（latest-holdings.csv、舊式 .ajax CSV、產品頁、BlackRock 鏡像）全部實測 403，連真實瀏覽器都回 Access Denied —— 阻擋依據是來源 IP 屬資料中心，不是標頭或 UA，所以 CI 無法繞過。因此主要自動來源為 TickerInside（完整 30 檔、source_layer=issuer、附資料日期）。若要用官方檔案：人工下載後放到 data/raw/official/SOXX_holdings.csv，它會優先被使用（45 天內有效，過期自動讓位）。SOXX 追蹤 ICE/PHLX 半導體類指數，與 SOX 非完全相同。",
       "freq": "monthly"
     }
   ]

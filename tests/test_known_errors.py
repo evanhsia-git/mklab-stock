@@ -347,6 +347,32 @@ check("指數替代 ETF：SOXX 產出為完整 30 檔（官方 CSV 被封鎖下�
       _soxx_file['count'] >= 28 and _soxx_file['weight_total_pct'] >= 90 and 'tickerinside' in _soxx_file['source'],
       f"{_soxx_file['count']} 檔 {_soxx_file['weight_total_pct']}% {str(_soxx_file['source'])[:44]}")
 
+# 人工上傳檔的新鮮度守門（iShares 官方檔案對資料中心 IP 一律 403 → 只能人工放入；
+# 但舊的人工檔不能永遠排在前面把自動來源擋掉）
+_td3 = tempfile.mkdtemp()
+_mf = os.path.join(_td3, "SOXX_holdings.csv")
+with open(_mf, "w", encoding="utf-8-sig") as _f:
+    _f.write("Ticker,Name,Weight (%)\nAMD,Advanced Micro Devices,9.2\nNVDA,NVIDIA,8.0\n")
+_old_root = _fih.ROOT
+try:
+    setattr(_fih, "ROOT", _td3)
+    _fresh = _fih.manual_source_stale("manual_upload:SOXX_holdings.csv", {"max_age_days": 45})
+    _t = os.path.getmtime(_mf) - 100 * 86400
+    os.utime(_mf, (_t, _t))
+    _aged = _fih.manual_source_stale("manual_upload:SOXX_holdings.csv", {"max_age_days": 45})
+    _missing = _fih.manual_source_stale("manual_upload:__不存在__.csv", {"max_age_days": 45})
+    _plain = _fih.manual_source_stale("https://example.com/x.csv", {"max_age_days": 45})
+finally:
+    setattr(_fih, "ROOT", _old_root)
+check("指數替代 ETF：新鮮的手動檔可用、超過 max_age_days 會被跳過（不擋住自動來源）",
+      _fresh is None and _aged and '跳過' in _aged and '100' in _aged, f"fresh={_fresh} aged={_aged}")
+check("指數替代 ETF：可選手動檔不存在只是跳過（不是錯誤），非手動來源不受影響",
+      '不存在' in (_missing or '') and _plain is None, f"missing={_missing} plain={_plain}")
+check("指數替代 ETF：SOXX 設定了官方 CSV 的人工上傳通道（max_age_days=45）",
+      any(isinstance(s, dict) and s.get('url', '').startswith('manual_upload:') and s.get('max_age_days')
+          for s in _pr2['SOXX']['sources']),
+      f"{[s.get('url') for s in _pr2['SOXX']['sources'] if isinstance(s, dict)][:2]}")
+
 # 逐來源門檻：同一檔基金的官方來源與免費備援完整度差很多，必須各自驗證，
 # 否則不是備援永遠失敗，就是部分資料（前 25 大）靜默通過。
 _srcs = _pr2['QQQ']['sources']

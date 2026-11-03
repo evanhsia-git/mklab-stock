@@ -64,6 +64,29 @@ def load_source(src):
     data = fetch_bytes(src)
     return data, src
 
+def manual_source_stale(src, cfg):
+    """manual_upload 來源的新鮮度守門：回傳「跳過原因」字串，或 None 表示可用。
+
+    為什麼需要：有些官方檔案（例如 iShares 的 latest-holdings.csv）對資料中心 IP 一律 403
+    （Akamai 依來源 IP 判斷，連瀏覽器都擋），CI 永遠拿不到，只能靠人工下載後放進 repo。
+    但人工檔會過期：若它排在自動來源前面又沒有期限，就會一直用舊資料、把後面的自動來源擋掉。
+    因此給這類來源 max_age_days：超過就跳過（回報原因），讓自動來源接手。
+    檔案不存在時也回傳原因（這是可選來源，不該讓它變成每次執行的錯誤）。
+    """
+    if not src.startswith("manual_upload:"):
+        return None
+    rel = src.split(":", 1)[1]
+    days = float(cfg.get("max_age_days") or 0)
+    p = os.path.join(ROOT, rel)
+    if not os.path.exists(p):
+        return f"可選手動檔不存在（{rel}）→ 跳過"
+    if days <= 0:
+        return None
+    age = (dt.datetime.now() - dt.datetime.fromtimestamp(os.path.getmtime(p))).days
+    if age > days:
+        return f"手動檔已 {age} 天未更新（上限 {days} 天）→ 跳過，改用自動來源"
+    return None
+
 def parse_vanguard(doc):
     """Vanguard 發行人端點（https://investor.vanguard.com/irr/funds/profile/{TICKER}-AdditionalFundData）。
 
@@ -235,6 +258,10 @@ def main():
             # 否則不是備援永遠失敗，就是部分資料靜默通過驗證。
             src = spec["url"] if isinstance(spec, dict) else spec
             eff = {**fund, **{k: v for k, v in spec.items() if k != "url"}} if isinstance(spec, dict) else fund
+            stale = manual_source_stale(src, eff)
+            if stale:
+                log(f"⏭ {key}：{stale}")
+                continue
             try:
                 data, used = load_source(src)
                 holdings = parse_bytes(data, used)

@@ -4,7 +4,7 @@
  "issuer": "iShares (BlackRock)",
  "count": 30,
  "source": "https://tickerinside.com/api/v1/fund/soxx.json",
- "fetched_at": "2026-11-03T23:37:28.204726+08:00",
+ "fetched_at": "2026-11-04T00:28:41.598429+08:00",
  "weight_total_pct": 99.85,
  "holdings": [
   {
