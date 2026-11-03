@@ -7,13 +7,13 @@
   "skipped": false,
   "details": {
     "twii_days": 260,
-    "twii_range": "2025-10-01~2026-10-30"
+    "twii_range": "2025-10-03~2026-11-03"
   },
-  "end": "2026-11-03 03:39:59",
-  "duration_sec": 1.0,
-  "start": "2026-11-03 03:39:58",
+  "end": "2026-11-03 16:18:28",
+  "duration_sec": 2.3,
+  "start": "2026-11-03 16:18:26",
   "log_lines": [
     "[INFO] 開始抓取 TWII 加權指數 K 線 (yfinance ^TWII, 260 日窗口)",
-    "[INFO] TWII K 線寫入 260 天 → twii_kdata.js (2025-10-01~2026-10-30)"
+    "[INFO] TWII K 線寫入 260 天 → twii_kdata.js (2025-10-03~2026-11-03)"
   ]
 }
