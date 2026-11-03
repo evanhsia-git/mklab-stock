@@ -2,10 +2,10 @@
  "fund": "VOO",
  "index": "S&P 500",
  "issuer": "Vanguard",
- "count": 493,
- "source": "/root/mklab-stock/data/raw/official/VOO_holdings.csv",
- "fetched_at": "2026-11-03T00:05:21.499870+08:00",
- "weight_total_pct": 98.63,
+ "count": 501,
+ "source": "https://investor.vanguard.com/irr/funds/profile/VOO-AdditionalFundData",
+ "fetched_at": "2026-11-03T21:31:31.418880+08:00",
+ "weight_total_pct": 98.71,
  "holdings": [
   {
    "ticker": "NVDA",
@@ -2471,6 +2471,47 @@
    "ticker": "NCLH",
    "name": "Norwegian Cruise Line Holdings Ltd",
    "weight_pct": 0.01
+  },
+  {
+   "ticker": "AOS",
+   "name": "A O Smith Corp",
+   "weight_pct": 0.01
+  },
+  {
+   "ticker": "DVA",
+   "name": "DaVita Inc",
+   "weight_pct": 0.01
+  },
+  {
+   "ticker": "HRL",
+   "name": "Hormel Foods Corp",
+   "weight_pct": 0.01
+  },
+  {
+   "ticker": "WYNN",
+   "name": "Wynn Resorts Ltd",
+   "weight_pct": 0.01
+  },
+  {
+   "ticker": "ERIE",
+   "name": "Erie Indemnity Co",
+   "weight_pct": 0.01
+  },
+  {
+   "ticker": "SKYD",
+   "name": "Paramount Skydance Corp",
+   "weight_pct": 0.01
+  },
+  {
+   "ticker": "MGM",
+   "name": "MGM Resorts International",
+   "weight_pct": 0.01
+  },
+  {
+   "ticker": "NWS",
+   "name": "News Corp",
+   "weight_pct": 0.01
   }
- ]
+ ],
+ "holdings_asof": "2026-09-30"
 }

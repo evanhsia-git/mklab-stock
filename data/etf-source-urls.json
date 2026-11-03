@@ -1,7 +1,9 @@
 {
   "meta": {
     "description": "ETF 資料網址（參考紀錄，未來需要時使用）",
-    "template": "https://investor.vanguard.com/irr/funds/profile/{TICKER}-AdditionalFundData"
+    "template": "https://investor.vanguard.com/irr/funds/profile/{TICKER}-AdditionalFundData",
+    "updated": "2026-11-03",
+    "note": "VOO 已由 index-holdings job 每月自動抓取（fetch_index_holdings.py 的 parse_vanguard 解析此端點的 JSON；股東持股每月公布一次，不需頻繁抓取）；VTI／VUG／VTV／BND 僅登記備用，尚未納入自動流程。"
   },
   "etfs": [
     {

@@ -282,6 +282,31 @@ except ValueError:
     _floor_ok = True
 check("指數替代 ETF：低於該基金 min_weight_total 會被擋下", _floor_ok)
 
+# VOO 自動來源（2026-11-03）：Vanguard 的 {TICKER}-AdditionalFundData 回傳 JSON（非表格），
+# 舊版 parse_bytes 只認 HTML/XLSX/CSV → VOO 只能靠手動檔，等於沒有自動更新。
+_vj = {"holdingDetails": {
+    "asOfDate": "09/30/2026",
+    "equityHoldings": [
+        {"ticker": "NVDA", "securityLongDescription": "NVIDIA Corp", "marketValuePercentage": "8.39%"},
+        {"ticker": "AAPL", "securityLongDescription": "Apple Inc", "marketValuePercentage": "7.38%"},
+        {"ticker": "", "securityLongDescription": "CASH", "marketValuePercentage": "0.05%"}],
+    "shortTermReservesHoldings": [{"ticker": "CMT001142", "marketValuePercentage": "0.05%"}],
+    "derivativeHoldings": [{"ticker": "ESZ6", "marketValuePercentage": "0.03%"}]}}
+_vj_bytes = json.dumps(_vj).encode()
+_vh = _fih.parse_bytes(_vj_bytes, "https://investor.vanguard.com/irr/funds/profile/VOO-AdditionalFundData")
+check("指數替代 ETF：Vanguard JSON 可解析（只取股票部位、濾掉無代號列）",
+      [x['ticker'] for x in _vh] == ["NVDA", "AAPL"] and _vh[0]['weight_pct'] == 8.39
+      and _vh[0]['name'] == 'NVIDIA Corp', f"{[(x['ticker'], x['weight_pct']) for x in _vh]}")
+check("指數替代 ETF：Vanguard 持股基準日可解析為 ISO 日期（月更新來源需可追溯版本）",
+      _fih.source_asof(_vj_bytes) == '2026-09-30', f"{_fih.source_asof(_vj_bytes)}")
+check("指數替代 ETF：VOO 以官方端點優先（自動），手動檔僅為備援",
+      str(_pr2['VOO']['sources'][0]).startswith('https://investor.vanguard.com/irr/funds/profile/VOO'),
+      f"{_pr2['VOO']['sources'][0]}")
+_voo_file = json.load(open('data/index-holdings/VOO.json', encoding='utf-8'))
+check("指數替代 ETF：VOO 產出記錄來源與持股基準日",
+      str(_voo_file.get('source', '')).startswith('http') and bool(_voo_file.get('holdings_asof')),
+      f"source={str(_voo_file.get('source'))[:52]} asof={_voo_file.get('holdings_asof')}")
+
 # 完全沒有產出時必須回傳非 0（否則 job 綠色但目錄 0 檔，只能靠人翻日誌）
 _tmpd = tempfile.mkdtemp()
 _bad_cfg = os.path.join(_tmpd, 'cfg.json')

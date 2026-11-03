@@ -63,7 +63,43 @@ def load_source(src):
     data = fetch_bytes(src)
     return data, src
 
+def parse_vanguard(doc):
+    """Vanguard 發行人端點（https://investor.vanguard.com/irr/funds/profile/{TICKER}-AdditionalFundData）。
+
+    回應是 JSON（約 420KB），持股在 holdingDetails.equityHoldings，每筆有
+    ticker / securityLongDescription / marketValuePercentage（字串如 "8.39%"）。
+    只取股票部位：shortTermReservesHoldings 是現金與附買回、derivativeHoldings 是期貨／交換，
+    都算「成分股與權重」以外的部位，納入會讓權重與檔數失真。
+    """
+    hd = (doc or {}).get("holdingDetails") or {}
+    out = []
+    for h in hd.get("equityHoldings") or []:
+        tk = str(h.get("ticker") or "").strip().upper()
+        wt = _num(h.get("marketValuePercentage"))
+        if not tk or wt is None or not re.match(r"^[A-Z][A-Z0-9.\-]{0,6}$", tk):
+            continue
+        out.append({"ticker": tk, "name": str(h.get("securityLongDescription") or "").strip(),
+                    "weight_pct": wt})
+    return out
+
+def source_asof(data):
+    """來源自帶的持股基準日（Vanguard holdingDetails.asOfDate，如 09/30/2026）→ ISO 日期。"""
+    if data.lstrip()[:1] != b"{":
+        return None
+    try:
+        s = str(((json.loads(data.decode("utf-8-sig", errors="replace")).get("holdingDetails") or {})
+                 .get("asOfDate")) or "").strip()
+        return dt.datetime.strptime(s, "%m/%d/%Y").date().isoformat()
+    except Exception:
+        return None
+
 def parse_bytes(data, src):
+    if data.lstrip()[:1] == b"{":  # JSON（如 Vanguard 的 {TICKER}-AdditionalFundData）
+        doc = json.loads(data.decode("utf-8-sig", errors="replace"))
+        res = parse_vanguard(doc)
+        if res:
+            return res
+        return []
     if data.lstrip()[:1] == b"<":  # HTML：逐一檢查每個表格
         import pandas as pd
         for t in pd.read_html(io.StringIO(data.decode("utf-8", errors="replace"))):
@@ -119,6 +155,9 @@ def main():
                        "fetched_at": dt.datetime.now(TZ).isoformat(),
                        "weight_total_pct": round(sum(h["weight_pct"] for h in holdings), 2),
                        "holdings": sorted(holdings, key=lambda h: -h["weight_pct"])}
+                asof = source_asof(data)  # 來源自帶的持股基準日（月更新的來源需要知道是哪一版）
+                if asof:
+                    doc["holdings_asof"] = asof
                 json.dump(doc, open(out_path, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
                 log(f"✅ {key}：{len(holdings)} 檔，來源 {used[:90]}")
                 ok += 1; done = True

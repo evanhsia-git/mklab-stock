@@ -3,7 +3,7 @@
     "description": "四大指數的替代 ETF（發行人公開持股，較易取得）。權重為 ETF 持股權重，與指數權重略有差異。",
     "updated": "2026-11-03",
     "schedule": "每月 2 日由 index-holdings job 自動抓取（四檔皆為每月更新）；VOO 來源失敗時用手動檔備援",
-    "source_notes": "發行商端點常加 bot 牆（Invesco 406、iShares/BlackRock 403）或改用 JavaScript 載入表格，因此每個基金設定多個來源依序嘗試；stockanalysis.com 是伺服器端渲染、免 key 的穩定備援，但免費層只提供前 25 大持股（權重加總可能低於 100%）→ 用 min_weight_total 明確標示該基金的合理門檻，而不是全面放寬驗證。2026-11-03 逐檔實測：SSGA 帶 -en- 的 XLSX 可用（30 檔 99.95%）、stockanalysis.com QQQ 25 檔 71.25% / SOXX 24 檔 95.82% 可用；Invesco 官方頁與 iShares 直連 CSV 皆不可用，僅保留為備援。",
+    "source_notes": "發行商端點常加 bot 牆（Invesco 406、iShares/BlackRock 403）或改用 JavaScript 載入表格，因此每個基金設定多個來源依序嘗試；stockanalysis.com 是伺服器端渲染、免 key 的穩定備援，但免費層只提供前 25 大持股（權重加總可能低於 100%）→ 用 min_weight_total 明確標示該基金的合理門檻，而不是全面放寬驗證。Vanguard 的 {TICKER}-AdditionalFundData 回傳 JSON（非表格），由 parse_vanguard 解析。2026-11-03 逐檔實測：SSGA 帶 -en- 的 XLSX 可用（30 檔 99.95%）、Vanguard VOO JSON 可用（501 檔 98.71%）、stockanalysis.com QQQ 25 檔 71.25% / SOXX 24 檔 95.82% 可用；Invesco 官方頁與 iShares 直連 CSV 皆不可用，僅保留為備援。",
     "notes": "expected_min/max 為「該來源實際能取得的檔數範圍」，不是指數成分股總數（例：QQQ 指數有 100 檔，但可達來源只提供前 25 大 → 範圍 20~30 並以 min_weight_total 標示權重門檻）。"
   },
   "funds": [
@@ -18,7 +18,7 @@
         "https://investor.vanguard.com/irr/funds/profile/VOO-AdditionalFundData",
         "manual_upload:data/raw/official/VOO_holdings.csv"
       ],
-      "note": "Vanguard 持股每月公布；每月更新一次即可。Vanguard 端點回傳 JSON 非表格，解析不到時會自動退回手動檔（manual_upload），驗證門檻 480~540 檔、權重 ≥90% 確保退回的是完整檔案。",
+      "note": "Vanguard 每月公布（回應為 JSON，holdingDetails.asOfDate 為持股基準日）。自動來源優先：parse_vanguard 解析 holdingDetails.equityHoldings（實測 501 檔、權重 98.71%、基準日 2026-09-30），只取股票部位（排除現金與期貨），失敗時才退回手動檔 manual_upload。驗證門檻 480~540 檔、權重 ≥90%。",
       "freq": "monthly"
     },
     {
