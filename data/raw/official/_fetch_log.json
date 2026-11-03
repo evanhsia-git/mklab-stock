@@ -1,47 +1,137 @@
 {
-  "fetched_at": "2026-11-03T21:02:19.672989+08:00",
+  "fetched_at": "2026-11-03T17:01:28.628702+08:00",
   "sources": [
     {
       "prefix": "t187ap03_L",
-      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap03_L",
+      "urls": [
+        "https://openapi.twse.com.tw/v1/opendata/t187ap03_L"
+      ],
       "mode": "全量",
       "status": "ok",
+      "parts": [
+        {
+          "url": "https://openapi.twse.com.tw/v1/opendata/t187ap03_L",
+          "rows": 1099
+        }
+      ],
       "base_rows": 0,
       "rows": 1099,
       "file": "t187ap03_L_latest.csv"
     },
     {
       "prefix": "t187ap06_L",
-      "url": "https://mopsfin.twse.com.tw/opendata/t187ap06_L_ci.csv",
-      "mode": "當日增量批次，合併既有快照",
+      "urls": [
+        "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_ci",
+        "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_basi",
+        "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_bd",
+        "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_fh",
+        "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_ins",
+        "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_mim"
+      ],
+      "mode": "當期增量批次，合併既有快照",
       "status": "ok",
+      "parts": [
+        {
+          "url": "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_ci",
+          "rows": 53
+        },
+        {
+          "url": "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_basi",
+          "rows": 0
+        },
+        {
+          "url": "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_bd",
+          "rows": 0
+        },
+        {
+          "url": "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_fh",
+          "rows": 0
+        },
+        {
+          "url": "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_ins",
+          "rows": 0
+        },
+        {
+          "url": "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_mim",
+          "rows": 0
+        }
+      ],
       "base_rows": 1052,
       "rows": 1052,
       "file": "t187ap06_L_latest.csv"
     },
     {
       "prefix": "t187ap07_L",
-      "url": "https://mopsfin.twse.com.tw/opendata/t187ap07_L_ci.csv",
-      "mode": "當日增量批次，合併既有快照",
+      "urls": [
+        "https://openapi.twse.com.tw/v1/opendata/t187ap07_L_ci",
+        "https://openapi.twse.com.tw/v1/opendata/t187ap07_L_basi",
+        "https://openapi.twse.com.tw/v1/opendata/t187ap07_L_bd",
+        "https://openapi.twse.com.tw/v1/opendata/t187ap07_L_fh",
+        "https://openapi.twse.com.tw/v1/opendata/t187ap07_L_ins",
+        "https://openapi.twse.com.tw/v1/opendata/t187ap07_L_mim"
+      ],
+      "mode": "當期增量批次，合併既有快照",
       "status": "ok",
+      "parts": [
+        {
+          "url": "https://openapi.twse.com.tw/v1/opendata/t187ap07_L_ci",
+          "rows": 53
+        },
+        {
+          "url": "https://openapi.twse.com.tw/v1/opendata/t187ap07_L_basi",
+          "rows": 0
+        },
+        {
+          "url": "https://openapi.twse.com.tw/v1/opendata/t187ap07_L_bd",
+          "rows": 0
+        },
+        {
+          "url": "https://openapi.twse.com.tw/v1/opendata/t187ap07_L_fh",
+          "rows": 0
+        },
+        {
+          "url": "https://openapi.twse.com.tw/v1/opendata/t187ap07_L_ins",
+          "rows": 0
+        },
+        {
+          "url": "https://openapi.twse.com.tw/v1/opendata/t187ap07_L_mim",
+          "rows": 0
+        }
+      ],
       "base_rows": 1052,
       "rows": 1052,
       "file": "t187ap07_L_latest.csv"
     },
     {
       "prefix": "t187ap45",
-      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap45_L",
+      "urls": [
+        "https://openapi.twse.com.tw/v1/opendata/t187ap45_L"
+      ],
       "mode": "全量",
       "status": "ok",
+      "parts": [
+        {
+          "url": "https://openapi.twse.com.tw/v1/opendata/t187ap45_L",
+          "rows": 1239
+        }
+      ],
       "base_rows": 0,
       "rows": 1239,
       "file": "t187ap45_latest.json"
     },
     {
       "prefix": "t187ap47",
-      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L",
+      "urls": [
+        "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+      ],
       "mode": "全量",
       "status": "ok",
+      "parts": [
+        {
+          "url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L",
+          "rows": 276
+        }
+      ],
       "base_rows": 0,
       "rows": 276,
       "file": "t187ap47_latest.json"
