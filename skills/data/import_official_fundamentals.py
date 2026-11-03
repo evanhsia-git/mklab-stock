@@ -3,14 +3,19 @@
 TWSE 官方財報／股利／基金資料匯入（手動匯入：放入 data/raw/official/ 後執行）。
 
 來源檔案（皆為 TWSE OpenAPI 下載）：
-  t187ap06_L_ci2.csv   綜合損益表（上市公司，累計期間）→ EPS、本期淨利、營業收入
-  t187ap07_L_ci.csv    資產負債表（上市公司）          → 資產總計、歸屬母公司權益
+  t187ap06_L_*.csv     綜合損益表（上市公司，累計期間）→ EPS、本期淨利、營業收入
+  t187ap07_L_*.csv     資產負債表（上市公司）          → 資產總計、歸屬母公司權益
+                       （檔名由 fetch_official_fundamentals.py 產生，固定為 *_latest.csv；
+                         MOPS 只提供「當日出表」的增量批次，該程式會與既有快照 upsert 合併後才寫入）
   t187ap45_*.json      上市公司股利分派情形            → 現金股利、連續配息年數
   t187ap47_*.json      基金基本資料彙總表（ETF）       → 上市日期、基金類型、保管機構…
 
 計算方式（重要假設，請確認）：
   - 損益與資產負債表為「累計至該季」的數字（台灣 IFRS 財報慣例）。
-    本檔為 115 年第 2 季（累計 6 個月），年化係數 = 12 ÷ 6 = 2。
+    年化係數「逐列」依該列自己的年度/季別計算：Q1×4、Q2×2、Q3×(12/9)、Q4×1。
+    ⚠️ 不可只用第一列的季別算一個係數：官方檔案是「當日出表」的增量批次，
+    與既有快照合併後可能同時含不同季別（2026-11-03 實測 999 家 Q2 ＋ 53 家 Q3），
+    用單一係數會把 Q3（累計 9 個月）當 Q2 年化而高估 50%。
   - ROE = 歸屬母公司淨利(累計) × 年化 ÷ 歸屬母公司權益合計
   - ROA = 本期淨利(累計) × 年化 ÷ 資產總計
   - EPS(年化) = 基本每股盈餘(累計) × 年化
@@ -100,20 +105,24 @@ def import_income_balance(stamp_info):
     c_eq_parent = find_col(bh, exact="歸屬於母公司業主之權益合計")
 
     bal = {r[c_sym_b].strip(): r for r in brows if r and r[c_sym_b].strip()}
-    year = irows[0][c_year_i].strip() if irows else None
-    qtr = irows[0][c_q_i].strip() if irows else None
-    months = {"1": 3, "2": 6, "3": 9, "4": 12}.get(qtr)
-    if not months:
-        raise ValueError(f"無法判斷季別：{qtr}")
-    factor = 12 / months
-    asof = roc_to_iso(irows[0][c_date_i].strip())
-    period = f"{int(year) + 1911}Q{qtr}"
-
-    out = {}
+    MONTHS = {"1": 3, "2": 6, "3": 9, "4": 12}
+    out, periods, skipped = {}, {}, 0
     for r in irows:
         sym = r[c_sym_i].strip()
         if not sym:
             continue
+        y, q = r[c_year_i].strip(), r[c_q_i].strip()
+        months = MONTHS.get(q)
+        if not months:
+            skipped += 1
+            continue
+        factor = 12 / months
+        try:
+            period = f"{int(y) + 1911}Q{q}"
+        except ValueError:
+            period = f"{y}Q{q}"
+        asof = roc_to_iso(r[c_date_i].strip())
+        periods[period] = periods.get(period, 0) + 1
         ni_p, ni_t = num(r[c_ni_parent]), num(r[c_ni_total])
         eps_ytd = num(r[c_eps])
         b = bal.get(sym)
@@ -134,8 +143,15 @@ def import_income_balance(stamp_info):
             "roa_annualized_pct": round(ni_t * factor / assets * 100, 2) if ni_t is not None and assets else None,
         }
         out[sym] = rec
-    _log(f"損益/資產負債表：{period}（出表 {asof}），公司 {len(out)} 家")
-    return out, {"period": period, "asof": asof, "files": [os.path.basename(inc_path[0]), os.path.basename(bal_path[0])]}
+    if not out:
+        raise ValueError("沒有任何一列能判斷季別，無法年化")
+    asofs = {rec["asof"] for rec in out.values() if rec["asof"]}
+    mix = "＋".join(f"{p} {n} 家" for p, n in sorted(periods.items(), key=lambda kv: -kv[1]))
+    _log(f"損益/資產負債表：{mix}（逐列依各自季別年化），公司 {len(out)} 家"
+         + (f"，略過無法判斷季別 {skipped} 列" if skipped else ""))
+    return out, {"period": max(periods, key=lambda k: periods[k]), "periods": periods,
+                 "asof": max(asofs) if asofs else None,
+                 "files": [os.path.basename(inc_path[0]), os.path.basename(bal_path[0])]}
 
 
 def import_dividends():
@@ -229,12 +245,13 @@ def main():
     etf = import_etf_basic(None)
 
     src_meta = {
-        "source": "TWSE OpenAPI 官方檔案（使用者下載放入 data/raw/official/）",
+        "source": "TWSE OpenAPI／MOPS opendata 官方檔案（由 fetch_official_fundamentals.py 下載）",
         "files": mtimes,
         "imported_at": now,
         "financial_period": fin_info["period"] if fin_info else None,
+        "financial_periods": fin_info.get("periods") if fin_info else None,
         "financial_asof_roc_date": fin_info["asof"] if fin_info else None,
-        "method": "損益/資產負債表為累計數，依季別年化（Q2×2）；營收年增率需月營收檔，尚未提供",
+        "method": "損益/資產負債表為累計數，年化係數逐列依各自季別計算（Q1×4、Q2×2、Q3×4/3、Q4×1）；同一份快照可能同時含不同季別（MOPS 增量批次與既有快照合併所致）；營收年增率需月營收檔，尚未提供",
     }
 
     with open(os.path.join(DATA, "official-fundamentals.json"), "w", encoding="utf-8") as f:

@@ -24,7 +24,16 @@ shift
 git config user.name "github-actions[bot]"
 git config user.email "github-actions[bot]@users.noreply.github.com"
 
-git add "$@"
+# 只加入實際存在的路徑：glob（如 data/us-history-*）沒有匹配時會保留字面字串，git add 會直接失敗
+paths=()
+for p in "$@"; do
+  if compgen -G "$p" > /dev/null || [ -e "$p" ]; then paths+=("$p"); fi
+done
+if [ "${#paths[@]}" -eq 0 ]; then
+  echo "no paths to add (全部路徑不存在)"
+  exit 0
+fi
+git add -- "${paths[@]}"
 if git diff --cached --quiet; then
   echo "no changes"
   exit 0
@@ -36,7 +45,11 @@ if git merge-base --is-ancestor origin/main HEAD; then
   : # 遠端沒有新東西
 else
   echo "遠端領先（其他 job 先推了），合併 origin/main：衝突取遠端較新版本"
-  git merge --no-edit -X theirs origin/main
+  if ! git merge --no-edit -X theirs origin/main; then
+    git merge --abort || true
+    echo "❌ 合併 origin/main 失敗（非內容衝突，可能是檔案刪改衝突），本次放棄推送" >&2
+    exit 1
+  fi
 fi
 
 n=0

@@ -1,42 +1,34 @@
 name: daily-update
 
-# 這裡是「整條 workflow（run）」的層級：同時只允許一個 run，新的 run 取代等待中的舊 run
-# （排程重疊時希望「跳過被取代的那個」，所以刻意保持 queue 預設值 single）
-concurrency:
-  group: data-update
-  cancel-in-progress: false
-
-# 下面每個 job 另有 job 級 concurrency（group: mklab-git-push），用途是序列化 git push、避免 race。
-# ⚠️ 但 job 級 concurrency 的 queue 預設是 single：同一個 group 只能有「1 個執行中 + 1 個 pending」，
-#    新的 pending 會直接取消上一個 pending。workflow_dispatch 一次觸發 8 個 job 時，
-#    只有 2 個能存活，其餘 6 個在 2 秒內被自己人取消（run #234 的 6 個 error 就是這個，非真失敗）。
-#    因此每個 job 都必須加上 `queue: max`（最多 100 個排隊），讓 sibling job 排隊而非互相取消。
+# 併發控制分兩層，用途不同、不可互相取代：
+#   1. workflow（run）層級：group: data-update，同一時間只允許一個 run，
+#      新的 run 取代「等待中」的舊 run（排程重疊時希望跳過被取代的那個，故刻意保持 queue 預設值 single）。
+#   2. job 層級：group: mklab-git-push，讓資料 job 依序執行、序列化 git push，避免同時推送互相衝突。
+#      ⚠️ job 層級 concurrency 的 queue 預設是 single：同一個 group 只能有「1 個執行中 + 1 個 pending」，
+#      新的 pending 會直接取消上一個 pending。workflow_dispatch 一次觸發全部 job 時，只有 2 個能存活，
+#      其餘在 2 秒內被自己人取消（run #234 的 6 個 error 就是這個，不是真的失敗）
+#      → 因此每個 job 都必須加 `queue: max`（最多 100 個排隊）。
+#      注意：queue: max 不可與 cancel-in-progress: true 併用（會 validation error）。
+#   3. 推送一律透過 scripts/ci_commit_push.sh（先 fetch、衝突取遠端較新版本、被插隊時重試 5 次）
+#      → 因此每個 checkout 都必須 fetch-depth: 0。淺層 checkout 的歷史是斷的，
+#        git merge 遠端分岔歷史會直接失敗，推送腳本救不回來。
 
 on:
   schedule:
-    # 台灣收盤後 17:00 = UTC 09:00（週一至週五）：抓收盤+PE/PB/殖利率
-    - cron: "0 9 * * 1-5"
-    # 每週六 10:00 UTC = 18:00 台灣：yfinance 補 ROE/ROA（sleep 3s 防 ban）
-    - cron: "0 10 * * 6"
-    # 每個工作日 UTC 09:30（台灣 17:30）：抓全球指數 + 代表 ETF 收盤/漲跌（yfinance）
-    - cron: "30 9 * * 1-5"
-    # 每個工作日 UTC 10:00：產生市場摘要 + RSS
-    - cron: "0 10 * * 1-5"
-    # 每個工作日 UTC 22:00（美股收盤後，不論冬夏令時皆已收盤完畢）：抓美股個股/ETF 前30大
-    # 與台股排程完全分開的獨立時段，互不影響
-    - cron: "0 22 * * 1-5"
-    # 每個工作日 UTC 22:30（台灣隔日 06:30）：抓全球指數歷史（global-history job）
-    # 注意：該 job 的 if 條件本來就寫了這條 cron，但沒註冊在這裡 → 永遠不會自動執行
-    - cron: "30 22 * * 1-5"
-    # 每個工作日 UTC 22:45（台灣隔日 06:45）：抓指數替代 ETF 持股（index-holdings job）
-    # 同上：條件有寫、排程未註冊 → 只能手動觸發
-    - cron: "45 22 * * 1-5"
+    - cron: "0 9 * * 1-5"    # daily：週一至週五 17:00（台灣）
+    - cron: "0 10 * * 6"     # weekly-roe：每週六 18:00
+    - cron: "30 9 * * 1-5"   # indices：週一至週五 17:30
+    - cron: "0 22 * * 1-5"   # us-market：週一至週五 隔日 06:00
+    - cron: "30 22 * * 1-5"  # global-history：週一至週五 隔日 06:30
+    - cron: "45 22 2 * *"    # index-holdings：每月 2 日 隔日 06:45
+    - cron: "0 10 20 * *"    # official-fundamentals：每月 20 日 18:00
   workflow_dispatch: {}
 
 permissions:
   contents: write
 
 jobs:
+  # 每日：收盤行情 → 本地計算（指標、K 線、產業、官方公司資訊）→ 市場摘要與 RSS
   daily:
     concurrency:
       group: mklab-git-push
@@ -46,22 +38,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
-      - name: Fetch daily (TWSE OpenAPI, 雲端免 key)
+      - name: 抓取當日收盤（TWSE/TPEx）
         run: python skills/data/fetch_data.py daily
-      - name: Compute technical indicators (MA/RSI/MACD/KD, 純本地計算不對外請求)
+      - name: 技術指標與 ETF 分類
         run: python skills/data/compute_indicators.py
-      - name: Integrate official company info (產業/上市日期，排除 TPEx 非 ETF)
+      - name: 官方公司資訊（產業、上市日）
         run: python skills/data/integrate_official_company.py
-      - name: Build per-stock K-line files (data/kline)
+      - name: 個股 K 線檔
         run: python skills/data/build_kline.py
-      - name: Recompute industry aggregates (產業每日重算，不使用舊統計)
+      - name: 產業統計
         run: python skills/data/compute_industry.py
-      - name: Commit & push
-        run: 'bash scripts/ci_commit_push.sh "data: 每日更新 $(date +%Y-%m-%d) [skip ci]" data/'
+      - name: 每日市場摘要與 RSS（本地計算）
+        run: python skills/data/build_digest.py
+      - name: 推送
+        run: 'bash scripts/ci_commit_push.sh "data: 每日更新 $(date +%Y-%m-%d) [skip ci]" data/ rss.xml'
 
+  # 每週六：補 ROE/ROA（只抓沒有官方財報的一般股票）
   weekly-roe:
     concurrency:
       group: mklab-git-push
@@ -71,16 +68,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
-      - name: Install yfinance
+      - name: 安裝 yfinance
         run: pip install yfinance
-      - name: Fetch ROE/ROA (yfinance, 免 key, sleep 3s 防 ban)
+      - name: 補 ROE/ROA（yfinance，每檔間隔 3 秒）
         run: python skills/data/fetch_data.py weekly
-      - name: Commit & push
-        run: 'bash scripts/ci_commit_push.sh "data: 每週 ROE/ROA 更新 $(date +%Y-%m-%d) [skip ci]" data/'
+      - name: 推送
+        run: 'bash scripts/ci_commit_push.sh "data: ROE/ROA 補充 $(date +%Y-%m-%d) [skip ci]" data/'
 
+  # 每日：全球指數、全球 ETF、總經指標、台股加權指數 K 線（合併原 twii-kline）
   indices:
     concurrency:
       group: mklab-git-push
@@ -90,51 +90,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
-      - name: Install yfinance
+      - name: 安裝 yfinance
         run: pip install yfinance
-      - name: Fetch global indices + ETFs (yfinance, 免 key)
+      - name: 全球指數與 ETF（yfinance）
         run: python skills/data/fetch_data.py indices
-      - name: Commit & push
-        run: 'bash scripts/ci_commit_push.sh "data: 全球指數/ETF 更新 $(date +%Y-%m-%d) [skip ci]" data/'
-
-  twii-kline:
-    concurrency:
-      group: mklab-git-push
-      queue: max
-      cancel-in-progress: false
-    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '30 9 * * 1-5'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-python@v6
-        with:
-          python-version: "3.11"
-      - name: Install yfinance
-        run: pip install yfinance
-      - name: Fetch TWII 加權指數 K 線 (yfinance ^TWII, 260 日窗口)
+      - name: 台股加權指數 K 線（yfinance ^TWII）
         run: python skills/data/fetch_data.py twii
-      - name: Commit & push
-        run: 'bash scripts/ci_commit_push.sh "data: TWII 加權指數 K 線更新 $(date +%Y-%m-%d) [skip ci]" data/'
-  digest:
-    concurrency:
-      group: mklab-git-push
-      queue: max
-      cancel-in-progress: false
-    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 10 * * 1-5'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-python@v6
-        with:
-          python-version: "3.11"
-      - name: Build digest (static, no key)
-        run: python skills/data/build_digest.py
-      - name: Commit & push
-        run: 'bash scripts/ci_commit_push.sh "data: 每日摘要更新 $(date +%Y-%m-%d) [skip ci]" data/ rss.xml'
+      - name: 推送
+        run: 'bash scripts/ci_commit_push.sh "data: 全球指數／ETF／TWII K 線 $(date +%Y-%m-%d) [skip ci]" data/'
 
+  # 每日：美股市值前 30 大個股、ETF 規模前 30 大
   us-market:
     concurrency:
       group: mklab-git-push
@@ -144,16 +114,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
-      - name: Install yfinance
+      - name: 安裝 yfinance
         run: pip install yfinance
-      - name: Fetch US top-30 stocks & ETFs (yfinance, 免 key, 與台股資料完全獨立管理)
+      - name: 美股個股與 ETF 前 30 大（yfinance）
         run: python skills/data/fetch_us_data.py all
-      - name: Commit & push
-        run: 'bash scripts/ci_commit_push.sh "data: 美股市值/ETF規模前30大更新 $(date +%Y-%m-%d) [skip ci]" data/us/'
+      - name: 推送
+        run: 'bash scripts/ci_commit_push.sh "data: 美股前 30 大 $(date +%Y-%m-%d) [skip ci]" data/us/'
 
+  # 每日：美股指數、全球指數與市場情緒的收盤，累積為月檔
   global-history:
     concurrency:
       group: mklab-git-push
@@ -163,31 +136,60 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
-      - name: Install yfinance
+      - name: 安裝 yfinance
         run: pip install yfinance
-      - name: Fetch US / global / sentiment daily closes (月檔，yfinance 備援)
+      - name: 美股／全球／情緒每日收盤（yfinance）
         run: python skills/data/fetch_global_history.py
-      - name: Commit & push
-        run: 'bash scripts/ci_commit_push.sh "data: 美股/全球月檔更新 $(date +%Y-%m-%d) [skip ci]" data/us-history-* data/global-history-*'
+      - name: 推送
+        run: 'bash scripts/ci_commit_push.sh "data: 美股／全球月檔 $(date +%Y-%m-%d) [skip ci]" data/us-history-* data/global-history-*'
 
+  # 每月 2 日：DIA、QQQ、SOXX、VOO 的替代 ETF 持股（VOO 來源失敗時用手動檔）
   index-holdings:
     concurrency:
       group: mklab-git-push
       queue: max
       cancel-in-progress: false
-    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '45 22 * * 1-5'
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '45 22 2 * *'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
-      - name: Install parsers
-        run: pip install pandas openpyxl
-      - name: Fetch index-proxy ETF holdings (DIA/QQQ/SOXX 自動，VOO 手動備援)
+      - name: 安裝解析套件
+        run: pip install pandas openpyxl lxml
+      - name: 四大指數替代 ETF 持股
         run: python skills/data/fetch_index_holdings.py
-      - name: Commit & push
-        run: 'bash scripts/ci_commit_push.sh "data: 指數替代 ETF 持股更新 $(date +%Y-%m-%d) [skip ci]" data/index-holdings/'
+      - name: 推送
+        run: 'bash scripts/ci_commit_push.sh "data: 指數替代 ETF 持股 $(date +%Y-%m) [skip ci]" data/index-holdings/'
+
+  # 每月 20 日：TWSE 官方財報（損益、資產負債表、股利、基金、公司基本資料）自動下載並匯入
+  official-fundamentals:
+    concurrency:
+      group: mklab-git-push
+      queue: max
+      cancel-in-progress: false
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 10 20 * *'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - name: 下載 TWSE 官方財報與公司資料
+        run: python skills/data/fetch_official_fundamentals.py
+      - name: 匯入財報（ROE/ROA/EPS、股利）
+        run: python skills/data/import_official_fundamentals.py
+      - name: 公司基本資料（產業、上市日）
+        run: python skills/data/integrate_official_company.py
+      - name: 推送
+        run: 'bash scripts/ci_commit_push.sh "data: 官方財報月更新 $(date +%Y-%m) [skip ci]" data/ data/raw/official/'

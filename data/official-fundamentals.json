@@ -1,16 +1,23 @@
 {
   "meta": {
-    "source": "TWSE OpenAPI 官方檔案（使用者下載放入 data/raw/official/）",
+    "source": "TWSE OpenAPI／MOPS opendata 官方檔案（由 fetch_official_fundamentals.py 下載）",
     "files": {
-      "t187ap06_L_ci2.csv": "2026-10-30 11:33:47 UTC+08:00",
-      "t187ap47_openapi_full.json": "2026-10-30 11:33:47 UTC+08:00",
-      "t187ap45_openapi_full.json": "2026-10-30 11:33:47 UTC+08:00",
-      "t187ap07_L_ci.csv": "2026-10-30 11:33:47 UTC+08:00"
+      "_fetch_log.json": "2026-11-03 14:28:20 UTC+08:00",
+      "t187ap45_latest.json": "2026-11-03 14:28:20 UTC+08:00",
+      "t187ap03_L_latest.csv": "2026-11-03 14:28:14 UTC+08:00",
+      "VOO_holdings.csv": "2026-11-02 11:13:21 UTC+08:00",
+      "t187ap06_L_latest.csv": "2026-11-03 14:28:16 UTC+08:00",
+      "t187ap07_L_latest.csv": "2026-11-03 14:28:18 UTC+08:00",
+      "t187ap47_latest.json": "2026-11-03 14:28:20 UTC+08:00"
     },
-    "imported_at": "2026-10-30 11:34:18 UTC+08:00",
+    "imported_at": "2026-11-03 14:41:04 UTC+08:00",
     "financial_period": "2026Q2",
-    "financial_asof_roc_date": "2026-10-30",
-    "method": "損益/資產負債表為累計數，依季別年化（Q2×2）；營收年增率需月營收檔，尚未提供"
+    "financial_periods": {
+      "2026Q2": 999,
+      "2026Q3": 53
+    },
+    "financial_asof_roc_date": "2026-11-03",
+    "method": "損益/資產負債表為累計數，年化係數逐列依各自季別計算（Q1×4、Q2×2、Q3×4/3、Q4×1）；同一份快照可能同時含不同季別（MOPS 增量批次與既有快照合併所致）；營收年增率需月營收檔，尚未提供"
   },
   "financial": {
     "1101": {
@@ -308,18 +315,18 @@
       "roa_annualized_pct": 8.43
     },
     "1232": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 11481997.0,
-      "ni_total_ytd_thousand": 790350.0,
-      "ni_parent_ytd_thousand": 753144.0,
-      "eps_ytd": 4.71,
-      "eps_annualized": 9.42,
-      "equity_parent_thousand": 5514780.0,
-      "assets_total_thousand": 10715479.0,
-      "roe_annualized_pct": 27.31,
-      "roa_annualized_pct": 14.75
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 18753075.0,
+      "ni_total_ytd_thousand": 1341100.0,
+      "ni_parent_ytd_thousand": 1284559.0,
+      "eps_ytd": 8.03,
+      "eps_annualized": 10.71,
+      "equity_parent_thousand": 6050002.0,
+      "assets_total_thousand": 10613254.0,
+      "roe_annualized_pct": 28.31,
+      "roa_annualized_pct": 16.85
     },
     "1233": {
       "period": "2026Q2",
@@ -1400,18 +1407,18 @@
       "roa_annualized_pct": 17.74
     },
     "1477": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 17062830.0,
-      "ni_total_ytd_thousand": 1912835.0,
-      "ni_parent_ytd_thousand": 1887631.0,
-      "eps_ytd": 7.65,
-      "eps_annualized": 15.3,
-      "equity_parent_thousand": 13788645.0,
-      "assets_total_thousand": 23966704.0,
-      "roe_annualized_pct": 27.38,
-      "roa_annualized_pct": 15.96
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 26546755.0,
+      "ni_total_ytd_thousand": 2901570.0,
+      "ni_parent_ytd_thousand": 2867646.0,
+      "eps_ytd": 11.62,
+      "eps_annualized": 15.49,
+      "equity_parent_thousand": 13294841.0,
+      "assets_total_thousand": 23168885.0,
+      "roe_annualized_pct": 28.76,
+      "roa_annualized_pct": 16.7
     },
     "1503": {
       "period": "2026Q2",
@@ -1722,18 +1729,18 @@
       "roa_annualized_pct": 4.82
     },
     "1535": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 4187134.0,
-      "ni_total_ytd_thousand": 203347.0,
-      "ni_parent_ytd_thousand": 203347.0,
-      "eps_ytd": 1.64,
-      "eps_annualized": 3.28,
-      "equity_parent_thousand": 3732808.0,
-      "assets_total_thousand": 7507591.0,
-      "roe_annualized_pct": 10.9,
-      "roa_annualized_pct": 5.42
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 6268614.0,
+      "ni_total_ytd_thousand": 301939.0,
+      "ni_parent_ytd_thousand": 301939.0,
+      "eps_ytd": 2.44,
+      "eps_annualized": 3.25,
+      "equity_parent_thousand": 3857771.0,
+      "assets_total_thousand": 7043167.0,
+      "roe_annualized_pct": 10.44,
+      "roa_annualized_pct": 5.72
     },
     "1536": {
       "period": "2026Q2",
@@ -2548,18 +2555,18 @@
       "roa_annualized_pct": 6.06
     },
     "1773": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 6652050.0,
-      "ni_total_ytd_thousand": 1314591.0,
-      "ni_parent_ytd_thousand": 1314648.0,
-      "eps_ytd": 4.38,
-      "eps_annualized": 8.76,
-      "equity_parent_thousand": 11435323.0,
-      "assets_total_thousand": 18670756.0,
-      "roe_annualized_pct": 22.99,
-      "roa_annualized_pct": 14.08
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 10672806.0,
+      "ni_total_ytd_thousand": 2045149.0,
+      "ni_parent_ytd_thousand": 2045679.0,
+      "eps_ytd": 6.82,
+      "eps_annualized": 9.09,
+      "equity_parent_thousand": 12202532.0,
+      "assets_total_thousand": 19494477.0,
+      "roe_annualized_pct": 22.35,
+      "roa_annualized_pct": 13.99
     },
     "1776": {
       "period": "2026Q2",
@@ -2828,18 +2835,18 @@
       "roa_annualized_pct": 0.27
     },
     "2006": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 29865731.0,
-      "ni_total_ytd_thousand": 2992341.0,
-      "ni_parent_ytd_thousand": 2971876.0,
-      "eps_ytd": 4.07,
-      "eps_annualized": 8.14,
-      "equity_parent_thousand": 34170013.0,
-      "assets_total_thousand": 53355877.0,
-      "roe_annualized_pct": 17.39,
-      "roa_annualized_pct": 11.22
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 45638071.0,
+      "ni_total_ytd_thousand": 4758378.0,
+      "ni_parent_ytd_thousand": 4721418.0,
+      "eps_ytd": 6.47,
+      "eps_annualized": 8.63,
+      "equity_parent_thousand": 35998390.0,
+      "assets_total_thousand": 55326021.0,
+      "roe_annualized_pct": 17.49,
+      "roa_annualized_pct": 11.47
     },
     "2007": {
       "period": "2026Q2",
@@ -2940,18 +2947,18 @@
       "roa_annualized_pct": 0.77
     },
     "2015": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 13991827.0,
-      "ni_total_ytd_thousand": 1372324.0,
-      "ni_parent_ytd_thousand": 1373908.0,
-      "eps_ytd": 2.36,
-      "eps_annualized": 4.72,
-      "equity_parent_thousand": 22056568.0,
-      "assets_total_thousand": 26211679.0,
-      "roe_annualized_pct": 12.46,
-      "roa_annualized_pct": 10.47
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 20873762.0,
+      "ni_total_ytd_thousand": 1906609.0,
+      "ni_parent_ytd_thousand": 1908855.0,
+      "eps_ytd": 3.28,
+      "eps_annualized": 4.37,
+      "equity_parent_thousand": 22604382.0,
+      "assets_total_thousand": 25812714.0,
+      "roe_annualized_pct": 11.26,
+      "roa_annualized_pct": 9.85
     },
     "2017": {
       "period": "2026Q2",
@@ -3654,18 +3661,18 @@
       "roa_annualized_pct": -18.85
     },
     "2301": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 96110746.0,
-      "ni_total_ytd_thousand": 10894546.0,
-      "ni_parent_ytd_thousand": 10891244.0,
-      "eps_ytd": 4.8,
-      "eps_annualized": 9.6,
-      "equity_parent_thousand": 95803594.0,
-      "assets_total_thousand": 239164413.0,
-      "roe_annualized_pct": 22.74,
-      "roa_annualized_pct": 9.11
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 153513764.0,
+      "ni_total_ytd_thousand": 18343436.0,
+      "ni_parent_ytd_thousand": 18320590.0,
+      "eps_ytd": 8.08,
+      "eps_annualized": 10.77,
+      "equity_parent_thousand": 97453074.0,
+      "assets_total_thousand": 264741080.0,
+      "roe_annualized_pct": 25.07,
+      "roa_annualized_pct": 9.24
     },
     "2302": {
       "period": "2026Q2",
@@ -3682,18 +3689,18 @@
       "roa_annualized_pct": 7.17
     },
     "2303": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 129770564.0,
-      "ni_total_ytd_thousand": 58340799.0,
-      "ni_parent_ytd_thousand": 58431436.0,
-      "eps_ytd": 4.68,
-      "eps_annualized": 9.36,
-      "equity_parent_thousand": 443920249.0,
-      "assets_total_thousand": 665972883.0,
-      "roe_annualized_pct": 26.33,
-      "roa_annualized_pct": 17.52
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 204009681.0,
+      "ni_total_ytd_thousand": 74729928.0,
+      "ni_parent_ytd_thousand": 74865383.0,
+      "eps_ytd": 6.0,
+      "eps_annualized": 8.0,
+      "equity_parent_thousand": 470916768.0,
+      "assets_total_thousand": 675785677.0,
+      "roe_annualized_pct": 21.2,
+      "roa_annualized_pct": 14.74
     },
     "2305": {
       "period": "2026Q2",
@@ -3710,18 +3717,18 @@
       "roa_annualized_pct": 9.39
     },
     "2308": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 342608732.0,
-      "ni_total_ytd_thousand": 51003600.0,
-      "ni_parent_ytd_thousand": 45691231.0,
-      "eps_ytd": 17.59,
-      "eps_annualized": 35.18,
-      "equity_parent_thousand": 293710740.0,
-      "assets_total_thousand": 754433332.0,
-      "roe_annualized_pct": 31.11,
-      "roa_annualized_pct": 13.52
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 539667536.0,
+      "ni_total_ytd_thousand": 77061840.0,
+      "ni_parent_ytd_thousand": 69185826.0,
+      "eps_ytd": 26.64,
+      "eps_annualized": 35.52,
+      "equity_parent_thousand": 318197309.0,
+      "assets_total_thousand": 835660191.0,
+      "roe_annualized_pct": 28.99,
+      "roa_annualized_pct": 12.3
     },
     "2312": {
       "period": "2026Q2",
@@ -3864,18 +3871,18 @@
       "roa_annualized_pct": -1.26
     },
     "2329": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 10336694.0,
-      "ni_total_ytd_thousand": 642824.0,
-      "ni_parent_ytd_thousand": 642824.0,
-      "eps_ytd": 0.96,
-      "eps_annualized": 1.92,
-      "equity_parent_thousand": 16409590.0,
-      "assets_total_thousand": 26654758.0,
-      "roe_annualized_pct": 7.83,
-      "roa_annualized_pct": 4.82
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 15481175.0,
+      "ni_total_ytd_thousand": 987487.0,
+      "ni_parent_ytd_thousand": 987487.0,
+      "eps_ytd": 1.48,
+      "eps_annualized": 1.97,
+      "equity_parent_thousand": 16691993.0,
+      "assets_total_thousand": 26290300.0,
+      "roe_annualized_pct": 7.89,
+      "roa_annualized_pct": 5.01
     },
     "2330": {
       "period": "2026Q2",
@@ -3920,18 +3927,18 @@
       "roa_annualized_pct": -0.08
     },
     "2337": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 29593392.0,
-      "ni_total_ytd_thousand": 9515162.0,
-      "ni_parent_ytd_thousand": 9507911.0,
-      "eps_ytd": 4.82,
-      "eps_annualized": 9.64,
-      "equity_parent_thousand": 61932113.0,
-      "assets_total_thousand": 96446487.0,
-      "roe_annualized_pct": 30.7,
-      "roa_annualized_pct": 19.73
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 53830664.0,
+      "ni_total_ytd_thousand": 20466042.0,
+      "ni_parent_ytd_thousand": 20452620.0,
+      "eps_ytd": 10.34,
+      "eps_annualized": 13.79,
+      "equity_parent_thousand": 73327583.0,
+      "assets_total_thousand": 113794666.0,
+      "roe_annualized_pct": 37.19,
+      "roa_annualized_pct": 23.98
     },
     "2338": {
       "period": "2026Q2",
@@ -4396,18 +4403,18 @@
       "roa_annualized_pct": 4.86
     },
     "2383": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 80342455.0,
-      "ni_total_ytd_thousand": 15210423.0,
-      "ni_parent_ytd_thousand": 15213191.0,
-      "eps_ytd": 42.46,
-      "eps_annualized": 84.92,
-      "equity_parent_thousand": 58335438.0,
-      "assets_total_thousand": 158577444.0,
-      "roe_annualized_pct": 52.16,
-      "roa_annualized_pct": 19.18
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 141226994.0,
+      "ni_total_ytd_thousand": 29709539.0,
+      "ni_parent_ytd_thousand": 29713011.0,
+      "eps_ytd": 82.92,
+      "eps_annualized": 110.56,
+      "equity_parent_thousand": 73468253.0,
+      "assets_total_thousand": 193742980.0,
+      "roe_annualized_pct": 53.92,
+      "roa_annualized_pct": 20.45
     },
     "2385": {
       "period": "2026Q2",
@@ -4494,18 +4501,18 @@
       "roa_annualized_pct": 6.31
     },
     "2395": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 46511554.0,
-      "ni_total_ytd_thousand": 7821490.0,
-      "ni_parent_ytd_thousand": 7852037.0,
-      "eps_ytd": 9.05,
-      "eps_annualized": 18.1,
-      "equity_parent_thousand": 55335278.0,
-      "assets_total_thousand": 93203810.0,
-      "roe_annualized_pct": 28.38,
-      "roa_annualized_pct": 16.78
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 78951792.0,
+      "ni_total_ytd_thousand": 14022722.0,
+      "ni_parent_ytd_thousand": 14069915.0,
+      "eps_ytd": 16.21,
+      "eps_annualized": 21.61,
+      "equity_parent_thousand": 62660962.0,
+      "assets_total_thousand": 98984999.0,
+      "roe_annualized_pct": 29.94,
+      "roa_annualized_pct": 18.89
     },
     "2397": {
       "period": "2026Q2",
@@ -4704,18 +4711,18 @@
       "roa_annualized_pct": 4.74
     },
     "2419": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 4119381.0,
-      "ni_total_ytd_thousand": 78714.0,
-      "ni_parent_ytd_thousand": 45441.0,
-      "eps_ytd": 0.14,
-      "eps_annualized": 0.28,
-      "equity_parent_thousand": 4817708.0,
-      "assets_total_thousand": 11803297.0,
-      "roe_annualized_pct": 1.89,
-      "roa_annualized_pct": 1.33
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 7578178.0,
+      "ni_total_ytd_thousand": 328907.0,
+      "ni_parent_ytd_thousand": 129759.0,
+      "eps_ytd": 0.4,
+      "eps_annualized": 0.53,
+      "equity_parent_thousand": 4922667.0,
+      "assets_total_thousand": 13524555.0,
+      "roe_annualized_pct": 3.51,
+      "roa_annualized_pct": 3.24
     },
     "2420": {
       "period": "2026Q2",
@@ -4942,18 +4949,18 @@
       "roa_annualized_pct": -9.29
     },
     "2439": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 21408429.0,
-      "ni_total_ytd_thousand": 637646.0,
-      "ni_parent_ytd_thousand": 381852.0,
-      "eps_ytd": 1.54,
-      "eps_annualized": 3.08,
-      "equity_parent_thousand": 16786938.0,
-      "assets_total_thousand": 40825822.0,
-      "roe_annualized_pct": 4.55,
-      "roa_annualized_pct": 3.12
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 34379171.0,
+      "ni_total_ytd_thousand": 855080.0,
+      "ni_parent_ytd_thousand": 497775.0,
+      "eps_ytd": 2.01,
+      "eps_annualized": 2.68,
+      "equity_parent_thousand": 17001898.0,
+      "assets_total_thousand": 44202160.0,
+      "roe_annualized_pct": 3.9,
+      "roa_annualized_pct": 2.58
     },
     "2440": {
       "period": "2026Q2",
@@ -4970,18 +4977,18 @@
       "roa_annualized_pct": 1.47
     },
     "2441": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 10005945.0,
-      "ni_total_ytd_thousand": 1692497.0,
-      "ni_parent_ytd_thousand": 1692535.0,
-      "eps_ytd": 2.98,
-      "eps_annualized": 5.96,
-      "equity_parent_thousand": 27485766.0,
-      "assets_total_thousand": 33662283.0,
-      "roe_annualized_pct": 12.32,
-      "roa_annualized_pct": 10.06
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 16003969.0,
+      "ni_total_ytd_thousand": 3074158.0,
+      "ni_parent_ytd_thousand": 3074114.0,
+      "eps_ytd": 5.41,
+      "eps_annualized": 7.21,
+      "equity_parent_thousand": 27193948.0,
+      "assets_total_thousand": 32162059.0,
+      "roe_annualized_pct": 15.07,
+      "roa_annualized_pct": 12.74
     },
     "2442": {
       "period": "2026Q2",
@@ -5026,18 +5033,18 @@
       "roa_annualized_pct": 7.42
     },
     "2450": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 17234568.0,
-      "ni_total_ytd_thousand": 172709.0,
-      "ni_parent_ytd_thousand": 172952.0,
-      "eps_ytd": 0.67,
-      "eps_annualized": 1.34,
-      "equity_parent_thousand": 6215130.0,
-      "assets_total_thousand": 10762952.0,
-      "roe_annualized_pct": 5.57,
-      "roa_annualized_pct": 3.21
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 26571524.0,
+      "ni_total_ytd_thousand": 299683.0,
+      "ni_parent_ytd_thousand": 300072.0,
+      "eps_ytd": 1.16,
+      "eps_annualized": 1.55,
+      "equity_parent_thousand": 6343044.0,
+      "assets_total_thousand": 11623344.0,
+      "roe_annualized_pct": 6.31,
+      "roa_annualized_pct": 3.44
     },
     "2451": {
       "period": "2026Q2",
@@ -5082,18 +5089,18 @@
       "roa_annualized_pct": 12.44
     },
     "2455": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 1924683.0,
-      "ni_total_ytd_thousand": 408673.0,
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 3266757.0,
+      "ni_total_ytd_thousand": 746850.0,
       "ni_parent_ytd_thousand": null,
-      "eps_ytd": 2.2,
-      "eps_annualized": 4.4,
+      "eps_ytd": 4.01,
+      "eps_annualized": 5.35,
       "equity_parent_thousand": null,
-      "assets_total_thousand": 5716733.0,
+      "assets_total_thousand": 5728078.0,
       "roe_annualized_pct": null,
-      "roa_annualized_pct": 14.3
+      "roa_annualized_pct": 17.38
     },
     "2457": {
       "period": "2026Q2",
@@ -5222,18 +5229,18 @@
       "roa_annualized_pct": 0.37
     },
     "2467": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 5044062.0,
-      "ni_total_ytd_thousand": 1151072.0,
-      "ni_parent_ytd_thousand": 1106348.0,
-      "eps_ytd": 7.16,
-      "eps_annualized": 14.32,
-      "equity_parent_thousand": 15817015.0,
-      "assets_total_thousand": 29161787.0,
-      "roe_annualized_pct": 13.99,
-      "roa_annualized_pct": 7.89
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 8022519.0,
+      "ni_total_ytd_thousand": 1736703.0,
+      "ni_parent_ytd_thousand": 1660918.0,
+      "eps_ytd": 10.67,
+      "eps_annualized": 14.23,
+      "equity_parent_thousand": 15135536.0,
+      "assets_total_thousand": 29616761.0,
+      "roe_annualized_pct": 14.63,
+      "roa_annualized_pct": 7.82
     },
     "2468": {
       "period": "2026Q2",
@@ -5334,18 +5341,18 @@
       "roa_annualized_pct": 7.93
     },
     "2480": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 4882885.0,
-      "ni_total_ytd_thousand": 522614.0,
-      "ni_parent_ytd_thousand": 522614.0,
-      "eps_ytd": 4.91,
-      "eps_annualized": 9.82,
-      "equity_parent_thousand": 3275661.0,
-      "assets_total_thousand": 9472340.0,
-      "roe_annualized_pct": 31.91,
-      "roa_annualized_pct": 11.03
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 7446907.0,
+      "ni_total_ytd_thousand": 764927.0,
+      "ni_parent_ytd_thousand": 764927.0,
+      "eps_ytd": 7.19,
+      "eps_annualized": 9.59,
+      "equity_parent_thousand": 3587874.0,
+      "assets_total_thousand": 11429666.0,
+      "roe_annualized_pct": 28.43,
+      "roa_annualized_pct": 8.92
     },
     "2481": {
       "period": "2026Q2",
@@ -5544,18 +5551,18 @@
       "roa_annualized_pct": 6.16
     },
     "2498": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 1266828.0,
-      "ni_total_ytd_thousand": -521137.0,
-      "ni_parent_ytd_thousand": -521137.0,
-      "eps_ytd": -0.62,
-      "eps_annualized": -1.24,
-      "equity_parent_thousand": 26213533.0,
-      "assets_total_thousand": 38869299.0,
-      "roe_annualized_pct": -3.98,
-      "roa_annualized_pct": -2.68
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 2030455.0,
+      "ni_total_ytd_thousand": -302919.0,
+      "ni_parent_ytd_thousand": -302919.0,
+      "eps_ytd": -0.36,
+      "eps_annualized": -0.48,
+      "equity_parent_thousand": 26683640.0,
+      "assets_total_thousand": 42358043.0,
+      "roe_annualized_pct": -1.51,
+      "roa_annualized_pct": -0.95
     },
     "2501": {
       "period": "2026Q2",
@@ -6594,18 +6601,18 @@
       "roa_annualized_pct": -0.38
     },
     "2912": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 180703389.0,
-      "ni_total_ytd_thousand": 7319192.0,
-      "ni_parent_ytd_thousand": 6265139.0,
-      "eps_ytd": 6.03,
-      "eps_annualized": 12.06,
-      "equity_parent_thousand": 40976680.0,
-      "assets_total_thousand": 304022909.0,
-      "roe_annualized_pct": 30.58,
-      "roa_annualized_pct": 4.81
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 275878618.0,
+      "ni_total_ytd_thousand": 10769383.0,
+      "ni_parent_ytd_thousand": 9292757.0,
+      "eps_ytd": 8.94,
+      "eps_annualized": 11.92,
+      "equity_parent_thousand": 44300032.0,
+      "assets_total_thousand": 303671006.0,
+      "roe_annualized_pct": 27.97,
+      "roa_annualized_pct": 4.73
     },
     "2913": {
       "period": "2026Q2",
@@ -6720,18 +6727,18 @@
       "roa_annualized_pct": 5.45
     },
     "3004": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 2590139.0,
-      "ni_total_ytd_thousand": 258363.0,
-      "ni_parent_ytd_thousand": 258363.0,
-      "eps_ytd": 4.01,
-      "eps_annualized": 8.02,
-      "equity_parent_thousand": 3775151.0,
-      "assets_total_thousand": 9043329.0,
-      "roe_annualized_pct": 13.69,
-      "roa_annualized_pct": 5.71
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 4147691.0,
+      "ni_total_ytd_thousand": 421061.0,
+      "ni_parent_ytd_thousand": 421061.0,
+      "eps_ytd": 6.54,
+      "eps_annualized": 8.72,
+      "equity_parent_thousand": 3946157.0,
+      "assets_total_thousand": 9906714.0,
+      "roe_annualized_pct": 14.23,
+      "roa_annualized_pct": 5.67
     },
     "3005": {
       "period": "2026Q2",
@@ -6748,18 +6755,18 @@
       "roa_annualized_pct": 10.98
     },
     "3006": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 21213118.0,
-      "ni_total_ytd_thousand": 7968955.0,
-      "ni_parent_ytd_thousand": 7971616.0,
-      "eps_ytd": 27.58,
-      "eps_annualized": 55.16,
-      "equity_parent_thousand": 18995053.0,
-      "assets_total_thousand": 30076365.0,
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 43363345.0,
+      "ni_total_ytd_thousand": 18728073.0,
+      "ni_parent_ytd_thousand": 18730635.0,
+      "eps_ytd": 64.54,
+      "eps_annualized": 86.05,
+      "equity_parent_thousand": 29755855.0,
+      "assets_total_thousand": 48033446.0,
       "roe_annualized_pct": 83.93,
-      "roa_annualized_pct": 52.99
+      "roa_annualized_pct": 51.99
     },
     "3008": {
       "period": "2026Q2",
@@ -6930,18 +6937,18 @@
       "roa_annualized_pct": 6.82
     },
     "3023": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 17311456.0,
-      "ni_total_ytd_thousand": 1772982.0,
-      "ni_parent_ytd_thousand": 1768440.0,
-      "eps_ytd": 7.37,
-      "eps_annualized": 14.74,
-      "equity_parent_thousand": 16253324.0,
-      "assets_total_thousand": 35081604.0,
-      "roe_annualized_pct": 21.76,
-      "roa_annualized_pct": 10.11
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 27007617.0,
+      "ni_total_ytd_thousand": 2686449.0,
+      "ni_parent_ytd_thousand": 2679079.0,
+      "eps_ytd": 11.16,
+      "eps_annualized": 14.88,
+      "equity_parent_thousand": 17756474.0,
+      "assets_total_thousand": 38489522.0,
+      "roe_annualized_pct": 20.12,
+      "roa_annualized_pct": 9.31
     },
     "3024": {
       "period": "2026Q2",
@@ -7098,18 +7105,18 @@
       "roa_annualized_pct": 16.95
     },
     "3035": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 5902036.0,
-      "ni_total_ytd_thousand": 420607.0,
-      "ni_parent_ytd_thousand": 302262.0,
-      "eps_ytd": 1.16,
-      "eps_annualized": 2.32,
-      "equity_parent_thousand": 17113885.0,
-      "assets_total_thousand": 25115433.0,
-      "roe_annualized_pct": 3.53,
-      "roa_annualized_pct": 3.35
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 9566239.0,
+      "ni_total_ytd_thousand": 789269.0,
+      "ni_parent_ytd_thousand": 581143.0,
+      "eps_ytd": 2.23,
+      "eps_annualized": 2.97,
+      "equity_parent_thousand": 18014356.0,
+      "assets_total_thousand": 26358272.0,
+      "roe_annualized_pct": 4.3,
+      "roa_annualized_pct": 3.99
     },
     "3036": {
       "period": "2026Q2",
@@ -7126,18 +7133,18 @@
       "roa_annualized_pct": 4.11
     },
     "3037": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 80336273.0,
-      "ni_total_ytd_thousand": 18723125.0,
-      "ni_parent_ytd_thousand": 18157914.0,
-      "eps_ytd": 11.7,
-      "eps_annualized": 23.4,
-      "equity_parent_thousand": 123886281.0,
-      "assets_total_thousand": 313242650.0,
-      "roe_annualized_pct": 29.31,
-      "roa_annualized_pct": 11.95
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 132986108.0,
+      "ni_total_ytd_thousand": 29143315.0,
+      "ni_parent_ytd_thousand": 28209851.0,
+      "eps_ytd": 17.85,
+      "eps_annualized": 23.8,
+      "equity_parent_thousand": 177832637.0,
+      "assets_total_thousand": 399844428.0,
+      "roe_annualized_pct": 21.15,
+      "roa_annualized_pct": 9.72
     },
     "3038": {
       "period": "2026Q2",
@@ -7336,18 +7343,18 @@
       "roa_annualized_pct": 2.43
     },
     "3054": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 339319.0,
-      "ni_total_ytd_thousand": 233983.0,
-      "ni_parent_ytd_thousand": 233983.0,
-      "eps_ytd": 2.9,
-      "eps_annualized": 5.8,
-      "equity_parent_thousand": 1538041.0,
-      "assets_total_thousand": 1737284.0,
-      "roe_annualized_pct": 30.43,
-      "roa_annualized_pct": 26.94
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 449278.0,
+      "ni_total_ytd_thousand": 623255.0,
+      "ni_parent_ytd_thousand": 623255.0,
+      "eps_ytd": 7.73,
+      "eps_annualized": 10.31,
+      "equity_parent_thousand": 1836373.0,
+      "assets_total_thousand": 2021606.0,
+      "roe_annualized_pct": 45.25,
+      "roa_annualized_pct": 41.11
     },
     "3055": {
       "period": "2026Q2",
@@ -7756,32 +7763,32 @@
       "roa_annualized_pct": 5.21
     },
     "3321": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 1133355.0,
-      "ni_total_ytd_thousand": -67534.0,
-      "ni_parent_ytd_thousand": -67534.0,
-      "eps_ytd": -0.78,
-      "eps_annualized": -1.56,
-      "equity_parent_thousand": 671367.0,
-      "assets_total_thousand": 2054239.0,
-      "roe_annualized_pct": -20.12,
-      "roa_annualized_pct": -6.58
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 1826104.0,
+      "ni_total_ytd_thousand": -23211.0,
+      "ni_parent_ytd_thousand": -23211.0,
+      "eps_ytd": -0.27,
+      "eps_annualized": -0.36,
+      "equity_parent_thousand": 722952.0,
+      "assets_total_thousand": 2383335.0,
+      "roe_annualized_pct": -4.28,
+      "roa_annualized_pct": -1.3
     },
     "3338": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 1887922.0,
-      "ni_total_ytd_thousand": 40280.0,
-      "ni_parent_ytd_thousand": 40280.0,
-      "eps_ytd": 0.46,
-      "eps_annualized": 0.92,
-      "equity_parent_thousand": 1959993.0,
-      "assets_total_thousand": 3745875.0,
-      "roe_annualized_pct": 4.11,
-      "roa_annualized_pct": 2.15
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 3195976.0,
+      "ni_total_ytd_thousand": 88244.0,
+      "ni_parent_ytd_thousand": 88244.0,
+      "eps_ytd": 1.02,
+      "eps_annualized": 1.36,
+      "equity_parent_thousand": 2023392.0,
+      "assets_total_thousand": 4017815.0,
+      "roe_annualized_pct": 5.81,
+      "roa_annualized_pct": 2.93
     },
     "3346": {
       "period": "2026Q2",
@@ -7826,18 +7833,18 @@
       "roa_annualized_pct": 0.8
     },
     "3380": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 10480123.0,
-      "ni_total_ytd_thousand": 29719.0,
-      "ni_parent_ytd_thousand": 60957.0,
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 17622682.0,
+      "ni_total_ytd_thousand": 218286.0,
+      "ni_parent_ytd_thousand": 61034.0,
       "eps_ytd": 0.11,
-      "eps_annualized": 0.22,
-      "equity_parent_thousand": 9175587.0,
-      "assets_total_thousand": 25777401.0,
-      "roe_annualized_pct": 1.33,
-      "roa_annualized_pct": 0.23
+      "eps_annualized": 0.15,
+      "equity_parent_thousand": 9209276.0,
+      "assets_total_thousand": 29362941.0,
+      "roe_annualized_pct": 0.88,
+      "roa_annualized_pct": 0.99
     },
     "3406": {
       "period": "2026Q2",
@@ -7924,18 +7931,18 @@
       "roa_annualized_pct": -12.11
     },
     "3443": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 25344369.0,
-      "ni_total_ytd_thousand": 3201497.0,
-      "ni_parent_ytd_thousand": 3201497.0,
-      "eps_ytd": 23.89,
-      "eps_annualized": 47.78,
-      "equity_parent_thousand": 13465348.0,
-      "assets_total_thousand": 37385404.0,
-      "roe_annualized_pct": 47.55,
-      "roa_annualized_pct": 17.13
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 44098869.0,
+      "ni_total_ytd_thousand": 5473445.0,
+      "ni_parent_ytd_thousand": 5473445.0,
+      "eps_ytd": 40.84,
+      "eps_annualized": 54.45,
+      "equity_parent_thousand": 15730625.0,
+      "assets_total_thousand": 46268108.0,
+      "roe_annualized_pct": 46.39,
+      "roa_annualized_pct": 15.77
     },
     "3447": {
       "period": "2026Q2",
@@ -8008,18 +8015,18 @@
       "roa_annualized_pct": 1.72
     },
     "3504": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 1423232.0,
-      "ni_total_ytd_thousand": 11121.0,
-      "ni_parent_ytd_thousand": 11121.0,
-      "eps_ytd": 0.1,
-      "eps_annualized": 0.2,
-      "equity_parent_thousand": 2845787.0,
-      "assets_total_thousand": 4455284.0,
-      "roe_annualized_pct": 0.78,
-      "roa_annualized_pct": 0.5
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 2169569.0,
+      "ni_total_ytd_thousand": 12342.0,
+      "ni_parent_ytd_thousand": 12342.0,
+      "eps_ytd": 0.11,
+      "eps_annualized": 0.15,
+      "equity_parent_thousand": 2857667.0,
+      "assets_total_thousand": 4453191.0,
+      "roe_annualized_pct": 0.58,
+      "roa_annualized_pct": 0.37
     },
     "3515": {
       "period": "2026Q2",
@@ -8176,18 +8183,18 @@
       "roa_annualized_pct": 1.79
     },
     "3563": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 1910611.0,
-      "ni_total_ytd_thousand": 632566.0,
-      "ni_parent_ytd_thousand": 626830.0,
-      "eps_ytd": 9.8,
-      "eps_annualized": 19.6,
-      "equity_parent_thousand": 5547440.0,
-      "assets_total_thousand": 7915065.0,
-      "roe_annualized_pct": 22.6,
-      "roa_annualized_pct": 15.98
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 3002746.0,
+      "ni_total_ytd_thousand": 954957.0,
+      "ni_parent_ytd_thousand": 954127.0,
+      "eps_ytd": 14.92,
+      "eps_annualized": 19.89,
+      "equity_parent_thousand": 5816459.0,
+      "assets_total_thousand": 7798064.0,
+      "roe_annualized_pct": 21.87,
+      "roa_annualized_pct": 16.33
     },
     "3576": {
       "period": "2026Q2",
@@ -8442,18 +8449,18 @@
       "roa_annualized_pct": 2.31
     },
     "3679": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 2081417.0,
-      "ni_total_ytd_thousand": 263118.0,
-      "ni_parent_ytd_thousand": 263118.0,
-      "eps_ytd": 4.18,
-      "eps_annualized": 8.36,
-      "equity_parent_thousand": 4838964.0,
-      "assets_total_thousand": 9477024.0,
-      "roe_annualized_pct": 10.87,
-      "roa_annualized_pct": 5.55
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 3404494.0,
+      "ni_total_ytd_thousand": 456123.0,
+      "ni_parent_ytd_thousand": 456123.0,
+      "eps_ytd": 7.25,
+      "eps_annualized": 9.67,
+      "equity_parent_thousand": 5072779.0,
+      "assets_total_thousand": 9591414.0,
+      "roe_annualized_pct": 11.99,
+      "roa_annualized_pct": 6.34
     },
     "3686": {
       "period": "2026Q2",
@@ -8526,18 +8533,18 @@
       "roa_annualized_pct": 1.01
     },
     "3704": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 15061489.0,
-      "ni_total_ytd_thousand": 646636.0,
-      "ni_parent_ytd_thousand": 630525.0,
-      "eps_ytd": 1.55,
-      "eps_annualized": 3.1,
-      "equity_parent_thousand": 12123053.0,
-      "assets_total_thousand": 28977474.0,
-      "roe_annualized_pct": 10.4,
-      "roa_annualized_pct": 4.46
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 22814657.0,
+      "ni_total_ytd_thousand": 1128285.0,
+      "ni_parent_ytd_thousand": 1099067.0,
+      "eps_ytd": 2.71,
+      "eps_annualized": 3.61,
+      "equity_parent_thousand": 12617429.0,
+      "assets_total_thousand": 32169263.0,
+      "roe_annualized_pct": 11.61,
+      "roa_annualized_pct": 4.68
     },
     "3705": {
       "period": "2026Q2",
@@ -9226,18 +9233,18 @@
       "roa_annualized_pct": 3.96
     },
     "4583": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 1760772.0,
-      "ni_total_ytd_thousand": 546086.0,
-      "ni_parent_ytd_thousand": 546086.0,
-      "eps_ytd": 6.81,
-      "eps_annualized": 13.62,
-      "equity_parent_thousand": 9933373.0,
-      "assets_total_thousand": 11130876.0,
-      "roe_annualized_pct": 10.99,
-      "roa_annualized_pct": 9.81
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 2616703.0,
+      "ni_total_ytd_thousand": 827674.0,
+      "ni_parent_ytd_thousand": 827674.0,
+      "eps_ytd": 10.32,
+      "eps_annualized": 13.76,
+      "equity_parent_thousand": 10214961.0,
+      "assets_total_thousand": 11361462.0,
+      "roe_annualized_pct": 10.8,
+      "roa_annualized_pct": 9.71
     },
     "4585": {
       "period": "2026Q2",
@@ -9730,32 +9737,32 @@
       "roa_annualized_pct": 6.24
     },
     "4967": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 16633210.0,
-      "ni_total_ytd_thousand": 4706349.0,
-      "ni_parent_ytd_thousand": 4706349.0,
-      "eps_ytd": 53.44,
-      "eps_annualized": 106.88,
-      "equity_parent_thousand": 11143412.0,
-      "assets_total_thousand": 22589964.0,
-      "roe_annualized_pct": 84.47,
-      "roa_annualized_pct": 41.67
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 26772275.0,
+      "ni_total_ytd_thousand": 8323940.0,
+      "ni_parent_ytd_thousand": 8323940.0,
+      "eps_ytd": 90.95,
+      "eps_annualized": 121.27,
+      "equity_parent_thousand": 16045741.0,
+      "assets_total_thousand": 28429093.0,
+      "roe_annualized_pct": 69.17,
+      "roa_annualized_pct": 39.04
     },
     "4968": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 1907539.0,
-      "ni_total_ytd_thousand": 92389.0,
-      "ni_parent_ytd_thousand": 92389.0,
-      "eps_ytd": 1.0,
-      "eps_annualized": 2.0,
-      "equity_parent_thousand": 2698134.0,
-      "assets_total_thousand": 3598717.0,
-      "roe_annualized_pct": 6.85,
-      "roa_annualized_pct": 5.13
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 2880078.0,
+      "ni_total_ytd_thousand": 127596.0,
+      "ni_parent_ytd_thousand": 127596.0,
+      "eps_ytd": 1.38,
+      "eps_annualized": 1.84,
+      "equity_parent_thousand": 2734171.0,
+      "assets_total_thousand": 3495647.0,
+      "roe_annualized_pct": 6.22,
+      "roa_annualized_pct": 4.87
     },
     "4976": {
       "period": "2026Q2",
@@ -9842,18 +9849,18 @@
       "roa_annualized_pct": 12.73
     },
     "5203": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 1113464.0,
-      "ni_total_ytd_thousand": 131674.0,
-      "ni_parent_ytd_thousand": 131674.0,
-      "eps_ytd": 1.66,
-      "eps_annualized": 3.32,
-      "equity_parent_thousand": 4380238.0,
-      "assets_total_thousand": 6085477.0,
-      "roe_annualized_pct": 6.01,
-      "roa_annualized_pct": 4.33
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 1635350.0,
+      "ni_total_ytd_thousand": 152575.0,
+      "ni_parent_ytd_thousand": 152575.0,
+      "eps_ytd": 1.94,
+      "eps_annualized": 2.59,
+      "equity_parent_thousand": 4409627.0,
+      "assets_total_thousand": 5772407.0,
+      "roe_annualized_pct": 4.61,
+      "roa_annualized_pct": 3.52
     },
     "5215": {
       "period": "2026Q2",
@@ -10080,18 +10087,18 @@
       "roa_annualized_pct": 2.67
     },
     "5434": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 39362103.0,
-      "ni_total_ytd_thousand": 2876827.0,
-      "ni_parent_ytd_thousand": 2858045.0,
-      "eps_ytd": 14.79,
-      "eps_annualized": 29.58,
-      "equity_parent_thousand": 21975278.0,
-      "assets_total_thousand": 48203493.0,
-      "roe_annualized_pct": 26.01,
-      "roa_annualized_pct": 11.94
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 63028872.0,
+      "ni_total_ytd_thousand": 4899686.0,
+      "ni_parent_ytd_thousand": 4874710.0,
+      "eps_ytd": 25.19,
+      "eps_annualized": 33.59,
+      "equity_parent_thousand": 23739185.0,
+      "assets_total_thousand": 51707388.0,
+      "roe_annualized_pct": 27.38,
+      "roa_annualized_pct": 12.63
     },
     "5469": {
       "period": "2026Q2",
@@ -10374,18 +10381,18 @@
       "roa_annualized_pct": 1.36
     },
     "6112": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 12570260.0,
-      "ni_total_ytd_thousand": 369201.0,
-      "ni_parent_ytd_thousand": 348525.0,
-      "eps_ytd": 1.85,
-      "eps_annualized": 3.7,
-      "equity_parent_thousand": 4332209.0,
-      "assets_total_thousand": 15378509.0,
-      "roe_annualized_pct": 16.09,
-      "roa_annualized_pct": 4.8
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 18990587.0,
+      "ni_total_ytd_thousand": 358038.0,
+      "ni_parent_ytd_thousand": 335695.0,
+      "eps_ytd": 1.78,
+      "eps_annualized": 2.37,
+      "equity_parent_thousand": 4332691.0,
+      "assets_total_thousand": 16881121.0,
+      "roe_annualized_pct": 10.33,
+      "roa_annualized_pct": 2.83
     },
     "6115": {
       "period": "2026Q2",
@@ -10766,18 +10773,18 @@
       "roa_annualized_pct": 6.83
     },
     "6202": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 1808704.0,
-      "ni_total_ytd_thousand": 224366.0,
-      "ni_parent_ytd_thousand": 216181.0,
-      "eps_ytd": 0.94,
-      "eps_annualized": 1.88,
-      "equity_parent_thousand": 4044732.0,
-      "assets_total_thousand": 5864113.0,
-      "roe_annualized_pct": 10.69,
-      "roa_annualized_pct": 7.65
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 2876289.0,
+      "ni_total_ytd_thousand": 370268.0,
+      "ni_parent_ytd_thousand": 357702.0,
+      "eps_ytd": 1.55,
+      "eps_annualized": 2.07,
+      "equity_parent_thousand": 4204410.0,
+      "assets_total_thousand": 5807026.0,
+      "roe_annualized_pct": 11.34,
+      "roa_annualized_pct": 8.5
     },
     "6205": {
       "period": "2026Q2",
@@ -11004,18 +11011,18 @@
       "roa_annualized_pct": -7.87
     },
     "6271": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 5972201.0,
-      "ni_total_ytd_thousand": 915829.0,
-      "ni_parent_ytd_thousand": 914329.0,
-      "eps_ytd": 4.37,
-      "eps_annualized": 8.74,
-      "equity_parent_thousand": 27227420.0,
-      "assets_total_thousand": 35969231.0,
-      "roe_annualized_pct": 6.72,
-      "roa_annualized_pct": 5.09
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 9464532.0,
+      "ni_total_ytd_thousand": 1674242.0,
+      "ni_parent_ytd_thousand": 1671719.0,
+      "eps_ytd": 8.0,
+      "eps_annualized": 10.67,
+      "equity_parent_thousand": 27837930.0,
+      "assets_total_thousand": 36315902.0,
+      "roe_annualized_pct": 8.01,
+      "roa_annualized_pct": 6.15
     },
     "6272": {
       "period": "2026Q2",
@@ -11046,18 +11053,18 @@
       "roa_annualized_pct": 8.28
     },
     "6278": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 25785584.0,
-      "ni_total_ytd_thousand": 1428502.0,
-      "ni_parent_ytd_thousand": 1427118.0,
-      "eps_ytd": 4.93,
-      "eps_annualized": 9.86,
-      "equity_parent_thousand": 23147954.0,
-      "assets_total_thousand": 57011392.0,
-      "roe_annualized_pct": 12.33,
-      "roa_annualized_pct": 5.01
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 40243995.0,
+      "ni_total_ytd_thousand": 2405370.0,
+      "ni_parent_ytd_thousand": 2402930.0,
+      "eps_ytd": 8.31,
+      "eps_annualized": 11.08,
+      "equity_parent_thousand": 24206855.0,
+      "assets_total_thousand": 57010345.0,
+      "roe_annualized_pct": 13.24,
+      "roa_annualized_pct": 5.63
     },
     "6281": {
       "period": "2026Q2",
@@ -12264,18 +12271,18 @@
       "roa_annualized_pct": -2.61
     },
     "6799": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 503896.0,
-      "ni_total_ytd_thousand": 104401.0,
-      "ni_parent_ytd_thousand": 104401.0,
-      "eps_ytd": 2.41,
-      "eps_annualized": 4.82,
-      "equity_parent_thousand": 1647496.0,
-      "assets_total_thousand": 1943797.0,
-      "roe_annualized_pct": 12.67,
-      "roa_annualized_pct": 10.74
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 767221.0,
+      "ni_total_ytd_thousand": 151824.0,
+      "ni_parent_ytd_thousand": 151824.0,
+      "eps_ytd": 3.51,
+      "eps_annualized": 4.68,
+      "equity_parent_thousand": 1694985.0,
+      "assets_total_thousand": 1891637.0,
+      "roe_annualized_pct": 11.94,
+      "roa_annualized_pct": 10.7
     },
     "6805": {
       "period": "2026Q2",
@@ -12544,18 +12551,18 @@
       "roa_annualized_pct": 4.92
     },
     "6908": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 2350091.0,
-      "ni_total_ytd_thousand": -21080.0,
-      "ni_parent_ytd_thousand": 16314.0,
-      "eps_ytd": 0.45,
-      "eps_annualized": 0.9,
-      "equity_parent_thousand": 1299889.0,
-      "assets_total_thousand": 3551625.0,
-      "roe_annualized_pct": 2.51,
-      "roa_annualized_pct": -1.19
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 3614380.0,
+      "ni_total_ytd_thousand": -80557.0,
+      "ni_parent_ytd_thousand": -12809.0,
+      "eps_ytd": -0.35,
+      "eps_annualized": -0.47,
+      "equity_parent_thousand": 1280907.0,
+      "assets_total_thousand": 3956131.0,
+      "roe_annualized_pct": -1.33,
+      "roa_annualized_pct": -2.72
     },
     "6909": {
       "period": "2026Q2",
@@ -13146,18 +13153,18 @@
       "roa_annualized_pct": 1.49
     },
     "7765": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 1181763.0,
-      "ni_total_ytd_thousand": 250502.0,
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 1743717.0,
+      "ni_total_ytd_thousand": 355933.0,
       "ni_parent_ytd_thousand": null,
-      "eps_ytd": 6.16,
-      "eps_annualized": 12.32,
+      "eps_ytd": 8.75,
+      "eps_annualized": 11.67,
       "equity_parent_thousand": null,
-      "assets_total_thousand": 3101951.0,
+      "assets_total_thousand": 2790373.0,
       "roe_annualized_pct": null,
-      "roa_annualized_pct": 16.15
+      "roa_annualized_pct": 17.01
     },
     "7768": {
       "period": "2026Q2",
@@ -13328,18 +13335,18 @@
       "roa_annualized_pct": 3.97
     },
     "7822": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 1419287.0,
-      "ni_total_ytd_thousand": 441157.0,
-      "ni_parent_ytd_thousand": 442360.0,
-      "eps_ytd": 10.12,
-      "eps_annualized": 20.24,
-      "equity_parent_thousand": 6025178.0,
-      "assets_total_thousand": 8257853.0,
-      "roe_annualized_pct": 14.68,
-      "roa_annualized_pct": 10.68
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 2306056.0,
+      "ni_total_ytd_thousand": 724460.0,
+      "ni_parent_ytd_thousand": 726356.0,
+      "eps_ytd": 16.39,
+      "eps_annualized": 21.85,
+      "equity_parent_thousand": 6309176.0,
+      "assets_total_thousand": 8958836.0,
+      "roe_annualized_pct": 15.35,
+      "roa_annualized_pct": 10.78
     },
     "7823": {
       "period": "2026Q2",
@@ -13468,18 +13475,18 @@
       "roa_annualized_pct": 4.3
     },
     "8039": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 5111593.0,
-      "ni_total_ytd_thousand": 416442.0,
-      "ni_parent_ytd_thousand": 411845.0,
-      "eps_ytd": 1.56,
-      "eps_annualized": 3.12,
-      "equity_parent_thousand": 11196238.0,
-      "assets_total_thousand": 16600181.0,
-      "roe_annualized_pct": 7.36,
-      "roa_annualized_pct": 5.02
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 7605357.0,
+      "ni_total_ytd_thousand": 622260.0,
+      "ni_parent_ytd_thousand": 614688.0,
+      "eps_ytd": 2.33,
+      "eps_annualized": 3.11,
+      "equity_parent_thousand": 11175976.0,
+      "assets_total_thousand": 15301465.0,
+      "roe_annualized_pct": 7.33,
+      "roa_annualized_pct": 5.42
     },
     "8045": {
       "period": "2026Q2",
@@ -13748,18 +13755,18 @@
       "roa_annualized_pct": 1.48
     },
     "8215": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 9491823.0,
-      "ni_total_ytd_thousand": -279210.0,
-      "ni_parent_ytd_thousand": -306651.0,
-      "eps_ytd": -0.96,
-      "eps_annualized": -1.92,
-      "equity_parent_thousand": 4800635.0,
-      "assets_total_thousand": 23727477.0,
-      "roe_annualized_pct": -12.78,
-      "roa_annualized_pct": -2.35
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 14380980.0,
+      "ni_total_ytd_thousand": -360287.0,
+      "ni_parent_ytd_thousand": -399253.0,
+      "eps_ytd": -1.25,
+      "eps_annualized": -1.67,
+      "equity_parent_thousand": 4724749.0,
+      "assets_total_thousand": 23686386.0,
+      "roe_annualized_pct": -11.27,
+      "roa_annualized_pct": -2.03
     },
     "8222": {
       "period": "2026Q2",
@@ -13790,32 +13797,32 @@
       "roa_annualized_pct": 1.32
     },
     "8261": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 1658276.0,
-      "ni_total_ytd_thousand": 365768.0,
-      "ni_parent_ytd_thousand": 365265.0,
-      "eps_ytd": 3.07,
-      "eps_annualized": 6.14,
-      "equity_parent_thousand": 5706486.0,
-      "assets_total_thousand": 7086972.0,
-      "roe_annualized_pct": 12.8,
-      "roa_annualized_pct": 10.32
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 2501793.0,
+      "ni_total_ytd_thousand": 544490.0,
+      "ni_parent_ytd_thousand": 543984.0,
+      "eps_ytd": 4.58,
+      "eps_annualized": 6.11,
+      "equity_parent_thousand": 5883672.0,
+      "assets_total_thousand": 6638756.0,
+      "roe_annualized_pct": 12.33,
+      "roa_annualized_pct": 10.94
     },
     "8271": {
-      "period": "2026Q2",
-      "asof": "2026-10-30",
-      "annualize_factor": 2.0,
-      "revenue_ytd_thousand": 16718334.0,
-      "ni_total_ytd_thousand": 4653677.0,
-      "ni_parent_ytd_thousand": 4575826.0,
-      "eps_ytd": 35.51,
-      "eps_annualized": 71.02,
-      "equity_parent_thousand": 9512135.0,
-      "assets_total_thousand": 21944361.0,
-      "roe_annualized_pct": 96.21,
-      "roa_annualized_pct": 42.41
+      "period": "2026Q3",
+      "asof": "2026-11-03",
+      "annualize_factor": 1.3333333333333333,
+      "revenue_ytd_thousand": 25300238.0,
+      "ni_total_ytd_thousand": 6728521.0,
+      "ni_parent_ytd_thousand": 6564029.0,
+      "eps_ytd": 50.83,
+      "eps_annualized": 67.77,
+      "equity_parent_thousand": 11549299.0,
+      "assets_total_thousand": 23749373.0,
+      "roe_annualized_pct": 75.78,
+      "roa_annualized_pct": 37.78
     },
     "8341": {
       "period": "2026Q2",
@@ -18870,13 +18877,15 @@
     },
     "2454": {
       "by_year_cash_per_share": {
-        "114": 24.5
+        "114": 24.5,
+        "115": 24.5
       },
-      "latest_year": "114",
+      "latest_year": "115",
       "latest_cash_per_share": 24.5,
-      "streak_years": 1,
+      "streak_years": 2,
       "years_available": [
-        "114"
+        "114",
+        "115"
       ]
     },
     "2455": {
@@ -26091,6 +26100,17 @@
       },
       "latest_year": "114",
       "latest_cash_per_share": 3.22,
+      "streak_years": 1,
+      "years_available": [
+        "114"
+      ]
+    },
+    "7867": {
+      "by_year_cash_per_share": {
+        "114": 2.4309
+      },
+      "latest_year": "114",
+      "latest_cash_per_share": 2.4309,
       "streak_years": 1,
       "years_available": [
         "114"

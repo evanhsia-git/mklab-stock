@@ -52,16 +52,34 @@
 
 ## 資料更新排程（GitHub Actions，`.github/workflows/daily-update.yml`）
 
-| 排程（UTC） | 台灣時間 | 內容 |
-|---|---|---|
-| 週一至週五 09:00 | 17:00 | 抓當日收盤、PE/PB/殖利率（TWSE OpenAPI） |
-| 每週六 10:00 | 18:00 | 補齊 ROE/ROA（yfinance，含防 ban 延遲） |
-| 週一至週五 09:30 | 17:30 | 抓全球指數＋代表 ETF 收盤／漲跌（yfinance） |
-| 週一至週五 10:00 | 18:00 | 產生每日市場摘要 + RSS（`data/digest/`、`rss.xml`） |
-| 週一至週五 22:00 | 隔日 06:00 | 抓美股個股/ETF 前 30 大（yfinance，獨立於台股排程，輸出至 `data/us/`） |
+併發控制分兩層：workflow 層級 `group: data-update`（同一時間一個 run）；job 層級 `group: mklab-git-push` + `queue: max`，讓各 job 依序執行、序列化 git push（`queue` 預設是 single，同群組只能「1 執行中 + 1 等待」，一次觸發多個 job 會被自己人取消）。推送統一透過 `scripts/ci_commit_push.sh`：先拉取遠端、衝突時取遠端較新版本、被拒絕時最多重試 5 次；因此每個 checkout 都設 `fetch-depth: 0`（淺層歷史無法合併遠端分岔，推送會失敗）。
 
-- 週末／國定假日／突發休市自動跳過（資料源本身無交易日資料）。
-- 資料以收盤為準，非即時；各頁頂部黃色提示列會顯示實際資料日。
+### 各 job 說明（共 7 個）
+
+| Job | 功能 | 抓取內容與數量 | 更新頻率（台灣時間） | 資料來源 | 產出 |
+|---|---|---|---|---|---|
+| `daily` | 每日收盤行情、PE、殖利率；本地計算技術指標、K 線、產業統計、官方公司資訊；每日市場摘要與 RSS | 上市個股與 ETF（TWSE）、上櫃標準 ETF（TPEx），約 1,496 檔；計算與摘要在本地完成 | 週一至週五 17:00 | TWSE OpenAPI、TPEx OpenAPI | `data/stocks.json`、`data/kline/`、`data/industry.json`、`data/history/`、`data/digest/`、`rss.xml` |
+| `weekly-roe` | 補沒有官方財報的一般股票 ROE／ROA | 只抓不在 TWSE 官方財報內的一般股票，約數十檔，每檔間隔 3 秒 | 每週六 18:00 | yfinance（第三方） | `data/stocks.json` 的 ROE／ROA |
+| `indices` | 全球指數、全球 ETF、總經指標；台股加權指數 K 線 | 指數 16、ETF 12、總經 8，共 36 個代號；`^TWII` 近 260 日 | 週一至週五 17:30 | yfinance（第三方） | `data/indices.json`、`data/twii_kdata.js` |
+| `us-market` | 美股市值前 30 大個股、ETF 規模前 30 大 | 候選池約 60 檔個股、40 檔 ETF，取前 30 | 週一至週五 06:00（隔日） | yfinance（第三方） | `data/us/us-stocks.json`、`data/us/us-etfs.json` |
+| `global-history` | 美股指數、全球指數與市場情緒的每日收盤，累積為月檔 | 14 個代號（美股 5、全球與情緒 9），每日新增一筆 | 週一至週五 06:30（隔日） | yfinance（第三方） | `data/us-history-YYYY/us-history-YYYY-MM.json`、`data/global-history-YYYY/global-history-YYYY-MM.json` |
+| `index-holdings` | 四大指數替代 ETF 的持股與權重 | DIA（約 30）、QQQ（約 100）、SOXX（約 30）、VOO（約 500） | 每月 2 日 06:45（隔日） | State Street、Invesco、iShares 官網；Vanguard 官網（VOO，失敗時用手動檔） | `data/index-holdings/*.json` |
+| `official-fundamentals` | TWSE 官方財報、股利、基金與公司基本資料自動下載並匯入 | 損益、資產負債表（1,052 家上市公司）、股利（1,115 家）、基金（275 檔）、公司基本資料（1,099 家） | 每月 20 日 18:00 | TWSE OpenAPI（`t187ap03_L`、`t187ap45_L`、`t187ap47_L`）＋ MOPS opendata（`t187ap06_L`、`t187ap07_L`，當日增量批次與既有快照 upsert 合併） | `data/raw/official/`、`data/official-fundamentals.json`、`data/etf-official.json`、`data/stocks.json` 的 ROE／ROA／EPS 與產業欄位 |
+
+### 資料來源分類
+
+- **官方來源**：TWSE、TPEx 的收盤行情、PE、殖利率、產業分類、官方財報與股利、ETF 清單。
+- **第三方來源（yfinance）**：ROE／ROA 補充、全球指數與 ETF、美股前 30 大、全球與情緒的月檔、台股加權指數 K 線。非官方，偶爾失敗或限流；失敗時保留上一版，不寫入假值。
+- **發行人官網**：DIA、QQQ、SOXX、VOO 的持股明細。
+
+### 已確認的設計決策
+
+- `twii-kline` 併入 `indices`（兩者都抓 `^TWII`，原本重複）。
+- `digest` 併入 `daily`（摘要只讀本地資料）。
+- `us-market` 與 `global-history` 維持分開。
+- `index-holdings` 改為每月一次（DIA、QQQ、SOXX、VOO 都是每月）。
+- 新增 `official-fundamentals`，每月自動下載 TWSE 官方財報，取代原本的手動匯入。
+- 所有推送統一經過 `scripts/ci_commit_push.sh`。
 
 ## 目前資料規模（依 `data/stocks.json` meta，會隨每日更新變動）
 

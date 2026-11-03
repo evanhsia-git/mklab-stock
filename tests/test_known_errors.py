@@ -199,16 +199,23 @@ check("排程：job 引用的 cron 都已註冊在 on.schedule", _ref <= _reg an
 # 曾發生：為了序列化 push 而給 8 個 job 加上同一個 job 級 concurrency group，但 queue 預設 single
 # （同 group 只能 1 執行中 + 1 pending），workflow_dispatch 一次觸發 8 個 job 時 6 個 sibling
 # 在 2 秒內被 "Canceling since a higher priority waiting request for mklab-git-push exists" 取消。
+_job_ct = len(re.findall(r'^    concurrency:$', wf2, re.M))  # 每個 job 恰好一個 job 級 concurrency 區塊（workflow 層級縮排為 0，不會被算到）
 _group_ct = len(re.findall(r'^\s+group:\s*mklab-git-push\s*$', wf2, re.M))
 _queue_ct = len(re.findall(r'^\s+queue:\s*max\s*$', wf2, re.M))
 check("CI：job 級 concurrency 每個 group 都必須有 queue: max（否則 sibling job 互相取消）",
-      _group_ct == 8 and _queue_ct == 8, f"group={_group_ct} queue:max={_queue_ct}")
+      _group_ct == _job_ct and _queue_ct == _job_ct, f"jobs={_job_ct} group={_group_ct} queue:max={_queue_ct}")
+
+# 推送腳本會 git merge 遠端分岔歷史 → 淺層 checkout（預設 depth=1）合併必定失敗，必須 fetch-depth: 0
+_fd_ct = len(re.findall(r'^\s+fetch-depth:\s*0\s*$', wf2, re.M))
+check("CI：每個 job 的 checkout 都要 fetch-depth: 0（淺層歷史無法 merge 遠端分岔，推送會失敗）",
+      _fd_ct == _job_ct, f"jobs={_job_ct} fetch-depth:0={_fd_ct}")
 
 # 推送邏輯單一實作：8 個 job 共用 scripts/ci_commit_push.sh，且不得再用會被舊 checkout 覆蓋新資料的 -X ours
 _ci_push_raw = open('scripts/ci_commit_push.sh', encoding='utf-8').read()
 _ci_push = re.sub(r'^\s*#.*$', '', _ci_push_raw, flags=re.M)  # 註解裡會提到 -X ours 這個「錯誤示範」，比對要排除註解
-check("CI：8 個 commit 步驟都走共用腳本 scripts/ci_commit_push.sh（不再各 job 各寫一套）",
-      wf2.count('bash scripts/ci_commit_push.sh') == 8 and 'git config user.name' not in wf2)
+check("CI：每個 job 的推送步驟都走共用腳本 scripts/ci_commit_push.sh（不再各 job 各寫一套）",
+      wf2.count('bash scripts/ci_commit_push.sh') == _job_ct and 'git config user.name' not in wf2,
+      f"jobs={_job_ct} 呼叫={wf2.count('bash scripts/ci_commit_push.sh')}")
 check("CI：推送合併衝突取遠端（-X theirs），不得用 -X ours（舊 checkout 會把遠端較新資料覆蓋回舊的）",
       '-X ours' not in wf2 and '-X ours' not in _ci_push and '-X theirs' in _ci_push)
 check("CI：推送有重試（被其他 job 插隊時不會直接失敗）", 'until [' in _ci_push and 'git push origin HEAD:main' in _ci_push)
@@ -242,6 +249,54 @@ finally:
     setattr(_fih, 'CFG', _old_cfg)
     setattr(_fih, 'OUT_DIR', _old_out)
 check("指數替代 ETF：完全沒有產出時回傳非 0（不再假裝 success）", _rc == 1, f"rc={_rc}")
+
+# 官方財報下載（2026-11-03）
+# t187ap06_L / t187ap07_L 在 openapi.twse.com.tw 已失效（回傳 HTML 非 JSON，實測），必須走 MOPS；
+# MOPS 的 *_ci.csv 只是「當日出表」的增量批次（實測 53 家 vs 完整快照 1,052 家），
+# 所以必須與既有快照 upsert 合併，否則一份 53 家的批次會蓋掉 1,052 家的完整快照。
+_fof = _ilu.module_from_spec(_s2 := _ilu.spec_from_file_location("_fof", "skills/data/fetch_official_fundamentals.py"))
+_s2.loader.exec_module(_fof)
+_bad_ep = [u for _, u, *_ in _fof.SOURCES if "openapi.twse.com.tw" in u and ("t187ap06_L" in u or "t187ap07_L" in u)]
+check("官方財報：t187ap06/07 不得使用已失效的 openapi 端點", not _bad_ep, f"{_bad_ep}")
+check("官方財報：增量來源（06/07）必須標記為 upsert 合併",
+      all(inc for pre, _, _, _, _, _, _, inc in _fof.SOURCES if pre in ("t187ap06_L", "t187ap07_L")))
+_snap = _fof.existing_snapshot("t187ap06_L", "csv")  # 不寫死檔名：跑過下載後舊檔會被 _latest 取代
+_bk, _br, _bn = _fof.upsert(["公司代號", "營業收入"],
+                            [{"公司代號": "2330", "營業收入": "999"}, {"公司代號": "9999", "營業收入": "1"}],
+                            _snap, "公司代號")
+_i = {r["公司代號"]: r["營業收入"] for r in _br}
+check("官方財報：增量批次 upsert 後筆數不減、同代號被新資料覆蓋",
+      _bn >= 1000 and len(_br) >= _bn and _i.get("2330") == "999" and "9999" in _i,
+      f"快照 {_bn} 筆 → 合併後 {len(_br)} 筆、2330={_i.get('2330')}")
+
+# 年化係數必須逐列依各自季別計算（曾用第一列的季別算一個係數 → 混季時 Q3 被當 Q2 年化，高估 50%）
+import tempfile as _tf
+_td = _tf.mkdtemp()
+_od = os.path.join(_td, "official"); os.makedirs(_od)
+with open(os.path.join(_od, "t187ap06_L_latest.csv"), "w", encoding="utf-8-sig") as f:
+    f.write("出表日期,年度,季別,公司代號,公司名稱,營業收入,本期淨利（淨損）,淨利（淨損）歸屬於母公司業主,基本每股盈餘\n")
+    f.write("1151030,115,2,2330,台積電,1000,200,180,3.0\n")   # Q2：累計 6 個月 → ×2
+    f.write("1151103,115,3,9999,測試,1500,300,270,4.5\n")      # Q3：累計 9 個月 → ×4/3
+with open(os.path.join(_od, "t187ap07_L_latest.csv"), "w", encoding="utf-8-sig") as f:
+    f.write("出表日期,年度,季別,公司代號,資產總計,歸屬於母公司業主之權益合計\n")
+    f.write("1151030,115,2,2330,10000,5000\n")
+    f.write("1151103,115,3,9999,20000,9000\n")
+_iio = _ilu.module_from_spec(_s3 := _ilu.spec_from_file_location("_iio", "skills/data/import_official_fundamentals.py"))
+_s3.loader.exec_module(_iio)
+_old_src = _iio.SRC
+try:
+    _iio.SRC = _od
+    _fin, _info = _iio.import_income_balance(None)
+finally:
+    _iio.SRC = _old_src
+check("官方財報：年化係數逐列依各自季別（Q2×2、Q3×4/3、混季不互相污染）",
+      _fin["2330"]["annualize_factor"] == 2 and abs(_fin["9999"]["annualize_factor"] - 4 / 3) < 1e-9
+      and _fin["2330"]["eps_annualized"] == 6.0 and _fin["9999"]["eps_annualized"] == 6.0
+      and _fin["2330"]["roe_annualized_pct"] == 7.2 and _fin["9999"]["roe_annualized_pct"] == 4.0,
+      f"2330={_fin['2330']['annualize_factor']} 9999={round(_fin['9999']['annualize_factor'],4)} "
+      f"roe={_fin['2330']['roe_annualized_pct']}/{_fin['9999']['roe_annualized_pct']}")
+check("官方財報：混季時仍完整涵蓋所有公司並回報季別分布",
+      len(_fin) == 2 and _info["periods"] == {"2026Q2": 1, "2026Q3": 1}, f"{_info.get('periods')}")
 
 
 # 輸出
