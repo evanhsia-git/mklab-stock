@@ -146,7 +146,9 @@ mklab-stock/
 │   │   ├── us-stocks.json            # 美股市值前 30 大
 │   │   └── us-etfs.json              # 美股 ETF 規模前 30 大
 │   ├── etf-meta.json                # ETF 上市/上櫃日期、發行人、受益人數（半自動，見下方說明）
-│   └── raw/                         # 人工匯出的原始 CSV（twse_etf.csv／tpex_etf.csv），僅供 parse_etf_meta.py 讀取
+│   └── raw/                         # 人工匯出的原始 CSV（twse_etf.csv／tpex_etf.csv，僅供 parse_etf_meta.py 讀取）
+│       ├── official/                # TWSE 官方財報／股利／基金原始檔（由 fetch_official_fundamentals.py 下載）
+│       └── twse-openapi-full.md     # TWSE OpenAPI 143 端點完整清單（參考文件，來源 swagger.json）
 ├── docs/                          # 設計依據／資料欄位說明／規範文件
 ├── skills/                        # Skills First — 每個 Skill 自包含（qa-gate/html-health/lint/data/deployment/design-system/development）
 ├── vendor/                        # 第三方 JS（lightweight-charts.min.js）
