@@ -8,9 +8,9 @@
   "details": {
     "roe_updated": 39
   },
-  "end": "2026-11-04 13:38:36",
-  "duration_sec": 133.2,
-  "start": "2026-11-04 13:36:23",
+  "end": "2026-11-04 13:35:58",
+  "duration_sec": 0.6,
+  "start": "2026-11-04 13:35:57",
   "log_lines": [
     "[INFO] 開始補 ROE/ROA（yfinance 免 key，sleep 3s 防 ban）",
     "[INFO] 待補 40 檔",
