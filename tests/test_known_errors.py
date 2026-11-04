@@ -138,6 +138,13 @@ check("P0-1 證券分類與官方 ETF 清單+代碼規則一致", not mismatch, 
 # P0-2 來源狀態：不得有 stale 資料冒充今日行情
 stale_fresh = [s['sym'] for s in S if s.get('quality') == 'stale' and s.get('price_asof') == stocks_doc['meta'].get('as_of')]
 check("P0-2 stale 資料的行情日期不得等於快照日期", not stale_fresh, f"{len(stale_fresh)} 檔")
+# CI 修復：weekly（ROE 補充）不得覆寫 source（行情來源），寫入前必須重算 meta
+fd_text = open('skills/data/fetch_data.py', encoding='utf-8').read()
+check("CI weekly 不覆寫 source 為 Yahoo Finance（ROE 來源改記 roe_src）", 's["source"] = "Yahoo Finance"' not in fd_text and '"roe_src"' in fd_text)
+check("CI weekly 寫入前呼叫 recompute_meta", 'recompute_meta(data)' in fd_text)
+# CI 修復：權證／其他證券不參與漲跌異常檢查
+qg_text = open('skills/qa-gate/qa_gate.py', encoding='utf-8').read()
+check("CI QA 漲跌檢查排除 security_type=other", 'security_type") not in ("stock", "etf")' in qg_text)
 # 官方公司資料整合：一般股票具備產業與上市日期
 st_rows = [s for s in S if s.get('security_type') == 'stock']
 check("一般股票具備上市日期（官方）", all(s.get('listing_date') for s in st_rows), f"缺 {sum(1 for s in st_rows if not s.get('listing_date'))} 檔")

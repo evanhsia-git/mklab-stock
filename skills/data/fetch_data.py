@@ -161,6 +161,20 @@ def classify_security(sid, etf_ref):
     return "other"
 
 
+def recompute_meta(doc):
+    """依實際陣列重算 meta.count / meta.sources / meta.price_asof_counts（任何寫入 stocks.json 的地方都要呼叫）。"""
+    stocks = doc.get("stocks", [])
+    meta = doc.setdefault("meta", {})
+    src, pa = {}, {}
+    for s in stocks:
+        src[s.get("source")] = src.get(s.get("source"), 0) + 1
+        pa[s.get("price_asof")] = pa.get(s.get("price_asof"), 0) + 1
+    meta["count"] = len(stocks)
+    meta["sources"] = src
+    meta["price_asof_counts"] = pa
+    return doc
+
+
 def load_symbol_map():
     path = os.path.join(OUT, "symbol-map.json")
     if not os.path.exists(path):
@@ -898,8 +912,9 @@ def run_weekly():
         if s["sym"] in roe_map:
             s["roe"] = roe_map[s["sym"]].get("roe")
             s["roa"] = roe_map[s["sym"]].get("roa")
+            # 只標註 ROE/ROA 的補充來源；不得覆寫 source（source 表示行情來源，meta.sources 依此統計）
+            s["roe_src"] = "yfinance"
             s["quality"] = "yfinance_fallback"
-            s["source"] = "Yahoo Finance"
     # ====== 新增：週更新產業別 ======
     industry_map = fetch_industry_map()
     if industry_map:
@@ -908,6 +923,7 @@ def run_weekly():
     else:
         LOG.warn("Industry map empty; skipping industry classification update")
     data["meta"]["roe_source"] = "yfinance (免 key, 每週六更新, 備用)"
+    recompute_meta(data)  # 寫入前重算 meta，避免 sources / count 與陣列不一致
     with open(p, "w", encoding="utf-8") as f:
         json.dump(_sanitize_nan(data), f, ensure_ascii=False)
     LOG.stats["written"] = len(roe_map)

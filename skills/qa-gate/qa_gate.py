@@ -216,9 +216,14 @@ def run():
     c = Check("Data", "異常漲跌檢查 (>10.5% 警示 / >30% 阻擋)")
     try:
         warn_list, err_list = [], []
+        excluded = 0
         for s_ in stocks_list:
             chg = s_.get("chg")
             if not _num(chg):
+                continue
+            # 權證、特別股、DR 等（security_type=other）單日 ±30% 很常見，不屬於行情錯誤；只檢查一般股票與 ETF
+            if s_.get("security_type") not in ("stock", "etf"):
+                excluded += 1
                 continue
             if abs(chg) > 30:
                 err_list.append(f"{s_.get('sym')}={chg}%")
@@ -227,9 +232,9 @@ def run():
         if err_list:
             c.error(f"漲跌幅超過 30% {len(err_list)} 檔: {err_list[:10]}", "核對來源收盤與前收價", stocks_path)
         elif warn_list:
-            c.warn(f"漲跌幅超過 ±10.5% {len(warn_list)} 檔（可能為新上市或資料延遲，需人工確認）: {warn_list[:10]}", "人工確認", stocks_path)
+            c.warn(f"漲跌幅超過 ±10.5% {len(warn_list)} 檔（可能為新上市或資料延遲，需人工確認）: {warn_list[:10]}；已略過權證/其他證券 {excluded} 檔", "人工確認", stocks_path)
         else:
-            c.ok("所有有效漲跌幅在 ±10.5% 以內")
+            c.ok(f"一般股票與 ETF 漲跌幅皆在 ±10.5% 以內（略過權證/其他證券 {excluded} 檔）")
     except Exception as e:
         c.error(f"檢查失敗: {e}", "", stocks_path)
     add(c)
