@@ -1,44 +1,19 @@
 {
-  "mode": "daily",
+  "mode": "twii",
   "success": true,
   "error": null,
-  "fetched": 1390,
-  "written": 2952,
+  "fetched": 0,
+  "written": 260,
   "skipped": false,
   "details": {
-    "truncated": 12016,
-    "schema_version": "1.0.0",
-    "trade_date": "2026-11-03",
-    "history_file": "20261103.json",
-    "sources": {
-      "TWSE": 1375,
-      "TPEX": 1625
-    }
+    "twii_days": 260,
+    "twii_range": "2025-10-03~2026-11-03"
   },
-  "end": "2026-11-05 00:42:55",
-  "duration_sec": 140.8,
-  "start": "2026-11-05 00:40:34",
+  "end": "2026-11-05 01:24:14",
+  "duration_sec": 0.8,
+  "start": "2026-11-05 01:24:13",
   "log_lines": [
-    "[INFO] Actions 基準日 2026-11-05",
-    "[WARN] 下載失敗（第 1/5 次）https://openapi.twse.com.tw/v1/opendata/t187ap06_L: Expecting value: line 1 column 1 (char 0)",
-    "[WARN] 下載失敗（第 2/5 次）https://openapi.twse.com.tw/v1/opendata/t187ap06_L: Expecting value: line 1 column 1 (char 0)",
-    "[WARN] 下載失敗（第 3/5 次）https://openapi.twse.com.tw/v1/opendata/t187ap06_L: Expecting value: line 1 column 1 (char 0)",
-    "[WARN] 下載失敗（第 4/5 次）https://openapi.twse.com.tw/v1/opendata/t187ap06_L: Expecting value: line 1 column 1 (char 0)",
-    "[WARN] 下載失敗（第 5/5 次）https://openapi.twse.com.tw/v1/opendata/t187ap06_L: Expecting value: line 1 column 1 (char 0)",
-    "[WARN] 營益分析抓取失敗（ROE/ROA/EPS 留空，不中斷）：Expecting value: line 1 column 1 (char 0)",
-    "[INFO] 資產負債表取得 0 檔股本",
-    "[INFO] trade_date=2026-11-03, TWSE=1390",
-    "[INFO] ETF 發行張數載入 90 檔",
-    "[INFO] TPEX 每日收盤取得 13626 筆原始資料",
-    "[INFO] TPEX 候選筆數（一般股票+ETF，已過濾代碼格式）: 13626",
-    "[WARN] 下載失敗（第 1/5 次）https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_pe_ratio?l=zh-tw: Expecting value: line 1 column 1 (char 0)",
-    "[WARN] 下載失敗（第 2/5 次）https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_pe_ratio?l=zh-tw: Expecting value: line 1 column 1 (char 0)",
-    "[WARN] 下載失敗（第 3/5 次）https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_pe_ratio?l=zh-tw: Expecting value: line 1 column 1 (char 0)",
-    "[WARN] 下載失敗（第 4/5 次）https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_pe_ratio?l=zh-tw: Expecting value: line 1 column 1 (char 0)",
-    "[WARN] 下載失敗（第 5/5 次）https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_pe_ratio?l=zh-tw: Expecting value: line 1 column 1 (char 0)",
-    "[WARN] TPEX BWIBBU 抓取失敗（沿用前次 PE/PB/殖利率，不中斷）：Expecting value: line 1 column 1 (char 0)",
-    "[WARN] 合併後 15016 筆超過上限 3000，截除市值最小的 12016 筆",
-    "[WARN] 2026-11-03 歷史快照已存在，不覆蓋（防止重複寫入或舊資料覆蓋）",
-    "[INFO] 完成 → data/ (stocks=2952, history=2026-11-03, TWSE=1375)"
+    "[INFO] 開始抓取 TWII 加權指數 K 線 (yfinance ^TWII, 260 日窗口)",
+    "[INFO] TWII K 線寫入 260 天 → twii_kdata.js (2025-10-03~2026-11-03)"
   ]
 }
