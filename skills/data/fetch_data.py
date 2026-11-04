@@ -199,17 +199,20 @@ def ind_name(codes, fallback, raw):
     return nm if nm else fallback
 
 
-def fetch_json(url, timeout=60, attempts=3):
+def fetch_json(url, timeout=60, attempts=5):
     """抓 JSON，附重試與完整性檢查。
 
-    P0-3：不再接受 IncompleteRead 的 partial bytes。截斷的內容即使剛好是合法 JSON
-    （例如少了後半的陣列元素）也可能是不完整資料，因此一律視為失敗並重試；
-    全部重試失敗才拋出例外，由呼叫端決定是否沿用前次有效資料。
+    注意：上櫃全量收盤檔約 5MB，經常在傳輸中被截斷（IncompleteRead）。
+    - 不採用截斷後的 partial bytes（即使剛好是合法 JSON 也可能少了後半資料）。
+    - 以 Content-Length 與實際位元組數比對，確認回應完整才解析。
+    - 要求 identity 編碼，避免伺服器回傳壓縮內容時長度比對失真。
+    - 全部重試失敗才拋出例外，由呼叫端決定是否沿用前次有效資料。
     """
     last = None
     for i in range(attempts):
         try:
-            req = urllib.request.Request(url, headers={"User-Agent": "mklab-stock/1.0"})
+            req = urllib.request.Request(url, headers={"User-Agent": "mklab-stock/1.0",
+                                                       "Accept-Encoding": "identity"})
             with urllib.request.urlopen(req, timeout=timeout) as r:
                 raw = r.read()
                 expected = r.headers.get("Content-Length")
@@ -220,7 +223,7 @@ def fetch_json(url, timeout=60, attempts=3):
             last = e
             LOG.warn(f"下載失敗（第 {i+1}/{attempts} 次）{url}: {e}")
             if i + 1 < attempts:
-                time.sleep(2 * (i + 1))
+                time.sleep(min(30, 5 * (i + 1)))  # 退避：5s、10s、15s、20s
     raise last
 
 
@@ -380,7 +383,7 @@ def fetch_tpex_bwibbu():
 def fetch_tpex_daily():
     """抓 TPEX 每日收盤，回傳 list of dict（同 TWSE 格式）。失敗回傳空 list。"""
     try:
-        raw = fetch_json(TPEX_DAILY, timeout=120)   # 全量約 5MB，60s 容易截斷
+        raw = fetch_json(TPEX_DAILY, timeout=120, attempts=5)   # 全量約 5MB，傳輸中常被截斷，多給幾次重試
         if not isinstance(raw, list):
             return []
         LOG.info(f"TPEX 每日收盤取得 {len(raw)} 筆原始資料")

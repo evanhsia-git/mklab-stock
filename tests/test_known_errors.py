@@ -145,6 +145,10 @@ check("CI weekly 寫入前呼叫 recompute_meta", 'recompute_meta(data)' in fd_t
 # CI 修復：權證／其他證券不參與漲跌異常檢查
 qg_text = open('skills/qa-gate/qa_gate.py', encoding='utf-8').read()
 check("CI QA 漲跌檢查排除 security_type=other", 'security_type") not in ("stock", "etf")' in qg_text)
+# CI 修復（#190）：上櫃全量檔常被截斷；必須「重試到完整」，不得採用 partial bytes，也不得因截斷而整批失敗
+check("CI 上櫃下載不採用 IncompleteRead partial bytes（程式不存取 .partial）", 'getattr(e, "partial"' not in fd_text and 'e.partial' not in fd_text)
+check("CI fetch_json 以 Content-Length 驗證完整性且要求 identity 編碼", 'Content-Length' in fd_text and '"Accept-Encoding": "identity"' in fd_text)
+check("CI 上櫃下載使用 5 次重試", 'fetch_json(TPEX_DAILY, timeout=120, attempts=5)' in fd_text)
 # 官方公司資料整合：一般股票具備產業與上市日期
 st_rows = [s for s in S if s.get('security_type') == 'stock']
 check("一般股票具備上市日期（官方）", all(s.get('listing_date') for s in st_rows), f"缺 {sum(1 for s in st_rows if not s.get('listing_date'))} 檔")
