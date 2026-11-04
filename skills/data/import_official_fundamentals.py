@@ -209,7 +209,6 @@ def import_etf_basic(stamp_info):
     if not paths:
         return {}
     data = json.load(open(paths[0], encoding="utf-8"))
-    k = list(data[0].keys()) if data else []
     def g(r, name):
         return str(r.get(name, "") or "").strip()
     out = {}

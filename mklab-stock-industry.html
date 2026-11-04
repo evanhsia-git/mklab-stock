@@ -68,12 +68,14 @@
 </div>
 <div class="pager" id="indDetailPager"></div>
 
-<div class="disclaimer">產業分類來源：TWSE 官方公司基本資料（t187ap03_L）與 33 個法定產業代碼（data/industry-codes.json）。各產業漲跌、上漲比例由 data/stocks.json 每日行情重算（data/compute_industry.py）。基準日：<span id="indAsofNote">載入中</span></div>
+<div class="disclaimer">產業分類來源：TWSE 官方公司基本資料（t187ap03_L，上市）與 TPEx 上櫃股票基本資料（t187ap03_O，上櫃）、35 個產業代碼（data/industry-codes.json）。各產業漲跌、上漲比例由 data/stocks.json 每日行情重算（data/compute_industry.py）。基準日：<span id="indAsofNote">載入中</span></div>
 
 <script src="assets/js/data-client.js"></script>
 <script src="assets/js/mklab-core.js"></script>
 <script>
-  const INDUSTRIES = ["水泥工業","食品工業","塑膠工業","紡織纖維","電機機械","電器電纜","化學工業","生技醫療業","玻璃陶瓷","造紙工業","鋼鐵工業","橡膠工業","汽車工業","半導體業","電腦及週邊設備業","光電業","通訊網路業","電子零組件業","電子通路業","資訊服務業","其他電子業","建材營造","航運業","觀光餐旅","金融保險","貿易百貨","油電燃氣業","綜合","綠能環保","數位雲端","運動休閒","居家生活","其他等"];
+  // 產業清單不在此硬寫：唯一來源為 data/industry-codes.json（35 類，含上櫃專有的 32 文化創意業、33 農業科技業）
+  // 與 data/industry.json 的實際聚合結果。舊版本曾硬寫 33 個名稱且把「通信網路業」誤寫成「通訊網路業」，
+  // 兩份清單會漂移，故移除。
   // ===== 市場寬度（原 mklab-stock-breadth.html，併入本頁）=====
   // 包在獨立區塊內，BUCKETS 與 render 函式不會和產業頁的變數互相覆蓋
   const BreadthPanel = (function () {

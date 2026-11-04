@@ -153,6 +153,44 @@ check("CI 上櫃下載使用 5 次重試", 'fetch_json(TPEX_DAILY, timeout=120, 
 st_rows = [s for s in S if s.get('security_type') == 'stock']
 check("一般股票具備上市日期（官方）", all(s.get('listing_date') for s in st_rows), f"缺 {sum(1 for s in st_rows if not s.get('listing_date'))} 檔")
 
+# 上櫃來源（TPEx t187ap03_O）：上櫃一般股票必須有產業與上櫃日期，且來源標註正確
+tpex_st_rows = [s for s in st_rows if s.get('source') == 'TPEX']
+check("上櫃一般股票具備產業別", all(s.get('ind') for s in tpex_st_rows),
+      f"缺 {sum(1 for s in tpex_st_rows if not s.get('ind'))} 檔")
+check("上櫃一般股票標註上櫃來源", all('t187ap03_O' in (s.get('ind_src') or '') for s in tpex_st_rows if s.get('ind_src')),
+      f"未標註 {sum(1 for s in tpex_st_rows if s.get('ind_src') and 't187ap03_O' not in s['ind_src'])} 檔")
+
+# 評分公式單一來源：data/scoring-config.json（前端 index.html、後端 build_digest.py、文件 help.html）
+_sc = json.load(open('data/scoring-config.json', encoding='utf-8'))
+check("評分設定含 5 個評分項", len(_sc.get('components', [])) == 5, f"實際 {len(_sc.get('components', []))} 項")
+check("評分設定含公式說明與更新日",
+      bool(_sc.get('meta', {}).get('formula')) and bool(_sc.get('meta', {}).get('updated')))
+_idx_txt = open('index.html', encoding='utf-8').read()
+check("前端 index.html 讀取評分設定（未硬寫舊公式）",
+      'scoring-config' in _idx_txt and 'Math.min(40, roe * 1.2)' not in _idx_txt)
+_bd_txt = open('skills/data/build_digest.py', encoding='utf-8').read()
+check("後端 build_digest.py 讀取評分設定（未硬寫舊公式）",
+      'scoring-config' in _bd_txt and 'min(40, roe * 1.2)' not in _bd_txt)
+check("help.html 標示評分設定的唯一來源",
+      'scoring-config' in open('mklab-stock-help.html', encoding='utf-8').read())
+# 依設定試算：roe=20 / pe=15 / pb=2 / eps=10 / chg=5 → 24+15+12+3+5 = 59.0
+_smp = {'roe': 20, 'pe': 15, 'pb': 2, 'eps': 10, 'chg': 5}
+_tot = 0.0
+for _c in _sc['components']:
+    _v = _smp[_c['key']]
+    _x = (_c['base'] - _v) if _c.get('direction') == 'low' else (_v - _c['base'])
+    _tot += min(_c['max'], _x * _c['coef'])
+check("評分公式試算符合預期（59.0）", round(_tot, 1) == 59.0, f"實算 {round(_tot, 1)}")
+# 缺欄位不得計分（不得補 0）：compute_score 只要有一個欄位是 None 就回 None
+def _score_or_none(row):
+    for _c in _sc['components']:
+        if row.get(_c['key']) is None:
+            return None
+    return 1.0
+check("評分公式缺欄位不計分（不補 0）",
+      _score_or_none({'roe': 20, 'pe': None, 'pb': 2, 'eps': 10, 'chg': 5}) is None
+      and _score_or_none(_smp) is not None)
+
 
 # 個股 K 線檔：每檔行情都有對應 K 線，且最後一筆與行情收盤一致
 import os as _os

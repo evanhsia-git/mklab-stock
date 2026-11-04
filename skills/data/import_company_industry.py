@@ -4,7 +4,7 @@ TWSE 公司基本資料（t187ap03_L）產業別匯入：只補「一般股票�
 產業代碼 → 名稱 依 data/industry-codes.json。
 用法：放入 data/raw/official/t187ap03_L_*.csv 後執行 python3 skills/data/import_company_industry.py
 """
-import csv, datetime as dt, glob, json, os
+import csv, glob, json, os
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 SRC = glob.glob(os.path.join(ROOT, "data", "raw", "official", "t187ap03_L*.csv"))
 codes = json.load(open(os.path.join(ROOT, "data", "industry-codes.json"), encoding="utf-8"))["codes"]

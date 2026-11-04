@@ -29,7 +29,6 @@ mklab-stock ETF 補充資料解析腳本（半自動，非 GitHub Actions 排程
 import csv
 import re
 import datetime as dt
-import io
 import json
 import os
 
@@ -76,7 +75,7 @@ def parse_twse():
     lines = [l for l in content.splitlines() if l.strip()]
     # 第 0 行是頁面標題「ETF 投資篩選器」，第 1 行才是真正表頭，資料從第 2 行開始
     reader = csv.reader(lines[1:])
-    header = next(reader)
+    next(reader)  # 跳過表頭列
     out = []
     for row in reader:
         if not row or not row[0].strip():
@@ -111,7 +110,7 @@ def parse_tpex():
         content = f.read()
     lines = [l for l in content.splitlines() if l.strip()]
     reader = csv.reader(lines)
-    header = next(reader)
+    next(reader)  # 跳過表頭列
     out = []
     for row in reader:
         if not row or not row[0].strip():

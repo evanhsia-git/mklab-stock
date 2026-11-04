@@ -661,22 +661,11 @@
       all[sym].unshift(rec);
       _saveNotes(all);
     },
-    // 讀取某股票的交易紀錄（只含有 trade 欄位者），依交易日期由舊到新
-    trades(sym){
-      return (_loadNotes()[sym]||[]).filter(n=>n.trade)
-        .sort((a,b)=>String(a.trade.date).localeCompare(String(b.trade.date)));
-    },
     remove(sym, ts){
       const all=_loadNotes();
       if(!all[sym]) return;
       all[sym]=all[sym].filter(n=>n.ts!==ts);
       _saveNotes(all);
-    },
-    countAll(){
-      const all=_loadNotes();
-      const out={};
-      Object.keys(all).forEach(sym=>{ out[sym]=all[sym].length; });
-      return out;
     },
   };
 

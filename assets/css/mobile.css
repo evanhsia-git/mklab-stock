@@ -16,7 +16,6 @@
   .section-title { font-size: 14px; margin: 16px 0 8px; }
   .card { padding: 12px 14px; border-radius: 10px; }
   .grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
-  .card-sm { padding: 10px 12px; }
   .card-val { font-size: 18px; }
   .card .chg { font-size: 12px; }
   .freshness { font-size: 11px; padding: 4px 0 6px; }
@@ -37,7 +36,6 @@
   .row-input input[type="text"],
   .row-input input[type="search"] { width: 100%; min-width: 0; }
   .row-input button { width: 100%; }
-  .form-row { flex-direction: column; gap: 8px; }
   .layout { grid-template-columns: 1fr; }
   .panel { padding: 12px; }
   .mh-layout { grid-template-columns: 1fr; }
@@ -46,7 +44,6 @@
   .cards { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; }
   .card-title { font-size: 14px; }
   .badge { font-size: 10px; padding: 1px 6px; }
-  .pill { font-size: 11px; padding: 2px 8px; }
   .alert { padding: 10px 12px; font-size: 12px; }
   .kv { font-size: 12px; padding: 6px 0; }
   .count { font-size: 12px; }
@@ -54,11 +51,6 @@
   .footer { font-size: 11px; padding: 16px; }
   .btn { padding: 7px 14px; font-size: 12px; }
   .btn-sm { padding: 4px 8px; font-size: 11px; }
-  .btn-lg { padding: 10px 20px; font-size: 13px; }
-  .empty-state { padding: 30px 16px; }
-  .empty-state svg { width: 48px; height: 48px; }
-  .empty-state h4 { font-size: 13px; }
-  .empty-state p { font-size: 12px; }
 }
 
 /* ===== Small Mobile (<= 480px) ===== */
@@ -68,10 +60,7 @@
   .nav a { padding: 4px 6px; font-size: 12px; }
   .utilbar { gap: 4px; padding: 4px 8px; }
   .brand { font-size: 13px; }
-  .icon-btn { width: 32px; height: 32px; }
-  .icon-btn svg { width: 18px; height: 18px; }
   .cards { grid-template-columns: 1fr 1fr; gap: 6px; }
-  .card-sm { padding: 8px 10px; }
   .card-val { font-size: 16px; }
   .section-title { font-size: 13px; }
   .pager { gap: 4px; }
@@ -120,7 +109,6 @@
 
 /* ===== High DPI / Retina ===== */
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .icon-btn svg { image-rendering: -webkit-optimize-contrast; }
 }
 
 /* ===== Reduced Motion ===== */

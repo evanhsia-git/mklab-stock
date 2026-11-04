@@ -18,7 +18,6 @@ mklab-stock ETF 分類腳本（Build-Time，純本地計算，不對外請求）
 """
 import json
 import os
-import re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 META_PATH = os.path.join(ROOT, "data", "etf-meta.json")

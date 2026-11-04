@@ -30,6 +30,8 @@ import csv, datetime as dt, glob, io, json, os, sys, urllib.request
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 OUT = os.path.join(ROOT, "data", "raw", "official")
 OPENAPI = "https://openapi.twse.com.tw/v1/opendata/"
+# TPEx OpenAPI（mopsfin_ 系列＝公開資訊觀測站財報／公司資料，由上櫃中心提供）
+TPEX_OPENAPI = "https://www.tpex.org.tw/openapi/v1/"
 UA = {"User-Agent": "mklab-stock/1.0 (GitHub Actions) contact: github.com/evanhsia-git/mklab-stock"}
 
 # 官方財報按產業拆檔，必須全抓（缺一類就會有一整個產業沒有官方財報）
@@ -38,6 +40,13 @@ INDUSTRIES = ["ci", "basi", "bd", "fh", "ins", "mim"]
 # (輸出前綴, 來源 URL 清單, 來源格式, 輸出格式, 必要欄位, 去重鍵, 筆數下限, 是否為當期增量批次)
 SOURCES = [
     ("t187ap03_L", [OPENAPI + "t187ap03_L"], "json", "csv", ["公司代號", "產業別"], "公司代號", 800, False),
+    # 上櫃股票基本資料（TPEx OpenAPI mopsfin 系列）。P0-1 納入上櫃一般股票後，這些股票的
+    # 產業別與上櫃日期只有此來源有（TWSE t187ap03_L 僅涵蓋上市），缺它會讓
+    # 「一般股票產業分類完整」「一般股票具備上市日期」兩項測試失敗。
+    # 注意：本端點欄位為英文（SecuritiesCompanyCode / SecuritiesIndustryCode / DateOfListing），
+    # 與 t187ap03_L 的中文欄位不同，整合端需分別解析。
+    ("t187ap03_O", [TPEX_OPENAPI + "mopsfin_t187ap03_O"], "json", "csv",
+     ["SecuritiesCompanyCode", "SecuritiesIndustryCode"], "SecuritiesCompanyCode", 600, False),
     ("t187ap06_L", [OPENAPI + f"t187ap06_L_{s}" for s in INDUSTRIES], "json", "csv",
      ["公司代號", "營業收入"], "公司代號", 800, True),
     ("t187ap07_L", [OPENAPI + f"t187ap07_L_{s}" for s in INDUSTRIES], "json", "csv",

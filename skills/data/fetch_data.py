@@ -93,7 +93,6 @@ TWSE_DAILY       = "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL"
 TWSE_BWIBBU      = "https://openapi.twse.com.tw/v1/exchangeReport/BWIBBU_ALL"
 TWSE_PROFITABILITY = "https://openapi.twse.com.tw/v1/opendata/t187ap06_L"  # 營益分析：ROE、ROA、EPS（可能已失效，備用用 yfinance）
 TWSE_BALANCE     = "https://openapi.twse.com.tw/v1/opendata/t187ap05_L"     # 資產負債表：股本（可能已失效，備用用 yfinance）
-TWSE_INCOME      = "https://openapi.twse.com.tw/v1/opendata/t187ap03_L"     # 綜合損益表：淨利（可能已失效，備用用 yfinance）
 
 # TPEX：上櫃一般股票 + ETF（P0-4 修正：不再只抓 ETF）
 TPEX_DAILY       = "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes?l=zh-tw"
@@ -109,7 +108,7 @@ LOG = RunLogger(MODE)
 # ===== 選股原則 =====
 # 1. TWSE 上市股票 + ETF（排除期貨/指數/非數字開頭代碼）
 # 2. TPEX 上櫃 ETF（ETF、債券 ETF、槓桿/反向 ETF、高息/配息型）
-# 3. 合併後依市值由大到小排序，取前 SAFE_MAX 筆（上限 2000 筆）
+# 3. 合併後依市值由大到小排序，取前 SAFE_MAX 筆（上限 SAFE_MAX=3000 筆）
 # 4. ETF 以名稱關鍵字識別（ETF|基金|指數|正[0-9]|反[0-9]|槓桿|反向|期貨|配息|高息|優息|收益）
 # 5. 停牌/無成交資料保留代碼但 OHLC 設為 null
 
@@ -175,28 +174,12 @@ def recompute_meta(doc):
     return doc
 
 
-def load_symbol_map():
-    path = os.path.join(OUT, "symbol-map.json")
-    if not os.path.exists(path):
-        LOG.warn("symbol-map.json 不存在，將無法進行代碼轉換")
-        return {}
-    d = json.load(open(path, encoding="utf-8"))
-    return d.get("symbol_map", {})
-
-
 def load_codes():
     path = os.path.join(OUT, "industry-codes.json")
     if not os.path.exists(path):
         return {}, "其他等"
     d = json.load(open(path, encoding="utf-8"))
     return d.get("codes", {}), d.get("fallback", "其他等")
-
-
-def ind_name(codes, fallback, raw):
-    if not raw:
-        return fallback
-    nm = codes.get(str(raw).zfill(2)) or codes.get(str(raw))
-    return nm if nm else fallback
 
 
 def fetch_json(url, timeout=60, attempts=5):
@@ -225,20 +208,6 @@ def fetch_json(url, timeout=60, attempts=5):
             if i + 1 < attempts:
                 time.sleep(min(30, 5 * (i + 1)))  # 退避：5s、10s、15s、20s
     raise last
-
-
-def fetch_json_with_fallback(urls, timeout=60):
-    """依序嘗試多個 URL，成功即回傳；全部失敗回傳空 list。"""
-    for url in urls:
-        try:
-            raw = fetch_json(url, timeout=timeout)
-            if isinstance(raw, list) and raw:
-                LOG.info(f"成功取得資料來源: {url}")
-                return raw
-        except Exception as e:
-            LOG.warn(f"來源失敗 {url}: {e}")
-    LOG.error(f"所有來源均失敗: {urls}")
-    return []
 
 
 def parse_date(roc_str):
@@ -451,7 +420,6 @@ def fetch_yfinance_roe(sym_list):
 # ===== 主流程：每日抓取 =====
 def run_daily():
     codes, fallback = load_codes()
-    symbol_map = load_symbol_map()
     stamp = dt.datetime.now(dt.timezone(dt.timedelta(hours=8))).strftime("%Y-%m-%d")
     LOG.info(f"Actions 基準日 {stamp}")
 
@@ -770,58 +738,6 @@ def run_daily():
     stocks = all_stocks
 
     # ===== 方案二：yfinance 補齊 capital_stock / eps 缺漏 =====
-    def _yfinance_fill_missing(stocks_list):
-        """對 capital_stock 或 eps 為 null 的股票，呼叫 yfinance 補齊"""
-        try:
-            import yfinance as yf
-        except ImportError:
-            LOG.warn("yfinance 未安裝，跳過補齊")
-            return
-
-        # 找出需要補齊的代號
-        need_fill = [s for s in stocks_list if s.get("capital_stock") is None or s.get("eps") is None]
-        if not need_fill:
-            LOG.info("無需 yfinance 補齊")
-            return
-
-        syms = [s["sym"] for s in need_fill]
-        LOG.info(f"yfinance 補齊 {len(syms)} 檔 (capital_stock/eps 缺漏)")
-
-        # 為避免被 ban，分批處理，每檔 sleep 1.5 秒
-        for i, sym in enumerate(syms):
-            try:
-                t = yf.Ticker(f"{sym}.TW")
-                info = t.info or {}
-
-                # capital_stock: 實收資本額 = sharesOutstanding * 面值(台股慣例 10 元)
-                shares_out = info.get("sharesOutstanding")
-                capital = round(shares_out * 10) if shares_out else None
-
-                # eps: trailingEps (最新財報)
-                trailing_eps = info.get("trailingEps")
-
-                # 找到對應股票物件並更新
-                for s in stocks_list:
-                    if s["sym"] == sym:
-                        if s.get("capital_stock") is None and capital is not None:
-                            s["capital_stock"] = capital
-                        if s.get("eps") is None and trailing_eps is not None:
-                            s["eps"] = round(trailing_eps, 2)
-                        break
-
-            except Exception as e:
-                LOG.warn(f"yfinance {sym} 補齊失敗: {e}")
-
-            # 進度 log + 限速
-            if (i + 1) % 10 == 0:
-                LOG.info(f"  進度 {i+1}/{len(syms)}")
-            time.sleep(1.5)  # 防 ban
-
-        filled = sum(1 for s in need_fill if s.get("capital_stock") is not None or s.get("eps") is not None)
-        LOG.info(f"yfinance 補齊完成：{filled}/{len(need_fill)} 檔有新資料")
-
-    # _yfinance_fill_missing(stocks)
-
     meta = {
         "as_of": trade_date,
         "source": f"TWSE OpenAPI STOCK_DAY_ALL (免 key, 雲端)",
@@ -866,6 +782,7 @@ def run_daily():
     # 防護：休市日或來源資料不完整時，TWSE 會回傳舊資料且缺少高低價；這種日子不是交易日，
     # 不可寫入 history（否則回測與指標會讀到錯誤收盤值）。
     miss_hl = sum(1 for s in stocks if s.get("high") is None)
+    hpath = None  # 休市/來源不完整時不會寫入 history，下方記錄需容忍 None
     if stocks and miss_hl / len(stocks) > 0.5:
         LOG.warn(f"{trade_date} 高低價缺失 {miss_hl}/{len(stocks)}，疑似休市或來源不完整，不寫入 history 切片")
     else:
@@ -889,7 +806,7 @@ def run_daily():
 
     LOG.stats["written"] = len(stocks)
     LOG.stats["details"]["trade_date"] = trade_date
-    LOG.stats["details"]["history_file"] = os.path.basename(hpath)
+    LOG.stats["details"]["history_file"] = os.path.basename(hpath) if hpath else None
     LOG.stats["details"]["sources"] = sources
     LOG.info(f"完成 → data/ (stocks={len(stocks)}, history={trade_date}, TWSE={sources['TWSE']})")
     LOG.finish(True)

@@ -42,19 +42,28 @@ def load_json(path):
         return json.load(f)
 
 
+# 綜合評分公式的唯一來源：data/scoring-config.json
+# 前端 index.html 的 computeScore() 與 mklab-stock-help.html 的說明表都必須跟這份一致
+# （由 tests/test_known_errors.py 的「評分設定單一來源」檢查把關）。
+SCORE_CFG = json.load(open(os.path.join(DATA_DIR, 'scoring-config.json'), encoding='utf-8'))
+
+
 def compute_score(s):
-    """跟 mklab-stock-help.html「綜合評分計算標準」同一套公式，任一欄位缺漏則不計分"""
-    roe, pe, pb, eps, chg = s.get('roe'), s.get('pe'), s.get('pb'), s.get('eps'), s.get('chg')
-    if None in (roe, pe, pb, eps, chg):
-        return None
-    score = (
-        min(40, roe * 1.2)
-        + min(20, (30 - pe) * 1.0)
-        + min(15, (8 - pb) * 2.0)
-        + min(10, eps * 0.3)
-        + min(15, chg * 1.0)
-    )
-    return round(max(0, score), 1)
+    """依 data/scoring-config.json 計算綜合評分；任一欄位缺漏則不計分。"""
+    vals = {}
+    for c in SCORE_CFG['components']:
+        v = s.get(c['key'])
+        if v is None:
+            return None
+        vals[c['key']] = v
+    score = 0.0
+    for c in SCORE_CFG['components']:
+        v = vals[c['key']]
+        x = (c['base'] - v) if c.get('direction') == 'low' else (v - c['base'])
+        score += min(c['max'], x * c['coef'])
+    if SCORE_CFG.get('min_zero', True):
+        score = max(0.0, score)
+    return round(score, SCORE_CFG.get('round_decimals', 1))
 
 
 def build_digest():

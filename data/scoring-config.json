@@ -1,0 +1,16 @@
+{
+  "meta": {
+    "note": "綜合評分公式唯一來源。前端 index.html 與後端 skills/data/build_digest.py 皆讀本檔計算；mklab-stock-help.html 的說明表須與此一致（改參數時三處同步，由 tests/test_known_errors.py 把關）。",
+    "formula": "score = Σ min(max_i, (x_i - base_i) × coef_i)（direction=low 時為 (base_i - x_i) × coef_i），任一欄位缺漏則不計分",
+    "updated": "2026-11-04"
+  },
+  "components": [
+    { "key": "roe", "label": "ROE（股東權益報酬率）", "max": 40, "coef": 1.2, "base": 0,  "direction": "high" },
+    { "key": "pe",  "label": "PE（本益比）",          "max": 20, "coef": 1.0, "base": 30, "direction": "low"  },
+    { "key": "pb",  "label": "PB（股價淨值比）",       "max": 15, "coef": 2.0, "base": 8,  "direction": "low"  },
+    { "key": "eps", "label": "EPS（每股盈餘）",        "max": 10, "coef": 0.3, "base": 0,  "direction": "high" },
+    { "key": "chg", "label": "漲跌%",                 "max": 15, "coef": 1.0, "base": 0,  "direction": "high" }
+  ],
+  "round_decimals": 1,
+  "min_zero": true
+}

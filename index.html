@@ -253,17 +253,22 @@
       }
     }
 
-    // 綜合評分公式跟 mklab-stock-help.html「綜合評分計算標準」、
-    // skills/data/build_digest.py 的 compute_score() 是同一套，三處務必保持一致
+    // 綜合評分公式的唯一來源是 data/scoring-config.json：
+    //   前端＝本函式、後端＝skills/data/build_digest.py（讀同一份）、文件＝mklab-stock-help.html
+    // 三處一致性由 tests/test_known_errors.py 的「評分設定單一來源」檢查把關。
+    let SCORE_CFG = null;
     function computeScore(r) {
-      const { roe, pe, pb, eps, chg } = r;
-      if (roe == null || pe == null || pb == null || eps == null || chg == null) return null;
-      const score = Math.min(40, roe * 1.2)
-        + Math.min(20, (30 - pe) * 1.0)
-        + Math.min(15, (8 - pb) * 2.0)
-        + Math.min(10, eps * 0.3)
-        + Math.min(15, chg * 1.0);
-      return Math.round(Math.max(0, score) * 10) / 10;
+      if (!SCORE_CFG || !Array.isArray(SCORE_CFG.components)) return null; // 設定未載入時不計分（不用預設值硬算）
+      let score = 0;
+      for (const c of SCORE_CFG.components) {
+        const v = r[c.key];
+        if (v == null) return null;                        // 任一欄位缺漏則不計分
+        const x = c.direction === 'low' ? (c.base - v) : (v - c.base);
+        score += Math.min(c.max, x * c.coef);
+      }
+      const dec = SCORE_CFG.round_decimals != null ? SCORE_CFG.round_decimals : 1;
+      const d = Math.pow(10, dec);
+      return Math.round(Math.max(0, score) * d) / d;
     }
 
     let dailyPicksTable = null;
@@ -388,6 +393,10 @@
       MKLAB.Shell?.mount({ active: 'market' });
       MKLAB.initDrawer?.();
     }
+
+    // 評分參數（唯一來源）必須在計算分數前載入；載入失敗時不計分，不用預設值硬算
+    try { SCORE_CFG = await MKLAB.data.json('scoring-config'); }
+    catch (e) { console.warn('[Market] scoring-config 載入失敗，綜合評分暫不計算:', e); }
 
     renderIndices();
     renderMacro();

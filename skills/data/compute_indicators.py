@@ -22,7 +22,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 HISTORY_DIR = os.path.join(ROOT, "data", "history")
 STOCKS_PATH = os.path.join(ROOT, "data", "stocks.json")
 
-# 90 個交易日：足以算出 MA30 / RSI14 / MACD(12,26,9) / KD(9)，並留一些讓 EMA 收斂的緩衝
+# 280 個交易日：足以算出 MA30 / RSI14 / MACD(12,26,9) / KD(9)，並留一些讓 EMA 收斂的緩衝
 LOOKBACK_DAYS = 280  # 52 週位階需要約 1 年的交易日（原 90 日，改為 280 以覆蓋 52 週）
 MIN_FOR_MACD = 35  # 26 日 EMA + 9 日訊號線緩衝
 MIN_FOR_RSI = 15   # 14 期漲跌幅 + 1

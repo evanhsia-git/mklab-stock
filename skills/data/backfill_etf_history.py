@@ -24,7 +24,6 @@ ETF 上市以來歷史回補（一次性／可重跑，非每日排程）。
 注意：本腳本只「新增／更新」指定代號，不會刪除任何既有紀錄或檔案。
 """
 import argparse
-import datetime as dt
 import json
 import os
 import sys

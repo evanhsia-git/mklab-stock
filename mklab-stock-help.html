@@ -102,6 +102,7 @@
       <tr><td>漲跌%</td><td class="b">最高 15</td><td><code>min(15, 漲跌% × 1.0)</code>，越高越好</td></tr>
     </tbody>
   </table>
+  <p class="muted-small">本表由 <code>data/scoring-config.json</code> 驅動（唯一來源）：<code>index.html</code> 前端計分與 <code>skills/data/build_digest.py</code> 後端摘要皆讀同一份，調整參數時三處同步；一致性由 <code>tests/test_known_errors.py</code> 自動檢查。任一欄位缺漏則該檔不計分（顯示 <code>-</code>），不補 0。</p>
   </div>
   <p class="muted-small-top">任一欄位缺漏（null）則該股不列入推薦。評分僅供參考，<b>非投資建議</b>。</p>
 </div>
