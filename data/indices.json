@@ -14,9 +14,9 @@
       "name": "加權股價指數 (TAIEX)",
       "yf": "^TWII",
       "desc": "台灣大盤",
-      "close": 42365.77,
+      "close": 42950.43,
       "prev_close": 43307.54,
-      "chg_pct": -2.17,
+      "chg_pct": -0.82,
       "as_of": "2026-11-04"
     },
     {
@@ -84,9 +84,9 @@
       "name": "上海證券綜合指數",
       "yf": "000001.SS",
       "desc": "上證綜指",
-      "close": 3604.98,
+      "close": 3603.41,
       "prev_close": 3608.1,
-      "chg_pct": -0.09,
+      "chg_pct": -0.13,
       "as_of": "2026-11-04"
     },
     {
@@ -94,8 +94,8 @@
       "name": "滬深300",
       "yf": "000300.SS",
       "desc": "滬深300指數",
-      "close": 4011.28,
-      "prev_close": 4011.28,
+      "close": 4016.51,
+      "prev_close": 4016.51,
       "chg_pct": 0.0,
       "as_of": "2026-11-04"
     },
@@ -104,9 +104,9 @@
       "name": "深證成指",
       "yf": "399001.SZ",
       "desc": "深證成份指數",
-      "close": 10891.91,
+      "close": 10923.87,
       "prev_close": 10876.99,
-      "chg_pct": 0.14,
+      "chg_pct": 0.43,
       "as_of": "2026-11-04"
     },
     {
@@ -114,8 +114,8 @@
       "name": "創業板指",
       "yf": "399006.SZ",
       "desc": "創業板指數",
-      "close": 2394.12,
-      "prev_close": 2394.12,
+      "close": 2402.06,
+      "prev_close": 2402.06,
       "chg_pct": 0.0,
       "as_of": "2026-11-04"
     },
@@ -124,9 +124,9 @@
       "name": "恆生指數",
       "yf": "^HSI",
       "desc": "香港恆生指數",
-      "close": 23500.3,
+      "close": 23658.47,
       "prev_close": 23525.97,
-      "chg_pct": -0.11,
+      "chg_pct": 0.56,
       "as_of": "2026-11-04"
     },
     {
@@ -154,9 +154,9 @@
       "name": "Nikkei 225",
       "yf": "^N225",
       "desc": "日本最重要指數",
-      "close": 60558.91,
+      "close": 61441.18,
       "prev_close": 63081.86,
-      "chg_pct": -4.0,
+      "chg_pct": -2.6,
       "as_of": "2026-11-04"
     },
     {
@@ -174,9 +174,9 @@
       "name": "KOSPI",
       "yf": "^KS11",
       "desc": "韓國綜合股價指數",
-      "close": 5464.12,
+      "close": 5585.12,
       "prev_close": 5648.79,
-      "chg_pct": -3.27,
+      "chg_pct": -1.13,
       "as_of": "2026-11-04"
     },
     {
@@ -227,9 +227,9 @@
       "yf": "0050.TW",
       "tracks": "TW50",
       "since": 2003,
-      "close": 98.7,
+      "close": 99.75,
       "prev_close": 104.1,
-      "chg_pct": -5.19,
+      "chg_pct": -4.18,
       "as_of": "2026-11-04"
     },
     {
@@ -238,9 +238,9 @@
       "yf": "006208.TW",
       "tracks": "TW50",
       "since": 2017,
-      "close": 226.2,
+      "close": 228.55,
       "prev_close": 238.65,
-      "chg_pct": -5.22,
+      "chg_pct": -4.23,
       "as_of": "2026-11-04"
     },
     {
@@ -249,9 +249,9 @@
       "yf": "0056.TW",
       "tracks": "高股息",
       "since": 2008,
-      "close": 52.45,
+      "close": 53.05,
       "prev_close": 55.75,
-      "chg_pct": -5.92,
+      "chg_pct": -4.84,
       "as_of": "2026-11-04"
     },
     {
@@ -350,7 +350,7 @@
       "since": 2012,
       "close": 4.09,
       "prev_close": 4.09,
-      "chg_pct": 0.0,
+      "chg_pct": 0.22,
       "as_of": "2026-11-04"
     },
     {
@@ -359,9 +359,9 @@
       "yf": "159915.SZ",
       "tracks": "創業板",
       "since": 2015,
-      "close": 2.41,
+      "close": 2.42,
       "prev_close": 2.47,
-      "chg_pct": -2.51,
+      "chg_pct": -2.26,
       "as_of": "2026-11-04"
     },
     {
@@ -370,9 +370,9 @@
       "yf": "2800.HK",
       "tracks": "HSI",
       "since": 1999,
-      "close": 23.6,
+      "close": 23.78,
       "prev_close": 23.48,
-      "chg_pct": 0.51,
+      "chg_pct": 1.28,
       "as_of": "2026-11-04"
     },
     {
@@ -381,9 +381,9 @@
       "yf": "3188.HK",
       "tracks": "CSI300",
       "since": 2012,
-      "close": 48.96,
+      "close": 49.12,
       "prev_close": 49.4,
-      "chg_pct": -0.89,
+      "chg_pct": -0.57,
       "as_of": "2026-11-04"
     },
     {
@@ -392,9 +392,9 @@
       "yf": "1321.T",
       "tracks": "Nikkei225",
       "since": 2008,
-      "close": 630.9,
+      "close": 640.3,
       "prev_close": 657.0,
-      "chg_pct": -3.97,
+      "chg_pct": -2.54,
       "as_of": "2026-11-04"
     },
     {
@@ -403,9 +403,9 @@
       "yf": "1348.T",
       "tracks": "TOPIX",
       "since": 2006,
-      "close": 4005.0,
+      "close": 4048.0,
       "prev_close": 4129.0,
-      "chg_pct": -3.0,
+      "chg_pct": -1.96,
       "as_of": "2026-11-04"
     },
     {
@@ -445,9 +445,9 @@
     "usd_twd": {
       "label": "USD/TWD",
       "unit": "",
-      "value": 32.87,
+      "value": 32.82,
       "prev_value": 32.59,
-      "chg_pct": 0.87,
+      "chg_pct": 0.72,
       "as_of": "2026-11-04",
       "yf": "USDTWD=X",
       "desc": "美元兌台幣即期匯率"
@@ -455,29 +455,29 @@
     "gold": {
       "label": "黃金",
       "unit": "USD/oz",
-      "value": 3945.1,
-      "prev_value": 3969.6,
-      "chg_pct": -0.62,
-      "as_of": "2026-11-03",
+      "value": 3966.4,
+      "prev_value": 3940.4,
+      "chg_pct": 0.66,
+      "as_of": "2026-11-04",
       "yf": "GC=F",
       "desc": "COMEX 黃金期貨近月合約"
     },
     "oil": {
       "label": "原油 WTI",
       "unit": "USD/bbl",
-      "value": 95.68,
-      "prev_value": 96.46,
-      "chg_pct": -0.81,
-      "as_of": "2026-11-03",
+      "value": 96.23,
+      "prev_value": 96.09,
+      "chg_pct": 0.15,
+      "as_of": "2026-11-04",
       "yf": "CL=F",
       "desc": "NYMEX WTI 原油期貨近月合約"
     },
     "btc": {
       "label": "比特幣",
       "unit": "USD",
-      "value": 76182.26,
+      "value": 77474.83,
       "prev_value": 76677.3,
-      "chg_pct": -0.65,
+      "chg_pct": 1.04,
       "as_of": "2026-11-04",
       "yf": "BTC-USD",
       "desc": "比特幣兌美元現貨價格"
@@ -485,10 +485,10 @@
     "copper": {
       "label": "銅期貨",
       "unit": "USD/lb",
-      "value": 6.3,
-      "prev_value": 6.54,
-      "chg_pct": -3.71,
-      "as_of": "2026-11-03",
+      "value": 6.35,
+      "prev_value": 6.38,
+      "chg_pct": -0.42,
+      "as_of": "2026-11-04",
       "yf": "HG=F",
       "desc": "COMEX 銅期貨近月合約 (領先經濟指標)"
     },
@@ -505,10 +505,10 @@
     "dxy": {
       "label": "美元指數",
       "unit": "",
-      "value": 101.39,
-      "prev_value": 101.75,
-      "chg_pct": -0.35,
-      "as_of": "2026-11-03",
+      "value": 101.53,
+      "prev_value": 101.87,
+      "chg_pct": -0.33,
+      "as_of": "2026-11-04",
       "yf": "DX-Y.NYB",
       "desc": "ICE 美元指數 (DXY)"
     }
