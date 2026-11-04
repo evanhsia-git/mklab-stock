@@ -181,28 +181,101 @@ def run():
         c.error(f"檢查失敗: {e}", "", stocks_path)
     add(c)
 
-    c = Check("Data", "OHLC 合理性 (H>=L, H>=O, H>=C, L<=O, L<=C, P>0, V>=0, MktCap>0)")
+    # P0-6：以下檢查使用 stocks.json 實際欄位（sym / price / open / high / low / volume / market_cap），
+    # 舊版誤用 code / close，導致 OHLC 檢查在所有資料上都被跳過（永遠不會回報錯誤）。
+    def _num(v):
+        return isinstance(v, (int, float)) and not isinstance(v, bool) and v == v and v not in (float("inf"), float("-inf"))
+
+    c = Check("Data", "OHLC 合理性 (L<=O,C<=H, H>=L, 價格>0, 成交量>=0, 市值>0)")
     try:
         bad = []
-        for s in stocks_list:
-            o, h, l, c_ = s.get("open"), s.get("high"), s.get("low"), s.get("close")
-            v, mc = s.get("volume"), s.get("market_cap")
-            if None in (o, h, l, c_, v):
-                continue
-            if not (l <= o <= h and l <= c_ <= h and h >= l and c_ > 0 and v >= 0):
-                bad.append(s.get("code"))
+        checked = 0
+        for s_ in stocks_list:
+            o, h, l, cl = s_.get("open"), s_.get("high"), s_.get("low"), s_.get("price")
+            v, mc = s_.get("volume"), s_.get("market_cap")
+            if not all(_num(x) for x in (o, h, l, cl)):
+                continue  # 停牌/無成交：OHLC 為 null，屬於合法狀態，不計入
+            checked += 1
+            if not (h >= l and l <= o <= h and l <= cl <= h and cl > 0):
+                bad.append(s_.get("sym"))
+            elif _num(v) and v < 0:
+                bad.append(s_.get("sym"))
+            elif _num(mc) and mc <= 0:
+                bad.append(s_.get("sym"))
         if bad:
-            c.error(f"OHLC 異常: {bad[:10]}", "修正資料", stocks_path)
+            c.error(f"OHLC 異常 {len(bad)} 檔: {bad[:10]}", "修正來源資料，不得發布", stocks_path)
         else:
-            c.ok(f"{len(stocks)} 檔 OHLC 合理")
+            c.ok(f"{checked} 檔有效 OHLC 全部合理")
     except Exception as e:
         c.error(f"檢查失敗: {e}", "", stocks_path)
     add(c)
 
-    c = Check("Data", "前日波動異常 (>20% 閾值)")
+    # P0-6：真正的異常漲跌檢查（舊版直接回報「無異常波動」，未做任何計算）。
+    # 台股一般股票漲跌幅限制 ±10%；新上市前 5 日不限制、少數除權息/資料延遲可能造成超過 10%。
+    # 因此：>10.5% → WARNING（需人工確認）；>30% → ERROR（幾乎只可能是資料錯誤）。
+    c = Check("Data", "異常漲跌檢查 (>10.5% 警示 / >30% 阻擋)")
     try:
-        # 簡化：略過詳細實作
-        c.ok("無異常波動")
+        warn_list, err_list = [], []
+        for s_ in stocks_list:
+            chg = s_.get("chg")
+            if not _num(chg):
+                continue
+            if abs(chg) > 30:
+                err_list.append(f"{s_.get('sym')}={chg}%")
+            elif abs(chg) > 10.5:
+                warn_list.append(f"{s_.get('sym')}={chg}%")
+        if err_list:
+            c.error(f"漲跌幅超過 30% {len(err_list)} 檔: {err_list[:10]}", "核對來源收盤與前收價", stocks_path)
+        elif warn_list:
+            c.warn(f"漲跌幅超過 ±10.5% {len(warn_list)} 檔（可能為新上市或資料延遲，需人工確認）: {warn_list[:10]}", "人工確認", stocks_path)
+        else:
+            c.ok("所有有效漲跌幅在 ±10.5% 以內")
+    except Exception as e:
+        c.error(f"檢查失敗: {e}", "", stocks_path)
+    add(c)
+
+    # P0-6 / P1-1：meta 統計必須與實際陣列一致（count / sources / price_asof_counts）
+    c = Check("Data", "meta 統計與實際陣列一致")
+    try:
+        meta = stocks_data.get("meta", {}) if isinstance(stocks_data, dict) else {}
+        problems = []
+        if meta.get("count") != len(stocks_list):
+            problems.append(f"count meta={meta.get('count')} actual={len(stocks_list)}")
+        act_src, act_pa = {}, {}
+        for s_ in stocks_list:
+            act_src[s_.get("source")] = act_src.get(s_.get("source"), 0) + 1
+            act_pa[s_.get("price_asof")] = act_pa.get(s_.get("price_asof"), 0) + 1
+        if meta.get("sources") != act_src:
+            problems.append(f"sources meta={meta.get('sources')} actual={act_src}")
+        if meta.get("price_asof_counts") != act_pa:
+            problems.append(f"price_asof_counts meta={meta.get('price_asof_counts')} actual={act_pa}")
+        if problems:
+            c.error("; ".join(problems), "重新執行 integrate_official_company.py 重算 meta", stocks_path)
+        else:
+            c.ok(f"count={len(stocks_list)}，來源與行情日期分布一致")
+    except Exception as e:
+        c.error(f"檢查失敗: {e}", "", stocks_path)
+    add(c)
+
+    # P0-6：行情日期與來源狀態（stale 資料不得冒充最新）
+    # 上櫃（TPEx）常比上市（TWSE）早一個交易日更新，因此快照內可能混有 as_of 之後的行情日期：
+    # 這是已知且 meta 會揭露的狀態（P1-1），只給 WARNING；真正的未來日期（晚於今天）才是 ERROR。
+    c = Check("Data", "行情日期合理（非未來日期）、stale 資料明示")
+    try:
+        import datetime as _dt
+        today = _dt.datetime.now(_dt.timezone(_dt.timedelta(hours=8))).strftime("%Y-%m-%d")
+        as_of = str((stocks_data.get("meta") or {}).get("as_of") or "")[:10]
+        dates = [str(s_.get("price_asof") or "")[:10] for s_ in stocks_list]
+        future = [s_.get("sym") for s_, d_ in zip(stocks_list, dates) if d_ and d_ > today]
+        newer = [s_.get("sym") for s_, d_ in zip(stocks_list, dates) if as_of and d_ and d_ > as_of]
+        stale = [s_.get("sym") for s_ in stocks_list if s_.get("quality") == "stale"]
+        if future:
+            c.error(f"行情日期晚於今天 {len(future)} 檔: {future[:10]}", "檢查日期解析", stocks_path)
+        elif newer or stale:
+            c.warn(f"快照混合日期：晚於 as_of({as_of}) 的行情 {len(newer)} 檔（上櫃較早更新，屬已揭露狀態）；"
+                   f"沿用前次資料 stale {len(stale)} 檔", "確認 TWSE 是否已更新、來源是否恢復", stocks_path)
+        else:
+            c.ok("行情日期皆不晚於快照日期，無 stale 資料")
     except Exception as e:
         c.error(f"檢查失敗: {e}", "", stocks_path)
     add(c)

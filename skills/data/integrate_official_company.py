@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-整合官方公司基本資料（TWSE t187ap03_L）到 data/stocks.json，並依範圍規則排除 TPEx 非 ETF 列。
+整合官方公司基本資料（TWSE t187ap03_L）到 data/stocks.json，並依實際陣列重算 meta。
 
-範圍（使用者指定）：TWSE 一般股票、TWSE ETF、上櫃（TPEx）標準 ETF。不收 TPEx 一般股票。
-- TPEx 列：只保留官方 ETF 清單（data/etf-meta.json）內的代號，其餘移除。
+範圍（P0-1 修正後）：TWSE／TPEx 一般股票與 ETF 皆納入。本腳本不再刪除任何上櫃列（舊版會把上櫃一般股票每日刪掉）。
+- meta（count / sources / price_asof_counts）每次都依實際陣列重算，不沿用舊值（P1-1）。
 - 一般股票（security_type=stock）：以 t187ap03_L 補上 產業（ind）、上市日期（listing_date）、公司簡稱（company_short）。
   官方產業代碼 → 名稱依 data/industry-codes.json；代碼 91 為存託憑證，不在 33 類內，單獨命名。
 用法：python3 skills/data/integrate_official_company.py
@@ -26,12 +26,9 @@ for r in rows[1:]:
     d = r[ci["上市日期"]].strip()
     iso = f"{d[:4]}-{d[4:6]}-{d[6:8]}" if len(d) == 8 and d.isdigit() else None
     ap[r[ci["公司代號"]].strip()] = {"short": r[ci["公司簡稱"]].strip(), "ind": CODES.get(code), "listing": iso, "asof": r[ci["出表日期"]].strip()}
-etf_off = {e["sym"] for e in json.load(open(os.path.join(ROOT, "data", "etf-meta.json"), encoding="utf-8")).get("etfs", [])}
 p = os.path.join(ROOT, "data", "stocks.json")
 doc = json.load(open(p, encoding="utf-8"))
 before = len(doc["stocks"])
-removed_tpex = [s["sym"] for s in doc["stocks"] if s.get("source") == "TPEX" and s["sym"] not in etf_off]
-doc["stocks"] = [s for s in doc["stocks"] if not (s.get("source") == "TPEX" and s["sym"] not in etf_off)]
 filled = 0
 for s in doc["stocks"]:
     if s.get("security_type") == "stock" and s["sym"] in ap:
@@ -41,17 +38,31 @@ for s in doc["stocks"]:
         s["company_short"] = a["short"]
         s["ind_src"] = f"TWSE_t187ap03_L（出表 {a['asof']}）"
         filled += 1
+# P0-6：修正既有資料的市值 0（缺漏應為 null）。一般股票：收盤 × 股本 ÷ 面值10；無股本則設 null
+for s_ in doc["stocks"]:
+    if s_.get("market_cap") == 0:
+        cs = s_.get("capital_stock")
+        px = s_.get("price")
+        if s_.get("security_type") == "stock" and cs and px and px > 0:
+            s_["market_cap"] = round(px * cs / 10)
+        else:
+            s_["market_cap"] = None
+
+# P1-1：meta 一律由實際陣列重算（count / sources / price_asof_counts），不沿用舊值
 doc["meta"]["count"] = len(doc["stocks"])
 src = {}
+pa = {}
 for s in doc["stocks"]:
     src[s.get("source")] = src.get(s.get("source"), 0) + 1
+    k = s.get("price_asof")
+    pa[k] = pa.get(k, 0) + 1
 doc["meta"]["sources"] = src
+doc["meta"]["price_asof_counts"] = pa
 doc["meta"]["integration"] = {
     "integrated_at": dt.datetime.now(dt.timezone(dt.timedelta(hours=8))).isoformat(),
-    "scope": "TWSE 一般股票 + TWSE ETF + TPEx 標準 ETF（不含 TPEx 一般股票）",
-    "tpex_removed": removed_tpex, "rows_before": before, "rows_after": len(doc["stocks"]),
+    "scope": "TWSE／TPEx 一般股票 + TWSE／TPEx ETF（TPEx 一般股票於 P0-1 起納入）",
+    "rows_before": before, "rows_after": len(doc["stocks"]),
     "company_info_matched": filled,
 }
 json.dump(doc, open(p, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
-print(f"移除 TPEx 非 ETF {len(removed_tpex)} 筆：{removed_tpex}")
 print(f"股票 {before} → {len(doc['stocks'])}；公司基本資料對應 {filled} 檔")

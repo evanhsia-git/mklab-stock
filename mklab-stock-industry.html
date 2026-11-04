@@ -39,6 +39,7 @@
 
 <div class="section-title">今日市場寬度</div>
 <div class="breadth-summary" id="breadthSummary"></div>
+<p class="muted-small-top" id="breadthMeta"></p>
 
 <div class="section-title">漲跌幅分布</div>
 <div class="card" id="histWrap"></div>
@@ -67,7 +68,7 @@
 </div>
 <div class="pager" id="indDetailPager"></div>
 
-<div class="disclaimer">產業分類參考台灣證交所 33 個法定產業（示意資料）。生產環境由 Build-Time 計算各產業漲跌與成分股績效。</div>
+<div class="disclaimer">產業分類來源：TWSE 官方公司基本資料（t187ap03_L）與 33 個法定產業代碼（data/industry-codes.json）。各產業漲跌、上漲比例由 data/stocks.json 每日行情重算（data/compute_industry.py）。基準日：<span id="indAsofNote">載入中</span></div>
 
 <script src="assets/js/data-client.js"></script>
 <script src="assets/js/mklab-core.js"></script>
@@ -87,6 +88,12 @@
       { label: '> 7%',     test: v => v >= 7 },
     ];
 
+    // P0-5：市場寬度只計「一般股票」且「有有效漲跌幅」的檔數。
+    // 排除 ETF / 其他證券（security_type !== 'stock'）與 chg 為 null 的檔數（不補 0、不當作平盤）。
+    function validStocks(stocks) {
+      return stocks.filter(r => r.security_type === 'stock' && typeof r.chg === 'number' && !Number.isNaN(r.chg));
+    }
+
     function renderSummary(stocks) {
       const up = stocks.filter(r => r.chg > 0).length;
       const down = stocks.filter(r => r.chg < 0).length;
@@ -104,7 +111,7 @@
     }
 
     function renderHistogram(stocks) {
-      const counts = BUCKETS.map(b => stocks.filter(r => r.chg != null && b.test(r.chg)).length);
+      const counts = BUCKETS.map(b => stocks.filter(r => b.test(r.chg)).length);
       const max = Math.max(...counts, 1);
       let html = '';
       BUCKETS.forEach((b, i) => {
@@ -119,30 +126,45 @@
       document.getElementById('histWrap').innerHTML = html;
     }
 
+    // 產業上漲比例：分母只用「有效行情」檔數；成分股總數與有效行情數分開顯示
     function renderIndBreadth(stocks) {
       const byInd = {};
       stocks.forEach(r => {
         if (!r.ind) return;
-        byInd[r.ind] = byInd[r.ind] || { ind: r.ind, up: 0, total: 0 };
-        byInd[r.ind].total++;
-        if (r.chg > 0) byInd[r.ind].up++;
+        const d = byInd[r.ind] = byInd[r.ind] || { ind: r.ind, up: 0, valid: 0, members: 0 };
+        d.members++;
+        if (typeof r.chg === 'number' && !Number.isNaN(r.chg)) {
+          d.valid++;
+          if (r.chg > 0) d.up++;
+        }
       });
-      const rows = Object.values(byInd).map(d => ({ ...d, upRatio: d.total ? (d.up / d.total * 100) : 0 }));
-      rows.sort((a, b) => b.upRatio - a.upRatio);
-      let html = '<thead><tr><th>產業</th><th>上漲家數</th><th>總檔數</th><th>上漲比例</th></tr></thead><tbody>';
+      const rows = Object.values(byInd).map(d => ({ ...d, upRatio: d.valid ? (d.up / d.valid * 100) : null }));
+      rows.sort((a, b) => (b.upRatio == null) - (a.upRatio == null) || (b.upRatio || 0) - (a.upRatio || 0));
+      let html = '<thead><tr><th>產業</th><th>上漲家數</th><th>有效行情</th><th>成分股</th><th>上漲比例</th></tr></thead><tbody>';
       rows.forEach(r => {
-        html += `<tr><td>${r.ind}</td><td>${r.up}</td><td>${r.total}</td><td class="${r.upRatio >= 50 ? 'up' : 'down'}">${r.upRatio.toFixed(1)}%</td></tr>`;
+        const ratio = r.upRatio == null ? '-' : r.upRatio.toFixed(1) + '%';
+        const cls = r.upRatio == null ? '' : (r.upRatio >= 50 ? 'up' : 'down');
+        html += `<tr><td>${r.ind}</td><td>${r.up}</td><td>${r.valid}</td><td>${r.members}</td><td class="${cls}">${ratio}</td></tr>`;
       });
       html += '</tbody>';
       document.getElementById('indBreadthTable').innerHTML = html;
     }
 
     // 由產業頁的啟動流程呼叫；stocks 由同一次 MKLAB.data.stocks() 取得，不重複請求
-    function render(stocks) {
+    function render(allStocks, asof) {
       try {
-        renderSummary(stocks);
-        renderHistogram(stocks);
-        renderIndBreadth(stocks);
+        const common = allStocks.filter(r => r.security_type === 'stock');
+        const valid = validStocks(allStocks);
+        renderSummary(valid);
+        renderHistogram(valid);
+        renderIndBreadth(common);
+        const meta = document.getElementById('breadthMeta');
+        if (meta) {
+          const excludedNull = common.length - valid.length;
+          const excludedOther = allStocks.length - common.length;
+          meta.textContent = `基準日 ${asof || '-'}｜一般股票 ${common.length} 檔，有效行情 ${valid.length} 檔（上漲 + 下跌 + 平盤 = 有效行情）｜` +
+            `排除無行情 ${excludedNull} 檔、ETF/其他證券 ${excludedOther} 檔`;
+        }
       } catch (e) {
         console.warn('[industry/breadth] render failed:', e);
         const el = document.getElementById('breadthSummary');
@@ -169,6 +191,7 @@
           const sAsof = sd && sd.meta && sd.meta.as_of;
           const iAsof = d.meta && d.meta.as_of;
           MKLAB.setFreshness(sAsof || iAsof);
+          const _n = document.getElementById('indAsofNote'); if (_n) _n.textContent = sAsof || iAsof || '-';
           if (sAsof && iAsof && String(iAsof).replace(/-/g,'') !== String(sAsof).replace(/-/g,'')) {
             const note = document.createElement('div');
             note.className = 'muted-small-top';
@@ -184,7 +207,7 @@
       if (d && Array.isArray(d)) {
         ALL_STOCKS = d; stocksLoaded = true;
         renderGrid(); // 個股資料就緒後重新渲染卡片，補上真正的領漲/領跌
-        BreadthPanel.render(d); // 市場寬度：沿用同一份個股資料，不重複請求
+        MKLAB.data.json('stocks').then(sd => BreadthPanel.render(d, sd && sd.meta && sd.meta.as_of)).catch(() => BreadthPanel.render(d, null));
         if (activeInd != null) renderDetail(activeInd);
       }
     }).catch(() => {});

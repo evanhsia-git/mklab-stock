@@ -43,7 +43,7 @@
 <div class="card">
   <div class="row-input pf-form">
     <input id="pfSym" placeholder="代號 2330">
-    <input id="pfShares" type="number" placeholder="張數">
+    <input id="pfShares" type="number" min="0" step="0.001" placeholder="張數（1 張 = 1000 股，可填小數）">
     <input id="pfCost" type="number" placeholder="成本價">
     <button onclick="addHolding()">新增持股</button>
   </div>
@@ -113,11 +113,9 @@
     const rows = list.map(h => {
       const live = ALL.find(r => String(r.sym) === h.sym);
       const price = live ? live.price : null;
-      const mktVal = price != null ? price * h.shares : null;
-      const costTotal = h.cost * h.shares;
-      const pnl = mktVal != null ? mktVal - costTotal : null;
-      const pnlPct = mktVal != null && costTotal ? (pnl / costTotal) * 100 : null;
-      return { sym: h.sym, name: live ? live.name : '(找不到)', shares: h.shares, cost: h.cost, price, mktVal, pnl, pnlPct };
+      const v = MKLAB.Portfolio.valuation(h, price);
+      return { sym: h.sym, name: live ? live.name : '(找不到)', shares: h.shares, lots: MKLAB.Portfolio.sharesToLots(h.shares),
+               cost: h.cost, price, costTotal: v.costTotal, mktVal: v.mktVal, pnl: v.pnl, pnlPct: v.pnlPct };
     });
     const totalMktVal = rows.reduce((s, r) => s + (r.mktVal || 0), 0);
     rows.forEach(r => { r.weight = totalMktVal ? (r.mktVal || 0) / totalMktVal * 100 : 0; });
@@ -126,7 +124,8 @@
 
   function renderSummary(rows) {
     const totalMktVal = rows.reduce((s, r) => s + (r.mktVal || 0), 0);
-    const totalCost = rows.reduce((s, r) => s + r.cost * r.shares, 0);
+    // 總成本只計入已有行情的持股，與總市值口徑一致（無行情者不計入損益，不補 0）
+    const totalCost = rows.reduce((s, r) => s + (r.mktVal != null ? (r.costTotal || 0) : 0), 0);
     const totalPnl = totalMktVal - totalCost;
     const totalPnlPct = totalCost ? (totalPnl / totalCost) * 100 : 0;
     const cards = [
@@ -314,9 +313,11 @@
 
   function addHolding() {
     const sym = document.getElementById('pfSym').value.trim();
-    const shares = Number(document.getElementById('pfShares').value);
+    const lots = Number(document.getElementById('pfShares').value);
     const cost = Number(document.getElementById('pfCost').value);
-    if (!sym || !shares || !cost) { alert('請完整輸入代號、張數、成本價'); return; }
+    if (!sym || !(lots > 0) || !(cost > 0)) { alert('請完整輸入代號、張數（大於 0）、成本價（大於 0）'); return; }
+    const shares = MKLAB.Portfolio.lotsToShares(lots);
+    if (!(shares >= 1)) { alert('張數太小，換算後不足 1 股'); return; }
     if (!ALL.find(r => String(r.sym) === sym)) { alert('找不到股票代號 ' + sym); return; }
     MKLAB.Portfolio.add(sym, shares, cost);
     document.getElementById('pfSym').value = '';

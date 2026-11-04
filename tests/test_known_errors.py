@@ -123,9 +123,21 @@ empty_stock = [s['sym'] for s in S if s.get('security_type') == 'stock' and not 
 check("一般股票產業分類完整", len(empty_stock) == 0, f"缺 {len(empty_stock)} 檔：{empty_stock}")
 
 
-# 範圍：不含 TPEx 一般股票（上櫃只保留官方 ETF）
-tpex_non_etf = [s['sym'] for s in S if s.get('source') == 'TPEX' and s['sym'] not in etf_official]
-check("範圍：TPEx 只保留官方 ETF", len(tpex_non_etf) == 0, f"非 ETF {len(tpex_non_etf)} 筆")
+# P0-1 範圍：上櫃一般股票必須納入（不得再以「只保留 ETF」作為正常條件）
+tpex_stock_n = sum(1 for s in S if s.get('source') == 'TPEX' and s.get('security_type') == 'stock')
+tpex_total_n = sum(1 for s in S if s.get('source') == 'TPEX')
+check("P0-1 TPEx 一般股票已納入（>=300 檔）", tpex_stock_n >= 300, f"TPEx 一般股票 {tpex_stock_n} 檔（上櫃合計 {tpex_total_n}）")
+# P0-1 分類：每檔 security_type 必須與代碼規則 + 官方 ETF 清單一致（與 classify_security 相同）
+def _expect(sym):
+    if sym in etf_official: return 'etf'
+    if sym.startswith('00'): return 'unverified'
+    if len(sym) == 4 and sym.isdigit(): return 'stock'
+    return 'other'
+mismatch = [s['sym'] for s in S if s.get('security_type') != _expect(s['sym'])]
+check("P0-1 證券分類與官方 ETF 清單+代碼規則一致", not mismatch, f"不一致 {len(mismatch)} 檔 {mismatch[:5]}")
+# P0-2 來源狀態：不得有 stale 資料冒充今日行情
+stale_fresh = [s['sym'] for s in S if s.get('quality') == 'stale' and s.get('price_asof') == stocks_doc['meta'].get('as_of')]
+check("P0-2 stale 資料的行情日期不得等於快照日期", not stale_fresh, f"{len(stale_fresh)} 檔")
 # 官方公司資料整合：一般股票具備產業與上市日期
 st_rows = [s for s in S if s.get('security_type') == 'stock']
 check("一般股票具備上市日期（官方）", all(s.get('listing_date') for s in st_rows), f"缺 {sum(1 for s in st_rows if not s.get('listing_date'))} 檔")
@@ -155,7 +167,7 @@ check("分類：K/C/M/S/V 尾碼為外幣型", all('fx' in v for k,v in cl.items
 
 # TPEx ETF 篩選：官方清單內代號必須保留（修正純數字 ETF 漏抓）
 fd=open('skills/data/fetch_data.py',encoding='utf-8').read()
-check("TPEx ETF 篩選納入官方清單代號", "sid in _etf_ref" in fd and "etf-meta.json" in fd)
+check("P0-1 TPEx 分類以官方 ETF 清單判定（classify_security + load_etf_reference）", "def classify_security" in fd and "def load_etf_reference" in fd and "etf-meta.json" in fd and "tpex_candidates" in fd and "if keep_record(sid) and (sid in _etf_ref" not in fd)
 # 價格提醒：儲存邏輯存在且會判斷是否觸發
 wl=open('mklab-stock-watchlist.html',encoding='utf-8').read()
 check("Watchlist 價格提醒已實作（儲存與觸發判斷）", "function alertText" in wl and "mklab-price-alerts" in wl and "尚未啟用" not in wl)

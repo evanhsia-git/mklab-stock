@@ -41,24 +41,14 @@ jobs:
           python-version: "3.11"
       - name: Quality Gate
         run: python skills/qa-gate/qa_gate.py --json qa-result.json
+      - name: 已知錯誤測試（資料與程式，P0-6：納入自動測試）
+        run: python3 tests/test_known_errors.py
+      - name: 持股單位與估值測試（P0-4）
+        run: node tests/test_portfolio_units.js
+      - name: 市場寬度測試（P0-5）
+        run: node tests/test_breadth.js
       - name: 判定結果
-        id: verdict
-        run: |
-          python - <<'PY'
-          import json
-          try:
-              r = json.load(open('qa-result.json'))
-          except Exception as e:
-              print("無法讀取 qa-result.json:", e)
-              raise SystemExit(1)
-          allow = r.get('allow_deploy', False)
-          errs = r.get('errors', 0)
-          print(f"allow_deploy={allow}  critical_errors={errs}")
-          if not allow:
-              print("🔴 BLOCK DEPLOY：存在 Critical ERROR，CI 失敗")
-              raise SystemExit(1)
-          print("🟢 ALLOW DEPLOY")
-          PY
+        run: python3 scripts/ci_qa_verdict.py qa-result.json
       - name: 上傳報告
         if: always()
         uses: actions/upload-artifact@v6

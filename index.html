@@ -140,11 +140,12 @@
             const chgEl = document.getElementById(`idx-chg-${key}`);
             if (el && v.close != null) {
               el.textContent = Number(v.close).toLocaleString();
-              const pct = v.chg_pct ?? 0;
-              el.className = 'card-val ' + (pct >= 0 ? 'up' : 'down');
+              // P1-3：漲跌幅缺失顯示 "-"，不當成 0.00%；只有真實漲跌幅才上色
+              const hasPct = typeof v.chg_pct === 'number' && !Number.isNaN(v.chg_pct);
+              el.className = 'card-val' + (hasPct ? (v.chg_pct >= 0 ? ' up' : ' down') : '');
               if (chgEl) {
-                chgEl.textContent = (pct > 0 ? '+' : '') + pct.toFixed(2) + '%';
-                chgEl.className = 'card-sub ' + (pct >= 0 ? 'up' : 'down');
+                chgEl.textContent = hasPct ? ((v.chg_pct > 0 ? '+' : '') + v.chg_pct.toFixed(2) + '%') : '-';
+                chgEl.className = 'card-sub' + (hasPct ? (v.chg_pct >= 0 ? ' up' : ' down') : '');
               }
             }
           });

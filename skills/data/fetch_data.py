@@ -100,7 +100,8 @@ TPEX_DAILY       = "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_clos
 TPEX_BWIBBU      = "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_pe_ratio?l=zh-tw"  # 可能無 BWIBBU，暫用 PE ratio
 
 # ===== 配置參數 =====
-SAFE_MAX = 2000  # 上限：上市股票+ETF 總數不超過 2000 筆
+SAFE_MAX = 3000  # 上限：上市+上櫃（一般股票+ETF）合計；上櫃加入後約 2400 筆，故由 2000 提高
+TPEX_MIN_RAW = 300  # 上櫃原始筆數低於此值視為來源異常（TPEx 主板約千檔）
 SCHEMA_VERSION = "1.0.0"
 MODE = sys.argv[1] if len(sys.argv) > 1 else "daily"
 LOG = RunLogger(MODE)
@@ -133,6 +134,33 @@ def keep_record(code):
     return True
 
 
+def load_etf_reference():
+    """官方 ETF 清單（etf-meta.json + etf-supplement.json）：ETF 判定的唯一依據，不用名稱關鍵字。"""
+    ref = set()
+    for fn in ("etf-meta.json", "etf-supplement.json"):
+        fp = os.path.join(OUT, fn)
+        if os.path.exists(fp):
+            try:
+                ref |= {e["sym"] for e in json.load(open(fp, encoding="utf-8")).get("etfs", [])}
+            except (OSError, json.JSONDecodeError, KeyError):
+                LOG.warn(f"{fn} 讀取失敗，ETF 清單可能不完整")
+    return ref
+
+
+def classify_security(sid, etf_ref):
+    """證券分類，規則與 compute_indicators.py 一致：
+    官方 ETF 清單 → etf；00 開頭但不在清單 → unverified；4 碼純數字 → stock；
+    其餘（特別股、權證、DR、債券等）→ other。"""
+    sid = str(sid or "")
+    if sid in etf_ref:
+        return "etf"
+    if sid.startswith("00"):
+        return "unverified"
+    if len(sid) == 4 and sid.isdigit():
+        return "stock"
+    return "other"
+
+
 def load_symbol_map():
     path = os.path.join(OUT, "symbol-map.json")
     if not os.path.exists(path):
@@ -158,11 +186,11 @@ def ind_name(codes, fallback, raw):
 
 
 def fetch_json(url, timeout=60, attempts=3):
-    """抓 JSON，附重試。
+    """抓 JSON，附重試與完整性檢查。
 
-    TPEX 全量收盤檔約 5MB，偶爾被截斷成 http.client.IncompleteRead —— 曾在 10-30
-    讓整個 job 掉了 119 檔上櫃股（只留 TWSE）。因此：重試 3 次、指數退避；
-    且若截斷留下的 partial bytes 剛好是合法 JSON 就直接採用，不白白丟掉整份資料。
+    P0-3：不再接受 IncompleteRead 的 partial bytes。截斷的內容即使剛好是合法 JSON
+    （例如少了後半的陣列元素）也可能是不完整資料，因此一律視為失敗並重試；
+    全部重試失敗才拋出例外，由呼叫端決定是否沿用前次有效資料。
     """
     last = None
     for i in range(attempts):
@@ -170,15 +198,13 @@ def fetch_json(url, timeout=60, attempts=3):
             req = urllib.request.Request(url, headers={"User-Agent": "mklab-stock/1.0"})
             with urllib.request.urlopen(req, timeout=timeout) as r:
                 raw = r.read()
+                expected = r.headers.get("Content-Length")
+            if expected is not None and int(expected) != len(raw):
+                raise IOError(f"回應長度不符（Content-Length={expected}, 實際={len(raw)}）")
             return json.loads(raw.decode("utf-8"))
-        except Exception as e:          # IncompleteRead / URLError / timeout / JSON 截斷
+        except Exception as e:          # IncompleteRead / URLError / timeout / JSON 截斷 / 長度不符
             last = e
-            partial = getattr(e, "partial", None)
-            if partial:
-                try:
-                    return json.loads(partial.decode("utf-8"))
-                except Exception:
-                    pass
+            LOG.warn(f"下載失敗（第 {i+1}/{attempts} 次）{url}: {e}")
             if i + 1 < attempts:
                 time.sleep(2 * (i + 1))
     raise last
@@ -218,11 +244,11 @@ def load_existing_stocks():
 
 # ===== TWSE BWIBBU (PE/PB/殖利率) =====
 def fetch_bwibbu():
-    """抓 TWSE 本益比/淨值比/殖利率，回傳 {sid: {pe, pb, div}}。失敗回傳空 dict（graceful）。"""
+    """抓 TWSE 本益比/淨值比/殖利率，回傳 {sid: {pe, pb, div}}。失敗回傳 None（graceful）。"""
     try:
         raw = fetch_json(TWSE_BWIBBU, timeout=60)
         if not isinstance(raw, list):
-            return {}
+            return None
         out = {}
         for r in raw:
             sid = str(r.get("Code", "")).strip()
@@ -240,8 +266,8 @@ def fetch_bwibbu():
                         "div": _f("DividendYield")}
         return out
     except Exception as e:
-        LOG.warn(f"BWIBBU 抓取失敗（PE/PB 留空，不中斷）：{e}")
-        return {}
+        LOG.warn(f"BWIBBU 抓取失敗（沿用前次 PE/PB/殖利率，不中斷）：{e}")
+        return None
 
 
 # ===== TWSE 營益分析 (ROE/ROA/EPS) =====
@@ -308,12 +334,12 @@ def fetch_balance_sheet():
 
 # ===== TPEX BWIBBU (上櫃 PE/PB/殖利率) =====
 def fetch_tpex_bwibbu():
-    """抓 TPEX 本益比/淨值比/殖利率，回傳 {sid: {pe, pb, div}}。失敗回傳空 dict。
+    """抓 TPEX 本益比/淨值比/殖利率，回傳 {sid: {pe, pb, div}}。失敗回傳 None（與「來源正常但該股無資料」區分）。
     注意：TPEX 新 API 可能只有 PE ratio，PB/Div 可能需另一端點。"""
     try:
         raw = fetch_json(TPEX_BWIBBU, timeout=60)
         if not isinstance(raw, list):
-            return {}
+            return None
         out = {}
         for r in raw:
             sid = str(r.get("SecuritiesCompanyCode", "")).strip()
@@ -332,8 +358,8 @@ def fetch_tpex_bwibbu():
         LOG.info(f"TPEX BWIBBU 取得 {len(out)} 檔 PE/PB/殖利率")
         return out
     except Exception as e:
-        LOG.warn(f"TPEX BWIBBU 抓取失敗（PE/PB 留空，不中斷）：{e}")
-        return {}
+        LOG.warn(f"TPEX BWIBBU 抓取失敗（沿用前次 PE/PB/殖利率，不中斷）：{e}")
+        return None
 
 
 # ===== TPEX 每日收盤 =====
@@ -464,6 +490,7 @@ def run_daily():
 
     # 保留既有 ROE/ROA/EPS/market_cap/ind（這些由 weekly/官方 API 更新，daily 不覆寫）
     existing = load_existing_stocks()
+    etf_ref = load_etf_reference()
 
     stocks = []
     sources = {"TWSE": 0}
@@ -507,7 +534,7 @@ def run_daily():
 
         # 繼承既有 ROE/ROA/EPS/market_cap/ind
         ex = existing.get(sid, {})
-        bb_twse = bwibbu_twse.get(sid, {})
+        bb_twse = bwibbu_twse.get(sid, {}) if bwibbu_twse is not None else {"pe": ex.get("pe"), "pb": ex.get("pb"), "div": ex.get("div")}
         prof = profitability.get(sid, {})
         bal = balance_sheet.get(sid, {})
 
@@ -524,7 +551,7 @@ def run_daily():
                 if low is None: low = close
 
         # ETF market_cap：若無既有值且有發行張數資料，用 price * shares_stock 估算
-        mc = ex.get("market_cap")
+        mc = ex.get("market_cap") or None  # 0 視為缺漏（null 不得轉成 0）
         if mc is None and sid in etf_shares and close is not None:
             shares = etf_shares[sid].get("shares_stock")
             if shares:
@@ -535,6 +562,10 @@ def run_daily():
         roa = prof.get("roa") if prof.get("roa") is not None else ex.get("roa")
         eps = prof.get("eps") if prof.get("eps") is not None else ex.get("eps")
         capital_stock = bal.get("capital_stock") if bal.get("capital_stock") is not None else ex.get("capital_stock")
+
+        # P0-6：一般股票市值 = 收盤 × 股數；股數 = 股本(元) ÷ 面值 10。取不到股本時保留既有值（不補 0）
+        if close is not None and close > 0 and capital_stock and sid not in etf_shares:
+            mc = round(close * capital_stock / 10)
 
         # ETF 標記
         is_etf = bool(re.search(r"ETF|基金|指數|正[0-9]|反[0-9]|槓桿|反向|期貨|配息|高息|優息|收益", name or ""))
@@ -564,33 +595,12 @@ def run_daily():
         })
         sources["TWSE"] += 1
 
-    # --- 處理 TPEX（一般股票 + ETF）---
-    # 抓取 TPEX 每日收盤，過濾出 ETF（名稱含關鍵字或代碼格式）
+    # --- 處理 TPEX（P0-1：一般股票 + ETF 全部納入）---
+    # 原本只留 ETF 關鍵字命中者，導致上櫃一般股票整批遺漏。現在保留所有通過代碼格式檢查的上櫃證券，
+    # 類型一律由 classify_security() 依官方 ETF 清單判定（不以名稱判斷）。
     tpex_raw = fetch_tpex_daily()
-    tpex_etf_candidates = []
-    # 官方 ETF 清單（TWSE/TPEx 投資篩選器 CSV + 補充）為上櫃 ETF 的權威依據：
-    # 名稱或代碼規則抓不到的純數字 ETF（如 006201 元大富櫃50、00858 永豐美國500大）也必須保留
-    _etf_ref = set()
-    for _fn in ("etf-meta.json", "etf-supplement.json"):
-        _fp = os.path.join(OUT, _fn)
-        if os.path.exists(_fp):
-            try:
-                _etf_ref |= {e["sym"] for e in json.load(open(_fp, encoding="utf-8")).get("etfs", [])}
-            except (OSError, json.JSONDecodeError):
-                pass
-    for r in tpex_raw:
-        sid = r.get("SecuritiesCompanyCode", "").strip()
-        name = r.get("CompanyName", "").strip()
-        # 過濾：只保留 ETF 類（名稱關鍵字或代碼格式）
-        is_etf = bool(re.search(r"ETF|基金|指數|正[0-9]|反[0-9]|槓桿|反向|期貨|配息|高息|優息|收益", name or ""))
-        # 代碼格式：5-6 位數字+字母尾碼（如 00679B）
-        is_etf_code = len(sid) >= 5 and any(c.isalpha() for c in sid)
-        # P0-4：上櫃一般股票與 ETF 都保留（原本只保留 ETF，導致上櫃一般股票幾乎全部遺漏）
-        # ETF / 一般股票的最終分類由 compute_indicators.py 依官方 ETF 清單統一判定
-        # 範圍：上櫃只收 ETF（TPEx 一般股票不納入）；ETF 判定同原本的 is_etf / 代號規則
-        if keep_record(sid) and (sid in _etf_ref or is_etf or is_etf_code):
-            tpex_etf_candidates.append(r)
-    LOG.info(f"TPEX ETF 候選筆數: {len(tpex_etf_candidates)}")
+    tpex_candidates = [r for r in tpex_raw if keep_record(str(r.get("SecuritiesCompanyCode", "") or "").strip())]
+    LOG.info(f"TPEX 候選筆數（一般股票+ETF，已過濾代碼格式）: {len(tpex_candidates)}")
 
     # TPEX BWIBBU（PE/PB/殖利率）
     bwibbu_tpex = fetch_tpex_bwibbu()
@@ -612,7 +622,7 @@ def run_daily():
 
     # 處理 TPEX ETF，建立相同結構
     tpex_stocks = []
-    for r in tpex_etf_candidates:
+    for r in tpex_candidates:
         sid = r.get("SecuritiesCompanyCode", "").strip()
         name = r.get("CompanyName", "").strip()
         try:
@@ -666,19 +676,19 @@ def run_daily():
             price_asof = trade_date
 
         ex = existing.get(sid, {})
-        bb_tpex = bwibbu_tpex.get(sid, {})
+        bb_tpex = bwibbu_tpex.get(sid, {}) if bwibbu_tpex is not None else {"pe": ex.get("pe"), "pb": ex.get("pb"), "div": ex.get("div")}
         # TPEX 沒有營益分析/資產負債表 API，沿用既有資料
         roe = ex.get("roe")
         roa = ex.get("roa")
         eps = ex.get("eps")
         capital_stock = ex.get("capital_stock")
-        mc = ex.get("market_cap")
+        mc = ex.get("market_cap") or None  # 0 視為缺漏（null 不得轉成 0）
         if mc is None and sid in etf_shares and close is not None:
             shares = etf_shares[sid].get("shares_stock")
             if shares:
                 mc = round(close * shares)
 
-        is_etf = True  # TPEX 這裡都是 ETF
+        is_etf = classify_security(sid, etf_ref) == "etf"
 
         source = "TPEX"
         quality = "official"
@@ -703,10 +713,38 @@ def run_daily():
         })
         sources["TPEX"] = sources.get("TPEX", 0) + 1
 
-    # 合併並依市值排序，取前 SAFE_MAX
+    # P0-2：上櫃來源失敗或筆數異常時，不以空/殘缺資料覆蓋既有上櫃資料；沿用前次有效紀錄並標記 stale
+    # （price_asof 保留舊日期，因此不會混入今日 history 切片，也不會冒充最新行情）
+    prev_tpex = [v for v in existing.values() if v.get("source") == "TPEX"]
+    tpex_ok = (len(tpex_raw) >= TPEX_MIN_RAW and len(tpex_stocks) > 0
+               and (not prev_tpex or len(tpex_stocks) >= 0.8 * len(prev_tpex)))
+    if not tpex_ok:
+        LOG.warn(f"TPEX 資料不完整（原始 {len(tpex_raw)} 筆，本次 {len(tpex_stocks)} 筆，前次 {len(prev_tpex)} 筆），沿用前次上櫃資料並標記 stale")
+        tpex_stocks = []
+        for v in prev_tpex:
+            c = dict(v)
+            c["quality"] = "stale"
+            c["_est_mc"] = est_mc({"price": c.get("price"), "volume": c.get("volume"), "market_cap": c.get("market_cap")})
+            tpex_stocks.append(c)
+        LOG.stats["details"]["tpex_stale_carry"] = len(tpex_stocks)
+
+    # 合併：每筆類型依官方 ETF 清單統一判定（security_type 為唯一來源）
     all_stocks = stocks + tpex_stocks
+    for s in all_stocks:
+        sec = classify_security(s.get("sym", ""), etf_ref)
+        s["security_type"] = sec
+        s["is_etf"] = sec == "etf"
+
+    # 依市值排序取前 SAFE_MAX；超過時明確記錄被截除的筆數，不默默丟資料
     all_stocks.sort(key=lambda x: x.get("_est_mc", 0), reverse=True)
+    if len(all_stocks) > SAFE_MAX:
+        cut = len(all_stocks) - SAFE_MAX
+        LOG.warn(f"合併後 {len(all_stocks)} 筆超過上限 {SAFE_MAX}，截除市值最小的 {cut} 筆")
+        LOG.stats["details"]["truncated"] = cut
     all_stocks = all_stocks[:SAFE_MAX]
+    sources = {"TWSE": 0, "TPEX": 0}
+    for s in all_stocks:
+        sources[s.get("source")] = sources.get(s.get("source"), 0) + 1
 
     # 清理暫存欄位
     for s in all_stocks:
@@ -773,7 +811,7 @@ def run_daily():
         "schema_version": SCHEMA_VERSION,
         "count": len(stocks),
         "sources": sources,
-        "note": "收盤/漲跌每日更新；ROE/ROA/EPS/股本 由 TWSE 營益分析/資產負債表（官方免 key）補齊；ETF 含於上市清單；上限 2000 檔",
+        "note": "收盤/漲跌每日更新；ROE/ROA/EPS/股本 由 TWSE 營益分析/資產負債表（官方免 key）補齊；上市+上櫃一般股票與 ETF 皆納入；ETF 依官方清單判定；上限 3000 檔",
     }
 
     # 排除 U 尾代號（期貨型 ETF 與認購權證 7xxxxU），依使用者要求，資料庫與 CSV 都不納入

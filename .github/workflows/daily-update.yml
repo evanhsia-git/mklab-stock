@@ -55,8 +55,10 @@ jobs:
         run: python skills/data/compute_industry.py
       - name: 每日市場摘要與 RSS（本地計算）
         run: python skills/data/build_digest.py
+      - name: QA 閘門（提交前，錯誤即中止，不推送）
+        run: bash scripts/ci_qa_gate.sh
       - name: 推送
-        run: 'bash scripts/ci_commit_push.sh "data: 每日更新 $(date +%Y-%m-%d) [skip ci]" data/ rss.xml'
+        run: 'bash scripts/ci_commit_push.sh "data: 每日更新 $(date +%Y-%m-%d)" data/ rss.xml'
 
   # 每週六：補 ROE/ROA（只抓沒有官方財報的一般股票）
   weekly-roe:
@@ -77,8 +79,10 @@ jobs:
         run: pip install yfinance
       - name: 補 ROE/ROA（yfinance，每檔間隔 3 秒）
         run: python skills/data/fetch_data.py weekly
+      - name: QA 閘門（提交前，錯誤即中止，不推送）
+        run: bash scripts/ci_qa_gate.sh
       - name: 推送
-        run: 'bash scripts/ci_commit_push.sh "data: ROE/ROA 補充 $(date +%Y-%m-%d) [skip ci]" data/'
+        run: 'bash scripts/ci_commit_push.sh "data: ROE/ROA 補充 $(date +%Y-%m-%d)" data/'
 
   # 每日：全球指數、全球 ETF、總經指標、台股加權指數 K 線（合併原 twii-kline）
   indices:
@@ -101,8 +105,10 @@ jobs:
         run: python skills/data/fetch_data.py indices
       - name: 台股加權指數 K 線（yfinance ^TWII）
         run: python skills/data/fetch_data.py twii
+      - name: QA 閘門（提交前，錯誤即中止，不推送）
+        run: bash scripts/ci_qa_gate.sh
       - name: 推送
-        run: 'bash scripts/ci_commit_push.sh "data: 全球指數／ETF／TWII K 線 $(date +%Y-%m-%d) [skip ci]" data/'
+        run: 'bash scripts/ci_commit_push.sh "data: 全球指數／ETF／TWII K 線 $(date +%Y-%m-%d)" data/'
 
   # 每日：美股市值前 30 大個股、ETF 規模前 30 大
   us-market:
@@ -123,8 +129,10 @@ jobs:
         run: pip install yfinance
       - name: 美股個股與 ETF 前 30 大（yfinance）
         run: python skills/data/fetch_us_data.py all
+      - name: QA 閘門（提交前，錯誤即中止，不推送）
+        run: bash scripts/ci_qa_gate.sh
       - name: 推送
-        run: 'bash scripts/ci_commit_push.sh "data: 美股前 30 大 $(date +%Y-%m-%d) [skip ci]" data/us/'
+        run: 'bash scripts/ci_commit_push.sh "data: 美股前 30 大 $(date +%Y-%m-%d)" data/us/'
 
   # 每日：美股指數、全球指數與市場情緒的收盤，累積為月檔
   global-history:
@@ -145,8 +153,10 @@ jobs:
         run: pip install yfinance
       - name: 美股／全球／情緒每日收盤（yfinance）
         run: python skills/data/fetch_global_history.py
+      - name: QA 閘門（提交前，錯誤即中止，不推送）
+        run: bash scripts/ci_qa_gate.sh
       - name: 推送
-        run: 'bash scripts/ci_commit_push.sh "data: 美股／全球月檔 $(date +%Y-%m-%d) [skip ci]" data/us-history-* data/global-history-*'
+        run: 'bash scripts/ci_commit_push.sh "data: 美股／全球月檔 $(date +%Y-%m-%d)" data/us-history-* data/global-history-*'
 
   # 每月 2 日：DIA、QQQ、SOXX、VOO 的替代 ETF 持股（VOO 來源失敗時用手動檔）
   index-holdings:
@@ -167,8 +177,10 @@ jobs:
         run: pip install pandas openpyxl lxml
       - name: 四大指數替代 ETF 持股
         run: python skills/data/fetch_index_holdings.py
+      - name: QA 閘門（提交前，錯誤即中止，不推送）
+        run: bash scripts/ci_qa_gate.sh
       - name: 推送
-        run: 'bash scripts/ci_commit_push.sh "data: 指數替代 ETF 持股 $(date +%Y-%m) [skip ci]" data/index-holdings/'
+        run: 'bash scripts/ci_commit_push.sh "data: 指數替代 ETF 持股 $(date +%Y-%m)" data/index-holdings/'
 
   # 每月 20 日：TWSE 官方財報（損益、資產負債表、股利、基金、公司基本資料）自動下載並匯入
   official-fundamentals:
@@ -191,5 +203,7 @@ jobs:
         run: python skills/data/import_official_fundamentals.py
       - name: 公司基本資料（產業、上市日）
         run: python skills/data/integrate_official_company.py
+      - name: QA 閘門（提交前，錯誤即中止，不推送）
+        run: bash scripts/ci_qa_gate.sh
       - name: 推送
-        run: 'bash scripts/ci_commit_push.sh "data: 官方財報月更新 $(date +%Y-%m) [skip ci]" data/ data/raw/official/'
+        run: 'bash scripts/ci_commit_push.sh "data: 官方財報月更新 $(date +%Y-%m)" data/ data/raw/official/'

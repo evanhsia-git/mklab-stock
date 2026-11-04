@@ -58,7 +58,9 @@ def main():
         rows.append({
             "nm": nm,
             "chg": round(statistics.mean(chgs), 2),
-            "cnt": len(members),
+            "cnt": len(members),          # 成分股總數（一般股票）
+            "valid": len(chgs),           # 有有效行情的檔數（漲跌幅統計的分母）
+            "missing": len(members) - len(chgs),  # 缺失行情檔數（不計入統計，不補 0）
             "top": round(max(chgs), 2),
             "w1": avg_of(lambda sym: ret_since(series.get(sym), days=7)),
             "m1": avg_of(lambda sym: ret_since(series.get(sym), days=30)),

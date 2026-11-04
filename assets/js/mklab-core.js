@@ -40,7 +40,7 @@
     roe:   { label:'ROE',     type:'num', sortable:true,  fmt:r=>(r.roe!=null?Number(r.roe).toFixed(2):'-') },
     roa:   { label:'ROA',     type:'num', sortable:true,  fmt:r=>(r.roa!=null?Number(r.roa).toFixed(2):'-') },
     div:   { label:'殖利率%', type:'num', sortable:true, defDir:-1, fmt:r=>r.div!=null?Number(r.div).toFixed(2)+'%':'-' },
-    shares:  { label:'張數',   type:'num', sortable:true, fmt:r=>r.shares!=null?Number(r.shares).toLocaleString():'-' },
+    shares:  { label:'張數',   type:'num', sortable:true, fmt:r=>r.lots!=null?Number(r.lots).toLocaleString(undefined,{maximumFractionDigits:3}):'-' },
     cost:    { label:'成本價', type:'num', sortable:true, fmt:r=>r.cost!=null?Number(r.cost).toLocaleString(undefined,{maximumFractionDigits:2}):'-' },
     mktVal:  { label:'市值',   type:'num', sortable:true, defDir:-1, fmt:r=>r.mktVal!=null?Math.round(r.mktVal).toLocaleString():'-' },
     pnl:     { label:'損益',   type:'num', sortable:true, defDir:-1, fmt:r=>r.pnl!=null?(r.pnl>=0?'+':'')+Math.round(r.pnl).toLocaleString():'-' },
@@ -682,23 +682,55 @@
 
   // ============================================================
   //  Portfolio（投資組合，localStorage 共用模組）
+  //  單位：holding.shares 一律為「股」。UI 以「張」輸入（1 張 = 1000 股），換算後存入。
+  //  舊版 key mk_portfolio_v1 的 shares 實際是張數；首次讀取時乘以 1000 遷移到 v2。
+  //  v1 原始資料不刪除（保留作為備份）。
   // ============================================================
-  const PORTFOLIO_KEY = 'mk_portfolio_v1';
+  const PORTFOLIO_KEY = 'mk_portfolio_v2';
+  const PORTFOLIO_KEY_V1 = 'mk_portfolio_v1';
+  const SHARES_PER_LOT = 1000;
+  function _readJSON(k){ try{ const raw=localStorage.getItem(k); return raw==null?null:JSON.parse(raw); }catch(e){ return null; } }
+  function _migrateV1(){
+    const v1 = _readJSON(PORTFOLIO_KEY_V1);
+    if (!Array.isArray(v1)) return null;
+    return v1.map(h => ({ sym: String(h.sym), shares: Math.round(Number(h.shares) * SHARES_PER_LOT), cost: Number(h.cost), note: h.note || '' }));
+  }
   const Portfolio = {
-    getAll(){ try{ return JSON.parse(localStorage.getItem(PORTFOLIO_KEY)||'[]'); }catch(e){ return []; } },
+    SHARES_PER_LOT,
+    lotsToShares(lots){ return Math.round(Number(lots) * SHARES_PER_LOT); },
+    sharesToLots(shares){ return Number(shares) / SHARES_PER_LOT; },
+    // 純函式：單一持股的估值（price 為 null 時市值與損益回傳 null，不補 0）
+    valuation(h, price){
+      const costTotal = Number(h.cost) * Number(h.shares);
+      if (price == null || !(Number(price) > 0)) return { costTotal, mktVal: null, pnl: null, pnlPct: null };
+      const mktVal = Number(price) * Number(h.shares);
+      const pnl = mktVal - costTotal;
+      const pnlPct = costTotal > 0 ? (pnl / costTotal) * 100 : null;
+      return { costTotal, mktVal, pnl, pnlPct };
+    },
+    getAll(){
+      const v2 = _readJSON(PORTFOLIO_KEY);
+      if (Array.isArray(v2)) return v2;
+      const migrated = _migrateV1();
+      if (!migrated) return [];
+      try{ localStorage.setItem(PORTFOLIO_KEY, JSON.stringify(migrated)); }catch(e){}
+      return migrated;
+    },
     save(list){ try{ localStorage.setItem(PORTFOLIO_KEY, JSON.stringify(list)); }catch(e){} },
+    // shares 單位為股
     add(sym, shares, cost, note){
-      if(!sym || !shares || !cost) return;
+      shares = Math.round(Number(shares)); cost = Number(cost);
+      if(!sym || !(shares > 0) || !(cost > 0)) return;
       const list=Portfolio.getAll();
       const i=list.findIndex(h=>h.sym===sym);
       if(i>=0){
-        // 同一檔股票：加權平均成本後合併（v1 簡化為單一持股，不分批列示）
+        // 同一檔股票：加權平均成本後合併
         const old=list[i];
-        const totalShares=Number(old.shares)+Number(shares);
-        const totalCost=Number(old.shares)*Number(old.cost)+Number(shares)*Number(cost);
+        const totalShares=Number(old.shares)+shares;
+        const totalCost=Number(old.shares)*Number(old.cost)+shares*cost;
         list[i]={ sym, shares:totalShares, cost:totalCost/totalShares, note:note||old.note||'' };
       } else {
-        list.push({ sym, shares:Number(shares), cost:Number(cost), note:note||'' });
+        list.push({ sym, shares, cost, note:note||'' });
       }
       Portfolio.save(list);
     },
