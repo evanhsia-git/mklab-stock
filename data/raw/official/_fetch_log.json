@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-11-03T17:01:28.628702+08:00",
+  "fetched_at": "2026-11-04T11:48:18.299648+08:00",
   "sources": [
     {
       "prefix": "t187ap03_L",
@@ -33,7 +33,7 @@
       "parts": [
         {
           "url": "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_ci",
-          "rows": 53
+          "rows": 75
         },
         {
           "url": "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_basi",
@@ -75,7 +75,7 @@
       "parts": [
         {
           "url": "https://openapi.twse.com.tw/v1/opendata/t187ap07_L_ci",
-          "rows": 53
+          "rows": 75
         },
         {
           "url": "https://openapi.twse.com.tw/v1/opendata/t187ap07_L_basi",
@@ -112,11 +112,11 @@
       "parts": [
         {
           "url": "https://openapi.twse.com.tw/v1/opendata/t187ap45_L",
-          "rows": 1239
+          "rows": 1240
         }
       ],
       "base_rows": 0,
-      "rows": 1239,
+      "rows": 1240,
       "file": "t187ap45_latest.json"
     },
     {
