@@ -140,6 +140,8 @@
     <div class="grp" style="margin-top:12px;">
       <div class="lab">搜尋</div>
       <input id="etfSearch" placeholder="輸入代號或名稱，如 A、0050、高息" oninput="applyEtfScr()" style="width:100%;">
+      <!-- 成份股預設不顯示，僅本頁 ETF 篩選提供；勾選狀態記在瀏覽器 -->
+      <label class="chk-mb"><input type="checkbox" id="etfShowHoldings" onchange="toggleEtfHoldings(this.checked)"> 顯示前 10 大成份股（官方投信為主，其餘以 CMoney 補足）</label>
     </div>
     <div class="grp" style="margin-top:12px;">
       <div class="lab">說明</div>
@@ -344,6 +346,25 @@
   let etfScrCats = new Set(); // 目前勾選的分類（空集合 = 不限）
   let etfScrTable = null;
 
+  // ===== ETF 成份股（前 10 大）：預設不顯示，只在本頁 ETF 篩選提供 =====
+  const ETF_HOLD_KEY = 'mklab.screener.etf.holdings';
+  let etfHoldingsDoc = null;      // data/etf-holdings.json
+  let etfShowHoldings = false;
+  try { etfShowHoldings = localStorage.getItem(ETF_HOLD_KEY) === '1'; } catch (e) {}
+  function holdingsText(sym){
+    const h = etfHoldingsDoc && etfHoldingsDoc.holdings && etfHoldingsDoc.holdings[sym];
+    if (!h || !h.items || !h.items.length) return '-';
+    return h.items.slice(0, 10)
+      .map(([c, n, w]) => c + ' ' + n + ' ' + (w == null ? '-' : w + '%'))
+      .join(' · ');
+  }
+  function toggleEtfHoldings(on){
+    etfShowHoldings = !!on;
+    try { localStorage.setItem(ETF_HOLD_KEY, on ? '1' : '0'); } catch (e) {}
+    applyEtfScr();
+  }
+  window.toggleEtfHoldings = toggleEtfHoldings;
+
   function renderEtfCatChecks(){
     const el = document.getElementById('etfCatChecks');
     if (!el) return;
@@ -370,11 +391,16 @@
         (r.categories||[]).some(c => (ETF_LABEL_MAP[c]||'').toUpperCase().includes(q) || c.toUpperCase().includes(q))
       );
     }
+    // 成份股是選用欄位：勾選時才加入欄位並附上文字（預設不顯示；其他頁面完全沒有此欄位）
+    const baseCols = ['sym','name','price','chg','div','net_assets_100m','listing_date'];
+    const cols = etfShowHoldings ? baseCols.concat(['holdings10']) : baseCols;
+    if (etfShowHoldings) rows = rows.map(r => Object.assign({}, r, { holdings10: holdingsText(r.sym) }));
     const countEl = document.getElementById('etfScrCount');
     if (countEl) countEl.textContent = `符合：${rows.length} / ${etfScrAll.length} 檔`;
     if (!etfScrTable){
-      etfScrTable = MKLAB.DataTable('etfScrTable', { cols:['sym','name','price','chg','div','net_assets_100m','listing_date'], rows, pageSize:PER, pagerId:'etfScrPager', defaultSort:'net_assets_100m' });
+      etfScrTable = MKLAB.DataTable('etfScrTable', { cols, rows, pageSize:PER, pagerId:'etfScrPager', defaultSort:'net_assets_100m' });
     } else {
+      etfScrTable.setCols(cols);
       etfScrTable.setRows(rows);
     }
   }
@@ -384,11 +410,13 @@
 
   async function loadEtfScreener(){
     try {
-      const [meta, cls, stockDoc] = await Promise.all([
+      const [meta, cls, stockDoc, holdDoc] = await Promise.all([
         MKLAB.data.json('etf-meta'),
         MKLAB.data.json('etf-classified'),
         MKLAB.data.json('stocks').catch(()=>null),
+        MKLAB.data.json('etf-holdings').catch(()=>null),
       ]);
+      etfHoldingsDoc = holdDoc;   // 成份股資料（前 10 大）；缺檔時該欄位顯示 '-'
       const catMap = {};
       ((cls&&cls.etfs)||[]).forEach(c => { catMap[c.sym] = c.categories || []; });
       const priceMap = {};
@@ -400,6 +428,9 @@
           const live = priceMap[m.sym] || {};
           return Object.assign({}, m, { price: live.price, chg: live.chg, div: live.div, categories: catMap[m.sym] });
         });
+      // 還原上次的成份股顯示設定（預設不顯示；未勾選時表格不會有該欄位）
+      const hcb = document.getElementById('etfShowHoldings');
+      if (hcb) hcb.checked = etfShowHoldings;
       renderEtfCatChecks();
       applyEtfScr();
     } catch (e) {

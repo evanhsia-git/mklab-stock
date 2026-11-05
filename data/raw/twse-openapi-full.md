@@ -752,3 +752,164 @@
 - 網址：https://openapi.twse.com.tw/v1/opendata/t187ap47_L
 - 實測：實測可用（276 檔）
 - 欄位（29）：出表日期、基金代號、基金簡稱、基金類型、基金中文名稱、基金英文名稱、標的指數/追蹤指數名稱、標的指數是否為客製化或需揭露相關資訊之指數、股票及債券投資比例說明、是否設有績效指標、績效指標中文名稱、績效指標英文名稱、是否包含國外成分股、基金統一編號、成立日期、上市日期、基金經理人、經理公司總機、經理公司地址、經理公司董事長、經理公司發言人、經理公司總經理、經理公司代理發言人、總代理人、發行單位數/轉換數、保管機構、保管機構電話、保管機構地址、備註
+
+
+---
+
+## 官方資料來源與 API 整理（2026-11-05 整合）
+
+> 本節由使用者提供的 `MKLAB_台股官方資料來源_API整理.html` 轉為 Markdown 併入本檔，
+> 內容涵蓋 MOPS／TWSE／TPEx 官方資料入口、端點清單與導入順序。
+> **免責**：本清單為研究整理，非官方保證之永久 API；端點可能改版或限制存取，
+> 正式使用前請逐一實測 HTTP 狀態、Content-Type、回應內容與涵蓋範圍（HTTP 200 不等於有效資料）。
+
+整理可供 MKLAB Stock、GitHub Actions、Hermes Agent 或其他程式自動取得的台股官方資料入口，包含股票基本資料、財務報表、營收、股利、估值、交易、籌碼、ETF 與 ESG。
+本文件彙整先前整理的官方資料端點與入口，並非官方保證的永久 API 清單。端點可能改版、移除、調整欄位或限制存取。正式納入 MKLAB 前，請逐一測試 HTTP 狀態、Content-Type、回應本文、欄位、資料期間及上市/上櫃涵蓋範圍。HTTP 200 不代表內容一定是有效資料。若端點無法使用，請以官方 Swagger/網站當期文件重新確認，不要直接假設 URL 正確或資料完整。
+### 1. TWSE OpenAPI 基本資訊
+
+官方 API 文件：[https://openapi.twse.com.tw/](https://openapi.twse.com.tw/)
+
+常見 API 根路徑：`https://openapi.twse.com.tw/v1`。下表列出先前整理的端點，實際是否仍有效、欄位與資料期間均應以 Swagger 及實測為準。
+### 2. 公司基本資料與公告
+
+| 資料項目 | 端點 | 格式 | MKLAB 用途 |
+|---|---|---|---|
+| 上市公司基本資料 | [t187ap03_L](https://openapi.twse.com.tw/v1/opendata/t187ap03_L) | JSON | 公司代號、名稱、產業等基本主檔 |
+| 公開發行公司基本資料 | [t187ap03_P](https://openapi.twse.com.tw/v1/opendata/t187ap03_P) | JSON | 擴充公司基本資料範圍 |
+| 新上市公司 | [newlisting](https://openapi.twse.com.tw/v1/company/newlisting) | JSON | 追蹤新上市標的 |
+| 終止上市資訊 | [suspendListingCsvAndHtml](https://openapi.twse.com.tw/v1/company/suspendListingCsvAndHtml) | 待確認 | 清理失效股票代號；確認實際回傳格式 |
+| 上市公司重大訊息 | [t187ap04_L](https://openapi.twse.com.tw/v1/opendata/t187ap04_L) | JSON | 公司重大訊息追蹤 |
+### 3. 月營收與財務報表
+
+| 資料項目 | 端點 | 格式 | 用途 / 注意事項 |
+|---|---|---|---|
+| 上市公司每月營收 | [t187ap05_L](https://openapi.twse.com.tw/v1/opendata/t187ap05_L) | JSON | 計算 MoM、YoY、營收趨勢 |
+| 綜合損益表－一般業 | [t187ap06_L_ci](https://openapi.twse.com.tw/v1/opendata/t187ap06_L_ci) | JSON | 營收、毛利、營業利益、稅後損益等 |
+| 綜合損益表－金融業 | [t187ap06_L_basi](https://openapi.twse.com.tw/v1/opendata/t187ap06_L_basi) | JSON | 金融業專用格式 |
+| 綜合損益表－金控業 | [t187ap06_L_fh](https://openapi.twse.com.tw/v1/opendata/t187ap06_L_fh) | JSON | 金控業專用格式 |
+| 綜合損益表－保險業 | [t187ap06_L_ins](https://openapi.twse.com.tw/v1/opendata/t187ap06_L_ins) | JSON | 保險業專用格式 |
+| 綜合損益表－證券期貨業 | [t187ap06_L_bd](https://openapi.twse.com.tw/v1/opendata/t187ap06_L_bd) | JSON | 證券期貨業專用格式 |
+| 資產負債表－一般業 | [t187ap07_L_ci](https://openapi.twse.com.tw/v1/opendata/t187ap07_L_ci) | JSON | 資產、負債、權益與 ROE 計算基礎 |
+| 資產負債表－金融業 | [t187ap07_L_basi](https://openapi.twse.com.tw/v1/opendata/t187ap07_L_basi) | JSON | 金融業專用格式 |
+| 資產負債表－金控業 | [t187ap07_L_fh](https://openapi.twse.com.tw/v1/opendata/t187ap07_L_fh) | JSON | 金控業專用格式 |
+| 資產負債表－保險業 | [t187ap07_L_ins](https://openapi.twse.com.tw/v1/opendata/t187ap07_L_ins) | JSON | 保險業專用格式 |
+| 營益分析 | [t187ap17_L](https://openapi.twse.com.tw/v1/opendata/t187ap17_L) | JSON | 營業利益與獲利能力分析 |
+| 各產業 EPS 統計 | [t187ap14_L](https://openapi.twse.com.tw/v1/opendata/t187ap14_L) | JSON | 產業獲利比較；確認資料期間 |
+### 4. 股利、股東會與公司治理
+
+| 資料項目 | 端點 | 格式 | MKLAB 用途 |
+|---|---|---|---|
+| 上市公司股利分派 | [t187ap45_L](https://openapi.twse.com.tw/v1/opendata/t187ap45_L) | JSON | 歷年現金/股票股利；需區分提議、決議與發放 |
+| 股東會公告 | [t187ap38_L](https://openapi.twse.com.tw/v1/opendata/t187ap38_L) | JSON | 股東會公告追蹤 |
+| 股東會日期及電子投票資訊 | [t187ap41_L](https://openapi.twse.com.tw/v1/opendata/t187ap41_L) | JSON | 股東會日期與投票資訊 |
+| 董監事持股餘額 | [t187ap11_L](https://openapi.twse.com.tw/v1/opendata/t187ap11_L) | JSON | 董監事持股追蹤 |
+| 大股東名單（10% 以上） | [t187ap02_L](https://openapi.twse.com.tw/v1/opendata/t187ap02_L) | JSON | 大股東持股分析 |
+| 內部人持股轉讓申報 | [t187ap12_L](https://openapi.twse.com.tw/v1/opendata/t187ap12_L) | JSON | 內部人持股異動 |
+| 內部人持股未轉讓 | [t187ap13_L](https://openapi.twse.com.tw/v1/opendata/t187ap13_L) | JSON | 申報後未完成轉讓資訊 |
+| 董事長兼任總經理 | [t187ap33_L](https://openapi.twse.com.tw/v1/opendata/t187ap33_L) | JSON | 公司治理資訊 |
+| 董監事酬金 | [t187ap29_A_L](https://openapi.twse.com.tw/v1/opendata/t187ap29_A_L) | JSON | 公司治理及酬金分析 |
+### 5. 估值、股價交易與籌碼
+
+| 資料項目 | 端點 | 格式 | MKLAB 用途 |
+|---|---|---|---|
+| 個股 PE、殖利率、PB | [BWIBBU_ALL](https://openapi.twse.com.tw/v1/exchangeReport/BWIBBU_ALL) | JSON | 估值與殖利率篩選；ETF 是否包含須實測 |
+| 每日 PE、殖利率、PB | [BWIBBU_d](https://openapi.twse.com.tw/v1/exchangeReport/BWIBBU_d) | JSON | 歷史估值資料；確認日期參數/期間 |
+| 上市個股日成交資訊 | [STOCK_DAY_ALL](https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL) | JSON | 每日收盤價、成交量等 |
+| 日收盤價及月平均價 | [STOCK_DAY_AVG_ALL](https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_AVG_ALL) | JSON | 價格趨勢與均線資料基礎 |
+| 月成交資訊 | [FMSRFK_ALL](https://openapi.twse.com.tw/v1/exchangeReport/FMSRFK_ALL) | JSON | 月度成交統計 |
+| 年成交資訊 | [FMNPTK_ALL](https://openapi.twse.com.tw/v1/exchangeReport/FMNPTK_ALL) | JSON | 年度成交統計 |
+| 每日大盤統計 | [MI_INDEX](https://openapi.twse.com.tw/v1/exchangeReport/MI_INDEX) | JSON | 大盤指數與市場統計 |
+| 融資融券餘額 | [MI_MARGN](https://openapi.twse.com.tw/v1/exchangeReport/MI_MARGN) | JSON | 信用交易與市場情緒 |
+| 外資持股比例 | [MI_QFIIS_cat](https://openapi.twse.com.tw/v1/fund/MI_QFIIS_cat) | JSON | 外資持股分析 |
+| 外資持股前 20 名 | [MI_QFIIS_sort_20](https://openapi.twse.com.tw/v1/fund/MI_QFIIS_sort_20) | JSON | 外資持股排行 |
+| 除權息預告 | [TWT48U_ALL](https://openapi.twse.com.tw/v1/exchangeReport/TWT48U_ALL) | JSON | 除權息事件日曆 |
+### 6. ETF、基金與權證
+
+| 資料項目 | 端點 | 格式 | 用途 / 限制 |
+|---|---|---|---|
+| 基金基本資料彙總 | [t187ap47_L](https://openapi.twse.com.tw/v1/opendata/t187ap47_L) | JSON | ETF/基金基本資料；不等於每日持股明細 |
+| ETF 定期定額排行 | [ETFRank](https://openapi.twse.com.tw/v1/ETFReport/ETFRank) | JSON | 定期定額熱門度參考 |
+| 上市權證基本資料 | [t187ap37_L](https://openapi.twse.com.tw/v1/opendata/t187ap37_L) | JSON | 權證主檔 |
+| 上市權證每日成交資料 | [t187ap42_L](https://openapi.twse.com.tw/v1/opendata/t187ap42_L) | JSON | 權證交易分析 |
+| 上市權證交易人數 | [t187ap43_L](https://openapi.twse.com.tw/v1/opendata/t187ap43_L) | JSON | 權證交易人數統計 |
+
+**ETF 成分股提醒：**ETF 基本資料、ETF 排行、ETF 每日持股明細是不同資料。若要取得 0050、006208、009816、00981A 等 ETF 的完整成分股，應另外查詢投信基金公司、指數公司及交易所官方揭露，並確認更新頻率與歷史檔案。
+### 7. ESG / 永續資料
+
+| 資料項目 | 端點 | 格式 |
+|---|---|---|
+| 溫室氣體排放 | [t187ap46_L_1](https://openapi.twse.com.tw/v1/opendata/t187ap46_L_1) | JSON（待實測） |
+| 能源管理 | [t187ap46_L_2](https://openapi.twse.com.tw/v1/opendata/t187ap46_L_2) | JSON（待實測） |
+| 水資源管理 | [t187ap46_L_3](https://openapi.twse.com.tw/v1/opendata/t187ap46_L_3) | JSON（待實測） |
+| 廢棄物管理 | [t187ap46_L_4](https://openapi.twse.com.tw/v1/opendata/t187ap46_L_4) | JSON（待實測） |
+| 人力發展 | [t187ap46_L_5](https://openapi.twse.com.tw/v1/opendata/t187ap46_L_5) | JSON（待實測） |
+| 董事會資訊 | [t187ap46_L_6](https://openapi.twse.com.tw/v1/opendata/t187ap46_L_6) | JSON（待實測） |
+| 投資人溝通 | [t187ap46_L_7](https://openapi.twse.com.tw/v1/opendata/t187ap46_L_7) | JSON（待實測） |
+### 8. MOPS 歷史月營收與財報下載
+
+#### 歷史月營收 HTML 路徑範例
+
+先前整理的歷史月營收路徑格式如下。以下為民國 115 年 9 月示例，請實際測試是否仍可存取及是否符合當期資料。
+
+| 市場 | 示例網址 |
+|---|---|
+| 上市（sii） | [t21sc03_115_9_0.html](https://mopsov.twse.com.tw/nas/t21/sii/t21sc03_115_9_0.html) |
+| 上櫃（otc） | [t21sc03_115_9_0.html](https://mopsov.twse.com.tw/nas/t21/otc/t21sc03_115_9_0.html) |
+
+路徑參數概念：`{市場別}` 可為 `sii`（上市）或 `otc`（上櫃）；`115` 為民國年；`9` 為月份；最後的類別代碼需依官方資料實測確認。這些範例為 HTML，不是 CSV。
+
+#### XBRL / 財務報告
+
+從 [MOPS 官網](https://mops.twse.com.tw/)進入財務報表與 XBRL 相關區域，查找財務報告、XBRL 分類標準及下載功能。可用於取得資產負債表、綜合損益表、現金流量表、權益變動表及會計師查核/核閱資訊。實際下載格式可能是 XBRL、HTML、PDF 或壓縮檔，應以當期下載介面為準。
+### 9. 直接下載與自動化範例
+
+#### 使用 curl 下載 JSON
+
+```
+curl -L "https://openapi.twse.com.tw/v1/opendata/t187ap05_L" -o monthly_revenue.json
+```
+
+#### 使用 JavaScript fetch
+
+```
+const url = "https://openapi.twse.com.tw/v1/opendata/t187ap05_L";
+const response = await fetch(url);
+if (!response.ok) throw new Error(`HTTP ${response.status}`);
+const contentType = response.headers.get("content-type") || "";
+if (!contentType.includes("json")) {
+  throw new Error(`Unexpected Content-Type: ${contentType}`);
+}
+const data = await response.json();
+if (!Array.isArray(data) || data.length === 0) {
+  throw new Error("資料格式錯誤或資料為空");
+}
+console.log(`取得 ${data.length} 筆資料`);
+```
+
+#### GitHub Actions / Agent 驗證清單
+- 記錄完整 URL、HTTP Method、查詢參數及抓取時間。
+- 驗證 HTTP 狀態、Content-Type、回應本文與 JSON/CSV 結構。
+- 檢查欄位名稱、資料筆數、日期、代號及重複資料。
+- 區分缺值、數值 0、空字串、無資料及請求失敗。
+- 確認上市與上櫃市場是否都有涵蓋，不能只用上市資料代表全市場。
+- 保留原始回應與標準化資料，方便追查解析錯誤。
+- 確認資料授權、使用條款、頻率限制及 GitHub Actions 執行限制。
+- 失敗時重試並記錄錯誤，不可用空資料覆蓋最後一次有效資料。
+### 10. MKLAB 建議導入順序
+### 11. 官方入口與文件
+
+#### MOPS 公開資訊觀測站
+
+[mops.twse.com.tw](https://mops.twse.com.tw/)
+
+#### TWSE OpenAPI
+
+[openapi.twse.com.tw](https://openapi.twse.com.tw/)
+
+#### TPEx OpenAPI
+
+[tpex.org.tw/openapi](https://www.tpex.org.tw/openapi/)
+
+#### TWSE 官方網站
+
+[twse.com.tw](https://www.twse.com.tw/)

@@ -61,6 +61,9 @@
     expense_ratio: { label:'內扣費用率', type:'num', sortable:true, fmt:r=>r.expense_ratio!=null?Number(r.expense_ratio).toFixed(2)+'%':'-' },
     yield: { label:'配息率', type:'num', sortable:true, defDir:-1, fmt:r=>r.yield!=null?Number(r.yield).toFixed(2)+'%':'-' },
     listing_date: { label:'上市/上櫃日期', type:'str', sortable:true, fmt:r=>r.listing_date||'-' },
+    // ETF 成份股（前 10 大）。僅 ETF 篩選頁在勾選「顯示前 10 大成份股」時才會加入表格欄位，
+    // 其餘頁面與預設狀態都不顯示；資料來源 data/etf-holdings.json（官方投信為主、CMoney 備援）。
+    holdings10: { label:'前10大成份股', type:'str', sortable:false, fmt:r=>r.holdings10||'-' },
     issuer: { label:'發行人', type:'str', sortable:true, fmt:r=>r.issuer||'-' },
     volume: { label:'成交量(張)', type:'num', sortable:true, defDir:-1, fmt:r=>r.volume!=null?Math.round(r.volume/1000).toLocaleString():'-' },
     chg_2y: { label:'2年漲跌%', type:'pct', sortable:true, defDir:-1, fmt:r=>r.chg_2y!=null?(r.chg_2y>0?'+':'')+Number(r.chg_2y).toFixed(2)+'%':'-' },
@@ -378,6 +381,7 @@
     help: {
       doc: 'mklab-stock-help.html',                  // 功能說明（使用/資料源/評分標準）
       log: 'mklab-stock-log.html',                    // 開發日誌
+      sources: 'mklab-stock-sources.html',            // 台股官方資料來源與 API 整理
       readme: 'https://github.com/evanhsia-git/mklab-stock#readme', // GitHub README
     },
     system: {
@@ -407,6 +411,8 @@
         h += `<div class="row"><button class="btn-secondary" onclick="MKLAB._runExport(${i})">${a.label}</button></div>`;
       });
     }
+    h += '<h4>資料來源</h4>';
+    h += `<div class="row"><a href="${c.help.sources}">台股官方資料來源與 API 整理 ↗</a></div>`;
     h += '<h4>說明</h4>';
     h += `<div class="row"><a href="${c.help.doc}">功能說明（使用/資料源/評分標準）↗</a></div>`;
     h += `<div class="row"><a href="${c.help.log}">開發日誌 ↗</a></div>`;

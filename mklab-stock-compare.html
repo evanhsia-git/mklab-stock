@@ -44,7 +44,11 @@
 </div>
 <div class="symlist" id="cmpChips"></div>
 <div id="metricChecks" class="muted-small-top" style="margin:8px 0;"></div>
+<div class="muted-small-top" style="margin:8px 0;">
+  <label><input type="checkbox" id="cmpHoldingsChk" onchange="toggleCmpHoldings(this.checked)"> 成份股比較表與重疊率（限 ETF，預設不顯示）</label>
+</div>
 <div class="table-wrap"><table id="cmpTable"></table></div>
+<div id="cmpHoldings"></div>
 <p class="muted-small-top" id="cmpEmpty">尚未加入任何股票，輸入代號開始比較。</p>
 
 <script src="assets/js/data-client.js"></script>
@@ -139,7 +143,94 @@
     document.getElementById('cmpTable').innerHTML = html;
   }
 
-  function renderAll() { renderMetricChecks(); renderChips(); renderTable(); }
+  // ===== 成份股比較（限 ETF；預設不顯示）=====
+  // 資料來自 data/etf-holdings.json（官方投信為主、CMoney 備援），內容為前 10 大成份股。
+  // 重疊率兩種算法：
+  //   檔數重疊率 = 交集檔數 / 聯集檔數
+  //   權重重疊率 = 共同成份股逐檔取「較小權重」後加總（反映實質曝險重疊）
+  const CMP_HOLD_KEY = 'mklab-cmp-holdings';
+  let HOLD = null;
+  let showHoldings = false;
+  try { showHoldings = localStorage.getItem(CMP_HOLD_KEY) === '1'; } catch (e) {}
+  function toggleCmpHoldings(on) {
+    showHoldings = !!on;
+    try { localStorage.setItem(CMP_HOLD_KEY, on ? '1' : '0'); } catch (e) {}
+    renderHoldings();
+  }
+  window.toggleCmpHoldings = toggleCmpHoldings;
+
+  async function ensureHoldings() {
+    if (!HOLD) {
+      try { HOLD = await MKLAB.data.json('etf-holdings'); } catch (e) { HOLD = { holdings: {} }; }
+    }
+    return HOLD;
+  }
+  function hset(sym) {
+    const h = HOLD && HOLD.holdings && HOLD.holdings[sym];
+    if (!h || !h.items || !h.items.length) return null;
+    return { src: h.src || '', asof: h.asof || '', n: h.n || h.items.length,
+      items: h.items.map(([c, n, w]) => ({ c: c, n: n, w: w == null ? null : Number(w) })) };
+  }
+  function overlapOf(a, b) {
+    const mb = new Map(b.items.map(x => [x.c, x]));
+    let inter = 0, wInter = 0;
+    a.items.forEach(x => {
+      const y = mb.get(x.c);
+      if (y) { inter++; if (x.w != null && y.w != null) wInter += Math.min(x.w, y.w); }
+    });
+    const union = a.items.length + b.items.length - inter;
+    return { inter: inter, union: union, jac: union ? (inter / union) * 100 : 0, wOver: wInter };
+  }
+
+  async function renderHoldings() {
+    const box = document.getElementById('cmpHoldings');
+    if (!box) return;
+    const chk = document.getElementById('cmpHoldingsChk');
+    if (chk) chk.checked = showHoldings;
+    if (!showHoldings) { box.innerHTML = ''; return; }
+    await ensureHoldings();
+    const picks = getList().map(s => ({ s: s, h: hset(s) })).filter(x => x.h);
+    if (picks.length < 2) {
+      box.innerHTML = '<p class="muted-small-top">成份股比較需要至少 2 檔 ETF（目前清單中可取得成份股的有 ' + picks.length +
+        ' 檔）。請加入 ETF 代號，例如 0050、00878、009816。</p>';
+      return;
+    }
+    let html = '<div class="section-title">成份股比較（前 10 大）</div>';
+    html += '<div class="table-wrap"><table><thead><tr><th>ETF 組合</th><th>共同成份股</th><th>檔數重疊率</th><th>權重重疊率</th></tr></thead><tbody>';
+    for (let i = 0; i < picks.length; i++) {
+      for (let j = i + 1; j < picks.length; j++) {
+        const o = overlapOf(picks[i].h, picks[j].h);
+        html += '<tr><td>' + picks[i].s + ' vs ' + picks[j].s + '</td><td>' + o.inter + ' 檔</td><td>' +
+          o.jac.toFixed(1) + '%</td><td>' + o.wOver.toFixed(2) + '%</td></tr>';
+      }
+    }
+    html += '</tbody></table></div>';
+    const unionMap = new Map();
+    picks.forEach(p => p.h.items.forEach(x => {
+      if (!unionMap.has(x.c)) unionMap.set(x.c, { name: x.n, w: {} });
+      unionMap.get(x.c).w[p.s] = x.w;
+    }));
+    const rows2 = Array.from(unionMap.entries()).sort((a, b) => {
+      const ma = Math.max.apply(null, picks.map(p => a[1].w[p.s] == null ? 0 : a[1].w[p.s]));
+      const mb = Math.max.apply(null, picks.map(p => b[1].w[p.s] == null ? 0 : b[1].w[p.s]));
+      return mb - ma;
+    });
+    html += '<div class="table-wrap"><table><thead><tr><th>成份股</th>' +
+      picks.map(p => '<th>' + p.s + '</th>').join('') + '<th>共同持有</th></tr></thead><tbody>';
+    rows2.forEach(function (entry) {
+      const code = entry[0], info = entry[1];
+      const shared = picks.every(p => info.w[p.s] != null);
+      html += '<tr><td>' + code + ' ' + info.name + '</td>' +
+        picks.map(p => '<td>' + (info.w[p.s] == null ? '-' : info.w[p.s] + '%') + '</td>').join('') +
+        '<td>' + (shared ? '✓' : '') + '</td></tr>';
+    });
+    html += '</tbody></table></div>';
+    html += '<p class="muted-small-top">來源：' + picks.map(p => p.s + '（' + p.h.src + '，共 ' + p.h.n + ' 檔）').join('、') +
+      '。重疊率以前 10 大成份股計算；權重重疊率為共同成份股逐檔取較小權重後加總，僅代表前 10 大範圍的重疊程度。</p>';
+    box.innerHTML = html;
+  }
+
+  function renderAll() { renderMetricChecks(); renderChips(); renderTable(); renderHoldings(); }
 
   window.addEventListener('DOMContentLoaded', async function () {
     MKLAB.initDrawer();
