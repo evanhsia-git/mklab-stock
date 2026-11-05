@@ -103,6 +103,7 @@
     </tbody>
   </table>
   <p class="muted-small">本表由 <code>data/scoring-config.json</code> 驅動（唯一來源）：<code>index.html</code> 前端計分與 <code>skills/data/build_digest.py</code> 後端摘要皆讀同一份，調整參數時三處同步；一致性由 <code>tests/test_known_errors.py</code> 自動檢查。任一欄位缺漏則該檔不計分（顯示 <code>-</code>），不補 0。</p>
+  <p class="muted-small"><b>財報欄位口徑</b>：本站 ROE / ROA / EPS 皆為 TWSE 官方財報「累計數 × 年化係數」（Q1×4、Q2×2、Q3×4/3、Q4×1），屬估算值，季節性較強的公司會偏離全年實際值；EPS 標示為「EPS(年化)」。PE 則是證交所公布的「近四季」本益比，兩者口徑不同，<b>不能用「股價 ÷ EPS」去對照 PE</b>。沒有官方年化值的股票，EPS 顯示 <code>-</code>，不以單季 EPS 代替。</p>
   </div>
   <p class="muted-small-top">任一欄位缺漏（null）則該股不列入推薦。評分僅供參考，<b>非投資建議</b>。</p>
 </div>
@@ -121,8 +122,7 @@
     MKLAB.initDrawer();
     MKLAB.Shell.mount({ active: 'help' });
     MKLAB.data.json('stocks').then(function (meta) {
-      const asof = meta && meta.meta && meta.meta.as_of;
-      MKLAB.setFreshness(asof);
+      const asof = MKLAB.applyFreshness(meta);
       const el = document.getElementById('helpLatestDate');
       if (el) el.textContent = asof ? MKLAB.formatAsOf(asof) : '無法載入';
     }).catch(function () {

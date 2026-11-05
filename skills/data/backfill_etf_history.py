@@ -35,7 +35,7 @@ KLINE_DIR = os.path.join(DATA, "kline")
 
 sys.path.insert(0, HERE)
 from compute_indicators import (  # noqa: E402
-    sma, calc_rsi, calc_macd, calc_kd, calc_chg_1m, calc_chg_1y, calc_pos52,
+    sma, calc_rsi, calc_macd, calc_kd, calc_chg, CHG_PERIODS, calc_pos52,
     MIN_FOR_RSI, MIN_FOR_KD,
 )
 
@@ -107,8 +107,7 @@ def build_indicators(irows):
     dif, dea, hist = calc_macd(closes)
     k, d = calc_kd(highs, lows, closes, 9) if len(closes) >= MIN_FOR_KD else (None, None)
     out = {
-        "chg_1m": calc_chg_1m(irows),
-        "chg_1y": calc_chg_1y(irows),
+        **{k: calc_chg(irows, d) for k, d in CHG_PERIODS.items()},
         "ma5": sma(closes, 5), "ma10": sma(closes, 10),
         "ma20": sma(closes, 20), "ma30": sma(closes, 30),
         "rsi14": calc_rsi(closes, 14) if len(closes) >= MIN_FOR_RSI else None,

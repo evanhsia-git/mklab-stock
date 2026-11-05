@@ -2,11 +2,10 @@
 """
 整合官方公司基本資料（TWSE t187ap03_L）到 data/stocks.json，並依實際陣列重算 meta。
 
-範圍（P0-1 修正後）：TWSE／TPEx 一般股票與 ETF 皆納入。本腳本不再刪除任何上櫃列（舊版會把上櫃一般股票每日刪掉）。
+範圍：TWSE 一般股票 + TWSE／TPEx ETF。本站不收上櫃一般股票（原始設計）；若 stocks.json 殘留上櫃非 ETF 列，本腳本會移除並記錄筆數。
 - meta（count / sources / price_asof_counts）每次都依實際陣列重算，不沿用舊值（P1-1）。
-- 一般股票（security_type=stock）補上 產業（ind）、上市／上櫃日期（listing_date）、公司簡稱（company_short）：
-  - 上市：TWSE t187ap03_L（中文欄位），為主要來源（可覆寫既有值）
-  - 上櫃：TPEx t187ap03_O（英文欄位，mopsfin_t187ap03_O），只補缺不覆寫
+- 上市一般股票（security_type=stock）補上 產業（ind）、上市日期（listing_date）、公司簡稱（company_short）：
+  來源 TWSE t187ap03_L（中文欄位），可覆寫既有值
   官方產業代碼 → 名稱依 data/industry-codes.json；代碼 91 為存託憑證，不在 33 類內，單獨命名。
   日期欄位同時支援民國（1151103）與西元（20150925）兩種格式。
 用法：python3 skills/data/integrate_official_company.py
@@ -57,27 +56,26 @@ def _read(path_glob, cols):
     return out
 
 
-# 上市：TWSE t187ap03_L（中文欄位）；上櫃：TPEx t187ap03_O（英文欄位）
+# 上市：TWSE t187ap03_L（中文欄位）
 ap_l = {}
 for code_key, row in _read(os.path.join(ROOT, "data", "raw", "official", "t187ap03_L*.csv"),
                            ["公司代號", "公司簡稱", "產業別", "上市日期", "出表日期"]).items():
     ap_l[code_key] = {"short": row["公司簡稱"], "ind": ind_of(row["產業別"]),
                       "listing": _roc_iso(row["上市日期"]), "asof": row["出表日期"]}
-ap_o = {}
-for code_key, row in _read(os.path.join(ROOT, "data", "raw", "official", "t187ap03_O*.csv"),
-                           ["SecuritiesCompanyCode", "CompanyAbbreviation", "SecuritiesIndustryCode",
-                            "DateOfListing", "Date"]).items():
-    ap_o[code_key] = {"short": row["CompanyAbbreviation"],
-                      "ind": ind_of(row["SecuritiesIndustryCode"]),
-                      "listing": _roc_iso(row["DateOfListing"]), "asof": row["Date"]}
-if not ap_l and not ap_o:
-    print("[integrate] 找不到 t187ap03_L／t187ap03_O CSV，略過公司基本資料整合（不中斷排程）")
+if not ap_l:
+    print("[integrate] 找不到 t187ap03_L CSV，略過公司基本資料整合（不中斷排程）")
     raise SystemExit(0)
 p = os.path.join(ROOT, "data", "stocks.json")
 doc = json.load(open(p, encoding="utf-8"))
 before = len(doc["stocks"])
+# 上櫃只收 ETF（含清單尚未收錄的 00 開頭 unverified）；殘留的上櫃一般股票／權證等一律移除
+# 同時移除 other 類（特別股、DR、受益證券、ETN、權證等），本站只收 上市一般股票 / 上市 ETF / 上櫃 ETF
+dropped_tpex = [s for s in doc["stocks"] if (s.get("source") == "TPEX" and s.get("security_type") not in ("etf", "unverified"))
+                or s.get("security_type") == "other"]
+if dropped_tpex:
+    _drop = {s["sym"] for s in dropped_tpex}
+    doc["stocks"] = [s for s in doc["stocks"] if s["sym"] not in _drop]
 filled = 0
-filled_o = 0
 for s in doc["stocks"]:
     if s.get("security_type") != "stock":
         continue
@@ -89,13 +87,6 @@ for s in doc["stocks"]:
         s["company_short"] = a["short"]
         s["ind_src"] = f"TWSE_t187ap03_L（出表 {a['asof']}）"
         filled += 1
-    elif sym in ap_o:                    # 上櫃：t187ap03_O 只補缺，不覆寫既有值
-        b = ap_o[sym]
-        if b["ind"] and not s.get("ind"): s["ind"] = b["ind"]
-        if b["listing"] and not s.get("listing_date"): s["listing_date"] = b["listing"]
-        if b["short"]: s["company_short"] = b["short"]
-        s["ind_src"] = f"TPEx_t187ap03_O（出表 {b['asof']}）"
-        filled_o += 1
 # P0-6：修正既有資料的市值 0（缺漏應為 null）。一般股票：收盤 × 股本 ÷ 面值10；無股本則設 null
 for s_ in doc["stocks"]:
     if s_.get("market_cap") == 0:
@@ -118,10 +109,10 @@ doc["meta"]["sources"] = src
 doc["meta"]["price_asof_counts"] = pa
 doc["meta"]["integration"] = {
     "integrated_at": dt.datetime.now(dt.timezone(dt.timedelta(hours=8))).isoformat(),
-    "scope": "TWSE／TPEx 一般股票 + TWSE／TPEx ETF（TPEx 一般股票於 P0-1 起納入）",
+    "scope": "TWSE 一般股票 + TWSE／TPEx ETF（上櫃一般股票不收）",
     "rows_before": before, "rows_after": len(doc["stocks"]),
     "company_info_matched": filled,
-    "company_info_matched_tpex": filled_o,
+    "non_scope_dropped": len(dropped_tpex),
 }
 json.dump(doc, open(p, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
-print(f"股票 {before} → {len(doc['stocks'])}；公司基本資料對應 上市 {filled} 檔 + 上櫃 {filled_o} 檔")
+print(f"股票 {before} → {len(doc['stocks'])}（移除範圍外證券 {len(dropped_tpex)} 筆）；公司基本資料對應 上市 {filled} 檔")

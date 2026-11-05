@@ -96,6 +96,15 @@
     </div>
     <div class="count" id="count"></div>
     <p class="muted-small-top" id="fundNote"></p>
+    <details class="colpick" id="colPick">
+      <summary>顯示欄位（勾選要在表格顯示的內容）</summary>
+      <div class="colpick-body" id="colPickBody"></div>
+      <div class="colpick-actions">
+        <button type="button" onclick="colPickPreset('default')">恢復預設</button>
+        <button type="button" onclick="colPickPreset('all')">全選</button>
+        <button type="button" onclick="colPickPreset('none')">全不選（只留代號、名稱）</button>
+      </div>
+    </details>
     <div class="table-wrap">
       <table id="resTable"></table>
     </div>
@@ -196,7 +205,7 @@
     const exportedEtf = lastFilteredRows.filter(s=>etfSet.has(s.sym)).length;
     const exportedStock = lastFilteredRows.length - exportedEtf;
     const stamp = new Date().toLocaleString('zh-TW', { hour12: false });
-    MKLAB.exportCSV(lastFilteredRows, ['sym','name','price','chg','pe','pb','roe','div','cap'], {
+    MKLAB.exportCSV(lastFilteredRows, visibleCols().map(id=>id==='pos52'?'pos52w_level':id), {
       filename: 'mklab-stock-screener-' + new Date().toISOString().slice(0,10),
       dbUpdated: dataAsOf || stamp,
       dbTotalCount: current.length,
@@ -205,7 +214,7 @@
       exportedCount: lastFilteredRows.length,
       exportedStockCount: exportedStock,
       exportedEtfCount: exportedEtf,
-      source: 'TWSE OpenAPI（上市）+ TPEx OpenAPI（上櫃）；收盤價/PE/PB/殖利率/ROE/ROA 由 GitHub Actions 每日排程抓取；RSI/均線由歷史收盤價 Build-Time 計算；ETF 清單來源為 TWSE/TPEx ETF 投資篩選器 CSV',
+      source: 'TWSE OpenAPI（上市個股）；收盤價/PE/PB/殖利率/ROE/ROA 由 GitHub Actions 每日排程抓取；RSI/均線由歷史收盤價 Build-Time 計算；ETF 清單來源為 TWSE/TPEx ETF 投資篩選器 CSV',
       sourceUrl: 'https://openapi.twse.com.tw/ ， https://www.tpex.org.tw/openapi/ ， https://wwwc.twse.com.tw/zh/ETFortune/products ， https://info.tpex.org.tw/ETF/zh/filter.html',
       method: '本頁 Screener 依目前篩選條件從資料庫篩選後匯出；資料庫已排除 U 尾期貨型；本檔為目前符合條件的全部列（非分頁）',
     });
@@ -213,7 +222,7 @@
   function loadScreener(){
     MKLAB.data.stocks().then(d=>{
       if(d && Array.isArray(d) && d.length){
-        current=d.filter(s=>(s.security_type||"stock")==="stock").map(s=>({sym:s.sym,name:s.name,price:s.price,chg:s.chg,pe:s.pe,pb:s.pb,roe:s.roe,roa:s.roa,rsi:s.rsi14,pos52w_level:s.pos52w_level,div_streak_years:s.div_streak_years,div_cash_latest:s.div_cash_latest,ma5:s.ma5,ma10:s.ma10,ma30:s.ma30,cap:(s.market_cap!=null?(s.market_cap/1e8):0),div:(s.div||0),ind:s.ind}));
+        current=d.filter(s=>(s.security_type||"stock")==="stock").map(s=>({sym:s.sym,name:s.name,price:s.price,chg:s.chg,pe:s.pe,pb:s.pb,roe:s.roe,roa:s.roa,rsi:s.rsi14,pos52w_level:s.pos52w_level,div_streak_years:s.div_streak_years,div_cash_latest:s.div_cash_latest,ma5:s.ma5,ma10:s.ma10,ma20:s.ma20,ma30:s.ma30,chg_1m:s.chg_1m,chg_3m:s.chg_3m,chg_6m:s.chg_6m,chg_1y:s.chg_1y,chg_2y:s.chg_2y,eps:s.eps,volume:s.volume,rsi14:s.rsi14,k_value:s.kd_k,d_value:s.kd_d,macd_dif:s.macd_dif,macd_dea:s.macd_dea,macd_hist:s.macd_hist,cap:(s.market_cap!=null?(s.market_cap/1e8):0),div:(s.div||0),ind:s.ind}));
         dataLoaded=true;
         MKLAB.data.json('etf-classified').then(cd=>{ etfClassifiedSyms=(cd&&cd.etfs?cd.etfs:[]).map(x=>x.sym); }).catch(()=>{});
         // 填充產業下拉選單（不重複、排序後的產業清單）
@@ -226,7 +235,7 @@
         return MKLAB.data.json('stocks');
       }
     }).then(meta=>{
-      dataAsOf=(meta&&meta.meta&&meta.meta.as_of)||null; MKLAB.setFreshness(dataAsOf);
+      dataAsOf=MKLAB.applyFreshness(meta);
       const fu=meta&&meta.meta&&meta.meta.fundamentals;
       const fn=document.getElementById('fundNote');
       if(fn&&fu) fn.textContent=`財報（ROE/ROA/EPS）來源：TWSE 官方，${fu.financial_period||''}累計數年化，出表日 ${fu.financial_asof_roc_date||''}，匯入時間 ${fu.imported_at||''}。股利欄位來源：TWSE 股利分派（股利年度 ${(fu.dividend_years||'見資料檔')}）。`;
@@ -239,6 +248,47 @@
     if(hit){ if(!current.slice(0,200).includes(hit)) current.unshift(hit); }
     else { window.location.href='mklab-stock-research.html?sym='+encodeURIComponent(v); return; }
     apply();
+  }
+  // ===== 顯示欄位勾選器 =====
+  // 代號、名稱固定顯示；其餘由使用者勾選，選擇存在瀏覽器 localStorage（只影響這個瀏覽器）。
+  const COL_GROUPS = [
+    ['基本', [['ind','產業']]],
+    ['價格與報酬', [['price','股價'],['chg','日漲跌%'],['chg_1m','1月漲跌%'],['chg_3m','3月漲跌%'],['chg_6m','6月漲跌%'],['chg_1y','1年漲跌%'],['pos52','52週位階'],['volume','成交量(張)']]],
+    ['估值與獲利', [['pe','PE'],['pb','PB'],['eps','EPS(年化)'],['roe','ROE'],['roa','ROA']]],
+    ['股利與規模', [['div','殖利率%'],['div_cash','最近現金股利'],['cap','市值(億)']]],
+    ['技術面', [['rsi14','RSI(14)'],['ma5','MA5'],['ma10','MA10'],['ma20','MA20'],['ma30','MA30'],['macd_dif','MACD DIF'],['macd_dea','MACD DEA'],['macd_hist','MACD 柱狀'],['k_value','K值'],['d_value','D值']]]
+  ];
+  const COL_DEFAULT = ['price','chg','chg_1m','chg_3m','chg_6m','chg_1y','pos52','pe','pb','roe','div','div_cash','cap'];
+  // 暫不開放：連續配息年數。資料庫的配息歷史年數不完整（div_years_available 不足），顯示會誤導。
+  // 欄位定義（COLUMNS.div_streak）與資料欄位（div_streak_years）都保留，資料補齊後把 OPEN_DIV_STREAK 改成 true
+  // 並把下面這行的 ['div_streak','連續配息(年)'] 放進「股利與規模」群組即可開放。
+  const OPEN_DIV_STREAK = false;
+  if (OPEN_DIV_STREAK) COL_GROUPS[3][1].push(['div_streak','連續配息(年)']);
+  // 暫不開放：2 年漲跌幅。功能已寫好（資料欄位 chg_2y 每日計算、COLUMNS.chg_2y 已定義），
+  // 但 history 目前只有約 14 個月，幾乎全是「-」。history 滿 2 年後把 OPEN_CHG_2Y 改成 true 即可開放。
+  const OPEN_CHG_2Y = false;
+  if (OPEN_CHG_2Y) COL_GROUPS[1][1].splice(6, 0, ['chg_2y','2年漲跌%']);
+  const COL_KEY = 'mklab.screener.cols.v1';
+  const COL_ALL = COL_GROUPS.flatMap(g=>g[1].map(c=>c[0]));
+  let colSel = loadColSel();
+  function loadColSel(){
+    try{ const v=JSON.parse(localStorage.getItem(COL_KEY)||'null'); if(Array.isArray(v)) return v.filter(id=>COL_ALL.includes(id)); }catch(e){}
+    return COL_DEFAULT.slice();
+  }
+  function saveColSel(){ try{ localStorage.setItem(COL_KEY, JSON.stringify(colSel)); }catch(e){} }
+  function visibleCols(){ return ['sym','name'].concat(COL_ALL.filter(id=>colSel.includes(id))); }
+  function renderColPick(){
+    const box=document.getElementById('colPickBody'); if(!box) return;
+    box.innerHTML = COL_GROUPS.map(g=>'<div class="colpick-grp"><div class="lab">'+g[0]+'</div>'+g[1].map(c=>
+      '<label><input type="checkbox" data-col="'+c[0]+'"'+(colSel.includes(c[0])?' checked':'')+'> '+c[1]+'</label>').join('')+'</div>').join('');
+    box.querySelectorAll('input[data-col]').forEach(cb=>cb.addEventListener('change',()=>{
+      colSel = Array.from(box.querySelectorAll('input[data-col]:checked')).map(x=>x.dataset.col);
+      saveColSel(); if(resTable) resTable.setCols(visibleCols());
+    }));
+  }
+  function colPickPreset(kind){
+    colSel = kind==='all' ? COL_ALL.slice() : kind==='none' ? [] : COL_DEFAULT.slice();
+    saveColSel(); renderColPick(); if(resTable) resTable.setCols(visibleCols());
   }
   let resTable=null;
   let _applyScheduled=false;
@@ -264,16 +314,12 @@
   }
   function applyNow(){
     const g=id=>parseFloat(document.getElementById(id).value)||0; const pe=g('f_pe'),pb=g('f_pb'),div=g('f_div'),roe=g('f_roe'),roa=g('f_roa'),rsi=g('f_rsi'),chg=g('f_chg'),cap=g('f_cap'); const ma=document.getElementById('f_ma').value; const indEl=document.getElementById('f_ind'); const ind=indEl?indEl.value:'any';
-    const ge=(a,b)=> a==null ? true : a>=b;
-    const leU=(a,val,max)=> a==null ? true : (val>=max ? true : a<=val);
-    const geU=(a,val,min)=> a==null ? true : (val<=min ? true : a>=val);
-    const aboveMa=(s,key)=> s[key]==null ? true : s.price>=s[key];
     const rows=current.filter(s=>passStock(s,{pe,pb,div,roe,roa,rsi,chg,cap,ma,ind}));
     lastFilteredRows = rows;
     const label = dataLoaded ? `符合：${rows.length} / ${current.length} 檔` : '資料載入中…';
     document.getElementById('count').textContent=label;
     if(!resTable){
-      resTable = MKLAB.DataTable('resTable', { cols:['sym','name','price','chg','pos52','pe','pb','roe','div','div_streak','div_cash','cap'], rows:rows, pageSize:PER, pagerId:'pager', defaultSort:'roe', fieldMap:{pos52:'pos52w_level'} });
+      resTable = MKLAB.DataTable('resTable', { cols:visibleCols(), rows:rows, pageSize:PER, pagerId:'pager', defaultSort:'roe', fieldMap:{pos52:'pos52w_level'} });
     } else {
       resTable.setRows(rows);
     }
@@ -362,6 +408,7 @@
   }
   MKLAB.registerExport('匯出目前篩選結果 CSV', exportResultsCSV);
   window.addEventListener('DOMContentLoaded', function () {
+    renderColPick(); // 欄位勾選器（依 localStorage 還原上次選擇）
     apply(); // 初次渲染（此時 MKLAB 已定義）
     loadScreener();
     loadEtfScreener();

@@ -179,7 +179,7 @@
     });
   }).then(meta => {
     render();
-    MKLAB.setFreshness(meta && meta.meta && meta.meta.as_of);
+    MKLAB.applyFreshness(meta);
   }).catch(e => {
     console.warn('[watchlist] 資料載入失敗:', e);
     render();

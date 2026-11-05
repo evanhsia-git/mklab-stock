@@ -23,9 +23,6 @@
   th, td { padding: 8px 6px; font-size: 12px; }
   .table-wrap { border-radius: 10px; }
   .drawer { width: 280px; padding: 12px; }
-  .toolbar { gap: 6px; }
-  .toolbar label { font-size: 12px; }
-  .toolbar select { padding: 5px 8px; font-size: 12px; }
   .row { font-size: 13px; padding: 6px 0; }
   .switch { width: 44px; height: 24px; }
   .switch::after { width: 20px; height: 20px; }
@@ -43,7 +40,6 @@
   .perf h3 { font-size: 13px; }
   .cards { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; }
   .card-title { font-size: 14px; }
-  .badge { font-size: 10px; padding: 1px 6px; }
   .alert { padding: 10px 12px; font-size: 12px; }
   .kv { font-size: 12px; padding: 6px 0; }
   .count { font-size: 12px; }

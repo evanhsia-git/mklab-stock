@@ -13,6 +13,16 @@
   box-shadow: var(--shadow);
   transition: box-shadow var(--transition-fast), transform var(--transition-fast);
 }
+.table-wrap{
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  margin: 8px 0;
+}
+/* 注意：.table-wrap 必須寫在下面 .wrap > * + * 之前（兩者權重相同、後寫者勝），
+   區塊之間的 20px 間距才會蓋過這裡的 margin-top:8px；本規則原本分散在 mklab-theme.css（margin-top）與此檔 */
+
 /* 統一全站「頁面主要區塊」之間的留白，取代原本各頁各自决定、常常忘記留間距的作法。
    只作用在 .wrap 的直接子層（每頁最外層的區塊，如 .section-title/.card/.cards/.pf-summary/.table-wrap 等），
    不影響區塊內部（例如 .cards/.pf-summary 用 grid gap 控制內部卡片間距、.card 內部段落）。
@@ -137,13 +147,7 @@
   z-index: var(--z-nav);
   background: var(--surface);
   border-bottom: 1px solid var(--border);
-}.sym{ font-weight: 600; }.sym small{ color: var(--muted); font-weight: 400; display: block; }.table-wrap{
-  overflow-x: auto;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--surface);
-  margin-bottom: 8px;
-}.tv-box{
+}.sym{ font-weight: 600; }.sym small{ color: var(--muted); font-weight: 400; display: block; }.tv-box{
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);

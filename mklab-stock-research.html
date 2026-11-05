@@ -100,8 +100,7 @@ function loadAll() {
     renderList();
     return MKLAB.data.json('stocks');
   }).then(meta => {
-    const asof = meta && meta.meta && meta.meta.as_of;
-    MKLAB.setFreshness(asof);
+    const asof = MKLAB.applyFreshness(meta);
     const q = new URLSearchParams(location.search).get('sym');
     if (q && STOCKS[q]) selectSym(q);
     else loadKLine();
@@ -142,7 +141,7 @@ function selectSym(sym) {
       kv('PE', m.pe != null ? m.pe : '-') +
       kv('PB', m.pb != null ? m.pb : '-') +
       kv('ROE', (m.roe != null ? m.roe.toFixed(1) : '-') + '%') +
-      kv('EPS', m.eps != null ? m.eps : '-') +
+      kv('EPS(年化)', m.eps != null ? m.eps : '-') +
       kv('ROA', (m.roa != null ? m.roa.toFixed(1) : '-') + '%') +
     '</div>' +
     '<div class="kv" style="margin-top:8px;">' +

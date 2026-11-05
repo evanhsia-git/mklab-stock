@@ -146,31 +146,14 @@ def calc_kd(highs, lows, closes, n=9):
     return round(k, 1), round(d, 1)
 
 
-def calc_chg_1m(rows):
-    """一個月漲跌幅（%）：最新收盤 vs 不晚於 30 個日曆天前的最近一個交易日收盤。
+def calc_chg(rows, days):
+    """區間漲跌幅（%）：最新收盤 vs 不晚於「最新日 - days 個日曆天」的最近一個交易日收盤。
     rows 為 (date, open, high, low, close)，已依日期由舊到新排序。
-    找不到基準日（歷史不足）回傳 None，不推測。"""
-    if len(rows) < 2:
-        return None
-    latest_date, latest_close = rows[-1][0], rows[-1][4]
-    latest = dt.datetime.strptime(latest_date, "%Y%m%d").date()
-    target = latest - dt.timedelta(days=30)
-    base = None
-    for r in rows:
-        d = dt.datetime.strptime(r[0], "%Y%m%d").date()
-        if d <= target:
-            base = r[4]
-    if base is None or base == 0:
-        return None
-    return round((latest_close - base) / base * 100, 2)
-
-
-def calc_chg_1y(rows):
-    """年漲跌幅（%）：最新收盤 vs 不晚於 365 個日曆天前的最近一個交易日收盤。找不到基準回傳 None。"""
+    找不到基準日（歷史不足）回傳 None，不推測、不補 0。"""
     if len(rows) < 2:
         return None
     latest = dt.datetime.strptime(rows[-1][0], "%Y%m%d").date()
-    target = latest - dt.timedelta(days=365)
+    target = latest - dt.timedelta(days=days)
     base = None
     for r in rows:
         if dt.datetime.strptime(r[0], "%Y%m%d").date() <= target:
@@ -178,6 +161,19 @@ def calc_chg_1y(rows):
     if base is None or base == 0:
         return None
     return round((rows[-1][4] - base) / base * 100, 2)
+
+
+# 報酬期間（日曆天）：1 月 30、3 月 91、6 月 182、1 年 365、2 年 730
+def calc_chg_1m(rows):
+    return calc_chg(rows, 30)
+
+
+def calc_chg_1y(rows):
+    return calc_chg(rows, 365)
+
+
+# chg_2y 已預先計算但前端暫不開放：history 目前只有約 14 個月，大部分標的為 null；累積滿 2 年後自然有值
+CHG_PERIODS = {"chg_1m": 30, "chg_3m": 91, "chg_6m": 182, "chg_1y": 365, "chg_2y": 730}
 
 
 def calc_pos52(rows):
@@ -226,8 +222,8 @@ def main():
             row["rsi14"] = None
             row["macd_dif"] = row["macd_dea"] = row["macd_hist"] = None
             row["kd_k"] = row["kd_d"] = None
-            row["chg_1m"] = None
-            row["chg_1y"] = None
+            for _k in CHG_PERIODS:
+                row[_k] = None
             row.update({"high52w": None, "low52w": None, "pos52w_level": None})
             continue
 
@@ -235,8 +231,8 @@ def main():
         highs = [r[2] for r in rows]
         lows = [r[3] for r in rows]
 
-        row["chg_1m"] = calc_chg_1m(rows)
-        row["chg_1y"] = calc_chg_1y(rows)
+        for _k, _d in CHG_PERIODS.items():
+            row[_k] = calc_chg(rows, _d)
         row.update(calc_pos52(rows))
         row["ma5"] = sma(closes, 5)
         row["ma10"] = sma(closes, 10)
@@ -266,10 +262,16 @@ def main():
         elif sym.startswith("00"):
             row["security_type"], row["is_etf"] = "unverified", False
         elif not (len(sym) == 4 and sym.isdigit()):
-            # 非普通股代碼（特別股如 2883B、債券/權證等）：不列入個股與產業統計
+            # 非普通股代碼（特別股、DR、受益證券、ETN、權證等）：本站不收，標 other 後下方整批移除
             row["security_type"], row["is_etf"] = "other", False
         else:
             row["security_type"], row["is_etf"] = "stock", False
+
+    # 規矩：只留 上市一般股票 / 上市 ETF / 上櫃 ETF；特別股、DR、受益證券、ETN、權證等（other）一律不收
+    _before = len(stocks_doc.get("stocks", []))
+    stocks_doc["stocks"] = [r for r in stocks_doc.get("stocks", []) if r.get("security_type") != "other"]
+    if len(stocks_doc["stocks"]) != _before:
+        print(f"[compute_indicators] 移除其他證券 {_before - len(stocks_doc['stocks'])} 筆（本站不收特別股等）")
 
     with open(STOCKS_PATH, "w", encoding="utf-8") as f:
         json.dump(stocks_doc, f, ensure_ascii=False, indent=None, separators=(",", ":"))

@@ -58,7 +58,7 @@
     { key: 'pb',    label: 'PB',      fmt: r => r.pb != null ? Number(r.pb).toFixed(2) : '-', better: 'min' },
     { key: 'roe',   label: 'ROE',     fmt: r => r.roe != null ? Number(r.roe).toFixed(2) : '-', better: 'max' },
     { key: 'roa',   label: 'ROA',     fmt: r => r.roa != null ? Number(r.roa).toFixed(2) : '-', better: 'max' },
-    { key: 'eps',   label: 'EPS',     fmt: r => r.eps != null ? Number(r.eps).toFixed(2) : '-', better: 'max' },
+    { key: 'eps',   label: 'EPS(年化)',     fmt: r => r.eps != null ? Number(r.eps).toFixed(2) : '-', better: 'max' },
     { key: 'div',   label: '殖利率%', fmt: r => r.div != null ? Number(r.div).toFixed(2) + '%' : '-', better: 'max' },
     { key: 'market_cap', label: '市值(億)', fmt: r => r.market_cap != null ? (Number(r.market_cap) / 1e8).toFixed(1) : '-', better: 'max' },
     { key: 'chg_1m', label: '月漲跌%', fmt: r => MKLAB.cellPct(r.chg_1m), better: 'max' },
@@ -155,8 +155,7 @@
         if (list.length) saveList(list);
       }
       renderAll();
-      const meta = await MKLAB.data.json('stocks');
-      MKLAB.setFreshness(meta && meta.meta && meta.meta.as_of);
+      await MKLAB.loadFreshness();
     } catch (e) {
       console.warn('[compare] load failed:', e);
       MKLAB.setFreshness(null);

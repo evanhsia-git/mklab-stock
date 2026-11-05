@@ -48,6 +48,19 @@ def load_json(path):
 SCORE_CFG = json.load(open(os.path.join(DATA_DIR, 'scoring-config.json'), encoding='utf-8'))
 
 
+def effective_fundamentals(s):
+    """回傳與前端 data-client.js 相同口徑的財報欄位（官方累計年化優先）。
+    - ROE/ROA：有 roe_off/roa_off 者以官方值覆蓋
+    - EPS：只用官方年化 eps_off；沒有官方值時為 None（舊版殘留的 eps 是過期值，不可用）"""
+    e = dict(s)
+    if s.get('roe_off') is not None:
+        e['roe'] = s['roe_off']
+    if s.get('roa_off') is not None:
+        e['roa'] = s['roa_off']
+    e['eps'] = s.get('eps_off')
+    return e
+
+
 def compute_score(s):
     """依 data/scoring-config.json 計算綜合評分；任一欄位缺漏則不計分。"""
     vals = {}
@@ -75,7 +88,8 @@ def build_digest():
     as_of = (stocks_data or {}).get('meta', {}).get('as_of') or datetime.now().strftime('%Y-%m-%d')
 
     # 漲幅 / 跌幅前 5 大（排除 ETF、排除缺漲跌資料）
-    real_stocks = [s for s in stocks if not s.get('is_etf') and s.get('chg') is not None]
+    # 只算一般股票（security_type=stock）；排除 ETF、DR、特別股、權證等其他證券，並套用與前端相同的財報口徑
+    real_stocks = [effective_fundamentals(s) for s in stocks if s.get('security_type') == 'stock' and s.get('chg') is not None]
     top_gainers = sorted(real_stocks, key=lambda s: s['chg'], reverse=True)[:5]
     top_losers = sorted(real_stocks, key=lambda s: s['chg'])[:5]
 

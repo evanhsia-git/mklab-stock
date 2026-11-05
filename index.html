@@ -408,13 +408,7 @@
     loadEtf10();
 
     // 更新 freshness（資料新鮮度指示器，統一格式）
-    try {
-      const meta = await MKLAB.data.json('stocks');
-      MKLAB.setFreshness(meta && meta.meta && meta.meta.as_of);
-    } catch (e) {
-      const fresh = document.querySelector('.freshness');
-      if (fresh) fresh.textContent = '無法載入收盤資料，暫以示意資料顯示';
-    }
+    await MKLAB.loadFreshness();
   });
 </script>
 </main>

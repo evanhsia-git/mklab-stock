@@ -47,6 +47,8 @@ jobs:
         run: node tests/test_portfolio_units.js
       - name: 市場寬度測試（P0-5）
         run: node tests/test_breadth.js
+      - name: Screener 欄位勾選器測試
+        run: node tests/test_screener_cols.js
       - name: 判定結果
         run: python3 scripts/ci_qa_verdict.py qa-result.json
       - name: 上傳報告

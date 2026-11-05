@@ -58,7 +58,7 @@
 
 | Job | 功能 | 抓取內容與數量 | 更新頻率（台灣時間） | 資料來源 | 產出 |
 |---|---|---|---|---|---|
-| `daily` | 每日收盤行情、PE、殖利率；本地計算技術指標、K 線、產業統計、官方公司資訊；每日市場摘要與 RSS | 上市個股與 ETF（TWSE）、上櫃標準 ETF（TPEx），約 1,496 檔；計算與摘要在本地完成 | 週一至週五 17:00 | TWSE OpenAPI、TPEx OpenAPI | `data/stocks.json`、`data/kline/`、`data/industry.json`、`data/history/`、`data/digest/`、`rss.xml` |
+| `daily` | 每日收盤行情、PE、殖利率；本地計算技術指標、K 線、產業統計、官方公司資訊；每日市場摘要與 RSS | 上市個股與 ETF（TWSE）、上櫃標準 ETF（TPEx），約 1,440 檔；計算與摘要在本地完成 | 週一至週五 17:00 | TWSE OpenAPI、TPEx OpenAPI | `data/stocks.json`、`data/kline/`、`data/industry.json`、`data/history/`、`data/digest/`、`rss.xml` |
 | `weekly-roe` | 補沒有官方財報的一般股票 ROE／ROA | 只抓不在 TWSE 官方財報內的一般股票，約數十檔，每檔間隔 3 秒 | 每週六 18:00 | yfinance（第三方） | `data/stocks.json` 的 ROE／ROA |
 | `indices` | 全球指數、全球 ETF、總經指標；台股加權指數 K 線 | 指數 16、ETF 12、總經 8，共 36 個代號；`^TWII` 近 260 日 | 週一至週五 17:30 | yfinance（第三方） | `data/indices.json`、`data/twii_kdata.js` |
 | `us-market` | 美股市值前 30 大個股、ETF 規模前 30 大 | 候選池約 60 檔個股、40 檔 ETF，取前 30 | 週一至週五 06:00（隔日） | yfinance（第三方） | `data/us/us-stocks.json`、`data/us/us-etfs.json` |
@@ -103,7 +103,7 @@
 
 ## 目前資料規模（依 `data/stocks.json` meta，會隨每日更新變動）
 
-- 個股／ETF 檔數：**1,482 檔（ETF 336、一般股票 1091、待確認 2、其他 53；範圍：TWSE 一般股票、TWSE/TPEx 標準 ETF；數量以 data/stocks.json 為準）
+- 個股／ETF 檔數：**1,440 檔**（ETF 352［上市 239＋上櫃 113］、上市一般股票 1,088；範圍：上市一般股票 + 上市 ETF + 上櫃 ETF；上櫃一般股票、特別股、DR、受益證券、ETN、權證皆不收；數量以 data/stocks.json 為準）
 - 歷史股價切片：`data/history/` 逐日 JSON，目前約 **300+ 個交易日**
 - 產業分類：**33 個官方大類**（`data/industry-codes.json`）
 - 全球指數／ETF：`data/indices-config.json` 設定、`data/indices.json` 輸出
@@ -149,9 +149,9 @@ mklab-stock/
 │   └── js/
 │       ├── mklab-core.js         # 核心：Shell（導覽列）/ Drawer（設定抽屜）/ DataTable / Notes 等
 │       ├── data-client.js        # 統一資料層（快取／新鮮度提示）
-│       └── mklab-wc.js           # Web Components（K 線圖等）
+│       └── mklab-chart.js        # K 線圖元件（ECharts）
 ├── data/                         # Build-Time 產生的 JSON，前端只讀
-│   ├── stocks.json                 # 全市場個股最新一日（1,485 檔（TWSE 1380 + TPEx 105；ETF 336、一般股票 1146、待確認 3；數量以 data/stocks.json 實際筆數為準，TPEx 修正後下一次排程執行會更新）
+│   ├── stocks.json                 # 全市場個股最新一日（1,440 檔（TWSE 1,327 + TPEx ETF 113；數量以 data/stocks.json 實際筆數為準）
 │   ├── industry.json               # 33 產業聚合績效
 │   ├── industry-codes.json         # 臺證所 33 產業代碼對照表
 │   ├── indices.json                 # 全球指數／ETF 收盤
@@ -171,7 +171,7 @@ mklab-stock/
 │       └── twse-openapi-full.md     # TWSE OpenAPI 143 端點完整清單（參考文件，來源 swagger.json）
 ├── docs/                          # 設計依據／資料欄位說明／規範文件
 ├── skills/                        # Skills First — 每個 Skill 自包含（qa-gate/html-health/lint/data/deployment/design-system/development）
-├── vendor/                        # 第三方 JS（lightweight-charts.min.js）
+├── vendor/                        # 第三方 JS（echarts.min.js）
 ├── .github/workflows/
 │   ├── daily-update.yml          # 每日收盤 + 週六 ROE/ROA + 指數/ETF/K線 + 每日摘要
 │   └── qa-gate.yml                # 品質門禁

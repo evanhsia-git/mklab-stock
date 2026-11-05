@@ -73,8 +73,7 @@
       indSel.addEventListener('change', applyFilter);
       document.getElementById('mktSel').addEventListener('change', applyFilter);
       applyFilter();
-      const meta = await MKLAB.data.json('stocks');
-      MKLAB.setFreshness(meta && meta.meta && meta.meta.as_of);
+      await MKLAB.loadFreshness();
     } catch (e) {
       console.warn('[dividend] load failed:', e);
       MKLAB.setFreshness(null);

@@ -1,5 +1,3 @@
-/* ⚠️ .icard / .icard .nm / .icard .chg 在 mklab-theme.css 也有定義（見該檔開頭註解）。
-   目前是互補關係：本檔管文字溢出省略號，mklab-theme.css 管字體大小/粗細，並非真的衝突，可保留。 */
 
 /* 全局阻止水平滑動 */
 html {
@@ -101,7 +99,9 @@ html {
   .drawer-mask.open { display: block; }
 }
 
-/* Industry card text overflow */
+/* Industry card：字體（原在 mklab-theme.css）與文字溢出省略號合併在此，單一來源 */
+.icard .nm { font-size: 13px; font-weight: 600; }
+.icard .chg { font-size: 14px; font-weight: 700; }
 .icard .nm,
 .icard .chg {
   overflow: hidden;
@@ -199,3 +199,16 @@ html {
 .breadth-bar-track{ flex:1; height:20px; background:var(--bg); border-radius:6px; overflow:hidden; display:block; }
 .breadth-bar-fill{ display:block; height:100%; border-radius:6px; background:var(--bar-fill, var(--muted)); }
 .breadth-bar-count{ width:60px; color:var(--ink); flex-shrink:0; }
+
+/* Screener 顯示欄位勾選器 */
+.colpick { margin: 8px 0; border: 1px solid var(--border); border-radius: var(--radius); background: var(--card); }
+.colpick > summary { cursor: pointer; padding: 8px 12px; font-size: 13px; color: var(--muted); }
+.colpick[open] > summary { border-bottom: 1px solid var(--border); color: var(--fg); }
+.colpick-body { display: flex; flex-wrap: wrap; gap: 8px 24px; padding: 10px 12px; }
+.colpick-grp { min-width: 140px; }
+.colpick-grp .lab { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+.colpick-grp label { display: inline-flex; align-items: center; gap: 4px; margin: 2px 12px 2px 0; font-size: 13px; white-space: nowrap; cursor: pointer; }
+.colpick-actions { display: flex; flex-wrap: wrap; gap: 8px; padding: 8px 12px 10px; border-top: 1px solid var(--border); }
+.colpick-actions button { font-size: 12px; padding: 4px 10px; border: 1px solid var(--border); border-radius: 6px; background: transparent; color: var(--fg); cursor: pointer; }
+
+.meta.text-xs { font-size: 11px; }

@@ -16,7 +16,7 @@ mklab-stock/
 ├─ data/                # Build-Time 產出的 JSON（stocks.json、industry.json 等）
 ├─ docs/                # 設計依據／欄位說明
 ├─ skills/              # Skills First（qa-gate、data、deployment、design-system、development、html-health、lint 等）
-├─ vendor/              # 第三方 JS（lightweight-charts）
+├─ vendor/              # 第三方 JS（echarts）
 ├─ .github/workflows/   # daily-update.yml、qa-gate.yml
 ├─ HANDOFF.md           # 本檔案
 └─ README.md

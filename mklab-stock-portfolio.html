@@ -106,7 +106,12 @@
 <script>
   let ALL = [];
   let pfTable = null;
-  const DONUT_COLORS = ['#4f8ef7', '#f76c6c', '#f7c948', '#63d471', '#b978f7', '#f79b48', '#48c9f7', '#f748a6'];
+  // 圓餅圖色票讀 design token（--chart-1 ~ --chart-8，定義在 mklab-theme.css，隨深/淺色主題切換）
+  function donutColors() {
+    const cs = getComputedStyle(document.documentElement);
+    const fb = ['#4f8ef7', '#f76c6c', '#f7c948', '#63d471', '#b978f7', '#f79b48', '#48c9f7', '#f748a6'];
+    return fb.map((c, i) => (cs.getPropertyValue('--chart-' + (i + 1)) || '').trim() || c);
+  }
 
   function computeHoldings() {
     const list = MKLAB.Portfolio.getAll();
@@ -147,6 +152,7 @@
     const total = valid.reduce((s, g) => s + g.value, 0);
     let angle = 0;
     const cx = 80, cy = 80, r = 70, ir = 40;
+    const PAL = donutColors();
     let paths = '';
     valid.forEach((g, i) => {
       const frac = g.value / total;
@@ -156,11 +162,11 @@
       const large = (end - start) > 180 ? 1 : 0;
       const p1 = polar(cx, cy, r, start), p2 = polar(cx, cy, r, end);
       const p3 = polar(cx, cy, ir, end), p4 = polar(cx, cy, ir, start);
-      paths += `<path d="M${p1.x},${p1.y} A${r},${r} 0 ${large} 1 ${p2.x},${p2.y} L${p3.x},${p3.y} A${ir},${ir} 0 ${large} 0 ${p4.x},${p4.y} Z" fill="${DONUT_COLORS[i % DONUT_COLORS.length]}"></path>`;
+      paths += `<path d="M${p1.x},${p1.y} A${r},${r} 0 ${large} 1 ${p2.x},${p2.y} L${p3.x},${p3.y} A${ir},${ir} 0 ${large} 0 ${p4.x},${p4.y} Z" fill="${PAL[i % PAL.length]}"></path>`;
     });
     svg.innerHTML = paths;
     legend.innerHTML = valid.map((g, i) =>
-      `<div><span class="dot" style="--dot-fill:${DONUT_COLORS[i % DONUT_COLORS.length]}"></span>${g.label} ${(g.value / total * 100).toFixed(1)}%</div>`
+      `<div><span class="dot" style="--dot-fill:${PAL[i % PAL.length]}"></span>${g.label} ${(g.value / total * 100).toFixed(1)}%</div>`
     ).join('');
   }
   function renderDonut(rows) {
@@ -332,8 +338,7 @@
     try {
       ALL = await MKLAB.data.stocks();
       refresh();
-      const meta = await MKLAB.data.json('stocks');
-      MKLAB.setFreshness(meta && meta.meta && meta.meta.as_of);
+      await MKLAB.loadFreshness();
     } catch (e) {
       console.warn('[portfolio] load failed:', e);
       MKLAB.setFreshness(null);

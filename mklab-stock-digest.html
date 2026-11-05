@@ -63,8 +63,7 @@
       if (!dates.length) { document.getElementById('digestEmpty').style.display = 'block'; return; }
       const digests = await Promise.all(dates.slice(0, 14).map(d => MKLAB.data.json('digest/' + d).catch(() => null)));
       document.getElementById('digestList').innerHTML = digests.filter(Boolean).map(digestCard).join('');
-      const meta = await MKLAB.data.json('stocks');
-      MKLAB.setFreshness(meta && meta.meta && meta.meta.as_of);
+      await MKLAB.loadFreshness();
     } catch (e) {
       console.warn('[digest] load failed:', e);
       document.getElementById('digestEmpty').style.display = 'block';

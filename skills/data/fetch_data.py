@@ -5,14 +5,14 @@ mklab-stock GitHub Actions 每日資料抓取腳本（Build-Time, 雲端免 key�
 設計原則（用戶最高原則：GitHub-Native / Fork First / 零外部依賴 / 零 secret）：
   - 主源 TWSE OpenAPI（官方、免 key、雲端可達）抓收盤+PE/PB/殖利率+漲跌
   - 次源 TPEX OpenAPI（官方、免 key）抓上櫃/興櫃
-  - ROE/ROA/EPS/股本 由 TWSE 營益分析/資產負債表（免 key）補齊
+  - ROE/ROA/EPS 由 import_official_fundamentals.py 以官方財報（MOPS，累計年化）寫入；股本取自資產負債表
   - 產業分類用 data/industry-codes.json（33 類官方對照）
   - 產出 schema 與 data/schema.md 定義一致，確保歷史銜接
   - Graceful Degradation：單檔失敗不中斷，欄位給 null
   - 休市判斷：TWSE 回傳空/非最新交易日 → 標註跳過
 
 四種模式：
-  python skills/data/fetch_data.py daily      # 每日：TWSE+TPEX 收盤+PE/PB/殖利率+營益分析（快，~2min）
+  python skills/data/fetch_data.py daily      # 每日：TWSE+TPEX 收盤+PE/PB/殖利率（快，~2min；財報欄位由 import_official_fundamentals.py 另行更新）
   python skills/data/fetch_data.py weekly     # 每週六：yfinance 補 ROE/ROA（備用、sleep 3s 防 ban，~70min）
   python skills/data/fetch_data.py indices    # 每工作日：yfinance 抓全球指數+代表性 ETF 收盤/漲跌
   python skills/data/fetch_data.py twii       # 每工作日：yfinance 抓 ^TWII K 線 (260 日窗口)
@@ -91,15 +91,16 @@ class RunLogger:
 # ===== API 端點 =====
 TWSE_DAILY       = "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL"
 TWSE_BWIBBU      = "https://openapi.twse.com.tw/v1/exchangeReport/BWIBBU_ALL"
-TWSE_PROFITABILITY = "https://openapi.twse.com.tw/v1/opendata/t187ap06_L"  # 營益分析：ROE、ROA、EPS（可能已失效，備用用 yfinance）
 TWSE_BALANCE     = "https://openapi.twse.com.tw/v1/opendata/t187ap05_L"     # 資產負債表：股本（可能已失效，備用用 yfinance）
 
-# TPEX：上櫃一般股票 + ETF（P0-4 修正：不再只抓 ETF）
+# TPEX：只保留上櫃 ETF（上櫃一般股票不納入，為本站原始設計；其餘上櫃證券如權證亦不收）
 TPEX_DAILY       = "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes?l=zh-tw"
 TPEX_BWIBBU      = "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_pe_ratio?l=zh-tw"  # 可能無 BWIBBU，暫用 PE ratio
 
 # ===== 配置參數 =====
-SAFE_MAX = 3000  # 上限：上市+上櫃（一般股票+ETF）合計；上櫃加入後約 2400 筆，故由 2000 提高
+SAFE_MAX = 3000  # 安全上限：上市（一般股票+ETF+其他）+ 上櫃 ETF 合計，實際約 1,500 筆
+# 上櫃只保留這些分類：官方 ETF 清單內的 ETF；00 開頭但清單尚未收錄者（新掛牌 ETF，標記 unverified 供人工確認）
+TPEX_KEEP_TYPES = ("etf", "unverified")
 TPEX_MIN_RAW = 300  # 上櫃原始筆數低於此值視為來源異常（TPEx 主板約千檔）
 SCHEMA_VERSION = "1.0.0"
 MODE = sys.argv[1] if len(sys.argv) > 1 else "daily"
@@ -107,7 +108,7 @@ LOG = RunLogger(MODE)
 
 # ===== 選股原則 =====
 # 1. TWSE 上市股票 + ETF（排除期貨/指數/非數字開頭代碼）
-# 2. TPEX 上櫃 ETF（ETF、債券 ETF、槓桿/反向 ETF、高息/配息型）
+# 2. TPEX 只收上櫃 ETF（依官方 ETF 清單判定；上櫃一般股票、權證等一律不收）
 # 3. 合併後依市值由大到小排序，取前 SAFE_MAX 筆（上限 SAFE_MAX=3000 筆）
 # 4. ETF 以名稱關鍵字識別（ETF|基金|指數|正[0-9]|反[0-9]|槓桿|反向|期貨|配息|高息|優息|收益）
 # 5. 停牌/無成交資料保留代碼但 OHLC 設為 null
@@ -149,7 +150,7 @@ def load_etf_reference():
 def classify_security(sid, etf_ref):
     """證券分類，規則與 compute_indicators.py 一致：
     官方 ETF 清單 → etf；00 開頭但不在清單 → unverified；4 碼純數字 → stock；
-    其餘（特別股、權證、DR、債券等）→ other。"""
+    其餘（特別股、權證、DR、受益證券、ETN 等）→ other；other 在 run_daily 會整批排除，不寫入 stocks.json。"""
     sid = str(sid or "")
     if sid in etf_ref:
         return "etf"
@@ -254,38 +255,6 @@ def fetch_bwibbu():
     except Exception as e:
         LOG.warn(f"BWIBBU 抓取失敗（沿用前次 PE/PB/殖利率，不中斷）：{e}")
         return None
-
-
-# ===== TWSE 營益分析 (ROE/ROA/EPS) =====
-def fetch_profitability():
-    """抓 TWSE 營益分析 (t187ap06_L)，回傳 {sid: {roe, roa, eps}}。失敗回傳空 dict。"""
-    try:
-        raw = fetch_json(TWSE_PROFITABILITY, timeout=60)
-        if not isinstance(raw, list):
-            return {}
-        out = {}
-        for r in raw:
-            sid = str(r.get("公司代號", "")).strip()
-            if not sid or not keep_record(sid):
-                continue
-            def _f(k):
-                v = r.get(k)
-                if v in (None, "", "-", "--"):
-                    return None
-                try:
-                    return float(v)
-                except (ValueError, TypeError):
-                    return None
-            out[sid] = {
-                "roe": _f("股東權益報酬率(%)"),
-                "roa": _f("資產報酬率(%)"),
-                "eps": _f("每股盈餘(元)")
-            }
-        LOG.info(f"營益分析取得 {len(out)} 檔 ROE/ROA/EPS")
-        return out
-    except Exception as e:
-        LOG.warn(f"營益分析抓取失敗（ROE/ROA/EPS 留空，不中斷）：{e}")
-        return {}
 
 
 # ===== TWSE 資產負債表 (股本) =====
@@ -451,8 +420,6 @@ def run_daily():
     # 3) PE/PB/殖利率：TWSE
     bwibbu_twse = fetch_bwibbu()
 
-    # 4) 營益分析 (ROE/ROA/EPS)：TWSE 官方免 key
-    profitability = fetch_profitability()
 
     # 5) 股本：TWSE 官方免 key
     balance_sheet = fetch_balance_sheet()
@@ -520,7 +487,6 @@ def run_daily():
         # 繼承既有 ROE/ROA/EPS/market_cap/ind
         ex = existing.get(sid, {})
         bb_twse = bwibbu_twse.get(sid, {}) if bwibbu_twse is not None else {"pe": ex.get("pe"), "pb": ex.get("pb"), "div": ex.get("div")}
-        prof = profitability.get(sid, {})
         bal = balance_sheet.get(sid, {})
 
         # 當日無成交/停牌：TWSE 回傳 ClosingPrice=0 或空 → OHLC 全設 None
@@ -542,10 +508,8 @@ def run_daily():
             if shares:
                 mc = round(close * shares)
 
-        # 營益分析：優先 TWSE 官方，其次既有資料
-        roe = prof.get("roe") if prof.get("roe") is not None else ex.get("roe")
-        roa = prof.get("roa") if prof.get("roa") is not None else ex.get("roa")
-        eps = prof.get("eps") if prof.get("eps") is not None else ex.get("eps")
+        # ROE/ROA/EPS 不在每日行情抓取：沿用既有值（由 import_official_fundamentals.py 以官方年化值同步）
+        roe, roa, eps = ex.get("roe"), ex.get("roa"), ex.get("eps")
         capital_stock = bal.get("capital_stock") if bal.get("capital_stock") is not None else ex.get("capital_stock")
 
         # P0-6：一般股票市值 = 收盤 × 股數；股數 = 股本(元) ÷ 面值 10。取不到股本時保留既有值（不補 0）
@@ -580,12 +544,14 @@ def run_daily():
         })
         sources["TWSE"] += 1
 
-    # --- 處理 TPEX（P0-1：一般股票 + ETF 全部納入）---
-    # 原本只留 ETF 關鍵字命中者，導致上櫃一般股票整批遺漏。現在保留所有通過代碼格式檢查的上櫃證券，
+    # --- 處理 TPEX（只收上櫃 ETF）---
+    # 本站設計：上市一般股票 + 上市 ETF + 上櫃 ETF。上櫃一般股票、權證等不收。
     # 類型一律由 classify_security() 依官方 ETF 清單判定（不以名稱判斷）。
     tpex_raw = fetch_tpex_daily()
-    tpex_candidates = [r for r in tpex_raw if keep_record(str(r.get("SecuritiesCompanyCode", "") or "").strip())]
-    LOG.info(f"TPEX 候選筆數（一般股票+ETF，已過濾代碼格式）: {len(tpex_candidates)}")
+    tpex_candidates = [r for r in tpex_raw
+                       if keep_record(str(r.get("SecuritiesCompanyCode", "") or "").strip())
+                       and classify_security(str(r.get("SecuritiesCompanyCode", "") or "").strip(), etf_ref) in TPEX_KEEP_TYPES]
+    LOG.info(f"TPEX 候選筆數（僅 ETF，原始 {len(tpex_raw)} 筆）: {len(tpex_candidates)}")
 
     # TPEX BWIBBU（PE/PB/殖利率）
     bwibbu_tpex = fetch_tpex_bwibbu()
@@ -700,7 +666,9 @@ def run_daily():
 
     # P0-2：上櫃來源失敗或筆數異常時，不以空/殘缺資料覆蓋既有上櫃資料；沿用前次有效紀錄並標記 stale
     # （price_asof 保留舊日期，因此不會混入今日 history 切片，也不會冒充最新行情）
-    prev_tpex = [v for v in existing.values() if v.get("source") == "TPEX"]
+    # 沿用資料也只能是上櫃 ETF（舊檔若殘留上櫃一般股票，不可因 stale 沿用而復活）
+    prev_tpex = [v for v in existing.values() if v.get("source") == "TPEX"
+                 and classify_security(v.get("sym", ""), etf_ref) in TPEX_KEEP_TYPES]
     tpex_ok = (len(tpex_raw) >= TPEX_MIN_RAW and len(tpex_stocks) > 0
                and (not prev_tpex or len(tpex_stocks) >= 0.8 * len(prev_tpex)))
     if not tpex_ok:
@@ -719,6 +687,14 @@ def run_daily():
         sec = classify_security(s.get("sym", ""), etf_ref)
         s["security_type"] = sec
         s["is_etf"] = sec == "etf"
+
+    # 規矩：本站只收 上市一般股票 / 上市 ETF / 上櫃 ETF。
+    # 特別股（2881A）、DR（91xxxx）、受益證券（01xxxT）、ETN（02xxxx）、權證等 other 類一律不收。
+    _n_other = sum(1 for s in all_stocks if s["security_type"] == "other")
+    if _n_other:
+        LOG.info(f"排除其他證券（特別股／DR／受益證券／ETN／權證等）: {_n_other} 筆")
+        LOG.stats["details"]["excluded_other"] = _n_other
+        all_stocks = [s for s in all_stocks if s["security_type"] != "other"]
 
     # 依市值排序取前 SAFE_MAX；超過時明確記錄被截除的筆數，不默默丟資料
     all_stocks.sort(key=lambda x: x.get("_est_mc", 0), reverse=True)
@@ -744,7 +720,7 @@ def run_daily():
         "schema_version": SCHEMA_VERSION,
         "count": len(stocks),
         "sources": sources,
-        "note": "收盤/漲跌每日更新；ROE/ROA/EPS/股本 由 TWSE 營益分析/資產負債表（官方免 key）補齊；上市+上櫃一般股票與 ETF 皆納入；ETF 依官方清單判定；上限 3000 檔",
+        "note": "收盤/漲跌每日更新；ROE/ROA/EPS 由官方財報累計年化同步（import_official_fundamentals.py），股本取自資產負債表；範圍：上市一般股票 + 上市/上櫃 ETF（上櫃一般股票、特別股、DR、受益證券、ETN、權證皆不收）；ETF 依官方清單判定；上限 3000 檔",
     }
 
     # 排除 U 尾代號（期貨型 ETF 與認購權證 7xxxxU），依使用者要求，資料庫與 CSV 都不納入

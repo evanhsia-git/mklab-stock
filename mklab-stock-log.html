@@ -62,10 +62,10 @@
   <h3>v2.0 — Web Components 重構（2026-07-18）</h3>
   <ul>
     <li><b>重構路線</b>：放棄 React/Vite/npm（違反零依賴），改採 <b>原生 Web Components / classic script</b>。</li>
-    <li><b>元件庫</b>：<code>assets/mklab-wc.js</code> 註冊 <code>&lt;mklab-kline&gt;</code>（K 線圖，目前仍在使用中的唯一 Web Component）。</li>
+    <li><b>元件庫</b>：原 <code>assets/js/mklab-wc.js</code>（<code>&lt;mklab-kline&gt;</code>）已於 2026-11-04 移除；K 線圖改由 <code>assets/js/mklab-chart.js</code>（ECharts）提供。</li>
     <li><b>資料層</b>：<code>assets/js/data-client.js</code>（IIFE、快取、ETag、內建鍵 <code>stocks</code>/<code>indices</code>/<code>twiiKline</code>），統一取代各頁散落 <code>fetch()</code>。</li>
     <li><b>表格元件</b>：所有股票/績效表格統一使用 <code>assets/js/mklab-core.js</code> 的 <code>MKLAB.DataTable</code>（vanilla，非 Web Component），支援 <code>cols</code>、<code>pageSize</code>、<code>defaultSort</code>、<code>pagerId</code>、<code>fieldMap</code>。</li>
-    <li><b>所有主題頁</b>：Market / Screener / Research / Industry / Watchlist / Help / Log 全部統一引入 <code>assets/js/data-client.js</code> + <code>assets/js/mklab-core.js</code> + <code>assets/js/mklab-wc.js</code>。</li>
+    <li><b>所有主題頁</b>：Market / Screener / Research / Industry / Watchlist / Help / Log 全部統一引入 <code>assets/js/data-client.js</code> + <code>assets/js/mklab-core.js</code>。</li>
     <li><b>Build 系統（已演進）</b>：原 <code>build/build_pages.py</code> 將 <code>templates/</code> + <code>pages/</code> 組裝為根目錄完整 HTML；現已改為 <code>build/template_sync.py</code>（Template Synchronizer），根目錄 HTML 為唯一來源，<code>pages/</code> 已移除。</li>
     <li><b>QA Gate</b>：Python/JSON/HTML/Link/Chart 全自動檢測，全綠 <code>ALLOW DEPLOY</code>。</li>
   </ul>
@@ -88,8 +88,7 @@
     <li><b>data/twii_kdata.js</b>：原用 <code>const TWII_KDATA</code> → 不掛 <code>window</code>，改為 <code>if(typeof window!=='undefined')window.TWII_KDATA=TWII_KDATA;</code>。</li>
     <li><b>Demo 頁路徑</b>：<code>prototypes/</code> 子目錄下 script src 改用絕對路徑 <code>/vendor/...</code>、<code>/data/...</code>、<code>/assets/...</code>，避免相對路徑 404。</li>
     <li><b>瀏覽器快取</b>：Demo 頁 script src 加 <code>?v=</code> cache-bust。</li>
-    <li><b>Custom Element 時序</b>：呼叫元件方法（<code>setData</code> 等）必須等 <code>customElements.whenDefined('mklab-kline')</code> 後。</li>
-    <li><b>LightweightCharts v4 限制</b>：無 <code>series.getData()</code>、無 overlay 繪圖工具（畫線/費波那契不生效）。</li>
+    <li><b>圖表庫</b>：已改用 ECharts（<code>vendor/echarts.min.js</code>）；原 LightweightCharts 與 <code>vendor/lightweight-charts.min.js</code> 已移除。</li>
     <li><b>HTML 驗證</b>：<code>skills/html-health/check_html_health.py</code> 的 <code>escape_in_code_pre</code> 必須真正轉義為 <code>&lt;style&gt;&lt;/style&gt;</code>（曾因自我替換 bug 導致誤報）。</li>
     <li><b>QA Gate Links 檢查</b>：<code>data:</code>/<code>mailto:</code>/<code>javascript:</code>/<code>#</code> 協議必須排除，否則 favicon 的 <code>data:image/svg+xml</code> 被誤判 404。</li>
     <li><b><code>MKLAB</code> 全域物件</b>：<code>mklab-core.js</code> 用 IIFE + <code>global.MKLAB = {...}</code> 匯出，頁面 <code>&lt;script&gt;&lt;/script&gt;</code> 必須在 core.js 之後執行。</li>
@@ -114,13 +113,9 @@
 async function loadMeta() {
   try {
     const d = await MKLAB.data.json('stocks');
-    const asof = d?.meta?.as_of;
-    if (d && Array.isArray(d) && d.length) {
-      document.getElementById('logSyncDate').textContent = asof || 'Unknown';
-    }
-    if (asof) {
-      MKLAB.setFreshness(asof);
-    }
+    // 原本判斷 Array.isArray(d)，但 stocks.json 是物件（{meta, stocks}），條件永遠不成立，同步日期從不顯示
+    const asof = MKLAB.applyFreshness(d);
+    document.getElementById('logSyncDate').textContent = asof ? MKLAB.formatAsOf(asof) : '無法載入';
   } catch(e) {
     console.warn('[Log] loadMeta failed:', e);
     document.getElementById('logSyncDate').textContent = '載入失敗';

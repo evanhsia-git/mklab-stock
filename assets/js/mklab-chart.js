@@ -67,9 +67,13 @@
       const gap = 4;
       const subH = sub === 0 ? 0 : (avail - priceH - gap * sub) / sub;
       const grids = [], xAxes = [], yAxes = [], series = [];
-      const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
-      const txt = isDark ? '#9aa0a6' : '#6b7280';
-      const split = isDark ? '#2a2f3a' : '#e5e7eb';
+      // 圖表顏色讀 design token（assets/css/mklab-theme.css，隨深/淺色主題切換），避免硬寫 dark 值
+      const cs = getComputedStyle(document.documentElement);
+      const tok = (name, fallback) => (cs.getPropertyValue(name) || '').trim() || fallback;
+      const txt = tok('--muted', '#9aa0a6');
+      const split = tok('--border', '#2a2f3a');
+      const up = tok('--up', '#f87171');      // 台股慣例：紅漲
+      const down = tok('--down', '#4ade80');  // 綠跌
       let top = topStart;
       grids.push({ left: narrow ? 44 : 60, right: narrow ? 10 : 24, top: top + '%', height: priceH + '%' });
       top += priceH + gap;
@@ -82,20 +86,20 @@
           axisLabel: { color: txt }, splitLine: { lineStyle: { color: split } } });
       });
       series.push({ name: '大盤', type: 'candlestick', xAxisIndex: 0, yAxisIndex: 0, data: ohlc,
-        itemStyle: { color: '#f87171', color0: '#4ade80', borderColor: '#f87171', borderColor0: '#4ade80' } });
-      [['MA5', '#fbbf24'], ['MA20', '#60a5fa'], ['MA60', '#c084fc']].forEach(([k, col]) => {
+        itemStyle: { color: up, color0: down, borderColor: up, borderColor0: down } });
+      [['MA5', tok('--warn', '#fbbf24')], ['MA20', tok('--series-ma20', '#60a5fa')], ['MA60', tok('--series-ma60', '#c084fc')]].forEach(([k, col]) => {
         series.push({ name: k, type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: ma[k], showSymbol: false, smooth: false, lineStyle: { width: 1, color: col }, itemStyle: { color: col } });
       });
       panels.forEach((p, i) => {
         const gi = i + 1;
         if (p === 'KD') {
-          series.push({ name: 'K', type: 'line', xAxisIndex: gi, yAxisIndex: gi, data: kd.K, showSymbol: false, lineStyle: { width: 1, color: '#a855f7' }, itemStyle: { color: '#a855f7' } });
-          series.push({ name: 'D', type: 'line', xAxisIndex: gi, yAxisIndex: gi, data: kd.D, showSymbol: false, lineStyle: { width: 1, color: '#14b8a6' }, itemStyle: { color: '#14b8a6' } });
+          series.push({ name: 'K', type: 'line', xAxisIndex: gi, yAxisIndex: gi, data: kd.K, showSymbol: false, lineStyle: { width: 1, color: tok('--series-k', '#a855f7') }, itemStyle: { color: tok('--series-k', '#a855f7') } });
+          series.push({ name: 'D', type: 'line', xAxisIndex: gi, yAxisIndex: gi, data: kd.D, showSymbol: false, lineStyle: { width: 1, color: tok('--series-d', '#14b8a6') }, itemStyle: { color: tok('--series-d', '#14b8a6') } });
           yAxes[gi].min = 0; yAxes[gi].max = 100;
         } else {
-          series.push({ name: 'DIF', type: 'line', xAxisIndex: gi, yAxisIndex: gi, data: macd.DIF, showSymbol: false, lineStyle: { width: 1, color: '#3b82f6' }, itemStyle: { color: '#3b82f6' } });
-          series.push({ name: 'DEA', type: 'line', xAxisIndex: gi, yAxisIndex: gi, data: macd.DEA, showSymbol: false, lineStyle: { width: 1, color: '#f59e0b' }, itemStyle: { color: '#f59e0b' } });
-          series.push({ name: 'MACD柱', type: 'bar', xAxisIndex: gi, yAxisIndex: gi, data: macd.HIST.map(v => ({ value: v, itemStyle: { color: v >= 0 ? '#ef4444' : '#22c55e' } })) });
+          series.push({ name: 'DIF', type: 'line', xAxisIndex: gi, yAxisIndex: gi, data: macd.DIF, showSymbol: false, lineStyle: { width: 1, color: tok('--accent', '#3b82f6') }, itemStyle: { color: tok('--accent', '#3b82f6') } });
+          series.push({ name: 'DEA', type: 'line', xAxisIndex: gi, yAxisIndex: gi, data: macd.DEA, showSymbol: false, lineStyle: { width: 1, color: tok('--series-dea', '#f59e0b') }, itemStyle: { color: tok('--series-dea', '#f59e0b') } });
+          series.push({ name: 'MACD柱', type: 'bar', xAxisIndex: gi, yAxisIndex: gi, data: macd.HIST.map(v => ({ value: v, itemStyle: { color: v >= 0 ? up : down } })) });
         }
       });
       const all = Array.from({ length: n }, (_, i) => i);

@@ -60,11 +60,14 @@
         // stocks.json 原始結構含 {meta, stocks}，回傳原始物件供 caller 自行取用
         // 注意：不可在此自動拆解 stocks 陣列，否則 meta 資訊遺失
         if (name === 'stocks' && d && Array.isArray(d.stocks)) {
-          // 官方財報優先：有 roe_off/roa_off/eps_off 者以 TWSE 官方（累計年化）覆蓋第三方值
+          // 官方財報優先：有 roe_off/roa_off 者以 TWSE 官方（累計年化）覆蓋第三方值。
+          // roe/roa/eps 在管線端已與官方年化值同步（import_official_fundamentals.py）；這裡再保險一次：
+          // EPS 只用官方年化值（eps_off），沒有就顯示「-」，不拿任何舊值冒充。
+          // 後端 skills/data/build_digest.py 的 effective_fundamentals() 必須與此規則一致。
           d.stocks.forEach(s => {
             if (s.roe_off != null) s.roe = s.roe_off;
             if (s.roa_off != null) s.roa = s.roa_off;
-            if (s.eps_off != null) s.eps = s.eps_off;
+            s.eps = s.eps_off != null ? s.eps_off : null;
           });
         }
         _cache[name] = d;

@@ -1,8 +1,8 @@
 // P0-5 市場寬度測試：node tests/test_breadth.js
-// 直接從 mklab-stock-industry.html 抽出 BUCKETS 與 validStocks 執行，不改動頁面。
+// 直接從 assets/js/mklab-core.js（共用 BreadthPanel）抽出 BUCKETS 與 validStocks 執行，不改動頁面。
 const fs = require('fs'), path = require('path'), assert = require('assert');
-const html = fs.readFileSync(path.join(__dirname, '..', 'mklab-stock-industry.html'), 'utf8');
-const bm = html.match(/const BUCKETS = \[([\s\S]*?)\n    \];/);
+const html = fs.readFileSync(path.join(__dirname, '..', 'assets', 'js', 'mklab-core.js'), 'utf8');
+const bm = html.match(/const BUCKETS = \[([\s\S]*?)\n\s*\];/);
 assert(bm, '找不到 BUCKETS');
 const BUCKETS = eval('[' + bm[1] + ']');
 const vm = html.match(/function validStocks\(stocks\) \{\n\s*return ([^\n]+);\n/);
@@ -42,6 +42,27 @@ t('validStocks 排除 ETF、其他證券與 chg=null（不補 0、不當平盤�
   const v = validStocks(stocks);
   assert.deepStrictEqual(v.map(r => r.security_type + ':' + r.chg), ['stock:0']);
 });
+
+// 共用 BreadthPanel.render 煙霧測試（用假 DOM；確認 Industry / Breadth 兩頁共用的面板能完整渲染且數字自洽）
+{
+  const core = fs.readFileSync(path.join(__dirname, '..', 'assets', 'js', 'mklab-core.js'), 'utf8');
+  const s = core.indexOf('const BreadthPanel = (function () {');
+  const e = core.indexOf('  // ============================================================\n  //  Notes');
+  assert(s > 0 && e > s, '找不到 BreadthPanel 區塊');
+  const els = {};
+  const document = { getElementById: id => (els[id] = els[id] || { innerHTML: '', textContent: '' }) };
+  const BreadthPanel = new Function('document', core.slice(s, e) + '\nreturn BreadthPanel;')(document);
+  t('BreadthPanel.render：摘要／分布／產業表／說明列都有輸出，且有效行情 = 上漲+下跌+平盤', () => {
+    BreadthPanel.render([
+      { security_type: 'stock', chg: 1.2, ind: 'A' }, { security_type: 'stock', chg: -2, ind: 'A' },
+      { security_type: 'stock', chg: 0, ind: 'B' }, { security_type: 'stock', chg: null, ind: 'B' },
+      { security_type: 'etf', chg: 3, ind: 'A' }, { security_type: 'other', chg: 9, ind: 'A' },
+    ], '2026-11-03');
+    assert(els.breadthSummary.innerHTML.includes('上漲家數') && els.histWrap.innerHTML.includes('breadth-bar-row'));
+    assert(els.indBreadthTable.innerHTML.includes('<td>A</td><td>1</td><td>2</td><td>2</td>'), els.indBreadthTable.innerHTML);
+    assert(els.breadthMeta.textContent.includes('有效行情 3 檔') && els.breadthMeta.textContent.includes('排除無行情 1 檔'), els.breadthMeta.textContent);
+  });
+}
 
 const fail = results.filter(r => r[0] === 'FAIL');
 results.forEach(r => console.log(r[0], r[1]));

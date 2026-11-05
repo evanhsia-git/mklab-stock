@@ -275,10 +275,7 @@
     document.getElementById('dcaEnd').max = todayStr;
     document.getElementById('dcaStart').value = '2025-07-14';
     document.getElementById('dcaEnd').value = todayStr;
-    try {
-      const meta = await MKLAB.data.json('stocks');
-      MKLAB.setFreshness(meta && meta.meta && meta.meta.as_of);
-    } catch (e) { MKLAB.setFreshness(null); }
+    await MKLAB.loadFreshness();
   });
 </script>
 </main>

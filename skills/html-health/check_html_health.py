@@ -37,8 +37,7 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 # inline script 用到左邊的寫法，就必須載入右邊的 <script src="assets/js/...">
 CORE_SCRIPT_DEPS = [
     (re.compile(r'\bMKLAB\.data\.'), 'assets/js/data-client.js'),
-    (re.compile(r'\bMKLAB\.(DataTable|Drawer|Shell|Watch|Notes|Portfolio|initDrawer|setFreshness|cellPct)\b'), 'assets/js/mklab-core.js'),
-    (re.compile(r'<mklab-kline\b', re.I), 'assets/js/mklab-wc.js'),
+    (re.compile(r'\bMKLAB\.(DataTable|Drawer|Shell|Watch|Notes|Portfolio|initDrawer|setFreshness|loadFreshness|BreadthPanel|cellPct)\b'), 'assets/js/mklab-core.js'),
 ]
 
 PLACEHOLDER_RE = re.compile(r'\{\{[A-Z0-9_]+\}\}')

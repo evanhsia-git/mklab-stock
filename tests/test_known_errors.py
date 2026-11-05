@@ -30,8 +30,12 @@ hist_files = sorted(glob.glob('data/history/*.json'))
 latest = json.load(open(hist_files[-1], encoding='utf-8'))
 hmap = {r['stock_id']: r['close'] for r in latest['stocks']}
 # close 可能為 None（停牌／當日無成交，例如 20261030 有 13 檔）→ 必須先判 None，否則 TypeError 直接崩潰
+# 上櫃 ETF 常比上市早一天更新（price_asof 晚於 history 最新快照日，屬已揭露的混合日期）：
+# 只比對「行情日 = 快照日」的列；行情日較新者在下一次快照寫入後才可比對
+_hist_day = os.path.basename(hist_files[-1])[:8]
 mism = [s['sym'] for s in S if s['sym'] in hmap and hmap[s['sym']] is not None
-        and s.get('price') is not None and abs(hmap[s['sym']] - s['price']) > 1e-6]
+        and s.get('price') is not None and str(s.get('price_asof', '')).replace('-', '') == _hist_day
+        and abs(hmap[s['sym']] - s['price']) > 1e-6]
 check("P0-3 stocks.json 價格與 history 最新交易日一致", len(mism) == 0, f"不一致 {len(mism)} 檔")
 check("P0-3 stocks.json 日期與 history 最新交易日一致", stocks_doc['meta']['as_of'].replace('-', '') == os.path.basename(hist_files[-1])[:8])
 dates = [os.path.basename(f)[:8] for f in hist_files]
@@ -123,10 +127,34 @@ empty_stock = [s['sym'] for s in S if s.get('security_type') == 'stock' and not 
 check("一般股票產業分類完整", len(empty_stock) == 0, f"缺 {len(empty_stock)} 檔：{empty_stock}")
 
 
-# P0-1 範圍：上櫃一般股票必須納入（不得再以「只保留 ETF」作為正常條件）
-tpex_stock_n = sum(1 for s in S if s.get('source') == 'TPEX' and s.get('security_type') == 'stock')
-tpex_total_n = sum(1 for s in S if s.get('source') == 'TPEX')
-check("P0-1 TPEx 一般股票已納入（>=300 檔）", tpex_stock_n >= 300, f"TPEx 一般股票 {tpex_stock_n} 檔（上櫃合計 {tpex_total_n}）")
+# 資料範圍（本站原始設計）：上市一般股票 + 上市 ETF + 上櫃 ETF；上櫃一般股票、權證等不收
+tpex_rows = [s for s in S if s.get('source') == 'TPEX']
+tpex_bad = [s['sym'] for s in tpex_rows if s.get('security_type') not in ('etf', 'unverified')]
+check("範圍：上櫃只收 ETF（不得有上櫃一般股票／權證／其他）", len(tpex_bad) == 0, f"違規 {len(tpex_bad)} 檔：{tpex_bad[:8]}")
+check("範圍：上櫃 ETF 至少 50 檔（來源異常防護）", len(tpex_rows) >= 50, f"上櫃 ETF {len(tpex_rows)} 檔")
+twse_stock_n = sum(1 for s in S if s.get('source') == 'TWSE' and s.get('security_type') == 'stock')
+check("範圍：上市一般股票 >= 900 檔", twse_stock_n >= 900, f"上市一般股票 {twse_stock_n} 檔")
+others = [s['sym'] for s in S if s.get('security_type') == 'other']
+check("範圍：不收特別股／DR／受益證券／ETN／權證（security_type=other 必須為 0）", len(others) == 0, f"{len(others)} 檔：{others[:8]}")
+bad_code = [s['sym'] for s in S if s.get('security_type') == 'stock' and not (len(s['sym']) == 4 and s['sym'].isdigit())]
+check("範圍：一般股票代號皆為 4 碼純數字（排除 2881A 特別股等）", len(bad_code) == 0, f"{bad_code[:8]}")
+_ci = open('skills/data/compute_indicators.py', encoding='utf-8').read()
+check("範圍：fetch_data 與 compute_indicators 都會整批排除 other 類",
+      'excluded_other' in open('skills/data/fetch_data.py', encoding='utf-8').read() and '!= "other"' in _ci)
+check("報酬欄位：1/3/6 月、1 年與 2 年（預寫、未開放）漲跌幅皆由同一個 calc_chg 計算（CHG_PERIODS）",
+      'CHG_PERIODS = {"chg_1m": 30, "chg_3m": 91, "chg_6m": 182, "chg_1y": 365, "chg_2y": 730}' in _ci)
+_ret = [s for s in S if s.get('security_type') == 'stock']
+for _k in ('chg_1m', 'chg_3m', 'chg_6m', 'chg_1y'):
+    _n = sum(1 for s in _ret if s.get(_k) is not None)
+    check(f"報酬欄位：{_k} 一般股票覆蓋率 >= 85%（歷史不足者為 null，不補 0）", _n >= 0.85 * len(_ret), f"{_n}/{len(_ret)}")
+check("報酬欄位：缺資料為 null、不得為 0 冒充（3 月/6 月為 0.0 的比例不得異常）",
+      sum(1 for s in _ret if s.get('chg_3m') == 0) < 0.03 * len(_ret))
+_fd_src = open('skills/data/fetch_data.py', encoding='utf-8').read()
+check("範圍：fetch_data 上櫃只保留 ETF（TPEX_KEEP_TYPES）且沿用舊資料也套用同一規則",
+      'TPEX_KEEP_TYPES = ("etf", "unverified")' in _fd_src and _fd_src.count('in TPEX_KEEP_TYPES') >= 2)
+check("範圍：不再抓取上櫃股票基本資料（t187ap03_O）",
+      't187ap03_O' not in open('skills/data/fetch_official_fundamentals.py', encoding='utf-8').read()
+      and 't187ap03_O' not in open('skills/data/integrate_official_company.py', encoding='utf-8').read().split('"""')[2])
 # P0-1 分類：每檔 security_type 必須與代碼規則 + 官方 ETF 清單一致（與 classify_security 相同）
 def _expect(sym):
     if sym in etf_official: return 'etf'
@@ -153,12 +181,39 @@ check("CI 上櫃下載使用 5 次重試", 'fetch_json(TPEX_DAILY, timeout=120, 
 st_rows = [s for s in S if s.get('security_type') == 'stock']
 check("一般股票具備上市日期（官方）", all(s.get('listing_date') for s in st_rows), f"缺 {sum(1 for s in st_rows if not s.get('listing_date'))} 檔")
 
-# 上櫃來源（TPEx t187ap03_O）：上櫃一般股票必須有產業與上櫃日期，且來源標註正確
-tpex_st_rows = [s for s in st_rows if s.get('source') == 'TPEX']
-check("上櫃一般股票具備產業別", all(s.get('ind') for s in tpex_st_rows),
-      f"缺 {sum(1 for s in tpex_st_rows if not s.get('ind'))} 檔")
-check("上櫃一般股票標註上櫃來源", all('t187ap03_O' in (s.get('ind_src') or '') for s in tpex_st_rows if s.get('ind_src')),
-      f"未標註 {sum(1 for s in tpex_st_rows if s.get('ind_src') and 't187ap03_O' not in s['ind_src'])} 檔")
+# 一般股票一律來自上市（上櫃一般股票不收）：產業別來源必須是 TWSE t187ap03_L
+check("一般股票皆為上市且產業別來源為 TWSE t187ap03_L",
+      all(s.get('source') == 'TWSE' and 't187ap03_L' in (s.get('ind_src') or '') for s in st_rows),
+      f"不符 {sum(1 for s in st_rows if not (s.get('source') == 'TWSE' and 't187ap03_L' in (s.get('ind_src') or '')))} 檔")
+
+# EPS 口徑：JSON 原始 eps 為最近單季，前端與後端評分都只能用官方年化 eps_off（沒有就顯示 -）
+_fund_rows = [s for s in S if s.get('security_type') == 'stock']
+_mis = [s['sym'] for s in _fund_rows if s.get('roe_off') is not None and (s.get('roe') != s['roe_off'] or s.get('roa') != s.get('roa_off'))]
+check("ROE/ROA：有官方年化值者，roe/roa 必須等於 roe_off/roa_off（單一口徑）", len(_mis) == 0, f"{len(_mis)} 檔不一致：{_mis[:6]}")
+_stale = [s['sym'] for s in _fund_rows if s.get('roe_off') is None and s.get('roe') is not None and s.get('roe_src') != 'yfinance']
+check("ROE/ROA：沒有官方值且非 yfinance 補值者不得殘留過期舊值（應為 null 顯示 -）", len(_stale) == 0, f"{len(_stale)} 檔：{_stale[:6]}")
+_eps_mis = [s['sym'] for s in _fund_rows if s.get('eps') != s.get('eps_off')]
+check("EPS：eps 必須等於官方年化 eps_off（沒有官方值為 null）", len(_eps_mis) == 0, f"{len(_eps_mis)} 檔：{_eps_mis[:6]}")
+_fd2 = open('skills/data/fetch_data.py', encoding='utf-8').read()
+check("財報：fetch_data 不再呼叫已失效的 t187ap06_L 營益分析（舊版殘值來源）",
+      'fetch_profitability' not in _fd2 and 'TWSE_PROFITABILITY' not in _fd2)
+_dc = open('assets/js/data-client.js', encoding='utf-8').read()
+check("EPS 口徑：前端只用 eps_off，無官方值時不拿單季 eps 冒充",
+      's.eps = s.eps_off != null ? s.eps_off : null;' in _dc)
+import importlib.util as _iu
+_spec = _iu.spec_from_file_location('build_digest', 'skills/data/build_digest.py'); _bd = _iu.module_from_spec(_spec); _spec.loader.exec_module(_bd)
+_e1 = _bd.effective_fundamentals({'eps': 22.08, 'eps_off': 98.66, 'roe': 31.7, 'roe_off': 39.77})
+_e2 = _bd.effective_fundamentals({'eps': 3.0, 'eps_off': None, 'roe': 10.0, 'roe_off': None})
+check("EPS 口徑：後端評分與前端同口徑（有官方年化→用年化；無→None；ROE 有官方→用官方）",
+      _e1['eps'] == 98.66 and _e1['roe'] == 39.77 and _e2['eps'] is None and _e2['roe'] == 10.0,
+      f"{_e1['eps']}/{_e1['roe']}/{_e2['eps']}/{_e2['roe']}")
+check("EPS 口徑：摘要只計一般股票（不含 ETF／DR／特別股／權證）", "s.get('security_type') == 'stock'" in open('skills/data/build_digest.py', encoding='utf-8').read())
+check("共用：市場寬度面板只存在 mklab-core.js（industry／breadth 頁不得各自重寫）",
+      'const BreadthPanel' in open('assets/js/mklab-core.js', encoding='utf-8').read()
+      and all('const BUCKETS' not in open(p, encoding='utf-8').read() for p in ('mklab-stock-industry.html', 'mklab-stock-breadth.html')))
+check("共用：黃標資料日期由 MKLAB.loadFreshness 統一載入，且失敗不顯示『示意資料』",
+      'async function loadFreshness' in open('assets/js/mklab-core.js', encoding='utf-8').read()
+      and '示意資料' not in open('assets/js/mklab-core.js', encoding='utf-8').read())
 
 # 評分公式單一來源：data/scoring-config.json（前端 index.html、後端 build_digest.py、文件 help.html）
 _sc = json.load(open('data/scoring-config.json', encoding='utf-8'))

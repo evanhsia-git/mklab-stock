@@ -166,15 +166,19 @@ def run():
     else:
         stocks_list = stocks_data
     try:
+        # null 是「缺資料」的正確表示（前端顯示「-」），不算髒值；真正的髒值是 NaN/Infinity、空字串、字串 "-"
         dirty = []
+        nulls = 0
         for s in stocks_list:
             for k, v in s.items():
-                if v is None or v == "" or v == "-" or (isinstance(v, float) and (v != v or v in (float('inf'), float('-inf')))):
-                    dirty.append(f"{s.get('code', '?')}.{k}={v}")
+                if v is None:
+                    nulls += 1
+                elif v == "" or v == "-" or (isinstance(v, float) and (v != v or v in (float('inf'), float('-inf')))):
+                    dirty.append(f"{s.get('sym', '?')}.{k}={v!r}")
         if dirty:
-            c.warn("; ".join(dirty[:10]), "確認資料源是否涵蓋該標的", stocks_path)
+            c.warn("; ".join(dirty[:10]), "確認資料源是否涵蓋該標的；缺資料請用 null，不要用空字串或 '-'", stocks_path)
         else:
-            c.ok("無髒值")
+            c.ok(f"無髒值（另有 {nulls} 個 null 欄位＝缺資料，前端顯示「-」）")
     except Exception as e:
         c.error(f"檢查失敗: {e}", "", stocks_path)
     add(c)
@@ -426,6 +430,11 @@ def run():
         defined_vars.update(re.findall(r'style="[^"]*(--[a-zA-Z0-9-]+)\s*:', src))
         for m in var_use_re.finditer(src):
             used_vars.setdefault(m.group(1), []).append(os.path.basename(hf))
+    # 共用 JS（assets/js/*.js）產生的 HTML 樣板也會用 style="--xxx:..." 帶入自訂屬性（如市場寬度長條的 --bar-fill）
+    for jf in sorted(glob.glob(os.path.join(ROOT, "assets", "js", "*.js"))):
+        src = open(jf, encoding="utf-8").read()
+        defined_vars.update(re.findall(r'style=\\?["\'][^"\']*?(--[a-zA-Z0-9-]+)\s*:', src))
+        defined_vars.update(re.findall(r'style\.setProperty\(\s*[\'"](--[a-zA-Z0-9-]+)', src))
     undefined = {k: v for k, v in used_vars.items() if k not in defined_vars}
     if undefined:
         detail = "; ".join(f"{k} (用於 {', '.join(sorted(set(v)))})" for k, v in undefined.items())

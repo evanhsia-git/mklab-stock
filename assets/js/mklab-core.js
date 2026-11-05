@@ -36,7 +36,7 @@
     score: { label:'綜合評分',type:'num', sortable:true, defDir:-1, fmt:r=>r.score!=null?r.score:'-' },
     pe:    { label:'PE',      type:'num', sortable:true,  fmt:r=>r.pe!=null?Number(r.pe).toFixed(2):'-' },
     pb:    { label:'PB',      type:'num', sortable:true,  fmt:r=>r.pb!=null?Number(r.pb).toFixed(2):'-' },
-    eps:   { label:'EPS',     type:'num', sortable:true,  fmt:r=>r.eps!=null?Number(r.eps).toFixed(2):'-' },
+    eps:   { label:'EPS(年化)', type:'num', sortable:true,  fmt:r=>r.eps!=null?Number(r.eps).toFixed(2):'-' },
     roe:   { label:'ROE',     type:'num', sortable:true,  fmt:r=>(r.roe!=null?Number(r.roe).toFixed(2):'-') },
     roa:   { label:'ROA',     type:'num', sortable:true,  fmt:r=>(r.roa!=null?Number(r.roa).toFixed(2):'-') },
     div:   { label:'殖利率%', type:'num', sortable:true, defDir:-1, fmt:r=>r.div!=null?Number(r.div).toFixed(2)+'%':'-' },
@@ -62,6 +62,10 @@
     yield: { label:'配息率', type:'num', sortable:true, defDir:-1, fmt:r=>r.yield!=null?Number(r.yield).toFixed(2)+'%':'-' },
     listing_date: { label:'上市/上櫃日期', type:'str', sortable:true, fmt:r=>r.listing_date||'-' },
     issuer: { label:'發行人', type:'str', sortable:true, fmt:r=>r.issuer||'-' },
+    volume: { label:'成交量(張)', type:'num', sortable:true, defDir:-1, fmt:r=>r.volume!=null?Math.round(r.volume/1000).toLocaleString():'-' },
+    chg_2y: { label:'2年漲跌%', type:'pct', sortable:true, defDir:-1, fmt:r=>r.chg_2y!=null?(r.chg_2y>0?'+':'')+Number(r.chg_2y).toFixed(2)+'%':'-' },
+    chg_3m: { label:'3月漲跌%', type:'pct', sortable:true, defDir:-1, fmt:r=>r.chg_3m!=null?(r.chg_3m>0?'+':'')+Number(r.chg_3m).toFixed(2)+'%':'-' },
+    chg_6m: { label:'6月漲跌%', type:'pct', sortable:true, defDir:-1, fmt:r=>r.chg_6m!=null?(r.chg_6m>0?'+':'')+Number(r.chg_6m).toFixed(2)+'%':'-' },
     chg_1m: { label:'月漲跌%', type:'pct', sortable:true, defDir:-1, fmt:r=>r.chg_1m!=null?(r.chg_1m>0?'+':'')+Number(r.chg_1m).toFixed(2)+'%':'-' },
     // 52 週位階：5 個等寬區間（0-20/20-40/40-60/60-80/80-100%），以 5 格小方塊顯示目前所在區間
     pos52: { label:'52週位階', type:'html', sortable:true, defDir:-1, fmt:r=>{
@@ -73,8 +77,6 @@
     div_streak: { label:'連續配息(年)', type:'num', sortable:true, defDir:-1, fmt:r=>r.div_streak_years!=null?r.div_streak_years:'-' },
     div_cash: { label:'最近現金股利(元)', type:'num', sortable:true, defDir:-1, fmt:r=>r.div_cash_latest!=null?Number(r.div_cash_latest).toFixed(2):'-' },
     rsi14: { label:'RSI(14)', type:'num', sortable:true, fmt:r=>r.rsi14!=null?r.rsi14:'-' },
-    ma5: { label:'MA5', type:'num', sortable:true, fmt:r=>r.ma5!=null?r.ma5:'-' },
-    ma20: { label:'MA20', type:'num', sortable:true, fmt:r=>r.ma20!=null?r.ma20:'-' },
     pos52w_level: { label:'52週位階(1-5)', type:'num', sortable:true, fmt:r=>r.pos52w_level!=null?r.pos52w_level:'-' },
     market_cap: { label:'市值(元)', type:'num', sortable:true, fmt:r=>r.market_cap!=null?r.market_cap:'-' },
     beneficiaries: { label:'受益人數', type:'num', sortable:true, defDir:-1, fmt:r=>r.beneficiaries!=null?Number(r.beneficiaries).toLocaleString():'-' },
@@ -121,6 +123,8 @@
 
     // ── 均線 ──
     ma5:   { label:'MA5',   type:'num', sortable:true, fmt:r=>r.ma5!=null?Number(r.ma5).toLocaleString(undefined,{maximumFractionDigits:2}):'-' },
+    ma10:  { label:'MA10',  type:'num', sortable:true, fmt:r=>r.ma10!=null?Number(r.ma10).toLocaleString(undefined,{maximumFractionDigits:2}):'-' },
+    ma30:  { label:'MA30',  type:'num', sortable:true, fmt:r=>r.ma30!=null?Number(r.ma30).toLocaleString(undefined,{maximumFractionDigits:2}):'-' },
     ma20:  { label:'MA20',  type:'num', sortable:true, fmt:r=>r.ma20!=null?Number(r.ma20).toLocaleString(undefined,{maximumFractionDigits:2}):'-' },
     ma60:  { label:'MA60',  type:'num', sortable:true, fmt:r=>r.ma60!=null?Number(r.ma60).toLocaleString(undefined,{maximumFractionDigits:2}):'-' },
     ma120: { label:'MA120', type:'num', sortable:true, fmt:r=>r.ma120!=null?Number(r.ma120).toLocaleString(undefined,{maximumFractionDigits:2}):'-' },
@@ -247,6 +251,23 @@
     this.render();
   };
 
+  // 換欄位（欄位勾選器用）：重建表頭；原排序欄若仍在則保留，否則退回第一個可排序欄
+  DataTable.prototype.setCols = function(ids){
+    this.cols = (ids||[]).map(id=>{
+      const def = COLUMNS[id];
+      if(!def) throw new Error('DataTable: 未知欄位 "'+id+'"');
+      return Object.assign({ id:id }, def);
+    });
+    if(!this.cols.some(c=>c.id===this.sortKey)){
+      const first = this.cols.find(c=>c.sortable);
+      this.sortKey = first ? first.id : null;
+      this.sortDir = (first && first.defDir) ? first.defDir : -1;
+    }
+    this.page = 1;
+    this._build();
+    this.render();
+  };
+
   DataTable.prototype.setRows = function(rows){
     this.rows = rows || [];
     this.page = 1;
@@ -361,7 +382,7 @@
     },
     system: {
       version: 'dashboard v3.0',
-      source:  'TWSE/TPEX/Yahoo/Stooq',
+      source:  'TWSE/TPEX/Yahoo',
       updated: null,
       status:  '● 正常運作',
     },
@@ -639,9 +660,130 @@
   function setFreshness(asof) {
     const f = document.querySelector('.freshness');
     if (!f) return;
-    if (!asof) { f.textContent = '無法載入收盤資料，暫以示意資料顯示'; return; }
+    if (!asof) { f.textContent = '無法載入收盤資料'; return; }
     f.textContent = '資料以 ' + formatAsOf(asof) + ' 收盤為準（Build-Time 自動更新）';
   }
+
+  // 頁面已經自己載入了 stocks.json（doc）時用：更新黃標並回傳資料日（沒有則 null）。取代各頁重複的 doc.meta.as_of 取值＋setFreshness
+  function applyFreshness(doc) {
+    const asof = (doc && doc.meta && doc.meta.as_of) || null;
+    setFreshness(asof);
+    return asof;
+  }
+
+  // 各頁共用：讀 stocks.json 的 meta.as_of 並更新黃標文字；失敗時顯示「無法載入」，不拋錯。回傳 meta（失敗為 null）
+  async function loadFreshness() {
+    try {
+      const doc = await global.MKLAB.data.json('stocks');
+      setFreshness(doc && doc.meta && doc.meta.as_of);
+      return doc;
+    } catch (e) {
+      setFreshness(null);
+      return null;
+    }
+  }
+
+  // ============================================================
+  //  市場寬度面板（Industry / Breadth 兩頁共用；原本各頁各寫一份，約 95% 重複）
+  //  需要頁面上有 #breadthSummary、#histWrap、#indBreadthTable，（選用）#breadthMeta
+  // ============================================================
+  const BreadthPanel = (function () {
+    const BUCKETS = [
+      { label: '< -7%',    test: v => v < -7 },
+      { label: '-7~-3%',   test: v => v >= -7 && v < -3 },
+      { label: '-3~-1%',   test: v => v >= -3 && v < -1 },
+      { label: '-1~0%',    test: v => v >= -1 && v < 0 },
+      { label: '0~1%',     test: v => v >= 0 && v < 1 },
+      { label: '1~3%',     test: v => v >= 1 && v < 3 },
+      { label: '3~7%',     test: v => v >= 3 && v < 7 },
+      { label: '> 7%',     test: v => v >= 7 },
+    ];
+
+    // P0-5：市場寬度只計「一般股票」且「有有效漲跌幅」的檔數。
+    // 排除 ETF / 其他證券（security_type !== 'stock'）與 chg 為 null 的檔數（不補 0、不當作平盤）。
+    function validStocks(stocks) {
+      return stocks.filter(r => r.security_type === 'stock' && typeof r.chg === 'number' && !Number.isNaN(r.chg));
+    }
+
+    function renderSummary(stocks) {
+      const up = stocks.filter(r => r.chg > 0).length;
+      const down = stocks.filter(r => r.chg < 0).length;
+      const flat = stocks.filter(r => r.chg === 0).length;
+      const ratio = down > 0 ? (up / down).toFixed(2) : '∞';
+      const cards = [
+        { label: '上漲家數', val: up, cls: 'up' },
+        { label: '下跌家數', val: down, cls: 'down' },
+        { label: '平盤家數', val: flat, cls: '' },
+        { label: '漲跌家數比', val: ratio, cls: '' },
+      ];
+      document.getElementById('breadthSummary').innerHTML = cards.map(c =>
+        `<div class="card"><div class="card-title">${c.label}</div><div class="card-val ${c.cls}">${c.val}</div></div>`
+      ).join('');
+    }
+
+    function renderHistogram(stocks) {
+      const counts = BUCKETS.map(b => stocks.filter(r => b.test(r.chg)).length);
+      const max = Math.max(...counts, 1);
+      let html = '';
+      BUCKETS.forEach((b, i) => {
+        const pct = (counts[i] / max * 100).toFixed(1);
+        const color = b.label.startsWith('-') || b.label.startsWith('<') ? 'var(--down)' : (b.label.startsWith('>') || (!b.label.startsWith('0') && !b.label.startsWith('-')) ? 'var(--up)' : 'var(--muted)');
+        html += `<div class="breadth-bar-row">
+          <span class="breadth-bar-label">${b.label}</span>
+          <span class="breadth-bar-track"><span class="breadth-bar-fill" style="width:${pct}%;--bar-fill:${color};"></span></span>
+          <span class="breadth-bar-count">${counts[i]} 檔</span>
+        </div>`;
+      });
+      document.getElementById('histWrap').innerHTML = html;
+    }
+
+    // 產業上漲比例：分母只用「有效行情」檔數；成分股總數與有效行情數分開顯示
+    function renderIndBreadth(stocks) {
+      const byInd = {};
+      stocks.forEach(r => {
+        if (!r.ind) return;
+        const d = byInd[r.ind] = byInd[r.ind] || { ind: r.ind, up: 0, valid: 0, members: 0 };
+        d.members++;
+        if (typeof r.chg === 'number' && !Number.isNaN(r.chg)) {
+          d.valid++;
+          if (r.chg > 0) d.up++;
+        }
+      });
+      const rows = Object.values(byInd).map(d => ({ ...d, upRatio: d.valid ? (d.up / d.valid * 100) : null }));
+      rows.sort((a, b) => (b.upRatio == null) - (a.upRatio == null) || (b.upRatio || 0) - (a.upRatio || 0));
+      let html = '<thead><tr><th>產業</th><th>上漲家數</th><th>有效行情</th><th>成分股</th><th>上漲比例</th></tr></thead><tbody>';
+      rows.forEach(r => {
+        const ratio = r.upRatio == null ? '-' : r.upRatio.toFixed(1) + '%';
+        const cls = r.upRatio == null ? '' : (r.upRatio >= 50 ? 'up' : 'down');
+        html += `<tr><td>${r.ind}</td><td>${r.up}</td><td>${r.valid}</td><td>${r.members}</td><td class="${cls}">${ratio}</td></tr>`;
+      });
+      html += '</tbody>';
+      document.getElementById('indBreadthTable').innerHTML = html;
+    }
+
+    // 由產業頁的啟動流程呼叫；stocks 由同一次 MKLAB.data.stocks() 取得，不重複請求
+    function render(allStocks, asof) {
+      try {
+        const common = allStocks.filter(r => r.security_type === 'stock');
+        const valid = validStocks(allStocks);
+        renderSummary(valid);
+        renderHistogram(valid);
+        renderIndBreadth(common);
+        const meta = document.getElementById('breadthMeta');
+        if (meta) {
+          const excludedNull = common.length - valid.length;
+          const excludedOther = allStocks.length - common.length;
+          meta.textContent = `基準日 ${asof || '-'}｜一般股票 ${common.length} 檔，有效行情 ${valid.length} 檔（上漲 + 下跌 + 平盤 = 有效行情）｜` +
+            `排除無行情 ${excludedNull} 檔、ETF/其他證券 ${excludedOther} 檔`;
+        }
+      } catch (e) {
+        console.warn('[breadth] render failed:', e);
+        const el = document.getElementById('breadthSummary');
+        if (el) el.innerHTML = '<p class="muted-small-top">市場寬度載入失敗：' + (e && e.message ? e.message : e) + '</p>';
+      }
+    }
+    return { render };
+  })();
 
   // ============================================================
   //  Notes（個股筆記，localStorage 共用模組，Research/Watchlist 共用）
@@ -820,7 +962,7 @@
 
   // 全站共用：台股／美股資料庫 CSV（各一檔；每檔內含「個股」與「ETF」兩個區塊）
   const TW_IDS = ['sym','name','ind','price','chg','chg_1m','chg_1y','pos52w_level','pe','pb','roe','roa','div','market_cap','rsi14','ma5','ma20'];
-  const TW_SRC = 'TWSE OpenAPI（上市）+ TPEx OpenAPI（上櫃）；ROE/ROA/EPS 為 TWSE 官方財報年化（2026Q2 累計）；RSI/MA/月漲跌/年漲跌/52週位階由歷史收盤價計算';
+  const TW_SRC = 'TWSE OpenAPI（上市個股與 ETF）+ TPEx OpenAPI（僅上櫃 ETF）；ROE/ROA/EPS 為 TWSE 官方財報累計年化（EPS 欄位為年化 EPS）；RSI/MA/月漲跌/年漲跌/52週位階由歷史收盤價計算';
   MKLAB.registerExport('下載台股資料庫 CSV（個股＋ETF 兩區塊）', async function(){
     const rows = await MKLAB.data.stocks();
     const meta = await MKLAB.data.json('stocks').catch(() => null);
@@ -866,6 +1008,9 @@
   global.MKLAB.setLang = function(l){ Drawer.setLang(l); };
   global.MKLAB.formatAsOf = formatAsOf;
   global.MKLAB.setFreshness = setFreshness;
+  global.MKLAB.loadFreshness = loadFreshness;
+  global.MKLAB.applyFreshness = applyFreshness;
+  global.MKLAB.BreadthPanel = BreadthPanel;
   global.MKLAB.Notes = Notes;
   global.MKLAB.Portfolio = Portfolio;
 

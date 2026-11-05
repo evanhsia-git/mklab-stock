@@ -274,6 +274,18 @@ def main():
             row["fund_asof"] = f_["asof"]
             row["fund_src"] = "TWSE_OFFICIAL"
             n += 1
+        # roe / roa / eps 與官方年化值同步（單一口徑）。
+        # 歷史包袱：舊版從 TWSE t187ap06_L 取 ROE/ROA/EPS，該端點已失效且欄位已改名，這三欄之後從未更新，
+        # 殘留的是過期、口徑不明的舊值（例：2330 的 roe 31.7 vs 官方年化 39.77）。
+        # 規則：有官方值 → 一律用官方；沒有官方值 → 只保留 yfinance 週更補的 ROE/ROA（roe_src 有標註），
+        # 其餘（過期殘值、EPS）清成 null，顯示「-」，不拿舊值冒充。
+        if row.get("security_type") == "stock":
+            if row.get("roe_off") is not None:
+                row["roe"], row["roa"] = row["roe_off"], row.get("roa_off")
+                row.pop("roe_src", None)
+            elif row.get("roe_src") != "yfinance":
+                row["roe"] = row["roa"] = None
+            row["eps"] = row.get("eps_off")
         if d_:
             row["div_cash_latest"] = d_["latest_cash_per_share"]
             row["div_latest_year"] = d_["latest_year"]

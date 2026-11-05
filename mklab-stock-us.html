@@ -59,7 +59,7 @@
         rows: stocks, pageSize: 10, pagerId: 'usStockPager',
         defaultSort: 'cap_fmt', fieldMap: { cap_fmt: 'market_cap' },
       });
-      MKLAB.setFreshness(stockDoc && stockDoc.meta && stockDoc.meta.as_of);
+      MKLAB.applyFreshness(stockDoc);
     } catch (e) {
       console.warn('[us] stocks load failed:', e);
       const t = document.getElementById('usStockTable');
