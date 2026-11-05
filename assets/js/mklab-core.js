@@ -604,6 +604,24 @@
     gear:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>',
   };
 
+  // 頁尾版本字串：全站唯一來源＝DRAWER_CFG.system.version。
+  // 各頁不再寫死版本（曾出現頁尾「Web Components v2.0」與抽屜「dashboard v3.0」不一致），
+  // 由 Shell.mount() 統一填入 .footer-inner 的版本節點；沒有節點就建立、有舊字串就就地接管。
+  function injectFooterVersion(){
+    const inner = document.querySelector('.footer-inner');
+    if(!inner) return;
+    const text = 'mklab-stock · ' + DRAWER_CFG.system.version;
+    let el = inner.querySelector('.footer-version');
+    if(!el){
+      const legacy = Array.from(inner.querySelectorAll('span'))
+        .find(s => /mklab-stock\s*·/.test(s.textContent));
+      el = legacy || document.createElement('span');
+      el.className = 'footer-version';
+      if(!legacy) inner.insertBefore(el, inner.firstChild);
+    }
+    el.textContent = text;
+  }
+
   const Shell = {
     mount(opts){
       opts = opts || {};
@@ -636,6 +654,8 @@
       // 深色按鈕同步初始狀態
       const darkOn = (localStorage.getItem('mk_dark')!=='0') && DRAWER_CFG.appearance.darkOn;
       document.documentElement.setAttribute('data-theme', darkOn?'dark':'light');
+      // 頁尾版本（單一來源：DRAWER_CFG.system.version）
+      injectFooterVersion();
     },
     toggleSearch(){
       const b = document.getElementById('searchBox');

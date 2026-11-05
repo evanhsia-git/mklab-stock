@@ -28,7 +28,7 @@ updated: 2026-07-14
 | 表格 | TanStack Table（虛擬化） | skill §二 |
 | 後端腳本 | Python 3.11 純腳本（產 `data/*.json`，免 DB） | skill §二 / §五 |
 | 部署 | Actions artifact-based Pages + `make deploy` | skill §二 / §九 |
-| 資料源 Tier1 | TWSE / TPEx / Yahoo / Stooq（免 key） | skill §四 |
+| 資料源 Tier1 | TWSE / TPEx / Yahoo（免 key；**Stooq 已停用**） | skill §四 |
 | 資料源 Tier2/3 | FinMind / Alpha Vantage / FMP / Finnhub / Polygon / Bloomberg（設 secret） | skill §四 |
 
 ---
@@ -114,7 +114,7 @@ updated: 2026-07-14
 | TWSE | https://www.twse.com.tw | 1 | TW 上市 | **採用（主源，免 key）** |
 | TPEx | https://www.tpex.org.tw | 1 | TPEX 上櫃/ETF | **採用（主源，免 key）** |
 | Yahoo (yfinance) | https://github.com/ranaroussi/yfinance | 1 | TW,US,GLOBAL,指數 | **採用（主源，免 key）**；原指南 `yfinance` 即此 |
-| Stooq | https://www.stooq.com | 1 | US,GLOBAL,指數 | **採用（主源，免 key）** |
+| Stooq | https://www.stooq.com | 1 | US,GLOBAL,指數 | **已停用**：現行美股／全球指數改用 yfinance（Yahoo），站上程式與 UI 已無引用 |
 | FinMind | https://finmindtrade.com | 2 | TW | 備援（設 `FINMIND_TOKEN` 才啟用） |
 | Alpha Vantage | https://www.alphavantage.co | 2 | US,GLOBAL | 備援（設 `ALPHAVANTAGE_KEY`） |
 | FMP | https://financialmodelingprep.com | 2 | US,GLOBAL | 備援（設 `FMP_KEY`） |
@@ -122,7 +122,7 @@ updated: 2026-07-14
 | Polygon | https://polygon.io | 3 | US,GLOBAL | 備援（設 `POLYGON_KEY`） |
 | Bloomberg | https://www.bloomberg.com | 3 | GLOBAL | 備援（設 `BLOOMBERG_KEY`） |
 
-> Tier1（TWSE/TPEx/Yahoo/Stooq）為 Fork 即跑主源，免 API Key；Tier2/3 為選配備援，僅當使用者於 repo 設定對應 secret 才進 Provider 池（見 skill §四 Registry / 紅線）。原指南僅列 TWSE/TPEx/FinMind/yfinance，已擴充對齊 10 provider 模型。
+> Tier1（TWSE/TPEx/Yahoo；Stooq 已停用不再列入）為 Fork 即跑主源，免 API Key；Tier2/3 為選配備援，僅當使用者於 repo 設定對應 secret 才進 Provider 池（見 skill §四 Registry / 紅線）。原指南僅列 TWSE/TPEx/FinMind/yfinance，已擴充對齊 10 provider 模型。
 
 ---
 
@@ -190,7 +190,7 @@ GitHub Actions → Python → FinMind/yfinance → 策略分析 → Plotly
 | Validation 回測 | Research（Phase2） | 其「確定性可重現」設計值得學；設 Key/運算貴→Phase2 |
 | Themes AI / Assistant AI | P4 Optional Backend | 僅設 secret 才啟用，不進核心 |
 
-> 不抄：Live App 後端堆疊（FastAPI/Postgres/Redis/Celery）、Operations 頁（我們用 GitHub Issues/Projects）、Material-UI/Recharts（我們用 shadcn/ui+ECharts）、12 市場擴張（我們採 **TW + US + China(A股滬深/港股)**，見主文 §11；China 經 Yahoo/Stooq 符號零 secret 達成，非 stock-screener 的 12 市場 Docker 模式）。
+> 不抄：Live App 後端堆疊（FastAPI/Postgres/Redis/Celery）、Operations 頁（我們用 GitHub Issues/Projects）、Material-UI/Recharts（我們用 shadcn/ui+ECharts）、12 市場擴張（我們採 **TW + US + China(A股滬深/港股)**，見主文 §11；China 經 Yahoo 符號零 secret 達成，非 stock-screener 的 12 市場 Docker 模式）。
 > 其 Static Site 模式（預匯出 JSON→Pages 只讀）**驗證我們架構選擇正確**。
 
 **收錄結論**
@@ -236,7 +236,7 @@ GitHub Actions → Python → FinMind/yfinance → 策略分析 → Plotly
 > 結論：在「不用外部工具」約束下，我們能做到 stock-screener **靜態站呈現的約 90% 核心功能**；剩餘 10% 為 AI 主題發現與多市場擴張（定為未來開發性）。呈現形式非常接近。
 
 ### 11.4 China 市場擴充（對應主文 §11）
-- 範圍：A股滬深（`.SS`/`.SZ`）+ 港股（`.HK`），經 Yahoo/Stooq 符號。
+- 範圍：A股滬深（`.SS`/`.SZ`）+ 港股（`.HK`），經 Yahoo 符號。
 - 實作：不新增 Provider 契約/secret；`china.py` 做符號對應，路由走既有 yahoo/stooq；`daily-cn.yml` 19:00 排程；資料併入 `market.json`/`asset.json` 加 `market:"cn"` 欄位。
 - 閘門：8 項全「是/低影響」→ 直接進核心，無違憲法（主文 §11.3 留存評估表）。
 
