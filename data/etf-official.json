@@ -2,16 +2,16 @@
   "meta": {
     "source": "TWSE OpenAPI／MOPS opendata 官方檔案（由 fetch_official_fundamentals.py 下載）",
     "files": {
-      "_fetch_log.json": "2026-11-04 18:28:57 UTC+08:00",
-      "SOXX_holdings.xls": "2026-11-04 00:57:34 UTC+08:00",
-      "t187ap45_latest.json": "2026-11-04 17:53:06 UTC+08:00",
-      "t187ap03_L_latest.csv": "2026-11-04 17:52:57 UTC+08:00",
-      "VOO_holdings.csv": "2026-11-02 11:13:21 UTC+08:00",
-      "t187ap06_L_latest.csv": "2026-11-04 17:53:01 UTC+08:00",
-      "t187ap07_L_latest.csv": "2026-11-04 17:53:04 UTC+08:00",
-      "t187ap47_latest.json": "2026-11-04 17:53:06 UTC+08:00"
+      "VOO_holdings.csv": "2026-11-05 14:01:00 UTC+08:00",
+      "t187ap06_L_latest.csv": "2026-11-05 14:01:00 UTC+08:00",
+      "t187ap47_latest.json": "2026-11-05 14:01:12 UTC+08:00",
+      "t187ap07_L_latest.csv": "2026-11-05 14:01:09 UTC+08:00",
+      "t187ap03_L_latest.csv": "2026-11-05 14:01:03 UTC+08:00",
+      "SOXX_holdings.xls": "2026-11-05 14:01:00 UTC+08:00",
+      "_fetch_log.json": "2026-11-05 14:01:12 UTC+08:00",
+      "t187ap45_latest.json": "2026-11-05 14:01:11 UTC+08:00"
     },
-    "imported_at": "2026-11-05 13:31:05 UTC+08:00",
+    "imported_at": "2026-11-05 14:01:12 UTC+08:00",
     "financial_period": "2026Q2",
     "financial_periods": {
       "2026Q2": 977,
@@ -30,7 +30,7 @@
       "establish_date": "2026-03-30",
       "manager": "梁恩溢",
       "custodian": "台灣集中保管結算所股份有限公司",
-      "units_issued": "2196640000"
+      "units_issued": "2230140000"
     },
     "00401A": {
       "name": "主動摩根台灣鑫收",
@@ -41,7 +41,7 @@
       "establish_date": "2026-03-31",
       "manager": "沈馨",
       "custodian": "國泰世華商業銀行股份有限公司",
-      "units_issued": "296895000"
+      "units_issued": "306395000"
     },
     "00402A": {
       "name": "主動安聯美國科技",
@@ -52,7 +52,7 @@
       "establish_date": "2026-05-29",
       "manager": "洪華珍",
       "custodian": "永豐商業銀行股份有限公司",
-      "units_issued": "563127000"
+      "units_issued": "564627000"
     },
     "00403A": {
       "name": "主動統一升級50",
@@ -63,7 +63,7 @@
       "establish_date": "2026-04-28",
       "manager": "張哲瑋",
       "custodian": "彰化商業銀行股份有限公司",
-      "units_issued": "13066019000"
+      "units_issued": "13069019000"
     },
     "00404A": {
       "name": "主動聯博動能50",
@@ -74,7 +74,7 @@
       "establish_date": "2026-05-28",
       "manager": "黃靜怡",
       "custodian": "台北富邦商業銀行股份有限公司",
-      "units_issued": "423295000"
+      "units_issued": "427295000"
     },
     "00405A": {
       "name": "主動富邦台灣龍耀",
@@ -85,7 +85,7 @@
       "establish_date": "2026-05-25",
       "manager": "高日告欣",
       "custodian": "彰化商業銀行股份有限公司",
-      "units_issued": "2587745000"
+      "units_issued": "2612245000"
     },
     "00406A": {
       "name": "主動中信台灣收益",
@@ -96,7 +96,7 @@
       "establish_date": "2026-06-02",
       "manager": "張書廷",
       "custodian": "合作金庫商業銀行股份有限公司",
-      "units_issued": "15741562000"
+      "units_issued": "16553562000"
     },
     "00407A": {
       "name": "主動凱基台灣",
@@ -107,7 +107,7 @@
       "establish_date": "2026-06-12",
       "manager": "趙偉志",
       "custodian": "彰化銀行股份有限公司",
-      "units_issued": "2296739000"
+      "units_issued": "2303239000"
     },
     "00408A": {
       "name": "主動第一金優股息",
@@ -129,7 +129,7 @@
       "establish_date": "2026-08-20",
       "manager": "胡家菱",
       "custodian": "國泰世華商業銀行股份有限公司",
-      "units_issued": "1438448000"
+      "units_issued": "1449948000"
     },
     "00410A": {
       "name": "主動永豐科技趨勢",
@@ -140,7 +140,7 @@
       "establish_date": "2026-07-23",
       "manager": "周力行",
       "custodian": "臺灣集中保管結算所股份有限公司",
-      "units_issued": "183360000"
+      "units_issued": "184860000"
     },
     "00412A": {
       "name": "主動安聯亞半導體",
@@ -151,7 +151,7 @@
       "establish_date": "2026-09-23",
       "manager": "蕭惠中",
       "custodian": "元大商業銀行股份有限公司",
-      "units_issued": "890988000"
+      "units_issued": "905488000"
     },
     "00415A": {
       "name": "主動群益核心50",
@@ -162,7 +162,7 @@
       "establish_date": "2026-10-06",
       "manager": "許育誌",
       "custodian": "臺灣集中保管結算所股份有限公司",
-      "units_issued": "1414690000"
+      "units_issued": "1422190000"
     },
     "00416A": {
       "name": "主動台新臺灣中小",
@@ -184,7 +184,7 @@
       "establish_date": "2003-06-25",
       "manager": "陳重銓",
       "custodian": "臺灣集中保管結算所股份有限公司",
-      "units_issued": "23575000000"
+      "units_issued": "23690000000"
     },
     "0051": {
       "name": "元大中型100",
@@ -206,7 +206,7 @@
       "establish_date": "2006-08-28",
       "manager": "洪珮甄",
       "custodian": "台新國際商業銀行股份有限公司",
-      "units_issued": "2687500000"
+      "units_issued": "2689500000"
     },
     "0053": {
       "name": "元大科技市值(原:元大電子)",
@@ -217,7 +217,7 @@
       "establish_date": "2007-07-04",
       "manager": "陳威志",
       "custodian": "臺灣集中保管結算所股份有限公司",
-      "units_issued": "17488000"
+      "units_issued": "17988000"
     },
     "0054": {
       "name": "元大台商50",
@@ -250,7 +250,7 @@
       "establish_date": "2007-12-13",
       "manager": "陳威志",
       "custodian": "臺灣集中保管結算所股份有限公司",
-      "units_issued": "14907534000"
+      "units_issued": "14974534000"
     },
     "0057": {
       "name": "富邦摩台",
@@ -371,7 +371,7 @@
       "establish_date": "2012-06-22",
       "manager": "洪珮甄",
       "custodian": "第一商業銀行股份有限公司",
-      "units_issued": "1903540000"
+      "units_issued": "1906540000"
     },
     "00625K": {
       "name": "富邦上証+R",
@@ -393,7 +393,7 @@
       "establish_date": "2014-10-23",
       "manager": "曾逸江",
       "custodian": "臺灣集中保管結算所股份有限公司",
-      "units_issued": "8475348000"
+      "units_issued": "8579348000"
     },
     "00632R": {
       "name": "元大台灣50反1",
@@ -404,7 +404,7 @@
       "establish_date": "2014-10-23",
       "manager": "陳威志",
       "custodian": "臺灣集中保管結算所股份有限公司",
-      "units_issued": "2280707730"
+      "units_issued": "2240707730"
     },
     "00633L": {
       "name": "富邦上証正2",
@@ -437,7 +437,7 @@
       "establish_date": "2015-04-01",
       "manager": "洪佑銘",
       "custodian": "臺灣集中保管結算所股份有限公司",
-      "units_issued": "323014000"
+      "units_issued": "322014000"
     },
     "00636": {
       "name": "國泰中國A50",
@@ -525,7 +525,7 @@
       "establish_date": "2015-08-27",
       "manager": "黃議玄",
       "custodian": "臺灣集中保管結算所股份有限公司",
-      "units_issued": "44321000"
+      "units_issued": "44821000"
     },
     "00643": {
       "name": "群益深証中小",
@@ -569,7 +569,7 @@
       "establish_date": "2015-12-02",
       "manager": "盧永 祥",
       "custodian": "臺灣集中保管結算所股份有限公司",
-      "units_issued": "641485000"
+      "units_issued": "641985000"
     },
     "00647L": {
       "name": "元大S&amp;P500正2",
@@ -756,7 +756,7 @@
       "establish_date": "2016-06-03",
       "manager": "王辰方",
       "custodian": "中國信託商業銀行股份有限公司",
-      "units_issued": "985029000"
+      "units_issued": "989529000"
     },
     "00663L": {
       "name": "國泰臺灣加權正2",
@@ -767,7 +767,7 @@
       "establish_date": "2016-07-01",
       "manager": "蘇鼎宇",
       "custodian": "台灣集中保管結算所託股份有限公",
-      "units_issued": "153663000"
+      "units_issued": "155163000"
     },
     "00664R": {
       "name": "國泰臺灣加權反1",
@@ -778,7 +778,7 @@
       "establish_date": "2016-07-01",
       "manager": "蘇鼎宇",
       "custodian": "台灣集中保管結算所股份有限公司",
-      "units_issued": "840075000"
+      "units_issued": "830075000"
     },
     "00665L": {
       "name": "富邦恒生國企正2",
@@ -855,7 +855,7 @@
       "establish_date": "2017-02-14",
       "manager": "陳婉寧",
       "custodian": "中國信託商業銀行股份有限公司",
-      "units_issued": "80645000"
+      "units_issued": "82145000"
     },
     "00671R": {
       "name": "富邦NASDAQ 反1",
@@ -888,7 +888,7 @@
       "establish_date": "2016-09-30",
       "manager": "洪佑銘",
       "custodian": "臺灣集中保管結算所股份有限公司",
-      "units_issued": "1331550646"
+      "units_issued": "1294050646"
     },
     "00674R": {
       "name": "期元大S&amp;P黃金反1(原名：元大S&amp;P黃金反1)",
@@ -954,7 +954,7 @@
       "establish_date": "2017-01-11",
       "manager": "蕭開豪",
       "custodian": "臺灣集中保管結算所股份有限公司",
-      "units_issued": "1343076000"
+      "units_issued": "1331576000"
     },
     "00681R": {
       "name": "元大美債20反1",
@@ -1009,7 +1009,7 @@
       "establish_date": "2017-03-23",
       "manager": "洪祥益",
       "custodian": "臺灣集中保管結算所股份有限公司",
-      "units_issued": "8054336000"
+      "units_issued": "8354336000"
     },
     "00686R": {
       "name": "群益臺灣加權反1",
@@ -1031,7 +1031,7 @@
       "establish_date": "2017-04-06",
       "manager": "林淑娟",
       "custodian": "台灣集中保管結算所股份有限公司",
-      "units_issued": "544615000"
+      "units_issued": "541615000"
     },
     "00689R": {
       "name": "國泰20年美債反1",
@@ -1207,7 +1207,7 @@
       "establish_date": "2017-08-23",
       "manager": "潘昶安",
       "custodian": "臺灣集中保管結算所股份有限公司",
-      "units_issued": "168073000"
+      "units_issued": "165073000"
     },
     "00709": {
       "name": "富邦歐洲",
@@ -1251,7 +1251,7 @@
       "establish_date": "2017-08-09",
       "manager": "曹君龍",
       "custodian": "玉山商業銀行股份有限公司",
-      "units_issued": "6571511000"
+      "units_issued": "6563011000"
     },
     "00713": {
       "name": "元大台灣高息低波",
@@ -1284,7 +1284,7 @@
       "establish_date": "2017-11-08",
       "manager": "林泳光",
       "custodian": "臺灣集中保管結算所股份有限公司",
-      "units_issued": "43191793"
+      "units_issued": "43691793"
     },
     "00716R": {
       "name": "華頓S&amp;P布蘭特反1",
@@ -1416,7 +1416,7 @@
       "establish_date": "2018-05-23",
       "manager": "潘昶安",
       "custodian": "臺灣集中保管結算所股份有限公司",
-      "units_issued": "260299000"
+      "units_issued": "259799000"
     },
     "00739": {
       "name": "元大MSCI A股",
@@ -1482,7 +1482,7 @@
       "establish_date": "2018-11-27",
       "manager": "林良一",
       "custodian": "玉山商業銀行",
-      "units_issued": "265994000"
+      "units_issued": "268494000"
     },
     "00762": {
       "name": "元大全球AI",
@@ -1537,7 +1537,7 @@
       "establish_date": "2019-01-22",
       "manager": "林淑娟",
       "custodian": "台灣集中保管結算所股份有限公司",
-      "units_issued": "96958000"
+      "units_issued": "97958000"
     },
     "00771": {
       "name": "元大US高息特別股",
@@ -1647,7 +1647,7 @@
       "establish_date": "2019-04-23",
       "manager": "李翰林",
       "custodian": "台灣集中保管結算所股份有限公司",
-      "units_issued": "960965000"
+      "units_issued": "976965000"
     },
     "00850": {
       "name": "元大臺灣ESG永續",
@@ -1702,7 +1702,7 @@
       "establish_date": "2019-11-15",
       "manager": "陳韻竹",
       "custodian": "台灣集中保管結算所股份有限公司",
-      "units_issued": "348744000"
+      "units_issued": "351244000"
     },
     "00866": {
       "name": "新光Shiller CAPE",
@@ -1724,7 +1724,7 @@
       "establish_date": "2020-03-23",
       "manager": "沈廷陽",
       "custodian": "臺灣集中保管結算所股份有限公司",
-      "units_issued": "16988000"
+      "units_issued": "17988000"
     },
     "00876": {
       "name": "元大全球5G(原名:元大未來關鍵科技)",
@@ -1746,7 +1746,7 @@
       "establish_date": "2020-07-10",
       "manager": "江宇騰",
       "custodian": "台灣集中保管結算所股份有限公司",
-      "units_issued": "19152790000"
+      "units_issued": "19309290000"
     },
     "00881": {
       "name": "國泰台灣科技龍頭",
@@ -1757,7 +1757,7 @@
       "establish_date": "2020-12-01",
       "manager": "蘇鼎宇",
       "custodian": "台灣集中保管結算所股份有限公司",
-      "units_issued": "3072903000"
+      "units_issued": "3076403000"
     },
     "00882": {
       "name": "中信中國高股息",
@@ -1768,7 +1768,7 @@
       "establish_date": "2021-01-27",
       "manager": "葉松炫",
       "custodian": "兆豐國際商業銀行股份有限公司",
-      "units_issued": "1914849000"
+      "units_issued": "1908349000"
     },
     "00885": {
       "name": "富邦越南",
@@ -1790,7 +1790,7 @@
       "establish_date": "2021-05-20",
       "manager": "張圭慧",
       "custodian": "永豐商業銀行股份有限公司",
-      "units_issued": "2056590000"
+      "units_issued": "2078090000"
     },
     "00892": {
       "name": "富邦台灣半導體",
@@ -1801,7 +1801,7 @@
       "establish_date": "2021-06-02",
       "manager": "陳又又吉",
       "custodian": "中國信託商業銀行股份有限公司",
-      "units_issued": "319292000"
+      "units_issued": "331792000"
     },
     "00893": {
       "name": "國泰智能電動車",
@@ -1845,7 +1845,7 @@
       "establish_date": "2021-09-09",
       "manager": "張苡琤",
       "custodian": "永豐商業銀行股份有限公司",
-      "units_issued": "495880000"
+      "units_issued": "499380000"
     },
     "00897": {
       "name": "富邦基因免疫生技",
@@ -1933,7 +1933,7 @@
       "establish_date": "2022-02-23",
       "manager": "黃鈺民",
       "custodian": "臺灣集中保管結算所股份有限公司",
-      "units_issued": "206612000"
+      "units_issued": "207112000"
     },
     "00905": {
       "name": "FT臺灣Smart",
@@ -1988,7 +1988,7 @@
       "establish_date": "2022-07-01",
       "manager": "楊庭杰",
       "custodian": "台灣集中保管結算所股份有限公司",
-      "units_issued": "120204000"
+      "units_issued": "124204000"
     },
     "00910": {
       "name": "第一金太空衛星",
@@ -2032,7 +2032,7 @@
       "establish_date": "2022-08-01",
       "manager": "吳朋鴻",
       "custodian": "華南商業銀行",
-      "units_issued": "61766000"
+      "units_issued": "62266000"
     },
     "00915": {
       "name": "凱基優選高股息30",
@@ -2054,7 +2054,7 @@
       "establish_date": "2022-09-16",
       "manager": "李翰林",
       "custodian": "臺灣集中保管結算所股份有限公司",
-      "units_issued": "88919000"
+      "units_issued": "87919000"
     },
     "00917": {
       "name": "中信特選金融",
@@ -2076,7 +2076,7 @@
       "establish_date": "2022-11-15",
       "manager": "郭修誠",
       "custodian": "臺灣集中保管結算所股份有限公司",
-      "units_issued": "4713764000"
+      "units_issued": "4720264000"
     },
     "00919": {
       "name": "群益台灣精選高息",
@@ -2087,7 +2087,7 @@
       "establish_date": "2022-10-13",
       "manager": "謝明志",
       "custodian": "臺灣集中保管結算所股份有限公司",
-      "units_issued": "19401635000"
+      "units_issued": "19411635000"
     },
     "00920": {
       "name": "富邦ESG綠色電力",
@@ -2120,7 +2120,7 @@
       "establish_date": "2023-03-16",
       "manager": "蘇鼎宇",
       "custodian": "臺灣集中保管結算所股份有限公司",
-      "units_issued": "2291686000"
+      "units_issued": "2303186000"
     },
     "00923": {
       "name": "群益台ESG低碳50",
@@ -2131,7 +2131,7 @@
       "establish_date": "2023-02-24",
       "manager": "邱郁茹",
       "custodian": "臺灣集中保管結算所股份有限公司",
-      "units_issued": "963423000"
+      "units_issued": "963923000"
     },
     "00924": {
       "name": "復華S&amp;P500成長",
@@ -2142,7 +2142,7 @@
       "establish_date": "2023-04-12",
       "manager": "吳允翔",
       "custodian": "台北富邦商業銀行股份有限公司",
-      "units_issued": "435603000"
+      "units_issued": "436103000"
     },
     "00925": {
       "name": "新光標普電動車",
@@ -2175,7 +2175,7 @@
       "establish_date": "2023-05-29",
       "manager": "謝明志",
       "custodian": "臺灣集中保管結算所股份有限公司",
-      "units_issued": "2201897000"
+      "units_issued": "2218897000"
     },
     "00929": {
       "name": "復華台灣科技優息",
@@ -2186,7 +2186,7 @@
       "establish_date": "2023-06-01",
       "manager": "許忠成",
       "custodian": "台北富邦商業銀行股份有限公司",
-      "units_issued": "5811139000"
+      "units_issued": "5854139000"
     },
     "00930": {
       "name": "永豐ESG低碳高息",
@@ -2208,7 +2208,7 @@
       "establish_date": "2023-08-22",
       "manager": "吳朋鴻",
       "custodian": "彰化商業銀行",
-      "units_issued": "102783000"
+      "units_issued": "102283000"
     },
     "00934": {
       "name": "中信成長高股息",
@@ -2219,7 +2219,7 @@
       "establish_date": "2023-10-25",
       "manager": "張圭慧",
       "custodian": "第一商業銀行股份有限公司",
-      "units_issued": "502526000"
+      "units_issued": "509026000"
     },
     "00935": {
       "name": "野村臺灣新科技50",
@@ -2230,7 +2230,7 @@
       "establish_date": "2023-10-23",
       "manager": "林怡君",
       "custodian": "野村證券投資信託股份有限公司",
-      "units_issued": "977004000"
+      "units_issued": "979504000"
     },
     "00936": {
       "name": "台新永續高息中小型ETF",
@@ -2296,7 +2296,7 @@
       "establish_date": "2024-05-09",
       "manager": "吳朋鴻",
       "custodian": "臺灣土地銀行股份有限公司",
-      "units_issued": "52889000"
+      "units_issued": "53889000"
     },
     "00944": {
       "name": "野村趨勢動能高息",
@@ -2340,7 +2340,7 @@
       "establish_date": "2024-05-31",
       "manager": "黃鈺民",
       "custodian": "合作金庫商業銀行股份有限公司",
-      "units_issued": "376364000"
+      "units_issued": "377864000"
     },
     "00949": {
       "name": "復華日本龍頭",
@@ -2384,7 +2384,7 @@
       "establish_date": "2024-08-12",
       "manager": "李忠泰",
       "custodian": "臺灣集中保管結算所股份有限公司",
-      "units_issued": "4703675000"
+      "units_issued": "4689175000"
     },
     "00954": {
       "name": "中信日本半導體",
@@ -2428,7 +2428,7 @@
       "establish_date": "2024-10-04",
       "manager": "江明鴻",
       "custodian": "臺灣集中保管結算所股份有限公司",
-      "units_issued": "830011000"
+      "units_issued": "822511000"
     },
     "00962": {
       "name": "台新AI優息動能基金",
@@ -2439,7 +2439,7 @@
       "establish_date": "2024-11-27",
       "manager": "王惜安",
       "custodian": "兆豐國際商業銀行股份有限公司",
-      "units_issued": "232920000"
+      "units_issued": "231420000"
     },
     "00963": {
       "name": "中信全球高股息",
@@ -2461,7 +2461,7 @@
       "establish_date": "2024-11-05",
       "manager": "張苡琤",
       "custodian": "第一商業銀行股份有限公司",
-      "units_issued": "90624000"
+      "units_issued": "91124000"
     },
     "00965": {
       "name": "元大航太防衛科技",
@@ -2538,7 +2538,7 @@
       "establish_date": "2025-03-03",
       "manager": "蔡長琛",
       "custodian": "臺灣集中保管結算所股份有限公司",
-      "units_issued": "337328000"
+      "units_issued": "340328000"
     },
     "009804": {
       "name": "聯邦台灣精彩50ETF基金",
@@ -2560,7 +2560,7 @@
       "establish_date": "2025-05-02",
       "manager": "劉恆誌",
       "custodian": "臺灣土地銀行",
-      "units_issued": "616316000"
+      "units_issued": "615316000"
     },
     "009808": {
       "name": "華南永昌優選50",
@@ -2593,7 +2593,7 @@
       "establish_date": "2025-04-22",
       "manager": "游景德",
       "custodian": "華南商業銀行股份有限公司",
-      "units_issued": "792230000"
+      "units_issued": "797230000"
     },
     "009810": {
       "name": "玉山全球藍籌100",
@@ -2648,7 +2648,7 @@
       "establish_date": "2026-01-22",
       "manager": "葉菀婷",
       "custodian": "兆豐國際商業銀行股份有限公司",
-      "units_issued": "13904844000"
+      "units_issued": "13989844000"
     },
     "009817": {
       "name": "國泰大和日本不動產收息ETF基金",
@@ -2692,7 +2692,7 @@
       "establish_date": "2025-05-15",
       "manager": "陳釧瑤",
       "custodian": "彰化商業銀行股份有限公司",
-      "units_issued": "10176709000"
+      "units_issued": "10231209000"
     },
     "00981T": {
       "name": "平衡凱基雙核收息",
@@ -2703,7 +2703,7 @@
       "establish_date": "2025-09-06",
       "manager": "張意聆",
       "custodian": "第一商業銀行股份有限公司",
-      "units_issued": "256761000"
+      "units_issued": "260761000"
     },
     "009820": {
       "name": "元大納斯達克精選",
@@ -2714,7 +2714,7 @@
       "establish_date": "2026-04-15",
       "manager": "方雅婷",
       "custodian": "第一商業銀行股份有限公司",
-      "units_issued": "923202000"
+      "units_issued": "925702000"
     },
     "009821": {
       "name": "野村稀土關鍵資源",
@@ -2736,7 +2736,7 @@
       "establish_date": "2026-06-15",
       "manager": "李晉含",
       "custodian": "臺灣集中保管結算所股份有限公司",
-      "units_issued": "449347000"
+      "units_issued": "449847000"
     },
     "009826": {
       "name": "貝萊德世界股票",
@@ -2758,7 +2758,7 @@
       "establish_date": "2026-08-24",
       "manager": "楊立楷",
       "custodian": "臺灣集中保管結算所股份有限公司",
-      "units_issued": "220450000"
+      "units_issued": "221950000"
     },
     "009828": {
       "name": "中信台日韓PCB",
@@ -2791,7 +2791,7 @@
       "establish_date": "2025-05-13",
       "manager": "陳沅易",
       "custodian": "臺灣集中保管結算所股份有限公司",
-      "units_issued": "2204936000"
+      "units_issued": "2242436000"
     },
     "00982D": {
       "name": "主動富邦動態入息",
@@ -2802,7 +2802,7 @@
       "establish_date": "2025-09-30",
       "manager": "黃詩紋",
       "custodian": "第一商業銀行股份有限公司",
-      "units_issued": "76729000"
+      "units_issued": "72729000"
     },
     "00982T": {
       "name": "平衡兆豐台美動能",
@@ -2824,7 +2824,7 @@
       "establish_date": "2026-10-19",
       "manager": "江明鴻",
       "custodian": "臺灣集中保管結算所股份有限公司",
-      "units_issued": "142749000"
+      "units_issued": "147249000"
     },
     "009832": {
       "name": "兆豐美國黃金",
@@ -2835,7 +2835,7 @@
       "establish_date": "2026-10-16",
       "manager": "吳朋鴻",
       "custodian": "臺灣土地銀行",
-      "units_issued": "110666000"
+      "units_issued": "106666000"
     },
     "00983A": {
       "name": "主動中信ARK創新",
@@ -2857,7 +2857,7 @@
       "establish_date": "2025-09-30",
       "manager": "游陳達",
       "custodian": "第一商業銀行股份有限公司",
-      "units_issued": "99197000"
+      "units_issued": "98697000"
     },
     "00984A": {
       "name": "主動安聯台灣高息",
@@ -2868,7 +2868,7 @@
       "establish_date": "2025-07-03",
       "manager": "廖本隆",
       "custodian": "國泰世華商業銀行股份有限公司",
-      "units_issued": "690458000"
+      "units_issued": "694458000"
     },
     "00984D": {
       "name": "主動聯博全球非投",
@@ -2879,7 +2879,7 @@
       "establish_date": "2026-01-22",
       "manager": "陳俊憲",
       "custodian": "玉山商業銀行股份有限公司",
-      "units_issued": "1226057000"
+      "units_issued": "1222057000"
     },
     "00985A": {
       "name": "主動野村台灣50",
@@ -2890,7 +2890,7 @@
       "establish_date": "2025-07-08",
       "manager": "林浩詳",
       "custodian": "台北富邦商業銀行股份有限公司",
-      "units_issued": "1443789000"
+      "units_issued": "1448789000"
     },
     "00985B": {
       "name": "群益ESG投等債0-5",
@@ -2901,7 +2901,7 @@
       "establish_date": "2025-09-02",
       "manager": "呂汶芳",
       "custodian": "臺灣集中保管結算所股份有限公司",
-      "units_issued": "808501000"
+      "units_issued": "805001000"
     },
     "00986A": {
       "name": "主動台新龍頭成長",
@@ -2912,7 +2912,7 @@
       "establish_date": "2025-08-18",
       "manager": "蘇聖峰",
       "custodian": "臺灣中小企業銀行股份有限公司",
-      "units_issued": "37827000"
+      "units_issued": "36327000"
     },
     "00987A": {
       "name": "主動台新優勢成長",
@@ -2923,7 +2923,7 @@
       "establish_date": "2025-12-16",
       "manager": "魏永祥",
       "custodian": "彰化商業銀行股份有限公司",
-      "units_issued": "140643000"
+      "units_issued": "141143000"
     },
     "00988A": {
       "name": "主動統一全球創新",
@@ -2934,7 +2934,7 @@
       "establish_date": "2025-10-21",
       "manager": "陳意婷",
       "custodian": "元大商業銀行股份有限公司",
-      "units_issued": "3029437000"
+      "units_issued": "3032437000"
     },
     "00989A": {
       "name": "主動摩根美國科技",
@@ -2978,7 +2978,7 @@
       "establish_date": "2026-07-22",
       "manager": "楊貽甯",
       "custodian": "永豐商業銀行股份有限公司",
-      "units_issued": "401828000"
+      "units_issued": "398328000"
     },
     "00992A": {
       "name": "主動群益科技創新",
@@ -2989,7 +2989,7 @@
       "establish_date": "2025-12-16",
       "manager": "陳朝政",
       "custodian": "臺灣集中保管結算所股份有限公司",
-      "units_issued": "2797955000"
+      "units_issued": "2823455000"
     },
     "00993A": {
       "name": "主動安聯台灣",
@@ -3000,7 +3000,7 @@
       "establish_date": "2026-01-20",
       "manager": "郭勁甫",
       "custodian": "中國信託商業銀行",
-      "units_issued": "727591000"
+      "units_issued": "728591000"
     },
     "00994A": {
       "name": "主動第一金台股優",
@@ -3033,7 +3033,7 @@
       "establish_date": "2026-03-16",
       "manager": "王仲良",
       "custodian": "元大商業銀行",
-      "units_issued": "440399000"
+      "units_issued": "445899000"
     },
     "00997A": {
       "name": "主動群益美國增長",
@@ -3055,7 +3055,7 @@
       "establish_date": "2026-04-21",
       "manager": "游景德",
       "custodian": "第一商業銀行股份有限公司",
-      "units_issued": "1002517000"
+      "units_issued": "1005517000"
     }
   }
 }
