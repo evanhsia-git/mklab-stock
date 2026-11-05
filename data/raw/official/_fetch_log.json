@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-11-04T13:45:29.489849+08:00",
+  "fetched_at": "2026-11-05T14:01:01.106030+08:00",
   "sources": [
     {
       "prefix": "t187ap03_L",
@@ -29,36 +29,9 @@
         "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_mim"
       ],
       "mode": "當期增量批次，合併既有快照",
-      "status": "ok",
-      "parts": [
-        {
-          "url": "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_ci",
-          "rows": 75
-        },
-        {
-          "url": "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_basi",
-          "rows": 0
-        },
-        {
-          "url": "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_bd",
-          "rows": 0
-        },
-        {
-          "url": "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_fh",
-          "rows": 0
-        },
-        {
-          "url": "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_ins",
-          "rows": 0
-        },
-        {
-          "url": "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_mim",
-          "rows": 0
-        }
-      ],
-      "base_rows": 1052,
-      "rows": 1052,
-      "file": "t187ap06_L_latest.csv"
+      "status": "failed",
+      "error": "JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+      "kept": "t187ap06_L_latest.csv"
     },
     {
       "prefix": "t187ap07_L",
@@ -75,7 +48,7 @@
       "parts": [
         {
           "url": "https://openapi.twse.com.tw/v1/opendata/t187ap07_L_ci",
-          "rows": 75
+          "rows": 108
         },
         {
           "url": "https://openapi.twse.com.tw/v1/opendata/t187ap07_L_basi",
@@ -112,11 +85,11 @@
       "parts": [
         {
           "url": "https://openapi.twse.com.tw/v1/opendata/t187ap45_L",
-          "rows": 1240
+          "rows": 1241
         }
       ],
       "base_rows": 0,
-      "rows": 1240,
+      "rows": 1241,
       "file": "t187ap45_latest.json"
     },
     {
