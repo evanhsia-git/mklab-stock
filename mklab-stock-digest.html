@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-TW" data-theme="dark">
 <head>
 <base href="/mklab-stock/">
@@ -31,6 +31,17 @@
 </aside>
 <div class="drawer-mask" onclick="MKLAB.Drawer.close()" aria-hidden="true"></div>
 <main class="wrap">
+
+<section id="eventSection">
+<div class="section-title">大盤重大事件時間軸（加權指數 5 日累積漲跌 ±10%）</div>
+<div class="muted-small-top" id="evNote" style="margin-bottom:8px;">以台股加權指數（TWII）收盤計算：任一交易日與 5 個交易日前收盤相比，累積漲跌達 ±10% 即列為事件；連續同方向的觸發日合併為一個事件，取幅度最大的一天。</div>
+<div class="card">
+  <div id="evTimeline" style="overflow-x:auto;"></div>
+  <div class="muted-small-top" id="evLegend" style="margin-top:6px;"></div>
+</div>
+<div id="evList"></div>
+</section>
+
 <section id="digestSection">
 <div class="section-title">每日市場摘要 <a class="link rss-link" href="rss.xml">訂閱 RSS ↗</a></div>
 <div id="digestList"></div>
@@ -41,6 +52,21 @@
 <script src="assets/js/data-client.js"></script>
 <script src="assets/js/mklab-core.js"></script>
 <script>
+  // ===== 大盤重大事件時間軸 =====
+  // 門檻：5 個交易日累積漲跌幅 ≥ +10% 或 ≤ -10%。只用加權指數（大盤），不套用個股。
+  const EV_TH = 0.10;
+  const EV_WINDOW = 5;     // 累積區間（交易日）
+  const EV_FWD = 60;       // 事件後觀察期（交易日，約 3 個月，與股災後三個月漲跌的算法一致）
+  // 歷史參考事件（來自 TVBS 股災後三月涨跌圖的標示日期）；僅在資料範圍內才會畫在時間軸上
+  const KNOWN_EVENTS = [
+    { d: '2000-04-10', name: '網路泡沫' },
+    { d: '2008-05-19', name: '金融海嘯' },
+    { d: '2011-07-27', name: '歐債危機' },
+    { d: '2018-10-01', name: '中美貿易戰' },
+    { d: '2020-03-10', name: '新冠疫情' },
+    { d: '2022-03-28', name: '美元升息' },
+  ];
+
   function digestCard(d) {
     const m = d.market;
     const arrow = m ? (m.chg_pct >= 0 ? 'up' : 'down') : '';
@@ -54,9 +80,132 @@
     </div>`;
   }
 
+  // 取得大盤收盤序列：優先 data/twii-long.json（由 skills/data/fetch_twii_long.py 產生的長期資料），否則用近期的 twii_kdata.js
+  async function loadTwiiSeries() {
+    let rows = [];
+    let source = '';
+    const long = await MKLAB.data.json('twii-long').catch(() => null);
+    if (long && Array.isArray(long.rows) && long.rows.length) {
+      rows = long.rows.map(x => ({ d: String(x[0]), c: Number(x[4]) })).filter(x => isFinite(x.c));
+      source = '長期資料 data/twii-long.json（' + rows[0].d + ' ～ ' + rows[rows.length - 1].d + '）';
+    }
+    const kd = await MKLAB.data.jsData('twii_kdata.js', 'TWII_KDATA').catch(() => null);
+    if (kd && kd.length && (!rows.length || kd[0].time < rows[rows.length - 1].d)) {
+      // 近期資料併入（以日期去重，近期資料優先）
+      const map = new Map(rows.map(r => [r.d, r]));
+      kd.forEach(k => map.set(String(k.time), { d: String(k.time), c: Number(k.close) }));
+      rows = Array.from(map.values()).sort((a, b) => a.d < b.d ? -1 : a.d > b.d ? 1 : 0);
+      if (!source) source = '近期資料 data/twii_kdata.js（' + rows[0].d + ' ～ ' + rows[rows.length - 1].d + '）';
+    }
+    return { rows: rows.filter(r => r.c > 0), source: source };
+  }
+
+  // 偵測事件：5 日累積漲跌 ≥ 門檻；同方向且間隔 ≤ 5 日的觸發合併為一個事件，取幅度最大者
+  function detectEvents(rows) {
+    const raw = [];
+    for (let i = EV_WINDOW; i < rows.length; i++) {
+      const p = rows[i].c / rows[i - EV_WINDOW].c - 1;
+      if (Math.abs(p) >= EV_TH) raw.push({ i: i, p: p });
+    }
+    const out = [];
+    raw.forEach(e => {
+      const last = out[out.length - 1];
+      if (last && e.i - last.end <= EV_WINDOW && Math.sign(e.p) === Math.sign(last.p)) {
+        last.end = e.i;
+        if (Math.abs(e.p) > Math.abs(last.p)) { last.i = e.i; last.p = e.p; }
+      } else {
+        out.push({ i: e.i, end: e.i, p: e.p });
+      }
+    });
+    return out.map(ev => {
+      const r = rows[ev.i];
+      const fwdIdx = ev.i + EV_FWD;
+      return {
+        date: r.d,
+        from: rows[ev.i - EV_WINDOW].d,
+        pct: ev.p * 100,
+        type: ev.p > 0 ? 'up' : 'down',
+        close: r.c,
+        fwd: fwdIdx < rows.length ? (rows[fwdIdx].c / r.c - 1) * 100 : null,
+      };
+    });
+  }
+
+  function fmtPct(v) { return v == null ? '-' : (v > 0 ? '+' : '') + v.toFixed(2) + '%'; }
+
+  // 時間軸（水平線 + 事件點；上下交錯標註，避免重疊）
+  function drawTimeline(rows, events, known) {
+    const box = document.getElementById('evTimeline');
+    if (!rows.length) { box.innerHTML = '<p class="text-muted">尚無大盤資料</p>'; return; }
+    const W = 1000, H = 220, X0 = 50, X1 = 950, AXIS_Y = 120;
+    const t0 = Date.parse(rows[0].d), t1 = Date.parse(rows[rows.length - 1].d);
+    const xOf = d => X0 + (Date.parse(d) - t0) / Math.max(1, t1 - t0) * (X1 - X0);
+    let svg = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" style="min-width:720px;width:100%;display:block;" role="img" aria-label="大盤重大事件時間軸">`;
+    svg += `<line x1="${X0}" y1="${AXIS_Y}" x2="${X1}" y2="${AXIS_Y}" style="stroke:var(--border);stroke-width:3"/>`;
+    // 年份刻度
+    const startY = Number(rows[0].d.slice(0, 4)), endY = Number(rows[rows.length - 1].d.slice(0, 4));
+    for (let y = startY; y <= endY; y++) {
+      const d = y + '-01-01';
+      const x = Date.parse(d) < t0 ? X0 : xOf(d);
+      if (x < X0 - 1 || x > X1 + 1) continue;
+      svg += `<line x1="${x}" y1="${AXIS_Y - 5}" x2="${x}" y2="${AXIS_Y + 5}" style="stroke:var(--muted)"/>`;
+      svg += `<text x="${x}" y="${AXIS_Y + 20}" text-anchor="middle" style="fill:var(--muted);font-size:12px">${y}</text>`;
+    }
+    const marks = [];
+    known.forEach(k => { if (Date.parse(k.d) >= t0 && Date.parse(k.d) <= t1) marks.push({ x: xOf(k.d), d: k.d, label: k.name, color: 'var(--muted)', sub: '歷史參考' }); });
+    events.forEach(e => marks.push({ x: xOf(e.date), d: e.date, label: (e.pct > 0 ? '+' : '') + e.pct.toFixed(1) + '%', color: e.type === 'up' ? 'var(--up)' : 'var(--down)', sub: e.date }));
+    marks.sort((a, b) => a.x - b.x);
+    marks.forEach((m, i) => {
+      const up = i % 2 === 0;
+      const yStem = up ? 60 : 180;
+      const yText = up ? 40 : 200;
+      svg += `<line x1="${m.x}" y1="${AXIS_Y}" x2="${m.x}" y2="${yStem}" style="stroke:${m.color};stroke-dasharray:3 3;opacity:.7"/>`;
+      svg += `<circle cx="${m.x}" cy="${AXIS_Y}" r="6" style="fill:${m.color}"/>`;
+      svg += `<text x="${m.x}" y="${yText - 4}" text-anchor="middle" style="fill:${m.color};font-size:12px;font-weight:700">${m.label}</text>`;
+      svg += `<text x="${m.x}" y="${yText + 9}" text-anchor="middle" style="fill:var(--muted);font-size:10px">${m.sub}</text>`;
+    });
+    svg += '</svg>';
+    box.innerHTML = svg;
+    document.getElementById('evLegend').innerHTML =
+      '<span class="up">▲ 上漲事件</span>　<span class="down">▼ 下跌事件</span>　<span class="text-muted">灰色為歷史參考事件（僅在資料範圍內顯示）</span>';
+  }
+
+  function drawEventTable(events) {
+    const box = document.getElementById('evList');
+    if (!events.length) {
+      box.innerHTML = '<div class="card"><p class="text-muted">資料範圍內沒有 5 日累積漲跌 ±10% 的大盤事件。</p></div>';
+      return;
+    }
+    const rows = events.slice().reverse().map(e => `<tr>
+      <td>${e.date}</td>
+      <td>${e.from} → ${e.date}</td>
+      <td class="${e.type}"><b>${fmtPct(e.pct)}</b></td>
+      <td>${e.close.toLocaleString()}</td>
+      <td class="${e.fwd == null ? '' : (e.fwd >= 0 ? 'up' : 'down')}">${e.fwd == null ? '資料不足' : fmtPct(e.fwd)}</td>
+    </tr>`).join('');
+    box.innerHTML = `<div class="card"><h3>事件明細（共 ${events.length} 次，新到舊）</h3>
+      <div class="table-wrap"><table><thead><tr><th>事件日</th><th>5 日區間</th><th>5 日累積漲跌</th><th>事件日收盤</th><th>事件後約 3 個月（60 交易日）</th></tr></thead><tbody>${rows}</tbody></table></div>
+      <p class="muted-small-top">「事件後約 3 個月」為事件日收盤至 60 個交易日後收盤的漲跌，資料不足則不顯示。僅供研究參考，非投資建議。</p></div>`;
+  }
+
+  async function renderEvents() {
+    try {
+      const s = await loadTwiiSeries();
+      if (!s.rows.length) { document.getElementById('evTimeline').innerHTML = '<p class="text-muted">尚無大盤資料</p>'; return; }
+      document.getElementById('evNote').textContent += '　資料範圍：' + s.source + '。';
+      const events = detectEvents(s.rows);
+      drawTimeline(s.rows, events, KNOWN_EVENTS);
+      drawEventTable(events);
+    } catch (e) {
+      console.warn('[digest] timeline failed:', e);
+      document.getElementById('evTimeline').innerHTML = '<p class="text-muted">時間軸資料載入失敗</p>';
+    }
+  }
+
   window.addEventListener('DOMContentLoaded', async function () {
     MKLAB.initDrawer();
     MKLAB.Shell.mount({ active: 'digest' });
+    renderEvents();
     try {
       const idx = await MKLAB.data.json('digest/index');
       const dates = (idx && idx.dates) || [];

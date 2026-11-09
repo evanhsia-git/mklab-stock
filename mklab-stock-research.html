@@ -73,6 +73,19 @@
   </div>
 </div>
 
+<div class="card">
+  <h3>多股區間報酬率比較（K 線漲跌幅）</h3>
+  <div class="muted-small-top">以各期間起算日前一交易日收盤為 0%，最多比較 6 檔。</div>
+  <div class="row-input" style="margin:8px 0;">
+    <input id="rtAdd" placeholder="輸入代號加入比較，如 2330（Enter 加入）">
+    <button onclick="rtAdd()">加入</button>
+  </div>
+  <div class="symlist" id="rtChips"></div>
+  <div class="kline-toolbar" id="rtCtl" style="margin:8px 0;"></div>
+  <div id="rtChart" style="height:380px;"></div>
+  <div id="rtSummary"></div>
+</div>
+
 <div class="disclaimer">僅供參考，非投資建議</div>
 
 <script src="assets/js/data-client.js"></script>
@@ -247,6 +260,53 @@ function selectSym(sym) {
     MKLAB.data.jsData('twii_kdata.js', 'TWII_KDATA')
       .then(function () { loadKLine(); })
       .catch(function (e) { console.warn('[research] K 線資料載入失敗:', e); });
+  });
+</script>
+<script src="assets/js/mklab-returns.js"></script>
+<script>
+  // 多股區間報酬率比較（清單存在本機瀏覽器，與 compare 頁各自獨立）
+  const RT_KEY = 'mk_returns_research';
+  let RT = null;
+  function rtList() { try { return JSON.parse(localStorage.getItem(RT_KEY) || '[]'); } catch (e) { return []; } }
+  function rtSave(l) { try { localStorage.setItem(RT_KEY, JSON.stringify(l)); } catch (e) {} }
+  function rtAdd() {
+    const el = document.getElementById('rtAdd');
+    const sym = el.value.trim().toUpperCase();
+    el.value = '';
+    if (!sym) return;
+    const l = rtList();
+    if (l.includes(sym)) return;
+    if (l.length >= 6) { alert('最多同時比較 6 檔，請先移除一檔再加入'); return; }
+    if (!STOCKS[sym]) { alert('找不到股票代號 ' + sym); return; }
+    l.push(sym);
+    rtSave(l);
+    rtRender();
+  }
+  function rtRemove(sym) { rtSave(rtList().filter(x => x !== sym)); rtRender(); }
+  window.rtRemove = rtRemove;
+  window.rtAdd = rtAdd;
+  function rtRender() {
+    const l = rtList();
+    document.getElementById('rtChips').innerHTML = l.map(s => {
+      const nm = STOCKS[s] ? STOCKS[s].name : '';
+      return '<div>' + s + ' ' + (nm || '') + '<span class="cmp-rm" style="cursor:pointer;margin-left:4px;color:var(--muted);" onclick="rtRemove(\'' + s + '\')">✕</span></div>';
+    }).join('');
+    if (RT) RT.refresh();
+  }
+  window.addEventListener('DOMContentLoaded', function () {
+    RT = MKLAB.returns.mount({
+      controls: document.getElementById('rtCtl'),
+      chart: document.getElementById('rtChart'),
+      summary: document.getElementById('rtSummary'),
+      getItems: function () {
+        return rtList().map(function (s) { return { sym: s, name: STOCKS[s] ? STOCKS[s].name : '' }; });
+      },
+    });
+    // 股票清單載完後（STOCKS 有值）再渲染 chips 與圖表
+    const timer = setInterval(function () {
+      if (Object.keys(STOCKS).length) { clearInterval(timer); rtRender(); }
+    }, 200);
+    setTimeout(function () { clearInterval(timer); }, 15000);
   });
 </script>
 </body>

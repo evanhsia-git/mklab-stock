@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-TW" data-theme="dark">
 <head>
 <base href="/mklab-stock/">
@@ -16,6 +16,10 @@
   #cmpTable td:first-child, #cmpTable th:first-child { text-align: left; }
   #cmpTable td.best { color: var(--up); font-weight: 700; }
   .cmp-rm { cursor: pointer; color: var(--muted); margin-left: 4px; }
+  .cmp-opt { margin-right: 14px; white-space: nowrap; }
+  .cmp-opt input { margin-right: 4px; }
+  .ind-bar { display:inline-block; height:8px; background:var(--accent); border-radius:4px; vertical-align:middle; margin-right:6px; }
+  #cmpReturnsChart { height: 380px; }
 </style>
 </head>
 <body>
@@ -44,15 +48,29 @@
 </div>
 <div class="symlist" id="cmpChips"></div>
 <div id="metricChecks" class="muted-small-top" style="margin:8px 0;"></div>
-<div class="muted-small-top" style="margin:8px 0;">
-  <label><input type="checkbox" id="cmpHoldingsChk" onchange="toggleCmpHoldings(this.checked)"> 成份股比較表與重疊率（限 ETF，預設不顯示）</label>
-</div>
 <div class="table-wrap"><table id="cmpTable"></table></div>
-<div id="cmpHoldings"></div>
 <p class="muted-small-top" id="cmpEmpty">尚未加入任何股票，輸入代號開始比較。</p>
+
+<div class="section-title">區間報酬率比較（K 線漲跌幅）</div>
+<div class="muted-small-top">以各期間起算日前一交易日收盤為 0%，比較清單內（最多 6 檔）個股的累積漲跌幅。</div>
+<div class="kline-toolbar" id="cmpRetCtl" style="margin:8px 0;"></div>
+<div id="cmpReturnsChart"></div>
+<div id="cmpReturnsSummary"></div>
+
+<div class="section-title">ETF 成份股比較</div>
+<div class="muted-small-top" style="margin:8px 0;">
+  <label><input type="checkbox" id="cmpHoldingsChk" onchange="toggleCmpHoldings(this.checked)"> 開啟 ETF 成份股比較（預設不顯示，僅比較清單中的 ETF）</label>
+  <span id="cmpHoldN" style="margin-left:14px;">
+    <label class="cmp-opt"><input type="radio" name="holdN" value="5" onchange="setHoldN(5)"> 前 5 大</label>
+    <label class="cmp-opt"><input type="radio" name="holdN" value="10" onchange="setHoldN(10)"> 前 10 大</label>
+  </span>
+</div>
+<div id="cmpHoldings"></div>
 
 <script src="assets/js/data-client.js"></script>
 <script src="assets/js/mklab-core.js"></script>
+<script src="vendor/echarts.min.js"></script>
+<script src="assets/js/mklab-returns.js"></script>
 <script>
   const CMP_KEY = 'mk_compare';
   const METRICS = [
@@ -62,7 +80,7 @@
     { key: 'pb',    label: 'PB',      fmt: r => r.pb != null ? Number(r.pb).toFixed(2) : '-', better: 'min' },
     { key: 'roe',   label: 'ROE',     fmt: r => r.roe != null ? Number(r.roe).toFixed(2) : '-', better: 'max' },
     { key: 'roa',   label: 'ROA',     fmt: r => r.roa != null ? Number(r.roa).toFixed(2) : '-', better: 'max' },
-    { key: 'eps',   label: 'EPS(年化)',     fmt: r => r.eps != null ? Number(r.eps).toFixed(2) : '-', better: 'max' },
+    { key: 'eps',   label: 'EPS(年化)', fmt: r => r.eps != null ? Number(r.eps).toFixed(2) : '-', better: 'max' },
     { key: 'div',   label: '殖利率%', fmt: r => r.div != null ? Number(r.div).toFixed(2) + '%' : '-', better: 'max' },
     { key: 'market_cap', label: '市值(億)', fmt: r => r.market_cap != null ? (Number(r.market_cap) / 1e8).toFixed(1) : '-', better: 'max' },
     { key: 'chg_1m', label: '月漲跌%', fmt: r => MKLAB.cellPct(r.chg_1m), better: 'max' },
@@ -70,7 +88,7 @@
     { key: 'pos52w_level', label: '52週位階(1-5)', fmt: r => r.pos52w_level != null ? r.pos52w_level : '-', better: 'max' },
     { key: 'ind',   label: '產業',    fmt: r => r.ind || '-', better: null },
   ];
-  // 勾選欄位：使用者勾選要比較的指標（選擇會記在本機瀏覽器），預設勾選常用的前八項
+  // 勾選欄位：使用者勾選要比較的指標（記在本機瀏覽器），預設勾選常用的前八項
   const METRIC_KEY = 'mklab-cmp-metrics';
   const DEFAULT_METRICS = ['price','chg','pe','pb','roe','div','chg_1y','market_cap'];
   function getSelMetrics() {
@@ -93,6 +111,7 @@
   window.toggleMetric = toggleMetric;
 
   let ALL = [];
+  let IND = new Map();
 
   function getList() { try { return JSON.parse(localStorage.getItem(CMP_KEY) || '[]'); } catch (e) { return []; } }
   function saveList(list) { try { localStorage.setItem(CMP_KEY, JSON.stringify(list)); } catch (e) {} }
@@ -116,6 +135,7 @@
     saveList(getList().filter(s => s !== sym));
     renderAll();
   }
+  window.removeCompare = removeCompare;
 
   function renderChips() {
     const list = getList();
@@ -133,7 +153,7 @@
     let html = '<thead><tr><th>指標</th>' + rows.map(r => `<th>${r.sym}<br><small>${r.name}</small></th>`).join('') + '</tr></thead><tbody>';
     const selMetrics = getSelMetrics();
     METRICS.filter(m => selMetrics.includes(m.key)).forEach(m => {
-      const vals = rows.map(r => r[m.key === 'market_cap' ? 'market_cap' : m.key]);
+      const vals = rows.map(r => r[m.key]);
       let bestIdx = -1;
       if (m.better === 'max') { let best = -Infinity; vals.forEach((v, i) => { if (v != null && v > best) { best = v; bestIdx = i; } }); }
       if (m.better === 'min') { let best = Infinity; vals.forEach((v, i) => { if (v != null && v < best) { best = v; bestIdx = i; } }); }
@@ -143,15 +163,29 @@
     document.getElementById('cmpTable').innerHTML = html;
   }
 
-  // ===== 成份股比較（限 ETF；預設不顯示）=====
-  // 資料來自 data/etf-holdings.json（官方投信為主、CMoney 備援），內容為前 10 大成份股。
+  // ===== 區間報酬率比較（清單內股票，最多 6 檔；清單最多 4 檔） =====
+  let RET = null;
+  function renderReturns() {
+    if (!RET) return;
+    RET.refresh();
+  }
+
+  // ===== ETF 成份股比較（限 ETF；預設不顯示）=====
+  // 資料來自 data/etf-holdings.json（官方投信為主、CMoney 備援）。
+  // 比較前 N 大（N = 5 或 10）；現金、期貨等非股票項目不納入重疊與產業計算。
   // 重疊率兩種算法：
   //   檔數重疊率 = 交集檔數 / 聯集檔數
   //   權重重疊率 = 共同成份股逐檔取「較小權重」後加總（反映實質曝險重疊）
+  // 產業別比率 = 各產業權重 ÷ 該 ETF 前 N 大（已排除現金/期貨）權重合計
   const CMP_HOLD_KEY = 'mklab-cmp-holdings';
+  const HOLD_N_KEY = 'mklab-cmp-holdN';
+  const NOISE = /CASH|現金|期貨|TX|權證|^C_/i;
   let HOLD = null;
   let showHoldings = false;
+  let holdN = 10;
   try { showHoldings = localStorage.getItem(CMP_HOLD_KEY) === '1'; } catch (e) {}
+  try { holdN = Number(localStorage.getItem(HOLD_N_KEY)) === 5 ? 5 : 10; } catch (e) {}
+
   function toggleCmpHoldings(on) {
     showHoldings = !!on;
     try { localStorage.setItem(CMP_HOLD_KEY, on ? '1' : '0'); } catch (e) {}
@@ -159,17 +193,32 @@
   }
   window.toggleCmpHoldings = toggleCmpHoldings;
 
+  function setHoldN(n) {
+    holdN = n === 5 ? 5 : 10;
+    try { localStorage.setItem(HOLD_N_KEY, String(holdN)); } catch (e) {}
+    renderHoldings();
+  }
+  window.setHoldN = setHoldN;
+
   async function ensureHoldings() {
     if (!HOLD) {
       try { HOLD = await MKLAB.data.json('etf-holdings'); } catch (e) { HOLD = { holdings: {} }; }
     }
     return HOLD;
   }
+  function isNoise(code, name) { return NOISE.test(String(code)) || NOISE.test(String(name || '')); }
+  function indOf(code) {
+    if (/\s[A-Z]{2}$/.test(code)) return '海外股票';
+    if (/^\d{4,6}[A-Z]?$/.test(code)) return IND.get(code) || '未分類';
+    return '其他';
+  }
   function hset(sym) {
     const h = HOLD && HOLD.holdings && HOLD.holdings[sym];
     if (!h || !h.items || !h.items.length) return null;
-    return { src: h.src || '', asof: h.asof || '', n: h.n || h.items.length,
-      items: h.items.map(([c, n, w]) => ({ c: c, n: n, w: w == null ? null : Number(w) })) };
+    const items = h.items.filter(x => !isNoise(x[0], x[1])).slice(0, holdN)
+      .map(([c, n, w]) => ({ c: String(c), n: n, w: w == null ? null : Number(w) }));
+    if (!items.length) return null;
+    return { name: h.name || '', src: h.src || '', asof: h.asof || '', n: h.n || h.items.length, items: items };
   }
   function overlapOf(a, b) {
     const mb = new Map(b.items.map(x => [x.c, x]));
@@ -181,30 +230,56 @@
     const union = a.items.length + b.items.length - inter;
     return { inter: inter, union: union, jac: union ? (inter / union) * 100 : 0, wOver: wInter };
   }
+  function industryAlloc(h) {
+    const m = new Map();
+    let tot = 0;
+    h.items.forEach(x => { const k = indOf(x.c); const w = x.w || 0; m.set(k, (m.get(k) || 0) + w); tot += w; });
+    return { map: m, tot: tot };
+  }
 
-  async function renderHoldings() {
+  function renderHoldings() {
     const box = document.getElementById('cmpHoldings');
     if (!box) return;
     const chk = document.getElementById('cmpHoldingsChk');
     if (chk) chk.checked = showHoldings;
+    document.querySelectorAll('input[name="holdN"]').forEach(r => { r.checked = Number(r.value) === holdN; });
+    document.getElementById('cmpHoldN').style.display = showHoldings ? 'inline' : 'none';
     if (!showHoldings) { box.innerHTML = ''; return; }
-    await ensureHoldings();
+    ensureHoldings().then(() => drawHoldings(box));
+  }
+
+  function drawHoldings(box) {
     const picks = getList().map(s => ({ s: s, h: hset(s) })).filter(x => x.h);
-    if (picks.length < 2) {
-      box.innerHTML = '<p class="muted-small-top">成份股比較需要至少 2 檔 ETF（目前清單中可取得成份股的有 ' + picks.length +
-        ' 檔）。請加入 ETF 代號，例如 0050、00878、009816。</p>';
+    if (!picks.length) {
+      box.innerHTML = '<p class="muted-small-top">清單中的股票沒有 ETF 成份股資料（僅 ETF 有成份股）。請加入 ETF 代號，例如 0050、00878、009816。</p>';
       return;
     }
-    let html = '<div class="section-title">成份股比較（前 10 大）</div>';
-    html += '<div class="table-wrap"><table><thead><tr><th>ETF 組合</th><th>共同成份股</th><th>檔數重疊率</th><th>權重重疊率</th></tr></thead><tbody>';
-    for (let i = 0; i < picks.length; i++) {
-      for (let j = i + 1; j < picks.length; j++) {
-        const o = overlapOf(picks[i].h, picks[j].h);
-        html += '<tr><td>' + picks[i].s + ' vs ' + picks[j].s + '</td><td>' + o.inter + ' 檔</td><td>' +
-          o.jac.toFixed(1) + '%</td><td>' + o.wOver.toFixed(2) + '%</td></tr>';
-      }
-    }
+    let html = '<div class="muted-small-top" style="margin-bottom:8px;">目前比較：前 ' + holdN + ' 大成份股（不含現金與期貨）</div>';
+
+    // 1) 前 N 大概況
+    html += '<div class="table-wrap"><table><thead><tr><th>ETF</th><th>名稱</th><th>成份股總數</th><th>前 ' + holdN + ' 大合計權重</th><th>資料來源</th></tr></thead><tbody>';
+    picks.forEach(p => {
+      html += '<tr><td>' + p.s + '</td><td>' + (p.h.name || ALL.find(r => r.sym === p.s)?.name || '') + '</td><td>' + p.h.n + ' 檔</td><td>' +
+        industryAlloc(p.h).tot.toFixed(2) + '%</td><td>' + (p.h.src || '-') + '</td></tr>';
+    });
     html += '</tbody></table></div>';
+
+    if (picks.length < 2) {
+      html += '<p class="muted-small-top">重疊率比較需要至少 2 檔 ETF（目前有成份股資料的有 1 檔）。</p>';
+    } else {
+      // 2) 兩兩重疊率
+      html += '<div class="table-wrap"><table><thead><tr><th>ETF 組合</th><th>共同成份股</th><th>檔數重疊率</th><th>權重重疊率</th></tr></thead><tbody>';
+      for (let i = 0; i < picks.length; i++) {
+        for (let j = i + 1; j < picks.length; j++) {
+          const o = overlapOf(picks[i].h, picks[j].h);
+          html += '<tr><td>' + picks[i].s + ' vs ' + picks[j].s + '</td><td>' + o.inter + ' 檔</td><td>' +
+            o.jac.toFixed(1) + '%</td><td>' + o.wOver.toFixed(2) + '%</td></tr>';
+        }
+      }
+      html += '</tbody></table></div>';
+    }
+
+    // 3) 成份股佔比矩陣
     const unionMap = new Map();
     picks.forEach(p => p.h.items.forEach(x => {
       if (!unionMap.has(x.c)) unionMap.set(x.c, { name: x.n, w: {} });
@@ -216,33 +291,66 @@
       return mb - ma;
     });
     html += '<div class="table-wrap"><table><thead><tr><th>成份股</th>' +
-      picks.map(p => '<th>' + p.s + '</th>').join('') + '<th>共同持有</th></tr></thead><tbody>';
-    rows2.forEach(function (entry) {
+      picks.map(p => '<th>' + p.s + '<br><small>佔比</small></th>').join('') + '<th>共同持有</th></tr></thead><tbody>';
+    rows2.forEach(entry => {
       const code = entry[0], info = entry[1];
-      const shared = picks.every(p => info.w[p.s] != null);
+      const shared = picks.length > 1 && picks.every(p => info.w[p.s] != null);
       html += '<tr><td>' + code + ' ' + info.name + '</td>' +
-        picks.map(p => '<td>' + (info.w[p.s] == null ? '-' : info.w[p.s] + '%') + '</td>').join('') +
+        picks.map(p => '<td>' + (info.w[p.s] == null ? '-' : info.w[p.s].toFixed(2) + '%') + '</td>').join('') +
         '<td>' + (shared ? '✓' : '') + '</td></tr>';
     });
     html += '</tbody></table></div>';
-    html += '<p class="muted-small-top">來源：' + picks.map(p => p.s + '（' + p.h.src + '，共 ' + p.h.n + ' 檔）').join('、') +
-      '。重疊率以前 10 大成份股計算；權重重疊率為共同成份股逐檔取較小權重後加總，僅代表前 10 大範圍的重疊程度。</p>';
+
+    // 4) 產業別比率
+    const allInd = new Map();
+    const allocs = picks.map(p => industryAlloc(p.h));
+    allocs.forEach(a => a.map.forEach((v, k) => allInd.set(k, Math.max(allInd.get(k) || 0, v))));
+    const indRows = Array.from(allInd.keys()).sort((a, b) => allInd.get(b) - allInd.get(a));
+    html += '<div class="section-title" style="margin-top:20px;">產業別比率（占前 ' + holdN + ' 大權重%）</div>';
+    html += '<div class="table-wrap"><table><thead><tr><th>產業</th>' +
+      picks.map(p => '<th>' + p.s + '</th>').join('') + '</tr></thead><tbody>';
+    indRows.forEach(k => {
+      html += '<tr><td>' + k + '</td>' + allocs.map(a => {
+        const v = a.tot ? (a.map.get(k) || 0) / a.tot * 100 : 0;
+        return '<td><span class="ind-bar" style="width:' + Math.round(v * 0.8) + 'px"></span>' + v.toFixed(1) + '%</td>';
+      }).join('') + '</tr>';
+    });
+    html += '</tbody></table></div>';
+
+    html += '<p class="muted-small-top">來源：' + picks.map(p => p.s + '（' + (p.h.src || '-') + '，成份股共 ' + p.h.n + ' 檔' + (p.h.asof ? '，資料日 ' + p.h.asof : '') + '）').join('、') +
+      '。產業別取自個股總表的產業欄位；海外成份股歸為「海外股票」，無對應產業的台股歸為「未分類」。重疊率僅代表前 ' + holdN + ' 大範圍內的重疊程度。</p>';
     box.innerHTML = html;
   }
 
-  function renderAll() { renderMetricChecks(); renderChips(); renderTable(); renderHoldings(); }
+  function renderAll() {
+    renderMetricChecks();
+    renderChips();
+    renderTable();
+    renderReturns();
+    renderHoldings();
+  }
 
   window.addEventListener('DOMContentLoaded', async function () {
     MKLAB.initDrawer();
     MKLAB.Shell.mount({ active: 'compare' });
     document.getElementById('cmpInput').addEventListener('keydown', e => { if (e.key === 'Enter') addCompare(); });
+    RET = MKLAB.returns.mount({
+      controls: document.getElementById('cmpRetCtl'),
+      chart: document.getElementById('cmpReturnsChart'),
+      summary: document.getElementById('cmpReturnsSummary'),
+      getItems: () => getList().map(s => {
+        const r = ALL.find(x => String(x.sym) === s);
+        return { sym: s, name: r ? r.name : '' };
+      }),
+    });
     try {
       ALL = await MKLAB.data.stocks();
+      IND = new Map(ALL.map(r => [String(r.sym), r.ind]));
       // 支援網址帶參數 ?syms=2330,2317 直接開比較
       const qs = new URLSearchParams(location.search);
       const syms = qs.get('syms');
       if (syms) {
-        const list = syms.split(',').map(s => s.trim()).filter(Boolean).slice(0, 4);
+        const list = syms.split(',').map(s => s.trim().toUpperCase()).filter(Boolean).slice(0, 4);
         if (list.length) saveList(list);
       }
       renderAll();

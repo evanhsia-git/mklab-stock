@@ -959,7 +959,7 @@
     note.push('# 僅供研究與教育參考，不構成任何投資建議');
     const lines = [...note];
     sections.forEach(s => {
-      const cols = s.ids.map(id => Object.assign({id:id}, COLUMNS[id] || {label:id, fmt:r=>r[id]}));
+      const cols = s.cols ? s.cols : s.ids.map(id => Object.assign({id:id}, COLUMNS[id] || {label:id, fmt:r=>r[id]}));
       lines.push('');
       lines.push('# 區塊：' + s.title + '（' + s.rows.length + ' 檔）');
       lines.push(cols.map(c => esc(c.label)).join(','));
@@ -986,45 +986,115 @@
     if (a && typeof a.fn === 'function') a.fn();
   };
 
-  // 全站共用：台股／美股資料庫 CSV（各一檔；每檔內含「個股」與「ETF」兩個區塊）
+  // 全站共用：資料匯出（四個獨立按鈕：台股個股／台股 ETF／美股個股／美股 ETF）
+  // 2026-11-09：拆成四個按鈕；台股 ETF 檔內含「前10大成份股」欄位與完整成份股明細區塊
   const TW_IDS = ['sym','name','ind','price','chg','chg_1m','chg_1y','pos52w_level','pe','pb','roe','roa','div','market_cap','rsi14','ma5','ma20'];
   const TW_SRC = 'TWSE OpenAPI（上市個股與 ETF）+ TPEx OpenAPI（僅上櫃 ETF）；ROE/ROA/EPS 為 TWSE 官方財報累計年化（EPS 欄位為年化 EPS）；RSI/MA/月漲跌/年漲跌/52週位階由歷史收盤價計算';
-  MKLAB.registerExport('下載台股資料庫 CSV（個股＋ETF 兩區塊）', async function(){
+  const TW_SRC_URL = 'https://openapi.twse.com.tw/ ， https://www.tpex.org.tw/openapi/';
+  const TW_ETF_EXTRA = ['issuer','holdings10'];
+  const US_STOCK_IDS = ['sym','name','price','chg','pe','pb','roe','div','market_cap','sector','industry','currency'];
+  const US_ETF_IDS = ['sym','name','price','chg','expense_ratio','yield','net_assets','ytd_return','category','currency'];
+  const TODAY = () => new Date().toISOString().slice(0,10);
+
+  // 由 COLUMNS 取得欄位（有中文標籤與格式化函式者沿用）
+  function colsFrom(ids){
+    return ids.map(id => { const c = COLUMNS[id] || {}; return { id: id, label: c.label || id, fmt: c.fmt }; });
+  }
+
+  // 台股：ETF 判斷優先用 stocks.json 的 security_type（最可靠），沒有時才退回 etf-classified 名單
+  async function twLoad(){
     const rows = await MKLAB.data.stocks();
-    const meta = await MKLAB.data.json('stocks').catch(() => null);
     const cls = await MKLAB.data.json('etf-classified').catch(() => null);
     const etfSet = new Set(((cls && cls.etfs) || []).map(e => e.sym));
-    const etfRows = rows.filter(r => etfSet.has(r.sym));
-    const stockRows = rows.filter(r => !etfSet.has(r.sym));
-    exportSections([
-      { title: '個股', rows: stockRows, ids: TW_IDS },
-      { title: 'ETF', rows: etfRows, ids: TW_IDS },
-    ], {
-      market: '台股',
-      filename: 'mklab-stock-TW-' + new Date().toISOString().slice(0,10),
-      dbUpdated: (meta && meta.meta && meta.meta.as_of) || '未知',
+    const meta = await MKLAB.data.json('stocks').catch(() => null);
+    const isEtf = r => r.security_type ? r.security_type === 'etf' : etfSet.has(String(r.sym));
+    return {
+      stock: rows.filter(r => !isEtf(r)),
+      etf: rows.filter(isEtf),
+      asof: (meta && meta.meta && meta.meta.as_of) || '未知',
+      total: rows.length,
+    };
+  }
+  function twOpts(kind, count, t, extra){
+    return {
+      market: '台股 ' + kind,
+      filename: 'mklab-stock-TW-' + kind + '-' + TODAY(),
+      dbUpdated: t.asof,
+      dbTotalCount: t.total,
+      dbStockCount: t.stock.length,
+      dbEtfCount: t.etf.length,
       source: TW_SRC,
-      sourceUrl: 'https://openapi.twse.com.tw/ ， https://www.tpex.org.tw/openapi/',
-      method: '個股區塊 ' + stockRows.length + ' 檔、ETF 區塊 ' + etfRows.length + ' 檔；已排除 U 尾期貨型與認購權證',
-    });
-  });
-  MKLAB.registerExport('下載美股資料庫 CSV（個股＋ETF 兩區塊）', async function(){
-    const us = await MKLAB.data.json('us/us-stocks').catch(() => null);
-    const ue = await MKLAB.data.json('us/us-etfs').catch(() => null);
-    const sRows = (us && us.stocks) || [];
-    const eRows = (ue && ue.etfs) || [];
+      sourceUrl: TW_SRC_URL,
+      method: kind + ' ' + count + ' 檔；已排除 U 尾期貨型與認購權證' + (extra || ''),
+    };
+  }
+
+  MKLAB.registerExport('下載台股 CSV（個股）', async function(){
+    const t = await twLoad();
     exportSections([
-      { title: '個股（市值前30大）', rows: sRows, ids: ['sym','name','price','chg','pe','pb','roe','div','market_cap','sector','industry','currency'] },
-      { title: 'ETF（市值前30大）', rows: eRows, ids: ['sym','name','price','chg','expense_ratio','yield','net_assets','ytd_return','category','currency'] },
-    ], {
-      market: '美股',
-      filename: 'mklab-stock-US-' + new Date().toISOString().slice(0,10),
-      dbUpdated: (us && us.meta && us.meta.as_of) || '未知',
+      { title: '個股', rows: t.stock, ids: TW_IDS },
+    ], twOpts('個股', t.stock.length, t));
+  });
+
+  MKLAB.registerExport('下載台股 CSV（ETF）', async function(){
+    const t = await twLoad();
+    const hold = await MKLAB.data.json('etf-holdings').catch(() => null);
+    const H = (hold && hold.holdings) || {};
+    // ETF 區塊：每檔加上前 10 大成份股摘要與來源
+    const etfRows = t.etf.map(e => {
+      const h = H[e.sym];
+      const items = (h && h.items) || [];
+      const summary = items.slice(0, 10).map(it => it[0] + ' ' + it[1] + '(' + (it[2] == null ? '-' : it[2]) + '%)').join('；');
+      return Object.assign({}, e, { holdings10: summary || '-', holdings_src: h ? (h.src || '') : '' });
+    });
+    // 成份股明細區塊：每檔 ETF 的全部已存成份股（官方直出者可達 50 檔）
+    const detail = [];
+    t.etf.forEach(e => {
+      const h = H[e.sym];
+      if (!h || !h.items) return;
+      h.items.forEach((it, i) => detail.push({
+        etf: e.sym, etf_name: e.name, rank: i + 1, code: it[0], stock_name: it[1],
+        weight: it[2], src: h.src || '', asof: h.asof || '', total_n: h.n,
+      }));
+    });
+    const holdCount = etfRows.filter(r => r.holdings_src).length;
+    exportSections([
+      { title: 'ETF', rows: etfRows, cols: colsFrom(TW_IDS).concat(colsFrom(TW_ETF_EXTRA)).concat([{ id: 'holdings_src', label: '成份股來源' }]) },
+      { title: 'ETF 成份股明細', rows: detail, cols: [
+        { id: 'etf', label: 'ETF代號' }, { id: 'etf_name', label: 'ETF名稱' }, { id: 'rank', label: '排名' },
+        { id: 'code', label: '成份股代號' }, { id: 'stock_name', label: '成份股名稱' }, { id: 'weight', label: '權重(%)' },
+        { id: 'src', label: '資料來源' }, { id: 'asof', label: '持股資料日' }, { id: 'total_n', label: '成份股總數' },
+      ] },
+    ], twOpts('ETF', etfRows.length, t, '；含成份股的 ETF ' + holdCount + ' 檔，成份股明細 ' + detail.length + ' 筆'));
+  });
+
+  // 美股：個股與 ETF 各自獨立匯出
+  MKLAB.registerExport('下載美股 CSV（個股）', async function(){
+    const us = await MKLAB.data.json('us/us-stocks').catch(() => null);
+    const rows = (us && us.stocks) || [];
+    exportSections([
+      { title: '個股（市值前30大）', rows: rows, ids: US_STOCK_IDS },
+    ], usOpts('個股', rows.length, us, 'us-stocks'));
+  });
+
+  MKLAB.registerExport('下載美股 CSV（ETF）', async function(){
+    const ue = await MKLAB.data.json('us/us-etfs').catch(() => null);
+    const rows = (ue && ue.etfs) || [];
+    exportSections([
+      { title: 'ETF（規模前30大）', rows: rows, ids: US_ETF_IDS },
+    ], usOpts('ETF', rows.length, ue, 'us-etfs'));
+  });
+
+  function usOpts(kind, count, doc){
+    return {
+      market: '美股 ' + kind,
+      filename: 'mklab-stock-US-' + kind + '-' + TODAY(),
+      dbUpdated: (doc && doc.meta && doc.meta.as_of) || '未知',
       source: 'Yahoo Finance（yfinance）；非官方交易所資料；候選池取自 Wikipedia 四大指數成分股',
       sourceUrl: 'https://finance.yahoo.com/',
-      method: '個股 ' + sRows.length + ' 檔、ETF ' + eRows.length + ' 檔（市值／規模排序取前 30）',
-    });
-  });
+      method: kind + ' ' + count + ' 檔（市值／規模排序取前 30）',
+    };
+  }
 
   global.MKLAB.Drawer = Drawer;
   global.MKLAB.Watch = Watch;

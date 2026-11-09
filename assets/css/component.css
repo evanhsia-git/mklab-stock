@@ -212,3 +212,19 @@ html {
 .colpick-actions button { font-size: 12px; padding: 4px 10px; border: 1px solid var(--border); border-radius: 6px; background: transparent; color: var(--fg); cursor: pointer; }
 
 .meta.text-xs { font-size: 11px; }
+
+/* ===== 超連結配色（2026-11-09）=====
+ * 原本一般 <a> 沒有任何樣式，會落到瀏覽器預設的深藍色（#0000EE），在深色主題下很不協調。
+ * 這裡為深色／淺色主題各定義一組連結色，並統一 hover / visited 狀態。 */
+:root { --link: #7dd3fc; --link-hover: #bae6fd; --link-visited: #c4b5fd; }
+[data-theme="light"] { --link: #1d4ed8; --link-hover: #1e3a8a; --link-visited: #6d28d9; }
+a { color: var(--link); text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; }
+a:visited { color: var(--link-visited); }
+a:hover { color: var(--link-hover); }
+a.link, .drawer a, .footer .link, .rss-link { color: var(--link); text-decoration: none; }
+a.link:hover, .drawer a:hover, .footer .link:hover, .rss-link:hover { color: var(--link-hover); text-decoration: underline; }
+/* 導覽、品牌、按鈕類連結維持原本的樣式，不被上面的全域連結色覆蓋 */
+.nav a, .brand, .btn, .pager a { text-decoration: none; }
+.nav a { color: var(--ink); }
+.nav a.active { color: #fff; }
+.brand { color: var(--ink); }
