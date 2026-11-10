@@ -198,8 +198,20 @@ _fd2 = open('skills/data/fetch_data.py', encoding='utf-8').read()
 check("財報：fetch_data 不再呼叫已失效的 t187ap06_L 營益分析（舊版殘值來源）",
       'fetch_profitability' not in _fd2 and 'TWSE_PROFITABILITY' not in _fd2)
 _dc = open('assets/js/data-client.js', encoding='utf-8').read()
-check("EPS 口徑：前端只用 eps_off，無官方值時不拿單季 eps 冒充",
-      's.eps = s.eps_off != null ? s.eps_off : null;' in _dc)
+# EPS/ROE/ROA 口徑：顯示值由資料管線決定，前端只負責呈現。
+# 2026-11-10 修正此檢查：原本是比對 data-client.js 內有沒有那行覆寫字串，但那段程式的
+# 條件寫成 `name === 'stocks'`，而 json() 會先把 name 補成 'stocks.json' → 條件永遠不成立
+# （死碼、從未生效）。等於在測一段不會執行的程式碼，還給了假的安全感。
+# 而且實測直接把它「修好」啟用會改掉 66 檔的 roa（weekly-roe job 以 yfinance 覆寫部分列），
+# 屬行為變更。故改成兩個真正的斷言：
+#   ① 後端管線確實持有該規則（security_type=='stock' 才處理，且 eps 只用官方年化值）
+#   ② 前端不得自行再算一次（負向斷言，防止有人重新接上而與管線漂移）
+_fin = open('skills/data/import_official_fundamentals.py', encoding='utf-8').read()
+check("EPS 口徑：後端管線以官方年化 eps 覆蓋，且只處理一般股票",
+      'row["eps"] = row.get("eps_off")' in _fin
+      and 'if row.get("security_type") == "stock":' in _fin)
+check("EPS 口徑：前端不得自行改寫 eps/roe/roa（避免與管線口徑漂移）",
+      '.eps_off != null' not in _dc and 's.roe = s.roe_off' not in _dc and 's.roa = s.roa_off' not in _dc)
 import importlib.util as _iu
 _spec = _iu.spec_from_file_location('build_digest', 'skills/data/build_digest.py'); _bd = _iu.module_from_spec(_spec); _spec.loader.exec_module(_bd)
 _e1 = _bd.effective_fundamentals({'eps': 22.08, 'eps_off': 98.66, 'roe': 31.7, 'roe_off': 39.77})

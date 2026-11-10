@@ -437,7 +437,12 @@
       document.documentElement.setAttribute('data-theme', darkOn?'dark':'light');
       const sw = document.getElementById('swDark'); if(sw) sw.classList.toggle('on', darkOn);
       // 動態更新「最後更新」日期：讀 stocks.json 的 meta.as_of
-      fetch('data/stocks.json').then(r=>r.ok?r.json():null).then(d=>{
+      // 走 MKLAB.data（共用快取 ＋ 進行中請求去重）。原本直接用原生 fetch 會繞過快取，
+      // 使同一個 stocks.json 在同一頁被多抓一次（實測 drawer 初始化與 open 各抓一次）。
+      const _asofReq = (global.MKLAB && global.MKLAB.data)
+        ? global.MKLAB.data.json('stocks')
+        : fetch('data/stocks.json').then(r=>r.ok?r.json():null);
+      _asofReq.then(d=>{
         const asof = d && d.meta && d.meta.as_of;
         if(asof){
           DRAWER_CFG.system.updated = asof;
@@ -456,8 +461,11 @@
       const mask = document.querySelector('.drawer-mask'); if(mask) mask.classList.add('open');
       // index 首頁有自選，開抽屜時刷新
       if(typeof renderWatch === 'function') renderWatch();
-      // 刷新 System 區塊的「最後更新」日期
-      fetch('data/stocks.json').then(r=>r.ok?r.json():null).then(d=>{
+      // 刷新 System 區塊的「最後更新」日期（同樣走 MKLAB.data，不再另抓一次）
+      const _asofReq2 = (global.MKLAB && global.MKLAB.data)
+        ? global.MKLAB.data.json('stocks')
+        : fetch('data/stocks.json').then(r=>r.ok?r.json():null);
+      _asofReq2.then(d=>{
         const asof = d && d.meta && d.meta.as_of;
         if(asof){
           DRAWER_CFG.system.updated = asof;

@@ -28,7 +28,12 @@
 
   function loadKline(sym) {
     if (sym in _klCache) return Promise.resolve(_klCache[sym]);
-    return fetch('data/kline/' + encodeURIComponent(sym) + '.json', { cache: 'no-store' })
+    // 兩個效率要點（與 assets/js/data-client.js 同一個坑）：
+    //   ① 進行中的請求要立刻放進 _klCache，否則「下載完成前」對同一代號的第二次呼叫
+    //      會再抓一次（原本 _klCache 只在 .then 內才寫）。
+    //   ② cache 用 'no-cache'：每次跟伺服器驗證、沒變就回 304 少傳。
+    //      不可用 'no-store'（等於關掉瀏覽器快取，每次換頁都重下）。
+    const p = fetch('data/kline/' + encodeURIComponent(sym) + '.json', { cache: 'no-cache' })
       .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
       .then(function (doc) {
         const rows = (doc.rows || [])
@@ -38,6 +43,8 @@
         return _klCache[sym];
       })
       .catch(function () { _klCache[sym] = null; return null; });
+    if (!(sym in _klCache)) _klCache[sym] = p;  // 進行中先佔位（解析後會被上面的結果覆蓋）
+    return p;
   }
 
   // 日期字串 YYYY-MM-DD 往前推 months 個月 / years 年（UTC 計算，避免時區飄移）

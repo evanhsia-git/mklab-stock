@@ -1,6 +1,8 @@
 /*
  * data-client.js — 統一資料層（零依賴、plain script IIFE）
  * 2026-07-18 重構：整合到新架構 assets/js/，支援 <base href="/mklab-stock/">
+ * 2026-11-10 效率修正：① 進行中的請求共用 Promise（原本會被同一頁重複抓 3 次）
+ *                     ② fetch 由 cache:'no-store' 改為 'no-cache'（改用 ETag 304 驗證）
  * 設計：集中讀取 data/*.json + 快取 + 新鮮度計算 + 錯誤處理
  * 用法：
  *   MKLAB.data.stocks().then(d => ...)
@@ -14,11 +16,20 @@
   // BASE 用相對路徑（配合 <base href="/mklab-stock/">），避免 GitHub Pages 子路徑下絕對路徑 /data/ 解析到根域而 404
   const BASE = 'data/';
 
-  // 快取（避免重複 fetch）
-  const _cache = {};
+  // 快取
+  const _cache = {};     // name → 已解析完成的資料（避免重複 fetch）
+  const _inflight = {};  // name → 進行中的 Promise（同一個檔被同時要多次時共用，不各抓一次）
 
   function _fetchOnce(name) {
-    return fetch(BASE + name, { cache: 'no-store' })
+    // cache: 'no-cache' 的語意是「每次都要跟伺服器確認，但內容沒變就不用重傳」。
+    //
+    // ⚠️ 不可改回 'no-store'：那等於完全關掉瀏覽器快取，每個頁面、每次換頁都把整個檔重下一次。
+    //    實測 GitHub Pages 對 data/*.json 有給 ETag 與 Cache-Control: max-age=600，
+    //    帶 If-None-Match 再抓會回 304（0 byte）；stocks.json 未壓縮 1.4 MB（傳輸約 248 KB），
+    //    關掉快取等於每次換頁都白付這筆。
+    // ⚠️ 也不可用預設的 'default'：max-age=600 會讓使用者在 10 分鐘內讀到舊檔，
+    //    而本站很在意「資料以 X 收盤為準」的正確性 → 寧可多一次便宜的 304 驗證。
+    return fetch(BASE + name, { cache: 'no-cache' })
       .then(r => {
         if (!r.ok) throw new Error('HTTP ' + r.status + ' ' + name);
         return r.text().then(text => {
@@ -43,36 +54,51 @@
       });
   }
 
-  function _fetch(name, _retries) {
+  /** 單次載入 + 自動重試（重試不走 _inflight，避免自己等自己） */
+  function _load(name, retries) {
+    return _fetchOnce(name).catch(e => {
+      // 自動重試：大檔案在行動網路上偶發性被截斷是常見狀況，通常重試就會自己好，
+      // 不需要每次都要使用者手動重新整理頁面
+      if (retries > 0) {
+        console.warn('[data-client] ' + name + ' 讀取失敗，重試中…（剩餘 ' + retries + ' 次）', e && e.message);
+        return new Promise(resolve => setTimeout(resolve, 400)).then(() => _load(name, retries - 1));
+      }
+      throw e;
+    });
+  }
+
+  function _fetch(name) {
     if (_cache[name]) return Promise.resolve(_cache[name]);
-    const retries = _retries == null ? 2 : _retries;
-    return _fetchOnce(name)
-      .catch(e => {
-        // 自動重試：大檔案在行動網路上偶發性被截斷是常見狀況，通常重試就會自己好，
-        // 不需要每次都要使用者手動重新整理頁面
-        if (retries > 0) {
-          console.warn('[data-client] ' + name + ' 讀取失敗，重試中…（剩餘 ' + retries + ' 次）', e && e.message);
-          return new Promise(resolve => setTimeout(resolve, 400)).then(() => _fetch(name, retries - 1));
-        }
-        throw e;
-      })
-      .then(d => {
-        // stocks.json 原始結構含 {meta, stocks}，回傳原始物件供 caller 自行取用
-        // 注意：不可在此自動拆解 stocks 陣列，否則 meta 資訊遺失
-        if (name === 'stocks' && d && Array.isArray(d.stocks)) {
-          // 官方財報優先：有 roe_off/roa_off 者以 TWSE 官方（累計年化）覆蓋第三方值。
-          // roe/roa/eps 在管線端已與官方年化值同步（import_official_fundamentals.py）；這裡再保險一次：
-          // EPS 只用官方年化值（eps_off），沒有就顯示「-」，不拿任何舊值冒充。
-          // 後端 skills/data/build_digest.py 的 effective_fundamentals() 必須與此規則一致。
-          d.stocks.forEach(s => {
-            if (s.roe_off != null) s.roe = s.roe_off;
-            if (s.roa_off != null) s.roa = s.roa_off;
-            s.eps = s.eps_off != null ? s.eps_off : null;
-          });
-        }
-        _cache[name] = d;
-        return d;
-      });
+    // 進行中的請求直接共用同一個 Promise。
+    // 舊版只把「結果」放進快取（_cache[name] = d 寫在 .then 內），所以在檔案還沒下載完之前
+    // 發出的第二、第三次呼叫，快取仍是空的 → 同一個檔被抓好幾次
+    // （實測 screener.html 對 stocks.json 發了 3 次請求，每次 248 KB）。
+    if (_inflight[name]) return _inflight[name];
+
+    const p = _load(name, 2).then(d => {
+      // stocks.json 原始結構含 {meta, stocks}，回傳原始物件供 caller 自行取用。
+      // ⚠️ 不可在此拆解或改寫 stocks 陣列：meta 會遺失，而且會與後端不一致。
+      //
+      // roe / roa / eps 的「官方值優先」規則**由資料管線擁有**
+      // （skills/data/import_official_fundamentals.py 第 327-333 行；只處理
+      //  security_type==='stock'，並刻意保留 weekly-roe job 以 yfinance 補的值）。
+      // 前端只負責原樣呈現。build_digest.py 的 effective_fundamentals() 亦是同一口徑。
+      //
+      // 歷史陷阱（2026-11-10 查證後移除）：此處原有 `if (name === 'stocks')` 的覆寫，
+      // 但 json() 會先把 name 補成 'stocks.json'，所以那個條件**永遠不成立**（死碼、從未生效）。
+      // 經實測**不可**直接改成 'stocks.json' 啟用它：roa 有 66 列與 roa_off 不同
+      // （weekly-roe job 以 yfinance 覆寫部分列的 roe/roa），接上會改變那 66 檔的顯示值——
+      // 那是行為變更，不是修 bug。要做的話必須先與管線端對齊口徑。
+      // 回歸測試：tests/test_data_client_cache.js（鎖住「原樣通過、不改寫財報欄位」）。
+      _cache[name] = d;
+      return d;
+    });
+
+    // 成功或失敗都要清掉 _inflight：否則一次失敗會讓這個檔永久卡在「已拒絕的 Promise」上，
+    // 之後再呼叫也不會重試。
+    _inflight[name] = p;
+    p.then(() => { delete _inflight[name]; }, () => { delete _inflight[name]; });
+    return p;
   }
 
   /** 讀 JSON 檔 */
@@ -141,6 +167,7 @@
   /** 清除快取（除錯用） */
   function clearCache() {
     for (const k in _cache) delete _cache[k];
+    for (const k in _inflight) delete _inflight[k];
   }
 
   global.MKLAB = global.MKLAB || {};
@@ -156,4 +183,4 @@
     BASE,
   };
 
-})(window);
+})(typeof window !== 'undefined' ? window : globalThis);
