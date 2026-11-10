@@ -2,23 +2,23 @@
   "meta": {
     "source": "TWSE OpenAPI／MOPS opendata 官方檔案（由 fetch_official_fundamentals.py 下載）",
     "files": {
-      "VOO_holdings.csv": "2026-11-05 14:01:00 UTC+08:00",
-      "t187ap06_L_latest.csv": "2026-11-05 14:01:00 UTC+08:00",
-      "t187ap47_latest.json": "2026-11-05 14:01:12 UTC+08:00",
-      "t187ap07_L_latest.csv": "2026-11-05 14:01:09 UTC+08:00",
-      "t187ap03_L_latest.csv": "2026-11-05 14:01:03 UTC+08:00",
-      "SOXX_holdings.xls": "2026-11-05 14:01:00 UTC+08:00",
-      "_fetch_log.json": "2026-11-05 14:01:12 UTC+08:00",
-      "t187ap45_latest.json": "2026-11-05 14:01:11 UTC+08:00"
+      "_fetch_log.json": "2026-11-05 18:43:13 UTC+08:00",
+      "SOXX_holdings.xls": "2026-11-04 00:57:34 UTC+08:00",
+      "t187ap45_latest.json": "2026-11-05 18:43:13 UTC+08:00",
+      "t187ap03_L_latest.csv": "2026-11-05 18:43:13 UTC+08:00",
+      "VOO_holdings.csv": "2026-11-02 11:13:21 UTC+08:00",
+      "t187ap06_L_latest.csv": "2026-11-04 17:53:01 UTC+08:00",
+      "t187ap07_L_latest.csv": "2026-11-05 18:43:13 UTC+08:00",
+      "t187ap47_latest.json": "2026-11-05 18:43:13 UTC+08:00"
     },
-    "imported_at": "2026-11-05 14:01:12 UTC+08:00",
+    "imported_at": "2026-11-10 10:50:46 UTC+08:00",
     "financial_period": "2026Q2",
     "financial_periods": {
       "2026Q2": 977,
       "2026Q3": 75
     },
     "financial_asof_roc_date": "2026-11-04",
-    "method": "損益/資產負債表為累計數，年化係數逐列依各自季別計算（Q1×4、Q2×2、Q3×4/3、Q4×1）；同一份快照可能同時含不同季別（MOPS 增量批次與既有快照合併所致）；營收年增率需月營收檔，尚未提供"
+    "method": "損益/資產負債表為累計數，年化係數逐列依各自季別計算（Q1×4、Q2×2、Q3×4/3、Q4×1）；同一份快照可能同時含不同季別（MOPS 增量批次與既有快照合併所致）；營收年增率需月營收檔，尚未提供；gross_margin_pct=營業毛利淨額/營業收入、operating_margin_pct=營業利益/營業收入、net_margin_pct=本期淨利/營業收入、debt_ratio_pct=負債總計/資產總計，皆為累計期間比率（不年化）；缺欄位一律 null，不以 0 冒充"
   },
   "etfs": {
     "00400A": {

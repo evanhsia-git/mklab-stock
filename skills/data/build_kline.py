@@ -33,18 +33,18 @@ OUT = os.path.join(ROOT, "data", "kline")
 os.makedirs(OUT, exist_ok=True)
 doc = json.load(open(os.path.join(ROOT, "data", "stocks.json"), encoding="utf-8"))
 asof = doc["meta"]["as_of"]
-series = load_series()
+series = load_series(limit=None)  # K 線吃 history/ 全部，不受指標用的 280 日回看限制
 n = 0; total = 0
 for s in doc["stocks"]:
     rows = series.get(s["sym"])
     if not rows:
         continue
-    last = dt.datetime.strptime(rows[-1][0], "%Y%m%d").date()
-    cutoff = last - dt.timedelta(days=366)
+    # 2026-11-09：不再用「最後一天 −366 日曆天」截斷。
+    # 舊版會把 history/ 已經有的資料整段丟掉（實測 2330 少了 71 個交易日：
+    # history/ 有 316 天、kline/ 只剩 245 天），因為 366 日曆天 ≈ 只有 245 個交易日。
+    # data/history/ 本身就是本站的行情真相來源，這裡全數採用；長度由 history/ 決定。
     out = []
     for d, o, h, l, c in rows:
-        if dt.datetime.strptime(d, "%Y%m%d").date() <= cutoff:
-            continue
         out.append([f"{d[:4]}-{d[4:6]}-{d[6:8]}", o if o is not None else c, h if h is not None else c, l if l is not None else c, c])
     if not out:
         continue

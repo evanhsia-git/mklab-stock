@@ -29,9 +29,16 @@ MIN_FOR_RSI = 15   # 14 期漲跌幅 + 1
 MIN_FOR_KD = 9
 
 
-def load_series():
-    """回傳 {股票代號: [(date, open, high, low, close), ...]}，依日期由舊到新排序。"""
-    files = sorted(glob.glob(os.path.join(HISTORY_DIR, "*.json")))[-LOOKBACK_DAYS:]
+def load_series(limit: "int | None" = LOOKBACK_DAYS):
+    """回傳 {股票代號: [(date, open, high, low, close), ...]}，依日期由舊到新排序。
+
+    limit=None 代表不截斷（讀 history/ 全部），給 build_kline.py 用——K 線是使用者的
+    歷史資料，不該被「算指標剛好夠用」的天數限制住。算指標的呼叫端維持預設
+    LOOKBACK_DAYS（MA30/RSI14/MACD/KD 只需要約 280 日，讀更多只是變慢）。
+    """
+    files = sorted(glob.glob(os.path.join(HISTORY_DIR, "*.json")))
+    if limit:
+        files = files[-limit:]
     series = {}
     for fp in files:
         date = os.path.basename(fp)[:-5]

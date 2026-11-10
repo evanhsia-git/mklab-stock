@@ -1,0 +1,118 @@
+{
+  "runs": [
+    {
+      "at": "2026-11-10T01:39:41+08:00",
+      "source": "TWSE MI_INDEX/BWIBBU_d + TPEx 每日收盤行情（官方歷史端點）",
+      "results": [
+        {
+          "date": "2026-07-20",
+          "status": "written",
+          "rows": 1423,
+          "sources": {
+            "TWSE": 1322,
+            "TPEX": 101
+          },
+          "missing_high": 0
+        },
+        {
+          "date": "2026-07-23",
+          "status": "written",
+          "rows": 1419,
+          "sources": {
+            "TWSE": 1317,
+            "TPEX": 102
+          },
+          "missing_high": 0
+        },
+        {
+          "date": "2026-08-05",
+          "status": "written",
+          "rows": 1425,
+          "sources": {
+            "TWSE": 1322,
+            "TPEX": 103
+          },
+          "missing_high": 0
+        },
+        {
+          "date": "2026-09-03",
+          "status": "written",
+          "rows": 1427,
+          "sources": {
+            "TWSE": 1323,
+            "TPEX": 104
+          },
+          "missing_high": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-11-10T01:56:14+08:00",
+      "source": "TWSE MI_INDEX/BWIBBU_d + TPEx 每日收盤行情（官方歷史端點）",
+      "results": [
+        {
+          "date": "2026-07-20",
+          "status": "written",
+          "rows": 1423,
+          "sources": {
+            "TWSE": 1322,
+            "TPEX": 101
+          },
+          "missing_high": 0
+        },
+        {
+          "date": "2026-07-23",
+          "status": "written",
+          "rows": 1419,
+          "sources": {
+            "TWSE": 1317,
+            "TPEX": 102
+          },
+          "missing_high": 0
+        },
+        {
+          "date": "2026-08-05",
+          "status": "written",
+          "rows": 1425,
+          "sources": {
+            "TWSE": 1322,
+            "TPEX": 103
+          },
+          "missing_high": 0
+        },
+        {
+          "date": "2026-09-03",
+          "status": "written",
+          "rows": 1427,
+          "sources": {
+            "TWSE": 1323,
+            "TPEX": 104
+          },
+          "missing_high": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-11-10T10:50:47+08:00",
+      "source": "TWSE MI_INDEX/BWIBBU_d + TPEx 每日收盤行情（官方歷史端點）",
+      "results": [
+        {
+          "date": "2026-07-20",
+          "status": "skipped_exists"
+        },
+        {
+          "date": "2026-07-23",
+          "status": "skipped_exists"
+        },
+        {
+          "date": "2026-08-05",
+          "status": "skipped_exists"
+        },
+        {
+          "date": "2026-09-03",
+          "status": "skipped_exists"
+        }
+      ]
+    }
+  ]
+}

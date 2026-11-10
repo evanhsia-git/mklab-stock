@@ -25,7 +25,8 @@ TWSE 官方財報／股利／基金資料匯入（手動匯入：放入 data/raw
 寫入：
   data/official-fundamentals.json  每家公司的計算結果與來源資訊
   data/etf-official.json           ETF 基本資料（上市日期、保管機構…）
-  data/stocks.json                 補上 roe_off / roa_off / eps_off / 股利欄位與 fund_* 來源欄位
+  data/stocks.json                 補上 roe_off / roa_off / eps_off / gross_margin / operating_margin /
+                                   net_margin / debt_ratio / 股利欄位與 fund_* 來源欄位
 """
 import csv
 import datetime as dt
@@ -100,9 +101,27 @@ def import_income_balance(stamp_info):
     c_ni_parent = find_col(ih, exact="淨利（淨損）歸屬於母公司業主")
     c_eps = find_col(ih, contains="基本每股盈餘")
 
+    def _opt(h, **kw):
+        """選用欄位查詢：找不到要回 None。
+
+        不可直接寫 `find_col(...) or find_col(...)` —— find_col 找不到時是 **raise
+        KeyError**，`or` 的備援永遠跑不到，整支腳本會爆掉。金融保險業（銀行/保險）的
+        損益表本來就沒有「營業毛利」，所以這幾欄必須是可選的。
+        """
+        try:
+            return find_col(h, **kw)
+        except KeyError:
+            return None
+
+    # 2026-11-09：三率（毛利率／淨利率／營業利益率）與負債比。
+    # 金融保險業沒有「營業毛利」（銀行/保險的收入結構不同）→ 該欄自然為 null，不補值。
+    c_gp = _opt(ih, exact="營業毛利（毛損）淨額") or _opt(ih, exact="營業毛利（毛損）")
+    c_op = _opt(ih, exact="營業利益（損失）")
+
     c_sym_b = find_col(bh, exact="公司代號")
     c_assets = find_col(bh, exact="資產總計")
     c_eq_parent = find_col(bh, exact="歸屬於母公司業主之權益合計")
+    c_liab = _opt(bh, exact="負債總計")
 
     bal = {r[c_sym_b].strip(): r for r in brows if r and r[c_sym_b].strip()}
     MONTHS = {"1": 3, "2": 6, "3": 9, "4": 12}
@@ -128,11 +147,26 @@ def import_income_balance(stamp_info):
         b = bal.get(sym)
         eq_p = num(b[c_eq_parent]) if b else None
         assets = num(b[c_assets]) if b else None
+        liab = num(b[c_liab]) if b and c_liab is not None else None
+        rev = num(r[c_rev])
+        gp = num(r[c_gp]) if c_gp is not None else None
+        op = num(r[c_op]) if c_op is not None else None
+        # 比率型指標用「累計期間」本身即可，不需年化（年化只影響 ROE/ROA/EPS 這種規模量）。
+        # 分母為 0 或 None 一律回 None —— 不以 0 冒充。
+        def ratio(numer):
+            return round(numer / rev * 100, 2) if numer is not None and rev else None
         rec = {
             "period": period,
             "asof": asof,
             "annualize_factor": factor,
-            "revenue_ytd_thousand": num(r[c_rev]),
+            "revenue_ytd_thousand": rev,
+            "gross_profit_ytd_thousand": gp,
+            "operating_income_ytd_thousand": op,
+            "liabilities_total_thousand": liab,
+            "gross_margin_pct": ratio(gp),
+            "operating_margin_pct": ratio(op),
+            "net_margin_pct": ratio(ni_t),
+            "debt_ratio_pct": round(liab / assets * 100, 2) if liab is not None and assets else None,
             "ni_total_ytd_thousand": ni_t,
             "ni_parent_ytd_thousand": ni_p,
             "eps_ytd": eps_ytd,
@@ -250,7 +284,11 @@ def main():
         "financial_period": fin_info["period"] if fin_info else None,
         "financial_periods": fin_info.get("periods") if fin_info else None,
         "financial_asof_roc_date": fin_info["asof"] if fin_info else None,
-        "method": "損益/資產負債表為累計數，年化係數逐列依各自季別計算（Q1×4、Q2×2、Q3×4/3、Q4×1）；同一份快照可能同時含不同季別（MOPS 增量批次與既有快照合併所致）；營收年增率需月營收檔，尚未提供",
+        "method": ("損益/資產負債表為累計數，年化係數逐列依各自季別計算（Q1×4、Q2×2、Q3×4/3、Q4×1）；"
+                   "同一份快照可能同時含不同季別（MOPS 增量批次與既有快照合併所致）；營收年增率需月營收檔，尚未提供；"
+                   "gross_margin_pct=營業毛利淨額/營業收入、operating_margin_pct=營業利益/營業收入、"
+                   "net_margin_pct=本期淨利/營業收入、debt_ratio_pct=負債總計/資產總計，皆為累計期間比率（不年化）；"
+                   "缺欄位一律 null，不以 0 冒充"),
     }
 
     with open(os.path.join(DATA, "official-fundamentals.json"), "w", encoding="utf-8") as f:
@@ -273,6 +311,13 @@ def main():
             row["fund_period"] = f_["period"]
             row["fund_asof"] = f_["asof"]
             row["fund_src"] = "TWSE_OFFICIAL"
+            # 三率與負債比（2026-11-09）：與 roe_off/eps_off 同一份官方財報、同一累計期間。
+            # 缺值一律 null（金融保險業沒有「營業毛利」、ETF 沒有財報）→ 前端顯示「-」，
+            # 不以 0 或任何推測值冒充。
+            row["gross_margin"] = f_.get("gross_margin_pct")
+            row["operating_margin"] = f_.get("operating_margin_pct")
+            row["net_margin"] = f_.get("net_margin_pct")
+            row["debt_ratio"] = f_.get("debt_ratio_pct")
             n += 1
         # roe / roa / eps 與官方年化值同步（單一口徑）。
         # 歷史包袱：舊版從 TWSE t187ap06_L 取 ROE/ROA/EPS，該端點已失效且欄位已改名，這三欄之後從未更新，
