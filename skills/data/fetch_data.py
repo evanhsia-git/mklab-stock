@@ -116,8 +116,14 @@ LOG = RunLogger(MODE)
 
 # ===== 工具函式 =====
 # 官方財報／股利欄位（由 import_official_fundamentals.py 寫入），每日重建時必須保留
-OFFICIAL_KEYS = ["listing_date", "company_short", "ind_src", "roe_off", "roa_off", "eps_off", "fund_period", "fund_asof", "fund_src",
-                 "div_cash_latest", "div_latest_year", "div_streak_years", "div_years_available"]
+# 2026-11-10 瘦身：拿掉 9 個「前端與測試都沒讀」的欄位（stocks.json 原始大小約 -20%）。
+# 本批移除：company_short、ind_src、fund_period、fund_asof、div_latest_year、
+#           last_updated（與 price_asof 完全重複）、high52w、low52w、operating_margin。
+# 出處資訊沒有消失：official-fundamentals.json 的 meta 仍有 files／financial_period／
+# financial_asof_roc_date／method，產業來源在 data/raw/official/ 的原始檔與 industry-codes.json。
+# operating_margin 仍完整保留在 official-fundamentals.json（只是不再複製進 stocks.json）。
+OFFICIAL_KEYS = ["listing_date", "roe_off", "roa_off", "eps_off", "fund_src",
+                 "div_cash_latest", "div_streak_years", "div_years_available"]
 
 def keep_record(code):
     """過濾機制：只留數字開頭、長度<=6 的上市/上櫃/ETF 代號。
@@ -524,7 +530,6 @@ def run_daily():
         quality = "official"
         # 治本：每筆記錄自己的價格日期。TWSE 記錄一律等於 trade_date。
         price_asof = trade_date
-        last_updated = price_asof
 
         stocks.append({
             "sym": sid,
@@ -540,7 +545,6 @@ def run_daily():
             "source": source,
             "quality": quality,
             "price_asof": price_asof,
-            "last_updated": last_updated,
         })
         sources["TWSE"] += 1
 
@@ -643,7 +647,6 @@ def run_daily():
 
         source = "TPEX"
         quality = "official"
-        last_updated = price_asof
 
         tpex_stocks.append({
             "sym": sid,
@@ -659,7 +662,6 @@ def run_daily():
             "source": source,
             "quality": quality,
             "price_asof": price_asof,
-            "last_updated": last_updated,
             "_est_mc": est_mc({"price": close, "volume": volume, "market_cap": mc}),
         })
         sources["TPEX"] = sources.get("TPEX", 0) + 1

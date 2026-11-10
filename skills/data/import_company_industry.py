@@ -21,7 +21,6 @@ filled = []
 for s in doc["stocks"]:
     if s.get("security_type") == "stock" and not s.get("ind") and s["sym"] in ap and ap[s["sym"]][0]:
         s["ind"] = ap[s["sym"]][0]
-        s["ind_src"] = f"TWSE_t187ap03_L（出表 {ap[s['sym']][1]}）"
         filled.append(s["sym"])
 json.dump(doc, open(p, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
 print(f"補上產業 {len(filled)} 檔：{filled}")

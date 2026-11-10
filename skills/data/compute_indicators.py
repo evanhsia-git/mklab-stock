@@ -186,7 +186,7 @@ CHG_PERIODS = {"chg_1m": 30, "chg_3m": 91, "chg_6m": 182, "chg_1y": 365, "chg_2y
 def calc_pos52(rows):
     """52 週位階：以最近約一年的收盤價算最高/最低，將目前收盤落在 5 個等寬區間之一（1~5）。
     歷史覆蓋不足 300 天（例如新上市）回傳 None，不推測。"""
-    empty = {"high52w": None, "low52w": None, "pos52w_level": None}
+    empty = {"pos52w_level": None}
     if len(rows) < 2:
         return empty
     last = dt.datetime.strptime(rows[-1][0], "%Y%m%d").date()
@@ -204,7 +204,7 @@ def calc_pos52(rows):
     else:
         pos = (cur - lo) / (hi - lo)
         level = min(int(pos * 5), 4) + 1  # 0-20%→1, 20-40%→2, 40-60%→3, 60-80%→4, 80-100%→5
-    return {"high52w": round(hi, 2), "low52w": round(lo, 2), "pos52w_level": level}
+    return {"pos52w_level": level}
 
 
 def main():
@@ -231,7 +231,7 @@ def main():
             row["kd_k"] = row["kd_d"] = None
             for _k in CHG_PERIODS:
                 row[_k] = None
-            row.update({"high52w": None, "low52w": None, "pos52w_level": None})
+            row.update({"pos52w_level": None})
             continue
 
         closes = [r[4] for r in rows]

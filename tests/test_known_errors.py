@@ -181,10 +181,20 @@ check("CI 上櫃下載使用 5 次重試", 'fetch_json(TPEX_DAILY, timeout=120, 
 st_rows = [s for s in S if s.get('security_type') == 'stock']
 check("一般股票具備上市日期（官方）", all(s.get('listing_date') for s in st_rows), f"缺 {sum(1 for s in st_rows if not s.get('listing_date'))} 檔")
 
-# 一般股票一律來自上市（上櫃一般股票不收）：產業別來源必須是 TWSE t187ap03_L
-check("一般股票皆為上市且產業別來源為 TWSE t187ap03_L",
-      all(s.get('source') == 'TWSE' and 't187ap03_L' in (s.get('ind_src') or '') for s in st_rows),
-      f"不符 {sum(1 for s in st_rows if not (s.get('source') == 'TWSE' and 't187ap03_L' in (s.get('ind_src') or '')))} 檔")
+# 一般股票一律來自上市（上櫃一般股票不收）。
+# 2026-11-10 起不再逐列寫 ind_src（前端與測試都沒讀，stocks.json 瘦身 −161 KB），
+# 改成直接驗證「值」本身 ＋ 驗證來源仍由管線獨佔讀官方檔 —— 比比對來源字串更實在。
+_ind_doc = json.load(open('data/industry-codes.json', encoding='utf-8'))
+_ind_allowed = set(_ind_doc['codes'].values()) | {_ind_doc['fallback'], '存託憑證'}
+check("一般股票皆為上市（source=TWSE，上櫃一般股票不收）",
+      all(s.get('source') == 'TWSE' for s in st_rows),
+      f"source 非 TWSE {sum(1 for s in st_rows if s.get('source') != 'TWSE')} 檔")
+check("一般股票產業別必為官方類別（33 類／fallback／DR 的『存託憑證』）",
+      all(s.get('ind') in _ind_allowed for s in st_rows),
+      f"不在官方清單 {[s['sym'] for s in st_rows if s.get('ind') not in _ind_allowed][:8]}")
+check("產業別來源仍由管線讀官方 t187ap03_L（不得改成猜測或留空）",
+      't187ap03_L' in open('skills/data/integrate_official_company.py', encoding='utf-8').read()
+      and 't187ap03_L' in open('skills/data/import_company_industry.py', encoding='utf-8').read())
 
 # EPS 口徑：JSON 原始 eps 為最近單季，前端與後端評分都只能用官方年化 eps_off（沒有就顯示 -）
 _fund_rows = [s for s in S if s.get('security_type') == 'stock']
@@ -212,6 +222,24 @@ check("EPS 口徑：後端管線以官方年化 eps 覆蓋，且只處理一般�
       and 'if row.get("security_type") == "stock":' in _fin)
 check("EPS 口徑：前端不得自行改寫 eps/roe/roa（避免與管線口徑漂移）",
       '.eps_off != null' not in _dc and 's.roe = s.roe_off' not in _dc and 's.roa = s.roa_off' not in _dc)
+
+# stocks.json 瘦身（2026-11-10）：這 9 欄前端與測試都沒有讀，已在寫入端移除。
+# 防回退：若有人把寫入端加回來，這裡立刻紅燈（並附大小預算，避免又長回去）。
+_SLIM_BANNED = ["last_updated", "company_short", "ind_src", "fund_period", "fund_asof",
+                "div_latest_year", "operating_margin", "high52w", "low52w"]
+_slim_bytes = open('data/stocks.json', 'rb').read()
+_slim_doc = json.loads(_slim_bytes)
+_slim_present = sorted({k for s in _slim_doc['stocks'] for k in s if k in _SLIM_BANNED})
+check("stocks.json 瘦身：9 個未使用欄位不得回歸", not _slim_present, f"又出現了 {_slim_present}")
+check("stocks.json 瘦身：單檔預算 1,300 KB", len(_slim_bytes) < 1300 * 1024,
+      f"目前 {len(_slim_bytes)/1024:.0f} KB")
+_slim_writers = (_fd2 + _fin
+                 + open('skills/data/compute_indicators.py', encoding='utf-8').read()
+                 + open('skills/data/integrate_official_company.py', encoding='utf-8').read()
+                 + open('skills/data/import_company_industry.py', encoding='utf-8').read())
+check("stocks.json 瘦身：寫入端不得再寫這 9 欄",
+      not [k for k in _SLIM_BANNED if f'"{k}"' in _slim_writers],
+      f"寫入端殘留 {[k for k in _SLIM_BANNED if chr(34)+k+chr(34) in _slim_writers]}")
 import importlib.util as _iu
 _spec = _iu.spec_from_file_location('build_digest', 'skills/data/build_digest.py'); _bd = _iu.module_from_spec(_spec); _spec.loader.exec_module(_bd)
 _e1 = _bd.effective_fundamentals({'eps': 22.08, 'eps_off': 98.66, 'roe': 31.7, 'roe_off': 39.77})

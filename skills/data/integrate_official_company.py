@@ -84,8 +84,6 @@ for s in doc["stocks"]:
         a = ap_l[sym]
         if a["ind"]: s["ind"] = a["ind"]
         s["listing_date"] = a["listing"]
-        s["company_short"] = a["short"]
-        s["ind_src"] = f"TWSE_t187ap03_L（出表 {a['asof']}）"
         filled += 1
 # P0-6：修正既有資料的市值 0（缺漏應為 null）。一般股票：收盤 × 股本 ÷ 面值10；無股本則設 null
 for s_ in doc["stocks"]:

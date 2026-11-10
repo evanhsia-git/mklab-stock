@@ -25,8 +25,9 @@ TWSE 官方財報／股利／基金資料匯入（手動匯入：放入 data/raw
 寫入：
   data/official-fundamentals.json  每家公司的計算結果與來源資訊
   data/etf-official.json           ETF 基本資料（上市日期、保管機構…）
-  data/stocks.json                 補上 roe_off / roa_off / eps_off / gross_margin / operating_margin /
-                                   net_margin / debt_ratio / 股利欄位與 fund_* 來源欄位
+  data/stocks.json                 補上 roe_off / roa_off / eps_off / gross_margin / net_margin /
+                                   debt_ratio / 股利欄位與 fund_src（只留前端與測試真的會讀的欄位；
+                                   operating_margin 等仍完整存在本 JSON 的 financial 區塊）
 """
 import csv
 import datetime as dt
@@ -308,14 +309,11 @@ def main():
             row["roe_off"] = f_["roe_annualized_pct"]
             row["roa_off"] = f_["roa_annualized_pct"]
             row["eps_off"] = f_["eps_annualized"]
-            row["fund_period"] = f_["period"]
-            row["fund_asof"] = f_["asof"]
             row["fund_src"] = "TWSE_OFFICIAL"
             # 三率與負債比（2026-11-09）：與 roe_off/eps_off 同一份官方財報、同一累計期間。
             # 缺值一律 null（金融保險業沒有「營業毛利」、ETF 沒有財報）→ 前端顯示「-」，
             # 不以 0 或任何推測值冒充。
             row["gross_margin"] = f_.get("gross_margin_pct")
-            row["operating_margin"] = f_.get("operating_margin_pct")
             row["net_margin"] = f_.get("net_margin_pct")
             row["debt_ratio"] = f_.get("debt_ratio_pct")
             n += 1
@@ -333,7 +331,6 @@ def main():
             row["eps"] = row.get("eps_off")
         if d_:
             row["div_cash_latest"] = d_["latest_cash_per_share"]
-            row["div_latest_year"] = d_["latest_year"]
             row["div_streak_years"] = d_["streak_years"]
             row["div_years_available"] = d_["years_available"]
     doc["meta"]["fundamentals"] = src_meta
