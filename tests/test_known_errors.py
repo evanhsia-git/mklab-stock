@@ -141,6 +141,50 @@ check("範圍：一般股票代號皆為 4 碼純數字（排除 2881A 特別股
 _ci = open('skills/data/compute_indicators.py', encoding='utf-8').read()
 check("範圍：fetch_data 與 compute_indicators 都會整批排除 other 類",
       'excluded_other' in open('skills/data/fetch_data.py', encoding='utf-8').read() and '!= "other"' in _ci)
+# 2026-11-10 修：上面兩條「範圍」檢查曾經一起白過 —— DR（9103/9105/9110/9136）剛好是
+# 4 碼純數字，所以 bad_code 抓不到；它又被錯誤分類成 stock，所以 others（只看
+# security_type）也抓不到。以下三條改用「不依賴 security_type」的判斷，才算真的關卡。
+_dr_rows = [s['sym'] for s in S
+            if (len(s['sym']) == 4 and s['sym'].isdigit() and s['sym'].startswith('91'))
+            or '-DR' in (s.get('name') or '') or '存託' in (s.get('name') or '')
+            or s.get('ind') == '存託憑證']
+check("範圍：DR／存託憑證不得存在（用代號形狀＋名稱＋產業別判斷，不依賴 security_type）",
+      len(_dr_rows) == 0, f"仍殘留 {len(_dr_rows)} 檔：{_dr_rows[:8]}")
+check("範圍：DR 是 4 碼純數字，兩個分類器都必須有 91xx 排除規則（避免只修一邊）",
+      'not sid.startswith("91")' in open('skills/data/fetch_data.py', encoding='utf-8').read()
+      and 'not sym.startswith("91")' in _ci)
+check("範圍：清理腳本不得只靠 security_type 判斷（會漏掉被誤分類的 DR）",
+      'startswith("91")' in open('scripts/purge_out_of_scope_data.py', encoding='utf-8').read())
+
+
+# 資料範圍：history 與 kline 也必須遵守同一條範圍規則，不能只有 stocks.json 乾淨。
+# 2026-11-10 實測發現：stocks.json 清乾淨了，但 317/321 份 history 快照仍殘留 20,419 列
+# 範圍外證券（特別股 2891C／6592B、受益證券 01001T、ETN 0200xx…），kline 也還有 12 個。
+# 根因：清理腳本只清「stocks.json 裡還在」的代號，早被移出的就永遠留在 history／kline。
+def _in_scope(sym):
+    s = str(sym or '')
+    return s.startswith('00') or (len(s) == 4 and s.isdigit() and not s.startswith('91'))
+
+_hbad = {}
+for _p in sorted(glob.glob('data/history/*.json')):
+    _d = json.load(open(_p, encoding='utf-8'))
+    _b = [r.get('stock_id') for r in _d.get('stocks', []) if not _in_scope(r.get('stock_id'))]
+    if _b:
+        _hbad[os.path.basename(_p)] = len(_b)
+check("範圍：history 快照不得含範圍外證券（特別股／權證／DR／受益證券／ETN）",
+      not _hbad, f"{len(_hbad)} 份殘留，共 {sum(_hbad.values())} 列：{list(_hbad)[:3]}")
+_kbad = [os.path.basename(x) for x in glob.glob('data/kline/*.json')
+         if not _in_scope(os.path.basename(x)[:-5])]
+check("範圍：kline 不得有範圍外證券的檔案", not _kbad, f"{len(_kbad)} 檔：{_kbad[:6]}")
+
+# meta 一致性：任何寫入 stocks.json 的地方都必須讓 meta 跟著陣列走。
+# 2026-11-10 實測：清掉 4 檔 DR 後 meta.count 仍停在 1448（陣列已是 1444）。
+_meta_now = stocks_doc.get('meta', {})
+check("meta：count 必須等於實際檔數", _meta_now.get('count') == len(S),
+      f"meta.count={_meta_now.get('count')} 實際={len(S)}")
+check("meta：sources 加總必須等於 count",
+      sum((_meta_now.get('sources') or {}).values()) == len(S),
+      f"sources={_meta_now.get('sources')}")
 check("報酬欄位：1/3/6 月、1 年與 2 年（預寫、未開放）漲跌幅皆由同一個 calc_chg 計算（CHG_PERIODS）",
       'CHG_PERIODS = {"chg_1m": 30, "chg_3m": 91, "chg_6m": 182, "chg_1y": 365, "chg_2y": 730}' in _ci)
 _ret = [s for s in S if s.get('security_type') == 'stock']
@@ -185,11 +229,12 @@ check("一般股票具備上市日期（官方）", all(s.get('listing_date') fo
 # 2026-11-10 起不再逐列寫 ind_src（前端與測試都沒讀，stocks.json 瘦身 −161 KB），
 # 改成直接驗證「值」本身 ＋ 驗證來源仍由管線獨佔讀官方檔 —— 比比對來源字串更實在。
 _ind_doc = json.load(open('data/industry-codes.json', encoding='utf-8'))
-_ind_allowed = set(_ind_doc['codes'].values()) | {_ind_doc['fallback'], '存託憑證'}
+# 2026-11-10：DR 已不收，'存託憑證' 不再放行（留著會變成掩護違規的洞）
+_ind_allowed = set(_ind_doc['codes'].values()) | {_ind_doc['fallback']}
 check("一般股票皆為上市（source=TWSE，上櫃一般股票不收）",
       all(s.get('source') == 'TWSE' for s in st_rows),
       f"source 非 TWSE {sum(1 for s in st_rows if s.get('source') != 'TWSE')} 檔")
-check("一般股票產業別必為官方類別（33 類／fallback／DR 的『存託憑證』）",
+check("一般股票產業別必為官方類別（33 類／fallback）",
       all(s.get('ind') in _ind_allowed for s in st_rows),
       f"不在官方清單 {[s['sym'] for s in st_rows if s.get('ind') not in _ind_allowed][:8]}")
 check("產業別來源仍由管線讀官方 t187ap03_L（不得改成猜測或留空）",

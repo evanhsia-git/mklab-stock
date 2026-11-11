@@ -268,8 +268,11 @@ def main():
             row["security_type"], row["is_etf"] = "etf", True
         elif sym.startswith("00"):
             row["security_type"], row["is_etf"] = "unverified", False
-        elif not (len(sym) == 4 and sym.isdigit()):
+        elif not (len(sym) == 4 and sym.isdigit() and not sym.startswith("91")):
             # 非普通股代碼（特別股、DR、受益證券、ETN、權證等）：本站不收，標 other 後下方整批移除
+            # 2026-11-10 修：DR 是 4 碼純數字（91xx），舊條件會把它判成 stock 而逃過 other 移除。
+            # TWSE 產業別 91 = 存託憑證 → 4 碼 91 開頭一律 other。
+            # ⚠️ 必須與 fetch_data.py 的 classify_security() 同步（tests 有一致性檢查）。
             row["security_type"], row["is_etf"] = "other", False
         else:
             row["security_type"], row["is_etf"] = "stock", False
@@ -279,6 +282,17 @@ def main():
     stocks_doc["stocks"] = [r for r in stocks_doc.get("stocks", []) if r.get("security_type") != "other"]
     if len(stocks_doc["stocks"]) != _before:
         print(f"[compute_indicators] 移除其他證券 {_before - len(stocks_doc['stocks'])} 筆（本站不收特別股等）")
+
+    # 上面會改變檔數（移除 other 類），所以 meta 必須一起重算——否則 meta.count／sources／
+    # price_asof_counts 會與實際陣列脫節（2026-11-10 實測：清掉 4 檔 DR 後 meta.count 仍停在 1448）。
+    # 邏輯與 fetch_data.recompute_meta() 相同（tests 有 count／sources 一致性檢查）。
+    _s = stocks_doc.get("stocks", [])
+    _meta = stocks_doc.setdefault("meta", {})
+    _src, _pa = {}, {}
+    for _r in _s:
+        _src[_r.get("source")] = _src.get(_r.get("source"), 0) + 1
+        _pa[_r.get("price_asof")] = _pa.get(_r.get("price_asof"), 0) + 1
+    _meta["count"], _meta["sources"], _meta["price_asof_counts"] = len(_s), _src, _pa
 
     with open(STOCKS_PATH, "w", encoding="utf-8") as f:
         json.dump(stocks_doc, f, ensure_ascii=False, indent=None, separators=(",", ":"))

@@ -155,14 +155,22 @@ def load_etf_reference():
 
 def classify_security(sid, etf_ref):
     """證券分類，規則與 compute_indicators.py 一致：
-    官方 ETF 清單 → etf；00 開頭但不在清單 → unverified；4 碼純數字 → stock；
-    其餘（特別股、權證、DR、受益證券、ETN 等）→ other；other 在 run_daily 會整批排除，不寫入 stocks.json。"""
+    官方 ETF 清單 → etf；00 開頭但不在清單 → unverified；
+    4 碼純數字且非 91xx → stock；其餘（特別股、DR、受益證券、ETN 等）→ other；
+    other 在 run_daily 會整批排除，不寫入 stocks.json。
+
+    2026-11-10 修（根因）：DR 代號 9103／9105／9110／9136 是「4 碼純數字」，
+    舊版先命中 len(sid)==4 and sid.isdigit() → "stock" 就直接回傳，永遠到不了 other 分支
+    → 註解寫的「DR → other」從未生效，4 檔 TDR 長期被當成一般股票收進 stocks.json
+    （總檔數虛胖、industry 多一類「存託憑證」、digest 還把它列進 top_gainers）。
+    TWSE 產業別代碼 91 = 存託憑證，故 4 碼 91 開頭一律視為 other。
+    ⚠️ 改這裡務必同步 compute_indicators.py 的同一段分類（tests 有一致性檢查）。"""
     sid = str(sid or "")
     if sid in etf_ref:
         return "etf"
     if sid.startswith("00"):
         return "unverified"
-    if len(sid) == 4 and sid.isdigit():
+    if len(sid) == 4 and sid.isdigit() and not sid.startswith("91"):
         return "stock"
     return "other"
 
