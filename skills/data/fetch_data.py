@@ -29,6 +29,11 @@ import time
 import datetime as dt
 import urllib.request
 import urllib.error
+# 站內資料範圍的唯一來源（同目錄）。自帶 os/sys 並動態加路徑，這樣不論是
+# `python3 skills/data/xxx.py` 直跑、由其他程式 import、或從別的 cwd 執行，都找得到。
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import scope_rules  # noqa: E402
 
 OUT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "data"))
 os.makedirs(OUT, exist_ok=True)
@@ -170,7 +175,7 @@ def classify_security(sid, etf_ref):
         return "etf"
     if sid.startswith("00"):
         return "unverified"
-    if len(sid) == 4 and sid.isdigit() and not sid.startswith("91"):
+    if scope_rules.in_scope(sid):
         return "stock"
     return "other"
 

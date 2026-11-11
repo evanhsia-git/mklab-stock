@@ -11,7 +11,7 @@
       "t187ap07_L_latest.csv": "2026-11-05 18:43:13 UTC+08:00",
       "t187ap47_latest.json": "2026-11-05 18:43:13 UTC+08:00"
     },
-    "imported_at": "2026-11-11 16:11:34 UTC+08:00",
+    "imported_at": "2026-11-11 18:28:49 UTC+08:00",
     "financial_period": "2026Q2",
     "financial_periods": {
       "2026Q2": 977,
@@ -22126,17 +22126,6 @@
         "114"
       ]
     },
-    "1101B": {
-      "by_year_cash_per_share": {
-        "114": 2.0263
-      },
-      "latest_year": "114",
-      "latest_cash_per_share": 2.0263,
-      "streak_years": 1,
-      "years_available": [
-        "114"
-      ]
-    },
     "1102": {
       "by_year_cash_per_share": {
         "114": 2.3,
@@ -22516,17 +22505,6 @@
       ]
     },
     "1312": {
-      "by_year_cash_per_share": {
-        "114": 0
-      },
-      "latest_year": "114",
-      "latest_cash_per_share": 0,
-      "streak_years": 0,
-      "years_available": [
-        "114"
-      ]
-    },
-    "1312A": {
       "by_year_cash_per_share": {
         "114": 0
       },
@@ -23391,17 +23369,6 @@
       },
       "latest_year": "114",
       "latest_cash_per_share": 1.2,
-      "streak_years": 1,
-      "years_available": [
-        "114"
-      ]
-    },
-    "1522A": {
-      "by_year_cash_per_share": {
-        "114": 2.0
-      },
-      "latest_year": "114",
-      "latest_cash_per_share": 2.0,
       "streak_years": 1,
       "years_available": [
         "114"
@@ -24413,17 +24380,6 @@
         "114"
       ]
     },
-    "2002A": {
-      "by_year_cash_per_share": {
-        "114": 1.4
-      },
-      "latest_year": "114",
-      "latest_cash_per_share": 1.4,
-      "streak_years": 1,
-      "years_available": [
-        "114"
-      ]
-    },
     "2006": {
       "by_year_cash_per_share": {
         "114": 4.3
@@ -25398,17 +25354,6 @@
       },
       "latest_year": "114",
       "latest_cash_per_share": 5.0,
-      "streak_years": 1,
-      "years_available": [
-        "114"
-      ]
-    },
-    "2348A": {
-      "by_year_cash_per_share": {
-        "114": 1.6
-      },
-      "latest_year": "114",
-      "latest_cash_per_share": 1.6,
       "streak_years": 1,
       "years_available": [
         "114"
@@ -27467,34 +27412,12 @@
         "114"
       ]
     },
-    "2836A": {
-      "by_year_cash_per_share": {
-        "114": 0.775
-      },
-      "latest_year": "114",
-      "latest_cash_per_share": 0.775,
-      "streak_years": 1,
-      "years_available": [
-        "114"
-      ]
-    },
     "2838": {
       "by_year_cash_per_share": {
         "114": 0.46
       },
       "latest_year": "114",
       "latest_cash_per_share": 0.46,
-      "streak_years": 1,
-      "years_available": [
-        "114"
-      ]
-    },
-    "2838A": {
-      "by_year_cash_per_share": {
-        "114": 2.6306
-      },
-      "latest_year": "114",
-      "latest_cash_per_share": 2.6306,
       "streak_years": 1,
       "years_available": [
         "114"
@@ -27588,39 +27511,6 @@
         "114"
       ]
     },
-    "2881A": {
-      "by_year_cash_per_share": {
-        "114": 2.7487
-      },
-      "latest_year": "114",
-      "latest_cash_per_share": 2.7487,
-      "streak_years": 1,
-      "years_available": [
-        "114"
-      ]
-    },
-    "2881B": {
-      "by_year_cash_per_share": {
-        "114": 2.5724
-      },
-      "latest_year": "114",
-      "latest_cash_per_share": 2.5724,
-      "streak_years": 1,
-      "years_available": [
-        "114"
-      ]
-    },
-    "2881C": {
-      "by_year_cash_per_share": {
-        "114": 1.8
-      },
-      "latest_year": "114",
-      "latest_cash_per_share": 1.8,
-      "streak_years": 1,
-      "years_available": [
-        "114"
-      ]
-    },
     "2882": {
       "by_year_cash_per_share": {
         "114": 3.5
@@ -27632,45 +27522,12 @@
         "114"
       ]
     },
-    "2882A": {
-      "by_year_cash_per_share": {
-        "114": 2.526
-      },
-      "latest_year": "114",
-      "latest_cash_per_share": 2.526,
-      "streak_years": 1,
-      "years_available": [
-        "114"
-      ]
-    },
-    "2882B": {
-      "by_year_cash_per_share": {
-        "114": 2.2807
-      },
-      "latest_year": "114",
-      "latest_cash_per_share": 2.2807,
-      "streak_years": 1,
-      "years_available": [
-        "114"
-      ]
-    },
     "2883": {
       "by_year_cash_per_share": {
         "114": 1.0
       },
       "latest_year": "114",
       "latest_cash_per_share": 1.0,
-      "streak_years": 1,
-      "years_available": [
-        "114"
-      ]
-    },
-    "2883B": {
-      "by_year_cash_per_share": {
-        "114": 0.355
-      },
-      "latest_year": "114",
-      "latest_cash_per_share": 0.355,
       "streak_years": 1,
       "years_available": [
         "114"
@@ -27720,72 +27577,6 @@
         "114"
       ]
     },
-    "2887E": {
-      "by_year_cash_per_share": {
-        "114": 2.4363
-      },
-      "latest_year": "114",
-      "latest_cash_per_share": 2.4363,
-      "streak_years": 1,
-      "years_available": [
-        "114"
-      ]
-    },
-    "2887F": {
-      "by_year_cash_per_share": {
-        "114": 1.9336
-      },
-      "latest_year": "114",
-      "latest_cash_per_share": 1.9336,
-      "streak_years": 1,
-      "years_available": [
-        "114"
-      ]
-    },
-    "2887G": {
-      "by_year_cash_per_share": {
-        "114": 1.71
-      },
-      "latest_year": "114",
-      "latest_cash_per_share": 1.71,
-      "streak_years": 1,
-      "years_available": [
-        "114"
-      ]
-    },
-    "2887H": {
-      "by_year_cash_per_share": {
-        "114": 1.8
-      },
-      "latest_year": "114",
-      "latest_cash_per_share": 1.8,
-      "streak_years": 1,
-      "years_available": [
-        "114"
-      ]
-    },
-    "2887I": {
-      "by_year_cash_per_share": {
-        "114": 0.0734
-      },
-      "latest_year": "114",
-      "latest_cash_per_share": 0.0734,
-      "streak_years": 1,
-      "years_available": [
-        "114"
-      ]
-    },
-    "2887Z1": {
-      "by_year_cash_per_share": {
-        "114": 0.6531
-      },
-      "latest_year": "114",
-      "latest_cash_per_share": 0.6531,
-      "streak_years": 1,
-      "years_available": [
-        "114"
-      ]
-    },
     "2889": {
       "by_year_cash_per_share": {
         "114": 0.5
@@ -27819,28 +27610,6 @@
         "114"
       ]
     },
-    "2891B": {
-      "by_year_cash_per_share": {
-        "114": 2.796
-      },
-      "latest_year": "114",
-      "latest_cash_per_share": 2.796,
-      "streak_years": 1,
-      "years_available": [
-        "114"
-      ]
-    },
-    "2891C": {
-      "by_year_cash_per_share": {
-        "114": 1.92
-      },
-      "latest_year": "114",
-      "latest_cash_per_share": 1.92,
-      "streak_years": 1,
-      "years_available": [
-        "114"
-      ]
-    },
     "2892": {
       "by_year_cash_per_share": {
         "114": 1.3
@@ -27858,17 +27627,6 @@
       },
       "latest_year": "114",
       "latest_cash_per_share": 0.52,
-      "streak_years": 1,
-      "years_available": [
-        "114"
-      ]
-    },
-    "2897B": {
-      "by_year_cash_per_share": {
-        "114": 0.54
-      },
-      "latest_year": "114",
-      "latest_cash_per_share": 0.54,
       "streak_years": 1,
       "years_available": [
         "114"
@@ -28379,17 +28137,6 @@
       },
       "latest_year": "114",
       "latest_cash_per_share": 7.8,
-      "streak_years": 1,
-      "years_available": [
-        "114"
-      ]
-    },
-    "3036A": {
-      "by_year_cash_per_share": {
-        "114": 2.1177
-      },
-      "latest_year": "114",
-      "latest_cash_per_share": 2.1177,
       "streak_years": 1,
       "years_available": [
         "114"
@@ -30954,17 +30701,6 @@
         "114"
       ]
     },
-    "5871A": {
-      "by_year_cash_per_share": {
-        "114": 4.1795
-      },
-      "latest_year": "114",
-      "latest_cash_per_share": 4.1795,
-      "streak_years": 1,
-      "years_available": [
-        "114"
-      ]
-    },
     "5876": {
       "by_year_cash_per_share": {
         "114": 1.8
@@ -32074,28 +31810,6 @@
       },
       "latest_year": "114",
       "latest_cash_per_share": 3.0,
-      "streak_years": 1,
-      "years_available": [
-        "114"
-      ]
-    },
-    "6592A": {
-      "by_year_cash_per_share": {
-        "114": 4.2
-      },
-      "latest_year": "114",
-      "latest_cash_per_share": 4.2,
-      "streak_years": 1,
-      "years_available": [
-        "114"
-      ]
-    },
-    "6592B": {
-      "by_year_cash_per_share": {
-        "114": 4.5
-      },
-      "latest_year": "114",
-      "latest_cash_per_share": 4.5,
       "streak_years": 1,
       "years_available": [
         "114"
@@ -33670,17 +33384,6 @@
         "114"
       ]
     },
-    "8112A": {
-      "by_year_cash_per_share": {
-        "114": 2.025
-      },
-      "latest_year": "114",
-      "latest_cash_per_share": 2.025,
-      "streak_years": 1,
-      "years_available": [
-        "114"
-      ]
-    },
     "8114": {
       "by_year_cash_per_share": {
         "114": 11.47
@@ -34478,17 +34181,6 @@
       },
       "latest_year": "114",
       "latest_cash_per_share": 4.38,
-      "streak_years": 1,
-      "years_available": [
-        "114"
-      ]
-    },
-    "9941A": {
-      "by_year_cash_per_share": {
-        "114": 2.3394
-      },
-      "latest_year": "114",
-      "latest_cash_per_share": 2.3394,
       "streak_years": 1,
       "years_available": [
         "114"

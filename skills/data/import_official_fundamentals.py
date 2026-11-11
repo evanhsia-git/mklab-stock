@@ -35,6 +35,11 @@ import glob
 import json
 import os
 import sys
+# 站內資料範圍的唯一來源（同目錄）。自帶 os/sys 並動態加路徑，這樣不論是
+# `python3 skills/data/xxx.py` 直跑、由其他程式 import、或從別的 cwd 執行，都找得到。
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import scope_rules  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 SRC = os.path.join(ROOT, "data", "raw", "official")
@@ -211,6 +216,10 @@ def import_dividends():
         sym = str(r.get(k[c_sym], "")).strip()
         year = str(r.get(k[c_year], "")).strip()
         if not sym or not year:
+            continue
+        # 範圍過濾（治本）：官方股利檔 t187ap45 同時包含特別股（2881A/B/C、2887E…）與 ETN，
+        # 本站不收。沒有這道過濾，每次 CI 都會把這些死鍵種回 official-fundamentals.json。
+        if not scope_rules.in_scope(sym):
             continue
         cash = sum(x or 0 for x in [num(r.get(k[c_cash_earn])), num(r.get(k[c_cash_legal])), num(r.get(k[c_cash_cap]))])
         scope = str(r.get(k[c_scope], "")).strip()

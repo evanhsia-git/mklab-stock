@@ -17,6 +17,11 @@ import datetime as dt
 import glob
 import json
 import os
+# 站內資料範圍的唯一來源（同目錄）。自帶 os/sys 並動態加路徑，這樣不論是
+# `python3 skills/data/xxx.py` 直跑、由其他程式 import、或從別的 cwd 執行，都找得到。
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import scope_rules  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 HISTORY_DIR = os.path.join(ROOT, "data", "history")
@@ -268,7 +273,7 @@ def main():
             row["security_type"], row["is_etf"] = "etf", True
         elif sym.startswith("00"):
             row["security_type"], row["is_etf"] = "unverified", False
-        elif not (len(sym) == 4 and sym.isdigit() and not sym.startswith("91")):
+        elif not scope_rules.in_scope(sym):
             # 非普通股代碼（特別股、DR、受益證券、ETN、權證等）：本站不收，標 other 後下方整批移除
             # 2026-11-10 修：DR 是 4 碼純數字（91xx），舊條件會把它判成 stock 而逃過 other 移除。
             # TWSE 產業別 91 = 存託憑證 → 4 碼 91 開頭一律 other。

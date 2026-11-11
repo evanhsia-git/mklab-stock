@@ -150,11 +150,46 @@ _dr_rows = [s['sym'] for s in S
             or s.get('ind') == '存託憑證']
 check("範圍：DR／存託憑證不得存在（用代號形狀＋名稱＋產業別判斷，不依賴 security_type）",
       len(_dr_rows) == 0, f"仍殘留 {len(_dr_rows)} 檔：{_dr_rows[:8]}")
-check("範圍：DR 是 4 碼純數字，兩個分類器都必須有 91xx 排除規則（避免只修一邊）",
-      'not sid.startswith("91")' in open('skills/data/fetch_data.py', encoding='utf-8').read()
-      and 'not sym.startswith("91")' in _ci)
-check("範圍：清理腳本不得只靠 security_type 判斷（會漏掉被誤分類的 DR）",
-      'startswith("91")' in open('scripts/purge_out_of_scope_data.py', encoding='utf-8').read())
+# 範圍規則的唯一來源：skills/data/scope_rules.py（原本散在 4 處各寫一份，結果一起漏掉 DR）
+sys.path.insert(0, os.path.join(ROOT, 'skills', 'data'))
+import scope_rules as _scope  # noqa: E402
+check("範圍：規則集中在 scope_rules.py（單一來源，含 91xx 排除）",
+      'def in_scope(' in open('skills/data/scope_rules.py', encoding='utf-8').read()
+      and 'not s.startswith("91")' in open('skills/data/scope_rules.py', encoding='utf-8').read())
+check("範圍：四個使用處都改用 scope_rules.in_scope（不得各寫一份）",
+      all('scope_rules' in open(f, encoding='utf-8').read() for f in
+          ('skills/data/fetch_data.py', 'skills/data/compute_indicators.py',
+           'skills/data/import_official_fundamentals.py', 'scripts/purge_out_of_scope_data.py')))
+check("範圍：in_scope() 對已知特殊證券回 False、對正常標的回 True",
+      not any(_scope.in_scope(x) for x in ('9103', '9105', '9110', '9136', '2881A', '2881B',
+                                           '2887E', '1312A', '01001T', '02001L', '6592B',
+                                           '72996U', '2891C', ''))
+      and all(_scope.in_scope(x) for x in ('2330', '0050', '00631L', '00981A', '2882', '2412')))
+# 以代號為鍵的衍生 store 也必須遵守同一條規則（否則範圍外證券會慢慢長回來）
+_sh = json.load(open('data/etf-shares.json', encoding='utf-8')).get('etf', {})
+_shbad = sorted(k for k in _sh if re.match(r'^\d', str(k)) and not _scope.in_scope(k))
+check("範圍：etf-shares.json 不得有範圍外鍵（特別股／ETN）", not _shbad, f"{len(_shbad)} 檔：{_shbad[:6]}")
+_ofbad = {}
+for _sec, _v in json.load(open('data/official-fundamentals.json', encoding='utf-8')).items():
+    if isinstance(_v, dict):
+        # 只檢查「看起來像代號的鍵」（meta 區塊的 files／method／source 不是代號）
+        _b = sorted(k for k in _v if re.match(r'^\d', str(k)) and not _scope.in_scope(k))
+        if _b:
+            _ofbad[_sec] = _b
+check("範圍：official-fundamentals.json 不得有範圍外鍵（官方股利檔含特別股，需在寫入端過濾）",
+      not _ofbad, f"{_ofbad}")
+_dgbad = {}
+for _p in sorted(glob.glob('data/digest/*.json')):
+    if _p.endswith('index.json'):
+        continue
+    _d = json.load(open(_p, encoding='utf-8'))
+    _b = sorted({x.get('sym') for _k in ('top_gainers', 'top_losers', 'top_score')
+                 for x in (_d.get(_k) or []) if not _scope.in_scope(x.get('sym'))})
+    if _b:
+        _dgbad[os.path.basename(_p)] = _b
+check("範圍：digest 榜單不得出現範圍外證券（ETN／DR）", not _dgbad, f"{_dgbad}")
+check("範圍：股利寫入端必須過濾（import_dividends 呼叫 in_scope）",
+      'scope_rules.in_scope(sym)' in open('skills/data/import_official_fundamentals.py', encoding='utf-8').read())
 
 
 # 資料範圍：history 與 kline 也必須遵守同一條範圍規則，不能只有 stocks.json 乾淨。
