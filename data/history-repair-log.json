@@ -1,24 +1,27 @@
 {
-  "repaired_at": "2026-11-12T16:39:45.704000+08:00",
+  "repaired_at": "2026-11-12T21:18:50+08:00",
   "rules": {
     "A": "high 缺失超過 50% 的快照視為非交易日或來源不完整，整檔刪除",
     "B": "代號開頭連續 >=3 天 o=h=l=c 且 volume 與首列相同 → 視為上市前／來源缺漏的補值，逐列刪除"
   },
-  "removed_files": 0,
-  "files": [],
-  "removed_padded_rows": 8,
-  "padded_symbols": 1,
-  "padded_detail": [
-    {
-      "sym": "00625K",
-      "name": "富邦上証+R",
-      "padded_days": 8,
-      "first_padded": "20250801",
-      "last_padded": "20250812",
-      "first_real": "20250813",
-      "first_real_close": 8.04,
-      "padded_close": null,
-      "padded_volume": 0.0
-    }
-  ]
+  "removed_files": 14,
+  "files": [
+    "20250714.json",
+    "20250715.json",
+    "20250716.json",
+    "20250717.json",
+    "20250718.json",
+    "20250721.json",
+    "20250722.json",
+    "20250723.json",
+    "20250724.json",
+    "20250725.json",
+    "20250728.json",
+    "20250729.json",
+    "20250730.json",
+    "20250731.json"
+  ],
+  "removed_padded_rows": 1,
+  "padded_symbols": 0,
+  "padded_detail": []
 }

@@ -102,9 +102,45 @@ def main():
     if len(detail) > 8:
         print(f"   …另有 {len(detail) - 8} 檔")
 
+    # ---- C. 刪除 2025-07-14 ~ 2025-07-31 的假快照檔 ----
+    fake_dates = [os.path.basename(f) for f in sorted(glob.glob(os.path.join(HIST, "202507*.json")))
+                  if "20250714" <= os.path.basename(f)[:8] <= "20250731"]
+
     if dry:
-        print("[repair] --dry-run：不修改任何檔案")
+        print(f"[repair] C 類（假快照）：{len(fake_dates)} 檔 (2025-07-14~07-31)")
+        for fname in fake_dates:
+            print(f"   刪除: {fname}")
+        print(f"[repair] --dry-run：不修改任何檔案")
         return
+
+    for fname in fake_dates:
+        fp = os.path.join(HIST, fname)
+        if os.path.exists(fp):
+            os.remove(fp)
+            print(f"[repair] 已刪除: {fname}")
+
+    print(f"[repair] C 類（假快照）：已刪除 {len(fake_dates)} 檔")
+
+    # ---- D. 009816 特例：移除 close=15.0, vol=367256179 的偽行 ----
+    nine_816_fake = []
+    for fp, d, rows in snaps:
+        for r in rows:
+            if str(r.get("stock_id")) == "009816" and r.get("close") == 15.0 and r.get("volume") == 367256179:
+                nine_816_fake.append((os.path.basename(fp), r))
+                break
+    if nine_816_fake:
+        print(f"[repair] D 類（009816 偽行）：{len(nine_816_fake)} 列，涉及 {nine_816_fake}")
+        for fname, r in nine_816_fake:
+            fp = os.path.join(HIST, fname)
+            d = json.load(open(fp, encoding="utf-8"))
+            keep = [x for x in d["stocks"] if not (str(x.get("stock_id")) == "009816" and x.get("close") == 15.0 and x.get("volume") == 367256179)]
+            if len(keep) != len(d["stocks"]):
+                d["stocks"] = keep
+                if "count" in d:
+                    d["count"] = len(keep)
+                with open(fp, "w", encoding="utf-8") as f:
+                    json.dump(d, f, ensure_ascii=False, separators=(",", ":"))
+                print(f"   已移除: {fname} 中 009816 的 close=15.0/vol=367256179 行")
 
     for fp, d, rows in snaps:
         if os.path.basename(fp) in {x["file"] for x in dead}:
@@ -126,14 +162,14 @@ def main():
             "A": "high 缺失超過 50% 的快照視為非交易日或來源不完整，整檔刪除",
             "B": "代號開頭連續 >=3 天 o=h=l=c 且 volume 與首列相同 → 視為上市前／來源缺漏的補值，逐列刪除",
         },
-        "removed_files": len(dead),
-        "files": dead,
+        "removed_files": len(dead) + len(fake_dates),
+        "files": dead + fake_dates,
         "removed_padded_rows": len(marked),
         "padded_symbols": len(detail),
         "padded_detail": detail,
     }
     json.dump(log, open(LOG, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
-    print(f"[repair] 完成：刪除 {len(dead)} 檔、{len(marked)} 列補值；紀錄於 {LOG}")
+    print("[repair] 完成：刪除 {len(dead)} 檔、{len(fake_dates)} 假快照、{len(marked)} 列補值；紀錄於 {LOG}")
     print("[repair] 請接著重跑 build_kline.py 與 compute_indicators.py")
 
 
