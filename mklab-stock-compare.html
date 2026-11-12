@@ -59,7 +59,7 @@
 
 <div class="section-title">ETF 成份股比較</div>
 <div class="muted-small-top" style="margin:8px 0;">
-  <label><input type="checkbox" id="cmpHoldingsChk" onchange="toggleCmpHoldings(this.checked)"> 開啟 ETF 成份股比較（預設不顯示，僅比較清單中的 ETF）</label>
+  <label><input type="checkbox" id="cmpHoldingsChk" onchange="toggleCmpHoldings(this.checked)"> 開啟 ETF 成份股比較（<strong>預設顯示</strong>，可取消勾選關閉；僅比較清單中的 ETF）</label>
   <span id="cmpHoldN" style="margin-left:14px;">
     <label class="cmp-opt"><input type="radio" name="holdN" value="5" onchange="setHoldN(5)"> 前 5 大</label>
     <label class="cmp-opt"><input type="radio" name="holdN" value="10" onchange="setHoldN(10)"> 前 10 大</label>
@@ -181,9 +181,11 @@
   const HOLD_N_KEY = 'mklab-cmp-holdN';
   const NOISE = /CASH|現金|期貨|TX|權證|^C_/i;
   let HOLD = null;
-  let showHoldings = false;
+  // 2026-11-11 使用者指定：預設「開啟」成份股比較；仍保留勾選框可隨時關閉。
+  // 只有在使用者「明確關閉過」時才記住 '0'（未設定過 → 維持預設開啟）。
+  let showHoldings = true;
   let holdN = 10;
-  try { showHoldings = localStorage.getItem(CMP_HOLD_KEY) === '1'; } catch (e) {}
+  try { const _v = localStorage.getItem(CMP_HOLD_KEY); if (_v !== null) showHoldings = _v === '1'; } catch (e) {}
   try { holdN = Number(localStorage.getItem(HOLD_N_KEY)) === 5 ? 5 : 10; } catch (e) {}
 
   function toggleCmpHoldings(on) {

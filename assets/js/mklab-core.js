@@ -407,8 +407,9 @@
     // 資料匯出：只有頁面註冊了匯出動作（MKLAB.registerExport）才會出現在設定抽屜裡
     if (MKLAB._exportActions && MKLAB._exportActions.length) {
       h += '<h4>資料匯出</h4>';
+      // 2026-11-11 使用者指定：與「資料來源／說明」用同一種連結樣式，不要做成按鈕
       MKLAB._exportActions.forEach((a, i) => {
-        h += `<div class="row"><button class="btn-secondary" onclick="MKLAB._runExport(${i})">${a.label}</button></div>`;
+        h += `<div class="row"><a href="#" onclick="MKLAB._runExport(${i});return false;">${a.label}</a></div>`;
       });
     }
     h += '<h4>資料來源</h4>';

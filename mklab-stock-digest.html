@@ -137,35 +137,65 @@
   function drawTimeline(rows, events, known) {
     const box = document.getElementById('evTimeline');
     if (!rows.length) { box.innerHTML = '<p class="text-muted">尚無大盤資料</p>'; return; }
-    const W = 1000, H = 220, X0 = 50, X1 = 950, AXIS_Y = 120;
+    const W = 2400, H = 330, X0 = 60, X1 = 2340, AXIS_Y = 160;   // 加寬加高（2026-11-11）：事件密集時才有空間分層
     const t0 = Date.parse(rows[0].d), t1 = Date.parse(rows[rows.length - 1].d);
     const xOf = d => X0 + (Date.parse(d) - t0) / Math.max(1, t1 - t0) * (X1 - X0);
-    let svg = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" style="min-width:720px;width:100%;display:block;" role="img" aria-label="大盤重大事件時間軸">`;
+    let svg = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" style="min-width:2400px;display:block;" role="img" aria-label="大盤重大事件時間軸">`;
     svg += `<line x1="${X0}" y1="${AXIS_Y}" x2="${X1}" y2="${AXIS_Y}" style="stroke:var(--border);stroke-width:3"/>`;
     // 年份刻度
     const startY = Number(rows[0].d.slice(0, 4)), endY = Number(rows[rows.length - 1].d.slice(0, 4));
+    // 年份標籤密度控制（2026-11-11 修）：TWII 資料自 1997 起共 30 年，若每年都標字，
+    // 在 900px 內每 15px 就一個標籤（字寬約 30px）→ 年份文字互相重疊成一團。
+    // 現在：刻度照畫，但文字間距不足時只畫刻度不標字。
+    const YEAR_MIN_GAP = 46;
+    let lastYearX = -1e9;
     for (let y = startY; y <= endY; y++) {
       const d = y + '-01-01';
       const x = Date.parse(d) < t0 ? X0 : xOf(d);
       if (x < X0 - 1 || x > X1 + 1) continue;
       svg += `<line x1="${x}" y1="${AXIS_Y - 5}" x2="${x}" y2="${AXIS_Y + 5}" style="stroke:var(--muted)"/>`;
-      svg += `<text x="${x}" y="${AXIS_Y + 20}" text-anchor="middle" style="fill:var(--muted);font-size:12px">${y}</text>`;
+      if (x - lastYearX >= YEAR_MIN_GAP) {
+        svg += `<text x="${x}" y="${AXIS_Y + 20}" text-anchor="middle" style="fill:var(--muted);font-size:12px">${y}</text>`;
+        lastYearX = x;
+      }
     }
     const marks = [];
     known.forEach(k => { if (Date.parse(k.d) >= t0 && Date.parse(k.d) <= t1) marks.push({ x: xOf(k.d), d: k.d, label: k.name, color: 'var(--muted)', sub: '歷史參考' }); });
     events.forEach(e => marks.push({ x: xOf(e.date), d: e.date, label: (e.pct > 0 ? '+' : '') + e.pct.toFixed(1) + '%', color: e.type === 'up' ? 'var(--up)' : 'var(--down)', sub: e.date }));
     marks.sort((a, b) => a.x - b.x);
-    marks.forEach((m, i) => {
-      const up = i % 2 === 0;
-      const yStem = up ? 60 : 180;
-      const yText = up ? 40 : 200;
+    // 標註分層（2026-11-11 修：使用者回報「全部歷史事件文字重疊在一起」）。
+    // 舊版只有上下 2 層（i%2），事件密集時同一層的標籤會互相蓋住。
+    // 現在同側各 3 層，並用「估算標籤寬度 + 最小間距」做貪婪分層，確保同層標籤不重疊。
+    // 8 層、層距 32px（主標籤+副標合計約 32px 高，層距小於它會讓相鄰層互相壓到）
+    const LANE_Y = [128, 96, 64, 32, 204, 236, 268, 300];
+    const MIN_PAD = 8;                          // 同層兩個標籤之間的最小水平留白（px）
+    const laneLast = LANE_Y.map(() => null);    // 每層記錄最後一個標籤的 {x, hw}
+    marks.forEach((m) => {
+      // 估半寬要取「主標籤」與「副標（日期／歷史參考）」較寬的一邊——
+      // 日期（如 1997-12-08，10 字元）比 +14.9% 寬，只估主標會讓副標壓到隔壁。
+      const hw = Math.max(22, String(m.label).length * 6.5, String(m.sub).length * 4.6);
+      let lane = -1;
+      for (let L = 0; L < laneLast.length; L++) {
+        const p = laneLast[L];
+        if (p === null || m.x - p.x >= p.hw + hw + MIN_PAD) { lane = L; break; }
+      }
+      if (lane < 0) {                          // 6 層都不夠（極端密集）→ 挑「最早結束」的那層
+        lane = 0;
+        for (let L = 1; L < laneLast.length; L++) {
+          const a = laneLast[L] ? laneLast[L].x : -1e9, b = laneLast[lane] ? laneLast[lane].x : -1e9;
+          if (a < b) lane = L;
+        }
+      }
+      laneLast[lane] = { x: m.x, hw: hw };
+      const yText = LANE_Y[lane];
+      const yStem = yText < AXIS_Y ? yText + 14 : yText - 14;
       svg += `<line x1="${m.x}" y1="${AXIS_Y}" x2="${m.x}" y2="${yStem}" style="stroke:${m.color};stroke-dasharray:3 3;opacity:.7"/>`;
       svg += `<circle cx="${m.x}" cy="${AXIS_Y}" r="6" style="fill:${m.color}"/>`;
-      svg += `<text x="${m.x}" y="${yText - 4}" text-anchor="middle" style="fill:${m.color};font-size:12px;font-weight:700">${m.label}</text>`;
-      svg += `<text x="${m.x}" y="${yText + 9}" text-anchor="middle" style="fill:var(--muted);font-size:10px">${m.sub}</text>`;
+      svg += `<text x="${m.x}" y="${yText - 6}" text-anchor="middle" style="fill:${m.color};font-size:12px;font-weight:700">${m.label}</text>`;
+      svg += `<text x="${m.x}" y="${yText + 11}" text-anchor="middle" style="fill:var(--muted);font-size:9px">${m.sub}</text>`;
     });
     svg += '</svg>';
-    box.innerHTML = svg;
+    box.innerHTML = '<div style="overflow-x:auto">' + svg + '</div>';
     document.getElementById('evLegend').innerHTML =
       '<span class="up">▲ 上漲事件</span>　<span class="down">▼ 下跌事件</span>　<span class="text-muted">灰色為歷史參考事件（僅在資料範圍內顯示）</span>';
   }
