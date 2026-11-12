@@ -212,6 +212,58 @@ _kbad = [os.path.basename(x) for x in glob.glob('data/kline/*.json')
          if not _in_scope(os.path.basename(x)[:-5])]
 check("範圍：kline 不得有範圍外證券的檔案", not _kbad, f"{len(_kbad)} 檔：{_kbad[:6]}")
 
+# 資料真實性：不得有「補值列」（2026-11-12）
+# 症狀：連續多日同價「且同量」＝偽造補值（真實一字漲跌停的成交量仍會變動）。
+# 實測曾被補 26,905 列——14 份快照（2025-07-14~07-31）每份 1309/1311 列，
+# 另有 73 檔 ETF／個股在「上市前」被補了最多 226 天，導致 research 頁的 YTD
+# 基準價算成假值（009816 凱基台灣TOP50 顯示 15.0，實際首日 2026-02-03 為 10.27）。
+_snaps2 = {}
+for _p in sorted(glob.glob('data/history/*.json')):
+    _dt = os.path.basename(_p)[:-5]
+    for _r in json.load(open(_p, encoding='utf-8')).get('stocks', []):
+        _snaps2.setdefault(str(_r.get('stock_id')), []).append((_dt, _r))
+_hpad = []
+for _sym, _items in _snaps2.items():
+    _items.sort(key=lambda x: x[0])
+    if len(_items) < 3:
+        continue
+    _c0, _v0 = _items[0][1].get('close'), _items[0][1].get('volume')
+    _n = 0
+    for _, _r in _items:
+        if (_r.get('open') == _r.get('high') == _r.get('low') == _r.get('close')
+                and _r.get('close') == _c0 and _r.get('volume') == _v0):
+            _n += 1
+        else:
+            break
+    if _n >= 3:
+        _hpad.append((_sym, _n))
+check("真實性：history 不得有『前導同價同量』補值列（真實平盤的量會變動）",
+      not _hpad, f"{len(_hpad)} 檔：{_hpad[:5]}")
+_kpad = []
+for _p in sorted(glob.glob('data/kline/*.json')):
+    _rr = json.load(open(_p, encoding='utf-8')).get('rows', [])
+    if len(_rr) < 3:
+        continue
+    _c0, _n = _rr[0][4], 0
+    for _r in _rr:
+        if _r[1] == _r[2] == _r[3] == _r[4] == _c0:
+            _n += 1
+        else:
+            break
+    if _n >= 3:
+        _kpad.append((os.path.basename(_p)[:-5], _n))
+check("真實性：kline 不得有『前導同價』補值列（history 清掉後 kline 也不得殘留）",
+      not _kpad, f"{len(_kpad)} 檔：{_kpad[:5]}")
+check("真實性：build_kline 必須剔除 merge 保留下來的前導補值（防回退）",
+      'def strip_padded_prefix' in open('skills/data/build_kline.py', encoding='utf-8').read()
+      and 'strip_padded_prefix(out)' in open('skills/data/build_kline.py', encoding='utf-8').read())
+check("真實性：repair_history 必須以『同價且同量』偵測補值（只同價會誤殺 OHLC 回填日）",
+      'PAD_MIN_RUN' in open('skills/data/repair_history.py', encoding='utf-8').read()
+      and 'volume' in open('skills/data/repair_history.py', encoding='utf-8').read())
+_ret2 = open('assets/js/mklab-returns.js', encoding='utf-8').read()
+check("前端：『基準日早於該標的首個交易日』時改用首個交易日並標示（不得顯示假基準價）",
+      'listedBase' in _ret2 and '（上市首日）' in _ret2)
+
 # meta 一致性：任何寫入 stocks.json 的地方都必須讓 meta 跟著陣列走。
 # 2026-11-10 實測：清掉 4 檔 DR 後 meta.count 仍停在 1448（陣列已是 1444）。
 _meta_now = stocks_doc.get('meta', {})

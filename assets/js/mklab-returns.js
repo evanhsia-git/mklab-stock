@@ -74,14 +74,21 @@
   function computeSeries(rows, period) {
     const n = rows.length;
     if (n < 2) return null;
-    const bi = baseIndex(rows, period);
-    if (bi < 0 || bi >= n - 1) return null;
+    let bi = baseIndex(rows, period);
+    // 2026-11-12：該標的在這個區間的「基準日」之前還沒有資料（例如 2026-02-03 才掛牌的
+    // 009816，YTD 基準日 2025-12-31 早於它上市）→ 舊版直接回 null 顯示「資料不足」，
+    // 但這樣所有新上市標的的區間報酬率都看不到。改成用「首個真實交易日」當基準並標記出來，
+    // 不謊稱它在那之前就存在。
+    let listedBase = false;
+    if (bi < 0) { bi = 0; listedBase = true; }
+    if (bi >= n - 1) return null;
     const base = rows[bi].c;
     if (!base) return null;
     const pts = [];
     for (let i = bi; i < n; i++) pts.push([rows[i].d, +((rows[i].c / base - 1) * 100).toFixed(2)]);
     return {
       baseDate: rows[bi].d,
+      listedBase: listedBase,
       endDate: rows[n - 1].d,
       baseClose: base,
       endClose: rows[n - 1].c,
@@ -197,14 +204,16 @@
         return '<tr><td>' + r.sym + '</td><td>' + r.name + '</td><td colspan="3" class="text-muted">資料不足（此區間無法取得基準日收盤）</td></tr>';
       }
       const cls = r.s.final >= 0 ? 'up' : 'down';
-      return '<tr><td>' + r.sym + '</td><td>' + r.name + '</td><td>' + r.s.baseDate + '</td>' +
+      // 基準日早於該標的資料起點時，改用首個交易日並標註，避免被誤讀成當天就有價格
+      const baseCell = r.s.baseDate + (r.s.listedBase ? ' <span class="text-muted">（上市首日）</span>' : '');
+      return '<tr><td>' + r.sym + '</td><td>' + r.name + '</td><td>' + baseCell + '</td>' +
         '<td class="' + cls + '"><b>' + pctText(r.s.final) + '</b></td>' +
         '<td>' + r.s.baseClose + ' → ' + r.s.endClose + '（' + r.s.endDate + '）</td></tr>';
     }).join('');
     st.opts.summary.innerHTML =
       '<div class="table-wrap"><table><thead><tr><th>代號</th><th>名稱</th><th>基準日</th><th>區間漲跌</th><th>收盤（基準 → 期末）</th></tr></thead><tbody>' +
       rows + '</tbody></table></div>' +
-      '<p class="muted-small-top">區間漲跌以基準日收盤為 0% 計算，僅代表歷史表現，不代表未來報酬。收盤價來自 data/kline，資料為收盤後更新。</p>';
+      '<p class="muted-small-top">區間漲跌以基準日收盤為 0% 計算，僅代表歷史表現，不代表未來報酬。收盤價來自 data/kline，資料為收盤後更新。標註「上市首日」者表示該標的在該區間基準日之前尚無資料，改以其首個交易日為基準。</p>';
   }
 
   MK.returns = { PERIODS: PERIODS, loadKline: loadKline, computeSeries: computeSeries, baseIndex: baseIndex, mount: mount };
