@@ -169,7 +169,7 @@ def main():
         "padded_detail": detail,
     }
     json.dump(log, open(LOG, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
-    print("[repair] 完成：刪除 {len(dead)} 檔、{len(fake_dates)} 假快照、{len(marked)} 列補值；紀錄於 {LOG}")
+    print(f"[repair] 完成：刪除 {len(dead)} 檔、{len(fake_dates)} 假快照、{len(marked)} 列補值；紀錄於 {LOG}")
     print("[repair] 請接著重跑 build_kline.py 與 compute_indicators.py")
 
 
