@@ -33,9 +33,10 @@
 <main class="wrap">
 
 <section id="eventSection">
-<div class="section-title">大盤重大事件時間軸（加權指數 5 日累積漲跌 ±10%）</div>
-<div class="muted-small-top" id="evNote" style="margin-bottom:8px;">以台股加權指數（TWII）收盤計算：任一交易日與 5 個交易日前收盤相比，累積漲跌達 ±10% 即列為事件；連續同方向的觸發日合併為一個事件，取幅度最大的一天。</div>
+<div class="section-title" id="evTitle">大盤重大事件時間軸（加權指數 5 日累積漲跌 ±15%）</div>
+<div class="muted-small-top" id="evNote" style="margin-bottom:8px;">以台股加權指數（TWII）收盤計算：任一交易日與 5 個交易日前收盤相比，累積漲跌達 ±15% 即列為事件；連續同方向且間隔不超過 5 日的觸發日合併為一個事件，取幅度最大的一天。</div>
 <div class="card">
+  <div class="kline-toolbar" id="evCtl" role="group" aria-label="事件門檻選擇" style="margin:0 0 10px;"></div>
   <div id="evTimeline" style="overflow-x:auto;"></div>
   <div class="muted-small-top" id="evLegend" style="margin-top:6px;"></div>
 </div>
@@ -53,10 +54,26 @@
 <script src="assets/js/mklab-core.js"></script>
 <script>
   // ===== 大盤重大事件時間軸 =====
-  // 門檻：5 個交易日累積漲跌幅 ≥ +10% 或 ≤ -10%。只用加權指數（大盤），不套用個股。
-  const EV_TH = 0.10;
-  const EV_WINDOW = 5;     // 累積區間（交易日）
+  // 門檻可切換（單選，預設第一項）。只用加權指數（大盤），不套用個股。
+  // 三個檔位的事件密度以 1997-07 起的 TWII 長期資料實測：5日±15%→7 件、20日±20%→18 件、60日±30%→14 件。
+  const EV_PRESETS = [
+    { key: '5_15',  window: 5,  th: 0.15, label: '5 日 ±15%' },
+    { key: '20_20', window: 20, th: 0.20, label: '20 日 ±20%' },
+    { key: '60_30', window: 60, th: 0.30, label: '60 日 ±30%' },
+  ];
+  const EV_MERGE = 5;      // 合併間隔（交易日）：同方向且間隔 ≤ 5 日的觸發日合併為一事件（固定，不隨窗口放大，否則長窗口會把不同事件過度合併）
   const EV_FWD = 60;       // 事件後觀察期（交易日，約 3 個月，與股災後三個月漲跌的算法一致）
+  const EV_PREF_KEY = 'mklab-digest-ev-preset';
+
+  function getEvPreset() {
+    try {
+      const k = localStorage.getItem(EV_PREF_KEY);
+      if (EV_PRESETS.some(p => p.key === k)) return k;
+    } catch (e) {}
+    return EV_PRESETS[0].key;
+  }
+  function setEvPreset(k) { try { localStorage.setItem(EV_PREF_KEY, k); } catch (e) {} }
+  function presetOf(key) { return EV_PRESETS.find(p => p.key === key) || EV_PRESETS[0]; }
   // 歷史參考事件（來自 TVBS 股災後三月涨跌圖的標示日期）；僅在資料範圍內才會畫在時間軸上
   const KNOWN_EVENTS = [
     { d: '2000-04-10', name: '網路泡沫' },
@@ -81,7 +98,13 @@
   }
 
   // 取得大盤收盤序列：優先 data/twii-long.json（由 skills/data/fetch_twii_long.py 產生的長期資料），否則用近期的 twii_kdata.js
-  async function loadTwiiSeries() {
+  // 只抓一次並快取（切換門檻檔位時重繪，不重複下載）
+  let _twiiPromise = null;
+  function loadTwiiSeries() {
+    if (!_twiiPromise) _twiiPromise = _loadTwiiSeries();
+    return _twiiPromise;
+  }
+  async function _loadTwiiSeries() {
     let rows = [];
     let source = '';
     const long = await MKLAB.data.json('twii-long').catch(() => null);
@@ -100,17 +123,17 @@
     return { rows: rows.filter(r => r.c > 0), source: source };
   }
 
-  // 偵測事件：5 日累積漲跌 ≥ 門檻；同方向且間隔 ≤ 5 日的觸發合併為一個事件，取幅度最大者
-  function detectEvents(rows) {
+  // 偵測事件：win 日累積漲跌 ≥ 門檻；同方向且間隔 ≤ EV_MERGE 日的觸發合併為一個事件，取幅度最大者
+  function detectEvents(rows, win, th) {
     const raw = [];
-    for (let i = EV_WINDOW; i < rows.length; i++) {
-      const p = rows[i].c / rows[i - EV_WINDOW].c - 1;
-      if (Math.abs(p) >= EV_TH) raw.push({ i: i, p: p });
+    for (let i = win; i < rows.length; i++) {
+      const p = rows[i].c / rows[i - win].c - 1;
+      if (Math.abs(p) >= th) raw.push({ i: i, p: p });
     }
     const out = [];
     raw.forEach(e => {
       const last = out[out.length - 1];
-      if (last && e.i - last.end <= EV_WINDOW && Math.sign(e.p) === Math.sign(last.p)) {
+      if (last && e.i - last.end <= EV_MERGE && Math.sign(e.p) === Math.sign(last.p)) {
         last.end = e.i;
         if (Math.abs(e.p) > Math.abs(last.p)) { last.i = e.i; last.p = e.p; }
       } else {
@@ -122,7 +145,7 @@
       const fwdIdx = ev.i + EV_FWD;
       return {
         date: r.d,
-        from: rows[ev.i - EV_WINDOW].d,
+        from: rows[ev.i - win].d,
         pct: ev.p * 100,
         type: ev.p > 0 ? 'up' : 'down',
         close: r.c,
@@ -200,10 +223,12 @@
       '<span class="up">▲ 上漲事件</span>　<span class="down">▼ 下跌事件</span>　<span class="text-muted">灰色為歷史參考事件（僅在資料範圍內顯示）</span>';
   }
 
-  function drawEventTable(events) {
+  function drawEventTable(events, p) {
     const box = document.getElementById('evList');
+    const pct = Math.round(p.th * 100);
+    const W = p.window + ' 日';
     if (!events.length) {
-      box.innerHTML = '<div class="card"><p class="text-muted">資料範圍內沒有 5 日累積漲跌 ±10% 的大盤事件。</p></div>';
+      box.innerHTML = `<div class="card"><p class="text-muted">資料範圍內沒有 ${W}累積漲跌 ±${pct}% 的大盤事件。</p></div>`;
       return;
     }
     const rows = events.slice().reverse().map(e => `<tr>
@@ -214,28 +239,62 @@
       <td class="${e.fwd == null ? '' : (e.fwd >= 0 ? 'up' : 'down')}">${e.fwd == null ? '資料不足' : fmtPct(e.fwd)}</td>
     </tr>`).join('');
     box.innerHTML = `<div class="card"><h3>事件明細（共 ${events.length} 次，新到舊）</h3>
-      <div class="table-wrap"><table><thead><tr><th>事件日</th><th>5 日區間</th><th>5 日累積漲跌</th><th>事件日收盤</th><th>事件後約 3 個月（60 交易日）</th></tr></thead><tbody>${rows}</tbody></table></div>
+      <div class="table-wrap"><table><thead><tr><th>事件日</th><th>${W}區間</th><th>${W}累積漲跌</th><th>事件日收盤</th><th>事件後約 3 個月（60 交易日）</th></tr></thead><tbody>${rows}</tbody></table></div>
       <p class="muted-small-top">「事件後約 3 個月」為事件日收盤至 60 個交易日後收盤的漲跌，資料不足則不顯示。僅供研究參考，非投資建議。</p></div>`;
   }
 
-  async function renderEvents() {
+  function mountPresetBar(state) {
+    const box = document.getElementById('evCtl');
+    box.innerHTML = EV_PRESETS.map(p => `<button type="button" data-ev="${p.key}">${p.label}</button>`).join('');
+    box.addEventListener('click', function (e) {
+      const b = e.target.closest && e.target.closest('[data-ev]');
+      if (!b || b.dataset.ev === state.key) return;
+      state.key = b.dataset.ev;
+      setEvPreset(state.key);
+      renderEvents(state);
+    });
+  }
+
+  async function renderEvents(state) {
+    const p = presetOf(state.key);
+    const pct = Math.round(p.th * 100);
+    // 檔位按鈕 active 狀態
+    document.querySelectorAll('#evCtl [data-ev]').forEach(function (b) {
+      b.classList.toggle('on', b.dataset.ev === p.key);
+    });
+    // 標題與說明依當前檔位顯示（每次「重設」而非累加，避免切換後文字重複堆疊）
+    document.getElementById('evTitle').textContent =
+      `大盤重大事件時間軸（加權指數 ${p.window} 日累積漲跌 ±${pct}%）`;
+    const note = `以台股加權指數（TWII）收盤計算：任一交易日與 ${p.window} 個交易日前收盤相比，累積漲跌達 ±${pct}% 即列為事件；連續同方向且間隔不超過 ${EV_MERGE} 日的觸發日合併為一個事件，取幅度最大的一天。`;
     try {
       const s = await loadTwiiSeries();
-      if (!s.rows.length) { document.getElementById('evTimeline').innerHTML = '<p class="text-muted">尚無大盤資料</p>'; return; }
-      document.getElementById('evNote').textContent += '　資料範圍：' + s.source + '。';
-      const events = detectEvents(s.rows);
+      if (!s.rows.length) {
+        document.getElementById('evNote').textContent = note;
+        document.getElementById('evTimeline').innerHTML = '<p class="text-muted">尚無大盤資料</p>';
+        document.getElementById('evList').innerHTML = '';
+        return;
+      }
+      document.getElementById('evNote').textContent = note + '　資料範圍：' + s.source + '。';
+      const events = detectEvents(s.rows, p.window, p.th);
       drawTimeline(s.rows, events, KNOWN_EVENTS);
-      drawEventTable(events);
+      drawEventTable(events, p);
     } catch (e) {
       console.warn('[digest] timeline failed:', e);
+      document.getElementById('evNote').textContent = note;
       document.getElementById('evTimeline').innerHTML = '<p class="text-muted">時間軸資料載入失敗</p>';
     }
+  }
+
+  function initEvents() {
+    const state = { key: getEvPreset() };
+    mountPresetBar(state);
+    renderEvents(state);
   }
 
   window.addEventListener('DOMContentLoaded', async function () {
     MKLAB.initDrawer();
     MKLAB.Shell.mount({ active: 'digest' });
-    renderEvents();
+    initEvents();
     try {
       const idx = await MKLAB.data.json('digest/index');
       const dates = (idx && idx.dates) || [];
