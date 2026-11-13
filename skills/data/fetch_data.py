@@ -24,6 +24,8 @@ import json
 import os
 import sys
 import re
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import data_rules  # 2026-11-13 共用資料品質規則
 import math
 import time
 import datetime as dt
@@ -96,7 +98,7 @@ class RunLogger:
 # ===== API 端點 =====
 TWSE_DAILY       = "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL"
 TWSE_BWIBBU      = "https://openapi.twse.com.tw/v1/exchangeReport/BWIBBU_ALL"
-TWSE_BALANCE     = "https://openapi.twse.com.tw/v1/opendata/t187ap05_L"     # 資產負債表：股本（可能已失效，備用用 yfinance）
+TWSE_BALANCE     = data_rules.TWSE_BALANCE_ENDPOINTS  # 2026-11-13：舊值 t187ap05_L 是「月營收」非資產負債表，股本永遠為 0
 
 # TPEX：只保留上櫃 ETF（上櫃一般股票不納入，為本站原始設計；其餘上櫃證券如權證亦不收）
 TPEX_DAILY       = "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes?l=zh-tw"
@@ -278,32 +280,71 @@ def fetch_bwibbu():
 
 # ===== TWSE 資產負債表 (股本) =====
 def fetch_balance_sheet():
-    """抓 TWSE 資產負債表 (t187ap05_L)，回傳 {sid: {capital_stock}}。失敗回傳空 dict。"""
-    try:
-        raw = fetch_json(TWSE_BALANCE, timeout=60)
-        if not isinstance(raw, list):
-            return {}
-        out = {}
-        for r in raw:
-            sid = str(r.get("公司代號", "")).strip()
-            if not sid or not keep_record(sid):
+    """抓 TWSE 資產負債表（t187ap07_L_* 各業別），回傳 {sid: {capital_stock(元)}}。
+    2026-11-13 修正：舊端點 t187ap05_L 為月營收表，沒有股本欄位，導致股本/市值全部為 0。
+    股本欄位單位為仟元，統一換算為新台幣元（data_rules.balance_capital_to_twd）。
+    任一端點失敗只略過該端點；全部失敗回傳空 dict（不中斷，但 qa_gate 會以 CAPITAL_ZERO 阻擋發布）。"""
+    out = {}
+    fails = 0
+    for url in TWSE_BALANCE:
+        try:
+            raw = fetch_json(url, timeout=60)
+            if not isinstance(raw, list):
+                fails += 1
                 continue
-            def _f(k):
-                v = r.get(k)
-                if v in (None, "", "-", "--"):
-                    return None
-                try:
-                    return float(v)
-                except (ValueError, TypeError):
-                    return None
-            capital = _f("普通股股本")
-            if capital:
-                out[sid] = {"capital_stock": capital}
-        LOG.info(f"資產負債表取得 {len(out)} 檔股本")
-        return out
-    except Exception as e:
-        LOG.warn(f"資產負債表抓取失敗（股本留空，不中斷）：{e}")
+            for r in raw:
+                sid = str(r.get("公司代號", "")).strip()
+                if not sid or not keep_record(sid):
+                    continue
+                cap = data_rules.balance_capital_to_twd(_to_num(r.get(data_rules.BALANCE_CAPITAL_KEY)))
+                if cap:
+                    out[sid] = {"capital_stock": cap}
+        except Exception as e:
+            fails += 1
+            LOG.warn(f"資產負債表端點失敗（略過）：{url.rsplit('/', 1)[-1]} {e}")
+    LOG.info(f"資產負債表取得 {len(out)} 檔股本（失敗端點 {fails}/{len(TWSE_BALANCE)}）")
+    # 單位保險絲：換算後股數不合理 → 整批丟棄（寧缺勿錯），qa_gate 會以 CAPITAL_ZERO 擋下
+    if out and not data_rules.capital_unit_plausible([v["capital_stock"] for v in out.values()]):
+        LOG.error("資產負債表股本換算後股數不合理（單位疑似錯誤），整批不採用")
         return {}
+    return out
+
+
+# ===== TWSE 上市公司基本資料 (股本，主要來源) =====
+def fetch_company_capital():
+    """抓上市公司基本資料 t187ap03_L 的「實收資本額」→ {sid: {capital_stock(元)}}。
+
+    2026-11-13 修正：股本的主要來源。t187ap07_L_* 資產負債表只收「該期別已申報」者
+    （實測 752/1,099；台積電 2330、富邦金 2881 等都不在內），覆蓋率不足；本端點涵蓋
+    全部上市公司，且「實收資本額」單位已是新台幣元，沒有仟元換算的單位風險。
+    實測 2330 = 259,323,700,670 元（2,593 億元）。"""
+    out = {}
+    try:
+        raw = fetch_json(data_rules.TWSE_COMPANY_INFO_ENDPOINT, timeout=60)
+        if isinstance(raw, list):
+            for r in raw:
+                sid = str(r.get("公司代號", "")).strip()
+                if not sid or not keep_record(sid):
+                    continue
+                cap = data_rules.company_capital_to_twd(_to_num(r.get(data_rules.COMPANY_CAPITAL_KEY)))
+                if cap:
+                    out[sid] = {"capital_stock": cap}
+        LOG.info(f"公司基本資料取得 {len(out)} 檔股本（實收資本額，單位：元）")
+    except Exception as e:
+        LOG.warn(f"公司基本資料端點失敗（略過）：{e}")
+    if out and not data_rules.capital_unit_plausible([v["capital_stock"] for v in out.values()]):
+        LOG.error("公司基本資料股本換算後股數不合理（單位疑似錯誤），整批不採用")
+        return {}
+    return out
+
+
+def _to_num(v):
+    if v in (None, "", "-", "--"):
+        return None
+    try:
+        return float(str(v).replace(",", ""))
+    except (ValueError, TypeError):
+        return None
 
 
 # ===== TPEX BWIBBU (上櫃 PE/PB/殖利率) =====
@@ -440,8 +481,12 @@ def run_daily():
     bwibbu_twse = fetch_bwibbu()
 
 
-    # 5) 股本：TWSE 官方免 key
+    # 5) 股本：TWSE 官方免 key（公司基本資料 t187ap03_L 為主、資產負債表 t187ap07_L_* 為備援）
+    company_capital = fetch_company_capital()
     balance_sheet = fetch_balance_sheet()
+    capital_stock_map = dict(balance_sheet)
+    capital_stock_map.update(company_capital)  # 公司基本資料優先（涵蓋全部上市、單位為元）
+    LOG.info(f"股本合併：公司基本資料 {len(company_capital)} ＋ 資產負債表 {len(balance_sheet)} → {len(capital_stock_map)} 檔")
 
     # 6) 處理 TWSE 資料
     trade_date = parse_date(twse_raw[0]["Date"])
@@ -506,7 +551,7 @@ def run_daily():
         # 繼承既有 ROE/ROA/EPS/market_cap/ind
         ex = existing.get(sid, {})
         bb_twse = bwibbu_twse.get(sid, {}) if bwibbu_twse is not None else {"pe": ex.get("pe"), "pb": ex.get("pb"), "div": ex.get("div")}
-        bal = balance_sheet.get(sid, {})
+        bal = capital_stock_map.get(sid, {})
 
         # 當日無成交/停牌：TWSE 回傳 ClosingPrice=0 或空 → OHLC 全設 None
         no_trade = (close is None or close <= 0)
@@ -533,7 +578,7 @@ def run_daily():
 
         # P0-6：一般股票市值 = 收盤 × 股數；股數 = 股本(元) ÷ 面值 10。取不到股本時保留既有值（不補 0）
         if close is not None and close > 0 and capital_stock and sid not in etf_shares:
-            mc = round(close * capital_stock / 10)
+            mc = data_rules.market_cap_from_capital(close, capital_stock) or mc
 
         # ETF 標記
         is_etf = bool(re.search(r"ETF|基金|指數|正[0-9]|反[0-9]|槓桿|反向|期貨|配息|高息|優息|收益", name or ""))
@@ -549,7 +594,7 @@ def run_daily():
             "name": name,
             "price": close,
             "open": open_p, "high": high, "low": low, "volume": volume,
-            "pe": bb_twse.get("pe"), "pb": bb_twse.get("pb"), "div": bb_twse.get("div"),
+            "pe": data_rules.sanitize_pe(bb_twse.get("pe"), eps), "pb": bb_twse.get("pb"), "div": bb_twse.get("div"),
             "roe": roe, "roa": roa, "eps": eps, "capital_stock": capital_stock,
             "market_cap": mc, "ind": ex.get("ind"),
             "is_etf": is_etf,
@@ -666,7 +711,7 @@ def run_daily():
             "name": name,
             "price": close,
             "open": open_p, "high": high, "low": low, "volume": volume,
-            "pe": bb_tpex.get("pe"), "pb": bb_tpex.get("pb"), "div": bb_tpex.get("div"),
+            "pe": data_rules.sanitize_pe(bb_tpex.get("pe"), eps), "pb": bb_tpex.get("pb"), "div": bb_tpex.get("div"),
             "roe": roe, "roa": roa, "eps": eps, "capital_stock": capital_stock,
             "market_cap": mc, "ind": ex.get("ind"),
             "is_etf": is_etf,
@@ -797,6 +842,11 @@ def run_daily():
 
     LOG.stats["written"] = len(stocks)
     LOG.stats["details"]["trade_date"] = trade_date
+    # 2026-11-13：TWSE 日期落後 TPEX 一個交易日 → 上市股價未更新，明確告警（qa_gate 會以 TWSE_STALE 阻擋）
+    _tpex_dates = [x.get("price_asof") for x in stocks if x.get("source") == "TPEX" and x.get("price_asof")]
+    if _tpex_dates and max(_tpex_dates) > str(trade_date)[:10]:
+        LOG.warn(f"TWSE 日期 {trade_date} 落後 TPEX {max(_tpex_dates)}：上市股價疑似未更新，請檢查 TWSE OpenAPI")
+        LOG.stats["details"]["twse_stale_vs_tpex"] = max(_tpex_dates)
     LOG.stats["details"]["history_file"] = os.path.basename(hpath) if hpath else None
     LOG.stats["details"]["sources"] = sources
     LOG.info(f"完成 → data/ (stocks={len(stocks)}, history={trade_date}, TWSE={sources['TWSE']})")

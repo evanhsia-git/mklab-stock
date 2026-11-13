@@ -30,6 +30,8 @@ import os
 import sys
 import time
 import datetime as dt
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import data_rules  # 2026-11-13 共用資料品質規則
 
 OUT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "data", "us"))
 os.makedirs(OUT_DIR, exist_ok=True)
@@ -95,10 +97,10 @@ def _fetch_one_stock(yf, sym):
             "price": price,
             "chg": chg,
             "pe": info.get("trailingPE"),
-            "pb": info.get("priceToBook"),
+            "pb": data_rules.us_price_to_book(info),  # 2026-11-13：舊值 priceToBook 對 BRK-B 等會失真
             "roe": round(info["returnOnEquity"] * 100, 2) if info.get("returnOnEquity") is not None else None,
             "eps": info.get("trailingEps"),
-            "div": round(info["dividendYield"] * 100, 2) if info.get("dividendYield") is not None else None,
+            "div": data_rules.us_dividend_yield_pct(info),  # 2026-11-13：yfinance dividendYield 已是百分比，不可再乘 100
             "market_cap": info.get("marketCap"),
             "sector": info.get("sector"),
             "industry": info.get("industry"),
@@ -129,7 +131,7 @@ def _fetch_one_etf(yf, sym):
             "net_assets": info.get("totalAssets"),  # 基金規模（近似市值，用於排序前 30 大）
             "expense_ratio": round(info["annualReportExpenseRatio"] * 100, 3) if info.get("annualReportExpenseRatio") is not None else None,
             "yield": round(info["yield"] * 100, 2) if info.get("yield") is not None else None,
-            "ytd_return": round(info["ytdReturn"] * 100, 2) if info.get("ytdReturn") is not None else None,
+            "ytd_return": data_rules.us_ytd_pct(info.get("ytdReturn")),  # 2026-11-13：ytdReturn 已是百分比，不可再乘 100
             "category": info.get("category"),
             "52w_high": info.get("fiftyTwoWeekHigh"),
             "52w_low": info.get("fiftyTwoWeekLow"),

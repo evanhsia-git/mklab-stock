@@ -105,6 +105,8 @@ def run():
         "skills/data/fetch_us_data.py",
         "skills/data/fetch_us_universe.py",
         "skills/data/build_digest.py",
+        "skills/data/data_rules.py",
+        "skills/data/sanitize_snapshot.py",
         "skills/data/compute_indicators.py",
         "skills/html-health/check_html_health.py",
         "skills/qa-gate/qa_gate.py",
@@ -182,6 +184,32 @@ def run():
     except Exception as e:
         c.error(f"檢查失敗: {e}", "", stocks_path)
     add(c)
+
+    # 2026-11-13：資料品質規則（skills/data/data_rules.py）— 單位、股本、EPS/PE、日期、美股欄位
+    # 每條規則對應一次真實事故；ERROR 直接阻擋發布，WARNING 僅提醒。
+    try:
+        sys.path.insert(0, os.path.join(ROOT, "skills", "data"))
+        import data_rules as _dr
+        def _load_opt(rel):
+            fp = os.path.join(ROOT, rel)
+            if not os.path.exists(fp):
+                return None
+            with open(fp, encoding="utf-8") as f:
+                return json.load(f)
+        _us_s = _load_opt(os.path.join("data", "us", "us-stocks.json"))
+        _us_e = _load_opt(os.path.join("data", "us", "us-etfs.json"))
+        _issues = _dr.validate_snapshot(stocks_data, _us_s, _us_e)
+        if not _issues:
+            add(Check("Data", "資料品質規則（單位/股本/EPS-PE/日期/美股）").ok("全部通過"))
+        for _it in _issues:
+            _c = Check("Data", f"[{_it['code']}] {_it['msg'][:60]}")
+            if _it["level"] == "ERROR":
+                _c.error(_it["msg"], "依 docs/superpowers/plans/2026-11-13-data-quality-fix-plan.md 修正後重跑", "data/stocks.json")
+            else:
+                _c.warn(_it["msg"], "確認後納入改善計畫", "data/stocks.json")
+            add(_c)
+    except Exception as _e:
+        add(Check("Data", "資料品質規則").error(f"規則檢查失敗: {_e}", "修復 data_rules.py", "skills/data/data_rules.py"))
 
     # P0-6：以下檢查使用 stocks.json 實際欄位（sym / price / open / high / low / volume / market_cap），
     # 舊版誤用 code / close，導致 OHLC 檢查在所有資料上都被跳過（永遠不會回報錯誤）。
