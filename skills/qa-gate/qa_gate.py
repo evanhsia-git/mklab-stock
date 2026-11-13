@@ -198,7 +198,8 @@ def run():
                 return json.load(f)
         _us_s = _load_opt(os.path.join("data", "us", "us-stocks.json"))
         _us_e = _load_opt(os.path.join("data", "us", "us-etfs.json"))
-        _issues = _dr.validate_snapshot(stocks_data, _us_s, _us_e)
+        _etf_h = _load_opt(os.path.join("data", "etf-holdings.json"))
+        _issues = _dr.validate_snapshot(stocks_data, _us_s, _us_e, _etf_h)
         if not _issues:
             add(Check("Data", "資料品質規則（單位/股本/EPS-PE/日期/美股）").ok("全部通過"))
         for _it in _issues:

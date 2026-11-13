@@ -231,6 +231,102 @@ class RealSnapshotRegression(unittest.TestCase):
         self.assertIn("CAPITAL_ZERO", codes)
 
 
+class MarketCapFromShares(unittest.TestCase):
+    """2026-11-13 事故：市值用 股本÷10 推股數，對面額非 10 元／無面額的 32 檔算錯，
+    最嚴重（6919 康霈*，面額 0.5 元）差 20 倍。改用官方「已發行普通股數」。"""
+
+    @staticmethod
+    def _codes(issues):
+        return {i["code"] for i in issues}
+
+    def test_market_cap_from_shares_basic(self):
+        self.assertEqual(dr.market_cap_from_shares(2340, 25932370067), round(2340 * 25932370067))
+
+    def test_market_cap_from_shares_invalid_is_none(self):
+        for p, s in ((0, 100), (100, 0), (None, 100), (100, None), (-1, 100)):
+            self.assertIsNone(dr.market_cap_from_shares(p, s), (p, s))
+
+    def test_par_value_variants_shares_is_authoritative(self):
+        # 康霈* 面額 0.5 元：股本 7.79 億 ÷ 10 = 7,786 萬股（錯），官方已發行 15.57 億股（對）
+        capital_twd, shares, price = 778_600_430, 1_557_200_860, 69.5
+        wrong = dr.market_cap_from_capital(price, capital_twd)
+        right = dr.market_cap_from_shares(price, shares)
+        self.assertAlmostEqual(right / wrong, 20.0, places=1)  # 差 20 倍
+
+    def test_market_cap_mismatch_is_error(self):
+        st = {"stocks": [
+            {"sym": "6919", "security_type": "stock", "price": 69.5,
+             "shares": 1_557_200_860, "market_cap": 5_408_000_000, "capital_stock": 778_600_430},
+        ]}
+        self.assertIn("MARKET_CAP_MISMATCH", self._codes(dr.validate_snapshot(st)))
+
+    def test_market_cap_consistent_is_clean(self):
+        st = {"stocks": [
+            {"sym": "2330", "security_type": "stock", "price": 2340.0,
+             "shares": 25_932_370_067, "market_cap": round(2340.0 * 25_932_370_067)},
+        ]}
+        self.assertNotIn("MARKET_CAP_MISMATCH", self._codes(dr.validate_snapshot(st)))
+
+
+class UsEtfPriceMustBeMarketPrice(unittest.TestCase):
+    """2026-11-13 事故：ETF price 取 navPrice（淨值），16/30 檔與市場收盤差 >0.5%。"""
+
+    @staticmethod
+    def _codes(issues):
+        return {i["code"] for i in issues}
+
+    def test_price_equal_to_nav_is_error(self):
+        ue = {"etfs": [{"sym": "GLD", "price": 367.82397, "nav": 367.82397}]}
+        self.assertIn("US_ETF_PRICE_IS_NAV", self._codes(dr.validate_snapshot({"stocks": []}, None, ue)))
+
+    def test_price_different_from_nav_is_clean(self):
+        ue = {"etfs": [{"sym": "GLD", "price": 354.89, "nav": 367.82397}]}
+        self.assertNotIn("US_ETF_PRICE_IS_NAV", self._codes(dr.validate_snapshot({"stocks": []}, None, ue)))
+
+
+class EtfHoldingsCountSemantics(unittest.TestCase):
+    """2026-11-13 事故：n 被當成「成份股總數」顯示，但 299/363 檔只存前 10 大（0050 顯示 10、實際 50）。"""
+
+    @staticmethod
+    def _codes(issues):
+        return {i["code"] for i in issues}
+
+    def test_ten_items_from_cmoney_is_unknown(self):
+        self.assertIsNone(dr.etf_holdings_n(10, "CMONEY"))
+        self.assertIsNone(dr.etf_holdings_n(10, "YUANTA+CMONEY"))
+
+    def test_official_full_list_keeps_count(self):
+        self.assertEqual(dr.etf_holdings_n(50, "FUBON"), 50)
+        self.assertEqual(dr.etf_holdings_n(10, "FUBON"), 10)
+
+    def test_short_list_is_not_truncated(self):
+        # 截斷只發生在「權重前 10 大」這個切點 → 少於 10 檔不可能是被截斷的結果
+        for n in (1, 2, 3, 6, 8, 9):
+            self.assertEqual(dr.etf_holdings_n(n, "CMONEY"), n)
+
+    def test_sanitize_sets_n_listed_and_is_idempotent(self):
+        doc = {"meta": {}, "holdings": {
+            "0050": {"src": "YUANTA+CMONEY", "n": 10, "items": [["2330", "台積電", 58.0]] * 10},
+            "006208": {"src": "FUBON", "n": 50, "items": [["2330", "台積電", 1.0]] * 50},
+        }}
+        dr.sanitize_etf_holdings_doc(doc)
+        self.assertIsNone(doc["holdings"]["0050"]["n"])
+        self.assertEqual(doc["holdings"]["0050"]["n_listed"], 10)
+        self.assertEqual(doc["holdings"]["006208"]["n"], 50)
+        self.assertEqual(doc["holdings"]["006208"]["n_listed"], 50)
+        # 冪等：再跑一次不再變更
+        self.assertEqual(dr.sanitize_etf_holdings_doc(doc), [])
+
+    def test_truncated_count_is_warning_not_error(self):
+        st = {"stocks": [{"sym": "2330", "security_type": "stock", "price": 1, "shares": 1,
+                          "capital_stock": 1, "market_cap": 1}]}
+        hold = {"holdings": {"0050": {"n": 10, "items": [["2330", "台積電", 1.0]] * 10}}}
+        issues = dr.validate_snapshot(st, None, None, hold)
+        codes = self._codes(issues)
+        self.assertIn("ETF_HOLDINGS_TRUNCATED", codes)
+        self.assertNotIn("ERROR", {i["level"] for i in issues})
+
+
 if __name__ == "__main__":
     unittest.main()
 

@@ -118,7 +118,11 @@ def _fetch_one_etf(yf, sym):
     try:
         t = yf.Ticker(sym)
         info = t.info or {}
-        price = info.get("navPrice") or info.get("currentPrice") or info.get("regularMarketPrice")
+        # 2026-11-13 修正：price 必須是「市場收盤價」，不可用 navPrice（淨值）。
+        # 舊版 navPrice 優先 → 顯示的是淨值而非市價，且淨值通常晚一天才更新，
+        # 導致 16/30 檔與市場收盤差 >0.5%（最大 3.64%），而 chg 卻是用市價的
+        # previousClose 算的，價格與漲跌幅口徑不一致。淨值改存 nav 欄位供參考。
+        price = info.get("currentPrice") or info.get("regularMarketPrice")
         prev_close = info.get("previousClose") or info.get("regularMarketPreviousClose")
         chg = None
         if price is not None and prev_close:
@@ -127,6 +131,7 @@ def _fetch_one_etf(yf, sym):
             "sym": sym,
             "name": info.get("shortName") or info.get("longName") or sym,
             "price": price,
+            "nav": info.get("navPrice"),  # 淨值（僅供參考，不用於 price）
             "chg": chg,
             "net_assets": info.get("totalAssets"),  # 基金規模（近似市值，用於排序前 30 大）
             "expense_ratio": round(info["annualReportExpenseRatio"] * 100, 3) if info.get("annualReportExpenseRatio") is not None else None,

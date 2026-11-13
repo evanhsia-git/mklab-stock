@@ -107,3 +107,72 @@
 - **觀察**：1808 潤隆自 2026-11-12 起不在 TWSE 每日行情 feed（最後成交日 11-11，疑似停牌），
   該檔因此從快照消失（1445 → 1444）。目前行為是「依當日 feed 重建」，未保留停牌標的；
   建議後續改為保留既有標的並標示停牌，避免個股無聲消失。
+
+---
+
+## 七、隨機抽查（80 檔）發現的缺陷與第一階段修正
+
+2026-11-13 以固定種子 `20261113` 抽樣台股上市股票 20／台股 ETF 20／美股 20／美股 ETF 20，
+與 TWSE / TPEx / yfinance / FinMind 交叉比對。
+
+**比對結果（修正前）**：台股 60/60 與外部來源精確吻合（TWSE、TPEx、FinMind 三源）；
+美股個股 30/30 吻合；結構檢查（重複代號、H<L、負量、市值≤0、未來日期、不可能日漲跌）全過。
+但找到三個會讓使用者看到錯數字的缺陷：
+
+### 1. 市值用「股本 ÷ 10」推股數 → 32 檔算錯（P0）
+
+- 根因：`market_cap_from_capital` 假設面額固定 10 元，但台股面額有 0.5／1／2.5／5 元，
+  甚至有「無面額」公司；13 檔誤差 >20%，合計低估約 1.07 兆元。
+  最嚴重 `6919 康霈*`（面額 0.5 元）市值 5.4B 應為 108.2B，**差 20 倍**。
+- 修正：改用 `t187ap03_L` 的 **「已發行普通股數」**（`data_rules.market_cap_from_shares`），
+  不對面額做任何假設；`market_cap_from_capital` 降為備援。快照新增 `shares` 欄位供稽核。
+- 驗證：全庫 1084 檔「市值 = 收盤 × 已發行股數」**0 檔不符**；
+  `2327 國巨*` 209.9B → 839.7B（+300%）、`6919 康霈*` 5.4B → 108.2B（+1900%）。
+
+### 2. 美股 ETF 的 price 取 `navPrice`（淨值）而非市價（P1）
+
+- 根因：`fetch_us_data.py` 的 `price = navPrice or currentPrice or ...`。淨值晚一天更新且非市價，
+  而 `chg` 卻用市價的 `previousClose` 算 → 價格與漲跌幅口徑不一致。
+  16/30 檔與市場收盤差 >0.5%，最大 3.64%（GLD）。
+- 修正：`price` 改用 `currentPrice / regularMarketPrice`；淨值另存 `nav` 欄位供參考。
+- 驗證：`price == nav` 由 2/30 → **0/30**；與市場收盤偏差中位數 0.56% → **0.058%**、
+  最大 3.64% → **0.165%**（殘差為美股盤中即時價位漂移）。
+
+### 3. ETF「成份股總數」被截斷（P1）
+
+- 根因：`etf-holdings.json` 的 `n` 文件寫「成份股總數」，實測 363 檔**全部 `n == items 長度`**，
+  其中 299 檔剛好 = 10；前端把它當總數顯示 → `0050` 顯示 10 檔（實際 50）、`00850` 顯示 10（實際約 100）。
+- 修正：語意修正為可證實的值（`data_rules.etf_holdings_n` + `sanitize_etf_holdings_doc`）：
+  - `n_listed` = 實際列出檔數（永遠可證實）
+  - `n` = 官方直出完整清單（`src` 為 `FUBON`）或「列出的檔數 ≠ 10」（截斷只發生在前 10 大這個切點）
+    → 填實際數；其餘**無法證實 → null**
+  - 前端 `n == null` 顯示「—」，不得回填 `items.length`（否則又把 10 謊稱成總數）
+- 驗證：363 檔中 **72 檔可證實、291 檔改 null**；`0050` 顯示「—」、`006208` 顯示「50 檔」、
+  `00632R`（6 檔）／`00653L`（3 檔）等短清單正確保留。
+
+### 4. qa_gate 新增 3 條防護規則（防止再犯）
+
+- `MARKET_CAP_MISMATCH`（ERROR）：市值與 收盤 × 已發行股數 不符 >1%
+- `US_ETF_PRICE_IS_NAV`（ERROR）：美股 ETF 的 `price` 與 `nav` 位元級相等（取錯欄位）
+- `ETF_HOLDINGS_TRUNCATED`（WARNING）：`n == 10` 且 `items` 長度 == 10（截斷跡象）
+
+### 5. 回歸測試
+
+`tests/test_data_rules_2026_11_13.py` 由 32 項擴充到 **44 項**，新增 3 個測試類別
+（`MarketCapFromShares`、`UsEtfPriceMustBeMarketPrice`、`EtfHoldingsCountSemantics`），
+分別鎖住上述三個事故（含「面額 0.5 元會差 20 倍」與 sanitize 冪等性）。
+
+### 驗證總結
+
+- `test_data_rules_2026_11_13` 44/44、`test_known_errors.py` 143/143、
+  `test_fake_data_regression.py` 全通過、4 支 node 測試全通過、`py_compile` 全通過、
+  前端 JS `node --check` 全通過。
+- 瀏覽器實測 compare 頁：0 console 錯誤；ETF 總數顯示「—／50 檔」如預期。
+- `qa_gate.py`：**🟢 ALLOW DEPLOY（Critical ERROR 0）**。
+
+### 仍未處理（第二／三階段）
+
+- 停牌標的改為保留 + 標示（1808 事件）
+- PE 與價／EPS 期間基準統一（266 檔）
+- 美股 ETF 費用率來源補齊（30/30 為空）
+- `daily-update.yml` 納入 `sanitize_snapshot.py`

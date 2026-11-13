@@ -317,7 +317,10 @@ def fetch_company_capital():
     2026-11-13 修正：股本的主要來源。t187ap07_L_* 資產負債表只收「該期別已申報」者
     （實測 752/1,099；台積電 2330、富邦金 2881 等都不在內），覆蓋率不足；本端點涵蓋
     全部上市公司，且「實收資本額」單位已是新台幣元，沒有仟元換算的單位風險。
-    實測 2330 = 259,323,700,670 元（2,593 億元）。"""
+    實測 2330 = 259,323,700,670 元（2,593 億元）。
+
+    同一份資料另有「已發行普通股數」，是市值的正確輸入（見 data_rules.market_cap_from_shares）：
+    台股面額有 0.5／1／2.5／5 元與無面額，用 股本÷10 推股數會算錯 32 檔（最大差 20 倍）。"""
     out = {}
     try:
         raw = fetch_json(data_rules.TWSE_COMPANY_INFO_ENDPOINT, timeout=60)
@@ -327,9 +330,12 @@ def fetch_company_capital():
                 if not sid or not keep_record(sid):
                     continue
                 cap = data_rules.company_capital_to_twd(_to_num(r.get(data_rules.COMPANY_CAPITAL_KEY)))
-                if cap:
-                    out[sid] = {"capital_stock": cap}
-        LOG.info(f"公司基本資料取得 {len(out)} 檔股本（實收資本額，單位：元）")
+                shares = _to_num(r.get(data_rules.COMPANY_SHARES_KEY))
+                if shares is not None and shares <= 0:
+                    shares = None
+                if cap or shares:
+                    out[sid] = {"capital_stock": cap, "shares": shares}
+        LOG.info(f"公司基本資料取得 {len(out)} 檔（股本＋已發行股數，單位：元／股）")
     except Exception as e:
         LOG.warn(f"公司基本資料端點失敗（略過）：{e}")
     if out and not data_rules.capital_unit_plausible([v["capital_stock"] for v in out.values()]):
@@ -575,10 +581,16 @@ def run_daily():
         # ROE/ROA/EPS 不在每日行情抓取：沿用既有值（由 import_official_fundamentals.py 以官方年化值同步）
         roe, roa, eps = ex.get("roe"), ex.get("roa"), ex.get("eps")
         capital_stock = bal.get("capital_stock") if bal.get("capital_stock") is not None else ex.get("capital_stock")
+        shares = bal.get("shares") if bal.get("shares") is not None else ex.get("shares")
 
-        # P0-6：一般股票市值 = 收盤 × 股數；股數 = 股本(元) ÷ 面值 10。取不到股本時保留既有值（不補 0）
-        if close is not None and close > 0 and capital_stock and sid not in etf_shares:
-            mc = data_rules.market_cap_from_capital(close, capital_stock) or mc
+        # 一般股票市值 = 收盤 × 已發行普通股數（2026-11-13 修正：不再用 股本÷10 推股數，
+        # 因為台股面額有 0.5／1／2.5／5 元與無面額，會把 32 檔算錯、最嚴重差 20 倍）。
+        # 拿不到已發行股數時才退回 股本÷10；兩者都沒有則保留既有值（不補 0）。
+        if close is not None and close > 0 and sid not in etf_shares:
+            if shares:
+                mc = data_rules.market_cap_from_shares(close, shares) or mc
+            elif capital_stock:
+                mc = data_rules.market_cap_from_capital(close, capital_stock) or mc
 
         # ETF 標記
         is_etf = bool(re.search(r"ETF|基金|指數|正[0-9]|反[0-9]|槓桿|反向|期貨|配息|高息|優息|收益", name or ""))
@@ -596,6 +608,7 @@ def run_daily():
             "open": open_p, "high": high, "low": low, "volume": volume,
             "pe": data_rules.sanitize_pe(bb_twse.get("pe"), eps), "pb": bb_twse.get("pb"), "div": bb_twse.get("div"),
             "roe": roe, "roa": roa, "eps": eps, "capital_stock": capital_stock,
+            "shares": shares,
             "market_cap": mc, "ind": ex.get("ind"),
             "is_etf": is_etf,
             "chg": chg,

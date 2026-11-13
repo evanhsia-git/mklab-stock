@@ -24,6 +24,8 @@ TARGETS = {
     "stocks": os.path.join(ROOT, "data", "stocks.json"),
     "us_stocks": os.path.join(ROOT, "data", "us", "us-stocks.json"),
     "us_etfs": os.path.join(ROOT, "data", "us", "us-etfs.json"),
+    # 2026-11-13：n 語意修正（只取得前 10 大者不可再自稱成份股總數）
+    "etf_holdings": os.path.join(ROOT, "data", "etf-holdings.json"),
 }
 
 
@@ -44,8 +46,10 @@ def main(dry_run=False):
                     notes.append((rec.get("sym"), n))
         elif name == "us_stocks":
             notes = [(None, [x]) for x in data_rules.sanitize_us_stocks_doc(doc)]
-        else:
+        elif name == "us_etfs":
             notes = [(None, [x]) for x in data_rules.sanitize_us_etfs_doc(doc)]
+        else:
+            notes = [(None, [x]) for x in data_rules.sanitize_etf_holdings_doc(doc)]
         print(f"[{name}] 修正 {len(notes)} 項")
         for sym, n in notes[:8]:
             print(f"    {sym + ': ' if sym else ''}{'; '.join(n)}")

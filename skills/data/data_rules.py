@@ -44,6 +44,8 @@ BALANCE_CAPITAL_KEY = "股本"
 # 實測值：2330 = 259,323,700,670 元（2,593 億元）。
 TWSE_COMPANY_INFO_ENDPOINT = "https://openapi.twse.com.tw/v1/opendata/t187ap03_L"
 COMPANY_CAPITAL_KEY = "實收資本額"
+# 已發行普通股數（股）：市值的正確輸入。同一份 t187ap03_L 就有，不必由股本推。
+COMPANY_SHARES_KEY = "已發行普通股數或TDR原股發行股數"
 COMPANY_CAPITAL_UNIT_TWD = 1  # 已是新台幣元，不做仟元換算
 
 # ---------- 合理範圍 ----------
@@ -89,8 +91,24 @@ def capital_unit_plausible(capitals_twd: List[float]) -> bool:
     return 1e7 <= med <= 5e10
 
 
+def market_cap_from_shares(price: Any, shares: Any) -> Optional[float]:
+    """市值 = 收盤 × 已發行普通股數。任一無效回傳 None（不補 0）。
+
+    2026-11-13：改以此為主要算法。舊的 market_cap_from_capital 假設面額固定 10 元，
+    但台股面額有 0.5／1／2.5／5 元，甚至有「無面額」公司（實測 32 檔不符、13 檔誤差 >20%，
+    最嚴重 6919 康霈* 差 20 倍）→ 直接用官方「已發行普通股數」，不對面額做任何假設。
+    """
+    p, s = _num_or_none(price), _num_or_none(shares)
+    if p is None or s is None or p <= 0 or s <= 0:
+        return None
+    return round(p * s)
+
+
 def market_cap_from_capital(price: Any, capital_twd: Any) -> Optional[float]:
-    """市值 = 收盤 × 股數；股數 = 股本(元) ÷ 面值 10。任一無效回傳 None（不補 0）。"""
+    """（備援）市值 = 收盤 × 股數；股數 = 股本(元) ÷ 面值 10。任一無效回傳 None（不補 0）。
+
+    只在拿不到「已發行普通股數」時使用。面額非 10 元或無面額的公司會算錯，
+    優先使用 market_cap_from_shares。"""
     p, c = _num_or_none(price), _num_or_none(capital_twd)
     if p is None or c is None or p <= 0 or c <= 0:
         return None
@@ -216,9 +234,62 @@ def sanitize_us_etfs_doc(doc: Dict[str, Any]) -> List[str]:
     return notes
 
 
+# ---------- ETF 持股快照（n 的語意） ----------
+# etf-holdings.json 的 n 原本被當成「成份股總數」顯示，但 299/363 檔其實只存了
+# 權重前 10 大，n 就等於陣列長度（0050 顯示 10 檔、實際 50 檔；00850 顯示 10、實際約 100）。
+# 這裡不改資料來源，只把語意修正為可證實的值：
+#   n_listed = 實際列出的檔數（永遠可證實）
+#   n        = 可證實的「成份股總數」；無法證實時為 None（前端顯示「—」，不顯示錯的 10）
+# 判定：截斷只發生在「權重前 10 大」這個切點，因此
+#   - 官方直出完整清單（src 開頭為 FULL_LIST_SRCS）→ n = len(items)
+#   - len(items) != 10 → 不可能是被前 10 大截斷的結果 → n = len(items)
+#   - len(items) == 10 且非官方完整清單 → 無法證實 → n = None
+FULL_LIST_SRCS = ("FUBON",)
+
+
+def etf_holdings_n(items_len: int, src: Any) -> Optional[int]:
+    """回傳可證實的成份股總數；無法證實回傳 None。"""
+    if items_len is None or items_len < 0:
+        return None
+    head = str(src or "").split("+")[0].strip().upper()
+    if head in FULL_LIST_SRCS or items_len != 10:
+        return items_len
+    return None
+
+
+def sanitize_etf_holdings_doc(doc: Dict[str, Any]) -> List[str]:
+    """修正 etf-holdings.json 的 n 語意（見 etf_holdings_n）。冪等。"""
+    notes: List[str] = []
+    hold = doc.get("holdings") or {}
+    unknown = complete = changed = 0
+    for _sym, h in hold.items():
+        items = h.get("items") or []
+        n_new = etf_holdings_n(len(items), h.get("src"))
+        if h.get("n_listed") != len(items):
+            h["n_listed"] = len(items)
+            changed += 1
+        if h.get("n") != n_new:
+            h["n"] = n_new
+            changed += 1
+        if n_new is None:
+            unknown += 1
+        else:
+            complete += 1
+    note = ("n = 可證實的成份股總數（官方直出完整清單者）；只取得權重前 10 大、無法證實總數時為 null，"
+            "前端顯示「—」而非錯誤的 10。n_listed = 本檔實際列出的成份股檔數。")
+    meta = doc.setdefault("meta", {})
+    if meta.get("note") != note:
+        meta["note"] = note
+        changed += 1
+    if changed:
+        notes.append(f"n 語意修正：可證實 {complete} 檔、無法證實改 null {unknown} 檔（{changed} 處變更）")
+    return notes
+
+
 # ---------- 快照驗證（供 qa_gate 與測試共用） ----------
 def validate_snapshot(stocks_doc: Dict[str, Any], us_stocks_doc: Optional[Dict[str, Any]] = None,
-                      us_etfs_doc: Optional[Dict[str, Any]] = None) -> List[Dict[str, str]]:
+                      us_etfs_doc: Optional[Dict[str, Any]] = None,
+                      etf_holdings_doc: Optional[Dict[str, Any]] = None) -> List[Dict[str, str]]:
     """回傳 issues：[{level: ERROR|WARNING, code, msg}]。
     ERROR 會阻擋發布（qa_gate），WARNING 只提醒。"""
     issues: List[Dict[str, str]] = []
@@ -303,4 +374,36 @@ def validate_snapshot(stocks_doc: Dict[str, Any], us_stocks_doc: Optional[Dict[s
         no_er = [e["sym"] for e in ue if e.get("expense_ratio") is None]
         if no_er:
             add("WARNING", "US_ETF_NO_EXPENSE", f"美股 ETF 費用率為空：{len(no_er)}/{len(ue)} 檔")
+        # 2026-11-13：price 必須是市價。舊版取 navPrice（淨值），導致 16/30 檔與市場收盤
+        # 差 >0.5%（最大 3.64%），而 chg 卻用市價算 → 口徑不一致。
+        # `nav` 欄位存在時，price 與 nav 完全相同（位元級相等）就是取錯欄位的鐵證。
+        nav_eq = [e["sym"] for e in ue
+                  if _is_num(e.get("price")) and _is_num(e.get("nav")) and abs(e["price"] - e["nav"]) < 1e-9]
+        if nav_eq:
+            add("ERROR", "US_ETF_PRICE_IS_NAV",
+                f"美股 ETF 的 price 等於淨值（取到 navPrice 而非市價）：{len(nav_eq)} 檔，例 {nav_eq[:5]}")
+
+    # 8. 市值與「收盤 × 已發行股數」不一致（2026-11-13 事故：用 股本÷10 推股數，
+    #    對面額非 10 元／無面額的 32 檔算錯，最嚴重差 20 倍）。只在兩邊都有值時判斷。
+    mc_bad = []
+    for s in stocks:
+        if s.get("security_type") != "stock":
+            continue
+        p, sh, mc = _num_or_none(s.get("price")), _num_or_none(s.get("shares")), _num_or_none(s.get("market_cap"))
+        if p and sh and mc:
+            exp = p * sh
+            if exp > 0 and abs(mc - exp) / exp > 0.01:
+                mc_bad.append(s["sym"])
+    if mc_bad:
+        add("ERROR", "MARKET_CAP_MISMATCH",
+            f"市值與 收盤×已發行股數 不符（>1%）：{len(mc_bad)} 檔，例 {mc_bad[:5]}")
+
+    # 9. ETF 成份股總數仍是「只列出前 10 大」（n == 10 且 items 長度 == 10）
+    if etf_holdings_doc:
+        hold = etf_holdings_doc.get("holdings") or {}
+        trunc = [k for k, v in hold.items()
+                 if v.get("n") is not None and v.get("n") == 10 and len(v.get("items") or []) == 10]
+        if trunc:
+            add("WARNING", "ETF_HOLDINGS_TRUNCATED",
+                f"ETF 成份股總數仍標成 10（可能被截斷為前 10 大）：{len(trunc)} 檔，例 {trunc[:5]}")
     return issues

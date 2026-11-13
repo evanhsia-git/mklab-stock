@@ -220,7 +220,12 @@
     const items = h.items.filter(x => !isNoise(x[0], x[1])).slice(0, holdN)
       .map(([c, n, w]) => ({ c: String(c), n: n, w: w == null ? null : Number(w) }));
     if (!items.length) return null;
-    return { name: h.name || '', src: h.src || '', asof: h.asof || '', n: h.n || h.items.length, items: items };
+    // n 可能為 null（只取得權重前 10 大、無法證實成份股總數）→ 保留 null，顯示層再處理，
+    // 不可用 h.items.length 回填，否則又會把「列出 10 檔」謊稱成「總共 10 檔」。
+    return { name: h.name || '', src: h.src || '', asof: h.asof || '',
+             n: (h.n === undefined ? h.items.length : h.n),
+             nListed: (h.n_listed === undefined ? h.items.length : h.n_listed),
+             items: items };
   }
   function overlapOf(a, b) {
     const mb = new Map(b.items.map(x => [x.c, x]));
@@ -261,7 +266,7 @@
     // 1) 前 N 大概況
     html += '<div class="table-wrap"><table><thead><tr><th>ETF</th><th>名稱</th><th>成份股總數</th><th>前 ' + holdN + ' 大合計權重</th><th>資料來源</th></tr></thead><tbody>';
     picks.forEach(p => {
-      html += '<tr><td>' + p.s + '</td><td>' + (p.h.name || ALL.find(r => r.sym === p.s)?.name || '') + '</td><td>' + p.h.n + ' 檔</td><td>' +
+      html += '<tr><td>' + p.s + '</td><td>' + (p.h.name || ALL.find(r => r.sym === p.s)?.name || '') + '</td><td>' + (p.h.n == null ? '—' : p.h.n + ' 檔') + '</td><td>' +
         industryAlloc(p.h).tot.toFixed(2) + '%</td><td>' + (p.h.src || '-') + '</td></tr>';
     });
     html += '</tbody></table></div>';
@@ -319,7 +324,7 @@
     });
     html += '</tbody></table></div>';
 
-    html += '<p class="muted-small-top">來源：' + picks.map(p => p.s + '（' + (p.h.src || '-') + '，成份股共 ' + p.h.n + ' 檔' + (p.h.asof ? '，資料日 ' + p.h.asof : '') + '）').join('、') +
+    html += '<p class="muted-small-top">來源：' + picks.map(p => p.s + '（' + (p.h.src || '-') + '，成份股共 ' + (p.h.n == null ? '未提供（僅前 ' + p.h.nListed + ' 大）' : p.h.n + ' 檔') + (p.h.asof ? '，資料日 ' + p.h.asof : '') + '）').join('、') +
       '。產業別取自個股總表的產業欄位；海外成份股歸為「海外股票」，無對應產業的台股歸為「未分類」。重疊率僅代表前 ' + holdN + ' 大範圍內的重疊程度。</p>';
     box.innerHTML = html;
   }

@@ -1063,7 +1063,9 @@
       if (!h || !h.items) return;
       h.items.forEach((it, i) => detail.push({
         etf: e.sym, etf_name: e.name, rank: i + 1, code: it[0], stock_name: it[1],
-        weight: it[2], src: h.src || '', asof: h.asof || '', total_n: h.n,
+        weight: it[2], src: h.src || '', asof: h.asof || '',
+        // n 為 null 表示只取得權重前 10 大、無法證實成份股總數 → 顯示「未提供」，不可顯示 10
+        total_n: (h.n == null ? '未提供' : h.n),
       }));
     });
     const holdCount = etfRows.filter(r => r.holdings_src).length;
