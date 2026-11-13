@@ -1,42 +1,19 @@
 {
-  "mode": "daily",
+  "mode": "twii",
   "success": true,
   "error": null,
-  "fetched": 1389,
-  "written": 1444,
+  "fetched": 0,
+  "written": 260,
   "skipped": false,
   "details": {
-    "excluded_other": 57,
-    "schema_version": "1.0.0",
-    "trade_date": "2026-11-12",
-    "twse_stale_vs_tpex": "2026-11-13",
-    "history_file": "20261112.json",
-    "sources": {
-      "TWSE": 1332,
-      "TPEX": 118
-    }
+    "twii_days": 260,
+    "twii_range": "2025-10-16~2026-11-12"
   },
-  "end": "2026-11-14 00:52:25",
-  "duration_sec": 78.5,
-  "start": "2026-11-14 00:51:07",
+  "end": "2026-11-14 01:18:08",
+  "duration_sec": 0.6,
+  "start": "2026-11-14 01:18:07",
   "log_lines": [
-    "[INFO] Actions 基準日 2026-11-14",
-    "[INFO] 公司基本資料取得 1099 檔（股本＋已發行股數，單位：元／股）",
-    "[INFO] 資產負債表取得 766 檔股本（失敗端點 0/6）",
-    "[INFO] 股本合併：公司基本資料 1099 ＋ 資產負債表 766 → 1099 檔",
-    "[INFO] trade_date=2026-11-12, TWSE=1389",
-    "[INFO] ETF 發行張數載入 76 檔",
-    "[INFO] TPEX 每日收盤取得 13807 筆原始資料",
-    "[INFO] TPEX 候選筆數（僅 ETF，原始 13807 筆）: 118",
-    "[WARN] 下載失敗（第 1/5 次）https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_pe_ratio?l=zh-tw: Expecting value: line 1 column 1 (char 0)",
-    "[WARN] 下載失敗（第 2/5 次）https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_pe_ratio?l=zh-tw: Expecting value: line 1 column 1 (char 0)",
-    "[WARN] 下載失敗（第 3/5 次）https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_pe_ratio?l=zh-tw: Expecting value: line 1 column 1 (char 0)",
-    "[WARN] 下載失敗（第 4/5 次）https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_pe_ratio?l=zh-tw: Expecting value: line 1 column 1 (char 0)",
-    "[WARN] 下載失敗（第 5/5 次）https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_pe_ratio?l=zh-tw: Expecting value: line 1 column 1 (char 0)",
-    "[WARN] TPEX BWIBBU 抓取失敗（沿用前次 PE/PB/殖利率，不中斷）：Expecting value: line 1 column 1 (char 0)",
-    "[INFO] 排除其他證券（特別股／DR／受益證券／ETN／權證等）: 57 筆",
-    "[WARN] 2026-11-12 歷史快照已存在，不覆蓋（防止重複寫入或舊資料覆蓋）",
-    "[WARN] TWSE 日期 2026-11-12 落後 TPEX 2026-11-13：上市股價疑似未更新，請檢查 TWSE OpenAPI",
-    "[INFO] 完成 → data/ (stocks=1444, history=2026-11-12, TWSE=1332)"
+    "[INFO] 開始抓取 TWII 加權指數 K 線 (yfinance ^TWII, 260 日窗口)",
+    "[INFO] TWII K 線寫入 260 天 → twii_kdata.js (2025-10-16~2026-11-12)"
   ]
 }
