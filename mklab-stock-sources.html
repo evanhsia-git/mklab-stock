@@ -90,6 +90,9 @@
 <tr><td>營益分析</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap17_L" target="_blank" rel="noopener">t187ap17_L</a></td><td><span class="src-tag json">JSON</span></td><td>營業利益與獲利能力分析</td></tr>
 <tr><td>各產業 EPS 統計</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap14_L" target="_blank" rel="noopener">t187ap14_L</a></td><td><span class="src-tag json">JSON</span></td><td>產業獲利比較；確認資料期間</td></tr>
 </tbody></table></div>
+<p class="muted-small-top">本站管線目前<b>實際抓取</b>：<code>t187ap06_L_{ci,basi,bd,fh,ins,mim}</code>、<code>t187ap07_L_{同}</code>。
+<code>t187ap05_L</code>（月營收）、<code>t187ap14_L</code>（各產業 EPS）、<code>t187ap17_L</code>（營益分析）<b>尚未導入</b>——
+2026-11-14 實測三者皆有資料（1,077／1,014／1,000 筆），已列為導入候選，詳見第 12 節。</p>
 </div>
 <div class="card src-card"><h2>4. 股利、股東會與公司治理</h2>
 <div class="table-wrap"><table><thead><tr><th>資料項目</th><th>端點</th><th>格式</th><th>MKLAB 用途</th></tr></thead><tbody>
@@ -142,12 +145,17 @@
 </div>
 <div class="card src-card"><h2>8. MOPS 歷史月營收與財報下載</h2>
 <h3>歷史月營收 HTML 路徑範例</h3>
-<p>先前整理的歷史月營收路徑格式如下。以下為民國 115 年 9 月示例，請實際測試是否仍可存取及是否符合當期資料。</p>
-<div class="table-wrap"><table><thead><tr><th>市場</th><th>示例網址</th></tr></thead><tbody>
-<tr><td>上市（sii）</td><td><a href="https://mopsov.twse.com.tw/nas/t21/sii/t21sc03_115_9_0.html" target="_blank" rel="noopener">t21sc03_115_9_0.html</a></td></tr>
-<tr><td>上櫃（otc）</td><td><a href="https://mopsov.twse.com.tw/nas/t21/otc/t21sc03_115_9_0.html" target="_blank" rel="noopener">t21sc03_115_9_0.html</a></td></tr>
+<p><b>✅ 2026-11-14 實測：網址仍可存取，且為當期資料。</b>
+上市（sii）與上櫃（otc）皆回 <b>HTTP 200</b>（456 KB／397 KB），出表日期 <code>115/11/14</code>、
+資料年月 <b>民國 115 年 9 月</b>，內容為當期月營收（當月營收、上月、去年同月、月增率、年增率、累計）。
+<b>編碼為 Big5（CP950）</b>——直接以 UTF-8 解析會整段亂碼，須 <code>decode(&#39;cp950&#39;)</code>；回傳是 HTML 表格（含產業分組、合計列），需自行解析。</p>
+<div class="table-wrap"><table><thead><tr><th>市場</th><th>示例網址</th><th>實測</th></tr></thead><tbody>
+<tr><td>上市（sii）</td><td><a href="https://mopsov.twse.com.tw/nas/t21/sii/t21sc03_115_9_0.html" target="_blank" rel="noopener">t21sc03_115_9_0.html</a></td><td>HTTP 200 · 456 KB · 當期</td></tr>
+<tr><td>上櫃（otc）</td><td><a href="https://mopsov.twse.com.tw/nas/t21/otc/t21sc03_115_9_0.html" target="_blank" rel="noopener">t21sc03_115_9_0.html</a></td><td>HTTP 200 · 397 KB · 當期</td></tr>
 </tbody></table></div>
 <p>路徑參數概念：<code>{市場別}</code> 可為 <code>sii</code>（上市）或 <code>otc</code>（上櫃）；<code>115</code> 為民國年；<code>9</code> 為月份；最後的類別代碼需依官方資料實測確認。這些範例為 HTML，不是 CSV。</p>
+<p class="muted-small-top"><b>建議</b>：只需「上市公司最新月營收」時，改用 OpenAPI 的 <code>t187ap05_L</code>（JSON、免解析 HTML、一檔即全市場）。
+MOPS 的 nas HTML 路徑則適合<b>回溯歷史月份</b>或需要<b>含上櫃公司</b>時使用。</p>
 <h3>XBRL / 財務報告</h3>
 <p>從 <a href="https://mops.twse.com.tw/" target="_blank" rel="noopener">MOPS 官網</a>進入財務報表與 XBRL 相關區域，查找財務報告、XBRL 分類標準及下載功能。可用於取得資產負債表、綜合損益表、現金流量表、權益變動表及會計師查核/核閱資訊。實際下載格式可能是 XBRL、HTML、PDF 或壓縮檔，應以當期下載介面為準。</p>
 </div>
@@ -198,7 +206,43 @@ console.log(`取得 ${data.length} 筆資料`);</pre>
 <div class="src-item"><h3>TWSE 官方網站</h3><p><a href="https://www.twse.com.tw/" target="_blank" rel="noopener">twse.com.tw</a></p><small>交易資訊、統計、ETF 與市場公告。</small></div>
 </div>
 </div>
-<p class="muted-small-top">本頁為官方資料來源研究整理，端點與內容可能隨官方改版；完整端點清單另見 repo 內 <code>data/raw/twse-openapi-full.md</code>。</p>
+<div class="card src-card"><h2>12. 實測盤點：143 端點全數可用，我們的缺口在哪（2026-11-14）</h2>
+<p>2026-11-14 對 <code>https://openapi.twse.com.tw/v1</code> 全部 <b>143 個端點</b>逐一發出請求實測：
+<b>143 / 143 全數回 HTTP 200 且可解析 JSON</b>。本站管線目前<b>只用了 19 個</b>，
+其餘 124 個中<b>36 個是可直接導入的候選</b>。</p>
+<h3>尚未導入、但實測有資料且值得做（★ 為效益，依序排列）</h3>
+<div class="table-wrap"><table><thead><tr><th>★</th><th>端點</th><th>實測筆數</th><th>資料內容</th><th>建議用途</th></tr></thead><tbody>
+<tr><td>★★★</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap05_L" target="_blank" rel="noopener"><code>t187ap05_L</code></a></td><td>1077</td><td>當月／上月／去年同月營收、月增率、年增率、累計營收</td><td>月營收看板、成長動能因子</td></tr>
+<tr><td>★★★</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap14_L" target="_blank" rel="noopener"><code>t187ap14_L</code></a></td><td>1014</td><td>基本每股盈餘、營收、營業利益、稅後淨利（季別）</td><td>官方 EPS（單檔請求版，取代逐產業財報）</td></tr>
+<tr><td>★★★</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap17_L" target="_blank" rel="noopener"><code>t187ap17_L</code></a></td><td>1000</td><td>毛利率、營業利益率、稅前純益率、稅後純益率</td><td>官方毛利率／營益率，取代自算</td></tr>
+<tr><td>★★★</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/MI_MARGN" target="_blank" rel="noopener"><code>MI_MARGN</code></a></td><td>1309</td><td>融資買進／賣出／餘額／限額、融券同欄位、資券互抵</td><td>籌碼面：融資融券餘額看板</td></tr>
+<tr><td>★★★</td><td><a href="https://openapi.twse.com.tw/v1/holidaySchedule/holidaySchedule" target="_blank" rel="noopener"><code>holidaySchedule</code></a></td><td>29</td><td>集中市場開（休）市日期、星期、說明</td><td>交易日曆，判斷「資料日是否合理」</td></tr>
+<tr><td>★★★</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/TWTAWU" target="_blank" rel="noopener"><code>TWTAWU</code></a></td><td>1</td><td>暫停交易證券：停止／恢復買賣日期與時間</td><td>停牌即時判斷（不必等快照少一檔才發現）</td></tr>
+<tr><td>★★</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/TWT48U_ALL" target="_blank" rel="noopener"><code>TWT48U_ALL</code></a></td><td>53</td><td>除權除息預告：息／權、股利、認購價、比率</td><td>除權息提醒、還原價依據</td></tr>
+<tr><td>★★</td><td><a href="https://openapi.twse.com.tw/v1/ETFReport/ETFRank" target="_blank" rel="noopener"><code>ETFRank</code></a></td><td>20</td><td>定期定額交易戶數排行（個股與 ETF）</td><td>ETF 人氣／定期定額排行頁</td></tr>
+<tr><td>★★</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap04_L" target="_blank" rel="noopener"><code>t187ap04_L</code></a></td><td>282</td><td>每日重大訊息：主旨、符合條款、事實發生日、說明</td><td>事件時間軸、個股重大訊息</td></tr>
+<tr><td>★★</td><td><a href="https://openapi.twse.com.tw/v1/fund/MI_QFIIS_cat" target="_blank" rel="noopener"><code>MI_QFIIS_cat</code></a></td><td>36</td><td>外資及陸資投資類股持股比率（依產業）</td><td>外資持股比重看板</td></tr>
+<tr><td>★★</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/FMSRFK_ALL" target="_blank" rel="noopener"><code>FMSRFK_ALL</code></a></td><td>37147</td><td>個股月成交資訊：月最高／最低／加權均價／週轉率</td><td>月線統計、月均價交叉驗證</td></tr>
+<tr><td>★★</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_AVG_ALL" target="_blank" rel="noopener"><code>STOCK_DAY_AVG_ALL</code></a></td><td>33296</td><td>個股日收盤價及月平均價</td><td>月平均價、價格合理性比對</td></tr>
+<tr><td>★★</td><td><a href="https://openapi.twse.com.tw/v1/company/newlisting" target="_blank" rel="noopener"><code>newlisting</code></a></td><td>797</td><td>最近上市公司（含上市日期、股本）</td><td>新股上市追蹤</td></tr>
+<tr><td>★★</td><td><a href="https://openapi.twse.com.tw/v1/company/suspendListingCsvAndHtml" target="_blank" rel="noopener"><code>suspendListingCsvAndHtml</code></a></td><td>265</td><td>終止上市公司</td><td>下市／退場清單</td></tr>
+<tr><td>★★</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap38_L" target="_blank" rel="noopener"><code>t187ap38_L</code></a></td><td>1149</td><td>股東會公告：開會日期、停止過戶、預擬配息配股、董監酬勞</td><td>股利預告、股東會行事曆</td></tr>
+<tr><td>★★</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap41_L" target="_blank" rel="noopener"><code>t187ap41_L</code></a></td><td>1153</td><td>股東會日期、地點、是否改選董監、是否採電子投票</td><td>股東會行事曆</td></tr>
+<tr><td>★★</td><td><a href="https://openapi.twse.com.tw/v1/indicesReport/MI_5MINS_HIST" target="_blank" rel="noopener"><code>MI_5MINS_HIST</code></a></td><td>10</td><td>發行量加權股價指數歷史資料（開高低收）</td><td>TWII 歷史備援來源</td></tr>
+</tbody></table></div>
+<h3>實測限制（會影響導入判斷）</h3>
+<ul>
+<li><code>t187ap06_L_fh</code>（金控損益表）<b>只回 1 筆全空資料</b>，故金融保險類無官方 EPS；
+目前以「官方 PE 反推 TTM EPS」處理（<code>eps_src = TWSE_PE_IMPLIED</code>）。</li>
+<li><code>t187ap14_L</code>、<code>t187ap17_L</code> 也<b>不含金控／銀行／保險</b>（2881／2882／2891 實測缺席），救不了上面那個缺口；
+<code>t187ap17_L</code> 另缺 2207 和泰車、1718 中纖。</li>
+<li><code>t187ap06_L_basi</code>（銀行損益表）有資料但只 9 家（2801、2812…），不含大型金控。</li>
+<li><code>twtazu_od</code>（漲跌證券數）實測出表日期 <code>1150605</code>，疑似非每日更新，導入前需再確認。</li>
+</ul>
+<p class="muted-small-top">完整 143 端點對照（每個端點的實測筆數、欄位、已使用／候選／範圍外分類）：
+repo 檔 <code>data/raw/twse-openapi-usage-map.md</code>。</p>
+</div>
+<p class="muted-small-top">本頁為官方資料來源研究整理，端點與內容可能隨官方改版；完整端點欄位清單見 repo 內 <code>data/raw/twse-openapi-full.md</code>；實測使用對照見 <code>data/raw/twse-openapi-usage-map.md</code>。</p>
 
 <script src="assets/js/data-client.js"></script>
 <script src="assets/js/mklab-core.js"></script>
