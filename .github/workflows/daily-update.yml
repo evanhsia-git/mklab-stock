@@ -51,6 +51,10 @@ jobs:
         run: python skills/data/compute_indicators.py
       - name: 官方公司資訊（產業、上市日）
         run: python skills/data/integrate_official_company.py
+      - name: 官方加值資料抓取（月營收／融資融券／營益分析／暫停交易／開休市）
+        run: python skills/data/fetch_market_extras.py
+      - name: 官方加值資料併入快照（冪等）
+        run: python skills/data/integrate_market_extras.py
       - name: 個股 K 線檔
         run: python skills/data/build_kline.py
       - name: 產業統計

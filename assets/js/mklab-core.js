@@ -77,6 +77,12 @@
       const cells = [1,2,3,4,5].map(i => `<i class="${i<=lv?'on':''}"></i>`).join('');
       return `<span class="pos52" title="52週位階 ${lv}/5（${(lv-1)*20}%~${lv*20}%）">${cells}</span>`;
     } },
+    // 官方加值欄位（2026-11-14）：資料來自 data/market-extras.json，由頁面載入後併入每列。
+    // 缺值一律顯示「-」（官方沒申報就沒有，不以 0 充數）。
+    rev_yoy: { label:'月營收年增%', type:'pct', sortable:true, defDir:-1, fmt:r=>r.rev_yoy!=null?(r.rev_yoy>0?'+':'')+Number(r.rev_yoy).toFixed(2)+'%':'-' },
+    rev_ytd_yoy: { label:'累計營收年增%', type:'pct', sortable:true, defDir:-1, fmt:r=>r.rev_ytd_yoy!=null?(r.rev_ytd_yoy>0?'+':'')+Number(r.rev_ytd_yoy).toFixed(2)+'%':'-' },
+    margin_fin: { label:'融資餘額(張)', type:'num', sortable:true, defDir:-1, fmt:r=>r.margin_fin!=null?Math.round(r.margin_fin).toLocaleString():'-' },
+    margin_sec: { label:'融券餘額(張)', type:'num', sortable:true, defDir:-1, fmt:r=>r.margin_sec!=null?Math.round(r.margin_sec).toLocaleString():'-' },
     div_streak: { label:'連續配息(年)', type:'num', sortable:true, defDir:-1, fmt:r=>r.div_streak_years!=null?r.div_streak_years:'-' },
     div_cash: { label:'最近現金股利(元)', type:'num', sortable:true, defDir:-1, fmt:r=>r.div_cash_latest!=null?Number(r.div_cash_latest).toFixed(2):'-' },
     rsi14: { label:'RSI(14)', type:'num', sortable:true, fmt:r=>r.rsi14!=null?r.rsi14:'-' },

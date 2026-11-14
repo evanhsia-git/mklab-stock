@@ -18,6 +18,7 @@ fetch_data.py / fetch_us_data.py / sanitize_snapshot.py / qa_gate.py 共用，
   6. TWSE 日期落後 TPEX 一個交易日仍被當成正常。
 """
 import math
+import os
 from typing import Any, Dict, List, Optional
 
 # ---------- 單位 ----------
@@ -416,6 +417,37 @@ def validate_snapshot(stocks_doc: Dict[str, Any], us_stocks_doc: Optional[Dict[s
         add("WARNING", "PE_EPS_IMPLIED",
             f"{len(implied)} 檔無官方損益表，EPS 由官方 PE 反推（TWSE_PE_IMPLIED；pe 與官方值一致）："
             f"{implied[:5]}…")
+
+    # 3c. 官方加值資料（market-extras，2026-11-14 導入）：月營收／融資融券／官方營益分析。
+    #     依架構決策，這些**不放在 stocks.json**（會讓單檔從 1,213 KB 爆到 1,751 KB，違反體積預算），
+    #     而是放在 data/market-extras.json 由前端按需載入；主檔只在 meta.market_extras 記來源與筆數。
+    #     因此這裡檢查 meta 記錄與資料檔本體，而不是逐列欄位。
+    me = (stocks_doc.get("meta") or {}).get("market_extras") or {}
+    if not me:
+        add("WARNING", "MARKET_EXTRAS_MISSING",
+            "stocks.json 的 meta.market_extras 不存在：官方加值資料未整合；"
+            "請確認 fetch_market_extras.py 與 integrate_market_extras.py 有在鏈上執行")
+    else:
+        _counts = me.get("counts") or {}
+        for _n, _k, _floor in (("月營收", "revenue", 900), ("融資融券", "margin", 900),
+                               ("官方營益分析", "profitability", 800)):
+            _c = _counts.get(_k, 0)
+            if _c < _floor:
+                add("WARNING", "MARKET_EXTRAS_LOW_COVERAGE",
+                    f"{_n}僅 {_c} 筆（預期 ≥ {_floor}），請確認官方端點是否縮水")
+        # 資料檔本體必須存在且有內容（meta 有記錄但檔案被刪是最容易漏掉的情況）
+        _fp = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(
+            os.path.abspath(__file__)))), "data", "market-extras.json")
+        if not os.path.exists(_fp) or os.path.getsize(_fp) < 10240:
+            add("ERROR", "MARKET_EXTRAS_FILE_MISSING",
+                f"meta 有記錄但 {os.path.relpath(_fp)} 不存在或過小")
+
+    # 3d. 停牌標記一致性：由官方暫停交易清單標記者必須有停止日（否則無法稽核）
+    _halt_bad = [s["sym"] for s in stocks
+                 if s.get("suspended_reason") == "halt" and not s.get("halt_date")]
+    if _halt_bad:
+        add("ERROR", "HALT_WITHOUT_DATE",
+            f"{len(_halt_bad)} 檔標為官方暫停交易卻無停止日：{_halt_bad[:5]}")
 
     # 4. 日期：TWSE 端點（STOCK_DAY_ALL）結構上只發 T-1，TPEX 發 T-0，
     #    因此「TWSE 較 TPEX 落後 1 個交易日」是來源的既定行為，不是資料沒更新

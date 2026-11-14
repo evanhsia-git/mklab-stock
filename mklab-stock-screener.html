@@ -227,9 +227,22 @@
   function loadScreener(){
     MKLAB.data.stocks().then(d=>{
       if(d && Array.isArray(d) && d.length){
-        current=d.filter(s=>(s.security_type||"stock")==="stock").map(s=>({sym:s.sym,name:s.name,price:s.price,chg:s.chg,pe:s.pe,pb:s.pb,roe:s.roe,roa:s.roa,rsi:s.rsi14,pos52w_level:s.pos52w_level,div_streak_years:s.div_streak_years,div_cash_latest:s.div_cash_latest,ma5:s.ma5,ma10:s.ma10,ma20:s.ma20,ma30:s.ma30,chg_1m:s.chg_1m,chg_3m:s.chg_3m,chg_6m:s.chg_6m,chg_1y:s.chg_1y,chg_2y:s.chg_2y,eps:s.eps,volume:s.volume,rsi14:s.rsi14,k_value:s.kd_k,d_value:s.kd_d,macd_dif:s.macd_dif,macd_dea:s.macd_dea,macd_hist:s.macd_hist,cap:(s.market_cap!=null?(s.market_cap/1e8):0),div:(s.div||0),ind:s.ind}));
+        current=d.filter(s=>(s.security_type||"stock")==="stock").map(s=>({sym:s.sym,name:s.name,price:s.price,chg:s.chg,pe:s.pe,pb:s.pb,roe:s.roe,roa:s.roa,rsi:s.rsi14,pos52w_level:s.pos52w_level,div_streak_years:s.div_streak_years,div_cash_latest:s.div_cash_latest,ma5:s.ma5,ma10:s.ma10,ma20:s.ma20,ma30:s.ma30,chg_1m:s.chg_1m,chg_3m:s.chg_3m,chg_6m:s.chg_6m,chg_1y:s.chg_1y,chg_2y:s.chg_2y,eps:s.eps,volume:s.volume,rsi14:s.rsi14,k_value:s.kd_k,d_value:s.kd_d,macd_dif:s.macd_dif,macd_dea:s.macd_dea,macd_hist:s.macd_hist,cap:(s.market_cap!=null?(s.market_cap/1e8):0),div:(s.div||0),ind:s.ind,
+          rev_ym:null,rev_month:null,rev_yoy:null,rev_ytd_yoy:null,margin_fin:null,margin_sec:null}));
         dataLoaded=true;
         MKLAB.data.json('etf-classified').then(cd=>{ etfClassifiedSyms=(cd&&cd.etfs?cd.etfs:[]).map(x=>x.sym); }).catch(()=>{});
+        // 官方加值資料（月營收 t187ap05_L、融資融券 MI_MARGN）放在獨立檔，按需載入後併入，
+        // 供「官方加值」欄位顯示與排序。不併進 stocks.json 是為了守住其單檔體積預算。
+        MKLAB.data.json('market-extras').then(x=>{
+          const rev=(x&&x.revenue)||{}, mar=(x&&x.margin)||{};
+          current.forEach(r=>{
+            const v=rev[r.sym]||{}, m=mar[r.sym]||{};
+            r.rev_ym=v.ym!=null?v.ym:null; r.rev_month=v.month!=null?v.month:null;
+            r.rev_yoy=v.yoy!=null?v.yoy:null; r.rev_ytd_yoy=v.ytd_yoy!=null?v.ytd_yoy:null;
+            r.margin_fin=m.fin_bal!=null?m.fin_bal:null; r.margin_sec=m.sec_bal!=null?m.sec_bal:null;
+          });
+          apply();
+        }).catch(()=>{});
         // 填充產業下拉選單（不重複、排序後的產業清單）
         const indSel=document.getElementById('f_ind');
         if(indSel){
@@ -261,7 +274,10 @@
     ['價格與報酬', [['price','股價'],['chg','日漲跌%'],['chg_1m','1月漲跌%'],['chg_3m','3月漲跌%'],['chg_6m','6月漲跌%'],['chg_1y','1年漲跌%'],['pos52','52週位階'],['volume','成交量(張)']]],
     ['估值與獲利', [['pe','PE'],['pb','PB'],['eps','EPS(年化)'],['roe','ROE'],['roa','ROA']]],
     ['股利與規模', [['div','殖利率%'],['div_cash','最近現金股利'],['cap','市值(億)']]],
-    ['技術面', [['rsi14','RSI(14)'],['ma5','MA5'],['ma10','MA10'],['ma20','MA20'],['ma30','MA30'],['macd_dif','MACD DIF'],['macd_dea','MACD DEA'],['macd_hist','MACD 柱狀'],['k_value','K值'],['d_value','D值']]]
+    ['技術面', [['rsi14','RSI(14)'],['ma5','MA5'],['ma10','MA10'],['ma20','MA20'],['ma30','MA30'],['macd_dif','MACD DIF'],['macd_dea','MACD DEA'],['macd_hist','MACD 柱狀'],['k_value','K值'],['d_value','D值']]],
+    // 官方加值（2026-11-14）：資料在 data/market-extras.json，載入後併入 current。
+    // 放在最後一組是刻意的——上面的群組順序被 tests/test_screener_cols.js 用索引斷言，插入中間會讓測試失效。
+    ['官方加值', [['rev_yoy','月營收年增%'],['rev_ytd_yoy','累計營收年增%'],['margin_fin','融資餘額(張)'],['margin_sec','融券餘額(張)']]]
   ];
   const COL_DEFAULT = ['price','chg','chg_1m','chg_3m','chg_6m','chg_1y','pos52','pe','pb','roe','div','div_cash','cap'];
   // 暫不開放：連續配息年數。資料庫的配息歷史年數不完整（div_years_available 不足），顯示會誤導。

@@ -27,6 +27,13 @@
   .src-links a{padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);text-decoration:none}
   .src-note{border-left:3px solid var(--warn);padding-left:10px}
 </style>
+<style>
+.ap-applied{color:#2e7d32;font-weight:600}
+.ap-imported{color:#8a6d00;font-weight:600}
+.ap-notapplied{color:#9aa0a6}
+.ap-empty{color:#c62828;font-weight:600}
+.ap-applied small,.ap-imported small,.ap-notapplied small,.ap-empty small{color:inherit;opacity:.72;font-weight:400}
+</style>
 </head>
 <body>
 <header class="sticky-header" role="banner">
@@ -51,6 +58,14 @@
 <div class="card src-card">
 <strong>使用目的</strong>
 <p>整理可供 MKLAB Stock、GitHub Actions、Hermes Agent 或其他程式自動取得的台股官方資料入口，包含股票基本資料、財務報表、營收、股利、估值、交易、籌碼、ETF 與 ESG。</p>
+<strong>「本站應用」欄位怎麼看（每個表格都有）</strong>
+<ul class="muted-small-top" style="margin:6px 0 0;padding-left:20px;">
+<li><span class="ap-applied">✅ 已應用</span> — 已進本站資料管線，且站台或資料庫實際使用（欄位說明用在哪裡）。</li>
+<li><span class="ap-imported">📦 已導入資料庫</span> — 已抓取並存進 <code>data/market-extras.json</code>，但還沒有 UI 或驗證用途。</li>
+<li><span class="ap-empty">⚠️ 空資料</span> — 官方端點本身回空（不是本站沒抓）。</li>
+<li><span class="ap-notapplied">— 未應用</span> — 尚未導入（含權證、券商營運、公債、ESG、公發公司等範圍外資料）。</li>
+</ul>
+<p class="muted-small-top" style="margin:8px 0 0;">統計：8 個表格、68 列，其中 <b>已應用 21 列</b>、已導入資料庫 4 列、空資料 1 列、未應用 42 列（2026-11-14 盤點）。完整 143 端點對照見第 12 節。</p>
 <div class="links">
 <a href="https://mops.twse.com.tw/" target="_blank" rel="noopener">MOPS 公開資訊觀測站</a>
 <a href="https://openapi.twse.com.tw/" target="_blank" rel="noopener">TWSE OpenAPI</a>
@@ -67,80 +82,80 @@
 <p>常見 API 根路徑：<code>https://openapi.twse.com.tw/v1</code>。下表列出先前整理的端點，實際是否仍有效、欄位與資料期間均應以 Swagger 及實測為準。</p>
 </div>
 <div class="card src-card"><h2>2. 公司基本資料與公告</h2>
-<div class="table-wrap"><table><thead><tr><th>資料項目</th><th>端點</th><th>格式</th><th>MKLAB 用途</th></tr></thead><tbody>
-<tr><td>上市公司基本資料</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap03_L" target="_blank" rel="noopener">t187ap03_L</a></td><td><span class="src-tag json">JSON</span></td><td>公司代號、名稱、產業等基本主檔</td></tr>
-<tr><td>公開發行公司基本資料</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap03_P" target="_blank" rel="noopener">t187ap03_P</a></td><td><span class="src-tag json">JSON</span></td><td>擴充公司基本資料範圍</td></tr>
-<tr><td>新上市公司</td><td><a href="https://openapi.twse.com.tw/v1/company/newlisting" target="_blank" rel="noopener">newlisting</a></td><td><span class="src-tag json">JSON</span></td><td>追蹤新上市標的</td></tr>
-<tr><td>終止上市資訊</td><td><a href="https://openapi.twse.com.tw/v1/company/suspendListingCsvAndHtml" target="_blank" rel="noopener">suspendListingCsvAndHtml</a></td><td><span class="src-tag">待確認</span></td><td>清理失效股票代號；確認實際回傳格式</td></tr>
-<tr><td>上市公司重大訊息</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap04_L" target="_blank" rel="noopener">t187ap04_L</a></td><td><span class="src-tag json">JSON</span></td><td>公司重大訊息追蹤</td></tr>
+<div class="table-wrap"><table><thead><tr><th>資料項目</th><th>端點</th><th>格式</th><th>MKLAB 用途</th><th>本站應用</th></tr></thead><tbody>
+<tr><td>上市公司基本資料</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap03_L" target="_blank" rel="noopener">t187ap03_L</a></td><td><span class="src-tag json">JSON</span></td><td>公司代號、名稱、產業等基本主檔</td><td class="ap-applied">✅ 已應用<br><small>產業別、實收資本額、已發行股數（市值計算基礎）</small></td></tr>
+<tr><td>公開發行公司基本資料</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap03_P" target="_blank" rel="noopener">t187ap03_P</a></td><td><span class="src-tag json">JSON</span></td><td>擴充公司基本資料範圍</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>新上市公司</td><td><a href="https://openapi.twse.com.tw/v1/company/newlisting" target="_blank" rel="noopener">newlisting</a></td><td><span class="src-tag json">JSON</span></td><td>追蹤新上市標的</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>終止上市資訊</td><td><a href="https://openapi.twse.com.tw/v1/company/suspendListingCsvAndHtml" target="_blank" rel="noopener">suspendListingCsvAndHtml</a></td><td><span class="src-tag">待確認</span></td><td>清理失效股票代號；確認實際回傳格式</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>上市公司重大訊息</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap04_L" target="_blank" rel="noopener">t187ap04_L</a></td><td><span class="src-tag json">JSON</span></td><td>公司重大訊息追蹤</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
 </tbody></table></div>
 </div>
 <div class="card src-card"><h2>3. 月營收與財務報表</h2>
-<div class="table-wrap"><table><thead><tr><th>資料項目</th><th>端點</th><th>格式</th><th>用途 / 注意事項</th></tr></thead><tbody>
-<tr><td>上市公司每月營收</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap05_L" target="_blank" rel="noopener">t187ap05_L</a></td><td><span class="src-tag json">JSON</span></td><td>計算 MoM、YoY、營收趨勢</td></tr>
-<tr><td>綜合損益表－一般業</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap06_L_ci" target="_blank" rel="noopener">t187ap06_L_ci</a></td><td><span class="src-tag json">JSON</span></td><td>營收、毛利、營業利益、稅後損益等</td></tr>
-<tr><td>綜合損益表－金融業</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap06_L_basi" target="_blank" rel="noopener">t187ap06_L_basi</a></td><td><span class="src-tag json">JSON</span></td><td>金融業專用格式</td></tr>
-<tr><td>綜合損益表－金控業</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap06_L_fh" target="_blank" rel="noopener">t187ap06_L_fh</a></td><td><span class="src-tag json">JSON</span></td><td>金控業專用格式</td></tr>
-<tr><td>綜合損益表－保險業</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap06_L_ins" target="_blank" rel="noopener">t187ap06_L_ins</a></td><td><span class="src-tag json">JSON</span></td><td>保險業專用格式</td></tr>
-<tr><td>綜合損益表－證券期貨業</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap06_L_bd" target="_blank" rel="noopener">t187ap06_L_bd</a></td><td><span class="src-tag json">JSON</span></td><td>證券期貨業專用格式</td></tr>
-<tr><td>資產負債表－一般業</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap07_L_ci" target="_blank" rel="noopener">t187ap07_L_ci</a></td><td><span class="src-tag json">JSON</span></td><td>資產、負債、權益與 ROE 計算基礎</td></tr>
-<tr><td>資產負債表－金融業</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap07_L_basi" target="_blank" rel="noopener">t187ap07_L_basi</a></td><td><span class="src-tag json">JSON</span></td><td>金融業專用格式</td></tr>
-<tr><td>資產負債表－金控業</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap07_L_fh" target="_blank" rel="noopener">t187ap07_L_fh</a></td><td><span class="src-tag json">JSON</span></td><td>金控業專用格式</td></tr>
-<tr><td>資產負債表－保險業</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap07_L_ins" target="_blank" rel="noopener">t187ap07_L_ins</a></td><td><span class="src-tag json">JSON</span></td><td>保險業專用格式</td></tr>
-<tr><td>營益分析</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap17_L" target="_blank" rel="noopener">t187ap17_L</a></td><td><span class="src-tag json">JSON</span></td><td>營業利益與獲利能力分析</td></tr>
-<tr><td>各產業 EPS 統計</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap14_L" target="_blank" rel="noopener">t187ap14_L</a></td><td><span class="src-tag json">JSON</span></td><td>產業獲利比較；確認資料期間</td></tr>
+<div class="table-wrap"><table><thead><tr><th>資料項目</th><th>端點</th><th>格式</th><th>用途 / 注意事項</th><th>本站應用</th></tr></thead><tbody>
+<tr><td>上市公司每月營收</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap05_L" target="_blank" rel="noopener">t187ap05_L</a></td><td><span class="src-tag json">JSON</span></td><td>計算 MoM、YoY、營收趨勢</td><td class="ap-applied">✅ 已應用<br><small>月營收（market-extras.json ＋篩選頁欄位）</small></td></tr>
+<tr><td>綜合損益表－一般業</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap06_L_ci" target="_blank" rel="noopener">t187ap06_L_ci</a></td><td><span class="src-tag json">JSON</span></td><td>營收、毛利、營業利益、稅後損益等</td><td class="ap-applied">✅ 已應用<br><small>綜合損益表一般業（ROE／EPS 來源）</small></td></tr>
+<tr><td>綜合損益表－金融業</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap06_L_basi" target="_blank" rel="noopener">t187ap06_L_basi</a></td><td><span class="src-tag json">JSON</span></td><td>金融業專用格式</td><td class="ap-applied">✅ 已應用<br><small>綜合損益表金融業</small></td></tr>
+<tr><td>綜合損益表－金控業</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap06_L_fh" target="_blank" rel="noopener">t187ap06_L_fh</a></td><td><span class="src-tag json">JSON</span></td><td>金控業專用格式</td><td class="ap-empty">⚠️ 空資料<br><small>金控損益表官方回空 → 改用官方 PE 反推 EPS</small></td></tr>
+<tr><td>綜合損益表－保險業</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap06_L_ins" target="_blank" rel="noopener">t187ap06_L_ins</a></td><td><span class="src-tag json">JSON</span></td><td>保險業專用格式</td><td class="ap-applied">✅ 已應用<br><small>綜合損益表保險業</small></td></tr>
+<tr><td>綜合損益表－證券期貨業</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap06_L_bd" target="_blank" rel="noopener">t187ap06_L_bd</a></td><td><span class="src-tag json">JSON</span></td><td>證券期貨業專用格式</td><td class="ap-applied">✅ 已應用<br><small>綜合損益表證券期貨業</small></td></tr>
+<tr><td>資產負債表－一般業</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap07_L_ci" target="_blank" rel="noopener">t187ap07_L_ci</a></td><td><span class="src-tag json">JSON</span></td><td>資產、負債、權益與 ROE 計算基礎</td><td class="ap-applied">✅ 已應用<br><small>資產負債表一般業（負債比、權益）</small></td></tr>
+<tr><td>資產負債表－金融業</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap07_L_basi" target="_blank" rel="noopener">t187ap07_L_basi</a></td><td><span class="src-tag json">JSON</span></td><td>金融業專用格式</td><td class="ap-applied">✅ 已應用<br><small>資產負債表金融業</small></td></tr>
+<tr><td>資產負債表－金控業</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap07_L_fh" target="_blank" rel="noopener">t187ap07_L_fh</a></td><td><span class="src-tag json">JSON</span></td><td>金控業專用格式</td><td class="ap-applied">✅ 已應用<br><small>資產負債表金控業</small></td></tr>
+<tr><td>資產負債表－保險業</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap07_L_ins" target="_blank" rel="noopener">t187ap07_L_ins</a></td><td><span class="src-tag json">JSON</span></td><td>保險業專用格式</td><td class="ap-applied">✅ 已應用<br><small>資產負債表保險業</small></td></tr>
+<tr><td>營益分析</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap17_L" target="_blank" rel="noopener">t187ap17_L</a></td><td><span class="src-tag json">JSON</span></td><td>營業利益與獲利能力分析</td><td class="ap-imported">📦 已導入資料庫<br><small>官方毛利率／營益率（market-extras.json；已存檔待接 UI／比對）</small></td></tr>
+<tr><td>各產業 EPS 統計</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap14_L" target="_blank" rel="noopener">t187ap14_L</a></td><td><span class="src-tag json">JSON</span></td><td>產業獲利比較；確認資料期間</td><td class="ap-imported">📦 已導入資料庫<br><small>官方累計 EPS（market-extras.json；與本站年化 EPS 交叉驗證用）</small></td></tr>
 </tbody></table></div>
 <p class="muted-small-top">本站管線目前<b>實際抓取</b>：<code>t187ap06_L_{ci,basi,bd,fh,ins,mim}</code>、<code>t187ap07_L_{同}</code>。
 <code>t187ap05_L</code>（月營收）、<code>t187ap14_L</code>（各產業 EPS）、<code>t187ap17_L</code>（營益分析）<b>尚未導入</b>——
 2026-11-14 實測三者皆有資料（1,077／1,014／1,000 筆），已列為導入候選，詳見第 12 節。</p>
 </div>
 <div class="card src-card"><h2>4. 股利、股東會與公司治理</h2>
-<div class="table-wrap"><table><thead><tr><th>資料項目</th><th>端點</th><th>格式</th><th>MKLAB 用途</th></tr></thead><tbody>
-<tr><td>上市公司股利分派</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap45_L" target="_blank" rel="noopener">t187ap45_L</a></td><td><span class="src-tag json">JSON</span></td><td>歷年現金/股票股利；需區分提議、決議與發放</td></tr>
-<tr><td>股東會公告</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap38_L" target="_blank" rel="noopener">t187ap38_L</a></td><td><span class="src-tag json">JSON</span></td><td>股東會公告追蹤</td></tr>
-<tr><td>股東會日期及電子投票資訊</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap41_L" target="_blank" rel="noopener">t187ap41_L</a></td><td><span class="src-tag json">JSON</span></td><td>股東會日期與投票資訊</td></tr>
-<tr><td>董監事持股餘額</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap11_L" target="_blank" rel="noopener">t187ap11_L</a></td><td><span class="src-tag json">JSON</span></td><td>董監事持股追蹤</td></tr>
-<tr><td>大股東名單（10% 以上）</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap02_L" target="_blank" rel="noopener">t187ap02_L</a></td><td><span class="src-tag json">JSON</span></td><td>大股東持股分析</td></tr>
-<tr><td>內部人持股轉讓申報</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap12_L" target="_blank" rel="noopener">t187ap12_L</a></td><td><span class="src-tag json">JSON</span></td><td>內部人持股異動</td></tr>
-<tr><td>內部人持股未轉讓</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap13_L" target="_blank" rel="noopener">t187ap13_L</a></td><td><span class="src-tag json">JSON</span></td><td>申報後未完成轉讓資訊</td></tr>
-<tr><td>董事長兼任總經理</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap33_L" target="_blank" rel="noopener">t187ap33_L</a></td><td><span class="src-tag json">JSON</span></td><td>公司治理資訊</td></tr>
-<tr><td>董監事酬金</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap29_A_L" target="_blank" rel="noopener">t187ap29_A_L</a></td><td><span class="src-tag json">JSON</span></td><td>公司治理及酬金分析</td></tr>
+<div class="table-wrap"><table><thead><tr><th>資料項目</th><th>端點</th><th>格式</th><th>MKLAB 用途</th><th>本站應用</th></tr></thead><tbody>
+<tr><td>上市公司股利分派</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap45_L" target="_blank" rel="noopener">t187ap45_L</a></td><td><span class="src-tag json">JSON</span></td><td>歷年現金/股票股利；需區分提議、決議與發放</td><td class="ap-applied">✅ 已應用<br><small>股利分派（殖利率、連續配息）</small></td></tr>
+<tr><td>股東會公告</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap38_L" target="_blank" rel="noopener">t187ap38_L</a></td><td><span class="src-tag json">JSON</span></td><td>股東會公告追蹤</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>股東會日期及電子投票資訊</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap41_L" target="_blank" rel="noopener">t187ap41_L</a></td><td><span class="src-tag json">JSON</span></td><td>股東會日期與投票資訊</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>董監事持股餘額</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap11_L" target="_blank" rel="noopener">t187ap11_L</a></td><td><span class="src-tag json">JSON</span></td><td>董監事持股追蹤</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>大股東名單（10% 以上）</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap02_L" target="_blank" rel="noopener">t187ap02_L</a></td><td><span class="src-tag json">JSON</span></td><td>大股東持股分析</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>內部人持股轉讓申報</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap12_L" target="_blank" rel="noopener">t187ap12_L</a></td><td><span class="src-tag json">JSON</span></td><td>內部人持股異動</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>內部人持股未轉讓</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap13_L" target="_blank" rel="noopener">t187ap13_L</a></td><td><span class="src-tag json">JSON</span></td><td>申報後未完成轉讓資訊</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>董事長兼任總經理</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap33_L" target="_blank" rel="noopener">t187ap33_L</a></td><td><span class="src-tag json">JSON</span></td><td>公司治理資訊</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>董監事酬金</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap29_A_L" target="_blank" rel="noopener">t187ap29_A_L</a></td><td><span class="src-tag json">JSON</span></td><td>公司治理及酬金分析</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
 </tbody></table></div>
 </div>
 <div class="card src-card"><h2>5. 估值、股價交易與籌碼</h2>
-<div class="table-wrap"><table><thead><tr><th>資料項目</th><th>端點</th><th>格式</th><th>MKLAB 用途</th></tr></thead><tbody>
-<tr><td>個股 PE、殖利率、PB</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/BWIBBU_ALL" target="_blank" rel="noopener">BWIBBU_ALL</a></td><td><span class="src-tag json">JSON</span></td><td>估值與殖利率篩選；ETF 是否包含須實測</td></tr>
-<tr><td>每日 PE、殖利率、PB</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/BWIBBU_d" target="_blank" rel="noopener">BWIBBU_d</a></td><td><span class="src-tag json">JSON</span></td><td>歷史估值資料；確認日期參數/期間</td></tr>
-<tr><td>上市個股日成交資訊</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL" target="_blank" rel="noopener">STOCK_DAY_ALL</a></td><td><span class="src-tag json">JSON</span></td><td>每日收盤價、成交量等</td></tr>
-<tr><td>日收盤價及月平均價</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_AVG_ALL" target="_blank" rel="noopener">STOCK_DAY_AVG_ALL</a></td><td><span class="src-tag json">JSON</span></td><td>價格趨勢與均線資料基礎</td></tr>
-<tr><td>月成交資訊</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/FMSRFK_ALL" target="_blank" rel="noopener">FMSRFK_ALL</a></td><td><span class="src-tag json">JSON</span></td><td>月度成交統計</td></tr>
-<tr><td>年成交資訊</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/FMNPTK_ALL" target="_blank" rel="noopener">FMNPTK_ALL</a></td><td><span class="src-tag json">JSON</span></td><td>年度成交統計</td></tr>
-<tr><td>每日大盤統計</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/MI_INDEX" target="_blank" rel="noopener">MI_INDEX</a></td><td><span class="src-tag json">JSON</span></td><td>大盤指數與市場統計</td></tr>
-<tr><td>融資融券餘額</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/MI_MARGN" target="_blank" rel="noopener">MI_MARGN</a></td><td><span class="src-tag json">JSON</span></td><td>信用交易與市場情緒</td></tr>
-<tr><td>外資持股比例</td><td><a href="https://openapi.twse.com.tw/v1/fund/MI_QFIIS_cat" target="_blank" rel="noopener">MI_QFIIS_cat</a></td><td><span class="src-tag json">JSON</span></td><td>外資持股分析</td></tr>
-<tr><td>外資持股前 20 名</td><td><a href="https://openapi.twse.com.tw/v1/fund/MI_QFIIS_sort_20" target="_blank" rel="noopener">MI_QFIIS_sort_20</a></td><td><span class="src-tag json">JSON</span></td><td>外資持股排行</td></tr>
-<tr><td>除權息預告</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/TWT48U_ALL" target="_blank" rel="noopener">TWT48U_ALL</a></td><td><span class="src-tag json">JSON</span></td><td>除權息事件日曆</td></tr>
+<div class="table-wrap"><table><thead><tr><th>資料項目</th><th>端點</th><th>格式</th><th>MKLAB 用途</th><th>本站應用</th></tr></thead><tbody>
+<tr><td>個股 PE、殖利率、PB</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/BWIBBU_ALL" target="_blank" rel="noopener">BWIBBU_ALL</a></td><td><span class="src-tag json">JSON</span></td><td>估值與殖利率篩選；ETF 是否包含須實測</td><td class="ap-applied">✅ 已應用<br><small>PE／PB／殖利率（stocks.json）</small></td></tr>
+<tr><td>每日 PE、殖利率、PB</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/BWIBBU_d" target="_blank" rel="noopener">BWIBBU_d</a></td><td><span class="src-tag json">JSON</span></td><td>歷史估值資料；確認日期參數/期間</td><td class="ap-applied">✅ 已應用<br><small>PE／PB／殖利率（同日價，本益比反推 EPS 用）</small></td></tr>
+<tr><td>上市個股日成交資訊</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL" target="_blank" rel="noopener">STOCK_DAY_ALL</a></td><td><span class="src-tag json">JSON</span></td><td>每日收盤價、成交量等</td><td class="ap-applied">✅ 已應用<br><small>每日收盤價（stocks.json）</small></td></tr>
+<tr><td>日收盤價及月平均價</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_AVG_ALL" target="_blank" rel="noopener">STOCK_DAY_AVG_ALL</a></td><td><span class="src-tag json">JSON</span></td><td>價格趨勢與均線資料基礎</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>月成交資訊</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/FMSRFK_ALL" target="_blank" rel="noopener">FMSRFK_ALL</a></td><td><span class="src-tag json">JSON</span></td><td>月度成交統計</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>年成交資訊</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/FMNPTK_ALL" target="_blank" rel="noopener">FMNPTK_ALL</a></td><td><span class="src-tag json">JSON</span></td><td>年度成交統計</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>每日大盤統計</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/MI_INDEX" target="_blank" rel="noopener">MI_INDEX</a></td><td><span class="src-tag json">JSON</span></td><td>大盤指數與市場統計</td><td class="ap-applied">✅ 已應用<br><small>大盤統計（加權指數當日）</small></td></tr>
+<tr><td>融資融券餘額</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/MI_MARGN" target="_blank" rel="noopener">MI_MARGN</a></td><td><span class="src-tag json">JSON</span></td><td>信用交易與市場情緒</td><td class="ap-applied">✅ 已應用<br><small>融資融券餘額（market-extras.json ＋篩選頁欄位）</small></td></tr>
+<tr><td>外資持股比例</td><td><a href="https://openapi.twse.com.tw/v1/fund/MI_QFIIS_cat" target="_blank" rel="noopener">MI_QFIIS_cat</a></td><td><span class="src-tag json">JSON</span></td><td>外資持股分析</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>外資持股前 20 名</td><td><a href="https://openapi.twse.com.tw/v1/fund/MI_QFIIS_sort_20" target="_blank" rel="noopener">MI_QFIIS_sort_20</a></td><td><span class="src-tag json">JSON</span></td><td>外資持股排行</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>除權息預告</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/TWT48U_ALL" target="_blank" rel="noopener">TWT48U_ALL</a></td><td><span class="src-tag json">JSON</span></td><td>除權息事件日曆</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
 </tbody></table></div>
 </div>
 <div class="card src-card"><h2>6. ETF、基金與權證</h2>
-<div class="table-wrap"><table><thead><tr><th>資料項目</th><th>端點</th><th>格式</th><th>用途 / 限制</th></tr></thead><tbody>
-<tr><td>基金基本資料彙總</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap47_L" target="_blank" rel="noopener">t187ap47_L</a></td><td><span class="src-tag json">JSON</span></td><td>ETF/基金基本資料；不等於每日持股明細</td></tr>
-<tr><td>ETF 定期定額排行</td><td><a href="https://openapi.twse.com.tw/v1/ETFReport/ETFRank" target="_blank" rel="noopener">ETFRank</a></td><td><span class="src-tag json">JSON</span></td><td>定期定額熱門度參考</td></tr>
-<tr><td>上市權證基本資料</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap37_L" target="_blank" rel="noopener">t187ap37_L</a></td><td><span class="src-tag json">JSON</span></td><td>權證主檔</td></tr>
-<tr><td>上市權證每日成交資料</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap42_L" target="_blank" rel="noopener">t187ap42_L</a></td><td><span class="src-tag json">JSON</span></td><td>權證交易分析</td></tr>
-<tr><td>上市權證交易人數</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap43_L" target="_blank" rel="noopener">t187ap43_L</a></td><td><span class="src-tag json">JSON</span></td><td>權證交易人數統計</td></tr>
+<div class="table-wrap"><table><thead><tr><th>資料項目</th><th>端點</th><th>格式</th><th>用途 / 限制</th><th>本站應用</th></tr></thead><tbody>
+<tr><td>基金基本資料彙總</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap47_L" target="_blank" rel="noopener">t187ap47_L</a></td><td><span class="src-tag json">JSON</span></td><td>ETF/基金基本資料；不等於每日持股明細</td><td class="ap-applied">✅ 已應用<br><small>ETF 基金基本資料</small></td></tr>
+<tr><td>ETF 定期定額排行</td><td><a href="https://openapi.twse.com.tw/v1/ETFReport/ETFRank" target="_blank" rel="noopener">ETFRank</a></td><td><span class="src-tag json">JSON</span></td><td>定期定額熱門度參考</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>上市權證基本資料</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap37_L" target="_blank" rel="noopener">t187ap37_L</a></td><td><span class="src-tag json">JSON</span></td><td>權證主檔</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>上市權證每日成交資料</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap42_L" target="_blank" rel="noopener">t187ap42_L</a></td><td><span class="src-tag json">JSON</span></td><td>權證交易分析</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>上市權證交易人數</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap43_L" target="_blank" rel="noopener">t187ap43_L</a></td><td><span class="src-tag json">JSON</span></td><td>權證交易人數統計</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
 </tbody></table></div>
 <p class="src-note"><strong>ETF 成分股提醒：</strong>ETF 基本資料、ETF 排行、ETF 每日持股明細是不同資料。若要取得 0050、006208、009816、00981A 等 ETF 的完整成分股，應另外查詢投信基金公司、指數公司及交易所官方揭露，並確認更新頻率與歷史檔案。</p>
 </div>
 <div class="card src-card"><h2>7. ESG / 永續資料</h2>
-<div class="table-wrap"><table><thead><tr><th>資料項目</th><th>端點</th><th>格式</th></tr></thead><tbody>
-<tr><td>溫室氣體排放</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap46_L_1" target="_blank" rel="noopener">t187ap46_L_1</a></td><td>JSON（待實測）</td></tr>
-<tr><td>能源管理</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap46_L_2" target="_blank" rel="noopener">t187ap46_L_2</a></td><td>JSON（待實測）</td></tr>
-<tr><td>水資源管理</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap46_L_3" target="_blank" rel="noopener">t187ap46_L_3</a></td><td>JSON（待實測）</td></tr>
-<tr><td>廢棄物管理</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap46_L_4" target="_blank" rel="noopener">t187ap46_L_4</a></td><td>JSON（待實測）</td></tr>
-<tr><td>人力發展</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap46_L_5" target="_blank" rel="noopener">t187ap46_L_5</a></td><td>JSON（待實測）</td></tr>
-<tr><td>董事會資訊</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap46_L_6" target="_blank" rel="noopener">t187ap46_L_6</a></td><td>JSON（待實測）</td></tr>
-<tr><td>投資人溝通</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap46_L_7" target="_blank" rel="noopener">t187ap46_L_7</a></td><td>JSON（待實測）</td></tr>
+<div class="table-wrap"><table><thead><tr><th>資料項目</th><th>端點</th><th>格式</th><th>本站應用</th></tr></thead><tbody>
+<tr><td>溫室氣體排放</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap46_L_1" target="_blank" rel="noopener">t187ap46_L_1</a></td><td>JSON（待實測）</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>能源管理</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap46_L_2" target="_blank" rel="noopener">t187ap46_L_2</a></td><td>JSON（待實測）</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>水資源管理</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap46_L_3" target="_blank" rel="noopener">t187ap46_L_3</a></td><td>JSON（待實測）</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>廢棄物管理</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap46_L_4" target="_blank" rel="noopener">t187ap46_L_4</a></td><td>JSON（待實測）</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>人力發展</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap46_L_5" target="_blank" rel="noopener">t187ap46_L_5</a></td><td>JSON（待實測）</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>董事會資訊</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap46_L_6" target="_blank" rel="noopener">t187ap46_L_6</a></td><td>JSON（待實測）</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>投資人溝通</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap46_L_7" target="_blank" rel="noopener">t187ap46_L_7</a></td><td>JSON（待實測）</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
 </tbody></table></div>
 </div>
 <div class="card src-card"><h2>8. MOPS 歷史月營收與財報下載</h2>
@@ -149,9 +164,9 @@
 上市（sii）與上櫃（otc）皆回 <b>HTTP 200</b>（456 KB／397 KB），出表日期 <code>115/11/14</code>、
 資料年月 <b>民國 115 年 9 月</b>，內容為當期月營收（當月營收、上月、去年同月、月增率、年增率、累計）。
 <b>編碼為 Big5（CP950）</b>——直接以 UTF-8 解析會整段亂碼，須 <code>decode(&#39;cp950&#39;)</code>；回傳是 HTML 表格（含產業分組、合計列），需自行解析。</p>
-<div class="table-wrap"><table><thead><tr><th>市場</th><th>示例網址</th><th>實測</th></tr></thead><tbody>
-<tr><td>上市（sii）</td><td><a href="https://mopsov.twse.com.tw/nas/t21/sii/t21sc03_115_9_0.html" target="_blank" rel="noopener">t21sc03_115_9_0.html</a></td><td>HTTP 200 · 456 KB · 當期</td></tr>
-<tr><td>上櫃（otc）</td><td><a href="https://mopsov.twse.com.tw/nas/t21/otc/t21sc03_115_9_0.html" target="_blank" rel="noopener">t21sc03_115_9_0.html</a></td><td>HTTP 200 · 397 KB · 當期</td></tr>
+<div class="table-wrap"><table><thead><tr><th>市場</th><th>示例網址</th><th>實測</th><th>本站應用</th></tr></thead><tbody>
+<tr><td>上市（sii）</td><td><a href="https://mopsov.twse.com.tw/nas/t21/sii/t21sc03_115_9_0.html" target="_blank" rel="noopener">t21sc03_115_9_0.html</a></td><td>HTTP 200 · 456 KB · 當期</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>上櫃（otc）</td><td><a href="https://mopsov.twse.com.tw/nas/t21/otc/t21sc03_115_9_0.html" target="_blank" rel="noopener">t21sc03_115_9_0.html</a></td><td>HTTP 200 · 397 KB · 當期</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
 </tbody></table></div>
 <p>路徑參數概念：<code>{市場別}</code> 可為 <code>sii</code>（上市）或 <code>otc</code>（上櫃）；<code>115</code> 為民國年；<code>9</code> 為月份；最後的類別代碼需依官方資料實測確認。這些範例為 HTML，不是 CSV。</p>
 <p class="muted-small-top"><b>建議</b>：只需「上市公司最新月營收」時，改用 OpenAPI 的 <code>t187ap05_L</code>（JSON、免解析 HTML、一檔即全市場）。
@@ -210,25 +225,28 @@ console.log(`取得 ${data.length} 筆資料`);</pre>
 <p>2026-11-14 對 <code>https://openapi.twse.com.tw/v1</code> 全部 <b>143 個端點</b>逐一發出請求實測：
 <b>143 / 143 全數回 HTTP 200 且可解析 JSON</b>。本站管線目前<b>只用了 19 個</b>，
 其餘 124 個中<b>36 個是可直接導入的候選</b>。</p>
-<h3>尚未導入、但實測有資料且值得做（★ 為效益，依序排列）</h3>
-<div class="table-wrap"><table><thead><tr><th>★</th><th>端點</th><th>實測筆數</th><th>資料內容</th><th>建議用途</th></tr></thead><tbody>
-<tr><td>★★★</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap05_L" target="_blank" rel="noopener"><code>t187ap05_L</code></a></td><td>1077</td><td>當月／上月／去年同月營收、月增率、年增率、累計營收</td><td>月營收看板、成長動能因子</td></tr>
-<tr><td>★★★</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap14_L" target="_blank" rel="noopener"><code>t187ap14_L</code></a></td><td>1014</td><td>基本每股盈餘、營收、營業利益、稅後淨利（季別）</td><td>官方 EPS（單檔請求版，取代逐產業財報）</td></tr>
-<tr><td>★★★</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap17_L" target="_blank" rel="noopener"><code>t187ap17_L</code></a></td><td>1000</td><td>毛利率、營業利益率、稅前純益率、稅後純益率</td><td>官方毛利率／營益率，取代自算</td></tr>
-<tr><td>★★★</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/MI_MARGN" target="_blank" rel="noopener"><code>MI_MARGN</code></a></td><td>1309</td><td>融資買進／賣出／餘額／限額、融券同欄位、資券互抵</td><td>籌碼面：融資融券餘額看板</td></tr>
-<tr><td>★★★</td><td><a href="https://openapi.twse.com.tw/v1/holidaySchedule/holidaySchedule" target="_blank" rel="noopener"><code>holidaySchedule</code></a></td><td>29</td><td>集中市場開（休）市日期、星期、說明</td><td>交易日曆，判斷「資料日是否合理」</td></tr>
-<tr><td>★★★</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/TWTAWU" target="_blank" rel="noopener"><code>TWTAWU</code></a></td><td>1</td><td>暫停交易證券：停止／恢復買賣日期與時間</td><td>停牌即時判斷（不必等快照少一檔才發現）</td></tr>
-<tr><td>★★</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/TWT48U_ALL" target="_blank" rel="noopener"><code>TWT48U_ALL</code></a></td><td>53</td><td>除權除息預告：息／權、股利、認購價、比率</td><td>除權息提醒、還原價依據</td></tr>
-<tr><td>★★</td><td><a href="https://openapi.twse.com.tw/v1/ETFReport/ETFRank" target="_blank" rel="noopener"><code>ETFRank</code></a></td><td>20</td><td>定期定額交易戶數排行（個股與 ETF）</td><td>ETF 人氣／定期定額排行頁</td></tr>
-<tr><td>★★</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap04_L" target="_blank" rel="noopener"><code>t187ap04_L</code></a></td><td>282</td><td>每日重大訊息：主旨、符合條款、事實發生日、說明</td><td>事件時間軸、個股重大訊息</td></tr>
-<tr><td>★★</td><td><a href="https://openapi.twse.com.tw/v1/fund/MI_QFIIS_cat" target="_blank" rel="noopener"><code>MI_QFIIS_cat</code></a></td><td>36</td><td>外資及陸資投資類股持股比率（依產業）</td><td>外資持股比重看板</td></tr>
-<tr><td>★★</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/FMSRFK_ALL" target="_blank" rel="noopener"><code>FMSRFK_ALL</code></a></td><td>37147</td><td>個股月成交資訊：月最高／最低／加權均價／週轉率</td><td>月線統計、月均價交叉驗證</td></tr>
-<tr><td>★★</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_AVG_ALL" target="_blank" rel="noopener"><code>STOCK_DAY_AVG_ALL</code></a></td><td>33296</td><td>個股日收盤價及月平均價</td><td>月平均價、價格合理性比對</td></tr>
-<tr><td>★★</td><td><a href="https://openapi.twse.com.tw/v1/company/newlisting" target="_blank" rel="noopener"><code>newlisting</code></a></td><td>797</td><td>最近上市公司（含上市日期、股本）</td><td>新股上市追蹤</td></tr>
-<tr><td>★★</td><td><a href="https://openapi.twse.com.tw/v1/company/suspendListingCsvAndHtml" target="_blank" rel="noopener"><code>suspendListingCsvAndHtml</code></a></td><td>265</td><td>終止上市公司</td><td>下市／退場清單</td></tr>
-<tr><td>★★</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap38_L" target="_blank" rel="noopener"><code>t187ap38_L</code></a></td><td>1149</td><td>股東會公告：開會日期、停止過戶、預擬配息配股、董監酬勞</td><td>股利預告、股東會行事曆</td></tr>
-<tr><td>★★</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap41_L" target="_blank" rel="noopener"><code>t187ap41_L</code></a></td><td>1153</td><td>股東會日期、地點、是否改選董監、是否採電子投票</td><td>股東會行事曆</td></tr>
-<tr><td>★★</td><td><a href="https://openapi.twse.com.tw/v1/indicesReport/MI_5MINS_HIST" target="_blank" rel="noopener"><code>MI_5MINS_HIST</code></a></td><td>10</td><td>發行量加權股價指數歷史資料（開高低收）</td><td>TWII 歷史備援來源</td></tr>
+<h3>導入候選與現況（★ 為效益，依序排列）</h3>
+<p class="muted-small-top">2026-11-14 已完成 <b>★★★ 六項</b>（月營收、融資融券、官方營益分析、官方累計 EPS、暫停交易、開休市日）：
+資料存於 <code>data/market-extras.json</code>，其中月營收與融資融券已接到篩選頁欄位、暫停交易已套用到 <code>stocks.json</code> 的交易狀態。
+★★ 以下尚未導入。</p>
+<div class="table-wrap"><table><thead><tr><th>★</th><th>端點</th><th>實測筆數</th><th>資料內容</th><th>建議用途</th><th>本站應用</th></tr></thead><tbody>
+<tr><td>★★★</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap05_L" target="_blank" rel="noopener"><code>t187ap05_L</code></a></td><td>1077</td><td>當月／上月／去年同月營收、月增率、年增率、累計營收</td><td>月營收看板、成長動能因子</td><td class="ap-applied">✅ 已應用<br><small>月營收（market-extras.json ＋篩選頁欄位）</small></td></tr>
+<tr><td>★★★</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap14_L" target="_blank" rel="noopener"><code>t187ap14_L</code></a></td><td>1014</td><td>基本每股盈餘、營收、營業利益、稅後淨利（季別）</td><td>官方 EPS（單檔請求版，取代逐產業財報）</td><td class="ap-imported">📦 已導入資料庫<br><small>官方累計 EPS（market-extras.json；與本站年化 EPS 交叉驗證用）</small></td></tr>
+<tr><td>★★★</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap17_L" target="_blank" rel="noopener"><code>t187ap17_L</code></a></td><td>1000</td><td>毛利率、營業利益率、稅前純益率、稅後純益率</td><td>官方毛利率／營益率，取代自算</td><td class="ap-imported">📦 已導入資料庫<br><small>官方毛利率／營益率（market-extras.json；已存檔待接 UI／比對）</small></td></tr>
+<tr><td>★★★</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/MI_MARGN" target="_blank" rel="noopener"><code>MI_MARGN</code></a></td><td>1309</td><td>融資買進／賣出／餘額／限額、融券同欄位、資券互抵</td><td>籌碼面：融資融券餘額看板</td><td class="ap-applied">✅ 已應用<br><small>融資融券餘額（market-extras.json ＋篩選頁欄位）</small></td></tr>
+<tr><td>★★★</td><td><a href="https://openapi.twse.com.tw/v1/holidaySchedule/holidaySchedule" target="_blank" rel="noopener"><code>holidaySchedule</code></a></td><td>29</td><td>集中市場開（休）市日期、星期、說明</td><td>交易日曆，判斷「資料日是否合理」</td><td class="ap-applied">✅ 已應用<br><small>開休市日（market-extras.json，交易日曆用）</small></td></tr>
+<tr><td>★★★</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/TWTAWU" target="_blank" rel="noopener"><code>TWTAWU</code></a></td><td>1</td><td>暫停交易證券：停止／恢復買賣日期與時間</td><td>停牌即時判斷（不必等快照少一檔才發現）</td><td class="ap-applied">✅ 已應用<br><small>暫停交易 → stocks.json 的 trading_status／halt_date</small></td></tr>
+<tr><td>★★</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/TWT48U_ALL" target="_blank" rel="noopener"><code>TWT48U_ALL</code></a></td><td>53</td><td>除權除息預告：息／權、股利、認購價、比率</td><td>除權息提醒、還原價依據</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>★★</td><td><a href="https://openapi.twse.com.tw/v1/ETFReport/ETFRank" target="_blank" rel="noopener"><code>ETFRank</code></a></td><td>20</td><td>定期定額交易戶數排行（個股與 ETF）</td><td>ETF 人氣／定期定額排行頁</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>★★</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap04_L" target="_blank" rel="noopener"><code>t187ap04_L</code></a></td><td>282</td><td>每日重大訊息：主旨、符合條款、事實發生日、說明</td><td>事件時間軸、個股重大訊息</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>★★</td><td><a href="https://openapi.twse.com.tw/v1/fund/MI_QFIIS_cat" target="_blank" rel="noopener"><code>MI_QFIIS_cat</code></a></td><td>36</td><td>外資及陸資投資類股持股比率（依產業）</td><td>外資持股比重看板</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>★★</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/FMSRFK_ALL" target="_blank" rel="noopener"><code>FMSRFK_ALL</code></a></td><td>37147</td><td>個股月成交資訊：月最高／最低／加權均價／週轉率</td><td>月線統計、月均價交叉驗證</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>★★</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_AVG_ALL" target="_blank" rel="noopener"><code>STOCK_DAY_AVG_ALL</code></a></td><td>33296</td><td>個股日收盤價及月平均價</td><td>月平均價、價格合理性比對</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>★★</td><td><a href="https://openapi.twse.com.tw/v1/company/newlisting" target="_blank" rel="noopener"><code>newlisting</code></a></td><td>797</td><td>最近上市公司（含上市日期、股本）</td><td>新股上市追蹤</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>★★</td><td><a href="https://openapi.twse.com.tw/v1/company/suspendListingCsvAndHtml" target="_blank" rel="noopener"><code>suspendListingCsvAndHtml</code></a></td><td>265</td><td>終止上市公司</td><td>下市／退場清單</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>★★</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap38_L" target="_blank" rel="noopener"><code>t187ap38_L</code></a></td><td>1149</td><td>股東會公告：開會日期、停止過戶、預擬配息配股、董監酬勞</td><td>股利預告、股東會行事曆</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>★★</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap41_L" target="_blank" rel="noopener"><code>t187ap41_L</code></a></td><td>1153</td><td>股東會日期、地點、是否改選董監、是否採電子投票</td><td>股東會行事曆</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td>★★</td><td><a href="https://openapi.twse.com.tw/v1/indicesReport/MI_5MINS_HIST" target="_blank" rel="noopener"><code>MI_5MINS_HIST</code></a></td><td>10</td><td>發行量加權股價指數歷史資料（開高低收）</td><td>TWII 歷史備援來源</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
 </tbody></table></div>
 <h3>實測限制（會影響導入判斷）</h3>
 <ul>
