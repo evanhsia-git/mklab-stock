@@ -367,6 +367,17 @@ def validate_snapshot(stocks_doc: Dict[str, Any], us_stocks_doc: Optional[Dict[s
         add("WARNING", "PE_EPS_MISMATCH",
             f"PE 與 價/EPS 偏差超過 {int(PE_EPS_TOLERANCE*100)}%：{len(mism)} 檔，需確認期間基準")
 
+    # 3b. 本益比退回交易所公告值：金融保險類（金控／銀行／保險）在免費官方管道拿不到 EPS，
+    #     所以 pe 只能用交易所公告的 PE（pe_src='official'），與本站 EPS 不同基準。
+    #     這不是錯誤，但必須「可見且不會悄悄變多」——所以列成 WARNING 並附原因。
+    #     實測（2026-11-14）：TWSE t187ap06_L_fh 只回 1 筆全空資料、mopsfin t187ap06_L_fh.csv
+    #     只有表頭、MOPS 舊 API 被 WAF 擋；yfinance 的台股金融 EPS 為 FY2025 過期值（不可用）。
+    fallback = [s["sym"] for s in stocks if s.get("pe_src") == "official"]
+    if fallback:
+        add("WARNING", "PE_OFFICIAL_FALLBACK",
+            f"{len(fallback)} 檔無本站 EPS，本益比改用交易所公告值（不同期間基準，已在 pe_src 標示）："
+            f"{fallback[:5]}…")
+
     # 4. 日期：TWSE 端點（STOCK_DAY_ALL）結構上只發 T-1，TPEX 發 T-0，
     #    因此「TWSE 較 TPEX 落後 1 個交易日」是來源的既定行為，不是資料沒更新
     #    （實測：2026-11-13 盤後 TWSE 回 11-12、TPEX 回 11-13）。

@@ -239,3 +239,43 @@
 - `sanitize_snapshot.py` 連續兩次執行：第二次 0 筆（冪等）。
 - `qa_gate.py`：**🟢 ALLOW DEPLOY（Critical ERROR 0）**，僅剩預期中的 WARNING
   （PE 1 檔、NO_PRICE 7 檔、SUSPENDED_HELD 1 檔、ETF_HOLDINGS_TRUNCATED 採已修正語意）。
+
+---
+
+## 九、第三階段：金融保險類 EPS 來源調查（結論：免費官方管道不存在）
+
+目標是讓 36 檔金融保險（2881 富邦金、2882 國泰金、2891 中信金…）也有本站 EPS，
+使其 `pe` 不必退回交易所公告值。**逐條實測四條官方路徑後確認：拿不到，因此不填任何推導值。**
+
+### 實測證據（2026-11-14）
+
+| 來源 | 結果 |
+|---|---|
+| `openapi.twse.com.tw/opendata/t187ap06_L_fh`（金控損益表） | 回 **1 筆全空資料**（僅「出表日期 1151114」，其餘欄位空字串） |
+| `openapi.twse.com.tw/opendata/t187ap07_L_fh`（金控資產負債表） | 同上，**1 筆全空** |
+| `openapi.twse.com.tw/opendata/t187ap06_L_basi`（銀行） | 有資料，但只 9 家（2801 彰銀、2812 台中銀…），**不含大型金控** |
+| `t187ap06_X_fh`（上櫃金控） | 同樣 1 筆全空 |
+| `mopsfin.twse.com.tw/opendata/t187ap06_L_fh.csv` | **僅 341 bytes＝只有表頭**（同一份空資料） |
+| `mops.twse.com.tw/mops/web/ajax_t163sb04`（MOPS 綜合損益表） | 回 **WAF 阻擋頁**「FOR SECURITY REASONS, THIS PAGE CAN NOT BE ACCESSED」（直接呼叫與瀏覽器內同源 fetch 皆被擋；MOPS 已改 SPA，舊 API 失效） |
+| yfinance `2881.TW` | `trailingEps` 8.14，但 `income_stmt` 期間只到 **2025-12-31**（FY2025 過期值） |
+| TWSE BWIBBU（官方） | 官方 PE 15.09（價格 161.5）→ 隱含 TTM EPS **10.70**，**比 yfinance 新一整個年度** |
+
+### 為什麼不用 yfinance 填
+
+用 yfinance 的 8.14 會讓富邦金的本益比從官方的 15.09 變成 **19.84（虛高 31%）**，
+而網站同時顯示官方 PE 的脈絡 → 同一列的數字互相矛盾。
+依「不同口徑寧可留 null 也不混用」原則，**不採用**。
+
+### 目前處置（不推導、不填值）
+
+- 這 36 檔維持 `eps = null`（前端顯示「—」）＋ `pe = pe_official`（交易所公告值）
+- `pe_src = "official"` 已標示來源；另存 `pe_official` 供稽核
+- **新增 qa_gate 規則 `PE_OFFICIAL_FALLBACK`（WARNING）**：列出這 36 檔與原因，
+  讓它可見且「不會悄悄變多」（若數量異常增加即代表新資料源出問題）
+- 測試：新增 `FinancialSectorPeFallback`（54/54 通過）
+
+### 若要做，唯一的乾淨解法（待 Ivan 決策，尚未實作）
+
+`eps = 收盤 ÷ 官方PE`。TWSE 的 PE 定義就是「收盤價 ÷ 最近四季每股盈餘」，
+反推即精確還原該官方數字（富邦金 → 10.70），顯示的 PE 仍與交易所完全一致；
+需標示 `eps_src='TWSE_PE_IMPLIED'`。因涉及「是否屬推導值」的判斷，未經確認不實作。

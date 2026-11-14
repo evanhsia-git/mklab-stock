@@ -384,6 +384,35 @@ class SecondPhaseFixes(unittest.TestCase):
         self.assertNotIn("SUSPENDED_HELD", self._codes(dr.validate_snapshot(st)))
 
 
+class FinancialSectorPeFallback(unittest.TestCase):
+    """第三階段：金融保險類在免費官方管道拿不到 EPS（金控端點空、MOPS 被 WAF 擋），
+    pe 只能退回交易所公告值（pe_src='official'）。這不是錯誤，但必須可見、不可悄悄變多。
+
+    實測（2026-11-14）：TWSE t187ap06_L_fh 只回 1 筆全空資料；
+    mopsfin t187ap06_L_fh.csv 只有表頭；MOPS 舊 API 回 WAF 阻擋頁。
+    yfinance 的台股金融 EPS 為 FY2025 過期值（2881=8.14，會讓 PE 由 15.09 虛高到 19.84），
+    因此不可拿來填本站 eps。
+    """
+
+    @staticmethod
+    def _codes(issues):
+        return {i["code"] for i in issues}
+
+    def test_official_pe_src_is_reported_as_warning(self):
+        st = {"stocks": [{"sym": "2881", "security_type": "stock", "capital_stock": 1,
+                          "price": 161.5, "shares": 1, "market_cap": 161,
+                          "eps": None, "pe": 15.09, "pe_src": "official", "pe_official": 15.09}]}
+        issues = dr.validate_snapshot(st)
+        self.assertIn("PE_OFFICIAL_FALLBACK", self._codes(issues))
+        self.assertNotIn("ERROR", {i["level"] for i in issues})
+
+    def test_computed_pe_src_is_not_reported(self):
+        st = {"stocks": [{"sym": "2330", "security_type": "stock", "capital_stock": 1,
+                          "price": 2350.0, "shares": 1, "market_cap": 2350,
+                          "eps": 98.66, "pe": 23.82, "pe_src": "computed"}]}
+        self.assertNotIn("PE_OFFICIAL_FALLBACK", self._codes(dr.validate_snapshot(st)))
+
+
 if __name__ == "__main__":
     unittest.main()
 
