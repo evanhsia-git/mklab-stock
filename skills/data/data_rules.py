@@ -160,6 +160,43 @@ def us_ytd_pct(raw: Any) -> Optional[float]:
     return round(v, 2)
 
 
+def us_expense_ratio_pct(info: Dict[str, Any]) -> Optional[float]:
+    """ETF 費用率（百分比）。
+
+    2026-11-13：舊版只讀 `annualReportExpenseRatio`，實測 30/30 檔都回 None → 全部顯示空。
+    改用 `netExpenseRatio`（實測 VOO 0.03、SPY 0.0945、QQQ 0.18，**單位已是百分比**）。
+    退回 `annualReportExpenseRatio` 時，該欄位歷史上為小數（0.0003）→ 明顯小於 0.01 才 ×100。
+    超過 5% 幾乎必為單位錯誤 → None（不猜）。
+    """
+    v = _num_or_none(info.get("netExpenseRatio"))
+    if v is not None and 0 < v <= 5:
+        return round(v, 3)
+    v2 = _num_or_none(info.get("annualReportExpenseRatio"))
+    if v2 is not None and v2 > 0:
+        pct = v2 * 100 if v2 < 0.01 else v2
+        if 0 < pct <= 5:
+            return round(pct, 3)
+    return None
+
+
+def price_eps_consistent_pe(price: Any, eps: Any) -> Optional[float]:
+    """本益比＝收盤 ÷ EPS（與本站顯示的 EPS 同一口徑，可自我驗證）。
+
+    2026-11-13：舊版 `pe` 來自 TWSE BWIBBU，`eps` 來自 MOPS 累計年化，兩者期間基準不同
+    → 251 檔「價/EPS 與 pe 差 >25%」，同一列兩個數字互相矛盾。
+    改為統一口徑：`pe = 收盤 ÷ EPS`（EPS ≤ 0 或任一無效 → None，不補值）。
+    """
+    p, e = _num_or_none(price), _num_or_none(eps)
+    if p is None or e is None or p <= 0 or e <= 0:
+        return None
+    pe = p / e
+    # 與 sanitize_pe 同一條上限規則：極端 PE（>1000，通常來自極小 EPS）視為無意義 → None，
+    # 在寫入時就判定，不要等到 sanitize 事後補刀（否則沒跑 sanitize 就會留下極端值）。
+    if pe > PE_MAX:
+        return None
+    return round(pe, 2)
+
+
 def us_price_to_book(info: Dict[str, Any]) -> Optional[float]:
     """優先 price / bookValue（每股淨值，單位明確）；退回 priceToBook；超範圍 → None。"""
     price = _num_or_none(info.get("currentPrice") or info.get("regularMarketPrice"))
@@ -199,16 +236,23 @@ def sanitize_stock_record(s: Dict[str, Any]) -> List[str]:
 
 
 def sanitize_us_stocks_doc(doc: Dict[str, Any]) -> List[str]:
-    """美股個股：殖利率整批 ÷100（若尚未標記），再逐筆檢查範圍。"""
+    """美股個股：殖利率整批 ÷100（**依數值判斷**），再逐筆檢查範圍。
+
+    2026-11-13：不再只用 meta 標記判斷。標記存在 meta，而 `fetch_us_data.py` 每次都重寫
+    整個檔案（標記消失），於是下一次 sanitize 會再除一次 100（AAPL 0.3 → 0.003）。
+    改成看「整批中位數」：正常美股殖利率中位數約 0.5~3%，中位數 >10% 才是 ×100 事故。
+    換算後中位數自動落回正常範圍 → 天然冪等。
+    """
     notes: List[str] = []
     rows = doc.get("stocks", [])
-    if not _units_fixed(doc, "div"):
+    divs = [r["div"] for r in rows if _is_num(r.get("div")) and r["div"] > 0]
+    med = sorted(divs)[len(divs) // 2] if divs else None
+    if med is not None and med > 10:
         for r in rows:
             if _is_num(r.get("div")):
-                old = r["div"]
-                r["div"] = round(old / 100, 2)
+                r["div"] = round(r["div"] / 100, 2)
         _mark_units(doc, "div")
-        notes.append(f"div 整批 ÷100（{len(rows)} 筆，yfinance 已是百分比，舊版重複乘 100）")
+        notes.append(f"div 整批 ÷100（{len(rows)} 筆，中位數 {med}% 明顯是 ×100）")
     for r in rows:
         d = r.get("div")
         if _is_num(d) and not (0 <= d <= US_DIV_MAX_PCT):
@@ -225,12 +269,15 @@ def sanitize_us_etfs_doc(doc: Dict[str, Any]) -> List[str]:
     """美股 ETF：年初至今報酬整批 ÷100（若尚未標記）。"""
     notes: List[str] = []
     rows = doc.get("etfs", [])
-    if not _units_fixed(doc, "ytd"):
+    yts = [abs(r["ytd_return"]) for r in rows if _is_num(r.get("ytd_return"))]
+    ymed = sorted(yts)[len(yts) // 2] if yts else None
+    # 同 div：依數值判斷（正常年初至今報酬中位數絕對值遠小於 30%），換算後天然冪等
+    if ymed is not None and ymed > 30:
         for r in rows:
             if _is_num(r.get("ytd_return")):
                 r["ytd_return"] = round(r["ytd_return"] / 100, 2)
         _mark_units(doc, "ytd")
-        notes.append(f"ytd_return 整批 ÷100（{len(rows)} 筆，舊版重複乘 100）")
+        notes.append(f"ytd_return 整批 ÷100（{len(rows)} 筆，中位數絕對值 {ymed}% 明顯是 ×100）")
     return notes
 
 
@@ -251,7 +298,9 @@ def etf_holdings_n(items_len: int, src: Any) -> Optional[int]:
     """回傳可證實的成份股總數；無法證實回傳 None。"""
     if items_len is None or items_len < 0:
         return None
-    head = str(src or "").split("+")[0].strip().upper()
+    # 必須「完全等於」官方完整清單來源；`FUBON+CMONEY` 是「富邦頁面取不到、退回 CMoney 前 10 大」，
+    # 仍是被截斷的（用 split("+")[0] 判斷會把它誤認為完整清單）。
+    head = str(src or "").strip().upper()
     if head in FULL_LIST_SRCS or items_len != 10:
         return items_len
     return None
@@ -327,8 +376,9 @@ def validate_snapshot(stocks_doc: Dict[str, Any], us_stocks_doc: Optional[Dict[s
     for s in stocks:
         k = (s.get("source"), s.get("price_asof"))
         dates[k] = dates.get(k, 0) + 1
-    twse_d = {d for (src, d) in dates if src == "TWSE"}
-    tpex_d = {d for (src, d) in dates if src == "TPEX"}
+    # 過濾掉 None（停牌沿用記錄可能沒有 price_asof），否則 max() 會拿 str 與 None 相比而爆掉
+    twse_d = {d for (src, d) in dates if src == "TWSE" and d}
+    tpex_d = {d for (src, d) in dates if src == "TPEX" and d}
     if twse_d and tpex_d and max(tpex_d) > max(twse_d):
         tw, tp = max(twse_d), max(tpex_d)
         # 以快照中出現過的 price_asof 當交易日曆，算 TWSE 實際落後幾個交易日
@@ -397,6 +447,12 @@ def validate_snapshot(stocks_doc: Dict[str, Any], us_stocks_doc: Optional[Dict[s
     if mc_bad:
         add("ERROR", "MARKET_CAP_MISMATCH",
             f"市值與 收盤×已發行股數 不符（>1%）：{len(mc_bad)} 檔，例 {mc_bad[:5]}")
+
+    # 9b. 停牌／當日無成交：保留是為了不讓標的無聲消失，但必須可見且不得冒充最新價
+    susp = [s["sym"] for s in stocks if s.get("trading_status") == "suspended"]
+    if susp:
+        add("WARNING", "SUSPENDED_HELD",
+            f"停牌／當日無成交，沿用前次紀錄：{len(susp)} 檔，例 {susp[:5]}（保留最後成交日，非最新價）")
 
     # 9. ETF 成份股總數仍是「只列出前 10 大」（n == 10 且 items 長度 == 10）
     if etf_holdings_doc:

@@ -45,6 +45,8 @@ jobs:
           python-version: "3.11"
       - name: 抓取當日收盤（TWSE/TPEx）
         run: python skills/data/fetch_data.py daily
+      - name: 快照確定性修正（單位／EPS-PE／股本缺口，冪等）
+        run: python skills/data/sanitize_snapshot.py
       - name: 技術指標與 ETF 分類
         run: python skills/data/compute_indicators.py
       - name: 官方公司資訊（產業、上市日）

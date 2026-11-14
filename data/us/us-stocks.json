@@ -1,6 +1,6 @@
 {
   "meta": {
-    "as_of": "2026-11-14 01:56:19 UTC",
+    "as_of": "2026-11-14 03:26:04 UTC",
     "source": "Yahoo Finance (yfinance)",
     "note": "候選池排序取前 30 大市值；非官方美股交易所資料，僅供研究參考，非投資建議。",
     "candidate_pool_size": 60,

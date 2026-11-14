@@ -170,9 +170,72 @@
 - 瀏覽器實測 compare 頁：0 console 錯誤；ETF 總數顯示「—／50 檔」如預期。
 - `qa_gate.py`：**🟢 ALLOW DEPLOY（Critical ERROR 0）**。
 
-### 仍未處理（第二／三階段）
+### 仍未處理（第三階段）
 
-- 停牌標的改為保留 + 標示（1808 事件）
-- PE 與價／EPS 期間基準統一（266 檔）
-- 美股 ETF 費用率來源補齊（30/30 為空）
-- `daily-update.yml` 納入 `sanitize_snapshot.py`
+- 金融保險類官方 EPS 來源（36 檔無官方累計 EPS，PE 暫用交易所公告值並以 `pe_src` 標示）
+
+---
+
+## 八、第二階段修正：PE 口徑、費用率、停牌保留、排程防護
+
+### 1. PE 口徑統一（`pe = 收盤 ÷ EPS`）
+
+- 根因：`pe` 取自 TWSE BWIBBU、`eps` 取自 MOPS 累計年化，**期間基準不同** →
+  251 檔「價/EPS 與 pe 差 >25%」，同一列的兩個數字互相矛盾。
+- 修正：`data_rules.price_eps_consistent_pe` —— `pe = 收盤 ÷ EPS`（與本站顯示的 EPS 同口徑，
+  可自我驗證）；極端值沿用既有上限規則（>1000 → None，來自極小 EPS 的無意義 PE）。
+  沒有 EPS 時（如尚無官方財報的金融保險類）才退回交易所公告值，並新增：
+  - `pe_src`：`computed`（由本站 EPS 計算）／`official`（交易所公告值）
+  - `pe_official`：交易所公告原值（供對照與稽核）
+- 驗證：PE/EPS 不一致 **251 → 1 檔**（`2466 冠西電`：EPS 0.1 → 價/EPS 3930 超過上限，
+  故退回公告值 250.32，`pe_src=official` 已標示，僅 WARNING）。
+  `pe_src` 分布：computed 828／official 36／無 581。
+
+### 2. 美股 ETF 費用率來源補齊（0/30 → 30/30）
+
+- 根因：只讀 `annualReportExpenseRatio`，實測 30/30 檔都回 None。
+- 修正：`data_rules.us_expense_ratio_pct` 優先讀 `netExpenseRatio`（實測 VOO 0.03、SPY 0.0945、
+  QQQ 0.18，**單位已是百分比**，不可再 ×100）；退回 `annualReportExpenseRatio` 時，
+  明顯小於 0.01 才視為小數 ×100；超過 5% 一律 None（不猜）。
+- 驗證：30/30 有值，範圍 0.03%（VTI／VOO／IVV）～ 0.40%。
+
+### 3. 停牌標的保留，不再無聲消失（1808 事件）
+
+- 根因：每次依 TWSE 當日 feed 重建 → 當日無成交的標的（1808 潤隆，最後成交 11-11）整筆消失，
+  使用者的自選股／研究清單會突然少一檔。
+- 修正：`fetch_data.py` 在合併後補回「前次快照有、本次 feed 沒有、**但仍在上市公司清單
+  （t187ap03_L）**」的標的；已不在清單者＝下市，不復活（避免墓碑資料）。
+  沿用記錄的處理原則——**不冒充現價**：
+  - `price / open / high / low / volume / chg / market_cap` 一律 **null**（缺值就讓它缺，
+    不用前值充當今日價）
+  - `last_close` 保留最後一次成交價；`price_asof` 保留該價的日期（≠ trade_date，不會混入當日 history）
+  - `trading_status`：`active` / `suspended`
+  - 股本與已發行股數與行情無關 → 用官方值補齊
+- 驗證：1808 潤隆回到快照（1444 → 1445），`price=null`、`last_close=31.0 @ 2026-11-11`、
+  `trading_status=suspended`、股本 71.4 億／7.14 億股；
+  `meta.price_asof_counts = {'2026-11-13': 1444, '2026-11-11': 1}`。
+- 新增 qa_gate 規則 `SUSPENDED_HELD`（WARNING）：停牌沿用筆數必須可見。
+
+### 4. 排程納入 `sanitize_snapshot.py`，並修掉重複除 100 的地雷
+
+- `daily-update.yml` 在 `fetch_data.py daily` 之後、計算鏈之前執行 `sanitize_snapshot.py`。
+- **同時修掉一個會計兩次的 bug**：原本靠 `meta.units_fixed` 標記判斷是否已換算，
+  但 `fetch_us_data.py` 每次都重寫整個檔案（標記消失）→ 下一次 sanitize 會再除一次 100
+  （AAPL 0.3 → 0.003）。改成**依數值判斷**（殖利率中位數 >10%、YTD 中位數絕對值 >30% 才是 ×100 事故），
+  換算後中位數自動落回正常範圍 → 天然冪等。
+- 驗證：連續執行 sanitize **第二次為 0 筆**。
+
+### 5. 其他修正
+
+- `validate_snapshot` 日期規則：`twse_d` / `tpex_d` 過濾 None，避免 `max()` 拿 str 與 None 相比而拋錯。
+- `etf_holdings_n`：`FUBON+CMONEY` 正確視為「被截斷」（原本 `split("+")[0]` 會誤認為官方完整清單）；
+  可證實者 64 檔、無法證實改 null 299 檔。
+
+### 驗證總結（第二階段）
+
+- `test_data_rules_2026_11_13` **52/52**（新增 `SecondPhaseFixes` 測試類別）、
+  `test_known_errors.py` 143/143、`test_fake_data_regression.py` 全通過、
+  4 支 node 測試全通過。
+- `sanitize_snapshot.py` 連續兩次執行：第二次 0 筆（冪等）。
+- `qa_gate.py`：**🟢 ALLOW DEPLOY（Critical ERROR 0）**，僅剩預期中的 WARNING
+  （PE 1 檔、NO_PRICE 7 檔、SUSPENDED_HELD 1 檔、ETF_HOLDINGS_TRUNCATED 採已修正語意）。

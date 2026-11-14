@@ -294,6 +294,8 @@ class EtfHoldingsCountSemantics(unittest.TestCase):
     def test_ten_items_from_cmoney_is_unknown(self):
         self.assertIsNone(dr.etf_holdings_n(10, "CMONEY"))
         self.assertIsNone(dr.etf_holdings_n(10, "YUANTA+CMONEY"))
+        # FUBON+CMONEY = 富邦頁面取不到、退回 CMoney 前 10 大 → 仍是被截斷的，不可當完整清單
+        self.assertIsNone(dr.etf_holdings_n(10, "FUBON+CMONEY"))
 
     def test_official_full_list_keeps_count(self):
         self.assertEqual(dr.etf_holdings_n(50, "FUBON"), 50)
@@ -325,6 +327,61 @@ class EtfHoldingsCountSemantics(unittest.TestCase):
         codes = self._codes(issues)
         self.assertIn("ETF_HOLDINGS_TRUNCATED", codes)
         self.assertNotIn("ERROR", {i["level"] for i in issues})
+
+
+class SecondPhaseFixes(unittest.TestCase):
+    """第二階段：PE 口徑統一、美股 ETF 費用率來源、停牌標的保留。"""
+
+    @staticmethod
+    def _codes(issues):
+        return {i["code"] for i in issues}
+
+    # --- PE 口徑統一（pe = 收盤 ÷ EPS）---
+    def test_price_eps_consistent_pe(self):
+        self.assertEqual(dr.price_eps_consistent_pe(2340.0, 98.66), round(2340.0 / 98.66, 2))
+
+    def test_price_eps_consistent_pe_invalid_is_none(self):
+        for p, e in ((100, 0), (100, -1.5), (None, 5), (100, None), (0, 5)):
+            self.assertIsNone(dr.price_eps_consistent_pe(p, e), (p, e))
+
+    def test_computed_pe_has_no_mismatch(self):
+        # 舊版 pe 取自 TWSE、eps 取自 MOPS 年化 → 251 檔「價/EPS 與 pe 差 >25%」。
+        # 新口徑下兩者必然一致，PE_EPS_MISMATCH 不應再出現。
+        st = {"stocks": [{"sym": "2330", "security_type": "stock", "capital_stock": 1,
+                          "price": 2340.0, "eps": 98.66,
+                          "pe": dr.price_eps_consistent_pe(2340.0, 98.66),
+                          "shares": 25_932_370_067, "market_cap": round(2340.0 * 25_932_370_067)}]}
+        self.assertNotIn("PE_EPS_MISMATCH", self._codes(dr.validate_snapshot(st)))
+
+    # --- 美股 ETF 費用率 ---
+    def test_expense_ratio_prefers_net_expense_ratio(self):
+        # 實測 VOO 0.03 / SPY 0.0945 / QQQ 0.18，單位已是百分比，不可再乘 100
+        self.assertEqual(dr.us_expense_ratio_pct({"netExpenseRatio": 0.03}), 0.03)
+        self.assertEqual(dr.us_expense_ratio_pct({"netExpenseRatio": 0.18}), 0.18)
+
+    def test_expense_ratio_falls_back_and_converts_fraction(self):
+        # annualReportExpenseRatio 歷史上為小數（0.0003 = 0.03%）
+        self.assertEqual(dr.us_expense_ratio_pct({"annualReportExpenseRatio": 0.0003}), 0.03)
+
+    def test_expense_ratio_out_of_range_is_none(self):
+        for v in (0, -1, 99, None):
+            self.assertIsNone(dr.us_expense_ratio_pct({"netExpenseRatio": v}), v)
+
+    # --- 停牌標的保留 ---
+    def test_suspended_is_warning_and_visible(self):
+        st = {"stocks": [{"sym": "2330", "security_type": "stock", "capital_stock": 1,
+                          "price": 1, "shares": 1, "market_cap": 1},
+                         {"sym": "1808", "security_type": "stock", "capital_stock": 1,
+                          "price": 31.0, "shares": 1, "market_cap": 31,
+                          "price_asof": "2026-11-11", "trading_status": "suspended"}]}
+        issues = dr.validate_snapshot(st)
+        self.assertIn("SUSPENDED_HELD", self._codes(issues))
+        self.assertNotIn("ERROR", {i["level"] for i in issues})
+
+    def test_active_records_do_not_trigger_suspended(self):
+        st = {"stocks": [{"sym": "2330", "security_type": "stock", "capital_stock": 1, "price": 1,
+                          "shares": 1, "market_cap": 1, "trading_status": "active"}]}
+        self.assertNotIn("SUSPENDED_HELD", self._codes(dr.validate_snapshot(st)))
 
 
 if __name__ == "__main__":

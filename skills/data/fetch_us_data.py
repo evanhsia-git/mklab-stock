@@ -134,7 +134,8 @@ def _fetch_one_etf(yf, sym):
             "nav": info.get("navPrice"),  # 淨值（僅供參考，不用於 price）
             "chg": chg,
             "net_assets": info.get("totalAssets"),  # 基金規模（近似市值，用於排序前 30 大）
-            "expense_ratio": round(info["annualReportExpenseRatio"] * 100, 3) if info.get("annualReportExpenseRatio") is not None else None,
+            # 2026-11-13：改用 netExpenseRatio（annualReportExpenseRatio 實測 30/30 都回 None）
+            "expense_ratio": data_rules.us_expense_ratio_pct(info),
             "yield": round(info["yield"] * 100, 2) if info.get("yield") is not None else None,
             "ytd_return": data_rules.us_ytd_pct(info.get("ytdReturn")),  # 2026-11-13：ytdReturn 已是百分比，不可再乘 100
             "category": info.get("category"),

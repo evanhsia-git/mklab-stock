@@ -595,6 +595,16 @@ def run_daily():
         # ETF 標記
         is_etf = bool(re.search(r"ETF|基金|指數|正[0-9]|反[0-9]|槓桿|反向|期貨|配息|高息|優息|收益", name or ""))
 
+        # 本益比統一口徑（2026-11-13）：pe = 收盤 ÷ EPS，與本站顯示的 EPS 同期間基準，
+        # 同一列的 pe 與 eps 必然互相吻合（舊版 pe 取自 TWSE、eps 取自 MOPS 累計年化，
+        # 251 檔兩者差 >25%，同一列自我矛盾）。
+        # 沒有 EPS（例如尚無官方財報的金融保險類）時才退回 TWSE 公告值，並以 pe_src 標示來源，
+        # 不讓兩種基準混在同一個欄位裡說不清。
+        pe_calc = data_rules.price_eps_consistent_pe(close, eps)
+        pe_twse = data_rules.sanitize_pe(bb_twse.get("pe"), eps)
+        pe_val = pe_calc if pe_calc is not None else pe_twse
+        pe_src = "computed" if pe_calc is not None else ("official" if pe_twse is not None else None)
+
         # 資料來源標記
         source = "TWSE"
         quality = "official"
@@ -606,7 +616,8 @@ def run_daily():
             "name": name,
             "price": close,
             "open": open_p, "high": high, "low": low, "volume": volume,
-            "pe": data_rules.sanitize_pe(bb_twse.get("pe"), eps), "pb": bb_twse.get("pb"), "div": bb_twse.get("div"),
+            "pe": pe_val, "pe_official": data_rules.sanitize_pe(bb_twse.get("pe"), None), "pe_src": pe_src,
+            "pb": bb_twse.get("pb"), "div": bb_twse.get("div"),
             "roe": roe, "roa": roa, "eps": eps, "capital_stock": capital_stock,
             "shares": shares,
             "market_cap": mc, "ind": ex.get("ind"),
@@ -616,6 +627,7 @@ def run_daily():
             "source": source,
             "quality": quality,
             "price_asof": price_asof,
+            "trading_status": "active",
         })
         sources["TWSE"] += 1
 
@@ -714,6 +726,12 @@ def run_daily():
             if shares:
                 mc = round(close * shares)
 
+        # 本益比統一口徑（同 TWSE）：pe = 收盤 ÷ EPS；無 EPS 才退回交易所公告值並以 pe_src 標示
+        pe_calc = data_rules.price_eps_consistent_pe(close, eps)
+        pe_off = data_rules.sanitize_pe(bb_tpex.get("pe"), eps)
+        pe_val = pe_calc if pe_calc is not None else pe_off
+        pe_src = "computed" if pe_calc is not None else ("official" if pe_off is not None else None)
+
         is_etf = classify_security(sid, etf_ref) == "etf"
 
         source = "TPEX"
@@ -724,7 +742,8 @@ def run_daily():
             "name": name,
             "price": close,
             "open": open_p, "high": high, "low": low, "volume": volume,
-            "pe": data_rules.sanitize_pe(bb_tpex.get("pe"), eps), "pb": bb_tpex.get("pb"), "div": bb_tpex.get("div"),
+            "pe": pe_val, "pe_official": data_rules.sanitize_pe(bb_tpex.get("pe"), None), "pe_src": pe_src,
+            "pb": bb_tpex.get("pb"), "div": bb_tpex.get("div"),
             "roe": roe, "roa": roa, "eps": eps, "capital_stock": capital_stock,
             "market_cap": mc, "ind": ex.get("ind"),
             "is_etf": is_etf,
@@ -733,6 +752,7 @@ def run_daily():
             "source": source,
             "quality": quality,
             "price_asof": price_asof,
+            "trading_status": "active",
             "_est_mc": est_mc({"price": close, "volume": volume, "market_cap": mc}),
         })
         sources["TPEX"] = sources.get("TPEX", 0) + 1
@@ -768,6 +788,52 @@ def run_daily():
         LOG.info(f"排除其他證券（特別股／DR／受益證券／ETN／權證等）: {_n_other} 筆")
         LOG.stats["details"]["excluded_other"] = _n_other
         all_stocks = [s for s in all_stocks if s["security_type"] != "other"]
+
+    # 停牌／無成交標的保留（2026-11-13）：TWSE 每日 feed 不含當日無成交的標的，
+    # 舊版直接依 feed 重建 → 1808 潤隆 這類標的會無聲從資料庫消失（1445 → 1444），
+    # 使用者的自選股與研究清單會突然少一檔。
+    # 這裡把「前次快照有、本次 feed 沒有、但仍在上市公司清單（t187ap03_L）」的標的沿用回來：
+    #   - 標記 trading_status='suspended'，保留最後一次成交價與它自己的 price_asof（不冒充最新價）
+    #   - 已不在上市公司清單者＝下市 → 不復活（避免墓碑資料永久留存）
+    #   - 範圍外證券（特別股／DR／ETN…）不因沿用而復活
+    _fresh = {s.get("sym") for s in all_stocks}
+    _listed = set(capital_stock_map.keys())
+    _susp = []
+    for _sym, _prev in existing.items():
+        if _sym in _fresh or _sym not in _listed:
+            continue
+        if classify_security(_sym, etf_ref) == "other":
+            continue
+        c = dict(_prev)
+        # 不冒充現價：suspended 沒有「當日收盤」，把現價欄位留空（缺值就讓它缺），
+        # 最後一次成交價另存 last_close／last_close_date，前端顯示「—」而不是把舊價當今日價。
+        # 注意：必須從「上一次的 last_close」接手，因為第二次起 _prev 的 price 已經是 None
+        # （沿用記錄本身沒有 price），若只看 _prev["price"] 會把最後成交價洗掉。
+        c["last_close"] = _prev.get("price") if _prev.get("price") is not None else _prev.get("last_close")
+        _last_date = (_prev.get("price_asof") if _prev.get("price_asof") is not None
+                      else _prev.get("last_close_date"))
+        for _k in ("price", "open", "high", "low", "volume", "chg", "market_cap"):
+            c[_k] = None
+        # price_asof 保留「最後有價資料的日期」而不用 None：
+        #   - meta 的 price_asof_counts 與 qa_gate 的日期規則就不必處理 None 鍵（JSON 會變 "null" 字串）
+        #   - 「這個價是哪一天的」仍可追溯（price 為 null，不會被誤讀成當日價）
+        #   - price_asof != trade_date，因此不會混進當日的 history 切片
+        c["price_asof"] = _last_date
+        c.pop("last_close_date", None)
+        # 股本／已發行股數與行情無關，且仍在上市公司清單內 → 用官方值補齊（不猜）
+        _ci = capital_stock_map.get(_sym) or {}
+        if _ci.get("capital_stock"):
+            c["capital_stock"] = _ci["capital_stock"]
+        if _ci.get("shares"):
+            c["shares"] = _ci["shares"]
+        c["trading_status"] = "suspended"
+        c["_est_mc"] = 0
+        _susp.append(c)
+    if _susp:
+        LOG.warn(f"停牌／當日無成交，沿用前次紀錄 {len(_susp)} 檔並標記 suspended（保留最後成交日，不改價）："
+                 f"{[s['sym'] for s in _susp][:10]}")
+        LOG.stats["details"]["suspended_carry"] = len(_susp)
+        all_stocks.extend(_susp)
 
     # 依市值排序取前 SAFE_MAX；超過時明確記錄被截除的筆數，不默默丟資料
     all_stocks.sort(key=lambda x: x.get("_est_mc", 0), reverse=True)
