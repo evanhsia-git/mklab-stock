@@ -334,8 +334,18 @@ _mis = [s['sym'] for s in _fund_rows if s.get('roe_off') is not None and (s.get(
 check("ROE/ROA：有官方年化值者，roe/roa 必須等於 roe_off/roa_off（單一口徑）", len(_mis) == 0, f"{len(_mis)} 檔不一致：{_mis[:6]}")
 _stale = [s['sym'] for s in _fund_rows if s.get('roe_off') is None and s.get('roe') is not None and s.get('roe_src') != 'yfinance']
 check("ROE/ROA：沒有官方值且非 yfinance 補值者不得殘留過期舊值（應為 null 顯示 -）", len(_stale) == 0, f"{len(_stale)} 檔：{_stale[:6]}")
-_eps_mis = [s['sym'] for s in _fund_rows if s.get('eps') != s.get('eps_off')]
-check("EPS：eps 必須等於官方年化 eps_off（沒有官方值為 null）", len(_eps_mis) == 0, f"{len(_eps_mis)} 檔：{_eps_mis[:6]}")
+# 2026-11-14：金融保險類（金控／銀行／保險）在免費官方管道沒有損益表，
+# 經 Ivan 決策後允許「由官方 PE 反推 TTM EPS」（TWSE 的 PE 定義＝收盤 ÷ 最近四季 EPS，反推屬精確還原），
+# 且必須以 eps_src='TWSE_PE_IMPLIED' 標示；其餘情況仍必須嚴格等於官方年化 eps_off。
+_eps_mis = [s['sym'] for s in _fund_rows
+            if s.get('eps') != s.get('eps_off')
+            and not (s.get('eps_off') is None and s.get('eps_src') == 'TWSE_PE_IMPLIED')]
+check("EPS：等於官方年化 eps_off；無官方財報者只能是官方 PE 反推值（TWSE_PE_IMPLIED）或 null",
+      len(_eps_mis) == 0, f"{len(_eps_mis)} 檔：{_eps_mis[:6]}")
+_eps_src_bad = [s['sym'] for s in _fund_rows
+                if s.get('eps_src') == 'TWSE_PE_IMPLIED' and s.get('pe_src') != 'computed']
+check("EPS：反推值必須同時讓 pe 由本站算出（pe_src=computed），不得與官方 PE 各說各話",
+      len(_eps_src_bad) == 0, f"{len(_eps_src_bad)} 檔：{_eps_src_bad[:6]}")
 _fd2 = open('skills/data/fetch_data.py', encoding='utf-8').read()
 check("財報：fetch_data 不再呼叫已失效的 t187ap06_L 營益分析（舊版殘值來源）",
       'fetch_profitability' not in _fd2 and 'TWSE_PROFITABILITY' not in _fd2)
@@ -350,8 +360,12 @@ _dc = open('assets/js/data-client.js', encoding='utf-8').read()
 #   ② 前端不得自行再算一次（負向斷言，防止有人重新接上而與管線漂移）
 _fin = open('skills/data/import_official_fundamentals.py', encoding='utf-8').read()
 check("EPS 口徑：後端管線以官方年化 eps 覆蓋，且只處理一般股票",
-      'row["eps"] = row.get("eps_off")' in _fin
-      and 'if row.get("security_type") == "stock":' in _fin)
+      'row["eps"] = row["eps_off"]' in _fin
+      and 'if row.get("security_type") == "stock":' in _fin
+      and 'data_rules.apply_pe_from_eps(row)' in _fin)
+_fd3 = open('skills/data/fetch_data.py', encoding='utf-8').read()
+check("EPS 口徑：金融保險類由官方 PE 反推 EPS（eps_from_official_pe）並標示 TWSE_PE_IMPLIED",
+      'data_rules.eps_from_official_pe' in _fd3 and 'EPS_SRC_PE_IMPLIED' in _fd3)
 check("EPS 口徑：前端不得自行改寫 eps/roe/roa（避免與管線口徑漂移）",
       '.eps_off != null' not in _dc and 's.roe = s.roe_off' not in _dc and 's.roa = s.roa_off' not in _dc)
 

@@ -197,6 +197,38 @@ def price_eps_consistent_pe(price: Any, eps: Any) -> Optional[float]:
     return round(pe, 2)
 
 
+# TWSE 的 PEratio 定義為「收盤價 ÷ 最近四季每股盈餘（TTM）」，因此可由兩者精確還原官方用過的 EPS。
+EPS_SRC_OFFICIAL = "TWSE_OFFICIAL"
+EPS_SRC_YFINANCE = "yfinance"
+EPS_SRC_PE_IMPLIED = "TWSE_PE_IMPLIED"  # 由官方 PE 反推（金融保險類無官方損益表時的來源）
+
+
+def eps_from_official_pe(price: Any, pe_official: Any) -> Optional[float]:
+    """由交易所公告 PE 反推 TTM EPS＝收盤 ÷ 官方PE。
+
+    只用於「免費官方管道拿不到損益表」的金融保險類（金控／銀行／保險）。
+    這不是估算：TWSE 的 PE 定義就是「收盤 ÷ 最近四季 EPS」，反推即還原該官方數字。
+    還原後 `pe = 收盤 ÷ eps` 會回到官方 PE，同一列的兩個數字不再互相矛盾。
+    """
+    p, pe = _num_or_none(price), _num_or_none(pe_official)
+    if p is None or pe is None or p <= 0 or pe <= 0:
+        return None
+    return round(p / pe, 2)
+
+
+def apply_pe_from_eps(rec: Dict[str, Any]) -> None:
+    """就地依 pe = 收盤 ÷ EPS 重算 pe / pe_src；沒有 EPS 才退回交易所公告值。冪等。"""
+    pe_calc = price_eps_consistent_pe(rec.get("price"), rec.get("eps"))
+    if pe_calc is not None:
+        rec["pe"], rec["pe_src"] = pe_calc, "computed"
+        return
+    off = rec.get("pe_official")
+    if _is_num(off):
+        rec["pe"], rec["pe_src"] = off, "official"
+    else:
+        rec["pe"], rec["pe_src"] = None, None
+
+
 def us_price_to_book(info: Dict[str, Any]) -> Optional[float]:
     """優先 price / bookValue（每股淨值，單位明確）；退回 priceToBook；超範圍 → None。"""
     price = _num_or_none(info.get("currentPrice") or info.get("regularMarketPrice"))
@@ -375,8 +407,15 @@ def validate_snapshot(stocks_doc: Dict[str, Any], us_stocks_doc: Optional[Dict[s
     fallback = [s["sym"] for s in stocks if s.get("pe_src") == "official"]
     if fallback:
         add("WARNING", "PE_OFFICIAL_FALLBACK",
-            f"{len(fallback)} 檔無本站 EPS，本益比改用交易所公告值（不同期間基準，已在 pe_src 標示）："
-            f"{fallback[:5]}…")
+            f"{len(fallback)} 檔無可用本站 EPS（含極端值），本益比沿用交易所公告值：{fallback[:5]}…")
+    #     金融保險類（金控／銀行／保險）沒有官方損益表 → EPS 由官方 PE 反推
+    #     （TWSE 的 PE 定義＝收盤 ÷ 最近四季 EPS，反推屬精確還原，不是估算），
+    #     仍列 WARNING 讓來源可見、數量異常增加時能立刻發現。
+    implied = [s["sym"] for s in stocks if s.get("eps_src") == EPS_SRC_PE_IMPLIED]
+    if implied:
+        add("WARNING", "PE_EPS_IMPLIED",
+            f"{len(implied)} 檔無官方損益表，EPS 由官方 PE 反推（TWSE_PE_IMPLIED；pe 與官方值一致）："
+            f"{implied[:5]}…")
 
     # 4. 日期：TWSE 端點（STOCK_DAY_ALL）結構上只發 T-1，TPEX 發 T-0，
     #    因此「TWSE 較 TPEX 落後 1 個交易日」是來源的既定行為，不是資料沒更新

@@ -266,16 +266,31 @@
 而網站同時顯示官方 PE 的脈絡 → 同一列的數字互相矛盾。
 依「不同口徑寧可留 null 也不混用」原則，**不採用**。
 
-### 目前處置（不推導、不填值）
+### 最終處置（Ivan 決策：採用官方 PE 反推）
 
-- 這 36 檔維持 `eps = null`（前端顯示「—」）＋ `pe = pe_official`（交易所公告值）
-- `pe_src = "official"` 已標示來源；另存 `pe_official` 供稽核
-- **新增 qa_gate 規則 `PE_OFFICIAL_FALLBACK`（WARNING）**：列出這 36 檔與原因，
-  讓它可見且「不會悄悄變多」（若數量異常增加即代表新資料源出問題）
-- 測試：新增 `FinancialSectorPeFallback`（54/54 通過）
+`eps = 收盤 ÷ 官方PE`。TWSE 的 PEratio 定義就是「收盤價 ÷ 最近四季每股盈餘（TTM）」，
+反推即**精確還原官方用過的數字**（富邦金 → 10.70），不是估算；
+還原後 `pe = 收盤 ÷ eps` 會回到官方 PE，同一列的兩個數字不再互相矛盾。
 
-### 若要做，唯一的乾淨解法（待 Ivan 決策，尚未實作）
+實作：
 
-`eps = 收盤 ÷ 官方PE`。TWSE 的 PE 定義就是「收盤價 ÷ 最近四季每股盈餘」，
-反推即精確還原該官方數字（富邦金 → 10.70），顯示的 PE 仍與交易所完全一致；
-需標示 `eps_src='TWSE_PE_IMPLIED'`。因涉及「是否屬推導值」的判斷，未經確認不實作。
+| 位置 | 變更 |
+|---|---|
+| `data_rules.eps_from_official_pe(price, pe_official)` | 反推 TTM EPS（任一無效 → None） |
+| `data_rules.apply_pe_from_eps(rec)` | 依最終 eps 重算 `pe`/`pe_src`；無 eps 才退回官方公告值（冪等） |
+| `fetch_data.py` daily | 沒有 eps 且有官方 PE 時反推，並標 `eps_src='TWSE_PE_IMPLIED'` |
+| `import_official_fundamentals.py` | eps 優先序：官方 `eps_off` ＞ 既有反推值 ＞ null；寫入後重算 pe |
+
+驗證：
+
+- **35 檔金融保險全部取得 EPS**，且 `pe` 精確等於官方值：
+  - 2881 富邦金 eps **10.70**、pe **15.09**（＝官方 15.09）
+  - 2882 國泰金 eps 8.48、pe 13.50（＝官方）
+  - 2891 中信金 eps 4.18、pe 18.83（＝官方）
+- `pe_src` 分布：computed **863**、official **1**（`2466 冠西電`：EPS 0.10 → 價/EPS 3930 超過
+  上限 1000 屬極端值，故沿用公告值）、無 581
+- 新增 qa_gate 規則 `PE_EPS_IMPLIED`（WARNING，列出反推來源，數量異常增加即代表官方來源變動）
+- 更新 `tests/test_known_errors.py` 兩條不變量（原寫死「eps 只能是官方年化值」）：
+  改為「等於官方 eps_off；無官方財報者只能是 `TWSE_PE_IMPLIED` 或 null」，
+  並新增「反推值必須同時讓 `pe_src=computed`，不得與官方 PE 各說各話」
+- 測試：`test_data_rules_2026_11_13` **59/59**、`test_known_errors` **145/145**（+2 條新檢查）

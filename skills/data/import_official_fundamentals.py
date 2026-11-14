@@ -40,6 +40,7 @@ import sys
 import os as _os, sys as _sys
 _sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
 import scope_rules  # noqa: E402
+import data_rules  # noqa: E402  （2026-11-14：PE 口徑統一與 eps_src 標記）
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 SRC = os.path.join(ROOT, "data", "raw", "official")
@@ -337,7 +338,16 @@ def main():
                 row.pop("roe_src", None)
             elif row.get("roe_src") != "yfinance":
                 row["roe"] = row["roa"] = None
-            row["eps"] = row.get("eps_off")
+            if row.get("eps_off") is not None:
+                row["eps"] = row["eps_off"]
+                row["eps_src"] = "TWSE_OFFICIAL"
+            elif row.get("eps_src") != "TWSE_PE_IMPLIED":
+                # 沒有官方損益表（金融保險類）：只保留「由官方 PE 反推」的值，
+                # 該值由 fetch_data.py daily 每天依最新 PE 重算；其餘（過期殘值）清成 null。
+                row["eps"] = None
+                row.pop("eps_src", None)
+            # eps 定案後重算 pe（單一口徑：pe = 收盤 ÷ EPS；無 EPS 才退回官方公告值）
+            data_rules.apply_pe_from_eps(row)
         if d_:
             row["div_cash_latest"] = d_["latest_cash_per_share"]
             row["div_streak_years"] = d_["streak_years"]

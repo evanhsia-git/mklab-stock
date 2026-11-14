@@ -595,6 +595,16 @@ def run_daily():
         # ETF 標記
         is_etf = bool(re.search(r"ETF|基金|指數|正[0-9]|反[0-9]|槓桿|反向|期貨|配息|高息|優息|收益", name or ""))
 
+        # EPS 來源標記（沿用既有；每月官方匯入會寫 TWSE_OFFICIAL）
+        eps_src = ex.get("eps_src")
+        # 沒有 EPS 時，用官方 PE 反推 TTM EPS（TWSE 的 PE 定義＝收盤 ÷ 最近四季 EPS，反推即還原）。
+        # 專門處理「免費官方管道拿不到損益表」的金融保險類；已有官方 EPS 者完全不受影響。
+        if eps is None and close:
+            _off_raw = data_rules.sanitize_pe(bb_twse.get("pe"), None)
+            _implied = data_rules.eps_from_official_pe(close, _off_raw)
+            if _implied is not None:
+                eps, eps_src = _implied, data_rules.EPS_SRC_PE_IMPLIED
+
         # 本益比統一口徑（2026-11-13）：pe = 收盤 ÷ EPS，與本站顯示的 EPS 同期間基準，
         # 同一列的 pe 與 eps 必然互相吻合（舊版 pe 取自 TWSE、eps 取自 MOPS 累計年化，
         # 251 檔兩者差 >25%，同一列自我矛盾）。
@@ -618,7 +628,7 @@ def run_daily():
             "open": open_p, "high": high, "low": low, "volume": volume,
             "pe": pe_val, "pe_official": data_rules.sanitize_pe(bb_twse.get("pe"), None), "pe_src": pe_src,
             "pb": bb_twse.get("pb"), "div": bb_twse.get("div"),
-            "roe": roe, "roa": roa, "eps": eps, "capital_stock": capital_stock,
+            "roe": roe, "roa": roa, "eps": eps, "eps_src": eps_src, "capital_stock": capital_stock,
             "shares": shares,
             "market_cap": mc, "ind": ex.get("ind"),
             "is_etf": is_etf,

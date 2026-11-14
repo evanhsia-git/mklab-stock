@@ -412,6 +412,41 @@ class FinancialSectorPeFallback(unittest.TestCase):
                           "eps": 98.66, "pe": 23.82, "pe_src": "computed"}]}
         self.assertNotIn("PE_OFFICIAL_FALLBACK", self._codes(dr.validate_snapshot(st)))
 
+    # --- 由官方 PE 反推 EPS（選項 1）---
+    def test_eps_from_official_pe_fuh_bon(self):
+        # 富邦金：收盤 161.5、官方 PE 15.09 → TTM EPS 10.70
+        self.assertEqual(dr.eps_from_official_pe(161.5, 15.09), 10.7)
+
+    def test_eps_from_official_pe_invalid_is_none(self):
+        for p, pe in ((0, 15), (161.5, 0), (None, 15), (161.5, None), (161.5, -3)):
+            self.assertIsNone(dr.eps_from_official_pe(p, pe), (p, pe))
+
+    def test_implied_eps_round_trips_to_official_pe(self):
+        # 反推後 pe = 收盤 ÷ eps 必須回到官方 PE（同一列不再自相矛盾）
+        price, pe_off = 161.5, 15.09
+        eps = dr.eps_from_official_pe(price, pe_off)
+        rec = {"price": price, "eps": eps, "pe_official": pe_off, "pe": None, "pe_src": None}
+        dr.apply_pe_from_eps(rec)
+        self.assertEqual(rec["pe_src"], "computed")
+        self.assertAlmostEqual(rec["pe"], pe_off, places=2)
+
+    def test_implied_eps_is_reported_as_warning(self):
+        st = {"stocks": [{"sym": "2881", "security_type": "stock", "capital_stock": 1,
+                          "price": 161.5, "shares": 1, "market_cap": 161,
+                          "eps": 10.7, "eps_src": dr.EPS_SRC_PE_IMPLIED,
+                          "pe": 15.09, "pe_src": "computed", "pe_official": 15.09}]}
+        issues = dr.validate_snapshot(st)
+        codes = self._codes(issues)
+        self.assertIn("PE_EPS_IMPLIED", codes)
+        self.assertNotIn("PE_OFFICIAL_FALLBACK", codes)
+        self.assertNotIn("ERROR", {i["level"] for i in issues})
+        self.assertNotIn("PE_EPS_MISMATCH", codes)
+
+    def test_apply_pe_from_eps_falls_back_to_official(self):
+        rec = {"price": 161.5, "eps": None, "pe_official": 15.09, "pe": None, "pe_src": None}
+        dr.apply_pe_from_eps(rec)
+        self.assertEqual((rec["pe"], rec["pe_src"]), (15.09, "official"))
+
 
 if __name__ == "__main__":
     unittest.main()
