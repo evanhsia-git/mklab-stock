@@ -102,12 +102,34 @@ def _has_post_event_rows(rows, cut):
     return any(str(r[0]).replace("-", "") >= cut for r in rows)
 
 
+def _cash_refund(action):
+    """每股退還股款（元／舊股）；沒有就是 0。
+
+    現金減資一定要用到：瑞儀 6176 是 25% 現金減資、每股退 2.5 元，事件後理論價
+    =(前收 − 2.5) ÷ 0.75，若只除 0.75 會高估 3.3 元（2026-11-15 實測）。
+    """
+    v = action.get("cash_refund")
+    if v in (None, ""):
+        return 0.0
+    try:
+        return float(v)
+    except (TypeError, ValueError):
+        return 0.0
+
+
 def adjust_rows(sym, rows, actions):
-    """把事件日之前的 OHLC 除以分割倍數（還原價，供指標使用）。
+    """把事件日之前的 OHLC 還原到「事件後」的價格基準（供指標使用）。
+
+    registry 的 ratio 語意統一為**新股／舊股**：
+      分割 7（1 股拆 7 股）→ 事件前價 ÷ 7
+      反分割 0.25（4 股併 1 股）→ 事件前價 ÷ 0.25（＝×4）
+      減資 0.75（25% 減資）→ 事件前價 ÷ 0.75（＝×1.333）
+    現金減資再加 `cash_refund`：事件前價先扣掉退還款再除，才是持有人財富等值
+    （1 股 × 前收 = 0.75 股 × 事件後價 + 2.5 元退還款 → 事件後價 =(前收 − 2.5) ÷ 0.75）。
 
     rows: [(YYYYMMDD, open, high, low, close), ...]（日期由舊到新）。
     回傳 (adjusted_rows, applied)；applied 為實際套用的事件（附 ratio 與分界日）。
-    只除以「日期 < 事件日」的列，因此重複呼叫結果相同。
+    只處理「日期 < 事件日」的列，因此重複呼叫結果相同。
     """
     hits = [a for a in actions_for(sym, actions) if event_date(a)]
     if not hits:
@@ -118,6 +140,7 @@ def adjust_rows(sym, rows, actions):
         ratio = float(a["ratio"])
         if ratio <= 0:
             continue
+        refund = _cash_refund(a)
         cut = str(event_date(a)).replace("-", "")
         if _boundary_already_continuous(out, cut):
             # 事件邊界已無跳空 → 這份序列已還原過，不再二次除（冪等守門）
@@ -132,15 +155,14 @@ def adjust_rows(sym, rows, actions):
             if str(r[0]).replace("-", "") >= cut:
                 continue
             o, h, l, c = r[1], r[2], r[3], r[4]
-            out[i] = (r[0],
-                      round(o / ratio, 4) if o is not None else None,
-                      round(h / ratio, 4) if h is not None else None,
-                      round(l / ratio, 4) if l is not None else None,
-                      round(c / ratio, 4) if c is not None else None)
+            def _adj(x, _r=ratio, _c=refund):
+                return round((x - _c) / _r, 4) if x is not None else None
+            out[i] = (r[0], _adj(o), _adj(h), _adj(l), _adj(c))
             n += 1
         if n == 0:
-            continue   # 保險：沒有列被除到就不算套用（不宣稱已還原）
+            continue   # 保險：沒有列被還原到就不算套用（不宣稱已還原）
         applied.append({"sym": sym, "type": a.get("type"), "ratio": ratio,
+                        "cash_refund": refund or None,
                         "event_date": event_date(a), "adjusted_rows": n,
                         "status": a.get("status"), "source": a.get("source")})
     return out, applied
@@ -201,17 +223,26 @@ def find_dead_runs(rows, min_run=DEAD_MIN_RUN):
     return runs
 
 
-def scan_for_discontinuity(sym, rows, threshold=JUMP_THRESHOLD, min_gap_days=0):
+def scan_for_discontinuity(sym, rows, threshold=JUMP_THRESHOLD, min_gap_days=0,
+                           trading_days=None, min_missing_trading_days=2):
     """掃單一序列的跳空：相鄰收盤比值偏離 > threshold 即視為疑似公司行為。
 
-    min_gap_days：兩列之間至少要隔幾個日曆天才算（公司行為一定伴隨停止交易，
-    而槓桿／反向 ETF 單日 ±20% 以上是正常行情——2026-11-15 實測 00715L 等
-    「期元大／期街口」系列一天就能跳 30%，需靠停牌缺口過濾）。
+    停牌判定優先看**真的沒交易的交易日**（`trading_days` 提供時）：公司行為一定伴隨
+    停止交易，停牌期間該標的沒有任何 K 線列。原本只用「日曆日 ≥3 天」會有漏洞——
+    週五→週一剛好 3 天，槓桿／反向 ETF 一天就能跳 20~30% 的正常行情會被誤報
+    （2026-11-15 實測：29 檔候選裡有 8 筆是純週末跳空、缺 0 個交易日）。
+
+    trading_days：可用交易日集合（YYYYMMDD）。提供時，兩列之間必須有
+      >= min_missing_trading_days 個交易日是「該標的沒資料」的，才算停牌跳空。
+    min_gap_days：相容用的日曆日門檻，只在沒提供 trading_days 時生效。
 
     回傳 [{sym, before_date, before_close, after_date, after_close, implied_ratio,
-           drop_pct, gap_days}]。只回報事實，不判定是否為分割（需人確認或官方來源）。
+           drop_pct, gap_days, missing_trading_days, halt_from}]。
+    只回報事實，不判定是否為分割（需人確認或官方來源）。
     """
+    import bisect
     import datetime as _dt
+    cal = sorted(str(d).replace("-", "") for d in trading_days) if trading_days else None
     hits = []
     for i in range(1, len(rows)):
         prev, cur = rows[i - 1][4], rows[i][4]
@@ -229,7 +260,16 @@ def scan_for_discontinuity(sym, rows, threshold=JUMP_THRESHOLD, min_gap_days=0):
                    - _dt.date(int(b[:4]), int(b[4:6]), int(b[6:8]))).days
         except ValueError:
             gap = None
-        if min_gap_days and (gap is None or gap < min_gap_days):
+        miss_n, halt_from = None, None
+        if cal is not None:
+            lo, hi = bisect.bisect_right(cal, b), bisect.bisect_left(cal, a)
+            miss_n = max(0, hi - lo)
+            if miss_n < min_missing_trading_days:
+                continue
+            if hi > lo:
+                first = cal[lo]
+                halt_from = f"{first[:4]}-{first[4:6]}-{first[6:8]}"
+        elif min_gap_days and (gap is None or gap < min_gap_days):
             continue
         hits.append({
             "sym": sym,
@@ -240,5 +280,7 @@ def scan_for_discontinuity(sym, rows, threshold=JUMP_THRESHOLD, min_gap_days=0):
             "implied_ratio": implied_ratio(prev, cur),
             "drop_pct": round(chg * 100, 2),
             "gap_days": gap,
+            "missing_trading_days": miss_n,
+            "halt_from": halt_from,
         })
     return hits

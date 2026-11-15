@@ -28,15 +28,34 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 KLINE = os.path.join(ROOT, "data", "kline")
 OUT = os.path.join(ROOT, "data", "corporate-actions-candidates.json")
 THRESHOLD = 0.2
-# 公司行為一定伴隨停止交易（換發期間無行情）→ 要求跳空的兩列之間至少隔 3 個日曆天。
-# 沒有這個條件，槓桿／反向型 ETF（期元大／期街口系列）單日 ±20~30% 的**正常行情**
-# 會被誤報成公司行為（2026-11-15 實測：無此條件時 64 筆跳空／59 檔候選）。
-MIN_GAP_DAYS = 3
+# 公司行為一定伴隨停止交易（換發期間無行情）→ 要求跳空的兩列之間「該標的真的沒交易的
+# 交易日」達標。**不可改回只看日曆日**：週五→週一剛好 3 個日曆天，槓桿／反向型 ETF
+# （期元大／期街口系列）單日 ±20~30% 的**正常行情**會被誤報成公司行為
+# （2026-11-15 實測：用日曆日門檻 29 檔候選裡有 8 筆是純週末跳空、缺 0 個交易日）。
+MIN_GAP_DAYS = 3               # 只在沒有交易日曆時才用的後備門檻
+MIN_MISSING_TRADING_DAYS = 2   # 至少要缺 2 個交易日才算停牌（排除週末與單一國定假日）
 
 
-def scan_kline_dir(kline_dir=None, threshold=THRESHOLD):
-    """掃全部 K 線檔 → 跳空清單（每檔取最大一跳，足以辨識事件）。"""
+def load_trading_days(root=None):
+    """交易日曆＝data/history/*.json 的檔名（本站每日快照，只有真的有開市才有檔）。
+
+    沒有這份日曆時（乾淨環境），呼叫端會退回日曆日門檻。
+    """
+    hist = os.path.join(root or ROOT, "data", "history")
+    try:
+        return {os.path.basename(p)[:-5] for p in glob.glob(os.path.join(hist, "*.json"))}
+    except OSError:
+        return set()
+
+
+def scan_kline_dir(kline_dir=None, threshold=THRESHOLD, trading_days=None, root=None):
+    """掃全部 K 線檔 → 跳空清單（有停牌缺口者）。
+
+    trading_days 未提供時自動讀 data/history 檔名當交易日曆。
+    """
     kline_dir = kline_dir or KLINE
+    if trading_days is None:
+        trading_days = load_trading_days(root=root) or None
     hits = []
     for fp in sorted(glob.glob(os.path.join(kline_dir, "*.json"))):
         sym = os.path.basename(fp)[:-5]
@@ -48,7 +67,9 @@ def scan_kline_dir(kline_dir=None, threshold=THRESHOLD):
         except (OSError, json.JSONDecodeError):
             continue
         clean = [(str(r[0]).replace("-", ""), r[1], r[2], r[3], r[4]) for r in rows]
-        for h in ca.scan_for_discontinuity(sym, clean, threshold, min_gap_days=MIN_GAP_DAYS):
+        for h in ca.scan_for_discontinuity(
+                sym, clean, threshold, min_gap_days=MIN_GAP_DAYS,
+                trading_days=trading_days, min_missing_trading_days=MIN_MISSING_TRADING_DAYS):
             hits.append(h)
     return hits
 
@@ -69,20 +90,24 @@ def build_candidates(hits, confirmed, names=None):
     for h in hits:
         if str(h["sym"]) in have:
             continue
+        gap_txt = (f"，期間缺 {h['missing_trading_days']} 個交易日（停牌跡象）"
+                   if h.get("missing_trading_days") else "")
         out.append({
             "sym": h["sym"],
             "name": (names or {}).get(h["sym"]),
             "type": classify_hit(h),
             "ratio": None,                     # 未經確認不填倍數（填了就會被拿去還原）
             "implied_ratio": h["implied_ratio"],
-            "halt_from": None,
+            "halt_from": h.get("halt_from"),
             "resume_date": h["after_date"],
+            "missing_trading_days": h.get("missing_trading_days"),
             "status": "detected",
             "source": "auto:price_discontinuity",
             "source_note": ("本站 K 線相鄰日跳空 "
                             f"{h['drop_pct']}%（{h['before_date']} 收 {h['before_close']} → "
-                            f"{h['after_date']} 收 {h['after_close']}），隱含倍數 "
-                            f"{h['implied_ratio']}。可能是分割／反分割／減資，也可能是真實崩跌，"
+                            f"{h['after_date']} 收 {h['after_close']}）{gap_txt}，隱含倍數 "
+                            f"{h['implied_ratio']}（＝新股/舊股，含停牌期間市場漲跌故為近似）。"
+                            "可能是分割／反分割／減資，也可能是真實崩跌，"
                             "須人工確認後才可寫入倍數並套用還原價。"),
         })
     out.sort(key=lambda x: str(x["sym"]))

@@ -6,100 +6,56 @@
   },
   "candidates": [
     {
-      "sym": "00643K",
-      "name": "群益深証中小+R",
-      "type": "reverse_split",
-      "ratio": null,
-      "implied_ratio": 0.8,
-      "halt_from": null,
-      "resume_date": "20250901",
-      "status": "detected",
-      "source": "auto:price_discontinuity",
-      "source_note": "本站 K 線相鄰日跳空 25.07%（20250825 收 3.51 → 20250901 收 4.39），隱含倍數 0.8。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
-    },
-    {
       "sym": "00673R",
       "name": "期元大S&P原油反1",
-      "type": "split",
+      "type": "reverse_split",
       "ratio": null,
-      "implied_ratio": 1.37,
-      "halt_from": null,
-      "resume_date": "20260309",
+      "implied_ratio": 0.25,
+      "halt_from": "2025-10-15",
+      "resume_date": "20251022",
+      "missing_trading_days": 5,
       "status": "detected",
       "source": "auto:price_discontinuity",
-      "source_note": "本站 K 線相鄰日跳空 -27.19%（20260306 收 20.3 → 20260309 收 14.78），隱含倍數 1.37。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
+      "source_note": "本站 K 線相鄰日跳空 305.13%（20251014 收 7.02 → 20251022 收 28.44），期間缺 5 個交易日（停牌跡象），隱含倍數 0.25（＝新股/舊股，含停牌期間市場漲跌故為近似）。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
     },
     {
-      "sym": "00708L",
-      "name": "期元大S&P黃金正2",
-      "type": "split",
+      "sym": "00674R",
+      "name": "期元大S&P黃金反1",
+      "type": "reverse_split",
       "ratio": null,
-      "implied_ratio": 1.28,
-      "halt_from": null,
-      "resume_date": "20260202",
+      "implied_ratio": 0.2,
+      "halt_from": "2026-04-15",
+      "resume_date": "20260422",
+      "missing_trading_days": 5,
       "status": "detected",
       "source": "auto:price_discontinuity",
-      "source_note": "本站 K 線相鄰日跳空 -21.78%（20260130 收 129.0 → 20260202 收 100.9），隱含倍數 1.28。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
+      "source_note": "本站 K 線相鄰日跳空 400.0%（20260414 收 5.18 → 20260422 收 25.9），期間缺 5 個交易日（停牌跡象），隱含倍數 0.2（＝新股/舊股，含停牌期間市場漲跌故為近似）。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
+    },
+    {
+      "sym": "00706L",
+      "name": "期元大S&P日圓正2",
+      "type": "reverse_split",
+      "ratio": null,
+      "implied_ratio": 0.25,
+      "halt_from": "2025-10-15",
+      "resume_date": "20251022",
+      "missing_trading_days": 5,
+      "status": "detected",
+      "source": "auto:price_discontinuity",
+      "source_note": "本站 K 線相鄰日跳空 299.64%（20251014 收 5.54 → 20251022 收 22.14），期間缺 5 個交易日（停牌跡象），隱含倍數 0.25（＝新股/舊股，含停牌期間市場漲跌故為近似）。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
     },
     {
       "sym": "00715L",
       "name": "期街口布蘭特正2",
       "type": "reverse_split",
       "ratio": null,
-      "implied_ratio": 0.83,
-      "halt_from": null,
-      "resume_date": "20260302",
+      "implied_ratio": 0.52,
+      "halt_from": "2025-12-03",
+      "resume_date": "20251210",
+      "missing_trading_days": 5,
       "status": "detected",
       "source": "auto:price_discontinuity",
-      "source_note": "本站 K 線相鄰日跳空 20.04%（20260226 收 26.9 → 20260302 收 32.29），隱含倍數 0.83。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
-    },
-    {
-      "sym": "00715L",
-      "name": "期街口布蘭特正2",
-      "type": "reverse_split",
-      "ratio": null,
-      "implied_ratio": 0.62,
-      "halt_from": null,
-      "resume_date": "20260309",
-      "status": "detected",
-      "source": "auto:price_discontinuity",
-      "source_note": "本站 K 線相鄰日跳空 62.34%（20260306 收 38.16 → 20260309 收 61.95），隱含倍數 0.62。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
-    },
-    {
-      "sym": "00887",
-      "name": "永豐中國科技50大",
-      "type": "reverse_split",
-      "ratio": null,
-      "implied_ratio": 0.69,
-      "halt_from": null,
-      "resume_date": "20241004",
-      "status": "detected",
-      "source": "auto:price_discontinuity",
-      "source_note": "本站 K 線相鄰日跳空 45.34%（20241001 收 12.35 → 20241004 收 17.95），隱含倍數 0.69。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
-    },
-    {
-      "sym": "00887",
-      "name": "永豐中國科技50大",
-      "type": "reverse_split",
-      "ratio": null,
-      "implied_ratio": 0.46,
-      "halt_from": null,
-      "resume_date": "20241007",
-      "status": "detected",
-      "source": "auto:price_discontinuity",
-      "source_note": "本站 K 線相鄰日跳空 116.32%（20241004 收 17.95 → 20241007 收 38.83），隱含倍數 0.46。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
-    },
-    {
-      "sym": "00887",
-      "name": "永豐中國科技50大",
-      "type": "split",
-      "ratio": null,
-      "implied_ratio": 2.04,
-      "halt_from": null,
-      "resume_date": "20241014",
-      "status": "detected",
-      "source": "auto:price_discontinuity",
-      "source_note": "本站 K 線相鄰日跳空 -50.97%（20241011 收 22.15 → 20241014 收 10.86），隱含倍數 2.04。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
+      "source_note": "本站 K 線相鄰日跳空 92.52%（20251202 收 10.43 → 20251210 收 20.08），期間缺 5 個交易日（停牌跡象），隱含倍數 0.52（＝新股/舊股，含停牌期間市場漲跌故為近似）。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
     },
     {
       "sym": "1516",
@@ -107,11 +63,12 @@
       "type": "reverse_split",
       "ratio": null,
       "implied_ratio": 0.74,
-      "halt_from": null,
+      "halt_from": "2026-10-15",
       "resume_date": "20261027",
+      "missing_trading_days": 6,
       "status": "detected",
       "source": "auto:price_discontinuity",
-      "source_note": "本站 K 線相鄰日跳空 34.77%（20261014 收 18.55 → 20261027 收 25.0），隱含倍數 0.74。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
+      "source_note": "本站 K 線相鄰日跳空 34.77%（20261014 收 18.55 → 20261027 收 25.0），期間缺 6 個交易日（停牌跡象），隱含倍數 0.74（＝新股/舊股，含停牌期間市場漲跌故為近似）。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
     },
     {
       "sym": "1563",
@@ -119,35 +76,25 @@
       "type": "reverse_split",
       "ratio": null,
       "implied_ratio": 0.83,
-      "halt_from": null,
+      "halt_from": "2026-08-27",
       "resume_date": "20260907",
+      "missing_trading_days": 7,
       "status": "detected",
       "source": "auto:price_discontinuity",
-      "source_note": "本站 K 線相鄰日跳空 20.45%（20260826 收 66.0 → 20260907 收 79.5），隱含倍數 0.83。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
-    },
-    {
-      "sym": "2101",
-      "name": "南港",
-      "type": "reverse_split",
-      "ratio": null,
-      "implied_ratio": 0.7,
-      "halt_from": null,
-      "resume_date": "20250915",
-      "status": "detected",
-      "source": "auto:price_discontinuity",
-      "source_note": "本站 K 線相鄰日跳空 42.54%（20250912 收 31.15 → 20250915 收 44.4），隱含倍數 0.7。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
+      "source_note": "本站 K 線相鄰日跳空 20.45%（20260826 收 66.0 → 20260907 收 79.5），期間缺 7 個交易日（停牌跡象），隱含倍數 0.83（＝新股/舊股，含停牌期間市場漲跌故為近似）。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
     },
     {
       "sym": "2314",
       "name": "台揚",
       "type": "reverse_split",
       "ratio": null,
-      "implied_ratio": 0.6,
-      "halt_from": null,
+      "implied_ratio": 0.45,
+      "halt_from": "2025-10-08",
       "resume_date": "20251020",
+      "missing_trading_days": 7,
       "status": "detected",
       "source": "auto:price_discontinuity",
-      "source_note": "本站 K 線相鄰日跳空 65.94%（20251017 收 13.8 → 20251020 收 22.9），隱含倍數 0.6。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
+      "source_note": "本站 K 線相鄰日跳空 122.33%（20251007 收 10.3 → 20251020 收 22.9），期間缺 7 個交易日（停牌跡象），隱含倍數 0.45（＝新股/舊股，含停牌期間市場漲跌故為近似）。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
     },
     {
       "sym": "2321",
@@ -155,35 +102,25 @@
       "type": "reverse_split",
       "ratio": null,
       "implied_ratio": 0.58,
-      "halt_from": null,
+      "halt_from": "2026-09-10",
       "resume_date": "20260921",
+      "missing_trading_days": 7,
       "status": "detected",
       "source": "auto:price_discontinuity",
-      "source_note": "本站 K 線相鄰日跳空 72.19%（20260909 收 15.1 → 20260921 收 26.0），隱含倍數 0.58。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
+      "source_note": "本站 K 線相鄰日跳空 72.19%（20260909 收 15.1 → 20260921 收 26.0），期間缺 7 個交易日（停牌跡象），隱含倍數 0.58（＝新股/舊股，含停牌期間市場漲跌故為近似）。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
     },
     {
       "sym": "2327",
       "name": "國巨*",
       "type": "split",
       "ratio": null,
-      "implied_ratio": 7.1,
-      "halt_from": null,
+      "implied_ratio": 3.82,
+      "halt_from": "2025-08-14",
       "resume_date": "20250825",
+      "missing_trading_days": 7,
       "status": "detected",
       "source": "auto:price_discontinuity",
-      "source_note": "本站 K 線相鄰日跳空 -85.91%（20250822 收 1015.0 → 20250825 收 143.0），隱含倍數 7.1。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
-    },
-    {
-      "sym": "2352",
-      "name": "佳世達",
-      "type": "reverse_split",
-      "ratio": null,
-      "implied_ratio": 0.83,
-      "halt_from": null,
-      "resume_date": "20251007",
-      "status": "detected",
-      "source": "auto:price_discontinuity",
-      "source_note": "本站 K 線相鄰日跳空 20.82%（20251003 收 29.3 → 20251007 收 35.4），隱含倍數 0.83。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
+      "source_note": "本站 K 線相鄰日跳空 -73.81%（20250813 收 546.0 → 20250825 收 143.0），期間缺 7 個交易日（停牌跡象），隱含倍數 3.82（＝新股/舊股，含停牌期間市場漲跌故為近似）。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
     },
     {
       "sym": "2380",
@@ -191,95 +128,77 @@
       "type": "reverse_split",
       "ratio": null,
       "implied_ratio": 0.31,
-      "halt_from": null,
+      "halt_from": "2026-06-17",
       "resume_date": "20260629",
+      "missing_trading_days": 7,
       "status": "detected",
       "source": "auto:price_discontinuity",
-      "source_note": "本站 K 線相鄰日跳空 225.76%（20260616 收 6.6 → 20260629 收 21.5），隱含倍數 0.31。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
-    },
-    {
-      "sym": "2489",
-      "name": "瑞軒",
-      "type": "split",
-      "ratio": null,
-      "implied_ratio": 3.08,
-      "halt_from": null,
-      "resume_date": "20251007",
-      "status": "detected",
-      "source": "auto:price_discontinuity",
-      "source_note": "本站 K 線相鄰日跳空 -67.5%（20251003 收 42.15 → 20251007 收 13.7），隱含倍數 3.08。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
-    },
-    {
-      "sym": "2540",
-      "name": "愛山林",
-      "type": "split",
-      "ratio": null,
-      "implied_ratio": 1.4,
-      "halt_from": null,
-      "resume_date": "20250930",
-      "status": "detected",
-      "source": "auto:price_discontinuity",
-      "source_note": "本站 K 線相鄰日跳空 -28.55%（20250926 收 79.5 → 20250930 收 56.8），隱含倍數 1.4。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
+      "source_note": "本站 K 線相鄰日跳空 225.76%（20260616 收 6.6 → 20260629 收 21.5），期間缺 7 個交易日（停牌跡象），隱含倍數 0.31（＝新股/舊股，含停牌期間市場漲跌故為近似）。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
     },
     {
       "sym": "2607",
       "name": "榮運",
       "type": "reverse_split",
       "ratio": null,
-      "implied_ratio": 0.82,
-      "halt_from": null,
+      "implied_ratio": 0.59,
+      "halt_from": "2025-09-25",
       "resume_date": "20251007",
+      "missing_trading_days": 6,
       "status": "detected",
       "source": "auto:price_discontinuity",
-      "source_note": "本站 K 線相鄰日跳空 21.78%（20251003 收 48.45 → 20251007 收 59.0），隱含倍數 0.82。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
+      "source_note": "本站 K 線相鄰日跳空 68.57%（20250924 收 35.0 → 20251007 收 59.0），期間缺 6 個交易日（停牌跡象），隱含倍數 0.59（＝新股/舊股，含停牌期間市場漲跌故為近似）。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
+    },
+    {
+      "sym": "2832",
+      "name": "台產",
+      "type": "reverse_split",
+      "ratio": null,
+      "implied_ratio": 0.76,
+      "halt_from": "2025-10-22",
+      "resume_date": "20251103",
+      "missing_trading_days": 7,
+      "status": "detected",
+      "source": "auto:price_discontinuity",
+      "source_note": "本站 K 線相鄰日跳空 31.53%（20251021 收 36.0 → 20251103 收 47.35），期間缺 7 個交易日（停牌跡象），隱含倍數 0.76（＝新股/舊股，含停牌期間市場漲跌故為近似）。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
     },
     {
       "sym": "3057",
       "name": "喬鼎",
-      "type": "split",
+      "type": "reverse_split",
       "ratio": null,
-      "implied_ratio": 1.38,
-      "halt_from": null,
+      "implied_ratio": 0.67,
+      "halt_from": "2025-09-25",
       "resume_date": "20251007",
+      "missing_trading_days": 6,
       "status": "detected",
       "source": "auto:price_discontinuity",
-      "source_note": "本站 K 線相鄰日跳空 -27.68%（20251003 收 19.15 → 20251007 收 13.85），隱含倍數 1.38。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
+      "source_note": "本站 K 線相鄰日跳空 48.61%（20250924 收 9.32 → 20251007 收 13.85），期間缺 6 個交易日（停牌跡象），隱含倍數 0.67（＝新股/舊股，含停牌期間市場漲跌故為近似）。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
     },
     {
       "sym": "3321",
       "name": "同泰",
       "type": "reverse_split",
       "ratio": null,
-      "implied_ratio": 0.31,
-      "halt_from": null,
-      "resume_date": "20250908",
-      "status": "detected",
-      "source": "auto:price_discontinuity",
-      "source_note": "本站 K 線相鄰日跳空 219.55%（20250905 收 7.62 → 20250908 收 24.35），隱含倍數 0.31。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
-    },
-    {
-      "sym": "3321",
-      "name": "同泰",
-      "type": "split",
-      "ratio": null,
-      "implied_ratio": 1.65,
-      "halt_from": null,
+      "implied_ratio": 0.52,
+      "halt_from": "2025-09-08",
       "resume_date": "20250915",
+      "missing_trading_days": 5,
       "status": "detected",
       "source": "auto:price_discontinuity",
-      "source_note": "本站 K 線相鄰日跳空 -39.43%（20250912 收 24.35 → 20250915 收 14.75），隱含倍數 1.65。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
+      "source_note": "本站 K 線相鄰日跳空 93.57%（20250905 收 7.62 → 20250915 收 14.75），期間缺 5 個交易日（停牌跡象），隱含倍數 0.52（＝新股/舊股，含停牌期間市場漲跌故為近似）。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
     },
     {
       "sym": "3593",
       "name": "力銘",
-      "type": "split",
+      "type": "reverse_split",
       "ratio": null,
-      "implied_ratio": 1.28,
-      "halt_from": null,
+      "implied_ratio": 0.66,
+      "halt_from": "2025-12-11",
       "resume_date": "20251222",
+      "missing_trading_days": 7,
       "status": "detected",
       "source": "auto:price_discontinuity",
-      "source_note": "本站 K 線相鄰日跳空 -22.15%（20251219 收 15.8 → 20251222 收 12.3），隱含倍數 1.28。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
+      "source_note": "本站 K 線相鄰日跳空 51.85%（20251210 收 8.1 → 20251222 收 12.3），期間缺 7 個交易日（停牌跡象），隱含倍數 0.66（＝新股/舊股，含停牌期間市場漲跌故為近似）。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
     },
     {
       "sym": "6176",
@@ -287,11 +206,12 @@
       "type": "reverse_split",
       "ratio": null,
       "implied_ratio": 0.8,
-      "halt_from": null,
+      "halt_from": "2026-08-13",
       "resume_date": "20260824",
+      "missing_trading_days": 7,
       "status": "detected",
       "source": "auto:price_discontinuity",
-      "source_note": "本站 K 線相鄰日跳空 24.85%（20260812 收 81.3 → 20260824 收 101.5），隱含倍數 0.8。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
+      "source_note": "本站 K 線相鄰日跳空 24.85%（20260812 收 81.3 → 20260824 收 101.5），期間缺 7 個交易日（停牌跡象），隱含倍數 0.8（＝新股/舊股，含停牌期間市場漲跌故為近似）。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
     },
     {
       "sym": "6550",
@@ -299,11 +219,12 @@
       "type": "reverse_split",
       "ratio": null,
       "implied_ratio": 0.57,
-      "halt_from": null,
+      "halt_from": "2026-09-17",
       "resume_date": "20260929",
+      "missing_trading_days": 6,
       "status": "detected",
       "source": "auto:price_discontinuity",
-      "source_note": "本站 K 線相鄰日跳空 75.4%（20260916 收 9.92 → 20260929 收 17.4），隱含倍數 0.57。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
+      "source_note": "本站 K 線相鄰日跳空 75.4%（20260916 收 9.92 → 20260929 收 17.4），期間缺 6 個交易日（停牌跡象），隱含倍數 0.57（＝新股/舊股，含停牌期間市場漲跌故為近似）。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
     },
     {
       "sym": "6949",
@@ -311,23 +232,51 @@
       "type": "split",
       "ratio": null,
       "implied_ratio": 22.21,
-      "halt_from": null,
+      "halt_from": "2026-08-27",
       "resume_date": "20260907",
+      "missing_trading_days": 7,
       "status": "detected",
       "source": "auto:price_discontinuity",
-      "source_note": "本站 K 線相鄰日跳空 -95.5%（20260826 收 1490.0 → 20260907 收 67.1），隱含倍數 22.21。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
+      "source_note": "本站 K 線相鄰日跳空 -95.5%（20260826 收 1490.0 → 20260907 收 67.1），期間缺 7 個交易日（停牌跡象），隱含倍數 22.21（＝新股/舊股，含停牌期間市場漲跌故為近似）。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
     },
     {
-      "sym": "9924",
-      "name": "福興",
-      "type": "reverse_split",
+      "sym": "7780",
+      "name": "大研生醫*",
+      "type": "split",
       "ratio": null,
-      "implied_ratio": 0.77,
-      "halt_from": null,
-      "resume_date": "20251007",
+      "implied_ratio": 9.09,
+      "halt_from": "2026-01-09",
+      "resume_date": "20260119",
+      "missing_trading_days": 6,
       "status": "detected",
       "source": "auto:price_discontinuity",
-      "source_note": "本站 K 線相鄰日跳空 30.5%（20251003 收 40.0 → 20251007 收 52.2），隱含倍數 0.77。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
+      "source_note": "本站 K 線相鄰日跳空 -89.0%（20260108 收 185.0 → 20260119 收 20.35），期間缺 6 個交易日（停牌跡象），隱含倍數 9.09（＝新股/舊股，含停牌期間市場漲跌故為近似）。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
+    },
+    {
+      "sym": "8422",
+      "name": "可寧衛*",
+      "type": "split",
+      "ratio": null,
+      "implied_ratio": 10.12,
+      "halt_from": "2025-11-06",
+      "resume_date": "20251117",
+      "missing_trading_days": 7,
+      "status": "detected",
+      "source": "auto:price_discontinuity",
+      "source_note": "本站 K 線相鄰日跳空 -90.12%（20251105 收 250.0 → 20251117 收 24.7），期間缺 7 個交易日（停牌跡象），隱含倍數 10.12（＝新股/舊股，含停牌期間市場漲跌故為近似）。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
+    },
+    {
+      "sym": "9927",
+      "name": "泰銘",
+      "type": "reverse_split",
+      "ratio": null,
+      "implied_ratio": 0.79,
+      "halt_from": "2025-11-13",
+      "resume_date": "20251124",
+      "missing_trading_days": 7,
+      "status": "detected",
+      "source": "auto:price_discontinuity",
+      "source_note": "本站 K 線相鄰日跳空 27.29%（20251112 收 52.4 → 20251124 收 66.7），期間缺 7 個交易日（停牌跡象），隱含倍數 0.79（＝新股/舊股，含停牌期間市場漲跌故為近似）。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
     }
   ]
 }

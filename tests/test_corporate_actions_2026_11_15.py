@@ -267,6 +267,107 @@ class TestDetectorScript(unittest.TestCase):
         self.assertEqual([c["sym"] for c in cands], ["a", "b"])
 
 
+class TestReverseSplitAndCapitalReduction(unittest.TestCase):
+    """反分割（ratio<1）與減資（含現金退還）的還原價。
+
+    registry 的 ratio 語意統一為「新股／舊股」：分割 7、反分割 0.25、減資 0.75。
+    減資若退還現金，事件前價格要先扣掉退還款再除以換發比率
+    （瑞儀 6176：25% 現金減資、每股退 2.5 元 → (前收 − 2.5) ÷ 0.75）。
+    """
+
+    def test_reverse_split_multiplies_history(self):
+        act = [{"sym": "00673R", "type": "reverse_split", "ratio": 0.25,
+                "halt_from": "2025-10-14", "resume_date": "2025-10-22",
+                "status": "done", "source": "官方"}]
+        rows = [("20251013", 20.0, 20.0, 20.0, 20.0),
+                ("20251022", 5.2, 5.2, 5.2, 5.2),
+                ("20251023", 5.3, 5.3, 5.3, 5.3)]
+        out, applied = ca.adjust_rows("00673R", rows, act)
+        self.assertAlmostEqual(out[0][4], 80.0, places=2)   # 20 ÷ 0.25
+        self.assertEqual(out[1][4], 5.2)                    # 事件後不動
+        self.assertEqual(applied[0]["ratio"], 0.25)
+
+    def test_capital_reduction_with_cash_refund(self):
+        act = [{"sym": "6176", "type": "capital_reduction", "ratio": 0.75, "cash_refund": 2.5,
+                "halt_from": "2026-08-12", "resume_date": "2026-08-24",
+                "status": "done", "source": "MOPS 公告"}]
+        rows = [("20260812", 81.3, 81.3, 81.3, 81.3),
+                ("20260824", 101.5, 102.5, 99.8, 101.5),
+                ("20260825", 99.9, 104.0, 99.0, 99.9)]
+        out, applied = ca.adjust_rows("6176", rows, act)
+        self.assertAlmostEqual(out[0][4], (81.3 - 2.5) / 0.75, places=2)
+        self.assertEqual(out[1][4], 101.5)                  # 事件後不動
+        self.assertEqual(len(applied), 1)
+
+    def test_capital_reduction_without_cash_refund(self):
+        act = [{"sym": "2380", "type": "capital_reduction", "ratio": 0.5,
+                "halt_from": "2026-06-16", "resume_date": "2026-06-29",
+                "status": "done", "source": "官方"}]
+        rows = [("20260616", 10.0, 10.0, 10.0, 10.0), ("20260629", 20.5, 20.5, 20.5, 20.5)]
+        out, _ = ca.adjust_rows("2380", rows, act)
+        self.assertAlmostEqual(out[0][4], 20.0, places=2)
+
+    def test_registry_accepts_ratio_below_one(self):
+        with tempfile.TemporaryDirectory() as d:
+            os.makedirs(os.path.join(d, "data"))
+            with open(os.path.join(d, "data", "corporate-actions.json"), "w", encoding="utf-8") as f:
+                json.dump({"actions": [{"sym": "00673R", "type": "reverse_split", "ratio": 0.25,
+                                        "resume_date": "2025-10-22", "status": "done",
+                                        "source": "官方"}]}, f)
+            self.assertEqual(len(ca.load_actions(root=d)), 1)
+
+
+class TestDetectorTradingDayGap(unittest.TestCase):
+    """跳空必須隔著「真的沒交易的交易日」才算公司行為。
+
+    原本用日曆日 ≥3 天 → 週五→週一（週末）就過關，實測產生 8 筆槓桿／反向 ETF 誤報。
+    """
+
+    WEEKEND = {"20260306", "20260309"}
+
+    def test_weekend_only_jump_is_rejected(self):
+        rows = [("2026-03-06", 1, 1, 1, 20.3), ("2026-03-09", 1, 1, 1, 14.78)]
+        hits = ca.scan_for_discontinuity("00673R", rows, 0.2, trading_days=self.WEEKEND)
+        self.assertEqual(hits, [])
+
+    def test_halt_jump_keeps_missing_trading_day_count(self):
+        rows = [("2026-08-26", 1, 1, 1, 66.0), ("2026-09-07", 1, 1, 1, 79.5)]
+        td = {"20260826", "20260827", "20260828", "20260831", "20260901",
+              "20260902", "20260903", "20260904", "20260907"}
+        hits = ca.scan_for_discontinuity("1563", rows, 0.2, trading_days=td)
+        self.assertEqual(len(hits), 1)
+        self.assertEqual(hits[0]["missing_trading_days"], 7)
+
+    def test_calendar_threshold_can_be_raised(self):
+        rows = [("2026-03-06", 1, 1, 1, 20.3), ("2026-03-09", 1, 1, 1, 14.78)]
+        td = {"20260306", "20260309"}
+        hits = ca.scan_for_discontinuity("00673R", rows, 0.2, trading_days=td,
+                                         min_missing_trading_days=5)
+        self.assertEqual(hits, [])
+
+
+class TestDetectorTradingCalendar(unittest.TestCase):
+    """detect_corporate_actions.load_trading_days()：以 history 快照檔名當交易日曆。"""
+
+    def test_reads_history_filenames(self):
+        import importlib
+        sys.path.insert(0, os.path.join(ROOT, "skills", "data"))
+        dca = importlib.import_module("detect_corporate_actions")
+        with tempfile.TemporaryDirectory() as d:
+            os.makedirs(os.path.join(d, "data", "history"))
+            for name in ("20260305.json", "20260306.json", "20260309.json"):
+                open(os.path.join(d, "data", "history", name), "w").write("{}")
+            cal = dca.load_trading_days(root=d)
+        self.assertEqual(cal, {"20260305", "20260306", "20260309"})
+
+    def test_missing_history_dir_returns_empty(self):
+        import importlib
+        sys.path.insert(0, os.path.join(ROOT, "skills", "data"))
+        dca = importlib.import_module("detect_corporate_actions")
+        with tempfile.TemporaryDirectory() as d:
+            self.assertEqual(dca.load_trading_days(root=d), set())
+
+
 class TestRealData(unittest.TestCase):
     """以本站真實資料驗證（資料存在才跑，缺檔時略過以免在乾淨環境誤報失敗）。"""
 
