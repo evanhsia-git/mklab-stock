@@ -22,6 +22,7 @@ import os
 import os as _os, sys as _sys
 _sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
 import scope_rules  # noqa: E402
+import corporate_actions as ca  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 HISTORY_DIR = os.path.join(ROOT, "data", "history")
@@ -217,10 +218,17 @@ def main():
     series = load_series()
     print(f"[compute_indicators] 取得 {len(series)} 檔股票的歷史序列（最多回溯 {LOOKBACK_DAYS} 個交易日）")
 
+    # 公司行為（分割／反分割）：指標一律用**還原價**（事件日前的 K 線 ÷ 倍數），
+    # 否則 00662 5 拆 1 會被 RSI／MA 當成「崩跌 80%」（2026-11-15 Ivan 指示）。
+    # 未經確認的自動偵測（status=detected）不套用——避免把真實崩跌當分割還原掉。
+    actions = ca.load_actions(root=ROOT)
+    print(f"[compute_indicators] 已載入公司行為 {len(actions)} 筆（未確認的自動偵測不套用）")
+
     with open(STOCKS_PATH, encoding="utf-8") as f:
         stocks_doc = json.load(f)
 
     updated = 0
+    adjusted_note = []
     for row in stocks_doc.get("stocks", []):
         sym = row.get("sym")
         rows = series.get(sym)
@@ -229,6 +237,17 @@ def main():
         krows = load_kline_rows(sym)
         if len(krows) > len(rows or []):
             rows = krows
+        # 公司行為還原：事件日（含）之後為新價，之前的 K 線 ÷ 倍數，讓指標連續。
+        # 只在記憶體內還原，不改寫 data/kline/（前端仍顯示原始價＋已分割標註）。
+        if rows:
+            rows, applied = ca.adjust_rows(sym, rows, actions)
+            # 只有真的除到列（事件落在序列內）才標記，否則不宣稱「已還原」
+            a0 = next((a for a in applied if a.get("adjusted_rows")), None)
+            if a0:
+                row["adj"] = {"r": a0["ratio"], "d": a0["event_date"]}
+                adjusted_note.append(f"{sym} ÷{a0['ratio']:g}（{a0['event_date']}）")
+            else:
+                row.pop("adj", None)
         if not rows:
             row["ma5"] = row["ma10"] = row["ma20"] = row["ma30"] = None
             row["rsi14"] = None
@@ -303,6 +322,8 @@ def main():
         json.dump(stocks_doc, f, ensure_ascii=False, indent=None, separators=(",", ":"))
 
     print(f"[compute_indicators] 已為 {updated} 檔股票寫入 MA/RSI/MACD/KD 欄位（資料不足者為 null）")
+    if adjusted_note:
+        print(f"[compute_indicators] 使用還原價（公司行為）{len(adjusted_note)} 檔：{'、'.join(adjusted_note)}")
 
 
 if __name__ == "__main__":

@@ -111,7 +111,10 @@ def apply_corporate_actions(doc, notes, today=None):
     """
     import datetime as dt
     reg = _load(CORPORATE_ACTIONS, {}) or {}
-    acts = [a for a in reg.get("actions", []) if a.get("status") != "done"]
+    # 2026-11-15：已完成（done）的分割也要標示，否則 0052／00631L 的 K 線跳空
+    # 在畫面上沒有「已分割 N:1」可解釋。未確認的自動偵測（detected）一律不寫入
+    # ——避免把真實崩跌標成公司行為。
+    acts = [a for a in reg.get("actions", []) if a.get("status") != "detected"]
     if not acts:
         return []
     today = today or dt.date.today().isoformat()
@@ -126,10 +129,14 @@ def apply_corporate_actions(doc, notes, today=None):
             "ratio": a.get("ratio"),
             "halt_from": a.get("halt_from"),
             "resume_date": a.get("resume_date"),
+            "status": a.get("status"),
             "source": a.get("source"),
         }
-        # 停止交易期間：標 suspended、清掉當日價量與市值（不得拿舊價當現價）
-        if a.get("halt_from") and a["halt_from"] <= today:
+        # 停止交易期間：標 suspended、清掉當日價量與市值（不得拿舊價當現價）。
+        # 只有「尚未復牌」的事件才會停牌——已完成的（done）停止日雖在過去，
+        # 但已恢復交易，若照樣標停牌會把 0052 的現價清成 null（2026-11-15 修）。
+        if (a.get("status") == "pending" and a.get("halt_from") and a["halt_from"] <= today
+                and (not a.get("resume_date") or a["resume_date"] > today)):
             s["trading_status"] = "suspended"
             s["suspended_reason"] = "corporate_action"
             s["halt_date"] = a.get("halt_from")
@@ -137,7 +144,7 @@ def apply_corporate_actions(doc, notes, today=None):
             for k in ("price", "open", "high", "low", "volume", "chg", "market_cap"):
                 s[k] = None
         touched.append(f"{a.get('sym')} {a.get('type')} {a.get('ratio')}:1"
-                       f"（停止 {a.get('halt_from')}、恢復 {a.get('resume_date')}）")
+                       f"（{a.get('status')}；停止 {a.get('halt_from')}、恢復 {a.get('resume_date')}）")
     if touched:
         notes.append("套用公司行為 " + str(len(touched)) + " 筆：" + "；".join(touched))
     return touched

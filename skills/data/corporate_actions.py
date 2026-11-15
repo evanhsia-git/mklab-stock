@@ -92,6 +92,16 @@ def _boundary_already_continuous(rows, cut, tol=1.2):
     return max(prev / cur, cur / prev) < tol
 
 
+def _has_post_event_rows(rows, cut):
+    """序列是否含「事件當日（含）之後」的列。
+
+    沒有就代表事件還沒發生在這份資料裡（分割已通過但未執行、或已停牌未復牌）——
+    此時不可還原，否則整段歷史會被同除，MA 等絕對值與畫面上的原始價脫節。
+    還原價的意義是「讓事件前後兩段接得起來」，只有單邊時沒有任何東西要接。
+    """
+    return any(str(r[0]).replace("-", "") >= cut for r in rows)
+
+
 def adjust_rows(sym, rows, actions):
     """把事件日之前的 OHLC 除以分割倍數（還原價，供指標使用）。
 
@@ -112,6 +122,11 @@ def adjust_rows(sym, rows, actions):
         if _boundary_already_continuous(out, cut):
             # 事件邊界已無跳空 → 這份序列已還原過，不再二次除（冪等守門）
             continue
+        if not _has_post_event_rows(out, cut):
+            # 序列裡沒有「事件當日之後」的列 → 事件還沒落在這份資料裡（分割尚未執行／
+            # 還沒復牌），此時若照除，會把整段歷史同除以倍數，讓 MA 等絕對值與畫面
+            # 上的原始價脫節（2026-11-15 實測：0053 尚未分割、00662 未復牌皆被誤除）。
+            continue
         n = 0
         for i, r in enumerate(out):
             if str(r[0]).replace("-", "") >= cut:
@@ -123,6 +138,8 @@ def adjust_rows(sym, rows, actions):
                       round(l / ratio, 4) if l is not None else None,
                       round(c / ratio, 4) if c is not None else None)
             n += 1
+        if n == 0:
+            continue   # 保險：沒有列被除到就不算套用（不宣稱已還原）
         applied.append({"sym": sym, "type": a.get("type"), "ratio": ratio,
                         "event_date": event_date(a), "adjusted_rows": n,
                         "status": a.get("status"), "source": a.get("source")})
@@ -184,12 +201,17 @@ def find_dead_runs(rows, min_run=DEAD_MIN_RUN):
     return runs
 
 
-def scan_for_discontinuity(sym, rows, threshold=JUMP_THRESHOLD):
+def scan_for_discontinuity(sym, rows, threshold=JUMP_THRESHOLD, min_gap_days=0):
     """掃單一序列的跳空：相鄰收盤比值偏離 > threshold 即視為疑似公司行為。
 
-    回傳 [{sym, before_date, before_close, after_date, after_close, implied_ratio, drop_pct}]。
-    只回報事實，不判定是否為分割（分辨真假需要人確認或官方來源）。
+    min_gap_days：兩列之間至少要隔幾個日曆天才算（公司行為一定伴隨停止交易，
+    而槓桿／反向 ETF 單日 ±20% 以上是正常行情——2026-11-15 實測 00715L 等
+    「期元大／期街口」系列一天就能跳 30%，需靠停牌缺口過濾）。
+
+    回傳 [{sym, before_date, before_close, after_date, after_close, implied_ratio,
+           drop_pct, gap_days}]。只回報事實，不判定是否為分割（需人確認或官方來源）。
     """
+    import datetime as _dt
     hits = []
     for i in range(1, len(rows)):
         prev, cur = rows[i - 1][4], rows[i][4]
@@ -199,14 +221,24 @@ def scan_for_discontinuity(sym, rows, threshold=JUMP_THRESHOLD):
             chg = cur / prev - 1
         except ZeroDivisionError:
             continue
-        if abs(chg) > threshold:
-            hits.append({
-                "sym": sym,
-                "before_date": str(rows[i - 1][0]).replace("-", ""),
-                "before_close": prev,
-                "after_date": str(rows[i][0]).replace("-", ""),
-                "after_close": cur,
-                "implied_ratio": implied_ratio(prev, cur),
-                "drop_pct": round(chg * 100, 2),
-            })
+        if abs(chg) <= threshold:
+            continue
+        b, a = str(rows[i - 1][0]).replace("-", ""), str(rows[i][0]).replace("-", "")
+        try:
+            gap = (_dt.date(int(a[:4]), int(a[4:6]), int(a[6:8]))
+                   - _dt.date(int(b[:4]), int(b[4:6]), int(b[6:8]))).days
+        except ValueError:
+            gap = None
+        if min_gap_days and (gap is None or gap < min_gap_days):
+            continue
+        hits.append({
+            "sym": sym,
+            "before_date": b,
+            "before_close": prev,
+            "after_date": a,
+            "after_close": cur,
+            "implied_ratio": implied_ratio(prev, cur),
+            "drop_pct": round(chg * 100, 2),
+            "gap_days": gap,
+        })
     return hits

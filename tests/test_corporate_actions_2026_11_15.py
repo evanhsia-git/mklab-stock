@@ -96,6 +96,32 @@ class TestAdjustRows(unittest.TestCase):
         self.assertEqual(out, self.ROWS)
         self.assertEqual(applied, [])
 
+    def test_future_event_is_not_applied(self):
+        """事件尚未落在序列內（分割已通過但未執行、或停牌未復牌）→ 不可還原。
+
+        否則整段歷史會被同除以倍數：實測 0053（2026-12-08 才執行）與 00662
+        （2026-11-17 才復牌）都曾被誤除，導致 ma20=28.61 對上 price=222.75 這種
+        「均線與股價脫節」的畫面。"""
+        fut = [{"sym": "0053", "type": "split", "ratio": 8.0, "resume_date": "2026-12-08",
+                "status": "pending", "source": "官方"}]
+        rows = [("20261110", 220.0, 222.0, 219.0, 221.0),
+                ("20261113", 222.0, 224.0, 221.0, 222.75)]
+        out, applied = ca.adjust_rows("0053", rows, fut)
+        self.assertEqual(out, rows)          # 原封不動
+        self.assertEqual(applied, [])
+
+    def test_event_inside_series_is_applied(self):
+        """事件必須同時有前、後兩側的列才會還原。"""
+        act = [{"sym": "0052", "type": "split", "ratio": 7.0, "resume_date": "2025-11-26",
+                "status": "done", "source": "官方"}]
+        rows = [("20251118", 245.3, 245.3, 245.3, 245.3),
+                ("20251126", 35.35, 35.35, 35.35, 35.35),
+                ("20251127", 36.0, 36.0, 36.0, 36.0)]
+        out, applied = ca.adjust_rows("0052", rows, act)
+        self.assertAlmostEqual(out[0][4], 35.04, places=2)   # 245.3 / 7
+        self.assertEqual(out[1][4], 35.35)                   # 事件後不動
+        self.assertEqual(applied[0]["adjusted_rows"], 1)
+
     def test_idempotent_when_called_on_already_adjusted(self):
         """只依「日期 < 事件日」判定，重複套用不會二次除。"""
         out1, _ = ca.adjust_rows("9999", self.ROWS, self.ACT)
@@ -186,6 +212,59 @@ class TestDetector(unittest.TestCase):
     def test_scan_ignores_normal_moves(self):
         rows = [("20260102", 100, 101, 99, 100), ("20260105", 110, 111, 109, 110)]
         self.assertEqual(ca.scan_for_discontinuity("9999", rows, threshold=0.2), [])
+
+    def test_gap_filter_drops_single_day_jumps(self):
+        """公司行為一定有停牌缺口：相鄰兩日就跳 30% 多半是槓桿／反向 ETF 的正常行情。
+        實測 00715L 期街口布蘭特正2 一天就能跳 30% 以上。"""
+        rows = [("20260309", 30, 30, 30, 30), ("20260310", 20, 20, 20, 20)]   # 隔 1 天
+        self.assertEqual(len(ca.scan_for_discontinuity("00715L", rows, threshold=0.2)), 1)
+        self.assertEqual(ca.scan_for_discontinuity("00715L", rows, threshold=0.2, min_gap_days=3), [])
+
+    def test_gap_filter_keeps_halt_jump(self):
+        rows = [("20251118", 245.3, 245.3, 245.3, 245.3), ("20251126", 35.35, 35.35, 35.35, 35.35)]
+        hits = ca.scan_for_discontinuity("0052", rows, threshold=0.2, min_gap_days=3)
+        self.assertEqual(len(hits), 1)
+        self.assertEqual(hits[0]["gap_days"], 8)
+
+
+class TestDetectorScript(unittest.TestCase):
+    def test_build_candidates_excludes_confirmed(self):
+        import detect_corporate_actions as dc
+        hits = [{"sym": "0052", "before_date": "20251118", "before_close": 245.3,
+                 "after_date": "20251126", "after_close": 35.35, "implied_ratio": 6.94,
+                 "drop_pct": -85.59},
+                {"sym": "9999", "before_date": "20260102", "before_close": 100,
+                 "after_date": "20260105", "after_close": 20, "implied_ratio": 5.0,
+                 "drop_pct": -80.0}]
+        confirmed = [{"sym": "0052", "status": "done", "ratio": 7.0, "source": "x"}]
+        out = dc.build_candidates(hits, confirmed)
+        self.assertEqual([c["sym"] for c in out], ["9999"])
+
+    def test_candidate_has_no_ratio_until_confirmed(self):
+        """候選不得帶倍數——帶了就會被 load_actions 拿去還原（可能把崩跌還原掉）。"""
+        import detect_corporate_actions as dc
+        out = dc.build_candidates([{"sym": "9999", "before_date": "20260102",
+                                    "before_close": 100, "after_date": "20260105",
+                                    "after_close": 20, "implied_ratio": 5.0,
+                                    "drop_pct": -80.0}], [])
+        self.assertIsNone(out[0]["ratio"])
+        self.assertEqual(out[0]["status"], "detected")
+        self.assertTrue(out[0]["source"].startswith("auto:"))
+
+    def test_classify_direction(self):
+        import detect_corporate_actions as dc
+        self.assertEqual(dc.classify_hit({"implied_ratio": 4.0}), "split")
+        self.assertEqual(dc.classify_hit({"implied_ratio": 0.25}), "reverse_split")
+        self.assertEqual(dc.classify_hit({"implied_ratio": None}), "unknown")
+
+    def test_output_is_idempotent(self):
+        import detect_corporate_actions as dc
+        cands = dc.build_candidates(
+            [{"sym": "b", "before_date": "20260102", "before_close": 100,
+              "after_date": "20260105", "after_close": 20, "implied_ratio": 5.0, "drop_pct": -80.0},
+             {"sym": "a", "before_date": "20260102", "before_close": 50,
+              "after_date": "20260105", "after_close": 10, "implied_ratio": 5.0, "drop_pct": -80.0}], [])
+        self.assertEqual([c["sym"] for c in cands], ["a", "b"])
 
 
 class TestRealData(unittest.TestCase):

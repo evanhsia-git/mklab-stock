@@ -157,10 +157,24 @@ class RestoreAndCorporateActions(unittest.TestCase):
         self.assertEqual(rec["price"], 117.8)
         self.assertIn("corporate_action", rec)   # 仍標示，供前端預告
 
-    def test_done_actions_are_ignored(self):
+    def test_done_actions_are_labeled_but_never_suspended(self):
+        """已完成的分割仍要標示（畫面的「已分割 N:1」），但不可標成停牌清掉現價。"""
         self._json(ss.CORPORATE_ACTIONS, {"actions": [
-            {"sym": "00662", "type": "split", "ratio": 5.0, "halt_from": "2026-11-11",
-             "status": "done", "source": "test"}]})
+            {"sym": "0052", "type": "split", "ratio": 7.0, "halt_from": "2025-11-19",
+             "resume_date": "2025-11-26", "status": "done", "source": "test"}]})
+        doc = {"stocks": [{"sym": "0052", "price": 44.1, "chg": 0.5, "market_cap": 1}]}
+        ss.apply_corporate_actions(doc, [], today="2026-11-15")
+        rec = doc["stocks"][0]
+        self.assertEqual(rec["corporate_action"]["ratio"], 7.0)
+        self.assertEqual(rec["corporate_action"]["status"], "done")
+        self.assertNotIn("suspended_reason", rec)
+        self.assertEqual(rec["price"], 44.1)     # 已復牌 → 現價不得被清
+
+    def test_detected_action_is_not_applied(self):
+        """自動偵測但未經確認者，不得寫入快照（避免把真實崩跌當成公司行為）。"""
+        self._json(ss.CORPORATE_ACTIONS, {"actions": [
+            {"sym": "00662", "type": "split", "ratio": 5.0, "resume_date": "2026-11-17",
+             "status": "detected", "source": "auto:price_discontinuity"}]})
         doc = {"stocks": [{"sym": "00662", "price": 23.5}]}
         ss.apply_corporate_actions(doc, [], today="2026-11-20")
         self.assertNotIn("corporate_action", doc["stocks"][0])

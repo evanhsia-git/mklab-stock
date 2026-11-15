@@ -210,6 +210,16 @@ def main():
             with open(fp, "w", encoding="utf-8") as f:
                 f.write(raw)
 
+    # removed_cells 必須**累積**：本程式冪等，第二次執行時已無列可刪（marked 為空），
+    # 若直接覆寫，之前刪過哪些格子的紀錄就消失，build_kline 便無從把 K 線檔裡
+    # 同一批死值列剔除（2026-11-15 實測：重跑一次後 kline 的 0052 五天 60.6 又活著）。
+    try:
+        prev_cells = json.load(open(LOG, encoding="utf-8")).get("removed_cells") or []
+    except (OSError, json.JSONDecodeError):
+        prev_cells = []
+    all_cells = {tuple(c) for c in prev_cells if isinstance(c, (list, tuple)) and len(c) == 2}
+    all_cells |= {(d, s) for d, s in marked}
+
     log = {
         "repaired_at": dt.datetime.now(dt.timezone(dt.timedelta(hours=8))).isoformat(),
         "rules": {
@@ -225,6 +235,10 @@ def main():
         "removed_dead_rows": len(dead_rows),
         "dead_symbols": len(dead_detail),
         "dead_detail": dead_detail,
+        # 逐格清單（[日期, 代號]）：build_kline.py 用它把**已被刪除的列從 K 線檔一併剔除**。
+        # 沒有這個，K 線檔會因為「以日期為鍵合併、保住既有列」而讓死值列存活下來
+        # （2026-11-15 實測：history 刪掉 0052 的 5 天死值後，kline 仍留著）。
+        "removed_cells": sorted([d, s] for d, s in all_cells),
     }
     json.dump(log, open(LOG, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
     print(f"[repair] 完成：刪除 {len(dead)} 檔、{len(fake_dates)} 假快照、{len(marked)} 列補值；紀錄於 {LOG}")

@@ -28,6 +28,28 @@ def merge_kline_rows(path, new_rows):
     for r in new_rows:
         by_date[r[0]] = r  # 重建結果來自官方歷史快照，優先於既有值
     return [by_date[d] for d in sorted(by_date)]
+def load_purged_cells(root):
+    """讀 data/history-repair-log.json 的 removed_cells → {(YYYY-MM-DD, 代號)}。
+
+    為什麼需要：merge_kline_rows() 為了保住「回補的長歷史」會保留既有 K 線列，
+    但那樣也讓**已被 repair_history 判定為死值／補值而刪掉的列在 K 線檔裡存活**
+    （2026-11-15 實測：history 已刪 0052 的 5 天同價同量列，kline 仍留著 60.6）。
+    死值列會讓 K 線與指標把分割算成崩跌，必須一併剔除。
+    """
+    path = os.path.join(root, "data", "history-repair-log.json")
+    try:
+        with open(path, encoding="utf-8") as f:
+            cells = json.load(f).get("removed_cells") or []
+    except (OSError, json.JSONDecodeError):
+        return set()
+    out = set()
+    for c in cells:
+        if isinstance(c, (list, tuple)) and len(c) == 2:
+            d = str(c[0])
+            out.add((f"{d[:4]}-{d[4:6]}-{d[6:8]}" if len(d) == 8 and "-" not in d else d, str(c[1])))
+    return out
+
+
 def strip_padded_prefix(rows, min_run=3):
     """移除開頭「連續同價且完全平盤」的補值列（2026-11-12 新增）。
 
@@ -60,7 +82,8 @@ os.makedirs(OUT, exist_ok=True)
 doc = json.load(open(os.path.join(ROOT, "data", "stocks.json"), encoding="utf-8"))
 asof = doc["meta"]["as_of"]
 series = load_series(limit=None)  # K 線吃 history/ 全部，不受指標用的 280 日回看限制
-n = 0; total = 0
+n = 0; total = 0; dropped = 0
+purged = load_purged_cells(ROOT)   # history 已判定為死值／補值而刪掉的 (日期, 代號)
 for s in doc["stocks"]:
     rows = series.get(s["sym"])
     if not rows:
@@ -77,7 +100,12 @@ for s in doc["stocks"]:
     path = os.path.join(OUT, f"{s['sym']}.json")
     out = merge_kline_rows(path, out)  # 不讓只有近一年的重建結果截短既有長歷史
     out = strip_padded_prefix(out)     # 但 merge 保留的舊資料也要剔除「前導補值列」
+    before = len(out)
+    out = [r for r in out if (r[0], s["sym"]) not in purged]   # 死值列／補值列一併剔除
+    dropped += before - len(out)
     with open(path, "w", encoding="utf-8") as f:
         json.dump({"sym": s["sym"], "asof": asof, "fields": ["date", "open", "high", "low", "close"], "rows": out}, f, ensure_ascii=False, separators=(",", ":"))
     n += 1; total += len(out)
 print(f"個股 K 線檔 {n} 檔，共 {total} 筆（資料日 {asof}）")
+if dropped:
+    print(f"剔除死值／補值列 {dropped} 筆（清單：data/history-repair-log.json 的 removed_cells）")
