@@ -82,6 +82,24 @@ class Check:
         return self
 
 
+def _ca_problems(a: dict):
+    """檢查公司行為登記條目缺什麼必要欄位；回 (entry, problems)。"""
+    probs = []
+    if not str(a.get("source") or "").strip():
+        probs.append("source")
+    if a.get("type") not in ("split", "reverse_split"):
+        probs.append("type")
+    try:
+        ratio = float(a.get("ratio") or a.get("implied_ratio") or 0)
+    except (TypeError, ValueError):
+        ratio = 0
+    if ratio <= 0:
+        probs.append("ratio")
+    if not str(a.get("resume_date") or "").strip():
+        probs.append("resume_date")
+    return a, probs
+
+
 checks: List[Check] = []
 errors = 0
 warnings = 0
@@ -325,6 +343,103 @@ def run():
             c.ok("行情日期皆不晚於快照日期，無 stale 資料")
     except Exception as e:
         c.error(f"檢查失敗: {e}", "", stocks_path)
+    add(c)
+
+    # ── 公司行為相關三條規則（2026-11-15 新增）────────────────────────
+    # 對應事故：0052／00631L 分割期間的死值列（連續同價同量）被當成真實成交，
+    # 一路汙染 MA/RSI；00662 5 拆 1 未登記導致漲跌幅被誤判；分割倍數靠人工記憶。
+    # 這裡只做「提醒與否決」，還原價與套用一律由 corporate-actions.json（人工確認）決定。
+
+    # 1) CORPORATE_ACTION_UNSOURCED（ERROR）：每筆登記都要有來源與倍數，否則不得部署。
+    c = Check("Data", "公司行為登記完整 (CORPORATE_ACTION_UNSOURCED)")
+    ca_path = os.path.join(ROOT, "data", "corporate-actions.json")
+    ca_bad, ca_total = [], 0
+    if not os.path.exists(ca_path):
+        c.error("找不到 data/corporate-actions.json", "建立登記檔（分割／反分割／減資）", ca_path)
+    else:
+        try:
+            ca_actions = (json.load(open(ca_path, encoding="utf-8")) or {}).get("actions") or []
+            ca_total = len(ca_actions)
+            for a in ca_actions:
+                _, probs = _ca_problems(a)
+                st = a.get("status") or "done"
+                # 已執行（done）的條目才強制要 type/ratio/resume_date；規劃中（pending/planned）只要求 source，
+                # 因為官方公告尚未給出精確倍數與換發日期（00757、006208）。
+                required = [p for p in probs if p in ("type", "ratio", "resume_date")] if st == "done" else []
+                if not str(a.get("source") or "").strip() or required:
+                    ca_bad.append(f"{a.get('sym', '?')}({','.join(required + (['source'] if not str(a.get('source') or '').strip() else []))})")
+            if ca_bad:
+                c.error(f"{len(ca_bad)} 筆欠缺必要欄位: {ca_bad[:8]}",
+                        "已執行的公司行為必須有 source、type、ratio>0、resume_date；規劃中者至少需 source",
+                        ca_path)
+            else:
+                c.ok(f"公司行為登記 {ca_total} 筆，來源／倍數／日期齊全")
+        except Exception as e:
+            c.error(f"讀取失敗: {e}", "修復 JSON 格式", ca_path)
+    add(c)
+
+    # 2) DEAD_VALUE_RUN（WARNING）：歷史快照仍有「連續同價＋同量」的假成交列。
+    #    只回溯最近 20 個快照（全掃 146 檔要 5 秒以上，且舊的死值列已被 repair_history 清掉）；
+    #    成交量必須「一字不差」才算死值——實測 40 萬筆相鄰配對僅 151 筆量相同且都非同價。
+    c = Check("Data", "歷史快照死值列 (DEAD_VALUE_RUN)")
+    try:
+        import glob as _glob
+        snaps = sorted(_glob.glob(os.path.join(ROOT, "data", "history", "*.json")))[-20:]
+        dead_syms, dead_cells, worst = [], 0, []
+        for sf in snaps:
+            try:
+                rows = (json.load(open(sf, encoding="utf-8")) or {}).get("stocks") or []
+            except Exception:
+                continue
+            by_sym = {}
+            for r in rows:
+                by_sym.setdefault(str(r.get("stock_id")), []).append(r)
+            for sym, rs in by_sym.items():
+                if len(rs) < 3:
+                    continue
+                run = 1
+                for i in range(1, len(rs)):
+                    a_, b_ = rs[i - 1], rs[i]
+                    same = (a_.get("open") == b_.get("open") == a_.get("high") == b_.get("high")
+                            == a_.get("low") == b_.get("low") == a_.get("close") == b_.get("close")
+                            and a_.get("volume") == b_.get("volume") and a_.get("close") is not None)
+                    run = run + 1 if same else 1
+                    if run >= 3:
+                        dead_cells += 1
+                        if sym not in dead_syms:
+                            dead_syms.append(sym)
+                        if len(worst) < 5:
+                            worst.append(f"{sym}@{os.path.basename(sf)[:8]}")
+        if dead_syms:
+            c.warn(f"最近 {len(snaps)} 個快照仍有疑似死值列：{len(dead_syms)} 檔、{dead_cells} 格"
+                   f"（例：{worst}）",
+                   "執行 skills/data/repair_history.py 剔除後重跑 build_kline.py 與 compute_indicators.py",
+                   os.path.join(ROOT, "data", "history"))
+        else:
+            c.ok(f"最近 {len(snaps)} 個快照無連續同價同量的死值列")
+    except Exception as e:
+        c.warn(f"檢查失敗: {e}", "人工確認 history 快照", "")
+    add(c)
+
+    # 3) CORPORATE_ACTION_DETECTED（WARNING）：自動偵測到的候選還沒人工確認。
+    c = Check("Data", "待確認公司行為候選 (CORPORATE_ACTION_DETECTED)")
+    cand_path = os.path.join(ROOT, "data", "corporate-actions-candidates.json")
+    try:
+        cands = (json.load(open(cand_path, encoding="utf-8")) or {}).get("candidates") or [] \
+            if os.path.exists(cand_path) else []
+        if os.path.exists(ca_path):
+            reg = {a.get("sym") for a in ((json.load(open(ca_path, encoding="utf-8")) or {}).get("actions") or [])}
+        else:
+            reg = set()
+        pending = [x for x in cands if x.get("sym") not in reg]
+        if pending:
+            top = [f"{x.get('sym')}≈{x.get('implied_ratio')}" for x in pending[:6]]
+            c.warn(f"{len(pending)} 檔跳空候選尚未登錄為公司行為（不影響股價顯示，也未套用還原價）: {top}",
+                   "核對官方公告後登錄到 data/corporate-actions.json，或確認是正常波動後忽略", cand_path)
+        else:
+            c.ok("無待確認的公司行為候選")
+    except Exception as e:
+        c.warn(f"檢查失敗: {e}", "人工確認候選檔", "")
     add(c)
 
     # ============================================================

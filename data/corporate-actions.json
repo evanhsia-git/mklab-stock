@@ -59,13 +59,14 @@
       "type": "split",
       "ratio": 7.0,
       "halt_from": null,
-      "resume_date": null,
+      "resume_date": "2025-06",
       "status": "done",
       "official_ratio": 7.0,
       "detected_factor": null,
       "evidence": "本站 K 線自 2025-08-01 起，事件在此前，範圍內無跳空（資料乾淨）",
-      "source": "使用者 Ivan 提供（2026-11-15）：2025 年 6 月完成 1 拆 7",
-      "source_note": "同上，非官方端點來源。"
+      "source": "Ivan 2026-11-15 提供：2025年6月完成 1 拆7",
+      "source_note": "Ivan 2026-11-15 提供「2025年6月完成 1 拆 7」，未給具體換發日；本站 K 線自 2025-08-01 起（事件之前無資料）故無法由資料推得，標為月精度、不影響還原價計算（序列內無事件前資料）",
+      "date_precision": "month"
     },
     {
       "sym": "00631L",
