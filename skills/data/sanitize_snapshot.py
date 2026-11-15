@@ -127,6 +127,7 @@ def apply_corporate_actions(doc, notes, today=None):
         s["corporate_action"] = {
             "type": a.get("type"),
             "ratio": a.get("ratio"),
+            "cash_refund": a.get("cash_refund"),   # 現金減資才有（每股退還股款）
             "halt_from": a.get("halt_from"),
             "resume_date": a.get("resume_date"),
             "status": a.get("status"),

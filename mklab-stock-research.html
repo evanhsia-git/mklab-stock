@@ -147,10 +147,19 @@ function selectSym(sym) {
   const m = STOCKS[sym];
   const chgCls = m.chg >= 0 ? 'up' : 'down', chgTxt = (m.chg > 0 ? '+' : '') + m.chg + '%';
   const kv = (k, v) => '<div><div class="k">' + k + '</div><div class="v">' + v + '</div></div>';
-  // 已分割／反分割：K 線顯示原始價（拆分後的價格本體），用「已分割 N:1」標示歷史分割。
+  // 公司行為標註（分割／反分割／減資）：價格一律顯示原始價，只加標籤。
+  // ratio 語意＝新股/舊股：7＝1拆7、0.25＝4併1、0.75＝25%減資。
   const ca = m.corporate_action || {};
   const caRatio = ca.ratio != null ? Number(ca.ratio) : null;
-  const caBadge = caRatio ? ` <span class="ca-badge">${ca.type === 'reverse_split' ? '反向分割' : '已分割'} ${caRatio.toFixed(1)}:1</span>` : '';
+  let caTxt = '';
+  if (caRatio > 0 && caRatio !== 1) {
+    if (ca.type === 'reverse_split') caTxt = `反分割 ${Math.round(1 / caRatio)}:1`;
+    else if (ca.type === 'capital_reduction') {
+      caTxt = `減資 ${Math.round((1 - caRatio) * 100)}%`
+        + (ca.cash_refund ? `（每股退還 ${ca.cash_refund} 元）` : '');
+    } else caTxt = `已分割 ${Number(caRatio.toFixed(2))}:1`;
+  }
+  const caBadge = caTxt ? ` <span class="ca-badge">${caTxt}</span>` : '';
   document.getElementById('infoCard').innerHTML =
     '<h3>' + sym + ' ' + m.name + ' <span class="' + chgCls + '">' + chgTxt + '</span>' + caBadge + '</h3>' +
     '<div class="kv">' +

@@ -87,7 +87,8 @@ def _ca_problems(a: dict):
     probs = []
     if not str(a.get("source") or "").strip():
         probs.append("source")
-    if a.get("type") not in ("split", "reverse_split"):
+    # capital_reduction＝減資（彌補虧損或現金退還股款）；三種都要有換發比率
+    if a.get("type") not in ("split", "reverse_split", "capital_reduction"):
         probs.append("type")
     try:
         ratio = float(a.get("ratio") or a.get("implied_ratio") or 0)
