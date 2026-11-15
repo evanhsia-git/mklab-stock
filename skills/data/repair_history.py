@@ -29,6 +29,9 @@ import json
 import os
 import sys
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import corporate_actions as ca  # noqa: E402
+
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 HIST = os.path.join(ROOT, "data", "history")
 LOG = os.path.join(ROOT, "data", "history-repair-log.json")
@@ -80,6 +83,46 @@ def find_padded_rows(snaps):
     return marked, sorted(detail, key=lambda x: -x["padded_days"])
 
 
+def find_dead_rows(snaps):
+    """回傳 ({(日期, 代號)}, detail) = 「中段死值列」。
+
+    B 類規則只看「開頭連續」，但 2026-11-15 實測停牌期間的死值列出現在序列中段：
+      0052  2025-11-19~11-25 五列 o=h=l=c=60.6、volume 完全相同
+      00631L 2026-03-25~03-30 四列 35.26、volume 完全相同
+    它們不是真實成交（真實平盤的量不會連續多日一字不差），卻會讓 K 線／指標把
+    分割算成崩跌。判定交由 corporate_actions.find_dead_runs（同一套標準）。
+    """
+    by_sym = {}
+    for fp, d, rows in snaps:
+        date = os.path.basename(fp)[:-5]
+        for r in rows:
+            v = r.get("volume")
+            by_sym.setdefault(str(r.get("stock_id")), []).append(
+                (date, r.get("open"), r.get("high"), r.get("low"), r.get("close"), v))
+    marked, detail = set(), []
+    for sym, items in by_sym.items():
+        items.sort(key=lambda x: x[0])
+        for run in ca.find_dead_runs(items):
+            for date in run["dates"]:
+                marked.add((date, sym))
+            idx = [i for i, x in enumerate(items) if x[0] in run["dates"]]
+            after = items[idx[-1] + 1] if idx and idx[-1] + 1 < len(items) else None
+            detail.append({
+                "sym": sym,
+                "name": next((r.get("stock_name") for _, _, rows in snaps
+                              for r in rows if str(r.get("stock_id")) == sym), None),
+                "kind": "dead_run_mid_series",
+                "dead_days": run["length"],
+                "first_dead": run["dates"][0],
+                "last_dead": run["dates"][-1],
+                "dead_close": run["close"],
+                "dead_volume": run["volume"],
+                "next_real_date": after[0] if after else None,
+                "next_real_close": after[4] if after else None,
+            })
+    return marked, sorted(detail, key=lambda x: -x["dead_days"])
+
+
 def main():
     dry = "--dry-run" in sys.argv
     snaps = load_all()
@@ -101,6 +144,17 @@ def main():
               f"→ 真實首日 {x['first_real']} close={x['first_real_close']}")
     if len(detail) > 8:
         print(f"   …另有 {len(detail) - 8} 檔")
+
+    # ---- E. 中段死值列（2026-11-15 新增；停牌期間的同價同量列，B 類只查開頭故漏掉）----
+    dead_rows, dead_detail = find_dead_rows(snaps)
+    marked |= dead_rows
+    print(f"[repair] E 類（中段死值）：{len(dead_rows)} 列，涉及 {len(dead_detail)} 檔標的")
+    for x in dead_detail[:8]:
+        print(f"   {x['sym']:<8} {x['dead_days']:>3} 天 "
+              f"({x['first_dead']}~{x['last_dead']}) close={x['dead_close']} "
+              f"vol={x['dead_volume']} → 次一真實日 {x['next_real_date']} close={x['next_real_close']}")
+    if len(dead_detail) > 8:
+        print(f"   …另有 {len(dead_detail) - 8} 檔")
 
     # ---- C. 刪除 2025-07-14 ~ 2025-07-31 的假快照檔 ----
     fake_dates = [os.path.basename(f) for f in sorted(glob.glob(os.path.join(HIST, "202507*.json")))
@@ -161,12 +215,16 @@ def main():
         "rules": {
             "A": "high 缺失超過 50% 的快照視為非交易日或來源不完整，整檔刪除",
             "B": "代號開頭連續 >=3 天 o=h=l=c 且 volume 與首列相同 → 視為上市前／來源缺漏的補值，逐列刪除",
+            "E": "序列任一位置連續 >=3 天 o=h=l=c 且 volume 與該段首列相同 → 視為停牌期間的死值列，逐列刪除（2026-11-15 新增）",
         },
         "removed_files": len(dead) + len(fake_dates),
         "files": dead + fake_dates,
         "removed_padded_rows": len(marked),
         "padded_symbols": len(detail),
         "padded_detail": detail,
+        "removed_dead_rows": len(dead_rows),
+        "dead_symbols": len(dead_detail),
+        "dead_detail": dead_detail,
     }
     json.dump(log, open(LOG, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
     print(f"[repair] 完成：刪除 {len(dead)} 檔、{len(fake_dates)} 假快照、{len(marked)} 列補值；紀錄於 {LOG}")
