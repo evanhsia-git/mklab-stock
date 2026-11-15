@@ -22,6 +22,7 @@ on:
     - cron: "30 22 * * 1-5"  # global-history：週一至週五 隔日 06:30
     - cron: "45 22 2 * *"    # index-holdings：每月 2 日 隔日 06:45
     - cron: "0 10 20 * *"    # official-fundamentals：每月 20 日 18:00
+    - cron: "0 10 * * 0"     # etf-meta：每週日 18:00
   workflow_dispatch: {}
 
 permissions:
@@ -213,3 +214,31 @@ jobs:
         run: bash scripts/ci_qa_gate.sh
       - name: 推送
         run: 'bash scripts/ci_commit_push.sh "data: 官方財報月更新 $(date +%Y-%m)" data/ data/raw/official/'
+
+  # 每週日：ETF 補充資料（資產規模、受益人數、發行人、標的指數）
+  #   官方自動化優先：TWSE ETF篩選器 CSV 端點 ＋ TPEx api/etfFilter；失敗才由人工 CSV 備援
+  #   （Ivan 2026-11-15 決策；來源細節見 skills/data/fetch_etf_meta.py 檔頭）
+  etf-meta:
+    concurrency:
+      group: mklab-git-push
+      queue: max
+      cancel-in-progress: false
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 10 * * 0'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - name: ETF 補充資料（規模／受益人數，官方自動化）
+        run: python skills/data/fetch_etf_meta.py
+      - name: ETF 分類（讀剛更新的官方清單；新上市 ETF 才不會停在 unverified）
+        run: python skills/data/classify_etf.py
+      - name: 套用分類與技術指標
+        run: python skills/data/compute_indicators.py
+      - name: QA 閘門（提交前，錯誤即中止，不推送）
+        run: bash scripts/ci_qa_gate.sh
+      - name: 推送
+        run: 'bash scripts/ci_commit_push.sh "data: ETF 補充資料與分類 $(date +%Y-%m-%d)" data/etf-meta.json data/etf-classified.json data/stocks.json data/raw/twse_etf.csv'

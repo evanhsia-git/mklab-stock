@@ -1,8 +1,8 @@
 {
   "meta": {
-    "as_of": "2026-11-02",
+    "as_of": "2026-11-15",
     "rules_version": "4.0.0",
-    "count": 357,
+    "count": 359,
     "excluded_count": 6,
     "excluded_syms": [
       "00635U",
@@ -13,11 +13,11 @@
       "00763U"
     ],
     "category_counts": {
-      "active": 35,
+      "active": 37,
       "dividend_high": 33,
-      "active_cap": 23,
-      "tech": 32,
-      "theme": 77,
+      "active_cap": 24,
+      "tech": 33,
+      "theme": 78,
       "global": 80,
       "market_cap": 91,
       "fx": 6,
@@ -223,6 +223,22 @@
       "pay_frequency": null
     },
     {
+      "sym": "00413A",
+      "name": "主動玉山關鍵科技",
+      "market": "TWSE",
+      "categories": [
+        "active",
+        "tech",
+        "theme"
+      ],
+      "category_reasons": {
+        "active": "尾碼 A",
+        "tech": "名稱含「科技」",
+        "theme": "科技型歸主題型"
+      },
+      "pay_frequency": null
+    },
+    {
       "sym": "00415A",
       "name": "主動群益核心50",
       "market": "TWSE",
@@ -239,6 +255,20 @@
     {
       "sym": "00416A",
       "name": "主動台新臺灣中小",
+      "market": "TWSE",
+      "categories": [
+        "active",
+        "active_cap"
+      ],
+      "category_reasons": {
+        "active": "尾碼 A",
+        "active_cap": "主動且寬基（A 尾碼）"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "00418A",
+      "name": "主動復華台灣新星",
       "market": "TWSE",
       "categories": [
         "active",
