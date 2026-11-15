@@ -1,0 +1,40 @@
+{
+  "meta": {
+    "note": "官方公司行為預告（TWSE TWTBAU1／TWTBAU2、TPEx tpex_intraday_trading_pre）。這裡的區間是**暫停先賣後買當日沖銷**的範圍，用來提前得知事件；**不含比率**，比率一律等事件發生後由官方公告補登到 corporate-actions.json。",
+    "as_of": "2026-11-15",
+    "count": 2,
+    "sources": {
+      "TWSE_PRE": "https://openapi.twse.com.tw/v1/exchangeReport/TWTBAU1",
+      "TWSE_HIS": "https://openapi.twse.com.tw/v1/exchangeReport/TWTBAU2",
+      "TPEX_PRE": "https://www.tpex.org.tw/openapi/v1/tpex_intraday_trading_pre"
+    }
+  },
+  "events": [
+    {
+      "sym": "0053",
+      "name": "元大科技市值",
+      "market": "TWSE",
+      "kind": "split",
+      "reason": "ETF分割",
+      "day_trade_suspend_from": "2026-11-27",
+      "day_trade_suspend_to": "2026-12-03",
+      "roc_from": "1151127",
+      "roc_to": "1151203",
+      "source": "https://openapi.twse.com.tw/v1/exchangeReport/TWTBAU1",
+      "when": "upcoming"
+    },
+    {
+      "sym": "6108",
+      "name": "競國",
+      "market": "TWSE",
+      "kind": "capital_reduction",
+      "reason": "減資",
+      "day_trade_suspend_from": "2026-12-07",
+      "day_trade_suspend_to": "2026-12-11",
+      "roc_from": "1151207",
+      "roc_to": "1151211",
+      "source": "https://openapi.twse.com.tw/v1/exchangeReport/TWTBAU1",
+      "when": "upcoming"
+    }
+  ]
+}

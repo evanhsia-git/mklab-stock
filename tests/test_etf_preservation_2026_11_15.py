@@ -198,12 +198,21 @@ class MetaRecompute(unittest.TestCase):
 
 
 class QaExemption(unittest.TestCase):
-    """QA 的異常漲跌規則必須排除公司行為，否則 00662 恢復交易日（11-17）會誤擋 CI。"""
+    """QA 的異常漲跌規則必須排除公司行為，否則 00662 恢復交易日（11-17）會誤擋 CI。
+
+    2026-11-15 收緊：只有「**已量化**（ratio 有值）且 done/pending」才豁免。
+    官方預告自動登錄的 planned 條目沒有比率，若也豁免，等於任何有預告的標的都能
+    無聲跳 30%（掩蓋真實異常）→ 這種情況改列 planned_list（WARNING，需人工確認）。
+    """
 
     def test_qa_gate_exempts_corporate_action(self):
         src = open(os.path.join(ROOT, "skills", "qa-gate", "qa_gate.py"), encoding="utf-8").read()
-        self.assertIn('if s_.get("corporate_action")', src)
         self.assertIn("公司行為", src)
+        # 新規則：豁免需已量化（有 ratio）且事件已完成或進行中
+        self.assertIn('quantified = bool(ca.get("ratio"))', src)
+        self.assertIn('ca.get("status") in ("done", "pending")', src)
+        # 未量化的預告不得豁免 → 走 planned_list（WARNING）
+        self.assertIn("planned_list", src)
 
     def test_data_rules_carry_etf_ref(self):
         """fetch_data 的沿用判定必須納入 ETF 清單，否則停牌 ETF 會整檔消失。"""

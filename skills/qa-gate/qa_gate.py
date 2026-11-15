@@ -265,7 +265,7 @@ def run():
     # 因此：>10.5% → WARNING（需人工確認）；>30% → ERROR（幾乎只可能是資料錯誤）。
     c = Check("Data", "異常漲跌檢查 (>10.5% 警示 / >30% 阻擋)")
     try:
-        warn_list, err_list, ca_list = [], [], []
+        warn_list, err_list, ca_list, planned_list = [], [], [], []
         excluded = 0
         for s_ in stocks_list:
             chg = s_.get("chg")
@@ -278,18 +278,29 @@ def run():
             # 公司行為（分割／反分割／減資）會讓價格跳動數倍，那是**正確**的價格變化，不是資料錯誤。
             # 實測：00662 富邦NASDAQ 5 拆 1，停止交易 2026-11-11、恢復 2026-11-17；
             # 若不分流，恢復當日會被這條規則判成 >30% 而 BLOCK DEPLOY（假警報擋住正確資料）。
-            if s_.get("corporate_action"):
-                ca = s_.get("corporate_action") or {}
-                ca_list.append(f"{s_.get('sym')}={chg}%({ca.get('type')} {ca.get('ratio')}:1)")
+            #
+            # ⚠️ 只有「**已量化**（有 ratio）且已完成/進行中」的事件才豁免。官方預告自動登錄的
+            # planned 條目沒有比率（ratio=None），若也豁免，等於任何有預告的標的都能無聲跳 30%
+            # ——那會掩蓋真實異常（2026-11-15 收緊）。
+            ca = s_.get("corporate_action") or {}
+            quantified = bool(ca.get("ratio")) and ca.get("status") in ("done", "pending")
+            if quantified:
+                ca_list.append(f"{s_.get('sym')}={chg}%({ca.get('type')} {ca.get('ratio')})")
                 continue
             if abs(chg) > 30:
-                err_list.append(f"{s_.get('sym')}={chg}%")
+                (err_list if not ca else planned_list).append(f"{s_.get('sym')}={chg}%")
             elif abs(chg) > 10.5:
-                warn_list.append(f"{s_.get('sym')}={chg}%")
+                (warn_list if not ca else planned_list).append(f"{s_.get('sym')}={chg}%")
         if err_list:
             c.error(f"漲跌幅超過 30% {len(err_list)} 檔: {err_list[:10]}", "核對來源收盤與前收價", stocks_path)
-        elif warn_list:
-            c.warn(f"漲跌幅超過 ±10.5% {len(warn_list)} 檔（可能為新上市或資料延遲，需人工確認）: {warn_list[:10]}；已略過權證/其他證券 {excluded} 檔", "人工確認", stocks_path)
+        elif warn_list or planned_list:
+            parts = []
+            if warn_list:
+                parts.append(f"漲跌幅超過 ±10.5% {len(warn_list)} 檔（可能為新上市或資料延遲，需人工確認）: {warn_list[:10]}")
+            if planned_list:
+                parts.append(f"有公司行為預告但**尚未量化**（planned、無 ratio）卻出現異常漲跌 {len(planned_list)} 檔，"
+                             f"不可視為已解釋: {planned_list[:5]}")
+            c.warn("；".join(parts) + f"；已略過權證/其他證券 {excluded} 檔", "人工確認", stocks_path)
         elif ca_list:
             c.warn(f"漲跌幅因**公司行為**（分割／減資）而超過 ±10.5% 的 {len(ca_list)} 檔，"
                    f"已排除不計為異常: {ca_list[:5]}；已略過權證/其他證券 {excluded} 檔",
@@ -441,6 +452,31 @@ def run():
             c.ok("無待確認的公司行為候選")
     except Exception as e:
         c.warn(f"檢查失敗: {e}", "人工確認候選檔", "")
+    add(c)
+
+    # 4) CORPORATE_ACTION_UPCOMING（WARNING）：官方預告有事件但還沒登錄 registry。
+    #    來源＝data/corporate-actions-schedule.json（fetch_split_schedule.py 產出）。
+    #    預告沒有比率，所以只提醒「該登錄了」，不自動補倍數。
+    c = Check("Data", "官方公司行為預告 (CORPORATE_ACTION_UPCOMING)")
+    sched_path = os.path.join(ROOT, "data", "corporate-actions-schedule.json")
+    try:
+        evs = ((json.load(open(sched_path, encoding="utf-8")) or {}).get("events") or []
+               if os.path.exists(sched_path) else [])
+        reg_syms = ({a.get("sym") for a in ((json.load(open(ca_path, encoding="utf-8")) or {}).get("actions") or [])}
+                    if os.path.exists(ca_path) else set())
+        upcoming = [e for e in evs if e.get("when") == "upcoming"]
+        missing = [e for e in upcoming if e.get("sym") not in reg_syms]
+        if missing:
+            c.warn(f"官方預告 {len(missing)} 筆公司行為尚未登錄 registry: "
+                   + ", ".join(f"{e.get('sym')}({e.get('reason')})" for e in missing[:6]),
+                   "執行 skills/data/fetch_split_schedule.py --register（以 status=planned 登錄，不含比率）",
+                   sched_path)
+        elif upcoming:
+            c.ok(f"官方預告 {len(upcoming)} 筆事件皆已登錄（未量化者為 planned，不套用還原價）")
+        else:
+            c.ok("目前無官方公司行為預告")
+    except Exception as e:
+        c.warn(f"檢查失敗: {e}", "人工確認排程檔", "")
     add(c)
 
     # ============================================================

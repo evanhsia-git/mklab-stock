@@ -58,6 +58,8 @@ jobs:
         run: python skills/data/fetch_market_extras.py
       - name: 官方加值資料併入快照（冪等）
         run: python skills/data/integrate_market_extras.py
+      - name: 官方公司行為預告（ETF 分割／減資 → 自動登錄 planned，不含比率）
+        run: python skills/data/fetch_split_schedule.py --register
       - name: 個股 K 線檔
         run: python skills/data/build_kline.py
       - name: 產業統計

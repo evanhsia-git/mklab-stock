@@ -158,6 +158,10 @@ function selectSym(sym) {
       caTxt = `減資 ${Math.round((1 - caRatio) * 100)}%`
         + (ca.cash_refund ? `（每股退還 ${ca.cash_refund} 元）` : '');
     } else caTxt = `已分割 ${Number(caRatio.toFixed(2))}:1`;
+  } else if (ca.status === 'planned') {
+    // 官方預告（證交所 TWTBAU1）自動登錄：還沒有官方比率，只標示事件即將發生，不寫任何數字
+    caTxt = ca.type === 'capital_reduction' ? '減資預告'
+      : ca.type === 'reverse_split' ? '反分割預告' : '分割預告';
   }
   const caBadge = caTxt ? ` <span class="ca-badge">${caTxt}</span>` : '';
   document.getElementById('infoCard').innerHTML =
