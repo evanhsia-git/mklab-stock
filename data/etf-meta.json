@@ -1,7 +1,7 @@
 {
   "meta": {
-    "as_of": "2026-11-15",
-    "fetched_at": "2026-11-15T10:14:16+08:00",
+    "as_of": "2026-11-16",
+    "fetched_at": "2026-11-16T00:52:13+08:00",
     "source": "TWSE ETF投資篩選器（官方 CSV）＋ TPEx ETF投資篩選器（官方 api/etfFilter）；自動化優先、失敗由人工 CSV 備援",
     "provenance": {
       "TWSE": "auto",
