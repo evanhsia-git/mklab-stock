@@ -246,7 +246,7 @@ def run():
     # 因此：>10.5% → WARNING（需人工確認）；>30% → ERROR（幾乎只可能是資料錯誤）。
     c = Check("Data", "異常漲跌檢查 (>10.5% 警示 / >30% 阻擋)")
     try:
-        warn_list, err_list = [], []
+        warn_list, err_list, ca_list = [], [], []
         excluded = 0
         for s_ in stocks_list:
             chg = s_.get("chg")
@@ -256,6 +256,13 @@ def run():
             if s_.get("security_type") not in ("stock", "etf"):
                 excluded += 1
                 continue
+            # 公司行為（分割／反分割／減資）會讓價格跳動數倍，那是**正確**的價格變化，不是資料錯誤。
+            # 實測：00662 富邦NASDAQ 5 拆 1，停止交易 2026-11-11、恢復 2026-11-17；
+            # 若不分流，恢復當日會被這條規則判成 >30% 而 BLOCK DEPLOY（假警報擋住正確資料）。
+            if s_.get("corporate_action"):
+                ca = s_.get("corporate_action") or {}
+                ca_list.append(f"{s_.get('sym')}={chg}%({ca.get('type')} {ca.get('ratio')}:1)")
+                continue
             if abs(chg) > 30:
                 err_list.append(f"{s_.get('sym')}={chg}%")
             elif abs(chg) > 10.5:
@@ -264,6 +271,10 @@ def run():
             c.error(f"漲跌幅超過 30% {len(err_list)} 檔: {err_list[:10]}", "核對來源收盤與前收價", stocks_path)
         elif warn_list:
             c.warn(f"漲跌幅超過 ±10.5% {len(warn_list)} 檔（可能為新上市或資料延遲，需人工確認）: {warn_list[:10]}；已略過權證/其他證券 {excluded} 檔", "人工確認", stocks_path)
+        elif ca_list:
+            c.warn(f"漲跌幅因**公司行為**（分割／減資）而超過 ±10.5% 的 {len(ca_list)} 檔，"
+                   f"已排除不計為異常: {ca_list[:5]}；已略過權證/其他證券 {excluded} 檔",
+                   "確認還原價與技術指標是否需調整", stocks_path)
         else:
             c.ok(f"一般股票與 ETF 漲跌幅皆在 ±10.5% 以內（略過權證/其他證券 {excluded} 檔）")
     except Exception as e:

@@ -807,7 +807,13 @@ def run_daily():
     #   - 已不在上市公司清單者＝下市 → 不復活（避免墓碑資料永久留存）
     #   - 範圍外證券（特別股／DR／ETN…）不因沿用而復活
     _fresh = {s.get("sym") for s in all_stocks}
-    _listed = set(capital_stock_map.keys())
+    # 2026-11-15 修正：原版只用「資產負債表」當前次仍上市與否的依據，但那是**公司**的財報，
+    # **ETF 沒有資產負債表**（實測：t187ap03_L 與 t187ap07_L 都不含 0050／00662）。
+    # 後果：ETF 一停牌就被判「不在上市清單」→ 不沿用 → 整檔從資料庫消失
+    # （實測 00662 富邦NASDAQ 辦 5 拆 1、停止交易日 2026-11-11 起即消失）。
+    # 因此把「官方基金清單（etf_ref，來自 t187ap47_L／ETF 篩選器）」一起納入，
+    # ETF 在下市前都會留在清單裡，於是能被正常沿用。
+    _listed = set(capital_stock_map.keys()) | set(etf_ref or ())
     _susp = []
     for _sym, _prev in existing.items():
         if _sym in _fresh or _sym not in _listed:

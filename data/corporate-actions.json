@@ -1,0 +1,27 @@
+{
+  "meta": {
+    "note": "公司行為登記表（分割／反分割／減資）。**每一筆都必須有來源**；未經來源確認不得寫入。本檔由 sanitize_snapshot.py 套用到 data/stocks.json。",
+    "updated": "2026-11-15",
+    "fields": {
+      "type": "split＝分割（1 股拆成 ratio 股，價格變為 1/ratio）、reverse_split＝反分割",
+      "ratio": "分割倍數（5 表示 5 拆 1，價格約變為 1/5）",
+      "halt_from / resume_date": "停止交易日 / 預定恢復交易日（此期間標記 trading_status=suspended，且不冒充現價）",
+      "status": "pending＝尚未恢復交易、done＝已恢復（恢復後即可下架）"
+    }
+  },
+  "actions": [
+    {
+      "sym": "00662",
+      "name": "富邦NASDAQ",
+      "type": "split",
+      "ratio": 5.0,
+      "halt_from": "2026-11-11",
+      "resume_date": "2026-11-17",
+      "last_close": 117.8,
+      "last_close_date": "2026-11-10",
+      "status": "pending",
+      "source": "Ivan 2026-11-15 提供：官方公告停止交易日 2026-11-11、預定 2026-11-17 恢復交易（5 拆 1）",
+      "source_note": "停止交易日與最後成交價可由本站既有官方資料交叉驗證（kline 最後一根為 2026-11-10 收 117.8）。分割倍數來自使用者提供之公告，TWSE OpenAPI 的 TWTAWU（暫停交易證券）與 TWT48U_ALL（除權除息預告）實測皆不含本檔，故無法由現有端點取得。"
+    }
+  ]
+}

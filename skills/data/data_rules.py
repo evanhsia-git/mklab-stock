@@ -265,6 +265,20 @@ def sanitize_stock_record(s: Dict[str, Any]) -> List[str]:
     if s.get("pe") is not None and new_pe is None:
         notes.append(f"pe {s.get('pe')} → null（EPS={s.get('eps')}）")
         s["pe"] = None
+
+    # 2026-11-15：沒有有效股價時，不得留著**舊的**市值冒充「當日市值」。
+    # fetch_data 只有在取得有效收盤價時才重算市值，停牌／無成交的標的因此會帶著很久以前的
+    # 市值繼續流通（實測 4 筆：00625K／00643K／00707R／1538）。市值＝股價 × 股數，
+    # 沒有當日股價就不該有「當日市值」；缺值就讓它缺（前端顯示「—」）。
+    if s.get("price") is None and s.get("market_cap") is not None:
+        notes.append(f"market_cap {s.get('market_cap')} → null（price 為 null，舊值不可當最新市值）")
+        s["market_cap"] = None
+
+    # 2026-11-15：ETF 不適用「實收資本額」（那是公司法對股份有限公司的科目）。
+    # 官方基金資料沒有這欄，舊版留下 0，前端會顯示成「真實的零元」→ 一律改 null。
+    if s.get("security_type") == "etf" and s.get("capital_stock") == 0:
+        notes.append("capital_stock 0 → null（ETF 無實收資本額）")
+        s["capital_stock"] = None
     return notes
 
 
@@ -441,6 +455,20 @@ def validate_snapshot(stocks_doc: Dict[str, Any], us_stocks_doc: Optional[Dict[s
         if not os.path.exists(_fp) or os.path.getsize(_fp) < 10240:
             add("ERROR", "MARKET_EXTRAS_FILE_MISSING",
                 f"meta 有記錄但 {os.path.relpath(_fp)} 不存在或過小")
+
+    # 3d-1. 沒有當日股價就不該有當日市值（舊市值不可冒充最新市值；實測曾 4 筆）
+    _mc_bad = [s["sym"] for s in stocks
+               if not _is_num(s.get("price")) and _is_num(s.get("market_cap"))]
+    if _mc_bad:
+        add("ERROR", "MARKET_CAP_WITHOUT_PRICE",
+            f"{len(_mc_bad)} 檔沒有股價卻有市值（舊值冒充最新）：{_mc_bad[:5]}")
+
+    # 3d-2. ETF 不適用實收資本額 → 應為 null 而非 0（0 會被前端顯示成「真實的零元」）
+    _cs_bad = [s["sym"] for s in stocks
+               if s.get("security_type") == "etf" and s.get("capital_stock") == 0]
+    if _cs_bad:
+        add("ERROR", "ETF_CAPITAL_STOCK_ZERO",
+            f"{len(_cs_bad)} 檔 ETF 的 capital_stock 為 0（應為 null）：{_cs_bad[:5]}")
 
     # 3d. 停牌標記一致性：由官方暫停交易清單標記者必須有停止日（否則無法稽核）
     _halt_bad = [s["sym"] for s in stocks
