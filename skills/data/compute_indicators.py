@@ -74,7 +74,7 @@ def load_kline_rows(sym):
     """讀 data/kline/{代號}.json → [(YYYYMMDD, open, high, low, close), ...]。
 
     為什麼指標要參考 K 線檔：history/ 只有近約一年的快照，但 K 線檔可能含有更長的歷史
-    （skills/data/backfill_etf_history.py 回補的「上市以來」日線只存在 K 線檔，history/
+    （回補腳本回補的「上市以來」日線只存在 K 線檔，history/
     裡該代號可能只有 1~2 天）。指標一律用兩者中較長的那一份，才是資訊最完整的算法。
     """
     path = os.path.join(ROOT, "data", "kline", f"{sym}.json")

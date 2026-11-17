@@ -13,7 +13,7 @@ def merge_kline_rows(path, new_rows):
     """與既有 K 線檔合併（以日期為鍵，新資料優先）。
 
     為什麼需要：本檔只從 data/history/（約 366 天）重建 K 線，若某代號的既有檔案含有
-    更長的歷史（例如 skills/data/backfill_etf_history.py 補的「上市以來」日線），
+    更長的歷史（例如 ETF「上市以來」日線，見 git 歷史中的 backfill_etf_history.py），
     直接覆寫會把長歷史截短成一年。合併可確保既有較早的資料不會被每日重建吃掉。
     """
     if not os.path.exists(path):
@@ -54,7 +54,7 @@ def strip_padded_prefix(rows, min_run=3):
     """移除開頭「連續同價且完全平盤」的補值列（2026-11-12 新增）。
 
     為什麼需要：merge_kline_rows() 會保留既有 K 線檔內、history/ 已經沒有的更早資料
-    （原本是為了保護 backfill_etf_history.py 補的「上市以來」長歷史），但這也讓
+    （原本是為了保護回補腳本補的「上市以來」長歷史），但這也讓
     **已被清除的偽造補值列在 K 線檔裡存活下來**。實測：009816 凱基台灣TOP50 的
     history 已正確從 2026-02-03（close 10.27）起，kline 卻仍留著 142 天
     close=15.0 的假列 → research 頁 YTD 基準價算成 15 元。
