@@ -510,6 +510,18 @@ def run_daily():
     else:
         LOG.warn("etf-shares.json 不存在，ETF market_cap 將留空")
 
+    # 載入官方 ETF 淨資產（etf-meta.json），用於 market_cap 合理性護欄
+    etf_nav = {}
+    etf_meta_path = os.path.join(OUT, "etf-meta.json")
+    if os.path.exists(etf_meta_path):
+        try:
+            for e in json.load(open(etf_meta_path, encoding="utf-8")).get("etfs", []):
+                if e.get("sym") and e.get("net_assets_100m") is not None:
+                    etf_nav[e["sym"]] = e["net_assets_100m"]
+            LOG.info(f"ETF 官方淨資產載入 {len(etf_nav)} 檔")
+        except Exception as e:
+            LOG.warn(f"etf-meta.json 載入失敗：{e}")
+
     # 保留既有 ROE/ROA/EPS/market_cap/ind（這些由 weekly/官方 API 更新，daily 不覆寫）
     existing = load_existing_stocks()
     etf_ref = load_etf_reference()
@@ -571,12 +583,21 @@ def run_daily():
                 if high is None: high = close
                 if low is None: low = close
 
-        # ETF market_cap：若無既有值且有發行張數資料，用 price * shares_stock 估算
-        mc = ex.get("market_cap") or None  # 0 視為缺漏（null 不得轉成 0）
-        if mc is None and sid in etf_shares and close is not None:
+        # ETF market_cap：有收盤價且有官方發行單位數時，直接用 price * shares_stock 重新計算
+        # （不沿用既有值，避免 1 億元等預設值長期殘留）
+        mc = None
+        if close is not None and sid in etf_shares:
             shares = etf_shares[sid].get("shares_stock")
             if shares:
                 mc = round(close * shares)
+        # 安全護欄：若官方 NAV 存在且與估算市值偏離 >3 倍 → 視為異常，不顯示錯誤數字（前端顯示 —）
+        # etf_nav 來自 etf-meta.json（官方淨資產，單位億元）
+        nav_100m = etf_nav.get(sid, None)
+        if mc is not None and nav_100m is not None and nav_100m > 0:
+            mc_100m = mc / 100_000_000
+            if abs(mc_100m - nav_100m) / nav_100m > 3.0:
+                LOG.info(f"ETF {sid} market_cap({mc_100m:.1f}B) vs NAV({nav_100m:.1f}B) 偏離>3倍，標記為缺失")
+                mc = None
 
         # ROE/ROA/EPS 不在每日行情抓取：沿用既有值（由 import_official_fundamentals.py 以官方年化值同步）
         roe, roa, eps = ex.get("roe"), ex.get("roa"), ex.get("eps")

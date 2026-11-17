@@ -1,539 +1,3689 @@
 {
-  "source": "TWSE ETF 基本資料 / 公開發行說明書",
-  "updated": "2026-07-16",
-  "note": "主動型/槓桿/反向/期貨 ETF 發行張數，需定期人工更新",
+  "source": "TWSE openapi t187ap47_L（官方，含發行單位數）＋ TPEx api/etfFilter（官方宣告，無單位數，shares_stock=null）",
+  "updated": "2026-11-17",
+  "note": "ETF market_cap（億元）= 收盤價 × shares_stock / 100,000,000，由 fetch_data.py 計算。TPEx ETF 暫無官方發行單位數 API，shares_stock 為 null，market_cap 待補充；本檔案僅紀錄官方可驗證之發行張數，絕不捏造。",
   "etf": {
     "00400A": {
       "name": "主動國泰動能高息",
-      "full_name": "國泰台股動能高息主動式ETF基金",
-      "shares": 30000,
+      "full_name": "國泰台股動能高息主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 2436140,
       "unit": "張",
-      "shares_stock": 30000000
+      "shares_stock": 2436140000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00401A": {
       "name": "主動摩根台灣鑫收",
-      "full_name": "摩根台灣鑫收益主動式ETF",
-      "shares": 25000,
+      "full_name": "摩根台灣鑫收益主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 330395,
       "unit": "張",
-      "shares_stock": 25000000
+      "shares_stock": 330395000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00402A": {
       "name": "主動安聯美國科技",
-      "full_name": "安聯美國科技領航主動式ETF",
-      "shares": 15000,
+      "full_name": "安聯美國科技領航主動式ETF證券投資信託基&#63754;",
+      "market": "TWSE",
+      "shares": 562127,
       "unit": "張",
-      "shares_stock": 15000000
+      "shares_stock": 562127000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00403A": {
       "name": "主動統一升級50",
-      "full_name": "統一台股升級50主動式ETF",
-      "shares": 20000,
+      "full_name": "統一台股升級50主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 13748019,
       "unit": "張",
-      "shares_stock": 20000000
+      "shares_stock": 13748019000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00404A": {
       "name": "主動聯博動能50",
-      "full_name": "聯博台灣動能收益50主動式ETF",
-      "shares": 18000,
+      "full_name": "聯博台灣動能收益50主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 436795,
       "unit": "張",
-      "shares_stock": 18000000
+      "shares_stock": 436795000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00405A": {
       "name": "主動富邦台灣龍耀",
-      "full_name": "富邦台灣龍耀主動式ETF基金",
-      "shares": 22000,
+      "full_name": "富邦台灣龍耀主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 2749745,
       "unit": "張",
-      "shares_stock": 22000000
+      "shares_stock": 2749745000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00406A": {
       "name": "主動中信台灣收益",
-      "full_name": "中信台灣收益成長主動式ETF",
-      "shares": 28000,
+      "full_name": "中國信託台灣收益成長主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 20169062,
       "unit": "張",
-      "shares_stock": 28000000
+      "shares_stock": 20169062000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00407A": {
       "name": "主動凱基台灣",
-      "full_name": "凱基台灣主動式ETF基金",
-      "shares": 12000,
+      "full_name": "凱基台灣主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 2454239,
       "unit": "張",
-      "shares_stock": 12000000
+      "shares_stock": 2454239000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00408A": {
       "name": "主動第一金優股息",
-      "full_name": "主動第一金優股息",
-      "shares": 10000,
+      "full_name": "第一金台股趨勢優股息主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 151634,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 151634000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00409A": {
+      "name": "主動復華全球50",
+      "full_name": "復華全球未來50主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 1447948,
+      "unit": "張",
+      "shares_stock": 1447948000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00410A": {
+      "name": "主動永豐科技趨勢",
+      "full_name": "永豐台灣科技趨勢主動式ETF證券投資信託基&#63754;",
+      "market": "TWSE",
+      "shares": 194860,
+      "unit": "張",
+      "shares_stock": 194860000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00412A": {
+      "name": "主動安聯亞半導體",
+      "full_name": "安聯亞洲半導體主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 928488,
+      "unit": "張",
+      "shares_stock": 928488000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00413A": {
+      "name": "主動玉山關鍵科技",
+      "full_name": "玉山臺灣關鍵科技主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 149650,
+      "unit": "張",
+      "shares_stock": 149650000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00415A": {
+      "name": "主動群益核心50",
+      "full_name": "群益台灣核心50主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 1531190,
+      "unit": "張",
+      "shares_stock": 1531190000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00416A": {
+      "name": "主動台新臺灣中小",
+      "full_name": "台新臺灣中小主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 804597,
+      "unit": "張",
+      "shares_stock": 804597000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00418A": {
+      "name": "主動復華台灣新星",
+      "full_name": "復華台灣新星主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 903118,
+      "unit": "張",
+      "shares_stock": 903118000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "0050": {
+      "name": "元大台灣50",
+      "full_name": "元大台灣卓越50證券投資信託基金",
+      "market": "TWSE",
+      "shares": 25037000,
+      "unit": "張",
+      "shares_stock": 25037000000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "0051": {
+      "name": "元大中型100",
+      "full_name": "元大台灣中型100證券投資信託基金",
+      "market": "TWSE",
+      "shares": 25500,
+      "unit": "張",
+      "shares_stock": 25500000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "0052": {
+      "name": "富邦科技",
+      "full_name": "富邦台灣科技指數證券投資信託基金",
+      "market": "TWSE",
+      "shares": 2712500,
+      "unit": "張",
+      "shares_stock": 2712500000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "0053": {
+      "name": "元大科技市值(原:元大電子)",
+      "full_name": "元大台灣ETF傘型證券投資信託基金之電子科技證券投資信託基金",
+      "market": "TWSE",
+      "shares": 18988,
+      "unit": "張",
+      "shares_stock": 18988000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "0054": {
+      "name": "元大台商50",
+      "full_name": "元大台灣ETF傘型證券投資信託基金之台商收成證券投資信託基金",
+      "market": "TWSE",
+      "shares": 4124,
+      "unit": "張",
+      "shares_stock": 4124000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "0055": {
+      "name": "元大MSCI金融",
+      "full_name": "元大台灣ETF傘型證券投資信託基金之金融證券投資信託基金",
+      "market": "TWSE",
+      "shares": 100654,
+      "unit": "張",
+      "shares_stock": 100654000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "0056": {
+      "name": "元大高股息",
+      "full_name": "元大台灣高股息證券投資信託基金",
+      "market": "TWSE",
+      "shares": 15220034,
+      "unit": "張",
+      "shares_stock": 15220034000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "0057": {
+      "name": "富邦摩台",
+      "full_name": "富邦台灣ETF傘型證券投資信託基金之富邦台灣摩根指數股票型證券投資信託基金",
+      "market": "TWSE",
+      "shares": 1527,
+      "unit": "張",
+      "shares_stock": 1527000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "0058": {
+      "name": "富邦發達",
+      "full_name": "富邦台灣ETF傘型證券投資信託基金之富邦台灣發達指數股票型證券投資信託基金",
+      "market": "TWSE",
+      "shares": 696,
+      "unit": "張",
+      "shares_stock": 696000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "0059": {
+      "name": "富邦金融",
+      "full_name": "富邦台灣ETF傘型證券投資信託基金之富邦台灣金融指數股票型證券投資信託基金",
+      "market": "TWSE",
+      "shares": 973,
+      "unit": "張",
+      "shares_stock": 973000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "0060": {
+      "name": "新台灣",
+      "full_name": "元大新台灣證券投資信託基金",
+      "market": "TWSE",
+      "shares": 1153,
+      "unit": "張",
+      "shares_stock": 1153000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "0061": {
+      "name": "元大寶滬深",
+      "full_name": "元大標智滬深300證券投資信託基金",
+      "market": "TWSE",
+      "shares": 92116,
+      "unit": "張",
+      "shares_stock": 92116000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "006203": {
+      "name": "元大MSCI台灣",
+      "full_name": "元大摩臺證券投資信託基金",
+      "market": "TWSE",
+      "shares": 10218,
+      "unit": "張",
+      "shares_stock": 10218000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "006204": {
+      "name": "永豐臺灣加權",
+      "full_name": "永豐臺灣加權ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 1500,
+      "unit": "張",
+      "shares_stock": 1500000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "006205": {
+      "name": "富邦上証",
+      "full_name": "富邦上証180證券投資信託基金",
+      "market": "TWSE",
+      "shares": 94272,
+      "unit": "張",
+      "shares_stock": 94272000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "006206": {
+      "name": "元大上證50",
+      "full_name": "元大中國傘型證券投資信託基金之上證50證券投資信託基金",
+      "market": "TWSE",
+      "shares": 26278,
+      "unit": "張",
+      "shares_stock": 26278000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "006207": {
+      "name": "復華滬深",
+      "full_name": "復華滬深300 A股證券投資信託基金",
+      "market": "TWSE",
+      "shares": 21392,
+      "unit": "張",
+      "shares_stock": 21392000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "006208": {
+      "name": "富邦台50",
+      "full_name": "富邦台灣釆吉50 證券投資信託基金",
+      "market": "TWSE",
+      "shares": 1935540,
+      "unit": "張",
+      "shares_stock": 1935540000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00625K": {
+      "name": "富邦上証+R",
+      "full_name": "富邦上証180證券投資信託基金-加掛人民幣ETF受益憑證-國外成份/加掛外幣證券指數股票型基金",
+      "market": "TWSE",
+      "shares": 333,
+      "unit": "張",
+      "shares_stock": 333000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00631L": {
       "name": "元大台灣50正2",
-      "full_name": "元大台灣50正2",
-      "shares": 10000,
+      "full_name": "元大ETF傘型證券投資信託基金之台灣50單日正向2倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 9729348,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 9729348000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00632R": {
       "name": "元大台灣50反1",
-      "full_name": "元大台灣50反向1倍ETF",
-      "shares": 12000,
+      "full_name": "元大ETF傘型證券投資信託基金之台灣50單日反向1倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 2308707,
       "unit": "張",
-      "shares_stock": 12000000
+      "shares_stock": 2308707730,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00633L": {
       "name": "富邦上証正2",
-      "full_name": "富邦上証正2",
-      "shares": 10000,
+      "full_name": "富邦中國ETF傘型證券投資信託基金之富邦上証180單日正向兩倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 135458,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 135458000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00634R": {
-      "name": "富邦上證反1",
-      "full_name": "富邦上證反向1倍ETF",
-      "shares": 15000,
+      "name": "富邦上証反1",
+      "full_name": "富邦中國ETF傘型證券投資信託基金之富邦上証180單日反向一倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 42756,
       "unit": "張",
-      "shares_stock": 15000000
+      "shares_stock": 42756000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00635U": {
-      "name": "期元大S&P黃金",
-      "full_name": "期元大S&P黃金",
-      "shares": 10000,
+      "name": "期元大S&amp;P黃金(原名：元大S&amp;P黃金)",
+      "full_name": "元大標普高盛黃金ER指數股票型期貨信託基金",
+      "market": "TWSE",
+      "shares": 347014,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 347014000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00636": {
+      "name": "國泰中國A50",
+      "full_name": "國泰富時中國A50證券投資信託基金",
+      "market": "TWSE",
+      "shares": 93446,
+      "unit": "張",
+      "shares_stock": 93446000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00636K": {
+      "name": "國泰中國A50+U",
+      "full_name": "國泰富時中國A50證券投資信託基金(加掛美元受益憑證)-國外成份/加掛外幣證券指數股票型基金",
+      "market": "TWSE",
+      "shares": 62,
+      "unit": "張",
+      "shares_stock": 62100,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00637L": {
       "name": "元大滬深300正2",
-      "full_name": "元大滬深300正2",
-      "shares": 10000,
+      "full_name": "元大滬深300傘型證券投資信託基金之滬深300單日正向2倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 838106,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 838106000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00638R": {
       "name": "元大滬深300反1",
-      "full_name": "元大滬深300反1",
-      "shares": 10000,
+      "full_name": "元大滬深300傘型證券投資信託基金之滬深300單日反向1倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 22948,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 22948000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00639": {
+      "name": "富邦深100",
+      "full_name": "富邦深証100證券投資信託基金",
+      "market": "TWSE",
+      "shares": 97403,
+      "unit": "張",
+      "shares_stock": 97403000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00640L": {
       "name": "富邦日本正2",
-      "full_name": "富邦日本正2",
-      "shares": 10000,
+      "full_name": "富邦日本ETF傘型證券投資信託基金之富邦日本東証單日正向兩倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 6919,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 6919000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00641R": {
       "name": "富邦日本反1",
-      "full_name": "富邦日本反1",
-      "shares": 10000,
+      "full_name": "富邦日本ETF傘型證券投資信託基金之富邦日本東証單日反向一倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 84258,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 84258000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00642U": {
-      "name": "期元大S&P石油",
-      "full_name": "期元大S&P石油",
-      "shares": 10000,
+      "name": "期元大S&amp;P石油(原名：元大S&amp;P石油)",
+      "full_name": "元大標普高盛原油ER指數股票型期貨信託基金",
+      "market": "TWSE",
+      "shares": 46321,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 46321000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00643": {
+      "name": "群益深証中小",
+      "full_name": "群益深証中小１００證券投資信託基金",
+      "market": "TWSE",
+      "shares": 72200,
+      "unit": "張",
+      "shares_stock": 72200000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00643K": {
+      "name": "群益深証中小+R",
+      "full_name": "群益深証中小１００證券投資信託基金加掛—人民幣ETF受益憑證-國外成份/加掛外幣證券指數股票型基金",
+      "market": "TWSE",
+      "shares": 217,
+      "unit": "張",
+      "shares_stock": 217000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00645": {
+      "name": "富邦日本",
+      "full_name": "富邦日本東証證券投資信託基金",
+      "market": "TWSE",
+      "shares": 45497,
+      "unit": "張",
+      "shares_stock": 45497000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00646": {
+      "name": "元大S&amp;P500",
+      "full_name": "元大標普500傘型證券投資信託基金之標普500證券投資信託基金",
+      "market": "TWSE",
+      "shares": 633985,
+      "unit": "張",
+      "shares_stock": 633985000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00647L": {
-      "name": "元大S&P500正2",
-      "full_name": "元大S&P500正2",
-      "shares": 10000,
+      "name": "元大S&amp;P500正2",
+      "full_name": "元大標普500傘型證券投資信託基金之標普500單日正向2倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 4916,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 4916000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00648R": {
-      "name": "元大S&P500反1",
-      "full_name": "元大S&P500反1",
-      "shares": 10000,
+      "name": "元大S&amp;P500反1",
+      "full_name": "元大標普500傘型證券投資信託基金之標普500單日反向1倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 130688,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 130688000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00649": {
+      "name": "FH香港",
+      "full_name": "復華香港ETF傘型證券投資信託基金之復華恒生證券投資信託基金",
+      "market": "TWSE",
+      "shares": 4272,
+      "unit": "張",
+      "shares_stock": 4272000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00650L": {
       "name": "復華香港正2",
-      "full_name": "復華香港正2",
-      "shares": 10000,
+      "full_name": "復華香港ETF傘型證券投資信託基金之復華恒生單日正向二倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 99338,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 99338000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00651R": {
       "name": "復華香港反1",
-      "full_name": "復華香港反1",
-      "shares": 10000,
+      "full_name": "復華香港ETF傘型證券投資信託基金之復華恒生單日反向一倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 32192,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 32192000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00652": {
+      "name": "富邦印度",
+      "full_name": "富邦印度ETF傘型證券投資信託基金之富邦印度NIFTY證券投資信託基金",
+      "market": "TWSE",
+      "shares": 58035,
+      "unit": "張",
+      "shares_stock": 58035000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00653L": {
       "name": "富邦印度正2",
-      "full_name": "富邦印度正2",
-      "shares": 10000,
+      "full_name": "富邦印度ETF傘型證券投資信託基金之富邦印度NIFTY單日正向兩倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 10903,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 10903000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00654R": {
       "name": "富邦印度反1",
-      "full_name": "富邦印度反1",
-      "shares": 10000,
+      "full_name": "富邦印度ETF傘型證券投資信託基金之富邦印度NIFTY單日反向一倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 19466,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 19466000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00655L": {
       "name": "國泰中國A50正2",
-      "full_name": "國泰中國A50正2",
-      "shares": 10000,
+      "full_name": "國泰A50傘型證券投資信託基金之富時中國A50單日正向2倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 62958,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 62958000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00656R": {
       "name": "國泰中國A50反1",
-      "full_name": "國泰中國A50反1",
-      "shares": 10000,
+      "full_name": "國泰A50傘型證券投資信託基金之富時中國A50單日反向1倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 20357,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 20357000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00657": {
+      "name": "國泰日經225",
+      "full_name": "國泰日本ETF傘型證券投資信託基金之日經225證券投資信託基金",
+      "market": "TWSE",
+      "shares": 7113,
+      "unit": "張",
+      "shares_stock": 7113000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00657K": {
+      "name": "國泰日經225+U",
+      "full_name": "國泰日本ETF傘型證券投資信託基金之日經225證券投資信託基金(加掛美元受益憑證)-國外成份/加掛外幣證券指數股票型基金",
+      "market": "TWSE",
+      "shares": 29,
+      "unit": "張",
+      "shares_stock": 29900,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00658L": {
+      "name": "國泰日本正2",
+      "full_name": "國泰日本ETF傘型證券投資信託基金之富時日本單日正向2倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 845,
+      "unit": "張",
+      "shares_stock": 845000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00659R": {
+      "name": "國泰日本反1",
+      "full_name": "國泰日本ETF傘型證券投資信託基金之富時日本單日反向1倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 3080,
+      "unit": "張",
+      "shares_stock": 3080000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00660": {
+      "name": "元大歐洲50",
+      "full_name": "元大已開發國家傘型證券投資信託基金之元大歐洲50證券投資信託基金",
+      "market": "TWSE",
+      "shares": 7031,
+      "unit": "張",
+      "shares_stock": 7031000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00661": {
+      "name": "元大日經225",
+      "full_name": "元大已開發國家傘型證券投資信託基金之元大日經225證券投資信託基金",
+      "market": "TWSE",
+      "shares": 23425,
+      "unit": "張",
+      "shares_stock": 23425000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00662": {
+      "name": "富邦NASDAQ",
+      "full_name": "富邦NASDAQ-100證券投資信託基金",
+      "market": "TWSE",
+      "shares": 1033029,
+      "unit": "張",
+      "shares_stock": 1033029000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00663L": {
       "name": "國泰臺灣加權正2",
-      "full_name": "國泰臺灣加權正2",
-      "shares": 10000,
+      "full_name": "國泰臺指ETF傘型證券投資信託基金之臺灣加權指數單日正向2倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 173663,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 173663000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00664R": {
       "name": "國泰臺灣加權反1",
-      "full_name": "國泰臺灣加權反1",
-      "shares": 10000,
+      "full_name": "國泰臺指ETF傘型證券投資信託基金之臺灣加權指數單日反向1倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 782575,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 782575000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00665L": {
       "name": "富邦恒生國企正2",
-      "full_name": "富邦恒生國企正2",
-      "shares": 10000,
+      "full_name": "富邦恒生國企ETF傘型證券投資信託基金之富邦恒生國企單日正向兩倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 401965,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 401965000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00666R": {
       "name": "富邦恒生國企反1",
-      "full_name": "富邦恒生國企反1",
-      "shares": 10000,
+      "full_name": "富邦恒生國企ETF傘型證券投資信託基金之富邦恒生國企單日反向一倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 12124,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 12124000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00667": {
+      "name": "元大韓國",
+      "full_name": "元大韓國KOSPI 200證券投資信託基金",
+      "market": "TWSE",
+      "shares": 929,
+      "unit": "張",
+      "shares_stock": 929000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00668": {
+      "name": "國泰美國道瓊",
+      "full_name": "國泰美國ETF傘型證券投資信託基金之道瓊工業平均指數證券投資信託基金",
+      "market": "TWSE",
+      "shares": 8058,
+      "unit": "張",
+      "shares_stock": 8058000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00668K": {
+      "name": "國泰美國道瓊+U",
+      "full_name": "國泰道瓊工業平均指數證券投資信託基金(加掛美元受益憑證)-國外成份/加掛外幣證券指數股票型基金",
+      "market": "TWSE",
+      "shares": 10,
+      "unit": "張",
+      "shares_stock": 10500,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00669R": {
       "name": "國泰美國道瓊反1",
-      "full_name": "國泰美國道瓊反1",
-      "shares": 10000,
+      "full_name": "國泰美國ETF傘型證券投資信託基金之道瓊工業平均指數單日反向1倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 183117,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 183117000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00670L": {
       "name": "富邦NASDAQ正2",
-      "full_name": "富邦NASDAQ正2",
-      "shares": 10000,
+      "full_name": "富邦NASDAQ-100 ETF 傘型證券投資信託基金之富邦NASDAQ-100單日正向兩倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 87145,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 87145000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00671R": {
-      "name": "富邦NASDAQ反1",
-      "full_name": "富邦NASDAQ反1",
-      "shares": 10000,
+      "name": "富邦NASDAQ 反1",
+      "full_name": "富邦NASDAQ-100 ETF傘型證券投資信託基金之富邦NASDAQ-100 單日反向一倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 472384,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 472384000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00672L": {
+      "name": "元大S&amp;P原油正2",
+      "full_name": "元大標普油金傘型期貨信託基金之元大標普高盛原油ER單日正向2倍指數股票型期貨信託基金",
+      "market": "TWSE",
+      "shares": 2036187,
+      "unit": "張",
+      "shares_stock": 2036187000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00673R": {
-      "name": "期元大S&P原油反1",
-      "full_name": "期元大S&P原油反1",
-      "shares": 10000,
+      "name": "期元大S&amp;P原油反1(原名：元大S&amp;P原油反1)",
+      "full_name": "元大標普油金傘型期貨信託基金之元大標普高盛原油ER單日反向1倍指數股票型期貨信託基金",
+      "market": "TWSE",
+      "shares": 1045550,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 1045550646,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00674R": {
-      "name": "期元大S&P黃金反1",
-      "full_name": "期元大S&P黃金反1",
-      "shares": 10000,
+      "name": "期元大S&amp;P黃金反1(原名：元大S&amp;P黃金反1)",
+      "full_name": "元大標普油金傘型期貨信託基金之元大標普高盛黃金ER單日反向1倍指數股票型期貨信託基金",
+      "market": "TWSE",
+      "shares": 13920,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 13920555,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00675L": {
-      "name": "富邦臺灣加權正2",
-      "full_name": "富邦臺灣加權正2",
-      "shares": 10000,
+      "name": "FB臺灣加權正2",
+      "full_name": "富邦臺灣加權ETF傘型證券投資信託基金之富邦臺灣加權單日正向兩倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 120286,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 120286000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00676R": {
       "name": "富邦臺灣加權反1",
-      "full_name": "富邦臺灣加權反1",
-      "shares": 10000,
+      "full_name": "富邦臺灣加權ETF傘型證券投資信託基金之富邦臺灣加權單日反向一倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 170833,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 170833683,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00677U": {
+      "name": "期富邦VIX",
+      "full_name": "富邦標普500波動率短期期貨ER指數股票型期貨信託基金",
+      "market": "TWSE",
+      "shares": 1486708,
+      "unit": "張",
+      "shares_stock": 1486708000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00678": {
+      "name": "群益那斯達克生技",
+      "full_name": "群益那斯達克生技證券投資信託基金",
+      "market": "TWSE",
+      "shares": 11948,
+      "unit": "張",
+      "shares_stock": 11948000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00680L": {
       "name": "元大美債20正2",
-      "full_name": "元大美債20正2",
-      "shares": 10000,
+      "full_name": "元大美國政府20年期(以上)債券ETF傘型證券投資信託基金之元大美國政府20年期(以上)債券單日正向2倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 1255576,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 1255576000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00681R": {
       "name": "元大美債20反1",
-      "full_name": "元大美債20反1",
-      "shares": 10000,
+      "full_name": "元大美國政府20年期(以上)債券ETF傘型證券投資信託基金之元大美國政府20年期(以上)債券單日反向1倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 7594,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 7594000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00682U": {
-      "name": "期元大美元指數",
-      "full_name": "期元大美元指數",
-      "shares": 10000,
+      "name": "期元大美元指數(原名：元大美元指數)",
+      "full_name": "元大標普美元指數傘型期貨信託基金之元大標普美元ER指數股票型期貨信託基金",
+      "market": "TWSE",
+      "shares": 7644,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 7644000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00683L": {
-      "name": "期元大美元指正2",
-      "full_name": "期元大美元指正2",
-      "shares": 10000,
+      "name": "期元大美元指正2(原名：元大美元指數正2)",
+      "full_name": "元大標普美元指數傘型期貨信託基金之元大標普美元ER單日正向2倍指數股票型期貨信託基金",
+      "market": "TWSE",
+      "shares": 10934,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 10934000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00684R": {
-      "name": "期元大美元指反1",
-      "full_name": "期元大美元指反1",
-      "shares": 10000,
+      "name": "期元大美元指反1(原名：元大美元指數反1)",
+      "full_name": "元大標普美元指數傘型期貨信託基金之元大標普美元ER單日反向1倍指數股票型期貨信託基金",
+      "market": "TWSE",
+      "shares": 9688,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 9688000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00685L": {
       "name": "群益臺灣加權正2",
-      "full_name": "群益臺灣加權正2",
-      "shares": 10000,
+      "full_name": "群益臺灣加權指數ETF傘型證券投資信託基金之群益臺灣加權指數單日正向2倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 9919336,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 9919336000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00686R": {
       "name": "群益臺灣加權反1",
-      "full_name": "群益臺灣加權反1",
-      "shares": 10000,
+      "full_name": "群益臺灣加權指數ETF傘型證券投資信託基金之群益臺灣加權指數單日反向1倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 256776,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 256776000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00688L": {
       "name": "國泰20年美債正2",
-      "full_name": "國泰20年美債正2",
-      "shares": 10000,
+      "full_name": "國泰美國債券ETF傘型證券投資信託基金之20年期(以上)美國公債指數單日正向2倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 517115,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 517115000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00689R": {
       "name": "國泰20年美債反1",
-      "full_name": "國泰20年美債反1",
-      "shares": 10000,
+      "full_name": "國泰美國債券ETF傘型證券投資信託基金之20年期(以上)美國公債指數單日反向1倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 6889,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 6889000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00690": {
+      "name": "兆豐藍籌30",
+      "full_name": "兆豐臺灣藍籌30ETF傘型證券投資信託基金之兆豐臺灣藍籌30 ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 90830,
+      "unit": "張",
+      "shares_stock": 90830000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00691R": {
+      "name": "兆豐藍籌反一",
+      "full_name": "兆豐國際臺灣藍籌30ETF傘型證券投資信託基金之兆豐國際臺灣藍籌30單日反向一倍ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 2106,
+      "unit": "張",
+      "shares_stock": 2106000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00692": {
+      "name": "富邦公司治理",
+      "full_name": "富邦臺灣公司治理100證券投資信託基金",
+      "market": "TWSE",
+      "shares": 615780,
+      "unit": "張",
+      "shares_stock": 615780000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00693U": {
-      "name": "期街口S&P黃豆",
-      "full_name": "期街口S&P黃豆",
-      "shares": 10000,
+      "name": "期街口S&amp;P黃豆",
+      "full_name": "街口標普高盛黃豆ER指數股票型期貨信託基金",
+      "market": "TWSE",
+      "shares": 46166,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 46166000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00698L": {
+      "name": "元大美債7-10正2",
+      "full_name": "元大美國政府7至10年期債券ETF傘型證券投資信託基金之元大美國政府7至10年期債券單日正向2倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 1149,
+      "unit": "張",
+      "shares_stock": 1149000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00699R": {
+      "name": "元大美債7-10反1",
+      "full_name": "元大美國政府7至10年期債券ETF傘型證券投資信託基金之元大美國政府7至10年期債券單日反向1倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 714,
+      "unit": "張",
+      "shares_stock": 714000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00700": {
+      "name": "富邦恒生國企",
+      "full_name": "富邦恒生國企ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 28483,
+      "unit": "張",
+      "shares_stock": 28483000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00701": {
+      "name": "國泰股利精選30",
+      "full_name": "國泰低波動ETF傘型證券投資信託基金之臺灣低波動股利精選30證券投資信託基金",
+      "market": "TWSE",
+      "shares": 168891,
+      "unit": "張",
+      "shares_stock": 168891000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00702": {
+      "name": "國泰標普低波高息",
+      "full_name": "國泰低波動ETF傘型證券投資信託基金之美國標普500低波動高股息證券投資信託基金",
+      "market": "TWSE",
+      "shares": 6688,
+      "unit": "張",
+      "shares_stock": 6688000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00703": {
+      "name": "台新MSCI中國",
+      "full_name": "台新MSCI新興市場國家傘型ETF證券投資信託基金之台新MSCI中國證券投資信託基金",
+      "market": "TWSE",
+      "shares": 9050,
+      "unit": "張",
+      "shares_stock": 9050000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00704L": {
+      "name": "台新MSCI台灣正2",
+      "full_name": "台新MSCI新興市場國家傘型ETF證券投資信託基金之台新MSCI台灣單日正向2倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 1378,
+      "unit": "張",
+      "shares_stock": 1378000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00705R": {
+      "name": "台新MSCI台灣反1",
+      "full_name": "台新MSCI新興市場國家傘型ETF證券投資信託基金之台新MSCI台灣單日反向1倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 1815,
+      "unit": "張",
+      "shares_stock": 1815000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00706L": {
-      "name": "期元大S&P日圓正2",
-      "full_name": "期元大S&P日圓正2",
-      "shares": 10000,
+      "name": "期元大S&amp;P日圓正2(原名：元大S&amp;P日圓正2)",
+      "full_name": "元大標普金日傘型期貨信託基金之元大標普日圓ER單日正向2倍指數股票型期貨信託基金",
+      "market": "TWSE",
+      "shares": 115770,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 115770853,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00707R": {
-      "name": "期元大S&P日圓反1",
-      "full_name": "期元大S&P日圓反1",
-      "shares": 10000,
+      "name": "期元大S&amp;P日圓反1(原名：元大S&amp;P日圓反1)",
+      "full_name": "元大標普金日傘型期貨信託基金之元大標普日圓ER單日反向1倍指數股票型期貨信託基金",
+      "market": "TWSE",
+      "shares": 6855,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 6855000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00708L": {
-      "name": "期元大S&P黃金正2",
-      "full_name": "期元大S&P黃金正2",
-      "shares": 10000,
+      "name": "期元大S&amp;P黃金正2(原名：元大S&amp;P黃金正2)",
+      "full_name": "元大標普金日傘型期貨信託基金之元大標普高盛黃金ER單日正向2倍指數股票型期貨信託基金",
+      "market": "TWSE",
+      "shares": 163573,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 163573000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00709": {
+      "name": "富邦歐洲",
+      "full_name": "富邦富時歐洲ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 13960,
+      "unit": "張",
+      "shares_stock": 13960000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00710B": {
+      "name": "復華彭博非投等債",
+      "full_name": "復華全球收益ETF傘型證券投資信託基金之復華1至5年期非投資等級債券證券投資信託基金",
+      "market": "TWSE",
+      "shares": 180261,
+      "unit": "張",
+      "shares_stock": 180261000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00711B": {
+      "name": "復華彭博新興債",
+      "full_name": "復華全球收益ETF傘型證券投資信託基金之復華新興市場10年期以上債券證券投資信託基金",
+      "market": "TWSE",
+      "shares": 871761,
+      "unit": "張",
+      "shares_stock": 871761000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00712": {
+      "name": "復華富時不動產",
+      "full_name": "復華全球收益ETF傘型證券投資信託基金之復華富時不動產證券化證券投資信託基金",
+      "market": "TWSE",
+      "shares": 6451011,
+      "unit": "張",
+      "shares_stock": 6451011000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00713": {
+      "name": "元大台灣高息低波",
+      "full_name": "元大台灣高股息低波動ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 1685012,
+      "unit": "張",
+      "shares_stock": 1685012000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00714": {
+      "name": "群益道瓊美國地產",
+      "full_name": "群益道瓊美國地產ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 18067,
+      "unit": "張",
+      "shares_stock": 18067000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00715L": {
       "name": "期街口布蘭特正2",
-      "full_name": "期街口布蘭特正2",
-      "shares": 10000,
+      "full_name": "街口標普高盛布蘭特原油ER單日正向2倍指數股票型期貨信託基金",
+      "market": "TWSE",
+      "shares": 47191,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 47191793,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00716R": {
+      "name": "華頓S&amp;P布蘭特反1",
+      "full_name": "華頓標普高盛布蘭特原油傘型期貨信託基金之華頓標普高盛布蘭特原油ER單日反向1倍指數股票型期貨信託基金",
+      "market": "TWSE",
+      "shares": 158,
+      "unit": "張",
+      "shares_stock": 158000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00717": {
+      "name": "富邦美國特別股",
+      "full_name": "富邦標普美國特別股ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 116605,
+      "unit": "張",
+      "shares_stock": 116605000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00728": {
+      "name": "第一金工業30",
+      "full_name": "第一金臺灣工業菁英30ETF傘型證券投資信託基金之第一金臺灣工業菁英30 ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 39923,
+      "unit": "張",
+      "shares_stock": 39923000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00729R": {
+      "name": "第一金工業30反一",
+      "full_name": "第一金臺灣工業菁英30ETF傘型證券投資信託基金之第一金臺灣工業菁英30單日反向一倍ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 598,
+      "unit": "張",
+      "shares_stock": 598000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00730": {
+      "name": "富邦臺灣優質高息",
+      "full_name": "富邦道瓊臺灣優質高息30ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 68544,
+      "unit": "張",
+      "shares_stock": 68544000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00731": {
+      "name": "復華富時高息低波",
+      "full_name": "復華富時台灣高股息低波動證券投資信託基金",
+      "market": "TWSE",
+      "shares": 20100,
+      "unit": "張",
+      "shares_stock": 20100000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00732": {
+      "name": "國泰RMB短期報酬",
+      "full_name": "國泰優勢收益傘型證券投資信託基金之富時人民幣短期報酬ETF 證券投資信託基金",
+      "market": "TWSE",
+      "shares": 772,
+      "unit": "張",
+      "shares_stock": 772000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00733": {
+      "name": "臺灣中小A級動能50 ETF基金",
+      "full_name": "富邦臺灣中小A級動能50 ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 62466,
+      "unit": "張",
+      "shares_stock": 62466000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00735": {
+      "name": "國泰臺韓科技",
+      "full_name": "國泰趨勢ETF傘型證券投資信託基金之臺韓科技證券投資信託基金",
+      "market": "TWSE",
+      "shares": 106289,
+      "unit": "張",
+      "shares_stock": 106289000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00736": {
+      "name": "國泰新興市場",
+      "full_name": "國泰趨勢ETF傘型證券投資信託基金之富時新興市場證券投資信託基金",
+      "market": "TWSE",
+      "shares": 6727,
+      "unit": "張",
+      "shares_stock": 6727000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00737": {
+      "name": "國泰AI機器人",
+      "full_name": "國泰趨勢ETF傘型證券投資信託基金之納斯達克全球人工智慧及機器人證券投資信託基金",
+      "market": "TWSE",
+      "shares": 24038,
+      "unit": "張",
+      "shares_stock": 24038000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00738U": {
-      "name": "期元大道瓊白銀",
-      "full_name": "期元大道瓊白銀",
-      "shares": 10000,
+      "name": "期元大道瓊白銀(原名：元大道瓊白銀)",
+      "full_name": "元大道瓊白銀ER指數股票型期貨信託基金",
+      "market": "TWSE",
+      "shares": 264299,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 264299000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00739": {
+      "name": "元大MSCI A股",
+      "full_name": "元大MSCI中國A股國際通ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 24988,
+      "unit": "張",
+      "shares_stock": 24988000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00742": {
+      "name": "新光內需收益",
+      "full_name": "新光特選內需收益ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 1610,
+      "unit": "張",
+      "shares_stock": 1610000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00743": {
+      "name": "國泰中國A150",
+      "full_name": "國泰新中國傘型證券投資信託基金之富時中國A150ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 2347,
+      "unit": "張",
+      "shares_stock": 2347000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00752": {
+      "name": "中信中國50",
+      "full_name": "中國信託中國外資自由投資50不含A及B股傘型ETF證券投資信託基金之中國信託MSCI中國外資自由50不含A及B股ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 245216,
+      "unit": "張",
+      "shares_stock": 245216000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00753L": {
       "name": "中信中國50正2",
-      "full_name": "中信中國50正2",
-      "shares": 10000,
+      "full_name": "中國信託中國外資自由投資50不含A及B股傘型ETF證券投資信託基金之中國信託MSCI中國外資自由投資50不含A及B股單日正向2倍ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 781657,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 781657000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00757": {
+      "name": "統一FANG+",
+      "full_name": "統一NYSE FANG+ ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 265494,
+      "unit": "張",
+      "shares_stock": 265494000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00762": {
+      "name": "元大全球AI",
+      "full_name": "元大全球人工智慧ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 47748,
+      "unit": "張",
+      "shares_stock": 47748000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00763U": {
       "name": "期街口道瓊銅",
-      "full_name": "期街口道瓊銅",
-      "shares": 10000,
+      "full_name": "街口道瓊銅ER指數股票型期貨信託基金",
+      "market": "TWSE",
+      "shares": 38065,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 38065000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00766L": {
+      "name": "台新MSCI中國正2",
+      "full_name": "台新MSCI中國外資自由投資單日正向2倍ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 1946,
+      "unit": "張",
+      "shares_stock": 1946000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00767": {
+      "name": "FH美國金融股",
+      "full_name": "復華多元資產傘型證券投資信託基金之復華美國金融服務業股票ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 4090,
+      "unit": "張",
+      "shares_stock": 4090000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00770": {
+      "name": "國泰標普北美科技ETF基金",
+      "full_name": "國泰標普北美科技ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 99458,
+      "unit": "張",
+      "shares_stock": 99458000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00771": {
+      "name": "元大US高息特別股",
+      "full_name": "元大標普美國高息特別股ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 14225,
+      "unit": "張",
+      "shares_stock": 14225000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00774B": {
+      "name": "新光中國政金綠債",
+      "full_name": "新光全方位收益ETF傘型證券投資信託基金之新光中國10年期國債及政策金融附加綠債債券ETF 證券投資信託基金",
+      "market": "TWSE",
+      "shares": 2350,
+      "unit": "張",
+      "shares_stock": 2350000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00774C": {
+      "name": "00774C",
+      "full_name": "新光全方位收益ETF傘型證券投資信託基金之新光中國10年期國債及政策金融附加綠債債券ETF證券投資信託基金-加掛人民幣ETF受益憑證-國外成份/加掛外幣證券指數股票型基金",
+      "market": "TWSE",
+      "shares": 1950,
+      "unit": "張",
+      "shares_stock": 1950000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00775B": {
+      "name": "台新投等債15+",
+      "full_name": "台新全方位收益ETF傘型證券投資信託基金之台新富時15年以上特選產業美元投資等級債券ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 232100,
+      "unit": "張",
+      "shares_stock": 232100000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00776": {
+      "name": "新光ICE美國權值",
+      "full_name": "新光全方位收益ETF傘型證券投資信託基金之新光NYSE美國核心大型權值股ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 100,
+      "unit": "張",
+      "shares_stock": 100000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00783": {
+      "name": "富邦中証500",
+      "full_name": "富邦多元收益ⅡETF傘型證券投資信託基金之富邦中國中証中小500ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 7531,
+      "unit": "張",
+      "shares_stock": 7531000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "0080": {
+      "name": "恒中國",
+      "full_name": "恒生H股指數股票型基金",
+      "market": "TWSE",
+      "shares": 500,
+      "unit": "張",
+      "shares_stock": 500000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "0081": {
+      "name": "恒香港",
+      "full_name": "恒生指數股票型基金",
+      "market": "TWSE",
+      "shares": 250,
+      "unit": "張",
+      "shares_stock": 250000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "008201": {
+      "name": "BP上證50",
+      "full_name": "標智上證50中國指數基金(本基金配息來源可能為本金)",
+      "market": "TWSE",
+      "shares": 349,
+      "unit": "張",
+      "shares_stock": 349100,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00830": {
+      "name": "國泰費城半導體",
+      "full_name": "國泰大三元ETF傘型證券投資信託基金之美國費城半導體證券投資信託基金",
+      "market": "TWSE",
+      "shares": 1025465,
+      "unit": "張",
+      "shares_stock": 1025465000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00850": {
+      "name": "元大臺灣ESG永續",
+      "full_name": "元大臺灣ESG永續ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 418944,
+      "unit": "張",
+      "shares_stock": 418944000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00851": {
+      "name": "台新全球AI",
+      "full_name": "台新SG全球AI機器人精選ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 5525,
+      "unit": "張",
+      "shares_stock": 5525000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00852L": {
       "name": "國泰美國道瓊正2",
-      "full_name": "國泰美國道瓊正2",
-      "shares": 10000,
+      "full_name": "國泰道瓊工業平均指數單日正向2倍證券投資信託基金",
+      "market": "TWSE",
+      "shares": 6865,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 6865000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00861": {
+      "name": "元大全球未來通訊",
+      "full_name": "元大全球未來通訊ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 67912,
+      "unit": "張",
+      "shares_stock": 67912000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00865B": {
+      "name": "國泰US短期公債",
+      "full_name": "國泰美國收益傘型證券投資信託基金之美國短期公債ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 340244,
+      "unit": "張",
+      "shares_stock": 340244000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00866": {
+      "name": "新光Shiller CAPE",
+      "full_name": "新光優質收益ETF傘型證券投資信託基金之新光Shiller Barclays CAPE&#174;美國產業價值投資ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 1229,
+      "unit": "張",
+      "shares_stock": 1229000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00875": {
+      "name": "國泰網路資安ETF",
+      "full_name": "國泰網路資安ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 18988,
+      "unit": "張",
+      "shares_stock": 18988000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00876": {
+      "name": "元大全球5G(原名:元大未來關鍵科技)",
+      "full_name": "元大全球5G關鍵科技ETF證券投資信託基金(原名:元大全球未來關鍵科技ETF證券投資信託基金)",
+      "market": "TWSE",
+      "shares": 94024,
+      "unit": "張",
+      "shares_stock": 94024000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00878": {
+      "name": "國泰永續高股息",
+      "full_name": "國泰台灣高股息傘型證券投資信託基金之台灣ESG永續高股息ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 19840290,
+      "unit": "張",
+      "shares_stock": 19840290000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00881": {
+      "name": "國泰台灣科技龍頭",
+      "full_name": "國泰台灣科技龍頭ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 3128403,
+      "unit": "張",
+      "shares_stock": 3128403000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00882": {
+      "name": "中信中國高股息",
+      "full_name": "中國信託全球收益ETF傘型證券投資信託基金之中國信託恒生中國高股息ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 1827849,
+      "unit": "張",
+      "shares_stock": 1827849000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00885": {
+      "name": "富邦越南",
+      "full_name": "富邦富時越南ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 571238,
+      "unit": "張",
+      "shares_stock": 571238000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00891": {
+      "name": "中信關鍵半導體",
+      "full_name": "中國信託臺灣ESG永續關鍵半導體ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 2209090,
+      "unit": "張",
+      "shares_stock": 2209090000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00892": {
+      "name": "富邦台灣半導體",
+      "full_name": "富邦台灣核心半導體ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 381292,
+      "unit": "張",
+      "shares_stock": 381292000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00893": {
+      "name": "國泰智能電動車",
+      "full_name": "國泰全球智能電動車ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 353384,
+      "unit": "張",
+      "shares_stock": 353384000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00894": {
+      "name": "中信小資高價30",
+      "full_name": "中國信託特選小資高價30ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 162009,
+      "unit": "張",
+      "shares_stock": 162009000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00895": {
+      "name": "富邦未來車",
+      "full_name": "富邦未來車ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 139916,
+      "unit": "張",
+      "shares_stock": 139916000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00896": {
+      "name": "中信綠能及電動車",
+      "full_name": "中國信託臺灣綠能及電動車ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 510880,
+      "unit": "張",
+      "shares_stock": 510880000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00897": {
+      "name": "富邦基因免疫生技",
+      "full_name": "富邦基因免疫生技ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 125012,
+      "unit": "張",
+      "shares_stock": 125012000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00898": {
+      "name": "國泰全球基因免疫與醫療革命ETF基金",
+      "full_name": "國泰全球基因免疫與醫療革命ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 101476,
+      "unit": "張",
+      "shares_stock": 101476000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00899": {
+      "name": "FT潔淨能源(原名:富蘭克林潔淨能源)",
+      "full_name": "富蘭克林華美全球潔淨能源ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 15635,
+      "unit": "張",
+      "shares_stock": 15635000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00900": {
+      "name": "富邦特選高股息30",
+      "full_name": "富邦特選台灣高股息30 ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 1416025,
+      "unit": "張",
+      "shares_stock": 1416025000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00901": {
+      "name": "永豐智能車供應鏈",
+      "full_name": "永豐台灣智能車供應鏈ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 70849,
+      "unit": "張",
+      "shares_stock": 70849000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00902": {
+      "name": "中信電池及儲能",
+      "full_name": "中國信託電池及儲能科技ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 224497,
+      "unit": "張",
+      "shares_stock": 224497000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00903": {
+      "name": "富邦元宇宙",
+      "full_name": "富邦元宇宙ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 45721,
+      "unit": "張",
+      "shares_stock": 45721000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00904": {
+      "name": "台新臺灣半導體30",
+      "full_name": "台新臺灣全市場半導體精選30ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 209612,
+      "unit": "張",
+      "shares_stock": 209612000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00905": {
+      "name": "FT臺灣Smart",
+      "full_name": "富蘭克林華美臺灣Smart ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 361827,
+      "unit": "張",
+      "shares_stock": 361827000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00906": {
+      "name": "大華元宇宙科技50",
+      "full_name": "大華銀元宇宙科技與服務ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 1271,
+      "unit": "張",
+      "shares_stock": 1271000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00907": {
+      "name": "永豐優息存股",
+      "full_name": "永豐台灣優選入息存股ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 148133,
+      "unit": "張",
+      "shares_stock": 148133000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00908": {
+      "name": "富邦入息REITs+",
+      "full_name": "富邦全球入息不動產與基礎建設ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 32416,
+      "unit": "張",
+      "shares_stock": 32416000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00909": {
+      "name": "國泰全球數位支付服務ETF基金",
+      "full_name": "國泰全球數位支付服務ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 125704,
+      "unit": "張",
+      "shares_stock": 125704000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00910": {
+      "name": "第一金太空衛星",
+      "full_name": "第一金太空衛星ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 108439,
+      "unit": "張",
+      "shares_stock": 108439000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00911": {
+      "name": "兆豐洲際半導體",
+      "full_name": "兆豐洲際半導體ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 27903,
+      "unit": "張",
+      "shares_stock": 27903000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00912": {
+      "name": "中信臺灣智慧50",
+      "full_name": "中國信託臺灣智慧50ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 83253,
+      "unit": "張",
+      "shares_stock": 83253000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00913": {
+      "name": "兆豐台灣晶圓製造ETF",
+      "full_name": "兆豐特選台灣晶圓製造 ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 66766,
+      "unit": "張",
+      "shares_stock": 66766000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00915": {
+      "name": "凱基優選高股息30",
+      "full_name": "凱基台灣優選高股息30ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 490983,
+      "unit": "張",
+      "shares_stock": 490983000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00916": {
+      "name": "國泰全球品牌50",
+      "full_name": "國泰全球品牌50ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 84419,
+      "unit": "張",
+      "shares_stock": 84419000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00917": {
+      "name": "中信特選金融",
+      "full_name": "中國信託特選金融及數據ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 68478,
+      "unit": "張",
+      "shares_stock": 68478000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00918": {
+      "name": "大華優利高填息30 ETF",
+      "full_name": "大華銀台灣優選股利高填息30ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 4753264,
+      "unit": "張",
+      "shares_stock": 4753264000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00919": {
+      "name": "群益台灣精選高息",
+      "full_name": "群益台灣精選高息ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 19528635,
+      "unit": "張",
+      "shares_stock": 19528635000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00920": {
+      "name": "富邦ESG綠色電力",
+      "full_name": "富邦全球ESG綠色電力ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 21280,
+      "unit": "張",
+      "shares_stock": 21280000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00921": {
+      "name": "兆豐龍頭等權重",
+      "full_name": "兆豐台灣產業龍頭存股等權重ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 57270,
+      "unit": "張",
+      "shares_stock": 57270000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00922": {
+      "name": "國泰台灣領袖50 ETF基金",
+      "full_name": "國泰台灣領袖 50 ETF 證券投資信託基金",
+      "market": "TWSE",
+      "shares": 2137686,
+      "unit": "張",
+      "shares_stock": 2137686000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00923": {
+      "name": "群益台ESG低碳50",
+      "full_name": "群益台灣ESG低碳50ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 977423,
+      "unit": "張",
+      "shares_stock": 977423000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00924": {
+      "name": "復華S&amp;P500成長",
+      "full_name": "復華美國標普500成長ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 435103,
+      "unit": "張",
+      "shares_stock": 435103000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00925": {
+      "name": "新光標普電動車",
+      "full_name": "新光標普電動車ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 1751,
+      "unit": "張",
+      "shares_stock": 1751000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00926": {
+      "name": "凱基全球菁英55",
+      "full_name": "凱基全球菁英55 ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 101982,
+      "unit": "張",
+      "shares_stock": 101982000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00927": {
+      "name": "群益半導體收益",
+      "full_name": "群益台灣半導體收益ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 2297397,
+      "unit": "張",
+      "shares_stock": 2297397000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00929": {
+      "name": "復華台灣科技優息",
+      "full_name": "復華台灣科技優息ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 6072639,
+      "unit": "張",
+      "shares_stock": 6072639000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00930": {
+      "name": "永豐ESG低碳高息",
+      "full_name": "永豐台灣ESG低碳高息40ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 159779,
+      "unit": "張",
+      "shares_stock": 159779000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00932": {
+      "name": "兆豐永續高息等權",
+      "full_name": "兆豐台灣ESG永續高股息等權重ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 100783,
+      "unit": "張",
+      "shares_stock": 100783000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00934": {
+      "name": "中信成長高股息",
+      "full_name": "中國信託臺灣優選成長高股息ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 539526,
+      "unit": "張",
+      "shares_stock": 539526000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00935": {
+      "name": "野村臺灣新科技50",
+      "full_name": "野村臺灣創新科技50 ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 1033504,
+      "unit": "張",
+      "shares_stock": 1033504000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00936": {
+      "name": "台新永續高息中小型ETF",
+      "full_name": "台新臺灣永續高息中小型ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 186297,
+      "unit": "張",
+      "shares_stock": 186297000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00938": {
+      "name": "凱基優選30",
+      "full_name": "凱基台灣優選30 ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 113516,
+      "unit": "張",
+      "shares_stock": 113516000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00939": {
+      "name": "統一台灣高息動能ETF基金",
+      "full_name": "統一台灣高息動能ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 1152976,
+      "unit": "張",
+      "shares_stock": 1152976000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00940": {
+      "name": "元大台灣價值高息",
+      "full_name": "元大臺灣價值高息ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 4961865,
+      "unit": "張",
+      "shares_stock": 4961865000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00941": {
+      "name": "中信上游半導體",
+      "full_name": "中國信託上游半導體ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 439291,
+      "unit": "張",
+      "shares_stock": 439291000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00943": {
+      "name": "兆豐電子高息等權",
+      "full_name": "兆豐台灣電子成長高息等權重ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 63889,
+      "unit": "張",
+      "shares_stock": 63889000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00944": {
+      "name": "野村趨勢動能高息",
+      "full_name": "野村臺灣趨勢動能高股息ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 52081,
+      "unit": "張",
+      "shares_stock": 52081000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00945B": {
+      "name": "凱基美國非投等債",
+      "full_name": "凱基美國優選收益非投資等級債券ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 811318,
+      "unit": "張",
+      "shares_stock": 811318000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00946": {
+      "name": "群益科技高息成長",
+      "full_name": "群益台灣科技高息成長ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 411746,
+      "unit": "張",
+      "shares_stock": 411746000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00947": {
+      "name": "台新臺灣IC設計動能ETF基金",
+      "full_name": "台新臺灣IC設計動能ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 435864,
+      "unit": "張",
+      "shares_stock": 435864000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00949": {
+      "name": "復華日本龍頭",
+      "full_name": "復華日本護城河優勢龍頭企業ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 194928,
+      "unit": "張",
+      "shares_stock": 194928000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00951": {
+      "name": "台新日本半導體ETF",
+      "full_name": "台新日本半導體ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 249542,
+      "unit": "張",
+      "shares_stock": 249542000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00952": {
+      "name": "凱基台灣AI 50",
+      "full_name": "凱基優選台灣AI 50 ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 249275,
+      "unit": "張",
+      "shares_stock": 249275000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00953B": {
+      "name": "群益優選非投等債",
+      "full_name": "群益優選收益非投資等級債券ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 4441675,
+      "unit": "張",
+      "shares_stock": 4441675000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00954": {
+      "name": "中信日本半導體",
+      "full_name": "中國信託日本ETF傘型證券投資信託基金之中國信託日本半導體ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 153247,
+      "unit": "張",
+      "shares_stock": 153247000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00956": {
+      "name": "中信日經高股息",
+      "full_name": "中國信託日本ETF傘型證券投資信託基金之中國信託日經高股息50ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 33130,
+      "unit": "張",
+      "shares_stock": 33130000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00960": {
+      "name": "野村全球航運龍頭",
+      "full_name": "野村全球航運龍頭息收ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 62495,
+      "unit": "張",
+      "shares_stock": 62495000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00961": {
+      "name": "FT臺灣永續高息",
+      "full_name": "富蘭克林華美臺灣ESG永續高息ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 808511,
+      "unit": "張",
+      "shares_stock": 808511000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00962": {
+      "name": "台新AI優息動能基金",
+      "full_name": "台新臺灣AI優息動能ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 227920,
+      "unit": "張",
+      "shares_stock": 227920000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00963": {
+      "name": "中信全球高股息",
+      "full_name": "中國信託優息ETF傘型證券投資信託基金之中國信託全球高股息ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 128433,
+      "unit": "張",
+      "shares_stock": 128433000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00964": {
+      "name": "中信亞太高股息",
+      "full_name": "中國信託優息ETF傘型證券投資信託基金之中國信託亞太高股息ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 99624,
+      "unit": "張",
+      "shares_stock": 99624000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00965": {
+      "name": "元大航太防衛科技",
+      "full_name": "元大全球航太與防衛科技ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 388992,
+      "unit": "張",
+      "shares_stock": 388992000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00971": {
+      "name": "野村美國研發龍頭",
+      "full_name": "野村美日ETF傘型證券投資信託基金之美國創新研發龍頭ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 50677,
+      "unit": "張",
+      "shares_stock": 50677000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00972": {
+      "name": "野村日本動能高息",
+      "full_name": "野村美日ETF傘型證券投資信託基金之日本價值動能高息ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 13172,
+      "unit": "張",
+      "shares_stock": 13172000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "009800": {
+      "name": "中信NASDAQ",
+      "full_name": "中國信託美國傘型證券投資信託基金之中國信託NASDAQ 100 ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 314391,
+      "unit": "張",
+      "shares_stock": 314391000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "009801": {
+      "name": "中信美國創新科技",
+      "full_name": "中國信託美國傘型證券投資信託基金之中國信託美國創新科技ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 91619,
+      "unit": "張",
+      "shares_stock": 91619000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "009802": {
+      "name": "富邦旗艦50",
+      "full_name": "富邦台灣旗艦動能50 ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 502495,
+      "unit": "張",
+      "shares_stock": 502495000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "009803": {
+      "name": "玉山市值動能50",
+      "full_name": "玉山臺灣市值動能50 ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 354828,
+      "unit": "張",
+      "shares_stock": 354828000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "009804": {
+      "name": "聯邦台灣精彩50ETF基金",
+      "full_name": "聯邦台灣精彩50ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 144392,
+      "unit": "張",
+      "shares_stock": 144392000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "009805": {
+      "name": "台新美國電力基建",
+      "full_name": "台新美國電力基建息收ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 602816,
+      "unit": "張",
+      "shares_stock": 602816000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "009808": {
+      "name": "華南永昌優選50",
+      "full_name": "華南永昌台灣優選50ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 38011,
+      "unit": "張",
+      "shares_stock": 38011000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "009809": {
+      "name": "富邦淨零ESG50",
+      "full_name": "富邦台灣淨零轉型ESG 50 ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 32363,
+      "unit": "張",
+      "shares_stock": 32363000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00980A": {
       "name": "主動野村臺灣優選",
-      "full_name": "主動野村臺灣優選",
-      "shares": 10000,
+      "full_name": "野村臺灣智慧優選主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 841730,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 841730000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "009810": {
+      "name": "玉山全球藍籌100",
+      "full_name": "玉山全球跨國藍籌100 ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 19154,
+      "unit": "張",
+      "shares_stock": 19154000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "009811": {
+      "name": "統一美國50ETF基金",
+      "full_name": "統一美國50ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 225450,
+      "unit": "張",
+      "shares_stock": 225450000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "009812": {
+      "name": "野村日本東證",
+      "full_name": "野村日本東證ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 91382,
+      "unit": "張",
+      "shares_stock": 91382000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "009813": {
+      "name": "貝萊德標普卓越50",
+      "full_name": "貝萊德iShares 安碩標普500卓越50 ETF 證券投資信託基金",
+      "market": "TWSE",
+      "shares": 293324,
+      "unit": "張",
+      "shares_stock": 293324000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "009816": {
+      "name": "凱基台灣TOP50",
+      "full_name": "凱基台灣 TOP 50 ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 14915844,
+      "unit": "張",
+      "shares_stock": 14915844000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "009817": {
+      "name": "國泰大和日本不動產收息ETF基金",
+      "full_name": "國泰大和日本不動產收息ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 206436,
+      "unit": "張",
+      "shares_stock": 206436000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "009818": {
+      "name": "華南永昌NASDAQxT",
+      "full_name": "華南永昌NASDAQ 100科技ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 43152,
+      "unit": "張",
+      "shares_stock": 43152000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "009819": {
+      "name": "中信數據及電力",
+      "full_name": "中國信託美國數據中心及電力ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 569245,
+      "unit": "張",
+      "shares_stock": 569245000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00981A": {
       "name": "主動統一台股增長",
-      "full_name": "主動統一台股增長",
-      "shares": 10000,
+      "full_name": "統一台股增長主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 11180209,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 11180209000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00981T": {
+      "name": "平衡凱基雙核收息",
+      "full_name": "凱基雙核收息債股平衡ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 264761,
+      "unit": "張",
+      "shares_stock": 264761000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "009820": {
+      "name": "元大納斯達克精選",
+      "full_name": "元大納斯達克100增強成長精選ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 922702,
+      "unit": "張",
+      "shares_stock": 922702000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "009821": {
+      "name": "野村稀土關鍵資源",
+      "full_name": "野村全球稀土與關鍵資源ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 600340,
+      "unit": "張",
+      "shares_stock": 600340000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "009824": {
+      "name": "群益美國科技巨頭ETF基金",
+      "full_name": "群益美國科技巨頭ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 449347,
+      "unit": "張",
+      "shares_stock": 449347000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "009826": {
+      "name": "貝萊德世界股票",
+      "full_name": "貝萊德iShares安碩世界股票ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 878804,
+      "unit": "張",
+      "shares_stock": 878804000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "009827": {
+      "name": "玉山未來全球算力",
+      "full_name": "玉山未來全球算力ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 220950,
+      "unit": "張",
+      "shares_stock": 220950000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "009828": {
+      "name": "中信台日韓PCB",
+      "full_name": "中國信託台日韓PCB ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 1529045,
+      "unit": "張",
+      "shares_stock": 1529045000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "009829": {
+      "name": "大華韓國KOSPI 50",
+      "full_name": "大華銀韓國KOSPI 50 ETF 證券投資信託基金",
+      "market": "TWSE",
+      "shares": 572870,
+      "unit": "張",
+      "shares_stock": 572870000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00982A": {
       "name": "主動群益台灣強棒",
-      "full_name": "主動群益台灣強棒",
-      "shares": 10000,
+      "full_name": "群益台灣精選強棒主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 2422436,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 2422436000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00982D": {
+      "name": "主動富邦動態入息",
+      "full_name": "富邦優選收益傘型證券投資信託基金之富邦環球動態入息投資級債主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 68729,
+      "unit": "張",
+      "shares_stock": 68729000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00982T": {
+      "name": "平衡兆豐台美動能",
+      "full_name": "兆豐台美動能股債平衡ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 17597,
+      "unit": "張",
+      "shares_stock": 17597000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "009831": {
+      "name": "FT核心AI電力算力",
+      "full_name": "富蘭克林華美核心AI電力算力ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 143749,
+      "unit": "張",
+      "shares_stock": 143749000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "009832": {
+      "name": "兆豐美國黃金",
+      "full_name": "兆豐美國黃金礦業ETF",
+      "market": "TWSE",
+      "shares": 86666,
+      "unit": "張",
+      "shares_stock": 86666000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00983A": {
       "name": "主動中信ARK創新",
-      "full_name": "主動中信ARK創新",
-      "shares": 10000,
+      "full_name": "中國信託ARK創新主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 70686,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 70686000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00983D": {
+      "name": "主動富邦複合收益",
+      "full_name": "富邦優選收益傘型證券投資信託基金之富邦環球複合優選收益債主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 91197,
+      "unit": "張",
+      "shares_stock": 91197000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00984A": {
       "name": "主動安聯台灣高息",
-      "full_name": "主動安聯台灣高息",
-      "shares": 10000,
+      "full_name": "安聯台灣高息成長主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 700458,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 700458000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00984D": {
+      "name": "主動聯博全球非投",
+      "full_name": "聯博優選全球非投資等級債券主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 1169557,
+      "unit": "張",
+      "shares_stock": 1169557000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00985A": {
       "name": "主動野村台灣50",
-      "full_name": "主動野村台灣50",
-      "shares": 10000,
+      "full_name": "野村臺灣增強50主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 1459789,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 1459789000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00985B": {
+      "name": "群益ESG投等債0-5",
+      "full_name": "群益0-5年期ESG投資等級公司債ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 775501,
+      "unit": "張",
+      "shares_stock": 775501000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00986A": {
       "name": "主動台新龍頭成長",
-      "full_name": "主動台新龍頭成長",
-      "shares": 10000,
+      "full_name": "台新全球龍頭成長主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 36327,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 36327000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00987A": {
       "name": "主動台新優勢成長",
-      "full_name": "主動台新優勢成長",
-      "shares": 10000,
+      "full_name": "台新臺灣優勢成長主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 152643,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 152643000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00988A": {
       "name": "主動統一全球創新",
-      "full_name": "主動統一全球創新",
-      "shares": 10000,
+      "full_name": "統一全球創新主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 3014437,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 3014437000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00989A": {
       "name": "主動摩根美國科技",
-      "full_name": "主動摩根美國科技",
-      "shares": 10000,
+      "full_name": "摩根大美國領先科技主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 61117,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 61117000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00990A": {
       "name": "主動元大AI新經濟",
-      "full_name": "主動元大AI新經濟",
-      "shares": 10000,
+      "full_name": "元大全球AI新經濟主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 2241522,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 2241522000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00991A": {
       "name": "主動復華未來50",
-      "full_name": "主動復華未來50",
-      "shares": 10000,
+      "full_name": "復華台灣未來50主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 4377416,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 4377416000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00991B": {
+      "name": "貝萊德A級公司債",
+      "full_name": "貝萊德iShares安碩10年期以上A級美元公司債ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 406328,
+      "unit": "張",
+      "shares_stock": 406328000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00992A": {
       "name": "主動群益科技創新",
-      "full_name": "主動群益科技創新",
-      "shares": 10000,
+      "full_name": "群益台灣科技創新主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 3096955,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 3096955000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00993A": {
       "name": "主動安聯台灣",
-      "full_name": "主動安聯台灣",
-      "shares": 10000,
+      "full_name": "安聯台灣主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 739091,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 739091000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00994A": {
       "name": "主動第一金台股優",
-      "full_name": "主動第一金台股優",
-      "shares": 10000,
+      "full_name": "第一金台股趨勢優選主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 232690,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 232690000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00995A": {
       "name": "主動中信台灣卓越",
-      "full_name": "主動中信台灣卓越",
-      "shares": 10000,
+      "full_name": "中國信託台灣卓越成長主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 283035,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 283035000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00996A": {
       "name": "主動兆豐台灣豐收",
-      "full_name": "主動兆豐台灣豐收",
-      "shares": 10000,
+      "full_name": "兆豐台灣豐收主動式ETF 證券投資信託基&#63754;",
+      "market": "TWSE",
+      "shares": 468899,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 468899000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00997A": {
       "name": "主動群益美國增長",
-      "full_name": "主動群益美國增長",
-      "shares": 10000,
+      "full_name": "群益美國增長主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 1021877,
       "unit": "張",
-      "shares_stock": 10000000
-    },
-    "00998A": {
-      "name": "主動復華金融股息",
-      "full_name": "主動復華金融股息",
-      "shares": 10000,
-      "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 1021877000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
     },
     "00999A": {
       "name": "主動野村臺灣高息",
-      "full_name": "主動野村臺灣高息",
-      "shares": 10000,
+      "full_name": "野村臺灣策略高息主動式ETF證券投資信託基金",
+      "market": "TWSE",
+      "shares": 1034017,
       "unit": "張",
-      "shares_stock": 10000000
+      "shares_stock": 1034017000,
+      "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
+    },
+    "00411A": {
+      "name": "主動統一前沿科技",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 43.08,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "006201": {
+      "name": "元大富櫃50",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 9.04,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00679B": {
+      "name": "元大美債20年",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 1531.67,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00687B": {
+      "name": "國泰20年美債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 1055.59,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00687C": {
+      "name": "國泰20年美債+櫃U(美元)",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 0.18,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00694B": {
+      "name": "富邦美債1-3",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 13.73,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00695B": {
+      "name": "富邦美債7-10",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 13.83,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00696B": {
+      "name": "富邦美債20年",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 171.25,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00697B": {
+      "name": "元大美債7-10",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 23.11,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00719B": {
+      "name": "元大美債1-3",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 96.23,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00720B": {
+      "name": "元大投資級公司債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 1286.25,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00722B": {
+      "name": "群益投資級電信債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 490.08,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00723B": {
+      "name": "群益投資級科技債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 434.19,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00724B": {
+      "name": "群益投資級金融債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 986.24,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00725B": {
+      "name": "國泰投資級公司債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 1275.45,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00726B": {
+      "name": "國泰新興投等債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 379.81,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00727B": {
+      "name": "國泰優選非投等債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 22.39,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00734B": {
+      "name": "台新JPM新興債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 3.84,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00740B": {
+      "name": "富邦全球投等債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 834.13,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00741B": {
+      "name": "富邦全球非投等債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 4.94,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00746B": {
+      "name": "富邦A級公司債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 896.39,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00749B": {
+      "name": "凱基新興債10+",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 303.6,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00750B": {
+      "name": "凱基科技債10+",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 50.46,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00751B": {
+      "name": "元大AAA至A公司債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 1542.1,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00754B": {
+      "name": "群益AAA-AA公司債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 413.33,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00755B": {
+      "name": "群益投資級公用債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 94.82,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00756B": {
+      "name": "群益投等新興公債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 372.18,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00758B": {
+      "name": "復華能源債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 2.8,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00759B": {
+      "name": "復華製藥債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 25.39,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00760B": {
+      "name": "復華新興企業債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 228.85,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00761B": {
+      "name": "國泰A級公司債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 911.25,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00764B": {
+      "name": "群益25年美債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 412.22,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00768B": {
+      "name": "復華20年美債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 377.84,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00772B": {
+      "name": "中信高評級公司債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 1085.03,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00773B": {
+      "name": "中信優先金融債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 882.27,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00777B": {
+      "name": "凱基AAA至A公司債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 674.18,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00778B": {
+      "name": "凱基金融債20+",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 508.44,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00779B": {
+      "name": "凱基美債25+",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 330.45,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00780B": {
+      "name": "國泰A級金融債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 90.5,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00781B": {
+      "name": "國泰A級科技債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 2.37,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00782B": {
+      "name": "國泰A級公用債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 6.14,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00785B": {
+      "name": "富邦金融投等債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 360.51,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00786B": {
+      "name": "元大10年IG銀行債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 6.13,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00787B": {
+      "name": "元大10年IG醫療債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 3.6,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00788B": {
+      "name": "元大10年IG電能債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 6.64,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00789B": {
+      "name": "復華公司債A3",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 211.4,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00791B": {
+      "name": "復華信用債1-5Y",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 162.22,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00792B": {
+      "name": "群益A級公司債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 698.37,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00795B": {
+      "name": "中信美國公債20年",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 378.72,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00799B": {
+      "name": "國泰A級醫療債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 7.09,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00834B": {
+      "name": "第一金金融債10+",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 6.03,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00836B": {
+      "name": "永豐10年A公司債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 185.33,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00840B": {
+      "name": "凱基IG精選15+",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 17.12,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00841B": {
+      "name": "凱基AAA-AA公司債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 19.4,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00842B": {
+      "name": "台新美元銀行債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 6.6,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00844B": {
+      "name": "台新15年IG金融債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 75.45,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00845B": {
+      "name": "富邦新興投等債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 78.04,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00846B": {
+      "name": "富邦歐洲銀行債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 26.45,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00848B": {
+      "name": "中信新興亞洲債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 45.06,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00849B": {
+      "name": "中信EM主權債0-5",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 185.71,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00853B": {
+      "name": "統一美債10年Aa-A",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 47.28,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00856B": {
+      "name": "永豐1-3年美公債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 1.47,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00857B": {
+      "name": "永豐20年美公債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 109.66,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00858": {
+      "name": "永豐美國500大",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 41.5,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00859B": {
+      "name": "群益0-1年美債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 13.49,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00860B": {
+      "name": "群益1-5Y投資級債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 1.04,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00862B": {
+      "name": "中信投資級公司債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 268.42,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00863B": {
+      "name": "中信全球電信債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 154.94,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00864B": {
+      "name": "中信美國公債0-1",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 48.9,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00867B": {
+      "name": "台新A-BBB電信債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 165.91,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00870B": {
+      "name": "元大15年EM主權債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 153.11,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00877": {
+      "name": "復華中國5G",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 42.13,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00884B": {
+      "name": "中信低碳新興債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 21.29,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00886": {
+      "name": "永豐美國科技",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 2.12,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00887": {
+      "name": "永豐中國科技50大",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 60.22,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00888": {
+      "name": "永豐台灣ESG",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 211.44,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00890B": {
+      "name": "凱基ESG BBB債15+",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 5.67,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00928": {
+      "name": "中信上櫃ESG30",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 12.66,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00931B": {
+      "name": "統一美債20年",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 290.05,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00933B": {
+      "name": "國泰10Y+金融債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 1059.79,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00937B": {
+      "name": "群益ESG投等債20+",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 2320.72,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00942B": {
+      "name": "台新美A公司債20+",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 280.16,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00948B": {
+      "name": "中信優息投資級債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 395.3,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00950B": {
+      "name": "凱基A級公司債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 558.59,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00955": {
+      "name": "中信日本商社",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 75.58,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00957B": {
+      "name": "兆豐US優選投等債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 23.58,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00958B": {
+      "name": "永豐ESG銀行債15+",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 10.43,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00959B": {
+      "name": "大華投等美債15Y+",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 44.3,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00966B": {
+      "name": "統一ESG投等債15+",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 15.43,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00967B": {
+      "name": "元大優息美債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 15.17,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00968B": {
+      "name": "元大優息投等債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 74.63,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00969B": {
+      "name": "元大零息超長美債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 9.63,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00970B": {
+      "name": "台新BBB投等債20+",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 33.45,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "009806": {
+      "name": "台新標普500",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 1.55,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "009807": {
+      "name": "台新標普科技精選",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 1.64,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00980B": {
+      "name": "台新特選IG債10+",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 4.61,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00980D": {
+      "name": "主動聯博投等入息",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 19.09,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00980T": {
+      "name": "平衡凱基美國TOP",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 8.83,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "009814": {
+      "name": "富邦標普500",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 17.53,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "009815": {
+      "name": "大華美國MAG7+",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 45.82,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00981B": {
+      "name": "第一金優選非投債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 136.74,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00981D": {
+      "name": "主動中信非投等債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 48.61,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "009822": {
+      "name": "華南永昌未來金融",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 5.71,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "009823": {
+      "name": "群益 S&P500",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 33.94,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "009825": {
+      "name": "聯邦美國金融創新",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 10.51,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00982B": {
+      "name": "FT投資級債20+",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 2.37,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00983B": {
+      "name": "大華優利美公債20",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 3.05,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00984B": {
+      "name": "大華優利美A債15",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 17.31,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00985D": {
+      "name": "主動貝萊德優投等",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 11.63,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00986B": {
+      "name": "FT金融債10+",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 0.94,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00986D": {
+      "name": "主動復華金融債息",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 19.36,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00987B": {
+      "name": "野村10+澳洲公債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 10.93,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00987D": {
+      "name": "主動統一美債量化",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 7.68,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00988B": {
+      "name": "玉山嚴選非投債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 29.57,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00989B": {
+      "name": "台新美國非投等債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 11.11,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00990B": {
+      "name": "國泰收益非投等債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 10.35,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00992B": {
+      "name": "街口優息非投債",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 3.15,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
+    },
+    "00998A": {
+      "name": "主動復華金融股息",
+      "full_name": "",
+      "market": "TPEx",
+      "shares": null,
+      "unit": "張",
+      "shares_stock": null,
+      "net_assets_100m": 66.54,
+      "source_url": "https://info.tpex.org.tw/api/etfFilter"
     }
   }
 }
