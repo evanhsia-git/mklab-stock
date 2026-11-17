@@ -30,4 +30,5 @@
 - PE 與 價/EPS 期間不一致（約 266 檔）目前僅告警，尚未統一基準。
 - 美股 ETF 費用率來源缺漏，目前僅告警。
 
-詳細修改說明見 `CHANGES-2026-11-13-data-quality.md`。
+詳細修改說明請參考對應修正計畫 `docs/superpowers/plans/2026-11-13-data-quality-fix-plan.md`。
+
