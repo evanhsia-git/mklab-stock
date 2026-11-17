@@ -44,7 +44,7 @@
 <script src="assets/js/data-client.js"></script>
 <script src="assets/js/mklab-core.js"></script>
 <script>
-  let usStockTable = null;
+let usStockTable = null;
   let usEtfTable = null;
 
   window.addEventListener('DOMContentLoaded', async function () {
@@ -54,9 +54,44 @@
     try {
       const stockDoc = await MKLAB.data.json('us/us-stocks');
       const stocks = (stockDoc && Array.isArray(stockDoc.stocks)) ? stockDoc.stocks : [];
+      // 擴充 US 股票資料：計算 52週位階，加上 N/A 欄位
+      const extendedStocks = stocks.map(r => {
+        // 月漲跌% / 年漲跌% 目前無資料，保留 null → 顯示「-」
+        const chg_1m = null;
+        const chg_1y = null;
+        let pos52 = null;
+        // 利用 52w_high / 52w_low 計算（公開欄位）；若遺失則為 null
+        const high = r['52w_high'];
+        const low = r['52w_low'];
+        const price = r.price;
+        if (high != null && low != null && low < high && price != null) {
+          const range = high - low; // 可能為 0
+          if (range > 0) {
+            pos52 = Math.round((price - low) / range * 100);
+          }
+        }
+        // 將 0-100 的位階轉成 1-5 等級（與台股 pos52w_level 同一顯示邏輯）
+        const pos52w_level = pos52 == null ? null : Math.min(5, Math.max(1, Math.ceil(pos52 / 20)));
+        return {
+          sym: r.sym,
+          name: r.name,
+          price: r.price,
+          chg: r.chg,
+          chg_1m: chg_1m,
+          chg_1y: chg_1y,
+          pos52w_level: pos52w_level,
+          pe: r.pe,
+          pb: r.pb,
+          roe: r.roe,
+          div: r.div,
+          cap_fmt: r.cap_fmt,
+          // 保留原始欄位以備其他使用
+          ...r,
+        };
+      });
       usStockTable = MKLAB.DataTable('usStockTable', {
-        cols: ['sym', 'name', 'price', 'chg', 'pe', 'pb', 'roe', 'div', 'cap_fmt'],
-        rows: stocks, pageSize: 10, pagerId: 'usStockPager',
+        cols: ['sym', 'name', 'price', 'chg', 'chg_1m', 'chg_1y', 'pos52', 'pe', 'pb', 'roe', 'div', 'cap_fmt'],
+        rows: extendedStocks, pageSize: 10, pagerId: 'usStockPager',
         defaultSort: 'cap_fmt', fieldMap: { cap_fmt: 'market_cap' },
       });
       MKLAB.applyFreshness(stockDoc);
@@ -69,9 +104,41 @@
     try {
       const etfDoc = await MKLAB.data.json('us/us-etfs');
       const etfs = (etfDoc && Array.isArray(etfDoc.etfs)) ? etfDoc.etfs : [];
+      // 美股 ETF 同樣擴充 pos52；us-etfs 沒有 chg_1m/chg_1y -> null
+      const extendedEtfs = etfs.map(r => {
+        const chg_1m = null;
+        const chg_1y = null;
+        let pos52 = null;
+        const high = r['52w_high'];
+        const low = r['52w_low'];
+        const price = r.price;
+        if (high != null && low != null && low < high && price != null) {
+          const range = high - low;
+          if (range > 0) pos52 = Math.round((price - low) / range * 100);
+        }
+        // 將 0-100 的位階轉成 1-5 等級（與台股 pos52w_level 同一顯示邏輯）
+        const pos52w_level = pos52 == null ? null : Math.min(5, Math.max(1, Math.ceil(pos52 / 20)));
+        return {
+          sym: r.sym,
+          name: r.name,
+          price: r.price,
+          chg: r.chg,
+          chg_1m: chg_1m,
+          chg_1y: chg_1y,
+          pos52w_level: pos52w_level,
+          pe: r.pe,
+          pb: r.pb,
+          roe: r.roe,
+          div: r.div,
+          expense_ratio: r.expense_ratio,
+          yield: r.yield,
+          assets_fmt: r.assets_fmt,
+          ...r,
+        };
+      });
       usEtfTable = MKLAB.DataTable('usEtfTable', {
-        cols: ['sym', 'name', 'price', 'chg', 'expense_ratio', 'yield', 'assets_fmt'],
-        rows: etfs, pageSize: 10, pagerId: 'usEtfPager',
+        cols: ['sym', 'name', 'price', 'chg', 'chg_1m', 'chg_1y', 'pos52', 'pe', 'pb', 'roe', 'div', 'expense_ratio', 'yield', 'assets_fmt'],
+        rows: extendedEtfs, pageSize: 10, pagerId: 'usEtfPager',
         defaultSort: 'assets_fmt', fieldMap: { assets_fmt: 'net_assets' },
       });
     } catch (e) {

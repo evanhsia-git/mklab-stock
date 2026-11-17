@@ -212,7 +212,7 @@
   }
 
   function renderAnnualDetail(stats, selectedYear) {
-    const shown = selectedYear === 'all' ? stats : stats.filter(x => x.year === selectedYear);
+    const shown = selectedYear === 'all' ? stats : selectedYear === 'last5' ? stats.slice().reverse().slice(0, 5) : stats.filter(x => x.year === selectedYear);
     const box = document.getElementById('annualDetail');
     const list = shown.slice().reverse();
     box.innerHTML = list.map(x => {
@@ -231,7 +231,7 @@
   }
 
   function renderAnnualTable(stats, selectedYear) {
-    const rows = (selectedYear === 'all' ? stats : stats.filter(x => x.year === selectedYear)).slice().reverse();
+    const rows = (selectedYear === 'all' ? stats : selectedYear === 'last5' ? stats.slice().reverse().slice(0, 5) : stats.filter(x => x.year === selectedYear)).slice().reverse();
     const html = rows.map(x => `<tr>
       <td>${x.year}${x.yearToDate ? ' YTD' : ''}</td>
       <td class="${x.returnPct == null ? '' : (x.returnPct >= 0 ? 'up' : 'down')}"><b>${fmtPct(x.returnPct)}</b></td>
@@ -261,13 +261,16 @@
     document.getElementById('annualNote').textContent = '資料來源：' + source + '。年度報酬以當年最後交易日收盤相較前一年度最後交易日收盤計算；第一個不完整年度不列入年度報酬排名。';
     drawAnnualChart(stats);
     const select = document.getElementById('annualYearSelect');
-    select.innerHTML = '<option value="all">全部年度</option>' + stats.slice().reverse().map(x => `<option value="${x.year}">${x.year}${x.yearToDate ? '（YTD）' : ''}</option>`).join('');
+    const yearsDesc = stats.slice().reverse();
+    const last5Years = yearsDesc.slice(0, 5);
+    select.innerHTML = '<option value="all">全部年度</option><option value="last5">近 5 年</option>' + last5Years.map(x => `<option value="${x.year}">${x.year}${x.yearToDate ? '（YTD）' : ''}</option>`).join('');
+    select.value = 'last5';
     select.addEventListener('change', () => {
       renderAnnualDetail(stats, select.value);
       renderAnnualTable(stats, select.value);
     });
-    renderAnnualDetail(stats, 'all');
-    renderAnnualTable(stats, 'all');
+    renderAnnualDetail(stats, 'last5');
+    renderAnnualTable(stats, 'last5');
   }
 
   async function renderAnnualFromSeries() {
@@ -508,7 +511,7 @@
       const idx = await MKLAB.data.json('digest/index');
       const dates = (idx && idx.dates) || [];
       if (!dates.length) { document.getElementById('digestEmpty').style.display = 'block'; return; }
-      const digests = await Promise.all(dates.slice(0, 14).map(d => MKLAB.data.json('digest/' + d).catch(() => null)));
+      const digests = await Promise.all(dates.slice(0, 5).map(d => MKLAB.data.json('digest/' + d).catch(() => null)));
       document.getElementById('digestList').innerHTML = digests.filter(Boolean).map(digestCard).join('');
       await MKLAB.loadFreshness();
     } catch (e) {

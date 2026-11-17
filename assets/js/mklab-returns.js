@@ -23,8 +23,17 @@
     { key: '1y',  label: '1年' },
   ];
   const PERIOD_KEY = 'mklab-returns-period';
+  const SINCE_LISTING_KEY = 'mklab-returns-since-listing';
   const COLORS = ['#3b82f6', '#f59e0b', '#10b981', '#ef4444', '#a855f7', '#14b8a6'];
   const _klCache = {};
+
+  // 2026-11-17：「以各股上市日期為基準」開關（預設開）。
+  //   開啓時每檔一律以自身首個交易日為基準（上市至今表現），忽略 period 設定；
+  //   關閉時回歸 period 模式（5日/1個月/…/1年，以同一基準日比較）。
+  function getSinceListing() {
+    try { const v = localStorage.getItem(SINCE_LISTING_KEY); return v === null ? true : v === '1'; } catch (e) { return true; }
+  }
+  function setSinceListing(on) { try { localStorage.setItem(SINCE_LISTING_KEY, on ? '1' : '0'); } catch (e) {} }
 
   function loadKline(sym) {
     if (sym in _klCache) return Promise.resolve(_klCache[sym]);
@@ -71,16 +80,21 @@
     return idx;
   }
 
-  function computeSeries(rows, period) {
+  function computeSeries(rows, period, commonStart) {
     const n = rows.length;
     if (n < 2) return null;
-    let bi = baseIndex(rows, period);
-    // 2026-11-12：該標的在這個區間的「基準日」之前還沒有資料（例如 2026-02-03 才掛牌的
-    // 009816，YTD 基準日 2025-12-31 早於它上市）→ 舊版直接回 null 顯示「資料不足」，
-    // 但這樣所有新上市標的的區間報酬率都看不到。改成用「首個真實交易日」當基準並標記出來，
-    // 不謊稱它在那之前就存在。
+    let bi;
     let listedBase = false;
-    if (bi < 0) { bi = 0; listedBase = true; }
+    if (commonStart) {
+      // 「相同上市日期」模式：以所有選取標的共同可比較的起始日為基準
+      bi = -1;
+      for (let i = 0; i < n; i++) { if (rows[i].d >= commonStart) { bi = i; break; } }
+      if (bi < 0) return null;
+    } else {
+      bi = baseIndex(rows, period);
+      // 該標的在區間基準日之前尚無資料（例如新掛牌）→ 用首個真實交易日當基準並標記
+      if (bi < 0) { bi = 0; listedBase = true; }
+    }
     if (bi >= n - 1) return null;
     const base = rows[bi].c;
     if (!base) return null;
@@ -115,6 +129,17 @@
     opts.controls.innerHTML = PERIODS.map(function (p) {
       return '<button type="button" class="btn btn-secondary btn-sm" data-rp="' + p.key + '">' + p.label + '</button>';
     }).join('');
+    // 2026-11-17：「相同上市日期」開關（預設開）
+    //   開 → 以所有選取標的共同起始日（最晚上市日）為基準，公平比較
+    //   關 → 回到 period 設定（例如選 1 年就強制 1 年）
+    const sinceDiv = document.createElement('span');
+    sinceDiv.style.marginLeft = '10px';
+    sinceDiv.innerHTML = '<label style="cursor:pointer;user-select:none;">' +
+      '<input type="checkbox" id="cbSinceListing" style="vertical-align:-2px;margin-right:4px;"' +
+      (getSinceListing() ? ' checked' : '') + '> 相同上市日期</label>';
+    opts.controls.appendChild(sinceDiv);
+    const cb = document.getElementById('cbSinceListing');
+    if (cb) cb.addEventListener('change', function () { setSinceListing(cb.checked); refresh(st); });
     opts.controls.addEventListener('click', function (e) {
       const b = e.target.closest && e.target.closest('[data-rp]');
       if (!b) return;
@@ -148,8 +173,18 @@
       return loadKline(it.sym).then(function (k) { return { it: it, k: k }; });
     }));
     if (token !== st.token) return; // 有較新的請求，丟棄這次結果
+
+    // 2026-11-17：「相同上市日期」模式 → 以所有標的共同起始日（最晚上市日）為基準
+    let commonStart = null;
+    if (getSinceListing()) {
+      const firstDates = loaded
+        .filter(function (x) { return x.k && x.k.rows && x.k.rows.length; })
+        .map(function (x) { return x.k.rows[0].d; });
+      if (firstDates.length) commonStart = firstDates.reduce(function (a, b) { return a > b ? a : b; });
+    }
+
     const results = loaded.map(function (x, idx) {
-      const s = x.k ? computeSeries(x.k.rows, st.period) : null;
+      const s = x.k ? computeSeries(x.k.rows, st.period, commonStart) : null;
       return { sym: x.it.sym, name: x.it.name || '', color: COLORS[idx % COLORS.length], s: s };
     });
     drawChart(st, results);
@@ -213,7 +248,8 @@
     st.opts.summary.innerHTML =
       '<div class="table-wrap"><table><thead><tr><th>代號</th><th>名稱</th><th>基準日</th><th>區間漲跌</th><th>收盤（基準 → 期末）</th></tr></thead><tbody>' +
       rows + '</tbody></table></div>' +
-      '<p class="muted-small-top">區間漲跌以基準日收盤為 0% 計算，僅代表歷史表現，不代表未來報酬。收盤價來自 data/kline，資料為收盤後更新。標註「上市首日」者表示該標的在該區間基準日之前尚無資料，改以其首個交易日為基準。</p>';
+      '<p class="muted-small-top">區間漲跌以基準日收盤為 0% 計算，僅代表歷史表現，不代表未來報酬。收盤價來自 data/kline，資料為收盤後更新。標註「上市首日」者表示該標的在該區間基準日之前尚無資料，改以其首個交易日為基準。' +
+      (getSinceListing() ? ' 目前以「相同上市日期」模式：所有標的共用同一基準日（最晚上市的首個交易日）。' : '') + '</p>';
   }
 
   MK.returns = { PERIODS: PERIODS, loadKline: loadKline, computeSeries: computeSeries, baseIndex: baseIndex, mount: mount };

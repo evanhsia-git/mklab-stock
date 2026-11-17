@@ -391,7 +391,7 @@
       readme: 'https://github.com/evanhsia-git/mklab-stock#readme', // GitHub README
     },
     system: {
-      version: 'dashboard v3.0',
+      version: 'v3.0',                              // 版本字串（不含 dashboard 前綴）
       source:  'TWSE/TPEX/Yahoo',
       updated: null,
       status:  '● 正常運作',

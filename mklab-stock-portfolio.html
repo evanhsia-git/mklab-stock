@@ -105,6 +105,7 @@
 <script src="assets/js/mklab-core.js"></script>
 <script>
   let ALL = [];
+  let HOLD = null;
   let pfTable = null;
   // 圓餅圖色票讀 design token（--chart-1 ~ --chart-8，定義在 mklab-theme.css，隨深/淺色主題切換）
   function donutColors() {
@@ -192,6 +193,26 @@
     if (live && live.security_type) return live.security_type === 'etf';
     return /^00/.test(sym);
   }
+
+  async function ensureHoldings() {
+    if (!HOLD) {
+      try { HOLD = await MKLAB.data.json('etf-holdings'); } catch (e) { HOLD = { holdings: {} }; }
+    }
+    return HOLD;
+  }
+
+  function hsetOf(sym) {
+    if (!HOLD || !HOLD.holdings) return null;
+    const h = HOLD.holdings[sym];
+    if (!h || !h.items || !h.items.length) return null;
+    const items = h.items
+      .map(([c, n, w]) => ({ c: String(c), n: n || '', w: w == null ? null : Number(w) }))
+      .filter(x => x.c && x.w != null)
+      .slice(0, 10); // 顯示前 10 大成分股
+    if (!items.length) return null;
+    return { name: h.name || '', src: h.src || '', asof: h.asof || '', items };
+  }
+
   function renderConstituents(rows) {
     const note = document.getElementById('pfConstituentsNote');
     const holdingsWithMkt = rows.filter(r => r.mktVal > 0);
@@ -201,10 +222,27 @@
     } else if (!etfHoldings.length) {
       note.innerHTML = '<p class="muted-small-top">目前持股中沒有偵測到 ETF（代號慣例以 00 開頭，如 0050、006208、00981A），持有 ETF 後才會顯示合併後的成分股佔比。</p>';
     } else {
-      note.innerHTML = `
-        <p class="muted-small-top">偵測到你持有以下 ETF：${etfHoldings.map(r => r.sym + ' ' + (r.name || '')).join('、')}。</p>
-        <p class="muted-small-top">⚠️ 目前資料庫尚未包含各 ETF 實際持有的成分股與權重資料，因此還無法計算「合併後的整體成分股佔比」。這需要額外建置一個 ETF 成分股資料源（例如定期抓取各 ETF 公開說明書／月報揭露的持股明細並整理成 JSON），才能在這裡合併計算你所有 ETF 持股的成分股曝險比例；目前先提供分頁位置，待資料源建置後即可補上實際圖表。</p>
-      `;
+      note.innerHTML = '<p class="muted-small-top">正在讀取 ETF 成分股資料…</p>';
+      // 載入並顯示每檔 ETF 的前 10 大成分股
+      ensureHoldings().then(() => {
+        const blocks = etfHoldings.map(r => {
+          const h = hsetOf(r.sym);
+          if (!h) return `<div class="card" style="margin-bottom:10px;"><div class="card-title">${r.sym} ${r.name || ''}</div><p class="text-muted text-sm">未取得成分股資料</p></div>`;
+          return `<div class="card" style="margin-bottom:10px;">
+            <div class="card-title">${r.sym} ${r.name || ''}（權重 ${r.weight.toFixed(1)}%）</div>
+            <table style="width:100%;font-size:12px;margin-top:6px;">
+              <thead><tr><th style="text-align:left">代號</th><th style="text-align:left">名稱</th><th style="text-align:right">權重%</th></tr></thead>
+              <tbody>
+                ${h.items.map((it, i) => `<tr><td>${it.c}</td><td>${it.n}</td><td style="text-align:right">${it.w.toFixed(2)}%</td></tr>`).join('')}
+              </tbody>
+            </table>
+            <p class="text-muted text-sm" style="margin-top:4px;">來源：${h.src || '—'} ${h.asof ? '｜' + h.asof : ''}（前 ${Math.min(10, h.items.length)} 大成分股）</p>
+          </div>`;
+        }).join('');
+        note.innerHTML = `<p class="muted-small-top">偵測到你持有以下 ETF：${etfHoldings.map(r => r.sym).join('、')}。</p>${blocks}`;
+      }).catch(() => {
+        note.innerHTML = '<p class="muted-small-top">無法載入 ETF 成分股資料。</p>';
+      });
     }
   }
   function showDonutWrap(show) {

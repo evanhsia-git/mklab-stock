@@ -243,4 +243,5 @@ a.link:hover, .drawer a:hover, .footer .link:hover, .rss-link:hover { color: var
 .nav a, .brand, .btn, .pager a { text-decoration: none; }
 .nav a { color: var(--ink); }
 .nav a.active { color: #fff; }
-.brand { color: var(--ink); }
+/* 品牌超連結：主標題 mklab-stock，固定白色，不隨滑鼠變色（使用者指定） */
+.brand { color: #fff !important; }

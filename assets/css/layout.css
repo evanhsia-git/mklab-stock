@@ -5,7 +5,7 @@
   text-decoration: none;
   cursor: pointer;
   transition: color var(--transition-fast);
-}.brand:hover{ color: var(--accent); }.card{
+}.brand:hover{ color: #fff !important; }.card{
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);

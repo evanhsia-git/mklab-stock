@@ -20,9 +20,10 @@
 | Research（研究） | `mklab-stock-research.html` | 個股深度研究：K 線圖、MACD / KD 指標、財報摘要 |
 | Industry（產業） | `mklab-stock-industry.html` | 依臺證所 33 個官方產業大類，查看漲跌績效、產業輪動熱力圖、成分股（含市值欄） |
 | Watchlist（自選） | `mklab-stock-watchlist.html` | 新增自選股代號排序追蹤；目標價／停損價提醒設定（示意，資料存於瀏覽器 localStorage） |
-| Compare（比較） | `mklab-stock-compare.html` | 最多同時比較 4 檔個股的關鍵指標，自動標示最優欄位（股票代號不分大小寫） |
-| Digest（每日摘要） | `mklab-stock-digest.html` | 每日市場摘要，提供 RSS 訂閱（`rss.xml`） |
-| US（美股） | `mklab-stock-us.html` | 美股市值前 30 大個股 + ETF 規模前 30 大（資料源 yfinance，與台股資料完全分開管理於 `data/us/`） |
+| Compare（比較） | `mklab-stock-compare.html` | 最多同時比較 4 檔個股的關鍵指標，自動標示最優欄位（股票代號不分大小寫）；區間報酬率比較（K 線漲跌幅）支援「相同上市日期」模式（預設開），以所有選取標的共同起始日為基準；關閉時回歸 period 設定（5日/1個月/…/1年） |
+| Portfolio 投資組合 | `mklab-stock-portfolio.html` | 持股損益追蹤；張數／成本價／市值／損益百分比；選取 ETF（如 0050）會顯示該 ETF 的前 10 大成分股與權重（資料來自 `data/etf-holdings.json`） |
+|| Digest（每日摘要） | `mklab-stock-digest.html` | 每日市場摘要，預設顯示近 5 日訊息，提供 RSS 訂閱（`rss.xml`）；年度事件預設顯示近 5 年，可再切換為全部年度 |
+| US（美股） | `mklab-stock-us.html` | 美股市值前 30 大個股 + ETF 規模前 30 大，欄位含日漲跌%、月漲跌%、年漲跌%、52週位階、PE/PB/配息等，與台股資料完全分開管理於 `data/us/`（資料源 yfinance） |
 | Help（說明） | `mklab-stock-help.html` | 使用說明、資料來源、資料更新頻率、評分標準、免責聲明 |
 | Log（開發日誌） | `mklab-stock-log.html` | 開發歷程記錄 |
 
