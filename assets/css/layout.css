@@ -1,10 +1,9 @@
 .brand{
   font-weight: 700;
   font-size: 15px;
-  color: var(--ink);
+  color: #fff !important;
   text-decoration: none;
   cursor: pointer;
-  transition: color var(--transition-fast);
 }.brand:hover{ color: #fff !important; }.card{
   background: var(--surface);
   border: 1px solid var(--border);
