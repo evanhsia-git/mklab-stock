@@ -243,5 +243,6 @@ a.link:hover, .drawer a:hover, .footer .link:hover, .rss-link:hover { color: var
 .nav a, .brand, .btn, .pager a { text-decoration: none; }
 .nav a { color: var(--ink); }
 .nav a.active { color: #fff; }
+/* 品牌超連結：主標題 mklab-stock，顏色由 theme 控制（淺色主題＝黑、深色主題＝白），hover 白色 */
 /* 品牌超連結：主標題 mklab-stock，固定白色，不隨滑鼠變色（使用者指定） */
-.brand { color: #fff !important; }
+.brand { color: #fff; }

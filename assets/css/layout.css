@@ -1,10 +1,20 @@
 .brand{
   font-weight: 700;
   font-size: 15px;
-  color: #fff !important;
+  color: #fff;
   text-decoration: none;
   cursor: pointer;
-}.brand:hover{ color: #fff !important; }.card{
+}
+
+[data-theme="dark"] .brand {
+  color: #fff;
+}
+
+[data-theme="light"] .brand {
+  color: var(--ink);
+}
+
+.brand:hover{ color: #fff; }.card{
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
