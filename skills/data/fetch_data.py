@@ -426,6 +426,20 @@ def _strip_nulls(obj):
     return obj
 
 
+def _strip_row_nulls(rows):
+    """對 stocks 陣列逐筆套用省略 null，但保留 QA gate 要求的必備欄位。
+    QA gate（skills/qa-gate/qa_gate.py）對每筆 row 強制要求
+    {sym, name, price, open, high, low, volume} 必須存在，缺任一即 BLOCK DEPLOY。
+    停牌股 price／open／high／low／volume 為 null 時仍必須保留欄位本身。
+    只有 row 這一層套用白名單；巢狀結構（如 adj）仍照常省略 null。"""
+    REQUIRED = ("sym", "name", "price", "open", "high", "low", "volume")
+    out = []
+    for r in rows:
+        out.append({k: (_strip_nulls(v) if isinstance(v, (dict, list)) else v)
+                    for k, v in r.items() if v is not None or k in REQUIRED})
+    return out
+
+
 def fetch_yfinance_roe(sym_list):
     """yfinance 抓 ROE/ROA（免 key）。每檔 sleep 3s 防 ban。回傳 {sym: {roe, roa}}"""
     try:
@@ -933,7 +947,7 @@ def run_daily():
     else:
         with open(os.path.join(OUT, "stocks.json"), "w", encoding="utf-8") as f:
             json.dump({"meta": _sanitize_nan(meta),
-                       "stocks": _strip_nulls(_sanitize_nan(stocks))}, f, ensure_ascii=False)
+                       "stocks": _strip_row_nulls(_sanitize_nan(stocks))}, f, ensure_ascii=False)
 
     # 當日 history 切片（收盤價 + PE/PB/殖利率）
     # 只納入價格日期等於快照日期的記錄：一份 dated snapshot 不可以混進別天的價格。
@@ -1015,7 +1029,7 @@ def run_weekly():
     data["meta"]["roe_source"] = "yfinance (免 key, 每週六更新, 備用)"
     recompute_meta(data)  # 寫入前重算 meta，避免 sources / count 與陣列不一致
     with open(p, "w", encoding="utf-8") as f:
-        json.dump({"meta": _sanitize_nan(data.get("meta") or {}), "stocks": _strip_nulls(_sanitize_nan(data.get("stocks") or []))}, f, ensure_ascii=False)
+        json.dump({"meta": _sanitize_nan(data.get("meta") or {}), "stocks": _strip_row_nulls(_sanitize_nan(data.get("stocks") or []))}, f, ensure_ascii=False)
     LOG.stats["written"] = len(roe_map)
     LOG.stats["details"]["roe_updated"] = len(roe_map)
     LOG.info(f"ROE/ROA 補齊 {len(roe_map)} 檔（備用來源）")
