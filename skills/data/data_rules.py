@@ -572,4 +572,12 @@ def validate_snapshot(stocks_doc: Dict[str, Any], us_stocks_doc: Optional[Dict[s
         if trunc:
             add("WARNING", "ETF_HOLDINGS_TRUNCATED",
                 f"ETF 成份股總數仍標成 10（可能被截斷為前 10 大）：{len(trunc)} 檔，例 {trunc[:5]}")
+    # 8. 月漲跌覆蓋率（fetch_us_returns.py 產生；缺漏超過 30% 提醒）
+    for _name, _doc, _key in (("美股個股", us_stocks_doc, "stocks"), ("美股 ETF", us_etfs_doc, "etfs")):
+        if not _doc:
+            continue
+        _rows = _doc.get(_key, [])
+        _miss = sum(1 for r in _rows if r.get("chg_1m") is None)
+        if _rows and _miss / len(_rows) > 0.3:
+            add("WARNING", "US_RETURNS_MISSING", f"{_name}月漲跌缺漏 {_miss}/{len(_rows)} 檔（yfinance 歷史價未取得）")
     return issues

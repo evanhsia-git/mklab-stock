@@ -140,6 +140,8 @@ jobs:
         run: pip install yfinance
       - name: 美股個股與 ETF 前 30 大（yfinance）
         run: python skills/data/fetch_us_data.py all
+      - name: 美股月／年漲跌（yfinance 調整後歷史價，失敗保留前次值）
+        run: python skills/data/fetch_us_returns.py
       - name: QA 閘門（提交前，錯誤即中止，不推送）
         run: bash scripts/ci_qa_gate.sh
       - name: 推送

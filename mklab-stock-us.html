@@ -56,9 +56,9 @@ let usStockTable = null;
       const stocks = (stockDoc && Array.isArray(stockDoc.stocks)) ? stockDoc.stocks : [];
       // 擴充 US 股票資料：計算 52週位階，加上 N/A 欄位
       const extendedStocks = stocks.map(r => {
-        // 月漲跌% / 年漲跌% 目前無資料，保留 null → 顯示「-」
-        const chg_1m = null;
-        const chg_1y = null;
+        // 月漲跌% / 年漲跌%：由 fetch_us_returns.py（yfinance 調整後收盤）產生；缺值顯示「-」
+        const chg_1m = r.chg_1m ?? null;
+        const chg_1y = r.chg_1y ?? null;
         let pos52 = null;
         // 利用 52w_high / 52w_low 計算（公開欄位）；若遺失則為 null
         const high = r['52w_high'];

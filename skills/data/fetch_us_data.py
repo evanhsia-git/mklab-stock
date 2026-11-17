@@ -182,6 +182,7 @@ def run_stocks():
         "stocks": top,
     }
     out_path = os.path.join(OUT_DIR, "us-stocks.json")
+    carry_return_fields(out_path, top)
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(doc, f, ensure_ascii=False, indent=2)
     _log(f"✅ 已寫入 {out_path}（{len(top)} 檔，候選池 {len(results)} 檔取得有效市值）")
@@ -220,10 +221,31 @@ def run_etfs():
         "etfs": top,
     }
     out_path = os.path.join(OUT_DIR, "us-etfs.json")
+    carry_return_fields(out_path, top)
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(doc, f, ensure_ascii=False, indent=2)
     _log(f"✅ 已寫入 {out_path}（{len(top)} 檔，候選池 {len(results)} 檔取得有效規模）")
     return True
+
+
+RETURN_FIELDS = ("chg_1m", "chg_ytd", "chg_1y")
+
+
+def carry_return_fields(out_path, rows):
+    """2026-11-17：fetch_us_data 每日整檔覆寫，會把 fetch_us_returns.py 算好的月／年漲跌清掉。
+    這裡先讀取舊檔，把同代號的報酬欄位帶回新資料；抓取失敗時仍保留前次數值。"""
+    if not os.path.exists(out_path):
+        return
+    try:
+        with open(out_path, encoding="utf-8") as f:
+            old = {r.get("sym"): r for r in json.load(f).get("stocks" if out_path.endswith("stocks.json") else "etfs", [])}
+    except Exception:
+        return
+    for r in rows:
+        prev = old.get(r.get("sym"), {})
+        for k in RETURN_FIELDS:
+            if k not in r and k in prev:
+                r[k] = prev[k]
 
 
 def main():
