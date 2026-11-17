@@ -4,7 +4,10 @@
     "source": "Yahoo Finance (yfinance)",
     "note": "候選池排序取前 30 大市值；非官方美股交易所資料，僅供研究參考，非投資建議。",
     "candidate_pool_size": 60,
-    "count": 30
+    "count": 30,
+    "returns_as_of": "2026-11-17",
+    "returns_source": "yfinance history(auto_adjust=True)",
+    "returns_failed": []
   },
   "stocks": [
     {
@@ -23,7 +26,10 @@
       "52w_high": 360.83,
       "52w_low": 243.42,
       "currency": "USD",
-      "exchange": "NMS"
+      "exchange": "NMS",
+      "chg_1m": 2.79,
+      "chg_ytd": 30.22,
+      "chg_1y": 29.7
     },
     {
       "sym": "MSFT",
@@ -41,7 +47,10 @@
       "52w_high": 559.15,
       "52w_low": 349.2,
       "currency": "USD",
-      "exchange": "NMS"
+      "exchange": "NMS",
+      "chg_1m": -2.09,
+      "chg_ytd": 7.79,
+      "chg_1y": 3.77
     },
     {
       "sym": "NVDA",
@@ -59,7 +68,10 @@
       "52w_high": 243.37,
       "52w_low": 148.8,
       "currency": "USD",
-      "exchange": "NMS"
+      "exchange": "NMS",
+      "chg_1m": -27.08,
+      "chg_ytd": -16.08,
+      "chg_1y": -16.24
     },
     {
       "sym": "GOOGL",
@@ -77,7 +89,10 @@
       "52w_high": 408.61,
       "52w_low": 272.11,
       "currency": "USD",
-      "exchange": "NMS"
+      "exchange": "NMS",
+      "chg_1m": -16.7,
+      "chg_ytd": -9.18,
+      "chg_1y": 2.11
     },
     {
       "sym": "GOOG",
@@ -95,7 +110,10 @@
       "52w_high": 404.47,
       "52w_low": 271.535,
       "currency": "USD",
-      "exchange": "NMS"
+      "exchange": "NMS",
+      "chg_1m": -16.52,
+      "chg_ytd": -10.19,
+      "chg_1y": 1.03
     },
     {
       "sym": "AMZN",
@@ -113,7 +131,10 @@
       "52w_high": 287.2,
       "52w_low": 196.0,
       "currency": "USD",
-      "exchange": "NMS"
+      "exchange": "NMS",
+      "chg_1m": 3.1,
+      "chg_ytd": 11.67,
+      "chg_1y": 8.49
     },
     {
       "sym": "META",
@@ -131,7 +152,10 @@
       "52w_high": 779.82,
       "52w_low": 520.26,
       "currency": "USD",
-      "exchange": "NMS"
+      "exchange": "NMS",
+      "chg_1m": -11.69,
+      "chg_ytd": -4.86,
+      "chg_1y": 3.06
     },
     {
       "sym": "AVGO",
@@ -149,7 +173,10 @@
       "52w_high": 495.0,
       "52w_low": 289.77,
       "currency": "USD",
-      "exchange": "NMS"
+      "exchange": "NMS",
+      "chg_1m": 1.41,
+      "chg_ytd": -3.14,
+      "chg_1y": -1.21
     },
     {
       "sym": "TSLA",
@@ -167,7 +194,10 @@
       "52w_high": 498.83,
       "52w_low": 297.38,
       "currency": "USD",
-      "exchange": "NMS"
+      "exchange": "NMS",
+      "chg_1m": 7.05,
+      "chg_ytd": -15.56,
+      "chg_1y": -5.53
     },
     {
       "sym": "LLY",
@@ -185,7 +215,10 @@
       "52w_high": 1475.25,
       "52w_low": 850.51,
       "currency": "USD",
-      "exchange": "NYQ"
+      "exchange": "NYQ",
+      "chg_1m": 14.03,
+      "chg_ytd": 34.02,
+      "chg_1y": 41.02
     },
     {
       "sym": "BRK-B",
@@ -203,7 +236,10 @@
       "52w_high": 596.92,
       "52w_low": 464.01,
       "currency": "USD",
-      "exchange": "NYQ"
+      "exchange": "NYQ",
+      "chg_1m": 11.43,
+      "chg_ytd": 17.94,
+      "chg_1y": 15.54
     },
     {
       "sym": "WMT",
@@ -221,7 +257,10 @@
       "52w_high": 135.16,
       "52w_low": 99.68,
       "currency": "USD",
-      "exchange": "NMS"
+      "exchange": "NMS",
+      "chg_1m": 8.08,
+      "chg_ytd": 15.99,
+      "chg_1y": 26.28
     },
     {
       "sym": "JPM",
@@ -239,7 +278,10 @@
       "52w_high": 366.5,
       "52w_low": 279.1,
       "currency": "USD",
-      "exchange": "NYQ"
+      "exchange": "NYQ",
+      "chg_1m": -0.44,
+      "chg_ytd": 6.98,
+      "chg_1y": 11.39
     },
     {
       "sym": "AMD",
@@ -257,7 +299,10 @@
       "52w_high": 658.52,
       "52w_low": 188.22,
       "currency": "USD",
-      "exchange": "NMS"
+      "exchange": "NMS",
+      "chg_1m": -4.63,
+      "chg_ytd": 135.47,
+      "chg_1y": 103.37
     },
     {
       "sym": "V",
@@ -275,7 +320,10 @@
       "52w_high": 442.23,
       "52w_low": 293.89,
       "currency": "USD",
-      "exchange": "NYQ"
+      "exchange": "NYQ",
+      "chg_1m": 6.12,
+      "chg_ytd": 22.56,
+      "chg_1y": 27.89
     },
     {
       "sym": "XOM",
@@ -293,7 +341,10 @@
       "52w_high": 188.5,
       "52w_low": 114.19,
       "currency": "USD",
-      "exchange": "NYQ"
+      "exchange": "NYQ",
+      "chg_1m": -6.18,
+      "chg_ytd": 42.34,
+      "chg_1y": 45.46
     },
     {
       "sym": "JNJ",
@@ -311,7 +362,10 @@
       "52w_high": 290.2495,
       "52w_low": 195.9,
       "currency": "USD",
-      "exchange": "NYQ"
+      "exchange": "NYQ",
+      "chg_1m": 10.56,
+      "chg_ytd": 38.73,
+      "chg_1y": 47.97
     },
     {
       "sym": "MA",
@@ -329,7 +383,10 @@
       "52w_high": 681.99,
       "52w_low": 464.52,
       "currency": "USD",
-      "exchange": "NYQ"
+      "exchange": "NYQ",
+      "chg_1m": 7.17,
+      "chg_ytd": 16.66,
+      "chg_1y": 19.87
     },
     {
       "sym": "ABBV",
@@ -347,7 +404,10 @@
       "52w_high": 302.93,
       "52w_low": 190.75,
       "currency": "USD",
-      "exchange": "NYQ"
+      "exchange": "NYQ",
+      "chg_1m": 3.2,
+      "chg_ytd": 32.77,
+      "chg_1y": 30.6
     },
     {
       "sym": "COST",
@@ -365,7 +425,10 @@
       "52w_high": 1117.0,
       "52w_low": 844.06,
       "currency": "USD",
-      "exchange": "NMS"
+      "exchange": "NMS",
+      "chg_1m": 12.77,
+      "chg_ytd": 29.91,
+      "chg_1y": 21.1
     },
     {
       "sym": "KO",
@@ -383,7 +446,10 @@
       "52w_high": 100.56,
       "52w_low": 67.27,
       "currency": "USD",
-      "exchange": "NYQ"
+      "exchange": "NYQ",
+      "chg_1m": 5.94,
+      "chg_ytd": 45.06,
+      "chg_1y": 43.7
     },
     {
       "sym": "CVX",
@@ -401,7 +467,10 @@
       "52w_high": 236.48,
       "52w_low": 146.49,
       "currency": "USD",
-      "exchange": "NYQ"
+      "exchange": "NYQ",
+      "chg_1m": -3.49,
+      "chg_ytd": 46.45,
+      "chg_1y": 45.07
     },
     {
       "sym": "PG",
@@ -419,7 +488,10 @@
       "52w_high": 173.57,
       "52w_low": 137.62,
       "currency": "USD",
-      "exchange": "NYQ"
+      "exchange": "NYQ",
+      "chg_1m": 9.3,
+      "chg_ytd": 24.24,
+      "chg_1y": 20.33
     },
     {
       "sym": "CSCO",
@@ -437,7 +509,10 @@
       "52w_high": 130.37,
       "52w_low": 72.8,
       "currency": "USD",
-      "exchange": "NMS"
+      "exchange": "NMS",
+      "chg_1m": -11.98,
+      "chg_ytd": 24.98,
+      "chg_1y": 24.41
     },
     {
       "sym": "ORCL",
@@ -455,7 +530,10 @@
       "52w_high": 250.25,
       "52w_low": 109.21,
       "currency": "USD",
-      "exchange": "NYQ"
+      "exchange": "NYQ",
+      "chg_1m": -7.13,
+      "chg_ytd": -38.08,
+      "chg_1y": -44.53
     },
     {
       "sym": "UNH",
@@ -473,7 +551,10 @@
       "52w_high": 461.62,
       "52w_low": 255.97,
       "currency": "USD",
-      "exchange": "NYQ"
+      "exchange": "NYQ",
+      "chg_1m": 2.64,
+      "chg_ytd": 27.28,
+      "chg_1y": 27.21
     },
     {
       "sym": "MRK",
@@ -491,7 +572,10 @@
       "52w_high": 156.92,
       "52w_low": 92.11,
       "currency": "USD",
-      "exchange": "NYQ"
+      "exchange": "NYQ",
+      "chg_1m": -1.02,
+      "chg_ytd": 40.07,
+      "chg_1y": 60.01
     },
     {
       "sym": "HD",
@@ -509,7 +593,10 @@
       "52w_high": 397.63,
       "52w_low": 277.15,
       "currency": "USD",
-      "exchange": "NYQ"
+      "exchange": "NYQ",
+      "chg_1m": 12.23,
+      "chg_ytd": 3.18,
+      "chg_1y": -2.91
     },
     {
       "sym": "BAC",
@@ -527,7 +614,10 @@
       "52w_high": 65.23,
       "52w_low": 46.12,
       "currency": "USD",
-      "exchange": "NYQ"
+      "exchange": "NYQ",
+      "chg_1m": -2.24,
+      "chg_ytd": -7.49,
+      "chg_1y": -3.26
     },
     {
       "sym": "GE",
@@ -545,7 +635,10 @@
       "52w_high": 388.84,
       "52w_low": 268.91,
       "currency": "USD",
-      "exchange": "NYQ"
+      "exchange": "NYQ",
+      "chg_1m": 3.62,
+      "chg_ytd": 6.01,
+      "chg_1y": 7.48
     }
   ]
 }
