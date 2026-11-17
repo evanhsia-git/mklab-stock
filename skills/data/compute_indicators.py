@@ -318,6 +318,10 @@ def main():
         _pa[_r.get("price_asof")] = _pa.get(_r.get("price_asof"), 0) + 1
     _meta["count"], _meta["sources"], _meta["price_asof_counts"] = len(_s), _src, _pa
 
+    # Option A 瘦身：省略 null 欄位（每筆 row 移除 None 值）
+    stocks_doc["stocks"] = [{k: v for k, v in r.items() if v is not None}
+                            for r in stocks_doc.get("stocks", [])]
+
     with open(STOCKS_PATH, "w", encoding="utf-8") as f:
         json.dump(stocks_doc, f, ensure_ascii=False, indent=None, separators=(",", ":"))
 

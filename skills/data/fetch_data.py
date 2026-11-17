@@ -414,6 +414,18 @@ def _sanitize_nan(obj):
     return obj
 
 
+def _strip_nulls(obj):
+    """遞迴移除 dict 中值為 None 的欄位（Option A 瘦身：省略 null 欄位）。
+    只移除 dict 的 None 值鍵；list 內的 None 元素保留（避免誤刪資料）。
+    注意：只應作用於 stocks.json 的 stocks 陣列（每筆獨立 dict），
+    不應作用於 meta（其 None 值是語意的一部分，如 price_asof_counts 的計數）。"""
+    if isinstance(obj, dict):
+        return {k: _strip_nulls(v) for k, v in obj.items() if v is not None}
+    if isinstance(obj, list):
+        return [_strip_nulls(v) for v in obj]
+    return obj
+
+
 def fetch_yfinance_roe(sym_list):
     """yfinance 抓 ROE/ROA（免 key）。每檔 sleep 3s 防 ban。回傳 {sym: {roe, roa}}"""
     try:
@@ -920,7 +932,8 @@ def run_daily():
         LOG.warn(f"既有 stocks.json 日期 {_prev_asof} 比本次資料 {trade_date} 新，不以舊資料覆蓋")
     else:
         with open(os.path.join(OUT, "stocks.json"), "w", encoding="utf-8") as f:
-            json.dump(_sanitize_nan({"meta": meta, "stocks": stocks}), f, ensure_ascii=False)
+            json.dump({"meta": _sanitize_nan(meta),
+                       "stocks": _strip_nulls(_sanitize_nan(stocks))}, f, ensure_ascii=False)
 
     # 當日 history 切片（收盤價 + PE/PB/殖利率）
     # 只納入價格日期等於快照日期的記錄：一份 dated snapshot 不可以混進別天的價格。
@@ -1002,7 +1015,7 @@ def run_weekly():
     data["meta"]["roe_source"] = "yfinance (免 key, 每週六更新, 備用)"
     recompute_meta(data)  # 寫入前重算 meta，避免 sources / count 與陣列不一致
     with open(p, "w", encoding="utf-8") as f:
-        json.dump(_sanitize_nan(data), f, ensure_ascii=False)
+        json.dump({"meta": _sanitize_nan(data.get("meta") or {}), "stocks": _strip_nulls(_sanitize_nan(data.get("stocks") or []))}, f, ensure_ascii=False)
     LOG.stats["written"] = len(roe_map)
     LOG.stats["details"]["roe_updated"] = len(roe_map)
     LOG.info(f"ROE/ROA 補齊 {len(roe_map)} 檔（備用來源）")
