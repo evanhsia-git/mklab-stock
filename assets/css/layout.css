@@ -6,15 +6,14 @@
   cursor: pointer;
 }
 
-[data-theme="dark"] .brand {
-  color: #fff;
-}
+/* 品牌主標題：深色＝白、淺色＝黑；hover 同色不變 */
+[data-theme="dark"] .brand,
+[data-theme="dark"] .brand:hover { color: #fff; }
 
-[data-theme="light"] .brand {
-  color: var(--ink);
-}
+[data-theme="light"] .brand,
+[data-theme="light"] .brand:hover { color: #1a1d21; }
 
-.brand:hover{ color: #fff; }.card{
+.card{
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
