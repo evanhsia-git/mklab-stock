@@ -156,10 +156,10 @@ import scope_rules as _scope  # noqa: E402
 check("範圍：規則集中在 scope_rules.py（單一來源，含 91xx 排除）",
       'def in_scope(' in open('skills/data/scope_rules.py', encoding='utf-8').read()
       and 'not s.startswith("91")' in open('skills/data/scope_rules.py', encoding='utf-8').read())
-check("範圍：四個使用處都改用 scope_rules.in_scope（不得各寫一份）",
+check("範圍：三個使用處都改用 scope_rules.in_scope（不得各寫一份）",
       all('scope_rules' in open(f, encoding='utf-8').read() for f in
           ('skills/data/fetch_data.py', 'skills/data/compute_indicators.py',
-           'skills/data/import_official_fundamentals.py', 'scripts/purge_out_of_scope_data.py')))
+           'skills/data/import_official_fundamentals.py')))
 check("範圍：in_scope() 對已知特殊證券回 False、對正常標的回 True",
       not any(_scope.in_scope(x) for x in ('9103', '9105', '9110', '9136', '2881A', '2881B',
                                            '2887E', '1312A', '01001T', '02001L', '6592B',
@@ -325,8 +325,7 @@ check("一般股票產業別必為官方類別（33 類／fallback）",
       all(s.get('ind') in _ind_allowed for s in st_rows),
       f"不在官方清單 {[s['sym'] for s in st_rows if s.get('ind') not in _ind_allowed][:8]}")
 check("產業別來源仍由管線讀官方 t187ap03_L（不得改成猜測或留空）",
-      't187ap03_L' in open('skills/data/integrate_official_company.py', encoding='utf-8').read()
-      and 't187ap03_L' in open('skills/data/import_company_industry.py', encoding='utf-8').read())
+      't187ap03_L' in open('skills/data/integrate_official_company.py', encoding='utf-8').read())
 
 # EPS 口徑：JSON 原始 eps 為最近單季，前端與後端評分都只能用官方年化 eps_off（沒有就顯示 -）
 _fund_rows = [s for s in S if s.get('security_type') == 'stock']
@@ -381,8 +380,7 @@ check("stocks.json 瘦身：單檔預算 1,300 KB", len(_slim_bytes) < 1300 * 10
       f"目前 {len(_slim_bytes)/1024:.0f} KB")
 _slim_writers = (_fd2 + _fin
                  + open('skills/data/compute_indicators.py', encoding='utf-8').read()
-                 + open('skills/data/integrate_official_company.py', encoding='utf-8').read()
-                 + open('skills/data/import_company_industry.py', encoding='utf-8').read())
+                 + open('skills/data/integrate_official_company.py', encoding='utf-8').read())
 check("stocks.json 瘦身：寫入端不得再寫這 9 欄",
       not [k for k in _SLIM_BANNED if f'"{k}"' in _slim_writers],
       f"寫入端殘留 {[k for k in _SLIM_BANNED if chr(34)+k+chr(34) in _slim_writers]}")

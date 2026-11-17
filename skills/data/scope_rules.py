@@ -5,7 +5,7 @@
 不收：特別股（2881A／2881B／2887E…）、權證、DR / TDR（91xx）、受益證券（01001T）、
       ETN（0200xx）、上櫃一般股票。
 
-為什麼要有這支：這條規則原本散在 4 個地方各寫一份（fetch_data.classify_security、
+為什麼要有這支：這條規則原本散在 3 個地方各寫一份（fetch_data.classify_security、
 compute_indicators、purge_out_of_scope_data），結果 2026-11-10 發現 DR（9103/9105/9110/9136）
 因為「剛好是 4 碼純數字」被前兩者判成 stock，而清理腳本又用同一個出錯的欄位判斷 → 三方一起漏。
 統一成這裡之後，改規則只改一處。
