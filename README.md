@@ -21,9 +21,6 @@
 | Industry（產業） | `mklab-stock-industry.html` | 依臺證所 33 個官方產業大類，查看漲跌績效、產業輪動熱力圖、成分股（含市值欄） |
 | Watchlist（自選） | `mklab-stock-watchlist.html` | 新增自選股代號排序追蹤；目標價／停損價提醒設定（示意，資料存於瀏覽器 localStorage） |
 | Compare（比較） | `mklab-stock-compare.html` | 最多同時比較 4 檔個股的關鍵指標，自動標示最優欄位（股票代號不分大小寫） |
-| Breadth（市場寬度） | `mklab-stock-breadth.html` | 今日市場寬度（上漲/下跌家數）與漲跌幅分布 |
-| Backtest（回測） | `mklab-stock-backtest.html` | 兩點式試算（買進日 vs 最新一日收盤價）試算報酬，非完整走勢回測，僅供教育參考 |
-| Portfolio（投資組合） | `mklab-stock-portfolio.html` | 持股損益追蹤、持股佔比圓餅圖、個股筆記（資料存於瀏覽器 localStorage） |
 | Digest（每日摘要） | `mklab-stock-digest.html` | 每日市場摘要，提供 RSS 訂閱（`rss.xml`） |
 | US（美股） | `mklab-stock-us.html` | 美股市值前 30 大個股 + ETF 規模前 30 大（資料源 yfinance，與台股資料完全分開管理於 `data/us/`） |
 | Help（說明） | `mklab-stock-help.html` | 使用說明、資料來源、資料更新頻率、評分標準、免責聲明 |
@@ -132,7 +129,6 @@ mklab-stock/
 ├── mklab-stock-industry.html     # Industry 產業
 ├── mklab-stock-watchlist.html    # Watchlist 自選
 ├── mklab-stock-compare.html      # Compare 比較
-├── mklab-stock-breadth.html      # Breadth 市場寬度
 ├── mklab-stock-backtest.html     # Backtest 回測
 ├── mklab-stock-portfolio.html    # Portfolio 投資組合
 ├── mklab-stock-digest.html       # Digest 每日摘要

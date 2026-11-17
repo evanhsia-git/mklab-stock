@@ -392,9 +392,9 @@ check("EPS 口徑：後端評分與前端同口徑（有官方年化→用年化
       _e1['eps'] == 98.66 and _e1['roe'] == 39.77 and _e2['eps'] is None and _e2['roe'] == 10.0,
       f"{_e1['eps']}/{_e1['roe']}/{_e2['eps']}/{_e2['roe']}")
 check("EPS 口徑：摘要只計一般股票（不含 ETF／DR／特別股／權證）", "s.get('security_type') == 'stock'" in open('skills/data/build_digest.py', encoding='utf-8').read())
-check("共用：市場寬度面板只存在 mklab-core.js（industry／breadth 頁不得各自重寫）",
+check("共用：市場寬度面板只存在 mklab-core.js（industry 頁不得重寫）",
       'const BreadthPanel' in open('assets/js/mklab-core.js', encoding='utf-8').read()
-      and all('const BUCKETS' not in open(p, encoding='utf-8').read() for p in ('mklab-stock-industry.html', 'mklab-stock-breadth.html')))
+      and 'const BUCKETS' not in open('mklab-stock-industry.html', encoding='utf-8').read())
 check("共用：黃標資料日期由 MKLAB.loadFreshness 統一載入，且失敗不顯示『示意資料』",
       'async function loadFreshness' in open('assets/js/mklab-core.js', encoding='utf-8').read()
       and '示意資料' not in open('assets/js/mklab-core.js', encoding='utf-8').read())
