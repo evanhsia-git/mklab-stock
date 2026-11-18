@@ -4,5 +4,19 @@
     "threshold": 0.2,
     "generated_from": "data/kline/*.json"
   },
-  "candidates": []
+  "candidates": [
+    {
+      "sym": "3714",
+      "name": "富采",
+      "type": "reverse_split",
+      "ratio": null,
+      "implied_ratio": 0.65,
+      "halt_from": "2026-11-05",
+      "resume_date": "20261116",
+      "missing_trading_days": 7,
+      "status": "detected",
+      "source": "auto:price_discontinuity",
+      "source_note": "本站 K 線相鄰日跳空 54.14%（20261104 收 56.7 → 20261116 收 87.4），期間缺 7 個交易日（停牌跡象），隱含倍數 0.65（＝新股/舊股，含停牌期間市場漲跌故為近似）。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
+    }
+  ]
 }
