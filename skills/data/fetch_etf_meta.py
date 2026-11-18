@@ -129,6 +129,32 @@ def load_prev():
         return {}
 
 
+def compute_etf_fees(net_assets_100m):
+    """依 AUM 階梯計算經理費/保管費（2026-11-17）。
+
+    經理費：0億含以上 0.15% / 1000億不含以上 0.10% / 5000億不含以上 0.08% / 10000億不含以上 0.05%
+    保管費：0億含以上 0.03% / 10000億不含以上 0.025%
+    回傳 (management_fee, custody_fee, total_fee)；AUM 為 None 時三者皆 None。
+    """
+    mgmt = None
+    cust = None
+    if net_assets_100m is not None:
+        if net_assets_100m >= 10000:
+            mgmt = 0.05
+            cust = 0.025
+        elif net_assets_100m >= 5000:
+            mgmt = 0.08
+            cust = 0.03
+        elif net_assets_100m >= 1000:
+            mgmt = 0.10
+            cust = 0.03
+        else:
+            mgmt = 0.15
+            cust = 0.03
+    total = (mgmt + cust) if (mgmt is not None and cust is not None) else None
+    return mgmt, cust, total
+
+
 def main():
     prev = load_prev()
     prev_etfs = prev.get("etfs") or []
@@ -168,6 +194,12 @@ def main():
         return 2
 
     etfs = twse + tpex
+    # 2026-11-17：依 AUM 階梯計算經理費/保管費/合計費率
+    for r in etfs:
+        mgmt, cust, total = compute_etf_fees(r.get("net_assets_100m"))
+        r["management_fee"] = mgmt
+        r["custody_fee"] = cust
+        r["total_fee"] = total
     # 護欄：來源異常導致檔數大減時不覆寫。
     # **逐市場**比對，不能只看總數——否則「TWSE 全掛、TPEx 正常」會通過護欄，
     # 寫出一份 TWSE 空掉的檔（前端會少掉一整個市場的 ETF）。
@@ -190,7 +222,10 @@ def main():
             "endpoints": {"TWSE": TWSE_CSV_URL, "TPEx": TPEX_API_URL},
             "manual_source_urls": {"TWSE": pem.TWSE_SOURCE_URL, "TPEx": pem.TPEX_SOURCE_URL},
             "note": "資產規模、受益人數為抓取當下的快照值（非即時）。"
-                    "上市/上櫃日期、發行人為低頻變動欄位。人工備援方式見 parse_etf_meta.py 檔頭。",
+                    "上市/上櫃日期、發行人為低頻變動欄位。人工備援方式見 parse_etf_meta.py 檔頭。"
+                    "經理費/保管費係依 AUM 階梯試算（0億含以上0.15%、1000億不含以上0.10%、"
+                    "5000億不含以上0.08%、10000億不含以上0.05%；保管費0億含以上0.03%、"
+                    "10000億不含以上0.025%），實際費率請以各發行機構官方披露為準。",
             "log": notes,
         },
         "etfs": etfs,

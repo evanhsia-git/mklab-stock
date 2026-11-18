@@ -87,6 +87,10 @@
     div_cash: { label:'最近現金股利(元)', type:'num', sortable:true, defDir:-1, fmt:r=>r.div_cash_latest!=null?Number(r.div_cash_latest).toFixed(2):'-' },
     rsi14: { label:'RSI(14)', type:'num', sortable:true, fmt:r=>r.rsi14!=null?r.rsi14:'-' },
     pos52w_level: { label:'52週位階(1-5)', type:'num', sortable:true, fmt:r=>r.pos52w_level!=null?r.pos52w_level:'-' },
+    // 2026-11-17：ETF 經理費 / 保管費 / 合計費率（依 AUM 階梯試算，非即時）
+    management_fee: { label:'經理費%', type:'num', sortable:true, fmt:r=>r.management_fee!=null?Number(r.management_fee).toFixed(2)+'%':'-' },
+    custody_fee:    { label:'保管費%', type:'num', sortable:true, fmt:r=>r.custody_fee!=null?Number(r.custody_fee).toFixed(2)+'%':'-' },
+    total_fee:      { label:'合計費率%', type:'num', sortable:true, defDir:-1, fmt:r=>r.total_fee!=null?Number(r.total_fee).toFixed(2)+'%':'-' },
     market_cap: { label:'市值(元)', type:'num', sortable:true, fmt:r=>r.market_cap!=null?r.market_cap:'-' },
     beneficiaries: { label:'受益人數', type:'num', sortable:true, defDir:-1, fmt:r=>r.beneficiaries!=null?Number(r.beneficiaries).toLocaleString():'-' },
     net_assets_100m: { label:'資產規模(億元)', type:'num', sortable:true, defDir:-1, fmt:r=>r.net_assets_100m!=null?Number(r.net_assets_100m).toLocaleString():'-' },

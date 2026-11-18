@@ -140,6 +140,32 @@ def parse_tpex():
     return out
 
 
+def compute_etf_fees(net_assets_100m):
+    """依 AUM 階梯計算經理費/保管費（2026-11-17）。
+
+    經理費：0億含以上 0.15% / 1000億不含以上 0.10% / 5000億不含以上 0.08% / 10000億不含以上 0.05%
+    保管費：0億含以上 0.03% / 10000億不含以上 0.025%
+    回傳 (management_fee, custody_fee, total_fee)；AUM 為 None 時三者皆 None。
+    """
+    mgmt = None
+    cust = None
+    if net_assets_100m is not None:
+        if net_assets_100m >= 10000:
+            mgmt = 0.05
+            cust = 0.025
+        elif net_assets_100m >= 5000:
+            mgmt = 0.08
+            cust = 0.03
+        elif net_assets_100m >= 1000:
+            mgmt = 0.10
+            cust = 0.03
+        else:
+            mgmt = 0.15
+            cust = 0.03
+    total = (mgmt + cust) if (mgmt is not None and cust is not None) else None
+    return mgmt, cust, total
+
+
 def main():
     twse = parse_twse()
     tpex = parse_tpex()
@@ -149,6 +175,12 @@ def main():
         print("[parse_etf_meta] ❌ 兩邊都沒有可解析的 CSV，未寫入任何檔案")
         return
 
+    for r in etfs:
+        mgmt, cust, total = compute_etf_fees(r.get("net_assets_100m"))
+        r["management_fee"] = mgmt
+        r["custody_fee"] = cust
+        r["total_fee"] = total
+
     doc = {
         "meta": {
             "as_of": dt.datetime.now().strftime("%Y-%m-%d"),
@@ -157,7 +189,9 @@ def main():
             "tpex_source_url": TPEX_SOURCE_URL,
             "count": len(etfs),
             "note": "上市/上櫃日期、發行人為低頻變動欄位；資產規模、受益人數為 CSV 匯出當下的快照值，"
-                    "並非即時資料，更新方式見本腳本檔頭說明。",
+                    "並非即時資料，更新方式見本腳本檔頭說明。經理費/保管費係依 AUM 階梯試算"
+                    "（0億含以上0.15%、1000億不含以上0.10%、5000億不含以上0.08%、10000億不含以上0.05%；"
+                    "保管費0億含以上0.03%、10000億不含以上0.025%），實際費率請以各發行機構官方披露為準。",
         },
         "etfs": etfs,
     }

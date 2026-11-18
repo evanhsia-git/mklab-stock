@@ -419,8 +419,8 @@
         (r.categories||[]).some(c => (ETF_LABEL_MAP[c]||'').toUpperCase().includes(q) || c.toUpperCase().includes(q))
       );
     }
-    // 成份股是選用欄位：勾選時才加入欄位並附上文字（預設不顯示；其他頁面完全沒有此欄位）
-    const baseCols = ['sym','name','price','chg','div','net_assets_100m','listing_date'];
+    // 成份股與費用率是選用欄位：勾選時才加入欄位並附上文字（預設不顯示；其他頁面完全沒有此欄位）
+    const baseCols = ['sym','name','price','chg','div','net_assets_100m','management_fee','custody_fee','total_fee','listing_date'];
     const cols = etfShowHoldings ? baseCols.concat(['holdings10']) : baseCols;
     if (etfShowHoldings) rows = rows.map(r => Object.assign({}, r, { holdings10: holdingsText(r.sym) }));
     const countEl = document.getElementById('etfScrCount');
