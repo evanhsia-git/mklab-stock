@@ -1,6 +1,6 @@
 /*
  * screener-dcf.js — Screener「DCF 估值」分頁（估值指標表 + DCF 計算機）
- * 依賴：mklab-core.js（MKLAB.data、MKLAB.DataTable）、valuation.js（MKLAB_VAL）
+ * 依賴：mklab-core.js（MKLAB.data、MKLAB.DataTable、MKLAB.exportCSV、MKLAB.registerExport）、valuation.js（MKLAB_VAL）
  * 所有使用者可控的文字一律以 textContent 寫入，不使用 innerHTML 拼接。
  */
 (function () {
@@ -9,12 +9,15 @@
   if (!V || !window.MKLAB) return;
 
   const PER = 10;
+  const PREF_KEY = 'mklab.screener.dcf.params';
+  const DEFAULTS = { g1: 8, g2: 4, gT: 2, wacc: 9, yield: 5 };
   const VAL_COLS = ['sym', 'name', 'price', 'val_graham', 'val_pe', 'val_pb', 'val_yield', 'val_ref', 'val_upside'];
   const cache = {};          // market -> normalized rows
   let market = 'tw';
   let valTable = null;
   let activated = false;
   let selected = null;       // 目前在計算機選取的標的
+  let lastValRows = [];      // 目前估值表的篩選結果（供 CSV 匯出）
 
   function fmtNum(x, d) {
     if (x == null || !isFinite(x)) return '-';
@@ -22,6 +25,29 @@
   }
   function el(id) { return document.getElementById(id); }
   function setText(id, txt) { const n = el(id); if (n) n.textContent = txt; }
+
+  // ---------- 參數記憶（僅記住假設參數，不記住個股資料） ----------
+  function storage() {
+    try { return window.localStorage || null; } catch (e) { return null; }
+  }
+  function loadPrefs() {
+    const st = storage();
+    if (!st) return;
+    let p = null;
+    try { p = JSON.parse(st.getItem(PREF_KEY) || 'null'); } catch (e) { p = null; }
+    if (!p || typeof p !== 'object') return;
+    const map = { g1: 'dcf_g1', g2: 'dcf_g2', gT: 'dcf_gT', wacc: 'dcf_wacc', yield: 'dcfYield' };
+    Object.keys(map).forEach(k => {
+      const v = Number(p[k]);
+      if (isFinite(v)) setInput(map[k], v);
+    });
+  }
+  function savePrefs() {
+    const st = storage();
+    if (!st) return;
+    const p = { g1: num('dcf_g1'), g2: num('dcf_g2'), gT: num('dcf_gT'), wacc: num('dcf_wacc'), yield: num('dcfYield') };
+    try { st.setItem(PREF_KEY, JSON.stringify(p)); } catch (e) { /* 配額或隱私模式：忽略 */ }
+  }
 
   // ---------- 資料正規化 ----------
   function normTw(doc) {
@@ -61,7 +87,7 @@
   // ---------- 估值指標表 ----------
   function targetYield() {
     const v = parseFloat((el('dcfYield') || {}).value);
-    return (isFinite(v) && v > 0) ? v : 5;
+    return (isFinite(v) && v > 0) ? v : DEFAULTS.yield;
   }
   function buildValRows(rows) {
     const med = {
@@ -76,13 +102,24 @@
       });
     });
   }
+  // 「綜合參考價上漲空間 ≥ X%」：注意這是估值指標的參考價，不是 DCF 內在價值
+  function minUpside() {
+    const raw = (el('dcfMinUpside') || {}).value;
+    if (raw === undefined || raw === null || String(raw).trim() === '') return null;
+    const v = parseFloat(raw);
+    return isFinite(v) ? v : null;
+  }
   function applyVal() {
     const rows0 = cache[market];
     if (!rows0) return;
     const q = ((el('dcfSearch') || {}).value || '').trim().toUpperCase();
+    const min = minUpside();
     let rows = buildValRows(rows0);
     if (q) rows = rows.filter(r => (r.sym || '').toUpperCase().includes(q) || (r.name || '').toUpperCase().includes(q));
-    setText('dcfValCount', `符合：${rows.length} / ${rows0.length} 檔（${market === 'tw' ? '台股' : '美股'}，缺 EPS 或 PB 者不計入）`);
+    if (min !== null) rows = rows.filter(r => r.val_upside != null && r.val_upside >= min);
+    lastValRows = rows;
+    const tail = min !== null ? `；上漲空間 ≥ ${min}%` : '';
+    setText('dcfValCount', `符合：${rows.length} / ${rows0.length} 檔（${market === 'tw' ? '台股' : '美股'}，缺 EPS 或 PB 者不計入${tail}）`);
     if (!valTable) {
       valTable = MKLAB.DataTable('dcfValTable', {
         cols: VAL_COLS, rows, pageSize: PER, pagerId: 'dcfValPager', defaultSort: 'val_upside',
@@ -90,6 +127,17 @@
     } else {
       valTable.setRows(rows);
     }
+  }
+  function exportValCSV() {
+    if (!lastValRows.length) { alert('目前沒有可匯出的估值資料'); return; }
+    MKLAB.exportCSV(lastValRows, VAL_COLS, {
+      filename: 'mklab-dcf-valuation-' + new Date().toISOString().slice(0, 10),
+      source: 'mklab-stock 估值指標（同產業中位數）',
+      method: '綜合參考價為 Graham、PE、PB、殖利率合理價的中位數；僅供研究參考，不構成投資建議',
+    });
+  }
+  if (typeof MKLAB.registerExport === 'function') {
+    MKLAB.registerExport('匯出 DCF 估值表 CSV（目前分頁）', exportValCSV);
   }
 
   // ---------- DCF 計算機 ----------
@@ -117,11 +165,13 @@
     calc();
   }
 
-  function calc() {
+  // opts.save === false 時不寫入記憶（用於程式內部的重設與切換，避免覆蓋使用者設定）
+  function calc(opts) {
     const base = {
       fcf0: num('dcf_fcf'), g1: num('dcf_g1'), g2: num('dcf_g2'), gT: num('dcf_gT'),
       wacc: num('dcf_wacc'), shares: num('dcf_shares'), netDebt: num('dcf_netdebt') || 0,
     };
+    if (!(opts && opts.save === false)) savePrefs();
     const out = el('dcfOut'), sens = el('dcfSens');
     if (!out || !sens) return;
     out.textContent = '';
@@ -189,13 +239,21 @@
     sens.appendChild(table);
   }
 
-  function resetCalc() {
+  // 清除個股選取與個股欄位，保留假設參數
+  function clearSelection() {
     selected = null;
-    ['dcf_price', 'dcf_fcf', 'dcf_shares', 'dcf_netdebt'].forEach(id => setInput(id, null));
-    setInput('dcf_g1', 8); setInput('dcf_g2', 4); setInput('dcf_gT', 2); setInput('dcf_wacc', 9);
+    ['dcf_price', 'dcf_fcf', 'dcf_shares'].forEach(id => setInput(id, null));
     setInput('dcf_netdebt', 0);
     setText('dcfNote', '請選擇股票，或直接輸入參數。');
     setText('dcfFcfHint', '');
+  }
+
+  // 「重設」：假設參數回到預設值，並寫入記憶
+  function resetCalc() {
+    clearSelection();
+    setInput('dcf_g1', DEFAULTS.g1); setInput('dcf_g2', DEFAULTS.g2);
+    setInput('dcf_gT', DEFAULTS.gT); setInput('dcf_wacc', DEFAULTS.wacc);
+    setInput('dcfYield', DEFAULTS.yield);
     calc();
   }
 
@@ -211,19 +269,25 @@
     });
   }
 
+  // 切換市場：只清除個股選取，保留使用者目前的假設參數
   function setMarket(m, btn) {
     market = m;
     document.querySelectorAll('#dcfMarket button').forEach(b => b.classList.toggle('on', b === btn));
-    selected = null;
-    loadMarket(m).then(() => { buildPicker(); applyVal(); resetCalc(); }).catch(() => setText('dcfValCount', '資料載入失敗'));
+    clearSelection();
+    loadMarket(m).then(() => { buildPicker(); applyVal(); calc({ save: false }); }).catch(() => setText('dcfValCount', '資料載入失敗'));
   }
 
   function activate() {
     if (activated) return;
     activated = true;
-    resetCalc();
+    setInput('dcf_g1', DEFAULTS.g1); setInput('dcf_g2', DEFAULTS.g2);
+    setInput('dcf_gT', DEFAULTS.gT); setInput('dcf_wacc', DEFAULTS.wacc);
+    setInput('dcfYield', DEFAULTS.yield);
+    loadPrefs();                       // 若有記憶則覆蓋預設值
+    clearSelection();
+    calc({ save: false });
     loadMarket('tw').then(() => { buildPicker(); applyVal(); }).catch(() => setText('dcfValCount', '資料載入失敗'));
   }
 
-  window.MKLAB_DCF = { activate, setMarket, applyVal, selectStock, calc, resetCalc };
+  window.MKLAB_DCF = { activate, setMarket, applyVal, selectStock, calc, resetCalc, exportValCSV };
 })();

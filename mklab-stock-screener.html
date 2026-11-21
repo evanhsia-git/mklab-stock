@@ -187,6 +187,11 @@
       <div class="lab">殖利率合理價的目標殖利率（%）</div>
       <input id="dcfYield" type="number" value="5" min="0.5" step="0.5" oninput="MKLAB_DCF.applyVal()" style="width:100%;">
     </div>
+    <div class="grp">
+      <div class="lab">綜合參考價上漲空間 ≥（%）</div>
+      <input id="dcfMinUpside" type="number" step="1" placeholder="不限" oninput="MKLAB_DCF.applyVal()" style="width:100%;">
+      <p class="muted-small-top">此欄為估值指標的參考價，不是 DCF 內在價值；DCF 結果請看右側計算機。</p>
+    </div>
     <div class="count" id="dcfValCount"></div>
   </div>
   <div>
