@@ -108,6 +108,8 @@ def _fetch_one_stock(yf, sym):
             "52w_low": info.get("fiftyTwoWeekLow"),
             "currency": info.get("currency", "USD"),
             "exchange": info.get("exchange"),
+            # 2026-11-17：DCF 估值輸入（百萬），缺值為 null
+            **data_rules.us_valuation_inputs(info),
         }
     except Exception as e:
         _log(f"⚠️ {sym} 抓取失敗：{e}")

@@ -156,6 +156,23 @@
 
 ---
 
+## 📐 估值與 DCF 欄位（2026-11-17）
+
+Screener「DCF 估值」分頁使用，計算邏輯集中在 `assets/js/valuation.js`（純函式，有測試）。
+
+| 來源 | 欄位 | 單位 | 說明 |
+|---|---|---|---|
+| `us-stocks.json` | `fcf_musd` | USD 百萬 | 自由現金流 TTM（yfinance `freeCashflow`），缺值為 null |
+| `us-stocks.json` | `cash_musd` | USD 百萬 | 現金與約當現金（`totalCash`） |
+| `us-stocks.json` | `debt_musd` | USD 百萬 | 總負債含租賃（`totalDebt`）；淨負債 = 負債 − 現金 |
+| `us-stocks.json` | `shares_mln` | 百萬股 | 已發行股數（`sharesOutstanding`） |
+| `stocks.json` | `shares` | 股 | 股數；頁面換算為百萬股 |
+| `stocks.json` | `div_cash_latest` | NT$／股 | 最近一年現金股利，用於殖利率合理價 |
+
+台股目前**沒有現金流量資料**，DCF 的基期 FCF 需由使用者手動輸入；若日後接上 TWSE 現金流量表，需同步修改 `fetch_data.py` 與 `screener-dcf.js` 的預填邏輯。
+
+估值公式：Graham Number = √(22.5 × EPS × 每股淨值)；PE 合理價 = EPS × 同產業中位數 PE；PB 合理價 = 每股淨值 × 同產業中位數 PB；殖利率合理價 = 每股現金股利 ÷ 目標殖利率；綜合參考價 = 上述各法中位數。
+
 ## 🔗 相關檔案
 
 - `scripts/fetch_data.py` - 主抓取腳本 (daily/weekly/indices)

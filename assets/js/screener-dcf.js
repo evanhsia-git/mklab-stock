@@ -1,0 +1,229 @@
+/*
+ * screener-dcf.js — Screener「DCF 估值」分頁（估值指標表 + DCF 計算機）
+ * 依賴：mklab-core.js（MKLAB.data、MKLAB.DataTable）、valuation.js（MKLAB_VAL）
+ * 所有使用者可控的文字一律以 textContent 寫入，不使用 innerHTML 拼接。
+ */
+(function () {
+  'use strict';
+  const V = window.MKLAB_VAL;
+  if (!V || !window.MKLAB) return;
+
+  const PER = 10;
+  const VAL_COLS = ['sym', 'name', 'price', 'val_graham', 'val_pe', 'val_pb', 'val_yield', 'val_ref', 'val_upside'];
+  const cache = {};          // market -> normalized rows
+  let market = 'tw';
+  let valTable = null;
+  let activated = false;
+  let selected = null;       // 目前在計算機選取的標的
+
+  function fmtNum(x, d) {
+    if (x == null || !isFinite(x)) return '-';
+    return Number(x).toLocaleString(undefined, { maximumFractionDigits: d, minimumFractionDigits: d });
+  }
+  function el(id) { return document.getElementById(id); }
+  function setText(id, txt) { const n = el(id); if (n) n.textContent = txt; }
+
+  // ---------- 資料正規化 ----------
+  function normTw(doc) {
+    return ((doc && doc.stocks) || [])
+      .filter(s => s.security_type === 'stock' && s.price > 0)
+      .map(s => ({
+        sym: s.sym, name: s.name, price: s.price, pe: s.pe, pb: s.pb, eps: s.eps,
+        group: s.ind || null,
+        cashDividend: s.div_cash_latest,           // 每股現金股利（NT$）
+        sharesMln: s.shares ? s.shares / 1e6 : null,
+        fcf: null,                                 // 台股目前沒有現金流量資料，需手動輸入
+        netDebt: null,
+        currency: 'NT$',
+      }));
+  }
+  function normUs(doc) {
+    return ((doc && doc.stocks) || [])
+      .filter(s => s.price > 0)
+      .map(s => ({
+        sym: s.sym, name: s.name, price: s.price, pe: s.pe, pb: s.pb, eps: s.eps,
+        group: s.industry || s.sector || null,
+        cashDividend: (s.div != null) ? s.price * s.div / 100 : null,
+        sharesMln: s.shares_mln,
+        fcf: s.fcf_musd,
+        netDebt: (s.debt_musd != null && s.cash_musd != null) ? s.debt_musd - s.cash_musd : null,
+        currency: 'US$',
+      }));
+  }
+  function loadMarket(m) {
+    if (cache[m]) return Promise.resolve(cache[m]);
+    const p = (m === 'tw')
+      ? MKLAB.data.json('stocks').then(normTw)
+      : MKLAB.data.json('us/us-stocks').then(normUs);
+    return p.then(rows => (cache[m] = rows));
+  }
+
+  // ---------- 估值指標表 ----------
+  function targetYield() {
+    const v = parseFloat((el('dcfYield') || {}).value);
+    return (isFinite(v) && v > 0) ? v : 5;
+  }
+  function buildValRows(rows) {
+    const med = {
+      pe: V.industryMedian(rows, 'group', 'pe', [0, 100], 3),
+      pb: V.industryMedian(rows, 'group', 'pb', [0, 50], 3),
+    };
+    return rows.map(r => {
+      const v = V.valuationRow(r, med, { targetYieldPct: targetYield() });
+      return Object.assign({}, r, {
+        val_graham: v.graham, val_pe: v.pe, val_pb: v.pb, val_yield: v.yield,
+        val_ref: v.ref, val_upside: v.upside,
+      });
+    });
+  }
+  function applyVal() {
+    const rows0 = cache[market];
+    if (!rows0) return;
+    const q = ((el('dcfSearch') || {}).value || '').trim().toUpperCase();
+    let rows = buildValRows(rows0);
+    if (q) rows = rows.filter(r => (r.sym || '').toUpperCase().includes(q) || (r.name || '').toUpperCase().includes(q));
+    setText('dcfValCount', `符合：${rows.length} / ${rows0.length} 檔（${market === 'tw' ? '台股' : '美股'}，缺 EPS 或 PB 者不計入）`);
+    if (!valTable) {
+      valTable = MKLAB.DataTable('dcfValTable', {
+        cols: VAL_COLS, rows, pageSize: PER, pagerId: 'dcfValPager', defaultSort: 'val_upside',
+      });
+    } else {
+      valTable.setRows(rows);
+    }
+  }
+
+  // ---------- DCF 計算機 ----------
+  function num(id) {
+    const v = parseFloat((el(id) || {}).value);
+    return isFinite(v) ? v : null;
+  }
+  function setInput(id, v) { const n = el(id); if (n) n.value = (v == null || !isFinite(v)) ? '' : String(v); }
+
+  function selectStock(sym) {
+    const rows = cache[market] || [];
+    selected = rows.find(r => r.sym === String(sym).trim()) || null;
+    if (!selected) { setText('dcfNote', '找不到此代號，請從清單選取。'); return; }
+    const s = selected;
+    setText('dcfNote', `${s.sym} ${s.name}｜單位：${s.currency} 百萬、百萬股`);
+    setInput('dcf_price', s.price);
+    setInput('dcf_shares', s.sharesMln != null ? Number(s.sharesMln.toFixed(4)) : null);
+    setInput('dcf_fcf', s.fcf != null ? Number(s.fcf.toFixed(2)) : null);
+    setInput('dcf_netdebt', s.netDebt != null ? Number(s.netDebt.toFixed(2)) : 0);
+    if (market === 'tw') {
+      setText('dcfFcfHint', '台股目前沒有現金流量資料，請依財報或自行估算後手動輸入（NT$ 百萬）。');
+    } else {
+      setText('dcfFcfHint', s.fcf == null ? '此股票缺少自由現金流資料，請手動輸入。' : '已由 yfinance 預填（TTM 自由現金流，USD 百萬）。');
+    }
+    calc();
+  }
+
+  function calc() {
+    const base = {
+      fcf0: num('dcf_fcf'), g1: num('dcf_g1'), g2: num('dcf_g2'), gT: num('dcf_gT'),
+      wacc: num('dcf_wacc'), shares: num('dcf_shares'), netDebt: num('dcf_netdebt') || 0,
+    };
+    const out = el('dcfOut'), sens = el('dcfSens');
+    if (!out || !sens) return;
+    out.textContent = '';
+    sens.textContent = '';
+    const r = V.dcf(base);
+    if (!r.ok) {
+      const p = document.createElement('p');
+      p.className = 'muted-small-top';
+      p.textContent = '無法計算：' + r.reason;
+      out.appendChild(p);
+      return;
+    }
+    const price = selected ? selected.price : null;
+    const upside = (price && price > 0) ? (r.perShare / price - 1) * 100 : null;
+    const items = [
+      ['每股內在價值', fmtNum(r.perShare, 2) + (selected ? ' ' + selected.currency : '')],
+      ['目前股價', price != null ? fmtNum(price, 2) : '-'],
+      ['上漲／下跌空間', upside != null ? (upside >= 0 ? '+' : '') + fmtNum(upside, 1) + '%' : '-'],
+      ['企業價值 EV（百萬）', fmtNum(r.ev, 0)],
+      ['未來 10 年 FCF 現值（百萬）', fmtNum(r.pvFcf, 0)],
+      ['終值現值（百萬）', fmtNum(r.pvTv, 0)],
+      ['終值佔 EV 比例', r.tvShare != null ? fmtNum(r.tvShare, 1) + '%' : '-'],
+    ];
+    const dl = document.createElement('dl');
+    dl.className = 'dcf-summary';
+    items.forEach(([k, v]) => {
+      const dt = document.createElement('dt'); dt.textContent = k;
+      const dd = document.createElement('dd'); dd.textContent = v;
+      dl.appendChild(dt); dl.appendChild(dd);
+    });
+    out.appendChild(dl);
+    if (r.tvShare != null && r.tvShare > 75) {
+      const warn = document.createElement('p');
+      warn.className = 'muted-small-top';
+      warn.textContent = '提醒：終值佔比超過 75%，結果高度依賴永續成長率與折現率假設。';
+      out.appendChild(warn);
+    }
+
+    // 敏感度表：WACC × 永續成長率
+    const waccs = [-2, -1, 0, 1, 2].map(d => base.wacc + d).filter(w => w > base.gT);
+    const gTs = [-1, -0.5, 0, 0.5, 1].map(d => base.gT + d);
+    const grid = V.sensitivity(base, waccs, gTs);
+    const title = document.createElement('h3');
+    title.textContent = '敏感度：每股內在價值（列＝折現率 WACC，欄＝永續成長率）';
+    sens.appendChild(title);
+    const table = document.createElement('table');
+    table.className = 'dcf-sens';
+    const thead = document.createElement('tr');
+    thead.appendChild(document.createElement('th'));
+    gTs.forEach(g => { const th = document.createElement('th'); th.textContent = g.toFixed(1) + '%'; thead.appendChild(th); });
+    table.appendChild(thead);
+    waccs.forEach((w, i) => {
+      const tr = document.createElement('tr');
+      const th = document.createElement('th'); th.textContent = w.toFixed(1) + '%'; tr.appendChild(th);
+      gTs.forEach((g, j) => {
+        const td = document.createElement('td');
+        const v = grid[i][j];
+        td.textContent = v == null ? '-' : fmtNum(v, 2);
+        if (i === 2 && j === 2) td.className = 'dcf-center';
+        if (v != null && price) td.title = (v / price * 100 - 100).toFixed(1) + '% vs 股價';
+        tr.appendChild(td);
+      });
+      table.appendChild(tr);
+    });
+    sens.appendChild(table);
+  }
+
+  function resetCalc() {
+    selected = null;
+    ['dcf_price', 'dcf_fcf', 'dcf_shares', 'dcf_netdebt'].forEach(id => setInput(id, null));
+    setInput('dcf_g1', 8); setInput('dcf_g2', 4); setInput('dcf_gT', 2); setInput('dcf_wacc', 9);
+    setInput('dcf_netdebt', 0);
+    setText('dcfNote', '請選擇股票，或直接輸入參數。');
+    setText('dcfFcfHint', '');
+    calc();
+  }
+
+  function buildPicker() {
+    const dl = el('dcfList');
+    if (!dl) return;
+    dl.textContent = '';
+    (cache[market] || []).forEach(r => {
+      const o = document.createElement('option');
+      o.value = r.sym;
+      o.label = r.name || '';
+      dl.appendChild(o);
+    });
+  }
+
+  function setMarket(m, btn) {
+    market = m;
+    document.querySelectorAll('#dcfMarket button').forEach(b => b.classList.toggle('on', b === btn));
+    selected = null;
+    loadMarket(m).then(() => { buildPicker(); applyVal(); resetCalc(); }).catch(() => setText('dcfValCount', '資料載入失敗'));
+  }
+
+  function activate() {
+    if (activated) return;
+    activated = true;
+    resetCalc();
+    loadMarket('tw').then(() => { buildPicker(); applyVal(); }).catch(() => setText('dcfValCount', '資料載入失敗'));
+  }
+
+  window.MKLAB_DCF = { activate, setMarket, applyVal, selectStock, calc, resetCalc };
+})();

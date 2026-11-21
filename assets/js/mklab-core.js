@@ -40,6 +40,13 @@
     roe:   { label:'ROE',     type:'num', sortable:true,  fmt:r=>(r.roe!=null?Number(r.roe).toFixed(2):'-') },
     roa:   { label:'ROA',     type:'num', sortable:true,  fmt:r=>(r.roa!=null?Number(r.roa).toFixed(2):'-') },
     div:   { label:'殖利率%', type:'num', sortable:true, defDir:-1, fmt:r=>r.div!=null?Number(r.div).toFixed(2)+'%':'-' },
+    // 2026-11-17：DCF 估值指標（由 assets/js/valuation.js 計算，僅 DCF 分頁使用）
+    val_graham: { label:'Graham',   type:'num', sortable:true, fmt:r=>r.val_graham!=null?Number(r.val_graham).toFixed(2):'-' },
+    val_pe:     { label:'PE 合理價', type:'num', sortable:true, fmt:r=>r.val_pe!=null?Number(r.val_pe).toFixed(2):'-' },
+    val_pb:     { label:'PB 合理價', type:'num', sortable:true, fmt:r=>r.val_pb!=null?Number(r.val_pb).toFixed(2):'-' },
+    val_yield:  { label:'殖利率價',  type:'num', sortable:true, fmt:r=>r.val_yield!=null?Number(r.val_yield).toFixed(2):'-' },
+    val_ref:    { label:'綜合參考價', type:'num', sortable:true, fmt:r=>r.val_ref!=null?Number(r.val_ref).toFixed(2):'-' },
+    val_upside: { label:'上漲空間%', type:'pct', sortable:true, defDir:-1, fmt:r=>r.val_upside!=null?cellPct(r.val_upside):'-' },
     shares:  { label:'張數',   type:'num', sortable:true, fmt:r=>r.lots!=null?Number(r.lots).toLocaleString(undefined,{maximumFractionDigits:3}):'-' },
     cost:    { label:'成本價', type:'num', sortable:true, fmt:r=>r.cost!=null?Number(r.cost).toLocaleString(undefined,{maximumFractionDigits:2}):'-' },
     mktVal:  { label:'市值',   type:'num', sortable:true, defDir:-1, fmt:r=>r.mktVal!=null?Math.round(r.mktVal).toLocaleString():'-' },

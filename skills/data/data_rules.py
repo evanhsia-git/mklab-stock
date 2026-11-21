@@ -243,6 +243,26 @@ def us_price_to_book(info: Dict[str, Any]) -> Optional[float]:
     return round(pb, 4)
 
 
+# ---------- 估值輸入（DCF 用，2026-11-17） ----------
+def _musd(v):
+    x = _num_or_none(v)
+    return round(x / 1e6, 2) if x is not None else None
+
+
+def us_valuation_inputs(info: Dict[str, Any]) -> Dict[str, Optional[float]]:
+    """DCF 所需的美股欄位，單位為「百萬」（USD 百萬、百萬股）。缺值一律 null，不補 0。
+    fcf_musd：自由現金流（yfinance freeCashflow，TTM）
+    cash_musd / debt_musd：現金與約當現金、總負債（含租賃，yfinance totalDebt）
+    shares_mln：已發行股數（sharesOutstanding）"""
+    shares = _num_or_none(info.get("sharesOutstanding"))
+    return {
+        "fcf_musd": _musd(info.get("freeCashflow")),
+        "cash_musd": _musd(info.get("totalCash")),
+        "debt_musd": _musd(info.get("totalDebt")),
+        "shares_mln": round(shares / 1e6, 4) if shares and shares > 0 else None,
+    }
+
+
 # ---------- 快照修復（用於既有 JSON） ----------
 # 美股快照的單位修復是「整批」層級：舊版程式把 yfinance 已是百分比的 dividendYield / ytdReturn
 # 又乘了 100，所以「每一筆」都放大 100 倍（不是只有離譜的幾筆）。因此以檔案 meta 的
