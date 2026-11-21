@@ -173,6 +173,35 @@
 MOPS 的 nas HTML 路徑則適合<b>回溯歷史月份</b>或需要<b>含上櫃公司</b>時使用。</p>
 <h3>XBRL / 財務報告</h3>
 <p>從 <a href="https://mops.twse.com.tw/" target="_blank" rel="noopener">MOPS 官網</a>進入財務報表與 XBRL 相關區域，查找財務報告、XBRL 分類標準及下載功能。可用於取得資產負債表、綜合損益表、現金流量表、權益變動表及會計師查核/核閱資訊。實際下載格式可能是 XBRL、HTML、PDF 或壓縮檔，應以當期下載介面為準。</p>
+
+<h3>現金流量表（合併）— MOPS 個別公司查詢</h3>
+<p>使用 mopsov 伺服器的 ajax endpoint，依公司代碼、年度、季別取得合併現金流量表（HTML 表格，非 JSON）。</p>
+<table><thead><tr><th>項目</th><th>說明</th></tr></thead><tbody>
+<tr><td>端點</td><td><code>https://mopsov.twse.com.tw/mops/web/ajax_t164sb05</code>（POST）</td></tr>
+<tr><td>TYPEK</td><td><code>sii</code>＝上市 / <code>otc</code>＝上櫃</td></tr>
+<tr><td>co_id</td><td>公司代號（例：2330 台積電）</td></tr>
+<tr><td>year / season</td><td>民國年（例 115）／季別（例 03）</td></tr>
+</tbody></table>
+<pre class="src-pre">POST https://mopsov.twse.com.tw/mops/web/ajax_t164sb05
+Content-Type: application/x-www-form-urlencoded
+
+encodeURIComponent=1&amp;step=1&amp;firstin=1&amp;off=1&amp;isQuery=Y&amp;TYPEK=sii&amp;co_id=2330&amp;year=115&amp;season=03</pre>
+<p class="muted-small-top">回應 <b>HTTP 200</b>，含「合併現金流量表」完整表格：營業活動之淨現金流入（流出）、投資活動、籌資活動、折舊費用、攤銷費用、取得不動產廠房及設備（CapEx）等，可據以計算自由現金流（FCF = CFO − CapEx）。</p>
+
+<h3>現金流量表（全市場彙總）— MOPS 彙總報表</h3>
+<table><thead><tr><th>項目</th><th>說明</th></tr></thead><tbody>
+<tr><td>端點</td><td><code>https://mopsov.twse.com.tw/mops/web/ajax_t163sb20</code>（POST）</td></tr>
+<tr><td>TYPEK</td><td><code>sii</code>＝上市 / <code>otc</code>＝上櫃</td></tr>
+<tr><td>year / season</td><td>民國年（例 115）／季別（例 03）</td></tr>
+</tbody></table>
+<pre class="src-pre">POST https://mopsov.twse.com.tw/mops/web/ajax_t163sb20
+Content-Type: application/x-www-form-urlencoded
+
+encodeURIComponent=1&amp;step=1&amp;firstin=1&amp;off=1&amp;TYPEK=sii&amp;year=115&amp;season=03</pre>
+<p class="muted-small-top">回應 <b>HTTP 200</b>，全市場彙總現金流量（營業、投資、籌資活動）。<b>直接以 mops.twse.com.tw（無 ov）呼叫會回安全性攔截頁</b>，須用 <code>mopsov.twse.com.tw</code> 並解析 HTML 表格。</p>
+
+<h3>財務比較 E 點通現金流量表</h3>
+<p>MOPS 財務比較（E 點通）另提供現金流量表與現金流量趨勢（營業、投資、籌資活動），可用 <code>t163sb20</code> 端點搭配市場別與年度/季別取得，供跨公司/跨業比較。</p>
 </div>
 <div class="card src-card"><h2>9. 直接下載與自動化範例</h2>
 <h3>使用 curl 下載 JSON</h3>
