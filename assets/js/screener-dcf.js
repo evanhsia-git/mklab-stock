@@ -51,18 +51,21 @@
 
   // ---------- 資料正規化 ----------
   function normTw(doc) {
-    return ((doc && doc.stocks) || [])
+    const rows = (doc && doc.stocks) || [];
+    return rows
       .filter(s => s.security_type === 'stock' && s.price > 0)
-      .map(s => ({
-        sym: s.sym, name: s.name, price: s.price, pe: s.pe, pb: s.pb, eps: s.eps,
-        group: s.ind || null,
-        cashDividend: s.div_cash_latest,           // 每股現金股利（NT$）
-        sharesMln: s.shares ? s.shares / 1e6 : null,
+      .map(s => {
+        const sharesMln = s.shares ? s.shares / 1e6 : null;
         // 基期自由現金流估算：以稅後淨利（EPS × 股數）近似，僅供參考（未扣資本支出）
-        fcf: s.eps != null && s.sharesMln != null ? Number((s.eps * s.sharesMln).toFixed(2)) : null,
-        netDebt: null,
-        currency: 'NT$',
-      }));
+        const fcf = (s.eps != null && sharesMln != null) ? Number((s.eps * sharesMln).toFixed(2)) : null;
+        return {
+          sym: s.sym, name: s.name, price: s.price, pe: s.pe, pb: s.pb, eps: s.eps,
+          group: s.ind || null,
+          cashDividend: s.div_cash_latest,           // 每股現金股利（NT$）
+          sharesMln, netDebt: null, currency: 'NT$',
+          fcf,
+        };
+      });
   }
   function normUs(doc) {
     return ((doc && doc.stocks) || [])
@@ -186,32 +189,30 @@
       return;
     }
     const price = selected ? selected.price : null;
+    const cur = selected ? selected.currency : '';
     const upside = (price && price > 0) ? (r.perShare / price - 1) * 100 : null;
-    const items = [
-      ['每股內在價值', fmtNum(r.perShare, 2) + (selected ? ' ' + selected.currency : '')],
-      ['目前股價', price != null ? fmtNum(price, 2) : '-'],
-      ['上漲／下跌空間', upside != null ? (upside >= 0 ? '+' : '') + fmtNum(upside, 1) + '%' : '-'],
-      ['企業價值 EV（百萬）', fmtNum(r.ev, 0)],
-      ['未來 10 年 FCF 現值（百萬）', fmtNum(r.pvFcf, 0)],
-      ['終值現值（百萬）', fmtNum(r.pvTv, 0)],
-      ['終值佔 EV 比例', r.tvShare != null ? fmtNum(r.tvShare, 1) + '%' : '-'],
-    ];
-    const dl = document.createElement('dl');
-    dl.className = 'dcf-summary';
-    items.forEach(([k, v]) => {
-      const dt = document.createElement('dt'); dt.textContent = k;
-      const dd = document.createElement('dd'); dd.textContent = v;
-      dl.appendChild(dt); dl.appendChild(dd);
-    });
-    out.appendChild(dl);
-    if (r.tvShare != null && r.tvShare > 75) {
-      const warn = document.createElement('p');
-      warn.className = 'muted-small-top';
-      warn.textContent = '提醒：終值佔比超過 75%，結果高度依賴永續成長率與折現率假設。';
-      out.appendChild(warn);
-    }
+    const mos = (price && price > 0) ? (r.perShare - price) / r.perShare * 100 : null; // vs intrinsic
+    const vd = verdictOf(mos);
 
-    // 敏感度表：WACC × 永續成長率
+    // --- 結論卡 ---
+    out.appendChild(heroCards(r.perShare, cur, price, upside, mos, vd));
+
+    // --- 簡易儀表（如低估/公允/高估） ---
+    out.appendChild(buildGauge(price, r.perShare));
+
+    // --- 文字解讀 ---
+    const readout = document.createElement('p');
+    readout.className = 'dcf-readout';
+    readout.textContent = readoutText(base, r, price, mos, vd);
+    out.appendChild(readout);
+
+    // --- 估值拆解表（未來10年FCF現值／終值／EV／淨負債／Equity） ---
+    out.appendChild(breakdownTable(r, base, base.shares));
+
+    // --- 5-年 FCF 現值柱狀圖（簡易條圖） ---
+    out.appendChild(fcfBars(r.fcfs));
+
+    // --- 敏感度表 ---
     const waccs = [-2, -1, 0, 1, 2].map(d => base.wacc + d).filter(w => w > base.gT);
     const gTs = [-1, -0.5, 0, 0.5, 1].map(d => base.gT + d);
     const grid = V.sensitivity(base, waccs, gTs);
@@ -238,6 +239,118 @@
       table.appendChild(tr);
     });
     sens.appendChild(table);
+  }
+
+  function verdictOf(mos) {
+    if (mos == null || !isFinite(mos)) return { cls: 'v-na', label: '資料不足' };
+    if (mos >= 40) return { cls: 'v-deep', label: '深度低估' };
+    if (mos >= 15) return { cls: 'v-under', label: '低估' };
+    if (mos >= -15) return { cls: 'v-fair', label: '合理' };
+    if (mos >= -40) return { cls: 'v-over', label: '高估' };
+    return { cls: 'v-deep-over', label: '嚴重高估' };
+  }
+  function pctFmt(x, dec) {
+    if (x == null || !isFinite(x)) return '-';
+    return (x >= 0 ? '+' : '') + Number(x).toFixed(dec || 1) + '%';
+  }
+  function heroCards(intrinsic, cur, price, upside, mos, vd) {
+    const wrap = document.createElement('div'); wrap.className = 'dcf-hero';
+    const card = document.createElement('div'); card.className = 'dcf-card';
+    card.innerHTML =
+      '<div class="k">每股內在價值</div>' +
+      '<div class="v ' + vd.cls + '">' + fmtNum(intrinsic, 2) + ' ' + cur + '</div>' +
+      '<div class="s">' + vd.label + '</div>';
+    const card2 = document.createElement('div'); card2.className = 'dcf-card';
+    card2.innerHTML =
+      '<div class="k">目前股價（' + cur + '）</div>' +
+      '<div class="v">' + fmtNum(price, 2) + '</div>' +
+      '<div class="s">安全邊際 <span class="dcf-verdict">' + pctFmt(mos) + '</span>' +
+      '（上漲空間 ' + pctFmt(upside) + '）</div>';
+    wrap.appendChild(card); wrap.appendChild(card2);
+    return wrap;
+  }
+  function buildGauge(price, intrinsic) {
+    const wrap = document.createElement('div');
+    wrap.className = 'dcf-gauge';
+    const track = document.createElement('div');
+    track.className = 'dcf-scale-track';
+    ['s1', 's2', 's3', 's4', 's5'].forEach(c => {
+      const seg = document.createElement('span'); seg.className = 'seg ' + c; track.appendChild(seg);
+    });
+    const needle = document.createElement('i');
+    needle.className = 'dcf-needle';
+    track.appendChild(needle);
+    wrap.appendChild(track);
+    const legend = document.createElement('div');
+    legend.className = 'dcf-scale-legend';
+    ['深度低估', '公允價值', '嚴重高估'].forEach(t => {
+      const s = document.createElement('span'); s.textContent = t; legend.appendChild(s);
+    });
+    wrap.appendChild(legend);
+    let p = 0.5;
+    if (intrinsic > 0 && price > 0) {
+      const ratio = price / intrinsic;  // 1.0 = 公允，<1 低估，>1 高估
+      p = Math.min(1, Math.max(0, (ratio - 0.5) / 1.0)); // 0.5→左(低估)  1→右(高估)
+    }
+    needle.style.left = Math.round(p * 100) + '%';
+    return wrap;
+  }
+  function readoutText(base, r, price, mos, vd) {
+    const g1 = base.g1, g2 = base.g2, gT = base.gT, wacc = base.wacc;
+    const tvShare = (r.tvShare == null) ? '-' : Number(r.tvShare.toFixed(0)) + '%';
+    let text = '';
+    if (price && price > 0 && intrinsicNum(r.perShare)) {
+      text += `在 g1 ${g1}%、g2 ${g2}、永續成長 ${gT}、WACC ${wacc}% 的假設下，每股內在價值約 NT$${fmtNum(r.perShare,2)}，較目前股價 NT$${fmtNum(price,2)} ${vd.label}（安全邊際 ${pctFmt(mos)}，上漲空間 ${pctFmt(upsideOf(r.perShare,price))}）。`;
+    } else {
+      text += `在 g1 ${g1}%、g2 ${g2}、永續成長 ${gT}、WACC ${wacc}% 的假設下，計算每股內在價值 ${fmtNum(r.perShare,2)}；${vd.label}。`;
+    }
+    text += ` 未來10年FCF現值佔 EV ${tvShare}，結果對 WACC 與永續成長率敏感，僅供研究參考，不構成投資建議。`;
+    return text;
+  }
+  function intrinsicNum(v){return v!=null&&isFinite(v);}
+  function upsideOf(intrinsic,price){return intrinsic>0&&price>0?(intrinsic/price-1)*100:null;}
+  function breakdownTable(r, base, sharesMln) {
+    const tbl = document.createElement('table'); tbl.className = 'dcf-table';
+    const rows = [
+      ['未來 10 年 FCF 現值', fmtNum(r.pvFcf, 0)],
+      ['終值現值', fmtNum(r.pvTv, 0)],
+      ['企業價值 EV', fmtNum(r.ev, 0)],
+      ['減：淨負債', fmtNum(base.netDebt, 0)],
+      ['股東權益值', fmtNum((r.ev - base.netDebt), 0)],
+      ['每股內在價值', fmtNum(r.perShare, 2)],
+    ];
+    rows.forEach(([k,v])=>{
+      const tr=document.createElement('tr');
+      const td=document.createElement('td'); td.textContent=k; tr.appendChild(td);
+      const td2=document.createElement('td'); td2.textContent=v; tr.appendChild(td2);
+      tbl.appendChild(tr);
+    });
+    const tr=document.createElement('tr'); tr.className='tot';
+    const td=document.createElement('td'); td.textContent='計算基期 FCF（稅後淨利估算）'; tr.appendChild(td);
+    const td2=document.createElement('td'); td2.textContent=fmtNum(base.fcf0,0)+' 百萬'; tr.appendChild(td2);
+    tbl.appendChild(tr);
+    return tbl;
+  }
+  function fcfBars(fcfs) {
+    const wrap = document.createElement('div');
+    wrap.className = 'dcf-bars';
+    const h = document.createElement('div');
+    h.className = 'k';
+    h.textContent = '未來 10 年 FCF 現值（條圖，百萬）';
+    wrap.appendChild(h);
+    const bars = document.createElement('div');
+    bars.className = 'dcf-bars-inner';
+    const maxPv = Math.max(...fcfs.map(f => f.pv)) || 1;
+    fcfs.forEach(f => {
+      const bar = document.createElement('div'); bar.className = 'bar';
+      const i = document.createElement('i'); i.style.height = (f.pv / maxPv * 100) + '%';
+      i.title = '第' + f.year + '年 FCF ' + fmtNum(f.fcf, 0) + '／現值 ' + fmtNum(f.pv, 0);
+      bar.appendChild(i);
+      const b = document.createElement('b'); b.textContent = 'Y' + f.year; bar.appendChild(b);
+      bars.appendChild(bar);
+    });
+    wrap.appendChild(bars);
+    return wrap;
   }
 
   // 清除個股選取與個股欄位，保留假設參數

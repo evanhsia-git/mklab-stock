@@ -8,6 +8,15 @@ class El {
   set textContent(v) { this._t = String(v); if (v === '') this.children = []; }
   get textContent() { return this._t; }
   appendChild(c) { this.children.push(c); return c; }
+  querySelector(sel) {
+    const s = sel.replace(/^\./, '');
+    for (const c of this.children) if (c.className === s || c.id === s) return c;
+    return null;
+  }
+  querySelectorAll(sel) {
+    const s = sel.replace(/^\./, '');
+    return this.children.filter(c => c.className === s || c.id === s);
+  }
 }
 const els = {};
 const document = {
@@ -104,10 +113,11 @@ async function t(name, fn) {
     DCF.calc();
     const out = el('dcfOut');
     assert.ok(out.children.length > 0, '沒有輸出');
-    const dl = out.children.find(c => c.className === 'dcf-summary');
-    assert.ok(dl, '缺少結果摘要');
-    const labels = dl.children.filter((_, i) => i % 2 === 0).map(c => c.textContent);
-    assert.ok(labels.includes('每股內在價值'));
+    // 新版輸出：結論卡、文字解讀、FCF 柱狀圖、估值拆解、敏感度
+    assert.ok(out.children.some(c => c.className && c.className.includes('dcf-hero')), '缺少結論卡');
+    assert.ok(out.children.some(c => c.className && c.className.includes('dcf-readout')), '缺少文字解讀');
+    assert.ok(out.children.some(c => c.className && c.className.includes('dcf-bars')), '缺少 FCF 柱狀圖');
+    assert.ok(out.children.length >= 4, '輸出區塊至少 4 段');
     const sens = el('dcfSens');
     const table = sens.children.find(c => c.className === 'dcf-sens');
     assert.ok(table, '缺少敏感度表');
