@@ -58,7 +58,8 @@
         group: s.ind || null,
         cashDividend: s.div_cash_latest,           // 每股現金股利（NT$）
         sharesMln: s.shares ? s.shares / 1e6 : null,
-        fcf: null,                                 // 台股目前沒有現金流量資料，需手動輸入
+        // 基期自由現金流估算：以稅後淨利（EPS × 股數）近似，僅供參考（未扣資本支出）
+        fcf: s.eps != null && s.sharesMln != null ? Number((s.eps * s.sharesMln).toFixed(2)) : null,
         netDebt: null,
         currency: 'NT$',
       }));
@@ -158,7 +159,7 @@
     setInput('dcf_fcf', s.fcf != null ? Number(s.fcf.toFixed(2)) : null);
     setInput('dcf_netdebt', s.netDebt != null ? Number(s.netDebt.toFixed(2)) : 0);
     if (market === 'tw') {
-      setText('dcfFcfHint', '台股目前沒有現金流量資料，請依財報或自行估算後手動輸入（NT$ 百萬）。');
+      setText('dcfFcfHint', '台股：已以稅後淨利（EPS × 股數）估算基期 FCF，僅供參考（未扣資本支出）；可依財報手動調整。');
     } else {
       setText('dcfFcfHint', s.fcf == null ? '此股票缺少自由現金流資料，請手動輸入。' : '已由 yfinance 預填（TTM 自由現金流，USD 百萬）。');
     }

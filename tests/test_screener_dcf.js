@@ -92,11 +92,11 @@ async function t(name, fn) {
     DCF.applyVal();
   });
 
-  await t('台股選股：自動帶入股數（百萬股）與股價，FCF 留空並提示手動輸入', async () => {
+  await t('台股選股：自動帶入股數（百萬股）與股價，FCF 以稅後淨利估算並提示可調整', async () => {
     DCF.selectStock('2330'); await tick();
     assert.ok(Math.abs(parseFloat(el('dcf_shares').value) - 25932.370067) < 0.01, 'shares=' + el('dcf_shares').value);
-    assert.strictEqual(el('dcf_fcf').value, '');
-    assert.ok(/手動輸入/.test(el('dcfFcfHint').textContent));
+    assert.ok(el('dcf_fcf').value !== '', 'FCF should be estimated from EPS × shares, not empty');
+    assert.ok(/估算/.test(el('dcfFcfHint').textContent));
   });
 
   await t('計算機：輸入 FCF 後產生每股內在價值與敏感度表', async () => {
