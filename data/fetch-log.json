@@ -1,19 +1,21 @@
 {
-  "mode": "twii",
+  "mode": "weekly",
   "success": true,
   "error": null,
-  "fetched": 0,
-  "written": 260,
+  "fetched": 37,
+  "written": 37,
   "skipped": false,
   "details": {
-    "twii_days": 260,
-    "twii_range": "2025-10-23~2026-11-19"
+    "roe_updated": 37
   },
-  "end": "2026-11-21 01:55:40",
-  "duration_sec": 0.7,
-  "start": "2026-11-21 01:55:39",
+  "end": "2026-11-22 01:07:44",
+  "duration_sec": 125.1,
+  "start": "2026-11-22 01:05:39",
   "log_lines": [
-    "[INFO] 開始抓取 TWII 加權指數 K 線 (yfinance ^TWII, 260 日窗口)",
-    "[INFO] TWII K 線寫入 260 天 → twii_kdata.js (2025-10-23~2026-11-19)"
+    "[INFO] 開始補 ROE/ROA（yfinance 免 key，sleep 3s 防 ban）",
+    "[INFO] 待補 37 檔",
+    "[INFO] Fetched industry map for 1098 stocks",
+    "[INFO] Applied industry classification to 0 stocks",
+    "[INFO] ROE/ROA 補齊 37 檔（備用來源）"
   ]
 }
