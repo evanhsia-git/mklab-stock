@@ -200,6 +200,12 @@ def main():
         r["management_fee"] = mgmt
         r["custody_fee"] = cust
         r["total_fee"] = total
+    # 2026-11-22：一律不寫 close（TPEx 早已如此；見 parse_tpex_json 的設計註解
+    # 「本站另有每日價量，不重複存」）。TWSE CSV 雖帶收盤欄，但週更會讓它過期
+    # （實例：0050 停在分割前 180.0）。全站無任何頁面顯示 etf-meta 的 close，
+    # 價格一律以 stocks.json 的 price 為準。
+    for r in etfs:
+        r.pop("close", None)
     # 護欄：來源異常導致檔數大減時不覆寫。
     # **逐市場**比對，不能只看總數——否則「TWSE 全掛、TPEx 正常」會通過護欄，
     # 寫出一份 TWSE 空掉的檔（前端會少掉一整個市場的 ETF）。

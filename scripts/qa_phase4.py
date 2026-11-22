@@ -94,16 +94,23 @@ def check_8_code_issuer_consistency():
     return issues
 
 def check_9_no_duplicate_holdings():
-    """Check holdings for duplicate codes"""
+    """Check holdings for duplicate codes
+    2026-11-22 起持股唯一來源為 data/etf-holdings.json（stocks.json 不再內嵌 holdings，
+    前端 portfolio/screener/compare 本就讀該檔），檢查改指向完整持股來源。"""
     issues = []
-    for r in etfs:
-        holdings = r.get('holdings')
-        if holdings:
-            codes = [h[0] if isinstance(h, list) else h.get('code') for h in holdings]
-            codes = [c for c in codes if c]
-            dupes = [code for code, count in Counter(codes).items() if count > 1]
-            if dupes:
-                issues.append(f"{r['sym']}: 成份股代碼重複={dupes}")
+    try:
+        with open('data/etf-holdings.json', encoding='utf-8') as f:
+            holdings_doc = json.load(f)
+    except Exception as e:  # noqa: BLE001
+        issues.append(f"data/etf-holdings.json 無法讀取（{type(e).__name__}）")
+        return issues
+    for sym, info in (holdings_doc.get('holdings') or {}).items():
+        items = (info or {}).get('items') or []
+        codes = [h[0] if isinstance(h, list) else h.get('code') for h in items]
+        codes = [c for c in codes if c]
+        dupes = [code for code, count in Counter(codes).items() if count > 1]
+        if dupes:
+            issues.append(f"{sym}: 成份股代碼重複={dupes}")
     return issues
 
 def check_10_all_fields_valid_types():

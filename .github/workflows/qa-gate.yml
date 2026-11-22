@@ -12,7 +12,7 @@ on:
       - '**.json'
       - '**.js'
       - '**.css'
-      - '.github/workflows/qa-gate.yml'
+      - '.github/workflows/**'
   pull_request:
     paths:
       - '**.py'

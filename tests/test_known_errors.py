@@ -378,6 +378,22 @@ _slim_present = sorted({k for s in _slim_doc['stocks'] for k in s if k in _SLIM_
 check("stocks.json 瘦身：9 個未使用欄位不得回歸", not _slim_present, f"又出現了 {_slim_present}")
 check("stocks.json 瘦身：單檔預算 1,300 KB", len(_slim_bytes) < 1300 * 1024,
       f"目前 {len(_slim_bytes)/1024:.0f} KB")
+# 防縮排回歸（2026-11-22）：檔案必須與緊湊序列化逐位元組一致。
+# 考古：11-10 瘦身後為緊湊格式，但 agent session 的臨時腳本用 json.dump(indent=2)
+# 重寫（11-21 c4533446、11-22 3236efea），使檔案膨脹回 3,103 KB。
+check("stocks.json 格式：必須為緊湊格式（防縮排回歸）",
+      _slim_bytes == json.dumps(_slim_doc, ensure_ascii=False, separators=(",", ":")).encode("utf-8"))
+# 防回歸（2026-11-22 瘦身 phase 2）：孤兒／無引用／全 null／重複欄位已移除，不得再出現。
+# official_* 與 data/official-fundamentals.json 逐筆重複；holdings 與 data/etf-holdings.json 重複；
+# 其餘為全 repo 無引用或全 null（custody_fee）。
+_PRUNED_P2 = ["annualized_return_3y", "annualized_return_5y", "custody_fee", "dividend_frequency",
+              "fee_checked_at", "holdings", "holdings_coverage_pct", "holdings_total_count",
+              "holdings_type", "holdings_verified", "last_distribution_date", "max_drawdown",
+              "return_10y", "return_3y", "sharpe_ratio", "volatility_1y"]
+_p2_present = sorted({k for s in _slim_doc['stocks'] for k in s
+                      if k in _PRUNED_P2 or k.startswith('official_')})
+check("stocks.json 瘦身 phase 2：已移除欄位不得回歸（official_*、無引用、holdings、custody_fee）",
+      not _p2_present, f"又出現了 {_p2_present[:8]}")
 _slim_writers = (_fd2 + _fin
                  + open('skills/data/compute_indicators.py', encoding='utf-8').read()
                  + open('skills/data/integrate_official_company.py', encoding='utf-8').read())
