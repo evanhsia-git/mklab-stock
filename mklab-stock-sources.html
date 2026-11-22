@@ -135,6 +135,8 @@
 <tr><td>外資持股比例</td><td><a href="https://openapi.twse.com.tw/v1/fund/MI_QFIIS_cat" target="_blank" rel="noopener">MI_QFIIS_cat</a></td><td><span class="src-tag json">JSON</span></td><td>外資持股分析</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
 <tr><td>外資持股前 20 名</td><td><a href="https://openapi.twse.com.tw/v1/fund/MI_QFIIS_sort_20" target="_blank" rel="noopener">MI_QFIIS_sort_20</a></td><td><span class="src-tag json">JSON</span></td><td>外資持股排行</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
 <tr><td>除權息預告</td><td><a href="https://openapi.twse.com.tw/v1/exchangeReport/TWT48U_ALL" target="_blank" rel="noopener">TWT48U_ALL</a></td><td><span class="src-tag json">JSON</span></td><td>除權息事件日曆</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td><strong>集保戶股權分散表（16 級持股分級）</strong></td><td><a href="https://openapi.tdcc.com.tw/v1/opendata/1-5" target="_blank" rel="noopener">openapi.tdcc.com.tw/v1/opendata/1-5</a>（集保 TDCC OpenAPI）</td><td><span class="src-tag json">JSON</span></td><td>全市場逐檔逐級：持股分級 1–16（1 張以下→1000 張以上）之人數／股數／占集保庫存比例，資料日期 T-1。免 key；⚠️ 中文欄名且首欄名帶 U+FEFF BOM（讀取需 strip）；134 端點規格見 <code>/tdcc-opendata-api-docs</code></td><td class="ap-notapplied">🧪 已實測 2026-11-22<br><small>資料日期 20261120；籌碼分布潛在來源（散戶/大戶輪動）</small></td></tr>
+<tr><td><strong>期交所期貨／選擇權籌碼（三大法人、Put/Call 比、大額交易人）</strong></td><td><a href="https://openapi.taifex.com.tw/swagger.json" target="_blank" rel="noopener">openapi.taifex.com.tw</a>（TAIFEX OpenAPI，135 端點）</td><td><span class="src-tag json">JSON</span></td><td>期貨/選擇權每日行情、三大法人（日期/週別×多種切分）、臺指選擇權 Put/Call 比、大額交易人未沖銷部位、保證金一覽表（含股票類/ETF 類）、最後結算價。⚠️ 2026-11-22 自 VPS 實測：資料端點回 Swagger UI 殼——疑似限台灣 IP 或限時開放，待台灣網路環境再驗</td><td class="ap-notapplied">🧪 規格已解析 2026-11-22<br><small>135 端點清單取得；資料存取待驗證</small></td></tr>
 </tbody></table></div>
 </div>
 <div class="card src-card"><h2>6. ETF、基金與權證</h2>
@@ -146,6 +148,7 @@
 <tr><td>上市權證基本資料</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap37_L" target="_blank" rel="noopener">t187ap37_L</a></td><td><span class="src-tag json">JSON</span></td><td>權證主檔</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
 <tr><td>上市權證每日成交資料</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap42_L" target="_blank" rel="noopener">t187ap42_L</a></td><td><span class="src-tag json">JSON</span></td><td>權證交易分析</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
 <tr><td>上市權證交易人數</td><td><a href="https://openapi.twse.com.tw/v1/opendata/t187ap43_L" target="_blank" rel="noopener">t187ap43_L</a></td><td><span class="src-tag json">JSON</span></td><td>權證交易人數統計</td><td class="ap-notapplied">— 未應用<br><small>尚未導入</small></td></tr>
+<tr><td><strong>集中保管 ETF 月分析表</strong></td><td><a href="https://openapi.tdcc.com.tw/v1/opendata/2-41" target="_blank" rel="noopener">openapi.tdcc.com.tw/v1/opendata/2-41</a>（集保 TDCC OpenAPI）</td><td><span class="src-tag json">JSON</span></td><td>逐檔 ETF：集保戶數、本/前月底保管數、月增減數額與百分比（受益人結構月度趨勢）。免 key；中文欄名含 BOM 前綴</td><td class="ap-notapplied">🧪 已實測 2026-11-22<br><small>資料年月 202610；可對照 beneficiaries 欄做月變化追蹤</small></td></tr>
 </tbody></table></div>
 <p class="src-note"><strong>ETF 成分股提醒：</strong>ETF 基本資料、ETF 排行、ETF 每日持股明細是不同資料。若要取得 0050、006208、009816、00981A 等 ETF 的完整成分股，應另外查詢投信基金公司、指數公司及交易所官方揭露，並確認更新頻率與歷史檔案。</p>
 </div>
