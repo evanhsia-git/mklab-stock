@@ -1,8 +1,8 @@
 {
   "meta": {
-    "as_of": "2026-11-16",
+    "as_of": "2026-11-23",
     "rules_version": "4.0.0",
-    "count": 359,
+    "count": 360,
     "excluded_count": 6,
     "excluded_syms": [
       "00635U",
@@ -13,13 +13,13 @@
       "00763U"
     ],
     "category_counts": {
-      "active": 37,
+      "active": 38,
       "dividend_high": 33,
       "active_cap": 24,
-      "tech": 33,
-      "theme": 78,
-      "global": 80,
-      "market_cap": 91,
+      "tech": 35,
+      "theme": 80,
+      "global": 81,
+      "market_cap": 90,
       "fx": 6,
       "leveraged": 21,
       "inverse": 20,
@@ -281,14 +281,18 @@
       "pay_frequency": null
     },
     {
-      "sym": "0050",
-      "name": "元大台灣50",
+      "sym": "00420A",
+      "name": "主動野村亞洲科技",
       "market": "TWSE",
       "categories": [
-        "market_cap"
+        "active",
+        "tech",
+        "theme"
       ],
       "category_reasons": {
-        "market_cap": "一般指數型，預設被動市值型"
+        "active": "尾碼 A",
+        "tech": "名稱含「科技」",
+        "theme": "科技型歸主題型"
       },
       "pay_frequency": null
     },
@@ -2911,6 +2915,22 @@
       ],
       "category_reasons": {
         "market_cap": "一般指數型，預設被動市值型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "009833",
+      "name": "野村韓國科技30",
+      "market": "TWSE",
+      "categories": [
+        "global",
+        "tech",
+        "theme"
+      ],
+      "category_reasons": {
+        "tech": "名稱含「科技」",
+        "global": "名稱含「韓國」",
+        "theme": "科技型歸主題型"
       },
       "pay_frequency": null
     },
