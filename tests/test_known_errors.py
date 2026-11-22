@@ -394,6 +394,14 @@ _p2_present = sorted({k for s in _slim_doc['stocks'] for k in s
                       if k in _PRUNED_P2 or k.startswith('official_')})
 check("stocks.json 瘦身 phase 2：已移除欄位不得回歸（official_*、無引用、holdings、custody_fee）",
       not _p2_present, f"又出現了 {_p2_present[:8]}")
+
+# ETF 每日淨值快照（2026-11-22 新增：TWSE MIS 反向 API，每日盤後累積）
+_nav_bytes = open('data/etf-nav.json', 'rb').read()
+_nav_doc = json.loads(_nav_bytes)
+check("ETF 每日淨值：快照涵蓋 ≥300 檔", len(_nav_doc.get('navs') or {}) >= 300,
+      f"目前 {len((_nav_doc.get('navs') or {}))} 檔")
+check("ETF 每日淨值：檔案為緊湊格式",
+      _nav_bytes == json.dumps(_nav_doc, ensure_ascii=False, separators=(",", ":")).encode("utf-8"))
 _slim_writers = (_fd2 + _fin
                  + open('skills/data/compute_indicators.py', encoding='utf-8').read()
                  + open('skills/data/integrate_official_company.py', encoding='utf-8').read())

@@ -109,6 +109,8 @@
     market_cap: { label:'市值(元)', type:'num', sortable:true, fmt:r=>r.market_cap!=null?r.market_cap:'-' },
     beneficiaries: { label:'受益人數', type:'num', sortable:true, defDir:-1, fmt:r=>r.beneficiaries!=null?Number(r.beneficiaries).toLocaleString():'-' },
     net_assets_100m: { label:'資產規模(億元)', type:'num', sortable:true, defDir:-1, fmt:r=>r.net_assets_100m!=null?Number(r.net_assets_100m).toLocaleString():'-' },
+    // 折溢價%＝(市價−淨值)/淨值（2026-11-22 新增，來源 data/etf-nav.json：TWSE MIS 每日淨值）
+    premium_discount: { label:'折溢價%', type:'pct', sortable:true, fmt:r=>r.premium_discount_pct!=null?cellPct(r.premium_discount_pct):'-' },
     w1:    { label:'1週',     type:'pct', sortable:true,  fmt:r=>cellPct(r.w1) },
     m1:    { label:'1月',     type:'pct', sortable:true,  fmt:r=>cellPct(r.m1) },
     m3:    { label:'3月',     type:'pct', sortable:true,  fmt:r=>cellPct(r.m3) },

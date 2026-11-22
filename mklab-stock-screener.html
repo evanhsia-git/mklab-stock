@@ -510,7 +510,7 @@
     }
     // 成份股與費用率是選用欄位：勾選時才加入欄位並附上文字（預設不顯示；其他頁面完全沒有此欄位）
     // 2026-11-22：移除 custody_fee 欄——MoneyDJ 無保管費資料，etf-meta 的 AUM 階梯推算值不對外顯示（口徑：不誤導）
-    const baseCols = ['sym','name','price','chg','div','net_assets_100m','management_fee','total_fee','listing_date'];
+    const baseCols = ['sym','name','price','chg','div','net_assets_100m','premium_discount','management_fee','total_fee','listing_date'];
     const cols = etfShowHoldings ? baseCols.concat(['holdings10']) : baseCols;
     if (etfShowHoldings) rows = rows.map(r => Object.assign({}, r, { holdings10: holdingsText(r.sym) }));
     const countEl = document.getElementById('etfScrCount');
@@ -528,11 +528,12 @@
 
   async function loadEtfScreener(){
     try {
-      const [meta, cls, stockDoc, holdDoc] = await Promise.all([
+      const [meta, cls, stockDoc, holdDoc, navDoc] = await Promise.all([
         MKLAB.data.json('etf-meta'),
         MKLAB.data.json('etf-classified'),
         MKLAB.data.json('stocks').catch(()=>null),
         MKLAB.data.json('etf-holdings').catch(()=>null),
+        MKLAB.data.json('etf-nav').catch(()=>null),
       ]);
       // 優先採用頁面內嵌的完整資料（自帶、不依賴額外請求）；沒有才用外部 JSON
       etfHoldingsDoc = readEmbeddedHoldings() || holdDoc;
@@ -546,10 +547,12 @@
         .filter(m => catMap[m.sym])
         .map(m => {
           const live = priceMap[m.sym] || {};
+          const navRow = (navDoc && navDoc.navs) ? navDoc.navs[m.sym] : null;
           // 2026-11-22 費用權威階梯：發行商公告（official）＞ MoneyDJ 實抓（stocks.json，fee_verified=pending）
           // ＞ AUM 階梯推算（僅內部參考）。畫面費用一律吃 stocks.json；custody_fee 明確歸 null（無可靠來源不顯示）。
           return Object.assign({}, m, {
             price: live.price, chg: live.chg, div: live.div,
+            premium_discount_pct: navRow ? navRow.premium_discount_pct : null,
             management_fee: live.management_fee != null ? live.management_fee : null,
             total_fee: live.total_fee != null ? live.total_fee : null,
             custody_fee: null,
