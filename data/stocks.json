@@ -532,7 +532,12 @@
       "holdings_type": "equity",
       "return_3y": 184.31,
       "return_10y": 555.41,
-      "dividend_frequency": "5x/year"
+      "dividend_frequency": "5x/year",
+      "max_drawdown": -33.83,
+      "volatility_1y": 31.86,
+      "sharpe_ratio": 0.93,
+      "annualized_return_3y": 41.67,
+      "annualized_return_5y": 23.31
     },
     {
       "sym": "2881",
@@ -1833,7 +1838,12 @@
       "holdings_type": "equity",
       "return_3y": 73.68,
       "return_10y": 299.94,
-      "dividend_frequency": "quarterly"
+      "dividend_frequency": "quarterly",
+      "max_drawdown": -26.89,
+      "volatility_1y": 25.03,
+      "sharpe_ratio": 0.88,
+      "annualized_return_3y": 20.2,
+      "annualized_return_5y": 16.95
     },
     {
       "sym": "2884",
@@ -2282,7 +2292,12 @@
       "holdings_type": "equity",
       "return_3y": 81.03,
       "return_10y": 199.4,
-      "dividend_frequency": "quarterly"
+      "dividend_frequency": "quarterly",
+      "max_drawdown": -22.29,
+      "volatility_1y": 22.18,
+      "sharpe_ratio": 1.03,
+      "annualized_return_3y": 21.87,
+      "annualized_return_5y": 18.47
     },
     {
       "sym": "2890",
@@ -2569,7 +2584,11 @@
       "holdings_type": "equity",
       "return_3y": 88.34,
       "return_10y": 174.15,
-      "dividend_frequency": "quarterly"
+      "dividend_frequency": "quarterly",
+      "max_drawdown": -23.39,
+      "volatility_1y": 19.97,
+      "sharpe_ratio": 1.46,
+      "annualized_return_3y": 23.49
     },
     {
       "sym": "2059",
@@ -3743,7 +3762,12 @@
       "holdings_type": "equity",
       "return_3y": 184.48,
       "return_10y": 560.84,
-      "dividend_frequency": "quarterly"
+      "dividend_frequency": "quarterly",
+      "max_drawdown": -33.81,
+      "volatility_1y": 31.91,
+      "sharpe_ratio": 0.95,
+      "annualized_return_3y": 41.69,
+      "annualized_return_5y": 23.32
     },
     {
       "sym": "4958",
@@ -4957,7 +4981,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": 245.37,
-      "return_10y": 1851.06
+      "return_10y": 1851.06,
+      "max_drawdown": -55.14,
+      "volatility_1y": 62.97,
+      "sharpe_ratio": 0.75,
+      "annualized_return_3y": 51.16,
+      "annualized_return_5y": 28.54
     },
     {
       "sym": "3036",
@@ -5286,7 +5315,10 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": 97.83
+      "return_10y": 97.83,
+      "max_drawdown": -43.09,
+      "volatility_1y": 46.31,
+      "sharpe_ratio": 1.33
     },
     {
       "sym": "2449",
@@ -5683,7 +5715,8 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": 26.0
+      "return_10y": 26.0,
+      "max_drawdown": -26.14
     },
     {
       "sym": "1590",
@@ -6722,7 +6755,11 @@
       "holdings_type": "equity",
       "return_3y": 105.81,
       "return_10y": 195.36,
-      "dividend_frequency": "quarterly"
+      "dividend_frequency": "quarterly",
+      "max_drawdown": -23.69,
+      "volatility_1y": 21.29,
+      "sharpe_ratio": 1.58,
+      "annualized_return_3y": 27.2
     },
     {
       "sym": "6213",
@@ -7064,7 +7101,12 @@
       "holdings_type": "equity",
       "return_3y": -57.86,
       "return_10y": 20.32,
-      "dividend_frequency": "semi-annual"
+      "dividend_frequency": "semi-annual",
+      "max_drawdown": -86.58,
+      "volatility_1y": 92.14,
+      "sharpe_ratio": 0.11,
+      "annualized_return_3y": -25.03,
+      "annualized_return_5y": -17.96
     },
     {
       "sym": "3702",
@@ -7321,7 +7363,11 @@
       "holdings_type": "equity",
       "return_3y": 56.01,
       "return_10y": 86.01,
-      "dividend_frequency": "monthly"
+      "dividend_frequency": "monthly",
+      "max_drawdown": -29.78,
+      "volatility_1y": 30.76,
+      "sharpe_ratio": 0.89,
+      "annualized_return_3y": 15.98
     },
     {
       "sym": "1504",
@@ -7903,7 +7949,12 @@
       "holdings_type": "equity",
       "return_3y": 181.86,
       "return_10y": 270.34,
-      "dividend_frequency": "semi-annual"
+      "dividend_frequency": "semi-annual",
+      "max_drawdown": -33.82,
+      "volatility_1y": 36.04,
+      "sharpe_ratio": 0.94,
+      "annualized_return_3y": 41.26,
+      "annualized_return_5y": 24.99
     },
     {
       "sym": "6415",
@@ -8861,7 +8912,8 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": -29.8
+      "return_10y": -29.8,
+      "max_drawdown": -38.64
     },
     {
       "sym": "6789",
@@ -9042,7 +9094,12 @@
       "holdings_type": "equity",
       "return_3y": 54.7,
       "return_10y": 246.85,
-      "dividend_frequency": "5x/year"
+      "dividend_frequency": "5x/year",
+      "max_drawdown": -18.42,
+      "volatility_1y": 13.07,
+      "sharpe_ratio": 1.06,
+      "annualized_return_3y": 15.66,
+      "annualized_return_5y": 14.92
     },
     {
       "sym": "6526",
@@ -10526,7 +10583,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 234.56,
-      "return_10y": 1531.99
+      "return_10y": 1531.99,
+      "max_drawdown": -54.81,
+      "volatility_1y": 64.12,
+      "sharpe_ratio": 0.76,
+      "annualized_return_3y": 49.56,
+      "annualized_return_5y": 28.99
     },
     {
       "sym": "6442",
@@ -10909,7 +10971,12 @@
       "holdings_type": "equity",
       "return_3y": 165.12,
       "return_10y": 552.35,
-      "dividend_frequency": "annual"
+      "dividend_frequency": "annual",
+      "max_drawdown": -41.22,
+      "volatility_1y": 43.54,
+      "sharpe_ratio": 0.73,
+      "annualized_return_3y": 38.4,
+      "annualized_return_5y": 23.78
     },
     {
       "sym": "1229",
@@ -11164,7 +11231,11 @@
       "holdings_type": "equity",
       "return_3y": 149.88,
       "return_10y": 174.03,
-      "dividend_frequency": "semi-annual"
+      "dividend_frequency": "semi-annual",
+      "max_drawdown": -29.2,
+      "volatility_1y": 32.32,
+      "sharpe_ratio": 1.25,
+      "annualized_return_3y": 35.7
     },
     {
       "sym": "6196",
@@ -12001,7 +12072,11 @@
       "holdings_type": "equity",
       "return_3y": 130.14,
       "return_10y": 146.05,
-      "dividend_frequency": "quarterly"
+      "dividend_frequency": "quarterly",
+      "max_drawdown": -34.96,
+      "volatility_1y": 40.44,
+      "sharpe_ratio": 1.04,
+      "annualized_return_3y": 32.03
     },
     {
       "sym": "1717",
@@ -12725,7 +12800,12 @@
       "holdings_type": "equity",
       "return_3y": 145.04,
       "return_10y": 165.71,
-      "dividend_frequency": "quarterly"
+      "dividend_frequency": "quarterly",
+      "max_drawdown": -44.71,
+      "volatility_1y": 38.24,
+      "sharpe_ratio": 0.7,
+      "annualized_return_3y": 34.82,
+      "annualized_return_5y": 18.35
     },
     {
       "sym": "2915",
@@ -13263,7 +13343,10 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_10y": 20.38,
-      "dividend_frequency": "monthly"
+      "dividend_frequency": "monthly",
+      "max_drawdown": -26.3,
+      "volatility_1y": 20.97,
+      "sharpe_ratio": 0.4
     },
     {
       "sym": "2889",
@@ -14211,7 +14294,8 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": 7.73
+      "return_10y": 7.73,
+      "max_drawdown": -49.49
     },
     {
       "sym": "2258",
@@ -14535,7 +14619,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 68.49,
-      "return_10y": 257.73
+      "return_10y": 257.73,
+      "max_drawdown": -19.57,
+      "volatility_1y": 13.58,
+      "sharpe_ratio": 0.75,
+      "annualized_return_3y": 18.99,
+      "annualized_return_5y": 13.51
     },
     {
       "sym": "6944",
@@ -14941,7 +15030,12 @@
       "holdings_type": "equity",
       "return_3y": 157.7,
       "return_10y": 456.97,
-      "dividend_frequency": "semi-annual"
+      "dividend_frequency": "semi-annual",
+      "max_drawdown": -30.87,
+      "volatility_1y": 30.33,
+      "sharpe_ratio": 0.92,
+      "annualized_return_3y": 37.1,
+      "annualized_return_5y": 21.46
     },
     {
       "sym": "3030",
@@ -15563,7 +15657,10 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_10y": 206.85,
-      "dividend_frequency": "semi-annual"
+      "dividend_frequency": "semi-annual",
+      "max_drawdown": -37.66,
+      "volatility_1y": 43.2,
+      "sharpe_ratio": 1.28
     },
     {
       "sym": "1907",
@@ -15820,7 +15917,10 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_10y": 13.18,
-      "dividend_frequency": "monthly"
+      "dividend_frequency": "monthly",
+      "max_drawdown": -11.33,
+      "volatility_1y": 3.55,
+      "sharpe_ratio": 0.59
     },
     {
       "sym": "00712",
@@ -15932,7 +16032,12 @@
       "holdings_type": "equity",
       "return_3y": -11.68,
       "return_10y": -33.72,
-      "dividend_frequency": "6x/year"
+      "dividend_frequency": "6x/year",
+      "max_drawdown": -33.82,
+      "volatility_1y": 16.32,
+      "sharpe_ratio": -0.33,
+      "annualized_return_3y": -4.06,
+      "annualized_return_5y": -7.16
     },
     {
       "sym": "8112",
@@ -16986,7 +17091,10 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": 16.4
+      "return_10y": 16.4,
+      "max_drawdown": -50.95,
+      "volatility_1y": 51.5,
+      "sharpe_ratio": 0.51
     },
     {
       "sym": "4766",
@@ -17318,7 +17426,10 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_10y": 62.52,
-      "dividend_frequency": "quarterly"
+      "dividend_frequency": "quarterly",
+      "max_drawdown": -42.02,
+      "volatility_1y": 43.71,
+      "sharpe_ratio": 1.03
     },
     {
       "sym": "2504",
@@ -17865,7 +17976,8 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": 13.77
+      "return_10y": 13.77,
+      "max_drawdown": -45.27
     },
     {
       "sym": "3715",
@@ -18173,7 +18285,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 108.14,
-      "return_10y": 526.5
+      "return_10y": 526.5,
+      "max_drawdown": -40.9,
+      "volatility_1y": 24.73,
+      "sharpe_ratio": 0.7,
+      "annualized_return_3y": 27.68,
+      "annualized_return_5y": 18.99
     },
     {
       "sym": "2421",
@@ -18995,7 +19112,12 @@
       "holdings_type": "equity",
       "return_3y": 147.24,
       "return_10y": 376.63,
-      "dividend_frequency": "quarterly"
+      "dividend_frequency": "quarterly",
+      "max_drawdown": -28.34,
+      "volatility_1y": 31.88,
+      "sharpe_ratio": 0.92,
+      "annualized_return_3y": 35.22,
+      "annualized_return_5y": 21.41
     },
     {
       "sym": "3019",
@@ -19180,7 +19302,11 @@
       "holdings_type": "equity",
       "return_3y": 144.42,
       "return_10y": 170.32,
-      "dividend_frequency": "semi-annual"
+      "dividend_frequency": "semi-annual",
+      "max_drawdown": -29.78,
+      "volatility_1y": 33.39,
+      "sharpe_ratio": 1.21,
+      "annualized_return_3y": 34.7
     },
     {
       "sym": "6116",
@@ -20873,7 +20999,12 @@
       "holdings_type": "equity",
       "return_3y": 70.16,
       "return_10y": 51.65,
-      "dividend_frequency": "semi-annual"
+      "dividend_frequency": "semi-annual",
+      "max_drawdown": -28.16,
+      "volatility_1y": 14.05,
+      "sharpe_ratio": 0.53,
+      "annualized_return_3y": 19.39,
+      "annualized_return_5y": 10.08
     },
     {
       "sym": "00990A",
@@ -20979,7 +21110,8 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": 17.8
+      "return_10y": 17.8,
+      "max_drawdown": -45.79
     },
     {
       "sym": "8028",
@@ -21284,7 +21416,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": 161.92,
-      "return_10y": -24.35
+      "return_10y": -24.35,
+      "max_drawdown": -69.13,
+      "volatility_1y": 32.5,
+      "sharpe_ratio": 0.38,
+      "annualized_return_3y": 37.85,
+      "annualized_return_5y": 19.69
     },
     {
       "sym": "2204",
@@ -22056,7 +22193,10 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_10y": 61.77,
-      "dividend_frequency": "monthly"
+      "dividend_frequency": "monthly",
+      "max_drawdown": -18.28,
+      "volatility_1y": 21.44,
+      "sharpe_ratio": 1.01
     },
     {
       "sym": "00400A",
@@ -22164,7 +22304,8 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_10y": 2.26,
-      "dividend_frequency": "5x/year"
+      "dividend_frequency": "5x/year",
+      "max_drawdown": -39.97
     },
     {
       "sym": "6456",
@@ -22386,7 +22527,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": 226.76,
-      "return_10y": 1775.26
+      "return_10y": 1775.26,
+      "max_drawdown": -55.24,
+      "volatility_1y": 64.6,
+      "sharpe_ratio": 0.74,
+      "annualized_return_3y": 48.39,
+      "annualized_return_5y": 28.08
     },
     {
       "sym": "3413",
@@ -22932,7 +23078,12 @@
       "holdings_type": "equity",
       "return_3y": 59.62,
       "return_10y": 63.6,
-      "dividend_frequency": "monthly"
+      "dividend_frequency": "monthly",
+      "max_drawdown": -31.57,
+      "volatility_1y": 22.67,
+      "sharpe_ratio": 0.59,
+      "annualized_return_3y": 16.87,
+      "annualized_return_5y": 10.92
     },
     {
       "sym": "2535",
@@ -23266,7 +23417,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": -65.01,
-      "return_10y": 4.24
+      "return_10y": 4.24,
+      "max_drawdown": -82.61,
+      "volatility_1y": 82.28,
+      "sharpe_ratio": -0.06,
+      "annualized_return_3y": -29.53,
+      "annualized_return_5y": -18.56
     },
     {
       "sym": "2362",
@@ -23593,7 +23749,10 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": 61.62
+      "return_10y": 61.62,
+      "max_drawdown": -34.25,
+      "volatility_1y": 33.67,
+      "sharpe_ratio": 1.3
     },
     {
       "sym": "5234",
@@ -28199,7 +28358,12 @@
       "holdings_verified": "partial",
       "holdings_type": "bond",
       "return_3y": 16.59,
-      "return_10y": 27.0
+      "return_10y": 27.0,
+      "max_drawdown": -12.13,
+      "volatility_1y": 4.1,
+      "sharpe_ratio": 1.06,
+      "annualized_return_3y": 5.25,
+      "annualized_return_5y": 7.08
     },
     {
       "sym": "2103",
@@ -29139,7 +29303,8 @@
       "holdings_verified": "partial",
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
-      "return_10y": -44.3
+      "return_10y": -44.3,
+      "max_drawdown": -44.41
     },
     {
       "sym": "3149",
@@ -31231,7 +31396,11 @@
       "holdings_type": "equity",
       "return_3y": 71.96,
       "return_10y": 157.61,
-      "dividend_frequency": "5x/year"
+      "dividend_frequency": "5x/year",
+      "max_drawdown": -25.06,
+      "volatility_1y": 20.07,
+      "sharpe_ratio": 1.38,
+      "annualized_return_3y": 19.8
     },
     {
       "sym": "00670L",
@@ -31310,7 +31479,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": 80.37,
-      "return_10y": 664.75
+      "return_10y": 664.75,
+      "max_drawdown": -64.47,
+      "volatility_1y": 43.36,
+      "sharpe_ratio": 0.28,
+      "annualized_return_3y": 21.73,
+      "annualized_return_5y": 3.21
     },
     {
       "sym": "3592",
@@ -31992,7 +32166,10 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_10y": 75.8,
-      "dividend_frequency": "quarterly"
+      "dividend_frequency": "quarterly",
+      "max_drawdown": -40.4,
+      "volatility_1y": 39.39,
+      "sharpe_ratio": 1.24
     },
     {
       "sym": "2010",
@@ -32173,7 +32350,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 113.87,
-      "return_10y": 150.8
+      "return_10y": 150.8,
+      "max_drawdown": -42.54,
+      "volatility_1y": 30.54,
+      "sharpe_ratio": 0.6,
+      "annualized_return_3y": 28.84,
+      "annualized_return_5y": 16.16
     },
     {
       "sym": "3028",
@@ -32616,7 +32798,11 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": 77.38,
-      "return_10y": 103.4
+      "return_10y": 103.4,
+      "max_drawdown": -24.36,
+      "volatility_1y": 17.64,
+      "sharpe_ratio": 1.08,
+      "annualized_return_3y": 21.05
     },
     {
       "sym": "4551",
@@ -32800,7 +32986,10 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_10y": 93.81,
-      "dividend_frequency": "monthly"
+      "dividend_frequency": "monthly",
+      "max_drawdown": -28.57,
+      "volatility_1y": 25.77,
+      "sharpe_ratio": 1.08
     },
     {
       "sym": "1710",
@@ -33124,7 +33313,12 @@
       "holdings_type": "equity",
       "return_3y": 16.09,
       "return_10y": 13.88,
-      "dividend_frequency": "6x/year"
+      "dividend_frequency": "6x/year",
+      "max_drawdown": -25.68,
+      "volatility_1y": 7.61,
+      "sharpe_ratio": -0.17,
+      "annualized_return_3y": 5.1,
+      "annualized_return_5y": -0.89
     },
     {
       "sym": "8908",
@@ -33839,7 +34033,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": 7.5,
-      "return_10y": 17.83
+      "return_10y": 17.83,
+      "max_drawdown": -57.74,
+      "volatility_1y": 33.24,
+      "sharpe_ratio": -0.04,
+      "annualized_return_3y": 2.44,
+      "annualized_return_5y": -7.26
     },
     {
       "sym": "2031",
@@ -36034,7 +36233,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": -52.71,
-      "return_10y": 170.04
+      "return_10y": 170.04,
+      "max_drawdown": -90.68,
+      "volatility_1y": 64.26,
+      "sharpe_ratio": 0.29,
+      "annualized_return_3y": -22.09,
+      "annualized_return_5y": -14.58
     },
     {
       "sym": "3022",
@@ -36267,7 +36471,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": 46.63,
-      "return_10y": -47.5
+      "return_10y": -47.5,
+      "max_drawdown": -75.0,
+      "volatility_1y": 58.1,
+      "sharpe_ratio": 0.42,
+      "annualized_return_3y": 13.61,
+      "annualized_return_5y": -3.65
     },
     {
       "sym": "4441",
@@ -36666,7 +36875,10 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_10y": 15.97,
-      "dividend_frequency": "monthly"
+      "dividend_frequency": "monthly",
+      "max_drawdown": -13.02,
+      "volatility_1y": 3.49,
+      "sharpe_ratio": 0.63
     },
     {
       "sym": "2338",
@@ -37644,7 +37856,8 @@
       "holdings_verified": "partial",
       "holdings_type": "bond",
       "return_10y": 2.02,
-      "dividend_frequency": "6x/year"
+      "dividend_frequency": "6x/year",
+      "max_drawdown": -4.1
     },
     {
       "sym": "7780",
@@ -37989,7 +38202,12 @@
       "holdings_type": "equity",
       "return_3y": 82.69,
       "return_10y": 104.92,
-      "dividend_frequency": "quarterly"
+      "dividend_frequency": "quarterly",
+      "max_drawdown": -30.51,
+      "volatility_1y": 32.78,
+      "sharpe_ratio": 0.71,
+      "annualized_return_3y": 22.25,
+      "annualized_return_5y": 15.71
     },
     {
       "sym": "00947",
@@ -38100,7 +38318,10 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_10y": 69.25,
-      "dividend_frequency": "quarterly"
+      "dividend_frequency": "quarterly",
+      "max_drawdown": -42.6,
+      "volatility_1y": 52.37,
+      "sharpe_ratio": 0.72
     },
     {
       "sym": "3416",
@@ -39946,7 +40167,12 @@
       "holdings_type": "equity",
       "return_3y": 149.33,
       "return_10y": 137.25,
-      "dividend_frequency": "semi-annual"
+      "dividend_frequency": "semi-annual",
+      "max_drawdown": -49.17,
+      "volatility_1y": 40.02,
+      "sharpe_ratio": 0.61,
+      "annualized_return_3y": 35.6,
+      "annualized_return_5y": 15.8
     },
     {
       "sym": "1307",
@@ -40742,7 +40968,10 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": 45.73
+      "return_10y": 45.73,
+      "max_drawdown": -35.05,
+      "volatility_1y": 31.52,
+      "sharpe_ratio": 0.61
     },
     {
       "sym": "00885",
@@ -40850,7 +41079,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 35.59,
-      "return_10y": 15.07
+      "return_10y": 15.07,
+      "max_drawdown": -44.69,
+      "volatility_1y": 22.31,
+      "sharpe_ratio": 0.05,
+      "annualized_return_3y": 10.68,
+      "annualized_return_5y": -0.11
     },
     {
       "sym": "2527",
@@ -41487,7 +41721,10 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_10y": 32.88,
-      "dividend_frequency": "monthly"
+      "dividend_frequency": "monthly",
+      "max_drawdown": -22.2,
+      "volatility_1y": 18.12,
+      "sharpe_ratio": 0.77
     },
     {
       "sym": "6790",
@@ -42250,7 +42487,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": 110.23,
-      "return_10y": 152.13
+      "return_10y": 152.13,
+      "max_drawdown": -65.11,
+      "volatility_1y": 59.38,
+      "sharpe_ratio": 0.49,
+      "annualized_return_3y": 28.1,
+      "annualized_return_5y": 13.47
     },
     {
       "sym": "00997A",
@@ -42358,7 +42600,8 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": -11.39
+      "return_10y": -11.39,
+      "max_drawdown": -39.89
     },
     {
       "sym": "5292",
@@ -44354,7 +44597,8 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": -11.7
+      "return_10y": -11.7,
+      "max_drawdown": -18.92
     },
     {
       "sym": "00735",
@@ -44466,7 +44710,12 @@
       "holdings_type": "equity",
       "return_3y": 207.26,
       "return_10y": 429.11,
-      "dividend_frequency": "semi-annual"
+      "dividend_frequency": "semi-annual",
+      "max_drawdown": -37.38,
+      "volatility_1y": 51.49,
+      "sharpe_ratio": 0.84,
+      "annualized_return_3y": 45.38,
+      "annualized_return_5y": 24.92
     },
     {
       "sym": "6534",
@@ -44650,7 +44899,10 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": 39.62
+      "return_10y": 39.62,
+      "max_drawdown": -19.71,
+      "volatility_1y": 26.07,
+      "sharpe_ratio": 1.01
     },
     {
       "sym": "00965",
@@ -44757,7 +45009,10 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": 40.47
+      "return_10y": 40.47,
+      "max_drawdown": -22.93,
+      "volatility_1y": 22.6,
+      "sharpe_ratio": 0.8
     },
     {
       "sym": "2852",
@@ -45061,7 +45316,8 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": -22.49
+      "return_10y": -22.49,
+      "max_drawdown": -35.85
     },
     {
       "sym": "6914",
@@ -45821,7 +46077,10 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_10y": 19.56,
-      "dividend_frequency": "quarterly"
+      "dividend_frequency": "quarterly",
+      "max_drawdown": -34.62,
+      "volatility_1y": 29.61,
+      "sharpe_ratio": 0.6
     },
     {
       "sym": "1110",
@@ -46226,7 +46485,10 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_10y": 56.5,
-      "dividend_frequency": "quarterly"
+      "dividend_frequency": "quarterly",
+      "max_drawdown": -27.49,
+      "volatility_1y": 37.57,
+      "sharpe_ratio": 0.94
     },
     {
       "sym": "6277",
@@ -46411,7 +46673,10 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_10y": 10.31,
-      "dividend_frequency": "monthly"
+      "dividend_frequency": "monthly",
+      "max_drawdown": -2.64,
+      "volatility_1y": 3.71,
+      "sharpe_ratio": 1.9
     },
     {
       "sym": "2013",
@@ -47145,7 +47410,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": -24.73,
-      "return_10y": -68.92
+      "return_10y": -68.92,
+      "max_drawdown": -79.43,
+      "volatility_1y": 19.98,
+      "sharpe_ratio": -0.92,
+      "annualized_return_3y": -9.03,
+      "annualized_return_5y": -25.3
     },
     {
       "sym": "00955",
@@ -47573,7 +47843,11 @@
       "holdings_type": "equity",
       "return_3y": 135.55,
       "return_10y": 148.5,
-      "dividend_frequency": "5x/year"
+      "dividend_frequency": "5x/year",
+      "max_drawdown": -31.39,
+      "volatility_1y": 33.7,
+      "sharpe_ratio": 0.93,
+      "annualized_return_3y": 33.05
     },
     {
       "sym": "5222",
@@ -48182,7 +48456,12 @@
       "holdings_type": "equity",
       "return_3y": 12.18,
       "return_10y": 2.94,
-      "dividend_frequency": "5x/year"
+      "dividend_frequency": "5x/year",
+      "max_drawdown": -24.54,
+      "volatility_1y": 9.86,
+      "sharpe_ratio": -0.17,
+      "annualized_return_3y": 3.9,
+      "annualized_return_5y": -1.91
     },
     {
       "sym": "2419",
@@ -48426,7 +48705,8 @@
       "listing_date": "2026-11-11",
       "fee_source": "moneydj",
       "fee_verified": "conflict",
-      "currency": "TWD"
+      "currency": "TWD",
+      "holdings_verified": "partial"
     },
     {
       "sym": "8499",
@@ -49889,7 +50169,12 @@
       "holdings_type": "equity",
       "return_3y": 90.51,
       "return_10y": 215.6,
-      "dividend_frequency": "3x/year"
+      "dividend_frequency": "3x/year",
+      "max_drawdown": -21.2,
+      "volatility_1y": 17.7,
+      "sharpe_ratio": 1.06,
+      "annualized_return_3y": 23.97,
+      "annualized_return_5y": 16.45
     },
     {
       "sym": "4169",
@@ -50357,7 +50642,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 122.96,
-      "return_10y": 235.0
+      "return_10y": 235.0,
+      "max_drawdown": -37.79,
+      "volatility_1y": 39.92,
+      "sharpe_ratio": 0.62,
+      "annualized_return_3y": 30.64,
+      "annualized_return_5y": 15.77
     },
     {
       "sym": "5236",
@@ -50760,7 +51050,8 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": -18.8
+      "return_10y": -18.8,
+      "max_drawdown": -44.95
     },
     {
       "sym": "8215",
@@ -51519,7 +51810,12 @@
       "holdings_type": "equity",
       "return_3y": 163.89,
       "return_10y": 149.89,
-      "dividend_frequency": "5x/year"
+      "dividend_frequency": "5x/year",
+      "max_drawdown": -40.26,
+      "volatility_1y": 39.78,
+      "sharpe_ratio": 0.79,
+      "annualized_return_3y": 38.19,
+      "annualized_return_5y": 22.14
     },
     {
       "sym": "3032",
@@ -52261,7 +52557,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 115.2,
-      "return_10y": 181.33
+      "return_10y": 181.33,
+      "max_drawdown": -42.3,
+      "volatility_1y": 27.41,
+      "sharpe_ratio": 0.65,
+      "annualized_return_3y": 29.11,
+      "annualized_return_5y": 17.51
     },
     {
       "sym": "1436",
@@ -53263,7 +53564,10 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_10y": 76.87,
-      "dividend_frequency": "quarterly"
+      "dividend_frequency": "quarterly",
+      "max_drawdown": -29.91,
+      "volatility_1y": 33.49,
+      "sharpe_ratio": 1.21
     },
     {
       "sym": "6947",
@@ -55002,7 +55306,12 @@
       "holdings_type": "equity",
       "return_3y": 113.37,
       "return_10y": 373.71,
-      "dividend_frequency": "semi-annual"
+      "dividend_frequency": "semi-annual",
+      "max_drawdown": -32.91,
+      "volatility_1y": 25.24,
+      "sharpe_ratio": 0.7,
+      "annualized_return_3y": 28.74,
+      "annualized_return_5y": 17.73
     },
     {
       "sym": "3056",
@@ -55695,7 +56004,12 @@
       "holdings_type": "equity",
       "return_3y": 173.4,
       "return_10y": 191.71,
-      "dividend_frequency": "quarterly"
+      "dividend_frequency": "quarterly",
+      "max_drawdown": -40.69,
+      "volatility_1y": 41.94,
+      "sharpe_ratio": 0.82,
+      "annualized_return_3y": 39.83,
+      "annualized_return_5y": 23.13
     },
     {
       "sym": "1603",
@@ -56054,7 +56368,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": -22.65,
-      "return_10y": -66.2
+      "return_10y": -66.2,
+      "max_drawdown": -78.28,
+      "volatility_1y": 40.13,
+      "sharpe_ratio": -0.24,
+      "annualized_return_3y": -8.21,
+      "annualized_return_5y": -24.14
     },
     {
       "sym": "6184",
@@ -56828,7 +57147,12 @@
       "holdings_type": "equity",
       "return_3y": 166.84,
       "return_10y": 406.87,
-      "dividend_frequency": "5x/year"
+      "dividend_frequency": "5x/year",
+      "max_drawdown": -34.44,
+      "volatility_1y": 37.07,
+      "sharpe_ratio": 0.87,
+      "annualized_return_3y": 38.7,
+      "annualized_return_5y": 21.31
     },
     {
       "sym": "7730",
@@ -57592,7 +57916,10 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_10y": 37.36,
-      "dividend_frequency": "monthly"
+      "dividend_frequency": "monthly",
+      "max_drawdown": -29.56,
+      "volatility_1y": 26.62,
+      "sharpe_ratio": 0.61
     },
     {
       "sym": "2302",
@@ -57770,7 +58097,8 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": -11.3
+      "return_10y": -11.3,
+      "max_drawdown": -30.46
     },
     {
       "sym": "4994",
@@ -57951,7 +58279,11 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 192.26,
-      "return_10y": 199.47
+      "return_10y": 199.47,
+      "max_drawdown": -48.93,
+      "volatility_1y": 48.26,
+      "sharpe_ratio": 0.91,
+      "annualized_return_3y": 42.97
     },
     {
       "sym": "00752",
@@ -58059,7 +58391,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 10.42,
-      "return_10y": 1.7
+      "return_10y": 1.7,
+      "max_drawdown": -42.73,
+      "volatility_1y": 22.12,
+      "sharpe_ratio": -0.02,
+      "annualized_return_3y": 3.36,
+      "annualized_return_5y": -3.39
     },
     {
       "sym": "00633L",
@@ -58148,7 +58485,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": 2.51,
-      "return_10y": 5.24
+      "return_10y": 5.24,
+      "max_drawdown": -57.55,
+      "volatility_1y": 33.14,
+      "sharpe_ratio": -0.07,
+      "annualized_return_3y": 0.83,
+      "annualized_return_5y": -8.2
     },
     {
       "sym": "3504",
@@ -58327,7 +58669,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 126.41,
-      "return_10y": 256.25
+      "return_10y": 256.25,
+      "max_drawdown": -28.97,
+      "volatility_1y": 31.47,
+      "sharpe_ratio": 0.81,
+      "annualized_return_3y": 31.31,
+      "annualized_return_5y": 19.03
     },
     {
       "sym": "6743",
@@ -59859,7 +60206,12 @@
       "holdings_type": "equity",
       "return_3y": 95.66,
       "return_10y": 314.58,
-      "dividend_frequency": "annual"
+      "dividend_frequency": "annual",
+      "max_drawdown": -26.82,
+      "volatility_1y": 23.41,
+      "sharpe_ratio": 0.84,
+      "annualized_return_3y": 25.07,
+      "annualized_return_5y": 15.74
     },
     {
       "sym": "6862",
@@ -61295,7 +61647,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 91.58,
-      "return_10y": 349.47
+      "return_10y": 349.47,
+      "max_drawdown": -38.42,
+      "volatility_1y": 32.65,
+      "sharpe_ratio": 0.56,
+      "annualized_return_3y": 24.2,
+      "annualized_return_5y": 14.57
     },
     {
       "sym": "1217",
@@ -62013,7 +62370,8 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": -10.43
+      "return_10y": -10.43,
+      "max_drawdown": -45.11
     },
     {
       "sym": "1457",
@@ -63237,7 +63595,11 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 106.36,
-      "return_10y": 139.11
+      "return_10y": 139.11,
+      "max_drawdown": -41.69,
+      "volatility_1y": 48.07,
+      "sharpe_ratio": 0.68,
+      "annualized_return_3y": 27.31
     },
     {
       "sym": "3031",
@@ -64862,7 +65224,10 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": 20.1
+      "return_10y": 20.1,
+      "max_drawdown": -24.27,
+      "volatility_1y": 19.61,
+      "sharpe_ratio": 0.5
     },
     {
       "sym": "3338",
@@ -66120,7 +66485,10 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": 42.76
+      "return_10y": 42.76,
+      "max_drawdown": -17.85,
+      "volatility_1y": 21.36,
+      "sharpe_ratio": 0.72
     },
     {
       "sym": "6155",
@@ -66455,7 +66823,12 @@
       "holdings_type": "equity",
       "return_3y": 184.78,
       "return_10y": 709.49,
-      "dividend_frequency": "annual"
+      "dividend_frequency": "annual",
+      "max_drawdown": -34.26,
+      "volatility_1y": 35.76,
+      "sharpe_ratio": 0.92,
+      "annualized_return_3y": 41.74,
+      "annualized_return_5y": 24.97
     },
     {
       "sym": "7821",
@@ -66707,7 +67080,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 24.53,
-      "return_10y": 35.28
+      "return_10y": 35.28,
+      "max_drawdown": -32.09,
+      "volatility_1y": 15.24,
+      "sharpe_ratio": 0.05,
+      "annualized_return_3y": 7.59,
+      "annualized_return_5y": 0.55
     },
     {
       "sym": "2516",
@@ -67176,7 +67554,8 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": 5.54
+      "return_10y": 5.54,
+      "max_drawdown": -29.32
     },
     {
       "sym": "2748",
@@ -68030,7 +68409,12 @@
       "holdings_type": "equity",
       "return_3y": 23.57,
       "return_10y": 56.47,
-      "dividend_frequency": "6x/year"
+      "dividend_frequency": "6x/year",
+      "max_drawdown": -11.17,
+      "volatility_1y": 3.95,
+      "sharpe_ratio": 0.94,
+      "annualized_return_3y": 7.31,
+      "annualized_return_5y": 7.47
     },
     {
       "sym": "8438",
@@ -68355,7 +68739,10 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_10y": 34.84,
-      "dividend_frequency": "monthly"
+      "dividend_frequency": "monthly",
+      "max_drawdown": -35.73,
+      "volatility_1y": 34.75,
+      "sharpe_ratio": 0.57
     },
     {
       "sym": "1451",
@@ -68609,7 +68996,11 @@
       "holdings_type": "equity",
       "return_3y": 55.23,
       "return_10y": 68.16,
-      "dividend_frequency": "6x/year"
+      "dividend_frequency": "6x/year",
+      "max_drawdown": -26.29,
+      "volatility_1y": 23.42,
+      "sharpe_ratio": 0.87,
+      "annualized_return_3y": 15.79
     },
     {
       "sym": "00936",
@@ -68719,7 +69110,10 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_10y": 30.86,
-      "dividend_frequency": "monthly"
+      "dividend_frequency": "monthly",
+      "max_drawdown": -38.32,
+      "volatility_1y": 22.85,
+      "sharpe_ratio": 0.49
     },
     {
       "sym": "5706",
@@ -68899,7 +69293,8 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": -27.83
+      "return_10y": -27.83,
+      "max_drawdown": -31.46
     },
     {
       "sym": "009813",
@@ -69006,7 +69401,10 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": 3.68
+      "return_10y": 3.68,
+      "max_drawdown": -9.91,
+      "volatility_1y": 15.26,
+      "sharpe_ratio": 0.22
     },
     {
       "sym": "3530",
@@ -69400,7 +69798,8 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": 6.74
+      "return_10y": 6.74,
+      "max_drawdown": -43.47
     },
     {
       "sym": "2538",
@@ -69990,7 +70389,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": -24.11,
-      "return_10y": -69.0
+      "return_10y": -69.0,
+      "max_drawdown": -79.18,
+      "volatility_1y": 19.9,
+      "sharpe_ratio": -0.91,
+      "annualized_return_3y": -8.79,
+      "annualized_return_5y": -25.27
     },
     {
       "sym": "00665L",
@@ -70064,7 +70468,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": 5.59,
-      "return_10y": -64.98
+      "return_10y": -64.98,
+      "max_drawdown": -74.69,
+      "volatility_1y": 39.77,
+      "sharpe_ratio": -0.06,
+      "annualized_return_3y": 1.83,
+      "annualized_return_5y": -15.26
     },
     {
       "sym": "6742",
@@ -70541,7 +70950,12 @@
       "holdings_type": "equity",
       "return_3y": -2.83,
       "return_10y": 226.08,
-      "dividend_frequency": "3x/year"
+      "dividend_frequency": "3x/year",
+      "max_drawdown": -45.32,
+      "volatility_1y": 43.44,
+      "sharpe_ratio": 0.32,
+      "annualized_return_3y": -0.95,
+      "annualized_return_5y": 6.63
     },
     {
       "sym": "2062",
@@ -71731,7 +72145,12 @@
       "holdings_type": "equity",
       "return_3y": 66.04,
       "return_10y": 469.99,
-      "dividend_frequency": "annual"
+      "dividend_frequency": "annual",
+      "max_drawdown": -31.17,
+      "volatility_1y": 31.7,
+      "sharpe_ratio": 0.72,
+      "annualized_return_3y": 18.41,
+      "annualized_return_5y": 15.81
     },
     {
       "sym": "6614",
@@ -72410,7 +72829,10 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": 25.2
+      "return_10y": 25.2,
+      "max_drawdown": -10.01,
+      "volatility_1y": 15.7,
+      "sharpe_ratio": 1.15
     },
     {
       "sym": "1817",
@@ -72594,7 +73016,10 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_10y": 15.5,
-      "dividend_frequency": "11x/year"
+      "dividend_frequency": "11x/year",
+      "max_drawdown": -9.65,
+      "volatility_1y": 10.07,
+      "sharpe_ratio": 1.24
     },
     {
       "sym": "2613",
@@ -73611,7 +74036,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": 269.96,
-      "return_10y": 203.0
+      "return_10y": 203.0,
+      "max_drawdown": -71.09,
+      "volatility_1y": 157.32,
+      "sharpe_ratio": 0.79,
+      "annualized_return_3y": 54.66,
+      "annualized_return_5y": 44.22
     },
     {
       "sym": "1731",
@@ -74500,7 +74930,10 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_10y": 59.95,
-      "dividend_frequency": "quarterly"
+      "dividend_frequency": "quarterly",
+      "max_drawdown": -23.06,
+      "volatility_1y": 21.79,
+      "sharpe_ratio": 1.16
     },
     {
       "sym": "6141",
@@ -74822,7 +75255,11 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 82.24,
-      "return_10y": 98.27
+      "return_10y": 98.27,
+      "max_drawdown": -21.85,
+      "volatility_1y": 14.88,
+      "sharpe_ratio": 1.19,
+      "annualized_return_3y": 22.15
     },
     {
       "sym": "6152",
@@ -75004,7 +75441,10 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": 99.28
+      "return_10y": 99.28,
+      "max_drawdown": -30.82,
+      "volatility_1y": 33.47,
+      "sharpe_ratio": 1.63
     },
     {
       "sym": "2471",
@@ -75546,7 +75986,8 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": 10.58
+      "return_10y": 10.58,
+      "max_drawdown": -42.21
     },
     {
       "sym": "6165",
@@ -76013,7 +76454,10 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": 15.99
+      "return_10y": 15.99,
+      "max_drawdown": -47.06,
+      "volatility_1y": 53.39,
+      "sharpe_ratio": 0.35
     },
     {
       "sym": "1435",
@@ -76335,7 +76779,10 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_10y": 17.48,
-      "dividend_frequency": "monthly"
+      "dividend_frequency": "monthly",
+      "max_drawdown": -32.06,
+      "volatility_1y": 30.38,
+      "sharpe_ratio": 0.4
     },
     {
       "sym": "1530",
@@ -76812,7 +77259,11 @@
       "holdings_type": "equity",
       "return_3y": 39.94,
       "return_10y": 41.99,
-      "dividend_frequency": "6x/year"
+      "dividend_frequency": "6x/year",
+      "max_drawdown": -20.27,
+      "volatility_1y": 15.83,
+      "sharpe_ratio": 0.53,
+      "annualized_return_3y": 11.85
     },
     {
       "sym": "4720",
@@ -77208,7 +77659,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 166.39,
-      "return_10y": 178.0
+      "return_10y": 178.0,
+      "max_drawdown": -34.29,
+      "volatility_1y": 39.04,
+      "sharpe_ratio": 0.88,
+      "annualized_return_3y": 38.62,
+      "annualized_return_5y": 23.88
     },
     {
       "sym": "3588",
@@ -77608,7 +78064,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 63.64,
-      "return_10y": 183.74
+      "return_10y": 183.74,
+      "max_drawdown": -24.45,
+      "volatility_1y": 21.78,
+      "sharpe_ratio": 0.72,
+      "annualized_return_3y": 17.84,
+      "annualized_return_5y": 14.76
     },
     {
       "sym": "4106",
@@ -78362,7 +78823,11 @@
       "holdings_type": "equity",
       "return_3y": 143.91,
       "return_10y": 179.95,
-      "dividend_frequency": "3x/year"
+      "dividend_frequency": "3x/year",
+      "max_drawdown": -40.6,
+      "volatility_1y": 45.41,
+      "sharpe_ratio": 0.93,
+      "annualized_return_3y": 34.61
     },
     {
       "sym": "2115",
@@ -78615,7 +79080,11 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 61.08,
-      "return_10y": 99.28
+      "return_10y": 99.28,
+      "max_drawdown": -22.28,
+      "volatility_1y": 19.19,
+      "sharpe_ratio": 0.95,
+      "annualized_return_3y": 17.22
     },
     {
       "sym": "3052",
@@ -79013,7 +79482,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": -7.17,
-      "return_10y": -33.53
+      "return_10y": -33.53,
+      "max_drawdown": -52.85,
+      "volatility_1y": 29.46,
+      "sharpe_ratio": -0.24,
+      "annualized_return_3y": -2.45,
+      "annualized_return_5y": -8.4
     },
     {
       "sym": "4555",
@@ -79479,7 +79953,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 19.22,
-      "return_10y": 47.59
+      "return_10y": 47.59,
+      "max_drawdown": -32.55,
+      "volatility_1y": 15.81,
+      "sharpe_ratio": 0.01,
+      "annualized_return_3y": 6.04,
+      "annualized_return_5y": -0.39
     },
     {
       "sym": "2429",
@@ -80373,7 +80852,11 @@
       "holdings_type": "equity",
       "return_3y": 111.22,
       "return_10y": 125.83,
-      "dividend_frequency": "quarterly"
+      "dividend_frequency": "quarterly",
+      "max_drawdown": -32.62,
+      "volatility_1y": 32.83,
+      "sharpe_ratio": 0.87,
+      "annualized_return_3y": 28.31
     },
     {
       "sym": "1533",
@@ -80822,7 +81305,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": 152.97,
-      "return_10y": -6.31
+      "return_10y": -6.31,
+      "max_drawdown": -63.06,
+      "volatility_1y": 15.03,
+      "sharpe_ratio": 0.28,
+      "annualized_return_3y": 36.26,
+      "annualized_return_5y": 5.2
     },
     {
       "sym": "6142",
@@ -81285,7 +81773,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 10.94,
-      "return_10y": 91.19
+      "return_10y": 91.19,
+      "max_drawdown": -26.82,
+      "volatility_1y": 16.32,
+      "sharpe_ratio": 0.31,
+      "annualized_return_3y": 3.52,
+      "annualized_return_5y": 4.91
     },
     {
       "sym": "5244",
@@ -81986,7 +82479,10 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": 24.1
+      "return_10y": 24.1,
+      "max_drawdown": -46.21,
+      "volatility_1y": 53.07,
+      "sharpe_ratio": 0.42
     },
     {
       "sym": "4155",
@@ -82201,7 +82697,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": 20.17,
-      "return_10y": 32.33
+      "return_10y": 32.33,
+      "max_drawdown": -35.46,
+      "volatility_1y": 16.92,
+      "sharpe_ratio": 0.0,
+      "annualized_return_3y": 6.32,
+      "annualized_return_5y": -1.22
     },
     {
       "sym": "7631",
@@ -82599,7 +83100,12 @@
       "holdings_type": "equity",
       "return_3y": 117.46,
       "return_10y": 255.4,
-      "dividend_frequency": "6x/year"
+      "dividend_frequency": "6x/year",
+      "max_drawdown": -39.77,
+      "volatility_1y": 35.69,
+      "sharpe_ratio": 0.65,
+      "annualized_return_3y": 29.56,
+      "annualized_return_5y": 15.35
     },
     {
       "sym": "2239",
@@ -83917,7 +84423,12 @@
       "holdings_type": "equity",
       "return_3y": 64.42,
       "return_10y": 191.9,
-      "dividend_frequency": "6x/year"
+      "dividend_frequency": "6x/year",
+      "max_drawdown": -21.05,
+      "volatility_1y": 17.77,
+      "sharpe_ratio": 0.97,
+      "annualized_return_3y": 18.03,
+      "annualized_return_5y": 15.79
     },
     {
       "sym": "6807",
@@ -84062,7 +84573,8 @@
       "holdings_verified": "partial",
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
-      "return_10y": -12.6
+      "return_10y": -12.6,
+      "max_drawdown": -17.32
     },
     {
       "sym": "8072",
@@ -84458,7 +84970,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 76.68,
-      "return_10y": 221.55
+      "return_10y": 221.55,
+      "max_drawdown": -24.06,
+      "volatility_1y": 29.97,
+      "sharpe_ratio": 0.67,
+      "annualized_return_3y": 20.89,
+      "annualized_return_5y": 15.16
     },
     {
       "sym": "4414",
@@ -85017,7 +85534,8 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": 3.2
+      "return_10y": 3.2,
+      "max_drawdown": -43.73
     },
     {
       "sym": "6405",
@@ -85339,7 +85857,12 @@
       "holdings_type": "equity",
       "return_3y": 49.73,
       "return_10y": 92.73,
-      "dividend_frequency": "monthly"
+      "dividend_frequency": "monthly",
+      "max_drawdown": -23.19,
+      "volatility_1y": 24.02,
+      "sharpe_ratio": 0.56,
+      "annualized_return_3y": 14.4,
+      "annualized_return_5y": 10.2
     },
     {
       "sym": "3027",
@@ -86192,7 +86715,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 91.2,
-      "return_10y": -13.07
+      "return_10y": -13.07,
+      "max_drawdown": -57.23,
+      "volatility_1y": 29.77,
+      "sharpe_ratio": 0.03,
+      "annualized_return_3y": 24.12,
+      "annualized_return_5y": -1.61
     },
     {
       "sym": "006203",
@@ -86304,7 +86832,12 @@
       "holdings_type": "equity",
       "return_3y": 169.2,
       "return_10y": 540.3,
-      "dividend_frequency": "quarterly"
+      "dividend_frequency": "quarterly",
+      "max_drawdown": -32.44,
+      "volatility_1y": 32.48,
+      "sharpe_ratio": 0.9,
+      "annualized_return_3y": 39.11,
+      "annualized_return_5y": 22.04
     },
     {
       "sym": "3021",
@@ -86533,7 +87066,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": 3.05,
-      "return_10y": 5.02
+      "return_10y": 5.02,
+      "max_drawdown": -61.13,
+      "volatility_1y": 33.9,
+      "sharpe_ratio": -0.11,
+      "annualized_return_3y": 1.01,
+      "annualized_return_5y": -9.71
     },
     {
       "sym": "6558",
@@ -87067,7 +87605,12 @@
       "holdings_type": "equity",
       "return_3y": 5.2,
       "return_10y": -3.0,
-      "dividend_frequency": "5x/year"
+      "dividend_frequency": "5x/year",
+      "max_drawdown": -15.85,
+      "volatility_1y": 7.13,
+      "sharpe_ratio": -0.13,
+      "annualized_return_3y": 1.71,
+      "annualized_return_5y": -0.31
     },
     {
       "sym": "00917",
@@ -87178,7 +87721,11 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 106.4,
-      "return_10y": 116.58
+      "return_10y": 116.58,
+      "max_drawdown": -25.44,
+      "volatility_1y": 26.65,
+      "sharpe_ratio": 0.96,
+      "annualized_return_3y": 27.32
     },
     {
       "sym": "1735",
@@ -87362,7 +87909,10 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_10y": 36.05,
-      "dividend_frequency": "monthly"
+      "dividend_frequency": "monthly",
+      "max_drawdown": -14.63,
+      "volatility_1y": 11.14,
+      "sharpe_ratio": 1.14
     },
     {
       "sym": "1410",
@@ -87689,7 +88239,11 @@
       "holdings_type": "equity",
       "return_3y": 13.09,
       "return_10y": 15.06,
-      "dividend_frequency": "quarterly"
+      "dividend_frequency": "quarterly",
+      "max_drawdown": -30.31,
+      "volatility_1y": 18.84,
+      "sharpe_ratio": 0.27,
+      "annualized_return_3y": 4.19
     },
     {
       "sym": "2250",
@@ -88274,7 +88828,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": -62.57,
-      "return_10y": -89.26
+      "return_10y": -89.26,
+      "max_drawdown": -80.56,
+      "volatility_1y": 32.66,
+      "sharpe_ratio": -0.91,
+      "annualized_return_3y": -27.93,
+      "annualized_return_5y": -20.21
     },
     {
       "sym": "1906",
@@ -89019,7 +89578,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": 20.07,
-      "return_10y": -33.23
+      "return_10y": -33.23,
+      "max_drawdown": -68.79,
+      "volatility_1y": 38.17,
+      "sharpe_ratio": -0.01,
+      "annualized_return_3y": 6.29,
+      "annualized_return_5y": -10.48
     },
     {
       "sym": "4190",
@@ -89905,7 +90469,10 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_10y": 49.93,
-      "dividend_frequency": "monthly"
+      "dividend_frequency": "monthly",
+      "max_drawdown": -15.91,
+      "volatility_1y": 18.25,
+      "sharpe_ratio": 1.19
     },
     {
       "sym": "3321",
@@ -90098,7 +90665,10 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_10y": 53.8,
-      "dividend_frequency": "quarterly"
+      "dividend_frequency": "quarterly",
+      "max_drawdown": -37.77,
+      "volatility_1y": 21.7,
+      "sharpe_ratio": 0.81
     },
     {
       "sym": "1449",
@@ -90200,7 +90770,8 @@
       "listing_date": "2026-11-11",
       "fee_source": "moneydj",
       "fee_verified": "conflict",
-      "currency": "TWD"
+      "currency": "TWD",
+      "holdings_verified": "partial"
     },
     {
       "sym": "1805",
@@ -90609,7 +91180,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 11.86,
-      "return_10y": 24.65
+      "return_10y": 24.65,
+      "max_drawdown": -47.8,
+      "volatility_1y": 22.56,
+      "sharpe_ratio": -0.13,
+      "annualized_return_3y": 3.81,
+      "annualized_return_5y": -5.74
     },
     {
       "sym": "6674",
@@ -90928,7 +91504,11 @@
       "holdings_type": "equity",
       "return_3y": 151.27,
       "return_10y": 248.26,
-      "dividend_frequency": "semi-annual"
+      "dividend_frequency": "semi-annual",
+      "max_drawdown": -43.17,
+      "volatility_1y": 42.56,
+      "sharpe_ratio": 0.95,
+      "annualized_return_3y": 35.95
     },
     {
       "sym": "1445",
@@ -91077,7 +91657,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": -43.51,
-      "return_10y": -86.5
+      "return_10y": -86.5,
+      "max_drawdown": -66.57,
+      "volatility_1y": 22.42,
+      "sharpe_ratio": -0.41,
+      "annualized_return_3y": -17.34,
+      "annualized_return_5y": -11.42
     },
     {
       "sym": "1474",
@@ -91750,7 +92335,11 @@
       "holdings_type": "equity",
       "return_3y": 31.6,
       "return_10y": 62.95,
-      "dividend_frequency": "quarterly"
+      "dividend_frequency": "quarterly",
+      "max_drawdown": -25.88,
+      "volatility_1y": 22.4,
+      "sharpe_ratio": 0.76,
+      "annualized_return_3y": 9.58
     },
     {
       "sym": "6994",
@@ -91929,7 +92518,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 109.07,
-      "return_10y": 195.0
+      "return_10y": 195.0,
+      "max_drawdown": -27.39,
+      "volatility_1y": 30.68,
+      "sharpe_ratio": 0.59,
+      "annualized_return_3y": 27.87,
+      "annualized_return_5y": 13.14
     },
     {
       "sym": "009812",
@@ -92013,7 +92607,10 @@
       "holdings_verified": "partial",
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
-      "return_10y": 20.6
+      "return_10y": 20.6,
+      "max_drawdown": -11.96,
+      "volatility_1y": 21.24,
+      "sharpe_ratio": 0.84
     },
     {
       "sym": "6916",
@@ -92546,7 +93143,10 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_10y": 26.08,
-      "dividend_frequency": "monthly"
+      "dividend_frequency": "monthly",
+      "max_drawdown": -28.94,
+      "volatility_1y": 26.02,
+      "sharpe_ratio": 0.46
     },
     {
       "sym": "4440",
@@ -92830,7 +93430,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 14.81,
-      "return_10y": -1.87
+      "return_10y": -1.87,
+      "max_drawdown": -50.46,
+      "volatility_1y": 22.5,
+      "sharpe_ratio": -0.17,
+      "annualized_return_3y": 4.71,
+      "annualized_return_5y": -5.49
     },
     {
       "sym": "00676R",
@@ -92909,7 +93514,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": 132.66,
-      "return_10y": -31.85
+      "return_10y": -31.85,
+      "max_drawdown": -68.52,
+      "volatility_1y": 32.42,
+      "sharpe_ratio": 0.37,
+      "annualized_return_3y": 32.51,
+      "annualized_return_5y": 16.89
     },
     {
       "sym": "4999",
@@ -93444,7 +94054,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 48.02,
-      "return_10y": 4.8
+      "return_10y": 4.8,
+      "max_drawdown": -42.77,
+      "volatility_1y": 27.46,
+      "sharpe_ratio": 0.12,
+      "annualized_return_3y": 13.97,
+      "annualized_return_5y": 1.06
     },
     {
       "sym": "3419",
@@ -93729,7 +94344,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": -29.35,
-      "return_10y": -69.94
+      "return_10y": -69.94,
+      "max_drawdown": -45.47,
+      "volatility_1y": 16.37,
+      "sharpe_ratio": -0.32,
+      "annualized_return_3y": -10.93,
+      "annualized_return_5y": -5.85
     },
     {
       "sym": "1418",
@@ -94221,7 +94841,10 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_10y": 31.97,
-      "dividend_frequency": "monthly"
+      "dividend_frequency": "monthly",
+      "max_drawdown": -21.38,
+      "volatility_1y": 23.62,
+      "sharpe_ratio": 0.6
     },
     {
       "sym": "1776",
@@ -94405,7 +95028,10 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_10y": 77.38,
-      "dividend_frequency": "quarterly"
+      "dividend_frequency": "quarterly",
+      "max_drawdown": -25.68,
+      "volatility_1y": 30.51,
+      "sharpe_ratio": 1.54
     },
     {
       "sym": "009801",
@@ -94515,7 +95141,10 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": 9.51
+      "return_10y": 9.51,
+      "max_drawdown": -29.14,
+      "volatility_1y": 22.49,
+      "sharpe_ratio": 0.28
     },
     {
       "sym": "006206",
@@ -94623,7 +95252,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 25.48,
-      "return_10y": 36.62
+      "return_10y": 36.62,
+      "max_drawdown": -33.23,
+      "volatility_1y": 15.08,
+      "sharpe_ratio": 0.06,
+      "annualized_return_3y": 7.86,
+      "annualized_return_5y": 0.61
     },
     {
       "sym": "5546",
@@ -94943,7 +95577,10 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": -2.4
+      "return_10y": -2.4,
+      "max_drawdown": -22.46,
+      "volatility_1y": 29.01,
+      "sharpe_ratio": 0.02
     },
     {
       "sym": "8429",
@@ -95408,7 +96045,10 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_10y": 4.77,
-      "dividend_frequency": "11x/year"
+      "dividend_frequency": "11x/year",
+      "max_drawdown": -5.22,
+      "volatility_1y": 5.22,
+      "sharpe_ratio": 0.61
     },
     {
       "sym": "1526",
@@ -95587,7 +96227,10 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": 18.41
+      "return_10y": 18.41,
+      "max_drawdown": -25.07,
+      "volatility_1y": 17.8,
+      "sharpe_ratio": 0.46
     },
     {
       "sym": "00737",
@@ -95695,7 +96338,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 24.17,
-      "return_10y": 77.25
+      "return_10y": 77.25,
+      "max_drawdown": -33.34,
+      "volatility_1y": 23.18,
+      "sharpe_ratio": 0.08,
+      "annualized_return_3y": 7.48,
+      "annualized_return_5y": 0.36
     },
     {
       "sym": "8940",
@@ -95944,7 +96592,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 52.08,
-      "return_10y": 17.0
+      "return_10y": 17.0,
+      "max_drawdown": -49.1,
+      "volatility_1y": 28.05,
+      "sharpe_ratio": 0.22,
+      "annualized_return_3y": 15.0,
+      "annualized_return_5y": 3.43
     },
     {
       "sym": "6908",
@@ -96190,7 +96843,8 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": 18.8
+      "return_10y": 18.8,
+      "max_drawdown": -17.84
     },
     {
       "sym": "3057",
@@ -96472,7 +97126,10 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": 5.4
+      "return_10y": 5.4,
+      "max_drawdown": -25.97,
+      "volatility_1y": 32.79,
+      "sharpe_ratio": 0.23
     },
     {
       "sym": "8201",
@@ -97290,7 +97947,10 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_10y": 0.77,
-      "dividend_frequency": "11x/year"
+      "dividend_frequency": "11x/year",
+      "max_drawdown": -6.46,
+      "volatility_1y": 5.53,
+      "sharpe_ratio": -0.07
     },
     {
       "sym": "3018",
@@ -97509,7 +98169,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": 107.43,
-      "return_10y": 432.5
+      "return_10y": 432.5,
+      "max_drawdown": -43.55,
+      "volatility_1y": 43.92,
+      "sharpe_ratio": 0.7,
+      "annualized_return_3y": 27.53,
+      "annualized_return_5y": 23.41
     },
     {
       "sym": "3494",
@@ -97707,7 +98372,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": 96.26,
-      "return_10y": 450.34
+      "return_10y": 450.34,
+      "max_drawdown": -44.59,
+      "volatility_1y": 28.58,
+      "sharpe_ratio": 0.4,
+      "annualized_return_3y": 25.2,
+      "annualized_return_5y": 9.53
     },
     {
       "sym": "006207",
@@ -97815,7 +98485,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 22.36,
-      "return_10y": 36.59
+      "return_10y": 36.59,
+      "max_drawdown": -36.72,
+      "volatility_1y": 16.66,
+      "sharpe_ratio": -0.01,
+      "annualized_return_3y": 6.96,
+      "annualized_return_5y": -0.82
     },
     {
       "sym": "00739",
@@ -97926,7 +98601,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 18.08,
-      "return_10y": 30.66
+      "return_10y": 30.66,
+      "max_drawdown": -36.75,
+      "volatility_1y": 17.17,
+      "sharpe_ratio": -0.07,
+      "annualized_return_3y": 5.7,
+      "annualized_return_5y": -1.92
     },
     {
       "sym": "2929",
@@ -98448,7 +99128,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": 4.59,
-      "return_10y": 161.42
+      "return_10y": 161.42,
+      "max_drawdown": -44.77,
+      "volatility_1y": 31.1,
+      "sharpe_ratio": 0.17,
+      "annualized_return_3y": 1.51,
+      "annualized_return_5y": 2.16
     },
     {
       "sym": "00709",
@@ -98556,7 +99241,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 51.42,
-      "return_10y": 92.3
+      "return_10y": 92.3,
+      "max_drawdown": -20.15,
+      "volatility_1y": 16.34,
+      "sharpe_ratio": 0.61,
+      "annualized_return_3y": 14.83,
+      "annualized_return_5y": 10.29
     },
     {
       "sym": "2911",
@@ -98773,7 +99463,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": -36.93,
-      "return_10y": -76.24
+      "return_10y": -76.24,
+      "max_drawdown": -53.73,
+      "volatility_1y": 16.11,
+      "sharpe_ratio": -0.39,
+      "annualized_return_3y": -14.24,
+      "annualized_return_5y": -8.18
     },
     {
       "sym": "3432",
@@ -98950,7 +99645,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 69.36,
-      "return_10y": 117.2
+      "return_10y": 117.2,
+      "max_drawdown": -27.81,
+      "volatility_1y": 23.84,
+      "sharpe_ratio": 0.49,
+      "annualized_return_3y": 19.2,
+      "annualized_return_5y": 9.96
     },
     {
       "sym": "3150",
@@ -99352,7 +100052,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 75.67,
-      "return_10y": 205.72
+      "return_10y": 205.72,
+      "max_drawdown": -24.29,
+      "volatility_1y": 30.16,
+      "sharpe_ratio": 0.62,
+      "annualized_return_3y": 20.66,
+      "annualized_return_5y": 14.06
     },
     {
       "sym": "009809",
@@ -99464,7 +100169,10 @@
       "holdings_verified": "partial",
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
-      "return_10y": 46.38
+      "return_10y": 46.38,
+      "max_drawdown": -24.36,
+      "volatility_1y": 28.13,
+      "sharpe_ratio": 1.38
     },
     {
       "sym": "8101",
@@ -99645,7 +100353,11 @@
       "holdings_type": "equity",
       "return_3y": 45.66,
       "return_10y": 20.53,
-      "dividend_frequency": "quarterly"
+      "dividend_frequency": "quarterly",
+      "max_drawdown": -24.58,
+      "volatility_1y": 10.92,
+      "sharpe_ratio": 0.29,
+      "annualized_return_3y": 13.36
     },
     {
       "sym": "00668",
@@ -99753,7 +100465,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 49.51,
-      "return_10y": 183.73
+      "return_10y": 183.73,
+      "max_drawdown": -17.6,
+      "volatility_1y": 14.97,
+      "sharpe_ratio": 0.65,
+      "annualized_return_3y": 14.35,
+      "annualized_return_5y": 10.85
     },
     {
       "sym": "3593",
@@ -99943,7 +100660,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 27.01,
-      "return_10y": -19.35
+      "return_10y": -19.35,
+      "max_drawdown": -39.08,
+      "volatility_1y": 20.13,
+      "sharpe_ratio": 0.09,
+      "annualized_return_3y": 8.3,
+      "annualized_return_5y": 0.08
     },
     {
       "sym": "00986A",
@@ -100050,7 +100772,10 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": 22.6
+      "return_10y": 22.6,
+      "max_drawdown": -22.41,
+      "volatility_1y": 27.36,
+      "sharpe_ratio": 0.74
     },
     {
       "sym": "00674R",
@@ -100132,7 +100857,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": 168.91,
-      "return_10y": 66.68
+      "return_10y": 66.68,
+      "max_drawdown": -68.67,
+      "volatility_1y": 401.1,
+      "sharpe_ratio": 0.39,
+      "annualized_return_3y": 39.06,
+      "annualized_return_5y": 23.15
     },
     {
       "sym": "00920",
@@ -100243,7 +100973,11 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 45.2,
-      "return_10y": 37.07
+      "return_10y": 37.07,
+      "max_drawdown": -36.95,
+      "volatility_1y": 28.76,
+      "sharpe_ratio": 0.41,
+      "annualized_return_3y": 13.24
     },
     {
       "sym": "00956",
@@ -100354,7 +101088,10 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_10y": 48.74,
-      "dividend_frequency": "quarterly"
+      "dividend_frequency": "quarterly",
+      "max_drawdown": -15.97,
+      "volatility_1y": 19.44,
+      "sharpe_ratio": 0.99
     },
     {
       "sym": "0057",
@@ -100467,7 +101204,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": 169.7,
-      "return_10y": 504.17
+      "return_10y": 504.17,
+      "max_drawdown": -33.04,
+      "volatility_1y": 31.7,
+      "sharpe_ratio": 0.88,
+      "annualized_return_3y": 39.2,
+      "annualized_return_5y": 21.49
     },
     {
       "sym": "00714",
@@ -100579,7 +101321,12 @@
       "holdings_type": "equity",
       "return_3y": 30.65,
       "return_10y": 44.15,
-      "dividend_frequency": "quarterly"
+      "dividend_frequency": "quarterly",
+      "max_drawdown": -25.95,
+      "volatility_1y": 15.22,
+      "sharpe_ratio": 0.14,
+      "annualized_return_3y": 9.32,
+      "annualized_return_5y": 2.24
     },
     {
       "sym": "009810",
@@ -100678,7 +101425,10 @@
       "holdings_verified": "partial",
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
-      "return_10y": 34.87
+      "return_10y": 34.87,
+      "max_drawdown": -8.37,
+      "volatility_1y": 13.87,
+      "sharpe_ratio": 1.69
     },
     {
       "sym": "2314",
@@ -100873,7 +101623,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 89.44,
-      "return_10y": 230.08
+      "return_10y": 230.08,
+      "max_drawdown": -43.6,
+      "volatility_1y": 24.99,
+      "sharpe_ratio": 0.49,
+      "annualized_return_3y": 23.73,
+      "annualized_return_5y": 11.69
     },
     {
       "sym": "00641R",
@@ -100957,7 +101712,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": -48.06,
-      "return_10y": -78.84
+      "return_10y": -78.84,
+      "max_drawdown": -68.12,
+      "volatility_1y": 22.2,
+      "sharpe_ratio": -0.85,
+      "annualized_return_3y": -19.61,
+      "annualized_return_5y": -17.03
     },
     {
       "sym": "1213",
@@ -101137,7 +101897,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 42.9,
-      "return_10y": 122.81
+      "return_10y": 122.81,
+      "max_drawdown": -22.87,
+      "volatility_1y": 17.68,
+      "sharpe_ratio": 0.42,
+      "annualized_return_3y": 12.64,
+      "annualized_return_5y": 7.48
     },
     {
       "sym": "00899",
@@ -101245,7 +102010,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 9.97,
-      "return_10y": -0.75
+      "return_10y": -0.75,
+      "max_drawdown": -51.76,
+      "volatility_1y": 23.76,
+      "sharpe_ratio": 0.07,
+      "annualized_return_3y": 3.22,
+      "annualized_return_5y": -0.16
     },
     {
       "sym": "00972",
@@ -101456,7 +102226,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": -61.37,
-      "return_10y": -87.6
+      "return_10y": -87.6,
+      "max_drawdown": -80.0,
+      "volatility_1y": 33.94,
+      "sharpe_ratio": -0.87,
+      "annualized_return_3y": -27.17,
+      "annualized_return_5y": -19.68
     },
     {
       "sym": "006204",
@@ -101568,7 +102343,12 @@
       "holdings_type": "equity",
       "return_3y": 122.35,
       "return_10y": 435.35,
-      "dividend_frequency": "annual"
+      "dividend_frequency": "annual",
+      "max_drawdown": -28.7,
+      "volatility_1y": 30.21,
+      "sharpe_ratio": 0.84,
+      "annualized_return_3y": 30.52,
+      "annualized_return_5y": 18.74
     },
     {
       "sym": "00683L",
@@ -101642,7 +102422,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": 2.49,
-      "return_10y": 17.52
+      "return_10y": 17.52,
+      "max_drawdown": -25.92,
+      "volatility_1y": 11.8,
+      "sharpe_ratio": 0.32,
+      "annualized_return_3y": 0.82,
+      "annualized_return_5y": 5.02
     },
     {
       "sym": "00886",
@@ -101852,7 +102637,8 @@
       "currency": "TWD",
       "holdings_verified": "partial",
       "holdings_type": "equity",
-      "return_10y": 26.74
+      "return_10y": 26.74,
+      "max_drawdown": -24.39
     },
     {
       "sym": "00852L",
@@ -101921,7 +102707,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": 56.52,
-      "return_10y": 98.47
+      "return_10y": 98.47,
+      "max_drawdown": -36.13,
+      "volatility_1y": 30.33,
+      "sharpe_ratio": 0.31,
+      "annualized_return_3y": 16.11,
+      "annualized_return_5y": 6.32
     },
     {
       "sym": "00771",
@@ -102032,7 +102823,12 @@
       "holdings_type": "equity",
       "return_3y": 6.27,
       "return_10y": 0.58,
-      "dividend_frequency": "5x/year"
+      "dividend_frequency": "5x/year",
+      "max_drawdown": -16.29,
+      "volatility_1y": 6.34,
+      "sharpe_ratio": -0.15,
+      "annualized_return_3y": 2.05,
+      "annualized_return_5y": -0.47
     },
     {
       "sym": "009807",
@@ -102244,7 +103040,12 @@
       "holdings_type": "equity",
       "return_3y": 46.91,
       "return_10y": 62.25,
-      "dividend_frequency": "semi-annual"
+      "dividend_frequency": "semi-annual",
+      "max_drawdown": -21.18,
+      "volatility_1y": 16.08,
+      "sharpe_ratio": 0.43,
+      "annualized_return_3y": 13.68,
+      "annualized_return_5y": 6.67
     },
     {
       "sym": "00651R",
@@ -102313,7 +103114,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": -34.53,
-      "return_10y": -51.62
+      "return_10y": -51.62,
+      "max_drawdown": -58.18,
+      "volatility_1y": 20.18,
+      "sharpe_ratio": -0.14,
+      "annualized_return_3y": -13.17,
+      "annualized_return_5y": -5.37
     },
     {
       "sym": "00783",
@@ -102421,7 +103227,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 18.78,
-      "return_10y": 14.15
+      "return_10y": 14.15,
+      "max_drawdown": -38.72,
+      "volatility_1y": 24.11,
+      "sharpe_ratio": 0.02,
+      "annualized_return_3y": 5.91,
+      "annualized_return_5y": -1.31
     },
     {
       "sym": "00638R",
@@ -102490,7 +103301,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": -21.7,
-      "return_10y": -56.65
+      "return_10y": -56.65,
+      "max_drawdown": -45.03,
+      "volatility_1y": 18.84,
+      "sharpe_ratio": -0.02,
+      "annualized_return_3y": -7.83,
+      "annualized_return_5y": -1.11
     },
     {
       "sym": "00702",
@@ -102601,7 +103417,12 @@
       "holdings_type": "equity",
       "return_3y": 43.6,
       "return_10y": 73.02,
-      "dividend_frequency": "semi-annual"
+      "dividend_frequency": "semi-annual",
+      "max_drawdown": -17.08,
+      "volatility_1y": 18.18,
+      "sharpe_ratio": 0.62,
+      "annualized_return_3y": 12.82,
+      "annualized_return_5y": 9.85
     },
     {
       "sym": "00681R",
@@ -102665,7 +103486,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": 4.58,
-      "return_10y": 12.12
+      "return_10y": 12.12,
+      "max_drawdown": -19.21,
+      "volatility_1y": 10.79,
+      "sharpe_ratio": 0.74,
+      "annualized_return_3y": 1.5,
+      "annualized_return_5y": 11.72
     },
     {
       "sym": "00689R",
@@ -102739,7 +103565,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": 5.38,
-      "return_10y": 17.5
+      "return_10y": 17.5,
+      "max_drawdown": -19.62,
+      "volatility_1y": 10.97,
+      "sharpe_ratio": 0.73,
+      "annualized_return_3y": 1.76,
+      "annualized_return_5y": 11.74
     },
     {
       "sym": "00998A",
@@ -102944,7 +103775,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 11.95,
-      "return_10y": -13.35
+      "return_10y": -13.35,
+      "max_drawdown": -39.82,
+      "volatility_1y": 19.53,
+      "sharpe_ratio": -0.04,
+      "annualized_return_3y": 3.83,
+      "annualized_return_5y": -3.55
     },
     {
       "sym": "00634R",
@@ -103023,7 +103859,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": -23.01,
-      "return_10y": -61.34
+      "return_10y": -61.34,
+      "max_drawdown": -44.57,
+      "volatility_1y": 17.12,
+      "sharpe_ratio": -0.08,
+      "annualized_return_3y": -8.35,
+      "annualized_return_5y": -2.13
     },
     {
       "sym": "00684R",
@@ -103096,7 +103937,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": -6.77,
-      "return_10y": -27.63
+      "return_10y": -27.63,
+      "max_drawdown": -19.88,
+      "volatility_1y": 6.7,
+      "sharpe_ratio": -0.74,
+      "annualized_return_3y": -2.31,
+      "annualized_return_5y": -4.46
     },
     {
       "sym": "00656R",
@@ -103170,7 +104016,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": -21.75,
-      "return_10y": -60.08
+      "return_10y": -60.08,
+      "max_drawdown": -45.01,
+      "volatility_1y": 18.96,
+      "sharpe_ratio": -0.05,
+      "annualized_return_3y": -7.85,
+      "annualized_return_5y": -1.72
     },
     {
       "sym": "00654R",
@@ -103239,7 +104090,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": -14.51,
-      "return_10y": -66.94
+      "return_10y": -66.94,
+      "max_drawdown": -36.95,
+      "volatility_1y": 18.07,
+      "sharpe_ratio": -0.31,
+      "annualized_return_3y": -5.09,
+      "annualized_return_5y": -4.93
     },
     {
       "sym": "00666R",
@@ -103308,7 +104164,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": -34.18,
-      "return_10y": -46.26
+      "return_10y": -46.26,
+      "max_drawdown": -60.64,
+      "volatility_1y": 21.6,
+      "sharpe_ratio": -0.07,
+      "annualized_return_3y": -13.01,
+      "annualized_return_5y": -4.44
     },
     {
       "sym": "00937B",
@@ -103704,7 +104565,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 79.91,
-      "return_10y": -7.4
+      "return_10y": -7.4,
+      "max_drawdown": -26.13,
+      "volatility_1y": 32.8,
+      "sharpe_ratio": 0.47,
+      "annualized_return_3y": 21.62,
+      "annualized_return_5y": 10.19
     },
     {
       "sym": "00751B",
@@ -104102,7 +104968,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 13.32,
-      "return_10y": -56.5
+      "return_10y": -56.5,
+      "max_drawdown": -43.62,
+      "volatility_1y": 19.29,
+      "sharpe_ratio": -0.17,
+      "annualized_return_3y": 4.26,
+      "annualized_return_5y": -4.45
     },
     {
       "sym": "00772B",
@@ -104514,7 +105385,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 46.45,
-      "return_10y": -15.06
+      "return_10y": -15.06,
+      "max_drawdown": -21.58,
+      "volatility_1y": 14.0,
+      "sharpe_ratio": 0.44,
+      "annualized_return_3y": 13.56,
+      "annualized_return_5y": 7.05
     },
     {
       "sym": "009833",
@@ -113443,7 +114319,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": 8.85,
-      "return_10y": 29.23
+      "return_10y": 29.23,
+      "max_drawdown": -22.24,
+      "volatility_1y": 13.58,
+      "sharpe_ratio": -0.12,
+      "annualized_return_3y": 2.87,
+      "annualized_return_5y": -1.8
     },
     {
       "sym": "00643K",
@@ -113549,7 +114430,12 @@
       "holdings_verified": "partial",
       "holdings_type": "equity",
       "return_3y": -31.63,
-      "return_10y": -6.12
+      "return_10y": -6.12,
+      "max_drawdown": -48.33,
+      "volatility_1y": 24.0,
+      "sharpe_ratio": -0.08,
+      "annualized_return_3y": -11.9,
+      "annualized_return_5y": -6.68
     },
     {
       "sym": "00707R",
@@ -113615,7 +114501,12 @@
       "holdings_coverage_pct": 100.0,
       "holdings_type": "equity",
       "return_3y": 16.55,
-      "return_10y": 61.41
+      "return_10y": 61.41,
+      "max_drawdown": -15.45,
+      "volatility_1y": 7.88,
+      "sharpe_ratio": 0.85,
+      "annualized_return_3y": 5.24,
+      "annualized_return_5y": 9.91
     },
     {
       "sym": "1538",
