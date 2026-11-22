@@ -118,10 +118,18 @@ t('dcf：淨負債從 EV 扣除', () => {
 });
 
 t('dcf：WACC ≤ 永續成長率、FCF ≤ 0、股數 ≤ 0、缺參數皆不計算並說明原因', () => {
-  assert.ok(V.dcf({ fcf0: 100, g: 5, gT: 3, wacc: 3, shares: 100 }).reason.indexOf('折現率') >= 0);
-  assert.ok(V.dcf({ fcf0: -10, g: 5, gT: 2, wacc: 9, shares: 100 }).reason.indexOf('自由現金流') >= 0);
-  assert.strictEqual(V.dcf({ fcf0: 100, g: 5, gT: 2, wacc: 9, shares: 0 }).ok, false);
-  assert.strictEqual(V.dcf({ fcf0: 100, g: 5, gT: 2, wacc: 9 }).ok, false);
+  // 提供必要參數以隔離要測試的錯誤原因
+  const baseFull = { fcf0: 100, g: 5, gT: 2, wacc: 9, shares: 100, netDebt: 0 };
+  // WACC ≤ 永續成長率
+  assert.ok(V.dcf(Object.assign({}, baseFull, { gT: 3, wacc: 3 })).reason.indexOf('折現率') >= 0);
+  // FCF ≤ 0
+  assert.ok(V.dcf(Object.assign({}, baseFull, { fcf0: -10 })).reason.indexOf('自由現金流') >= 0);
+  // 股數 ≤ 0
+  assert.strictEqual(V.dcf(Object.assign({}, baseFull, { shares: 0 })).ok, false);
+  // 缺少淨負債
+  assert.ok(V.dcf(Object.assign({}, baseFull, { netDebt: null })).reason.indexOf('缺少淨負債') >= 0);
+  // 缺少股數
+  assert.ok(V.dcf(Object.assign({}, baseFull, { shares: null })).reason.indexOf('缺少參數：shares') >= 0);
 });
 
 t('inputWarnings：極端假設會給提醒（永續成長率、折現率、終值佔比）', () => {

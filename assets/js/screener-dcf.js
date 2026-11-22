@@ -27,7 +27,12 @@
     return Number(x).toLocaleString('zh-TW', { maximumFractionDigits: d, minimumFractionDigits: d });
   }
   function fmtPct(x) { return x == null || !isFinite(x) ? '—' : (x >= 0 ? '+' : '') + fmt(x, 1) + '%'; }
-  function num(id) { const v = parseFloat((el(id) || {}).value); return isFinite(v) ? v : null; }
+function num(id) {
+  const el = document.getElementById(id);
+  if (!el || el.value === '' || el.value === null) return null;
+  const v = parseFloat(el.value);
+  return isFinite(v) ? v : null;
+}
   function setInput(id, v) { const n = el(id); if (n) n.value = (v == null || !isFinite(v)) ? '' : String(v); }
   function el2(tag, cls, text) {
     const n = document.createElement(tag);
@@ -74,10 +79,10 @@
       .map(s => ({
         sym: s.sym, name: s.name, price: s.price, pe: s.pe, pb: s.pb,
         divPct: s.div, group: s.industry || s.sector || null,
-        // US: 原始檔沒有 shares/fcf/debt/cash；shares 以 市值/股價 回推（百萬股）
-        sharesMln: (s.shares) ? s.shares / 1e6 : ((s.market_cap != null && s.market_cap > 0 && s.price > 0) ? s.market_cap / s.price / 1e6 : null),
-        fcf: null,
-        netDebt: null,
+        isBank: /bank|bancorp|financial services/i.test(s.industry || s.sector || ''),
+        sharesMln: (s.shares_mln != null) ? s.shares_mln : ((s.market_cap != null && s.market_cap > 0 && s.price > 0) ? s.market_cap / s.price / 1e6 : null),
+        fcf: (s.fcf_musd != null) ? s.fcf_musd : null,
+        netDebt: (s.debt_musd != null && s.cash_musd != null) ? (s.debt_musd - s.cash_musd) : null,
         currency: 'US$',
       }));
   }
@@ -227,7 +232,7 @@
     setInput('dvPrice', r.price);
     setInput('dvShares', r.sharesMln != null ? Number(r.sharesMln.toFixed(4)) : null);
     setInput('dvFcf', r.fcf != null ? Number(r.fcf.toFixed(2)) : null);
-    setInput('dvNetDebt', r.netDebt != null ? Number(r.netDebt.toFixed(2)) : 0);
+    setInput('dvNetDebt', r.netDebt != null ? Number(r.netDebt.toFixed(2)) : null);
     if (market === 'tw') {
       setText('dvFcfHint', '台股目前沒有現金流量資料，請依財報自行估算後輸入（NT$ 百萬）。');
     } else {
@@ -246,12 +251,17 @@
   function calc() {
     const base = {
       fcf0: num('dvFcf'), g: num('dvG'), gT: num('dvGT'), wacc: num('dvWacc'),
-      shares: num('dvShares'), netDebt: num('dvNetDebt') || 0,
+      shares: num('dvShares'), netDebt: num('dvNetDebt'),
     };
     savePrefs();
     const out = el('dvResult'), warnBox = el('dvWarn'), chart = el('dvChart'), sens = el('dvSens');
     [out, warnBox, chart, sens].forEach(n => { if (n) n.textContent = ''; });
     if (!out) return;
+
+    if (selected && selected.isBank) {
+      out.appendChild(el2('p', 'dv-hint is-error', '模型不適用：金融業（銀行）不建議使用一般企業 EV / Net Debt / WACC DCF 估值，請改用其他方法。'));
+      return;
+    }
 
     const r = V.dcf(base);
     if (!r.ok) {
@@ -414,7 +424,7 @@
     setText('dvHint', '');
     const bars = el('dvBars'); if (bars) bars.textContent = '';
     ['dvPrice', 'dvFcf', 'dvShares'].forEach(id => setInput(id, null));
-    setInput('dvNetDebt', 0);
+    setInput('dvNetDebt', null);
     calc();
   }
 

@@ -116,6 +116,7 @@ const find = (node, cls) => node.children.find(c => c.className === cls);
   });
 
   await t('DCF 試算：輸入現金流後顯示每股價值、EV 組成、5 年長條圖、敏感度表', async () => {
+    el('dvNetDebt').value = '0';
     el('dvFcf').value = '1500000';
     DCF.calc();
     const res = el('dvResult');
@@ -132,6 +133,7 @@ const find = (node, cls) => node.children.find(c => c.className === cls);
   });
 
   await t('DCF 試算：極端假設（折現率 30%、永續 29%）會顯示提醒', async () => {
+    el('dvNetDebt').value = '0';
     el('dvWacc').value = '30'; el('dvGT').value = '29';
     DCF.calc();
     const warn = el('dvWarn');
@@ -195,8 +197,8 @@ const find = (node, cls) => node.children.find(c => c.className === cls);
     // shares = market_cap / price / 1e6 = 4978144444416 / 342.56 / 1e6 ≈ 14533.0 百萬股
     assert.ok(Math.abs(parseFloat(el('dvShares').value) - 14533.0) < 1, el('dvShares').value);
     assert.strictEqual(el('dvFcf').value, '');
-    assert.strictEqual(parseFloat(el('dvNetDebt').value), 0);
     assert.ok(/缺少自由現金流/.test(el('dvFcfHint').textContent));
+    assert.strictEqual(el('dvNetDebt').value, '');
   });
 
   await t('美股：選單(datalist)載入美股股票清單', async () => {

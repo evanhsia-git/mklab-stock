@@ -249,17 +249,112 @@ def _musd(v):
     return round(x / 1e6, 2) if x is not None else None
 
 
-def us_valuation_inputs(info: Dict[str, Any]) -> Dict[str, Optional[float]]:
+def us_valuation_inputs(info: Dict[str, Any], df_cashflow=None, df_balance_sheet=None,
+                        df_quarterly_cashflow=None, df_quarterly_balance_sheet=None) -> Dict[str, Optional[float]]:
     """DCF 所需的美股欄位，單位為「百萬」（USD 百萬、百萬股）。缺值一律 null，不補 0。
-    fcf_musd：自由現金流（yfinance freeCashflow，TTM）
+
+    資料來源優先序：
+    1. Ticker.info：freeCashflow, totalCash, totalDebt, sharesOutstanding
+    2. yfinance cashflow DataFrame：Free Cash Flow，或 OCF - CapEx 代理值
+    3. yfinance balance_sheet DataFrame：Cash And Cash Equivalents，Total Debt
+       （絕不使用 Total Liabilities 作為有息負債）
+    4. 若仍無法取得，一律保留 null，不補 0、不估算（不可自行從其他來源推測）
+
+    fcf_musd：自由現金流（yfinance freeCashflow / OCF - CapEx 代理值，TTM）
     cash_musd / debt_musd：現金與約當現金、總負債（含租賃，yfinance totalDebt）
-    shares_mln：已發行股數（sharesOutstanding）"""
+    shares_mln：已發行股數（sharesOutstanding）
+
+    重要：yfinance 的 info dict 鍵名可能因版本而變化，此處嘗試常見別名。
+    如果提供 df_cashflow/balance_sheet，會嘗試從 DataFrame 讀取相應列。
+
+    回傳額外欄位（會合併寫入 data/us/us-stocks.json）：
+    - fcf_source: FCF 資料來源標記
+    - cash_source: 現金資料來源標記
+    - debt_source: 有息負債資料來源標記
+    - shares_source: 股數資料來源標記
+    - shares_is_estimated: 股數是否為估算值（目前預設為 False）
+    """
+    # FCF：優先 info['freeCashflow'] / 'freeCashFlow']
+    fcf = None
+    fcf_source = None
+    if info.get("freeCashflow") is not None:
+        fcf = float(info["freeCashflow"])
+        fcf_source = "yfinance_info_freeCashflow"
+    elif info.get("freeCashFlow") is not None:
+        fcf = float(info["freeCashFlow"])
+        fcf_source = "yfinance_info_freeCashFlow"
+
+    # 備援：從 cashflow DataFrame 讀取 Free Cash Flow 或 OCF - CapEx
+    if df_cashflow is not None and fcf is None:
+        try:
+            if len(df_cashflow.columns) > 0:
+                latest_col = df_cashflow.columns[0]
+                row_data = df_cashflow[latest_col]
+                if "Free Cash Flow" in row_data.index:
+                    fcf = float(row_data["Free Cash Flow"])
+                    fcf_source = "yfinance_cashflow_FCF"
+                elif "Operating Cash Flow" in row_data.index and "Capital Expenditure" in row_data.index:
+                    ocf = float(row_data["Operating Cash Flow"])
+                    capex = row_data["Capital Expenditure"]
+                    capex_val = abs(capex) if capex < 0 else capex
+                    fcf = round(ocf + capex_val, 2)
+                    fcf_source = "yfinance_cashflow_OCF_Minus_CapEx"
+        except Exception:
+            pass
+
+    # Cash：totalCash 或 cashAndCashEquivalents (info) -> balance_sheet DataFrame 回退
+    cash = None
+    cash_source = None
+    if info.get("totalCash") is not None:
+        cash = float(info["totalCash"])
+        cash_source = "yfinance_info_totalCash"
+    elif info.get("cashAndCashEquivalents") is not None:
+        cash = float(info["cashAndCashEquivalents"])
+        cash_source = "yfinance_info_cashAndCashEquivalents"
+    elif df_balance_sheet is not None:
+        try:
+            latest_col = df_balance_sheet.columns[0]
+            row_data = df_balance_sheet[latest_col]
+            for key in ["Cash And Cash Equivalents", "Cash Cash Equivalents And Short Term Investments"]:
+                if key in row_data.index:
+                    cash = float(row_data[key])
+                    cash_source = f"yfinance_balance_sheet_{key}"
+                    break
+        except Exception:
+            pass
+
+    # Debt：totalDebt (info) -> balance_sheet DataFrame 回退；絕不使用 totalLiab 作為有息負債
+    debt = None
+    debt_source = None
+    if info.get("totalDebt") is not None:
+        debt = float(info["totalDebt"])
+        debt_source = "yfinance_info_totalDebt"
+    elif df_balance_sheet is not None:
+        try:
+            latest_col = df_balance_sheet.columns[0]
+            row_data = df_balance_sheet[latest_col]
+            if "Total Debt" in row_data.index:
+                debt = float(row_data["Total Debt"])
+                debt_source = "yfinance_balance_sheet_Total Debt"
+        except Exception:
+            pass
+
+    # Shares：sharesOutstanding
     shares = _num_or_none(info.get("sharesOutstanding"))
+    shares_mln = round(shares / 1e6, 4) if shares is not None and shares > 0 else None
+    shares_source = "yfinance_info_sharesOutstanding"
+    shares_is_estimated = False  # Yahoo Finance sharesOutstanding（非公式估算）；官方財報未驗證
+
     return {
-        "fcf_musd": _musd(info.get("freeCashflow")),
-        "cash_musd": _musd(info.get("totalCash")),
-        "debt_musd": _musd(info.get("totalDebt")),
-        "shares_mln": round(shares / 1e6, 4) if shares and shares > 0 else None,
+        "fcf_musd": _musd(fcf),
+        "cash_musd": _musd(cash),
+        "debt_musd": _musd(debt),
+        "shares_mln": shares_mln,
+        "fcf_source": fcf_source,
+        "cash_source": cash_source,
+        "debt_source": debt_source,
+        "shares_source": shares_source,
+        "shares_is_estimated": shares_is_estimated,
     }
 
 

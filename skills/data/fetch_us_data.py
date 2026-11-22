@@ -91,6 +91,15 @@ def _fetch_one_stock(yf, sym):
         chg = None
         if price is not None and prev_close:
             chg = round((price - prev_close) / prev_close * 100, 2)
+        # 2026-11-22：同時抓取 cashflow 與 balance_sheet DataFrame，用於補齊 DCF 財務欄位
+        try:
+            df_cashflow = t.cashflow if t.cashflow is not None else None
+        except Exception:
+            df_cashflow = None
+        try:
+            df_balance_sheet = t.balance_sheet if t.balance_sheet is not None else None
+        except Exception:
+            df_balance_sheet = None
         return {
             "sym": sym,
             "name": info.get("shortName") or info.get("longName") or sym,
@@ -108,8 +117,8 @@ def _fetch_one_stock(yf, sym):
             "52w_low": info.get("fiftyTwoWeekLow"),
             "currency": info.get("currency", "USD"),
             "exchange": info.get("exchange"),
-            # 2026-11-17：DCF 估值輸入（百萬），缺值為 null
-            **data_rules.us_valuation_inputs(info),
+            # 2026-11-17：DCF 估值輸入（百萬），缺值為 null；2026-11-22：改用 DataFrame 補齊缺失欄位
+            **data_rules.us_valuation_inputs(info, df_cashflow=df_cashflow, df_balance_sheet=df_balance_sheet),
         }
     except Exception as e:
         _log(f"⚠️ {sym} 抓取失敗：{e}")

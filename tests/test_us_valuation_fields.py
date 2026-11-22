@@ -20,7 +20,10 @@ class UsValuationInputs(unittest.TestCase):
 
     def test_missing_fields_are_none_not_zero(self):
         v = dr.us_valuation_inputs({})
-        self.assertEqual(v, {"fcf_musd": None, "cash_musd": None, "debt_musd": None, "shares_mln": None})
+        self.assertEqual(v, {"fcf_musd": None, "cash_musd": None, "debt_musd": None,
+                             "shares_mln": None, "fcf_source": None, "cash_source": None,
+                             "debt_source": None, "shares_source": "yfinance_info_sharesOutstanding",
+                             "shares_is_estimated": False})
 
     def test_zero_or_bad_shares_rejected(self):
         self.assertIsNone(dr.us_valuation_inputs({"sharesOutstanding": 0})["shares_mln"])

@@ -123,10 +123,11 @@
     for (const k of ['fcf0', 'g', 'gT', 'wacc', 'shares']) {
       if (!isNum(p[k])) { out.reason = `缺少參數：${k}`; return out; }
     }
-    const netDebt = isNum(p.netDebt) ? p.netDebt : 0;
+    const netDebt = isNum(p.netDebt) ? p.netDebt : null;
     if (p.shares <= 0) { out.reason = '股數必須大於 0'; return out; }
     if (p.wacc <= p.gT) { out.reason = '折現率必須大於永續成長率'; return out; }
     if (p.fcf0 <= 0) { out.reason = '基期自由現金流為負或 0，DCF 不適用（建議改用其他方法）'; return out; }
+    if (netDebt == null) { out.reason = '缺少淨負債（有息負債與現金資料不足），DCF 不適用（請補入淨負債或改用其他方法）'; return out; }
 
     const r = p.wacc / 100;
     let fcf = p.fcf0, pvSum = 0;
