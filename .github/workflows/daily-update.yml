@@ -67,6 +67,10 @@ jobs:
         run: python skills/data/compute_industry.py
       - name: 全市場 ETF 每日淨值／折溢價（TWSE MIS 反向 API，歷史月檔累積）
         run: python skills/data/fetch_etf_nav.py
+      - name: 主動式 ETF 官方持股（13 家投信破解；單檔失敗標 stale 不中斷）
+        run: python skills/data/fetch_etf_holdings_active.py
+      - name: ETF 持股歷史累積（冪等，供換股比對）
+        run: python skills/data/accumulate_etf_holdings_history.py
       - name: 每日市場摘要與 RSS（本地計算）
         run: python skills/data/build_digest.py
       - name: QA 閘門（提交前，錯誤即中止，不推送）

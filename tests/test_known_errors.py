@@ -408,8 +408,61 @@ _hidx = json.loads(open('data/etf-holdings-history/index.json', 'rb').read())
 check("ETF 持股歷史：索引含 ≥1 個月份檔", len(_hidx.get('months') or []) >= 1,
       f"months={(_hidx.get('months') or [])}")
 _hhdr = open('data/etf-holdings-history/' + (_hidx['months'][0]) + '.tsv', encoding='utf-8').readline().strip()
-check("ETF 持股歷史：TSV 欄位正確",
-      _hhdr == "record_date\tetf_code\tstock_code\tstock_name\tweight", f"header={_hhdr!r}")
+check("ETF 持股歷史：TSV 欄位正確（含 shares，供 scale 校正）",
+      _hhdr == "record_date\tetf_code\tstock_code\tstock_name\tweight\tshares", f"header={_hhdr!r}")
+
+# ETF 持股內容驗證（2026-11-22，規則學自 active-etf adapter 層：重複代號會讓 diff 少算、反查多算）
+_ah_doc = json.loads(open('data/etf-holdings.json', 'rb').read())
+_ah = _ah_doc.get('holdings') or {}
+_dup, _badw = [], []
+for _sym, _e in _ah.items():
+    if not isinstance(_e, dict):
+        continue
+    _codes = [it[0] for it in (_e.get('items') or []) if it]
+    if len(_codes) != len(set(_codes)):
+        _dup.append(_sym)
+    for it in (_e.get('items') or []):
+        # 只驗台股個股代碼（純數字 4-6 碼）：期貨/黃金等衍生品列的「權重」是名目部位，可 >100%
+        if it and len(it) >= 3 and isinstance(it[2], (int, float)) \
+                and re.match(r'^\d{4}[A-Z]?$', str(it[0])) and not (0 <= it[2] <= 100):
+            _badw.append((_sym, it[0], it[2]))
+            break
+check("ETF 持股：每檔內無重複成份股代號", not _dup, f"重複檔 {_dup[:6]}")
+check("ETF 持股：單筆權重均在 0~100%", not _badw, f"異常 {_badw[:4]}")
+
+# 換股比對 scale 校正（2026-11-22，學自 active-etf diffengine）：申贖等比例增減要用真中位數分離
+import importlib.util as _ilu
+_spec = _ilu.spec_from_file_location("etf_diff", "skills/data/etf_holdings_diff.py")
+_etf_diff = _ilu.module_from_spec(_spec)
+_spec.loader.exec_module(_etf_diff)
+# 4 檔共同持股全部 ×1.2（申購造成），經理人僅對 2330 主動加碼至 ×1.5
+_h1 = {"2330": ("台積電", 10.0, 1000), "2454": ("聯發科", 5.0, 500), "2308": ("鴻海", 3.0, 300), "0056": ("X", 1.0, 100)}
+_h2 = {"2330": ("台積電", 12.0, 1500), "2454": ("聯發科", 6.0, 600), "2308": ("鴻海", 3.6, 360), "0056": ("X", 1.2, 120)}
+_scale, _common = _etf_diff.compute_scale(_h1, _h2)
+check("換股比對 scale：偶數筆取真中位數（1.2 而非右側 1.5）", _scale == 1.2, f"scale={_scale}")
+check("換股比對 scale：common≥3 且範圍內 → ok", _etf_diff.valid_scale(_scale, _common) is True)
+_h3 = {"2330": ("台積電", 10.0, 1000), "2454": ("聯發科", 5.0, 500)}
+_, _common3 = _etf_diff.compute_scale(_h3, _h3)
+check("換股比對 scale：共同持股 <3 → insufficient（寧缺勿假）",
+      not _etf_diff.valid_scale(1.0, _common3), f"common={_common3}")
+
+# 國泰官方 Excel 解析器回歸測試（fixture 錄製 2026-11-20 00878；防 pandas/openpyxl 行為變化）
+import importlib.util as _ilu2
+_spec2 = _ilu2.spec_from_file_location("cathay_fetch", "skills/data/fetch_etf_holdings_cathay.py")
+_cathay = _ilu2.module_from_spec(_spec2)
+try:
+    _spec2.loader.exec_module(_cathay)
+    import pandas as _pd
+    _fx = _pd.read_excel("tests/fixtures/etf/cathay_00878.xlsx", header=None)
+    _fx_items, _fx_asof, _fx_extra = _cathay.parse_excel(_fx)
+    check("國泰持股解析：fixture（00878）≥25 檔持股且含官方淨值 27.98",
+          _fx_items and len(_fx_items) >= 25 and _fx_extra and _fx_extra.get("nav") == 27.98,
+          f"items={len(_fx_items or [])}, asof={_fx_asof}, extra={_fx_extra}")
+    check("國泰持股解析：fixture 含股數（4 欄 items，供 scale 校正）",
+          _fx_items and len(_fx_items[0]) == 4 and isinstance(_fx_items[0][3], int),
+          f"首筆 {_fx_items[0] if _fx_items else None}")
+except ImportError:
+    check("國泰持股解析：fixture 測試略過（缺 pandas）", True)
 _slim_writers = (_fd2 + _fin
                  + open('skills/data/compute_indicators.py', encoding='utf-8').read()
                  + open('skills/data/integrate_official_company.py', encoding='utf-8').read())

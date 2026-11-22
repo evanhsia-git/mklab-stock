@@ -411,36 +411,90 @@
     const sym = document.getElementById('cmpDiffSym').value;
     const d1 = document.getElementById('cmpDiffD1').value;
     const d2 = document.getElementById('cmpDiffD2').value;
+    // TSV v2：第 6 欄為股數（可為空）；股數是「申贖分離」校正的必要輸入
     const rows = (diffRows || []).filter(r => r[1] === sym && (r[0] === d1 || r[0] === d2) && !isNoise(r[2], r[3]));
     const h1 = {}, h2 = {};
-    rows.forEach(r => { (r[0] === d1 ? h1 : h2)[r[2]] = [r[3], parseFloat(r[4])]; });
+    rows.forEach(r => {
+      const sh = (r.length >= 6 && r[5] !== '' && r[5] != null && isFinite(parseFloat(r[5]))) ? parseFloat(r[5]) : null;
+      (r[0] === d1 ? h1 : h2)[r[2]] = { name: r[3], w: parseFloat(r[4]), sh: sh };
+    });
     const added = Object.keys(h2).filter(c => !(c in h1)).sort();
     const removed = Object.keys(h1).filter(c => !(c in h2)).sort();
-    const changed = Object.keys(h1).filter(c => c in h2)
-      .map(c => [c, h2[c][0], h1[c][1], h2[c][1]])
-      .filter(x => Math.abs(x[3] - x[2]) >= 0.01)
-      .sort((a, b) => Math.abs(b[3] - b[2]) - Math.abs(a[3] - a[2]));
+
+    // ── 申贖分離（學自 active-etf diffengine）：scale = 共同持股股數比值的真中位數 ──
+    const common = Object.keys(h1).filter(c => c in h2 && h1[c].sh != null && h2[c].sh != null && h1[c].sh > 0 && h2[c].sh > 0);
+    const hasShares = Object.keys(h1).concat(Object.keys(h2)).every(c =>
+      (h1[c] ? h1[c].sh != null : true) && (h2[c] ? h2[c].sh != null : true));
+    let scale = null, quality = 'ok';
+    if (hasShares && common.length >= 3) {
+      const ratios = common.map(c => h2[c].sh / h1[c].sh).sort((a, b) => a - b);
+      const mid = Math.floor(ratios.length / 2);
+      scale = (ratios.length % 2) ? ratios[mid] : (ratios[mid - 1] + ratios[mid]) / 2;  // 真中位數（取右側會漏判）
+      if (!(scale >= 0.2 && scale <= 5)) quality = 'insufficient_scale';
+    } else if (!hasShares) {
+      quality = 'weight_only';
+    } else {
+      quality = 'insufficient_scale';
+    }
+
+    // 事件：校正後股數變化 ≥5%「且」權重變化 ≥0.1pp（雙門檻濾掉股價被動漲跌與純申贖）
+    const events = [];
+    const wonly = [];
+    for (const c of Object.keys(h1)) {
+      if (!(c in h2)) continue;
+      const dw = h2[c].w - h1[c].w;
+      let adj = null;
+      if (scale != null && quality === 'ok' && h1[c].sh > 0 && h2[c].sh != null) {
+        adj = h2[c].sh / (h1[c].sh * scale) - 1;
+      }
+      if (adj != null && Math.abs(adj) >= 0.05 && Math.abs(dw) >= 0.1) {
+        events.push({ c: c, name: h2[c].name, w1: h1[c].w, w2: h2[c].w, dw: dw, adj: adj,
+                      adjShares: Math.round(h2[c].sh - h1[c].sh * scale),
+                      raw: h2[c].sh - h1[c].sh, type: adj > 0 ? 'INCREASE' : 'DECREASE' });
+      } else if (adj == null && Math.abs(dw) >= 0.01) {
+        wonly.push({ c: c, name: h2[c].name, w1: h1[c].w, w2: h2[c].w, dw: dw });
+      }
+    }
+    events.sort((a, b) => Math.abs(b.adj) - Math.abs(a.adj));
+    wonly.sort((a, b) => Math.abs(b.dw) - Math.abs(a.dw));
+
     let html = '';
     if (d1 === d2) {
       html = '<p class="muted-small-top">目前該 ETF 只有 ' + dates1Text(sym) + '；待下次持股更新累積新快照後即可比對。</p>';
     } else {
       html += '<p class="muted-small-top">快照規模：' + Object.keys(h1).length + ' 檔 → ' + Object.keys(h2).length + ' 檔' +
         '（已過濾現金／期貨等非個股列）</p>';
+      if (quality === 'ok' && scale != null) {
+        html += '<p class="muted-small-top">規模校正：scale=' + scale.toFixed(4) + '（共同持股 ' + common.length +
+          ' 檔）——已分離申購/贖回的等比例資金流，只呈現經理人主動調整。</p>';
+      } else if (quality === 'insufficient_scale') {
+        html += '<p class="muted-small-top">⚠️ 共同持股含股數者僅 ' + common.length + ' 檔（<3）或 scale 超界——無法可靠校正，' +
+          '以下退回權重比對（含申購贖回噪音，僅供參考）。</p>';
+      } else if (quality === 'weight_only') {
+        html += '<p class="muted-small-top">⚠️ 快照缺股數（舊格式或前 10 大來源）→ 無法分離申購贖回，以下為純權重比對。</p>';
+      }
       if (added.length) {
         html += '<p><b>＋ 新增 ' + added.length + ' 檔</b></p><div class="table-wrap"><table><thead><tr><th>代號</th><th>名稱</th><th>新權重%</th></tr></thead><tbody>' +
-          added.map(c => '<tr><td>' + c + '</td><td>' + h2[c][0] + '</td><td>' + h2[c][1].toFixed(2) + '</td></tr>').join('') + '</tbody></table></div>';
+          added.map(c => '<tr><td>' + c + '</td><td>' + h2[c].name + '</td><td>' + h2[c].w.toFixed(2) + '</td></tr>').join('') + '</tbody></table></div>';
       }
       if (removed.length) {
         html += '<p><b>－ 移除 ' + removed.length + ' 檔</b></p><div class="table-wrap"><table><thead><tr><th>代號</th><th>名稱</th><th>原權重%</th></tr></thead><tbody>' +
-          removed.map(c => '<tr><td>' + c + '</td><td>' + h1[c][0] + '</td><td>' + h1[c][1].toFixed(2) + '</td></tr>').join('') + '</tbody></table></div>';
+          removed.map(c => '<tr><td>' + c + '</td><td>' + h1[c].name + '</td><td>' + h1[c].w.toFixed(2) + '</td></tr>').join('') + '</tbody></table></div>';
       }
-      if (changed.length) {
-        html += '<p><b>Δ 權重變動 ' + changed.length + ' 檔</b>（|Δ|≥0.01pp，依變動量排序' + (changed.length > 20 ? '，顯示前 20' : '') + '）</p>' +
+      if (events.length) {
+        html += '<p><b>Δ 主動加減碼 ' + events.length + ' 檔</b>（校正後股數 ≥5% 且權重 ≥0.1pp，依變動量排序' + (events.length > 20 ? '，顯示前 20' : '') + '）</p>' +
+          '<div class="table-wrap"><table><thead><tr><th></th><th>代號</th><th>名稱</th><th>權重%</th><th>Δpp</th><th>校正後調整(股)</th><th>原始差額(股)</th></tr></thead><tbody>' +
+          events.slice(0, 20).map(x => '<tr><td>' + (x.type === 'INCREASE' ? '▲' : '▼') + '</td><td>' + x.c + '</td><td>' + x.name + '</td><td>' +
+            x.w1.toFixed(2) + '→' + x.w2.toFixed(2) + '</td><td>' + (x.dw > 0 ? '+' : '') + x.dw.toFixed(2) + '</td><td>' +
+            (x.adjShares > 0 ? '+' : '') + x.adjShares.toLocaleString() + '</td><td>' + (x.raw > 0 ? '+' : '') + x.raw.toLocaleString() + '</td></tr>').join('') + '</tbody></table></div>';
+      }
+      if (wonly.length && quality !== 'ok') {
+        html += '<p><b>Δ 權重變動 ' + wonly.length + ' 檔</b>（|Δ|≥0.01pp，依變動量排序' + (wonly.length > 20 ? '，顯示前 20' : '') + '）</p>' +
           '<div class="table-wrap"><table><thead><tr><th>代號</th><th>名稱</th><th>舊%</th><th>新%</th><th>Δpp</th></tr></thead><tbody>' +
-          changed.slice(0, 20).map(x => '<tr><td>' + x[0] + '</td><td>' + x[1] + '</td><td>' + x[2].toFixed(2) + '</td><td>' + x[3].toFixed(2) + '</td><td>' + (x[3] - x[2] > 0 ? '+' : '') + (x[3] - x[2]).toFixed(2) + '</td></tr>').join('') + '</tbody></table></div>';
+          wonly.slice(0, 20).map(x => '<tr><td>' + x.c + '</td><td>' + x.name + '</td><td>' + x.w1.toFixed(2) + '</td><td>' + x.w2.toFixed(2) + '</td><td>' + (x.dw > 0 ? '+' : '') + x.dw.toFixed(2) + '</td></tr>').join('') + '</tbody></table></div>';
       }
-      if (!added.length && !removed.length && !changed.length) {
-        html += '<p class="muted-small-top">兩個快照之間沒有成份股增減或權重變動（|Δ|<0.01pp）。</p>';
+      if (!added.length && !removed.length && !events.length && !(quality !== 'ok' && wonly.length)) {
+        html += '<p class="muted-small-top">兩個快照之間沒有跨門檻的主動調整。</p>';
       }
       html += '<p class="muted-small-top">註：比對基於歷史快照；官方完整清單與「前 10 大」來源的覆蓋範圍不同，跨來源日期比對時請留意。</p>';
     }

@@ -115,7 +115,7 @@ def parse_excel(df):
             shares = float(str(row[2]).replace(",", "").strip())
         except (ValueError, TypeError):
             shares = None
-        items.append([code, name, weight])
+        items.append([code, name, weight, int(shares) if shares is not None else None])
 
     # 4) 附加資訊：每單位淨值（官方值，供對照）
     nav = None

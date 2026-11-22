@@ -20,7 +20,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 HOLDINGS_PATH = ROOT / "data" / "etf-holdings.json"
 HIST_DIR = ROOT / "data" / "etf-holdings-history"
-COLS = ["record_date", "etf_code", "stock_code", "stock_name", "weight"]
+COLS = ["record_date", "etf_code", "stock_code", "stock_name", "weight", "shares"]
 
 
 def main():
@@ -44,11 +44,13 @@ def main():
             continue
         month = rec[:7]
         for it in items:
-            code, name, weight = (it + [None, None])[:3]
+            code, name, weight = (it + [None, None, None])[:3]
+            shares = it[3] if len(it) >= 4 else None  # 2026-11-22 起含股數（供 scale 校正）
             if code in (None, ""):
                 continue
             by_month.setdefault(month, []).append(
-                [rec, sym, str(code), str(name or ""), weight])
+                [rec, sym, str(code), str(name or ""), weight,
+                 "" if shares in (None, "") else shares])
 
     if not by_month:
         print("[holdings-history] ❌ 快照中沒有可累積的持股（asof/items 缺失）")
