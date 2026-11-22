@@ -98,7 +98,14 @@
     // 2026-11-17：ETF 經理費 / 保管費 / 合計費率（依 AUM 階梯試算，非即時）
     management_fee: { label:'經理費%', type:'num', sortable:true, fmt:r=>r.management_fee!=null?Number(r.management_fee).toFixed(2)+'%':'-' },
     custody_fee:    { label:'保管費%', type:'num', sortable:true, fmt:r=>r.custody_fee!=null?Number(r.custody_fee).toFixed(2)+'%':'-' },
-    total_fee:      { label:'合計費率%', type:'num', sortable:true, defDir:-1, fmt:r=>r.total_fee!=null?Number(r.total_fee).toFixed(2)+'%':'-' },
+    // 合計費率附來源徽章（2026-11-22）：fee_verified='official'→（官方）；其他有值狀態→（估算·待核實）。
+    // 無 fee_verified 的表格（其他頁）tag 為空字串，顯示不受影響。
+    total_fee:      { label:'合計費率%', type:'num', sortable:true, defDir:-1, fmt:r=>{
+                        if (r.total_fee==null) return '-';
+                        const tag = r.fee_verified==='official' ? '（官方）'
+                                  : (r.fee_verified ? '（估算·待核實）' : '');
+                        return Number(r.total_fee).toFixed(2)+'%'+tag;
+                      }},
     market_cap: { label:'市值(元)', type:'num', sortable:true, fmt:r=>r.market_cap!=null?r.market_cap:'-' },
     beneficiaries: { label:'受益人數', type:'num', sortable:true, defDir:-1, fmt:r=>r.beneficiaries!=null?Number(r.beneficiaries).toLocaleString():'-' },
     net_assets_100m: { label:'資產規模(億元)', type:'num', sortable:true, defDir:-1, fmt:r=>r.net_assets_100m!=null?Number(r.net_assets_100m).toLocaleString():'-' },

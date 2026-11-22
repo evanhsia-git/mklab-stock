@@ -148,6 +148,7 @@
     <div class="grp" style="margin-top:12px;">
       <div class="lab">說明</div>
       <p class="muted-small-top">同一檔 ETF 可同時屬於多個類型（如 00937B 同時是債券型與…）。代碼：L 槓桿、R 反向、B 債券、C 債券外幣、T 平衡、A 主動式、D 主動債券、市值型、高股息型、主題型。已排除 U 尾期貨型。</p>
+      <p class="muted-small-top">費用率來源：MoneyDJ 逐檔實抓。合計費率標示「（估算·待核實）」＝尚未經發行商公告核實、「（官方）」＝已核實。保管費目前無可靠公開來源，暫不顯示。「—」＝MoneyDJ 亦無該檔資料（多為主動式 ETF）。</p>
     </div>
   </div>
   <div>
@@ -508,7 +509,8 @@
       );
     }
     // 成份股與費用率是選用欄位：勾選時才加入欄位並附上文字（預設不顯示；其他頁面完全沒有此欄位）
-    const baseCols = ['sym','name','price','chg','div','net_assets_100m','management_fee','custody_fee','total_fee','listing_date'];
+    // 2026-11-22：移除 custody_fee 欄——MoneyDJ 無保管費資料，etf-meta 的 AUM 階梯推算值不對外顯示（口徑：不誤導）
+    const baseCols = ['sym','name','price','chg','div','net_assets_100m','management_fee','total_fee','listing_date'];
     const cols = etfShowHoldings ? baseCols.concat(['holdings10']) : baseCols;
     if (etfShowHoldings) rows = rows.map(r => Object.assign({}, r, { holdings10: holdingsText(r.sym) }));
     const countEl = document.getElementById('etfScrCount');
@@ -544,7 +546,16 @@
         .filter(m => catMap[m.sym])
         .map(m => {
           const live = priceMap[m.sym] || {};
-          return Object.assign({}, m, { price: live.price, chg: live.chg, div: live.div, categories: catMap[m.sym] });
+          // 2026-11-22 費用權威階梯：發行商公告（official）＞ MoneyDJ 實抓（stocks.json，fee_verified=pending）
+          // ＞ AUM 階梯推算（僅內部參考）。畫面費用一律吃 stocks.json；custody_fee 明確歸 null（無可靠來源不顯示）。
+          return Object.assign({}, m, {
+            price: live.price, chg: live.chg, div: live.div,
+            management_fee: live.management_fee != null ? live.management_fee : null,
+            total_fee: live.total_fee != null ? live.total_fee : null,
+            custody_fee: null,
+            fee_verified: live.fee_verified || null,
+            categories: catMap[m.sym]
+          });
         });
       // 還原上次的成份股顯示設定（預設不顯示；未勾選時表格不會有該欄位）
       const hcb = document.getElementById('etfShowHoldings');
