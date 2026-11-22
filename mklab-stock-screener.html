@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="assets/css/layout.css">
 <link rel="stylesheet" href="assets/css/component.css">
 <link rel="stylesheet" href="assets/css/mobile.css">
+<link rel="stylesheet" href="assets/css/dcf.css">
 </head>
 <body>
 <header class="sticky-header" role="banner">
@@ -157,101 +158,85 @@
 </div>
 </div><!-- /scrEtfPane -->
 
-<!-- ===== DCF 估值分頁（2026-11-17）===== -->
-<div id="scrDcfPane" style="display:none;">
-<style>
-  .dcf-summary{display:grid;grid-template-columns:max-content 1fr;gap:6px 16px;margin:8px 0;}
-  .dcf-summary dt{color:var(--muted);}
-  .dcf-summary dd{margin:0;font-weight:600;font-variant-numeric:tabular-nums;}
-  .dcf-sens{border-collapse:collapse;margin-top:8px;font-variant-numeric:tabular-nums;}
-  .dcf-sens th,.dcf-sens td{border:1px solid var(--border);padding:6px 10px;text-align:right;background:var(--surface);}
-  .dcf-sens th{font-weight:600;}
-  .dcf-sens .dcf-center{font-weight:700;color:var(--ink);}
-  .dcf-inputs label{display:block;margin-top:8px;}
-  .dcf-inputs input{width:100%;}
-
-  /* ===== DCF 結論卡與簡易圖表 ===== */
-  .dcf-hero{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:4px 0 10px;}
-  .dcf-card{border:1px solid var(--border);border-radius:10px;padding:10px 12px;background:var(--surface);}
-  .dcf-card .k{font-size:12px;color:var(--muted);}
-  .dcf-card .v{font-size:26px;font-weight:700;line-height:1.25;font-variant-numeric:tabular-nums;}
-  .dcf-card .s{font-size:12px;margin-top:2px;}
-  .v-deep,.v-under{color:var(--up);}
-  .v-fair{color:#eab308;}
-  .v-over,.v-deep-over{color:var(--down);}
-  .v-na{color:var(--muted);}
-  .dcf-verdict{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;border:1px solid currentColor;}
-  .dcf-scale-track{position:relative;display:flex;height:12px;border-radius:999px;overflow:hidden;margin:10px 0 4px;}
-  .dcf-scale-track .seg{flex:1;}
-  .seg.s1{background:var(--up);}.seg.s2{background:#84cc16}.seg.s3{background:#eab308}
-  .seg.s4{background:#f97316}.seg.s5{background:var(--down);}
-  .dcf-needle{position:absolute;top:-4px;width:3px;height:20px;background:var(--ink);border-radius:2px;transform:translateX(-1.5px);}
-  .dcf-scale-legend{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);}
-  .dcf-readout{margin:12px 0;padding:10px 12px;border-left:3px solid var(--accent);background:var(--surface);border-radius:0 8px 8px 0;line-height:1.75;}
-  .dcf-bars{display:flex;flex-direction:column;height:150px;margin:12px 0 2px;max-width:100%;overflow:hidden;}
-  .dcf-bars .k{font-size:11px;color:var(--muted);margin-bottom:4px;}
-  .dcf-bars .dcf-bars-inner{display:flex;align-items:flex-end;gap:4px;height:100%;width:100%;}
-  .dcf-bars .bar{flex:1;display:flex;flex-direction:column;justify-content:flex-end;height:100%;min-width:0;}
-  .dcf-bars .bar i{display:block;background:var(--accent);border-radius:3px 3px 0 0;min-height:2px;}
-  .dcf-bars .bar b{font-size:9px;font-weight:400;text-align:center;color:var(--muted);margin-top:3px;white-space:nowrap;}
-  .dcf-table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:13px;margin-top:4px;}
-  .dcf-table td{padding:5px 6px;border-bottom:1px solid var(--border);}
-  .dcf-table td:last-child{text-align:right;font-weight:600;}
-  .dcf-table tr.tot td{border-top:2px solid var(--border);font-weight:700;}
-</style>
-<div class="seg" id="dcfMarket" style="margin-bottom:14px;max-width:240px;">
-  <button class="on" onclick="MKLAB_DCF.setMarket('tw',this)">台股</button>
-  <button onclick="MKLAB_DCF.setMarket('us',this)">美股</button>
-</div>
-
-<div class="layout">
-  <div class="panel">
-    <h3>估值指標</h3>
-    <p class="muted-small-top">Graham Number、同產業中位數 PE／PB 合理價、殖利率合理價；綜合參考價為各法中位數。缺 EPS 或 PB 者不計入。</p>
-    <div class="grp">
-      <div class="lab">搜尋</div>
-      <input id="dcfSearch" placeholder="代號或名稱" oninput="MKLAB_DCF.applyVal()" style="width:100%;">
+<!-- ===== DCF 估值分頁（2026-11-22 改版：估值表與個股 DCF 整合）===== -->
+<div id="scrDcfPane" class="dv-wrap" style="display:none;">
+  <div class="dv-head">
+    <div class="dv-seg" id="dvMarket" role="group" aria-label="市場">
+      <button type="button" class="on" onclick="MKLAB_DCF.setMarket('tw',this)">台股</button>
+      <button type="button" onclick="MKLAB_DCF.setMarket('us',this)">美股</button>
     </div>
-    <div class="grp">
-      <div class="lab">殖利率合理價的目標殖利率（%）</div>
-      <input id="dcfYield" type="number" value="5" min="0.5" step="0.5" oninput="MKLAB_DCF.applyVal()" style="width:100%;">
-    </div>
-    <div class="grp">
-      <div class="lab">綜合參考價上漲空間 ≥（%）</div>
-      <input id="dcfMinUpside" type="number" step="1" placeholder="不限" oninput="MKLAB_DCF.applyVal()" style="width:100%;">
-      <p class="muted-small-top">此欄為估值指標的參考價，不是 DCF 內在價值；DCF 結果請看右側計算機。</p>
-    </div>
-    <div class="count" id="dcfValCount"></div>
+    <p class="dv-intro">先看同產業的估值參考價，點選任一檔即可在下方檢視個股細節與 DCF 試算。</p>
   </div>
-  <div>
-    <div class="table-wrap"><table id="dcfValTable"></table></div>
-    <div class="pager" id="dcfValPager"></div>
-  </div>
-</div>
 
-<div class="layout" style="margin-top:18px;">
-  <div class="panel dcf-inputs">
-    <h3>DCF 計算機</h3>
-    <label>選擇股票<input id="dcfPick" list="dcfList" placeholder="輸入代號，如 2330 或 AAPL" onchange="MKLAB_DCF.selectStock(this.value)"></label>
-    <datalist id="dcfList"></datalist>
-    <p class="muted-small-top" id="dcfNote">請選擇股票，或直接輸入參數。</p>
-    <label>目前股價<input id="dcf_price" readonly></label>
-    <label>基期自由現金流（百萬）<input id="dcf_fcf" type="number" step="any" oninput="MKLAB_DCF.calc()"></label>
-    <p class="muted-small-top" id="dcfFcfHint"></p>
-    <label>前 5 年成長率（%）<input id="dcf_g1" type="number" step="0.5" value="8" oninput="MKLAB_DCF.calc()"></label>
-    <label>第 6–10 年成長率（%）<input id="dcf_g2" type="number" step="0.5" value="4" oninput="MKLAB_DCF.calc()"></label>
-    <label>永續成長率（%）<input id="dcf_gT" type="number" step="0.5" value="2" oninput="MKLAB_DCF.calc()"></label>
-    <label>折現率 WACC（%）<input id="dcf_wacc" type="number" step="0.5" value="9" oninput="MKLAB_DCF.calc()"></label>
-    <label>股數（百萬股）<input id="dcf_shares" type="number" step="any" oninput="MKLAB_DCF.calc()"></label>
-    <label>淨負債（百萬）<input id="dcf_netdebt" type="number" step="any" value="0" oninput="MKLAB_DCF.calc()"></label>
-    <p><button onclick="MKLAB_DCF.resetCalc()">重設</button></p>
+  <section class="dv-card" aria-labelledby="dvTitle">
+    <h3 id="dvTitle">估值參考表</h3>
+    <p class="dv-sub">參考價 = Graham、PE、PB、殖利率四種方法的中位數（需至少兩種有效方法）。數值依同產業中位數計算；PE 低於 5、PB 低於 0.3 的股票不計入，以降低一次性獲利或資料異常造成的誇大。</p>
+    <div class="dv-toolbar">
+      <label class="dv-field"><span>搜尋代號或名稱</span>
+        <input class="dv-input" id="dvSearch" type="search" placeholder="例如 2330 或 台積" oninput="MKLAB_DCF.applyVal()"></label>
+      <label class="dv-field"><span>殖利率目標（%）</span>
+        <input class="dv-input" id="dvYield" type="number" inputmode="decimal" value="5" min="0.5" step="0.5" oninput="MKLAB_DCF.applyVal()">
+        <small>用於殖利率合理價</small></label>
+      <label class="dv-field"><span>參考價上漲 ≥（%）</span>
+        <input class="dv-input" id="dvMinUpside" type="number" inputmode="decimal" placeholder="不限" oninput="MKLAB_DCF.applyVal()">
+        <small>估值參考，非 DCF 結果</small></label>
+    </div>
+    <p class="dv-count" id="dvCount" aria-live="polite"></p>
+    <div class="dv-table-wrap"><table id="dvTable"></table></div>
+    <div class="pager" id="dvPager"></div>
+  </section>
+
+  <div class="dv-detail">
+    <section class="dv-card" aria-labelledby="dvStockTitle">
+      <h3 id="dvStockTitle">個股估值</h3>
+      <p class="dv-name" id="dvName">請在上方表格點選一檔股票</p>
+      <p class="dv-meta" id="dvMeta"></p>
+      <div class="dv-bars" id="dvBars"></div>
+      <p class="dv-legend">長條以目前股價為 1 倍（黑線）。綜合參考價以黃色表示。超過 3 倍的長條會截在 3 倍。</p>
+      <div class="dv-note" id="dvFlag"></div>
+    </section>
+
+    <section class="dv-card" aria-labelledby="dvDcfTitle">
+      <h3 id="dvDcfTitle">DCF 試算（5 年）</h3>
+      <p class="dv-sub">以基期自由現金流預估未來 5 年，再以永續成長終值折現。台股目前沒有現金流資料，需自行輸入；美股會自動帶入過去 12 個月的資料。</p>
+      <label class="dv-field"><span>選擇股票</span>
+        <input class="dv-input" id="dvPick" list="dvList" placeholder="輸入代號" onchange="MKLAB_DCF.selectStock(this.value)">
+      </label>
+      <datalist id="dvList"></datalist>
+      <div class="dv-inputs" style="margin-top:12px;">
+        <label class="dv-field"><span>基期自由現金流（百萬）</span>
+          <input class="dv-input" id="dvFcf" type="number" inputmode="decimal" step="any" oninput="MKLAB_DCF.calc()">
+          <small id="dvFcfHint"></small></label>
+        <label class="dv-field"><span>目前股價</span>
+          <input class="dv-input" id="dvPrice" readonly></label>
+        <label class="dv-field"><span>未來 5 年每年成長率（%）</span>
+          <input class="dv-input" id="dvG" type="number" inputmode="decimal" step="0.5" value="8" oninput="MKLAB_DCF.calc()"></label>
+        <label class="dv-field"><span>永續成長率（%）</span>
+          <input class="dv-input" id="dvGT" type="number" inputmode="decimal" step="0.5" value="2" oninput="MKLAB_DCF.calc()">
+          <small>通常不超過長期 GDP 成長（約 2–3%）</small></label>
+        <label class="dv-field"><span>折現率 WACC（%）</span>
+          <input class="dv-input" id="dvWacc" type="number" inputmode="decimal" step="0.5" value="9" oninput="MKLAB_DCF.calc()"></label>
+        <label class="dv-field"><span>股數（百萬股）</span>
+          <input class="dv-input" id="dvShares" type="number" inputmode="decimal" step="any" oninput="MKLAB_DCF.calc()"></label>
+        <label class="dv-field"><span>淨負債（百萬）</span>
+          <input class="dv-input" id="dvNetDebt" type="number" inputmode="decimal" step="any" value="0" oninput="MKLAB_DCF.calc()">
+          <small>負債減現金；負值代表淨現金</small></label>
+      </div>
+      <p><button type="button" class="dv-btn" onclick="MKLAB_DCF.resetCalc()">恢復預設參數</button></p>
+    </section>
   </div>
-  <div>
-    <div id="dcfOut"></div>
-    <div id="dcfSens"></div>
-  </div>
-</div>
-<div class="disclaimer">估值指標與 DCF 結果依假設計算，僅供研究參考，不構成投資建議。台股 DCF 基期 FCF 以稅後淨利（EPS × 股數）估算，僅供參考（未扣資本支出）；美股由 yfinance TTM 資料預填，可能與官方財報有落差。</div>
+
+  <section class="dv-card" aria-labelledby="dvResTitle">
+    <h3 id="dvResTitle">試算結果</h3>
+    <div id="dvResult"></div>
+    <div id="dvWarn"></div>
+    <div id="dvChart"></div>
+    <h3 style="margin-top:20px;font-size:15px;">敏感度（每股價值）</h3>
+    <p class="dv-sub">列＝折現率，欄＝永續成長率。深紅＝高於目前股價，綠＝低於目前股價。</p>
+    <div class="dv-sens-wrap" id="dvSens"></div>
+  </section>
+
+  <p class="dv-foot">估值與 DCF 結果依假設計算，僅供研究參考，不構成投資建議。美股自由現金流為 yfinance 過去 12 個月資料，可能與官方財報有落差。</p>
 </div><!-- /scrDcfPane -->
 
 <!-- etf-holdings-embedded:start（完整成份股資料，不顯示） -->
