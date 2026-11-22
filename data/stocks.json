@@ -460,7 +460,7 @@
       "avg_value_1m": 3000.0,
       "avg_volume": 50000000,
       "beneficiaries": 2000000,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.05,
       "custody_fee": 0.025,
       "total_fee": 0.075,
@@ -520,8 +520,7 @@
       "holdings_count": "10",
       "holdings_source": "YUANTA+CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2003-06-24"
     },
     {
       "sym": "2881",
@@ -1750,7 +1749,7 @@
       "avg_value_1m": 2823.953,
       "avg_volume": 61177787,
       "beneficiaries": 1793935,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.08,
       "custody_fee": 0.03,
       "total_fee": 0.11,
@@ -1810,8 +1809,7 @@
       "holdings_count": "10",
       "holdings_source": "YUANTA+CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2007-12-26"
     },
     {
       "sym": "2884",
@@ -2188,7 +2186,7 @@
       "avg_value_1m": 1886.9,
       "avg_volume": 66871815,
       "beneficiaries": 1774723,
-      "issuer": "國泰證券投資信託股份有限公司",
+      "issuer": "國泰投信",
       "management_fee": 0.08,
       "custody_fee": 0.03,
       "total_fee": 0.11,
@@ -2248,8 +2246,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2020-07-20"
     },
     {
       "sym": "2890",
@@ -2464,7 +2461,7 @@
       "avg_value_1m": 3067.201,
       "avg_volume": 113077431,
       "beneficiaries": 1523591,
-      "issuer": "群益證券投資信託股份有限公司",
+      "issuer": "群益投信",
       "management_fee": 0.08,
       "custody_fee": 0.03,
       "total_fee": 0.11,
@@ -2524,8 +2521,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2022-10-20"
     },
     {
       "sym": "2059",
@@ -3625,7 +3621,7 @@
       "avg_value_1m": 1053.794,
       "avg_volume": 5023222,
       "beneficiaries": 749943,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.1,
       "custody_fee": 0.03,
       "total_fee": 0.13,
@@ -3685,8 +3681,7 @@
       "holdings_count": "50",
       "holdings_source": "FUBON",
       "holdings_date": "2026/11/05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2012-07-17"
     },
     {
       "sym": "4958",
@@ -4840,7 +4835,7 @@
       "avg_value_1m": 7441.484,
       "avg_volume": 203409544,
       "beneficiaries": 393565,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.1,
       "custody_fee": 0.03,
       "total_fee": 0.13,
@@ -4890,8 +4885,7 @@
       "holdings_count": "8",
       "holdings_source": "YUANTA+CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2014-10-31"
     },
     {
       "sym": "3036",
@@ -5150,7 +5144,7 @@
       "avg_value_1m": 6642.104,
       "avg_volume": 250351180,
       "beneficiaries": 1010132,
-      "issuer": "統一證券投資信託股份有限公司",
+      "issuer": "統一投信",
       "management_fee": 0.1,
       "custody_fee": 0.03,
       "total_fee": 0.13,
@@ -5210,8 +5204,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-05-27"
     },
     {
       "sym": "2449",
@@ -5541,7 +5534,7 @@
       "avg_value_1m": 2705.872,
       "avg_volume": 201292338,
       "beneficiaries": 1011837,
-      "issuer": "凱基證券投資信託股份有限公司",
+      "issuer": "凱基投信",
       "management_fee": 0.1,
       "custody_fee": 0.03,
       "total_fee": 0.13,
@@ -5601,8 +5594,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-02-03"
     },
     {
       "sym": "1590",
@@ -6569,7 +6561,7 @@
       "avg_value_1m": 1184.518,
       "avg_volume": 39715205,
       "beneficiaries": 393720,
-      "issuer": "大華銀證券投資信託股份有限公司",
+      "issuer": "大華銀投信",
       "management_fee": 0.1,
       "custody_fee": 0.03,
       "total_fee": 0.13,
@@ -6629,8 +6621,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2022-11-24"
     },
     {
       "sym": "6213",
@@ -6898,7 +6889,7 @@
       "avg_value_1m": 1965.47,
       "avg_volume": 37746275,
       "beneficiaries": 473964,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.1,
       "custody_fee": 0.03,
       "total_fee": 0.13,
@@ -6958,8 +6949,7 @@
       "holdings_count": "50",
       "holdings_source": "FUBON",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2006-09-12"
     },
     {
       "sym": "3702",
@@ -7144,7 +7134,7 @@
       "avg_value_1m": 1172.256,
       "avg_volume": 47610470,
       "beneficiaries": 506989,
-      "issuer": "復華證券投資信託股份有限公司",
+      "issuer": "復華投信",
       "management_fee": 0.1,
       "custody_fee": 0.03,
       "total_fee": 0.13,
@@ -7204,8 +7194,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2023-06-09"
     },
     {
       "sym": "1504",
@@ -7460,7 +7449,7 @@
       "avg_value_1m": 2941.474,
       "avg_volume": 338037947,
       "beneficiaries": 581020,
-      "issuer": "中國信託證券投資信託股份有限公司",
+      "issuer": "中信投信",
       "management_fee": 0.1,
       "custody_fee": 0.03,
       "total_fee": 0.13,
@@ -7520,8 +7509,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-06-11"
     },
     {
       "sym": "2337",
@@ -7706,7 +7694,7 @@
       "avg_value_1m": 1005.636,
       "avg_volume": 22497653,
       "beneficiaries": 416021,
-      "issuer": "國泰證券投資信託股份有限公司",
+      "issuer": "國泰投信",
       "management_fee": 0.1,
       "custody_fee": 0.03,
       "total_fee": 0.13,
@@ -7766,8 +7754,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2020-12-10"
     },
     {
       "sym": "6415",
@@ -8658,7 +8645,7 @@
       "avg_value_1m": 4219.196,
       "avg_volume": 413894105,
       "beneficiaries": 801195,
-      "issuer": "統一證券投資信託股份有限公司",
+      "issuer": "統一投信",
       "management_fee": 0.1,
       "custody_fee": 0.03,
       "total_fee": 0.13,
@@ -8718,8 +8705,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-05-12"
     },
     {
       "sym": "6789",
@@ -8828,7 +8814,7 @@
       "avg_value_1m": 528.878,
       "avg_volume": 9403738,
       "beneficiaries": 269838,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.1,
       "custody_fee": 0.03,
       "total_fee": 0.13,
@@ -8888,8 +8874,7 @@
       "holdings_count": "10",
       "holdings_source": "YUANTA+CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-09-27"
     },
     {
       "sym": "6526",
@@ -10305,7 +10290,7 @@
       "avg_value_1m": 2104.08,
       "avg_volume": 157752388,
       "beneficiaries": 237925,
-      "issuer": "群益證券投資信託股份有限公司",
+      "issuer": "群益投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -10365,8 +10350,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-03-30"
     },
     {
       "sym": "6442",
@@ -10677,7 +10661,7 @@
       "avg_value_1m": 949.966,
       "avg_volume": 13053682,
       "beneficiaries": 204973,
-      "issuer": "國泰證券投資信託股份有限公司",
+      "issuer": "國泰投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -10737,8 +10721,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-05-03"
     },
     {
       "sym": "1229",
@@ -10921,7 +10904,7 @@
       "avg_value_1m": 553.701,
       "avg_volume": 16178335,
       "beneficiaries": 202934,
-      "issuer": "國泰證券投資信託股份有限公司",
+      "issuer": "國泰投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -10981,8 +10964,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2023-03-27"
     },
     {
       "sym": "6196",
@@ -11747,7 +11729,7 @@
       "avg_value_1m": 932.193,
       "avg_volume": 27169535,
       "beneficiaries": 247265,
-      "issuer": "群益證券投資信託股份有限公司",
+      "issuer": "群益投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -11807,8 +11789,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2023-06-06"
     },
     {
       "sym": "1717",
@@ -12460,7 +12441,7 @@
       "avg_value_1m": 778.388,
       "avg_volume": 24520591,
       "beneficiaries": 216768,
-      "issuer": "中國信託證券投資信託股份有限公司",
+      "issuer": "中信投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -12520,8 +12501,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2021-05-28"
     },
     {
       "sym": "2915",
@@ -12988,7 +12968,7 @@
       "avg_value_1m": 436.385,
       "avg_volume": 41148943,
       "beneficiaries": 306398,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -13048,8 +13028,7 @@
       "holdings_count": "10",
       "holdings_source": "YUANTA+CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2024-04-01"
     },
     {
       "sym": "2889",
@@ -13927,7 +13906,7 @@
       "avg_value_1m": 1591.921,
       "avg_volume": 98044116,
       "beneficiaries": 321395,
-      "issuer": "復華證券投資信託股份有限公司",
+      "issuer": "復華投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -13987,8 +13966,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-12-18"
     },
     {
       "sym": "2258",
@@ -14244,7 +14222,7 @@
       "avg_value_1m": 251.902,
       "avg_volume": 3453074,
       "beneficiaries": 118076,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -14304,8 +14282,7 @@
       "holdings_count": "10",
       "holdings_source": "YUANTA+CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2015-12-14"
     },
     {
       "sym": "6944",
@@ -14637,7 +14614,7 @@
       "avg_value_1m": 116.661,
       "avg_volume": 1470383,
       "beneficiaries": 90564,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -14697,8 +14674,7 @@
       "holdings_count": "50",
       "holdings_source": "FUBON",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-05-17"
     },
     {
       "sym": "3030",
@@ -15249,7 +15225,7 @@
       "avg_value_1m": 710.523,
       "avg_volume": 13763676,
       "beneficiaries": 137427,
-      "issuer": "野村證券投資信託股份有限公司",
+      "issuer": "野村投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -15309,8 +15285,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2023-11-01"
     },
     {
       "sym": "1907",
@@ -15496,7 +15471,7 @@
       "avg_value_1m": 344.669,
       "avg_volume": 35712149,
       "beneficiaries": 49626,
-      "issuer": "群益證券投資信託股份有限公司",
+      "issuer": "群益投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -15556,8 +15531,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2024-08-21"
     },
     {
       "sym": "00712",
@@ -15597,7 +15571,7 @@
       "avg_value_1m": 323.119,
       "avg_volume": 38531681,
       "beneficiaries": 148333,
-      "issuer": "復華證券投資信託股份有限公司",
+      "issuer": "復華投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -15657,8 +15631,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-08-21"
     },
     {
       "sym": "8112",
@@ -16645,7 +16618,7 @@
       "avg_value_1m": 918.488,
       "avg_volume": 51680956,
       "beneficiaries": 214396,
-      "issuer": "統一證券投資信託股份有限公司",
+      "issuer": "統一投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -16705,8 +16678,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-11-05"
     },
     {
       "sym": "4766",
@@ -16967,7 +16939,7 @@
       "avg_value_1m": 802.8,
       "avg_volume": 40265578,
       "beneficiaries": 181634,
-      "issuer": "群益證券投資信託股份有限公司",
+      "issuer": "群益投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -17027,8 +16999,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-05-22"
     },
     {
       "sym": "2504",
@@ -17505,7 +17476,7 @@
       "avg_value_1m": 1139.782,
       "avg_volume": 71165763,
       "beneficiaries": 204224,
-      "issuer": "群益證券投資信託股份有限公司",
+      "issuer": "群益投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -17565,8 +17536,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-12-30"
     },
     {
       "sym": "3715",
@@ -17806,7 +17776,7 @@
       "avg_value_1m": 267.359,
       "avg_volume": 2183215,
       "beneficiaries": 68724,
-      "issuer": "統一證券投資信託股份有限公司",
+      "issuer": "統一投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -17866,8 +17836,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2018-12-06"
     },
     {
       "sym": "2421",
@@ -18617,7 +18586,7 @@
       "avg_value_1m": 78.336,
       "avg_volume": 1022461,
       "beneficiaries": 80330,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -18677,8 +18646,7 @@
       "holdings_count": "10",
       "holdings_source": "YUANTA+CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-08-23"
     },
     {
       "sym": "3019",
@@ -18791,7 +18759,7 @@
       "avg_value_1m": 252.254,
       "avg_volume": 7108329,
       "beneficiaries": 122275,
-      "issuer": "群益證券投資信託股份有限公司",
+      "issuer": "群益投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -18851,8 +18819,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2023-03-08"
     },
     {
       "sym": "6116",
@@ -20473,7 +20440,7 @@
       "avg_value_1m": 141.762,
       "avg_volume": 9144852,
       "beneficiaries": 77957,
-      "issuer": "中國信託證券投資信託股份有限公司",
+      "issuer": "中信投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -20533,8 +20500,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2021-02-04"
     },
     {
       "sym": "00990A",
@@ -20573,7 +20539,7 @@
       "avg_value_1m": 506.829,
       "avg_volume": 33383670,
       "beneficiaries": 114631,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -20633,8 +20599,7 @@
       "holdings_count": "10",
       "holdings_source": "YUANTA+CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-12-22"
     },
     {
       "sym": "8028",
@@ -20889,7 +20854,7 @@
       "avg_value_1m": 1632.293,
       "avg_volume": 144756098,
       "beneficiaries": 54655,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -20929,8 +20894,7 @@
       "holdings_count": "6",
       "holdings_source": "CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2014-10-31"
     },
     {
       "sym": "2204",
@@ -21631,7 +21595,7 @@
       "avg_value_1m": 143.301,
       "avg_volume": 7953980,
       "beneficiaries": 107857,
-      "issuer": "統一證券投資信託股份有限公司",
+      "issuer": "統一投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -21691,8 +21655,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2024-03-20"
     },
     {
       "sym": "00400A",
@@ -21729,7 +21692,7 @@
       "avg_value_1m": 799.073,
       "avg_volume": 58477584,
       "beneficiaries": 147736,
-      "issuer": "國泰證券投資信託股份有限公司",
+      "issuer": "國泰投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -21789,8 +21752,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-04-09"
     },
     {
       "sym": "6456",
@@ -21967,7 +21929,7 @@
       "avg_value_1m": 689.006,
       "avg_volume": 2841592,
       "beneficiaries": 19808,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -22002,8 +21964,7 @@
       "holdings_count": "5",
       "holdings_source": "CMONEY",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2016-10-05"
     },
     {
       "sym": "3413",
@@ -22475,7 +22436,7 @@
       "avg_value_1m": 163.585,
       "avg_volume": 10033224,
       "beneficiaries": 123520,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -22535,8 +22496,7 @@
       "holdings_count": "30",
       "holdings_source": "FUBON",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2021-12-22"
     },
     {
       "sym": "2535",
@@ -22803,7 +22763,7 @@
       "avg_value_1m": 532.294,
       "avg_volume": 4876210,
       "beneficiaries": null,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.1,
       "custody_fee": 0.03,
       "total_fee": 0.13,
@@ -22862,9 +22822,7 @@
       ],
       "holdings_count": "10",
       "holdings_source": "FUBON+CMONEY",
-      "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "holdings_date": "2026/11/04"
     },
     {
       "sym": "2362",
@@ -23121,7 +23079,7 @@
       "avg_value_1m": 271.013,
       "avg_volume": 13221083,
       "beneficiaries": 155390,
-      "issuer": "野村證券投資信託股份有限公司",
+      "issuer": "野村投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -23181,8 +23139,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-07-21"
     },
     {
       "sym": "5234",
@@ -23424,8 +23381,7 @@
           2.21
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2021-03-31"
     },
     {
       "sym": "6579",
@@ -27716,7 +27672,7 @@
       "avg_value_1m": 158.191,
       "avg_volume": 3251492,
       "beneficiaries": 10429,
-      "issuer": "國泰證券投資信託股份有限公司",
+      "issuer": "國泰投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -27776,8 +27732,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-11-25"
     },
     {
       "sym": "2103",
@@ -28325,7 +28280,7 @@
       "avg_value_1m": 722.73,
       "avg_volume": 76651775,
       "beneficiaries": 114212,
-      "issuer": "凱基證券投資信託股份有限公司",
+      "issuer": "凱基投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -28385,8 +28340,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-06-24"
     },
     {
       "sym": "3376",
@@ -28642,7 +28596,7 @@
       "avg_value_1m": 841.315,
       "avg_volume": 97751448,
       "beneficiaries": 128871,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -28702,8 +28656,7 @@
       "holdings_count": "47",
       "holdings_source": "FUBON",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-06-09"
     },
     {
       "sym": "3149",
@@ -30723,7 +30676,7 @@
       "avg_value_1m": 150.445,
       "avg_volume": 5573226,
       "beneficiaries": 69691,
-      "issuer": "凱基證券投資信託股份有限公司",
+      "issuer": "凱基投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -30783,8 +30736,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2022-08-09"
     },
     {
       "sym": "00670L",
@@ -30823,7 +30775,7 @@
       "avg_value_1m": 217.794,
       "avg_volume": 1244236,
       "beneficiaries": 13528,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -30853,8 +30805,7 @@
       "holdings_count": "4",
       "holdings_source": "FUBON+CMONEY",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-02-21"
     },
     {
       "sym": "3592",
@@ -31465,7 +31416,7 @@
       "avg_value_1m": 291.697,
       "avg_volume": 13828009,
       "beneficiaries": 74314,
-      "issuer": "野村證券投資信託股份有限公司",
+      "issuer": "野村投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -31525,8 +31476,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-05-05"
     },
     {
       "sym": "2010",
@@ -31639,7 +31589,7 @@
       "avg_value_1m": 52.354,
       "avg_volume": 1316059,
       "beneficiaries": 55120,
-      "issuer": "國泰證券投資信託股份有限公司",
+      "issuer": "國泰投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -31699,8 +31649,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2021-07-01"
     },
     {
       "sym": "3028",
@@ -32083,7 +32032,7 @@
       "avg_value_1m": 77.984,
       "avg_volume": 2548681,
       "beneficiaries": 54456,
-      "issuer": "復華證券投資信託股份有限公司",
+      "issuer": "復華投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -32133,8 +32082,7 @@
       "holdings_count": "8",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2023-04-26"
     },
     {
       "sym": "4551",
@@ -32247,7 +32195,7 @@
       "avg_value_1m": 107.54,
       "avg_volume": 4151985,
       "beneficiaries": 58882,
-      "issuer": "中國信託證券投資信託股份有限公司",
+      "issuer": "中信投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -32307,8 +32255,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2023-11-01"
     },
     {
       "sym": "1710",
@@ -32560,7 +32507,7 @@
       "avg_value_1m": 12.206,
       "avg_volume": 771997,
       "beneficiaries": 776,
-      "issuer": "復華證券投資信託股份有限公司",
+      "issuer": "復華投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -32620,8 +32567,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-08-21"
     },
     {
       "sym": "8908",
@@ -33301,7 +33247,7 @@
       "avg_value_1m": 582.712,
       "avg_volume": 29119136,
       "beneficiaries": 12726,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -33326,8 +33272,7 @@
       "holdings_count": "3",
       "holdings_source": "YUANTA+CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2015-05-18"
     },
     {
       "sym": "2031",
@@ -35454,7 +35399,7 @@
       "avg_value_1m": 937.38,
       "avg_volume": 11126427,
       "beneficiaries": 15601,
-      "issuer": "國泰證券投資信託股份有限公司",
+      "issuer": "國泰投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -35514,8 +35459,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2016-07-14"
     },
     {
       "sym": "3022",
@@ -35713,7 +35657,7 @@
       "avg_value_1m": 352.707,
       "avg_volume": 26010666,
       "beneficiaries": 13710,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -35738,8 +35682,7 @@
       "holdings_count": "3",
       "holdings_source": "CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2016-10-07"
     },
     {
       "sym": "4441",
@@ -36067,7 +36010,7 @@
       "avg_value_1m": 86.223,
       "avg_volume": 5948888,
       "beneficiaries": 17463,
-      "issuer": "凱基證券投資信託股份有限公司",
+      "issuer": "凱基投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -36127,8 +36070,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2024-05-02"
     },
     {
       "sym": "2338",
@@ -37035,7 +36977,7 @@
       "avg_value_1m": 131.331,
       "avg_volume": 13161790,
       "beneficiaries": 15109,
-      "issuer": "聯博證券投資信託股份有限公司",
+      "issuer": "聯博投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -37095,8 +37037,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-02-04"
     },
     {
       "sym": "7780",
@@ -37369,7 +37310,7 @@
       "avg_value_1m": 136.94,
       "avg_volume": 5274670,
       "beneficiaries": 62320,
-      "issuer": "中國信託證券投資信託股份有限公司",
+      "issuer": "中信投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -37429,8 +37370,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2021-09-16"
     },
     {
       "sym": "00947",
@@ -37470,7 +37410,7 @@
       "avg_value_1m": 318.88,
       "avg_volume": 9965159,
       "beneficiaries": 56636,
-      "issuer": "台新證券投資信託股份有限公司",
+      "issuer": "台新投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -37530,8 +37470,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2024-06-12"
     },
     {
       "sym": "3416",
@@ -39303,7 +39242,7 @@
       "avg_value_1m": 165.619,
       "avg_volume": 4323837,
       "beneficiaries": 57284,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -39363,8 +39302,7 @@
       "holdings_count": "30",
       "holdings_source": "FUBON",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2021-06-10"
     },
     {
       "sym": "1307",
@@ -39692,7 +39630,7 @@
       "avg_value_1m": 260.79,
       "avg_volume": 27558774,
       "beneficiaries": 53720,
-      "issuer": "復華證券投資信託股份有限公司",
+      "issuer": "復華投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -39752,8 +39690,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-09-02"
     },
     {
       "sym": "6464",
@@ -40087,7 +40024,7 @@
       "avg_value_1m": 56.642,
       "avg_volume": 2359662,
       "beneficiaries": 45239,
-      "issuer": "中國信託證券投資信託股份有限公司",
+      "issuer": "中信投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -40147,8 +40084,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2024-03-15"
     },
     {
       "sym": "00885",
@@ -40188,7 +40124,7 @@
       "avg_value_1m": 79.23,
       "avg_volume": 4321656,
       "beneficiaries": 46274,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -40248,8 +40184,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2021-04-19"
     },
     {
       "sym": "2527",
@@ -40638,7 +40573,7 @@
       "avg_value_1m": 463.852,
       "avg_volume": 53990590,
       "beneficiaries": 60254,
-      "issuer": "群益證券投資信託股份有限公司",
+      "issuer": "群益投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -40698,8 +40633,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-10-20"
     },
     {
       "sym": "4771",
@@ -40811,7 +40745,7 @@
       "avg_value_1m": 160.434,
       "avg_volume": 12614499,
       "beneficiaries": 51197,
-      "issuer": "富蘭克林華美證券投資信託股份有限公司",
+      "issuer": "富蘭克林華美投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -40871,8 +40805,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2024-10-15"
     },
     {
       "sym": "6790",
@@ -40979,7 +40912,7 @@
       "avg_value_1m": 622.789,
       "avg_volume": 66482020,
       "beneficiaries": 87556,
-      "issuer": "中國信託證券投資信託股份有限公司",
+      "issuer": "中信投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -41039,8 +40972,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-09-02"
     },
     {
       "sym": "8341",
@@ -41594,7 +41526,7 @@
       "avg_value_1m": 483.923,
       "avg_volume": 5255960,
       "beneficiaries": 18629,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -41619,8 +41551,7 @@
       "holdings_count": "3",
       "holdings_source": "CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-09-01"
     },
     {
       "sym": "00997A",
@@ -41658,7 +41589,7 @@
       "avg_value_1m": 257.408,
       "avg_volume": 21583729,
       "beneficiaries": 61359,
-      "issuer": "群益證券投資信託股份有限公司",
+      "issuer": "群益投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -41718,8 +41649,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-04-14"
     },
     {
       "sym": "5292",
@@ -43470,7 +43400,7 @@
       "avg_value_1m": 157.362,
       "avg_volume": 15543142,
       "beneficiaries": 59420,
-      "issuer": "貝萊德證券投資信託股份有限公司",
+      "issuer": "貝萊德投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -43530,8 +43460,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-08-03"
     },
     {
       "sym": "3049",
@@ -43642,7 +43571,7 @@
       "avg_value_1m": 164.611,
       "avg_volume": 16345887,
       "beneficiaries": 32378,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -43702,8 +43631,7 @@
       "holdings_count": "10",
       "holdings_source": "YUANTA+CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-04-23"
     },
     {
       "sym": "00735",
@@ -43743,7 +43671,7 @@
       "avg_value_1m": 263.99,
       "avg_volume": 2845298,
       "beneficiaries": 31711,
-      "issuer": "國泰證券投資信託股份有限公司",
+      "issuer": "國泰投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -43803,8 +43731,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2018-06-11"
     },
     {
       "sym": "6534",
@@ -43918,7 +43845,7 @@
       "avg_value_1m": 165.666,
       "avg_volume": 10917301,
       "beneficiaries": 52505,
-      "issuer": "台新證券投資信託股份有限公司",
+      "issuer": "台新投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -43978,8 +43905,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-05-13"
     },
     {
       "sym": "00965",
@@ -44019,7 +43945,7 @@
       "avg_value_1m": 106.663,
       "avg_volume": 4213335,
       "beneficiaries": 32486,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -44079,8 +44005,7 @@
       "holdings_count": "10",
       "holdings_source": "YUANTA+CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2024-11-26"
     },
     {
       "sym": "2852",
@@ -44314,7 +44239,7 @@
       "avg_value_1m": 326.5,
       "avg_volume": 30736788,
       "beneficiaries": 83556,
-      "issuer": "野村證券投資信託股份有限公司",
+      "issuer": "野村投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -44374,8 +44299,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-05-05"
     },
     {
       "sym": "6914",
@@ -45064,7 +44988,7 @@
       "avg_value_1m": 125.905,
       "avg_volume": 8793283,
       "beneficiaries": 68514,
-      "issuer": "安聯證券投資信託股份有限公司",
+      "issuer": "安聯投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -45124,8 +45048,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-07-14"
     },
     {
       "sym": "1110",
@@ -45457,7 +45380,7 @@
       "avg_value_1m": 112.211,
       "avg_volume": 6435887,
       "beneficiaries": 39949,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -45517,8 +45440,7 @@
       "holdings_count": "50",
       "holdings_source": "FUBON",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-03-19"
     },
     {
       "sym": "6277",
@@ -45632,7 +45554,7 @@
       "avg_value_1m": 85.175,
       "avg_volume": 8305342,
       "beneficiaries": 8425,
-      "issuer": "群益證券投資信託股份有限公司",
+      "issuer": "群益投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -45692,8 +45614,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-09-11"
     },
     {
       "sym": "2013",
@@ -46382,7 +46303,7 @@
       "avg_value_1m": 134.288,
       "avg_volume": 19487137,
       "beneficiaries": 17355,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -46417,8 +46338,7 @@
       "holdings_count": "5",
       "holdings_source": "CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-01-17"
     },
     {
       "sym": "00955",
@@ -46514,8 +46434,7 @@
           1.75
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2024-08-20"
     },
     {
       "sym": "2484",
@@ -46770,7 +46689,7 @@
       "avg_value_1m": 44.649,
       "avg_volume": 1888074,
       "beneficiaries": 43960,
-      "issuer": "富蘭克林華美證券投資信託股份有限公司",
+      "issuer": "富蘭克林華美投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -46830,8 +46749,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2022-04-21"
     },
     {
       "sym": "5222",
@@ -47368,7 +47286,7 @@
       "avg_value_1m": 2.724,
       "avg_volume": 85403,
       "beneficiaries": 180,
-      "issuer": "台新證券投資信託股份有限公司",
+      "issuer": "台新投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -47428,8 +47346,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-02-15"
     },
     {
       "sym": "2419",
@@ -47664,14 +47581,13 @@
       "avg_value_1m": 927.557,
       "avg_volume": 94523124,
       "beneficiaries": 22129,
-      "issuer": "復華證券投資信託股份有限公司",
+      "issuer": "復華投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
       "ytd_return_pct": null,
       "holdings": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-11-11"
     },
     {
       "sym": "8499",
@@ -49062,7 +48978,7 @@
       "avg_value_1m": 36.152,
       "avg_volume": 1075284,
       "beneficiaries": 40508,
-      "issuer": "國泰證券投資信託股份有限公司",
+      "issuer": "國泰投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -49122,8 +49038,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-08-17"
     },
     {
       "sym": "4169",
@@ -49523,7 +49438,7 @@
       "avg_value_1m": 28.463,
       "avg_volume": 356987,
       "beneficiaries": 20682,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -49583,8 +49498,7 @@
       "holdings_count": "10",
       "holdings_source": "YUANTA+CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2020-07-07"
     },
     {
       "sym": "5236",
@@ -49920,7 +49834,7 @@
       "avg_value_1m": 217.173,
       "avg_volume": 19064398,
       "beneficiaries": 44168,
-      "issuer": "安聯證券投資信託股份有限公司",
+      "issuer": "安聯投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -49980,8 +49894,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-02-03"
     },
     {
       "sym": "8215",
@@ -50668,7 +50581,7 @@
       "avg_value_1m": 118.239,
       "avg_volume": 3539936,
       "beneficiaries": 31948,
-      "issuer": "台新證券投資信託股份有限公司",
+      "issuer": "台新投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -50728,8 +50641,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2022-03-07"
     },
     {
       "sym": "3032",
@@ -50910,7 +50822,7 @@
       "avg_value_1m": 220.484,
       "avg_volume": 15107114,
       "beneficiaries": 54550,
-      "issuer": "野村證券投資信託股份有限公司",
+      "issuer": "野村投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -50970,8 +50882,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-06-17"
     },
     {
       "sym": "00412A",
@@ -51001,7 +50912,7 @@
       "avg_value_1m": 258.508,
       "avg_volume": 30022000,
       "beneficiaries": 38928,
-      "issuer": "安聯證券投資信託股份有限公司",
+      "issuer": "安聯投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -51061,8 +50972,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-10-13"
     },
     {
       "sym": "9905",
@@ -51393,7 +51303,7 @@
       "avg_value_1m": 31.234,
       "avg_volume": 678883,
       "beneficiaries": 28294,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -51453,8 +51363,7 @@
       "holdings_count": "10",
       "holdings_source": "FUBON+CMONEY",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2021-08-12"
     },
     {
       "sym": "1436",
@@ -51925,7 +51834,7 @@
       "avg_value_1m": 14.707,
       "avg_volume": 986941,
       "beneficiaries": 438,
-      "issuer": "貝萊德證券投資信託股份有限公司",
+      "issuer": "貝萊德投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -51975,8 +51884,7 @@
       "holdings_count": "8",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-08-03"
     },
     {
       "sym": "1444",
@@ -52374,7 +52282,7 @@
       "avg_value_1m": 67.68,
       "avg_volume": 3418625,
       "beneficiaries": 35191,
-      "issuer": "玉山證券投資信託股份有限公司",
+      "issuer": "玉山投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -52434,8 +52342,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-03-13"
     },
     {
       "sym": "6947",
@@ -52600,8 +52507,7 @@
           2.87
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2021-03-31"
     },
     {
       "sym": "2305",
@@ -53640,7 +53546,7 @@
       "avg_value_1m": 258.99,
       "avg_volume": 29165166,
       "beneficiaries": 26894,
-      "issuer": "台新證券投資信託股份有限公司",
+      "issuer": "台新投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -53700,8 +53606,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-11-03"
     },
     {
       "sym": "1305",
@@ -54094,7 +53999,7 @@
       "avg_value_1m": 37.789,
       "avg_volume": 630977,
       "beneficiaries": 21945,
-      "issuer": "國泰證券投資信託股份有限公司",
+      "issuer": "國泰投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -54154,8 +54059,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-01-29"
     },
     {
       "sym": "3056",
@@ -54776,7 +54680,7 @@
       "avg_value_1m": 85.164,
       "avg_volume": 2051193,
       "beneficiaries": 29275,
-      "issuer": "中國信託證券投資信託股份有限公司",
+      "issuer": "中信投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -54836,8 +54740,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2021-08-13"
     },
     {
       "sym": "1603",
@@ -55166,7 +55069,7 @@
       "avg_value_1m": 168.926,
       "avg_volume": 16404544,
       "beneficiaries": 12288,
-      "issuer": "中國信託證券投資信託股份有限公司",
+      "issuer": "中信投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -55186,8 +55089,7 @@
       "holdings_count": "2",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2018-10-31"
     },
     {
       "sym": "6184",
@@ -55889,7 +55791,7 @@
       "avg_value_1m": 39.312,
       "avg_volume": 583030,
       "beneficiaries": 18669,
-      "issuer": "兆豐國際證券投資信託股份有限公司",
+      "issuer": "兆豐國際投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -55949,8 +55851,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-03-31"
     },
     {
       "sym": "7730",
@@ -56643,7 +56544,7 @@
       "avg_value_1m": 66.076,
       "avg_volume": 5455712,
       "beneficiaries": 34518,
-      "issuer": "群益證券投資信託股份有限公司",
+      "issuer": "群益投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -56703,8 +56604,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2024-05-09"
     },
     {
       "sym": "2302",
@@ -56815,7 +56715,7 @@
       "avg_value_1m": 150.344,
       "avg_volume": 14550604,
       "beneficiaries": 48630,
-      "issuer": "中國信託證券投資信託股份有限公司",
+      "issuer": "中信投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -56875,8 +56775,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-04-23"
     },
     {
       "sym": "4994",
@@ -56989,7 +56888,7 @@
       "avg_value_1m": 159.201,
       "avg_volume": 2513289,
       "beneficiaries": 35602,
-      "issuer": "第一金證券投資信託股份有限公司",
+      "issuer": "第一金投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -57049,8 +56948,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2022-07-20"
     },
     {
       "sym": "00752",
@@ -57090,7 +56988,7 @@
       "avg_value_1m": 58.03,
       "avg_volume": 2422766,
       "beneficiaries": 16423,
-      "issuer": "中國信託證券投資信託股份有限公司",
+      "issuer": "中信投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -57150,8 +57048,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2018-10-31"
     },
     {
       "sym": "00633L",
@@ -57190,7 +57087,7 @@
       "avg_value_1m": 159.398,
       "avg_volume": 3289056,
       "beneficiaries": 3901,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -57230,8 +57127,7 @@
       "holdings_count": "6",
       "holdings_source": "FUBON+CMONEY",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2014-11-25"
     },
     {
       "sym": "3504",
@@ -57342,7 +57238,7 @@
       "avg_value_1m": 15.069,
       "avg_volume": 190757,
       "beneficiaries": 17300,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -57402,8 +57298,7 @@
       "holdings_count": "10",
       "holdings_source": "YUANTA+CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-11-19"
     },
     {
       "sym": "6743",
@@ -58076,8 +57971,7 @@
           2.86
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-01-26"
     },
     {
       "sym": "3054",
@@ -58261,7 +58155,7 @@
       "avg_value_1m": 104.091,
       "avg_volume": 10634906,
       "beneficiaries": 37627,
-      "issuer": "安聯證券投資信託股份有限公司",
+      "issuer": "安聯投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -58311,8 +58205,7 @@
       "holdings_count": "8",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-06-09"
     },
     {
       "sym": "4540",
@@ -58851,7 +58744,7 @@
       "avg_value_1m": 27.356,
       "avg_volume": 620823,
       "beneficiaries": 20846,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -58911,8 +58804,7 @@
       "holdings_count": "10",
       "holdings_source": "YUANTA+CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2007-07-16"
     },
     {
       "sym": "6862",
@@ -59092,7 +58984,7 @@
       "avg_value_1m": 324.969,
       "avg_volume": 33151362,
       "beneficiaries": 19399,
-      "issuer": "大華銀證券投資信託股份有限公司",
+      "issuer": "大華銀投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -59152,8 +59044,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-08-21"
     },
     {
       "sym": "1472",
@@ -60156,8 +60047,7 @@
           3.321
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2020-07-22"
     },
     {
       "sym": "6776",
@@ -60270,7 +60160,7 @@
       "avg_value_1m": 33.549,
       "avg_volume": 342804,
       "beneficiaries": 22360,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -60330,8 +60220,7 @@
       "holdings_count": "10",
       "holdings_source": "YUANTA+CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-01-23"
     },
     {
       "sym": "1217",
@@ -60863,8 +60752,7 @@
           2.04
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-09-30"
     },
     {
       "sym": "6689",
@@ -60975,7 +60863,7 @@
       "avg_value_1m": 172.338,
       "avg_volume": 13320807,
       "beneficiaries": 32629,
-      "issuer": "兆豐國際證券投資信託股份有限公司",
+      "issuer": "兆豐國際投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -61035,8 +60923,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-03-25"
     },
     {
       "sym": "1457",
@@ -61648,7 +61535,7 @@
       "avg_value_1m": 106.12,
       "avg_volume": 10548194,
       "beneficiaries": 41405,
-      "issuer": "群益證券投資信託股份有限公司",
+      "issuer": "群益投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -61708,8 +61595,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-06-25"
     },
     {
       "sym": "2012",
@@ -62183,7 +62069,7 @@
       "avg_value_1m": 129.229,
       "avg_volume": 3022448,
       "beneficiaries": 27439,
-      "issuer": "國泰證券投資信託股份有限公司",
+      "issuer": "國泰投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -62243,8 +62129,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2022-07-13"
     },
     {
       "sym": "3031",
@@ -63802,7 +63687,7 @@
       "avg_value_1m": 23.843,
       "avg_volume": 1977638,
       "beneficiaries": 19615,
-      "issuer": "中國信託證券投資信託股份有限公司",
+      "issuer": "中信投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -63862,8 +63747,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-02-11"
     },
     {
       "sym": "3338",
@@ -65051,7 +64935,7 @@
       "avg_value_1m": 26.369,
       "avg_volume": 1283621,
       "beneficiaries": 20738,
-      "issuer": "復華證券投資信託股份有限公司",
+      "issuer": "復華投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -65111,8 +64995,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2024-07-01"
     },
     {
       "sym": "6155",
@@ -65375,7 +65258,7 @@
       "avg_value_1m": 29.838,
       "avg_volume": 130410,
       "beneficiaries": 14354,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -65435,8 +65318,7 @@
       "holdings_count": "10",
       "holdings_source": "YUANTA+CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2007-07-16"
     },
     {
       "sym": "7821",
@@ -65620,7 +65502,7 @@
       "avg_value_1m": 22.021,
       "avg_volume": 542668,
       "beneficiaries": 8726,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -65680,8 +65562,7 @@
       "holdings_count": "10",
       "holdings_source": "FUBON+CMONEY",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2011-09-26"
     },
     {
       "sym": "2516",
@@ -66080,7 +65961,7 @@
       "avg_value_1m": 128.963,
       "avg_volume": 10158396,
       "beneficiaries": 21682,
-      "issuer": "摩根證券投資信託股份有限公司",
+      "issuer": "摩根投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -66140,8 +66021,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-04-10"
     },
     {
       "sym": "2748",
@@ -66878,8 +66758,7 @@
           1.7063
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-06-25"
     },
     {
       "sym": "00710B",
@@ -66919,7 +66798,7 @@
       "avg_value_1m": 6.414,
       "avg_volume": 337686,
       "beneficiaries": 3607,
-      "issuer": "復華證券投資信託股份有限公司",
+      "issuer": "復華投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -66979,8 +66858,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-08-21"
     },
     {
       "sym": "8438",
@@ -67234,7 +67112,7 @@
       "avg_value_1m": 47.468,
       "avg_volume": 2949675,
       "beneficiaries": 22892,
-      "issuer": "凱基證券投資信託股份有限公司",
+      "issuer": "凱基投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -67294,8 +67172,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2024-09-05"
     },
     {
       "sym": "1451",
@@ -67477,7 +67354,7 @@
       "avg_value_1m": 37.958,
       "avg_volume": 1796832,
       "beneficiaries": 23495,
-      "issuer": "永豐證券投資信託股份有限公司",
+      "issuer": "永豐投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -67537,8 +67414,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2023-07-13"
     },
     {
       "sym": "00936",
@@ -67577,7 +67453,7 @@
       "avg_value_1m": 57.361,
       "avg_volume": 3071535,
       "beneficiaries": 21795,
-      "issuer": "台新證券投資信託股份有限公司",
+      "issuer": "台新投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -67637,8 +67513,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2023-11-08"
     },
     {
       "sym": "5706",
@@ -67748,7 +67623,7 @@
       "avg_value_1m": 125.049,
       "avg_volume": 13003087,
       "beneficiaries": 28453,
-      "issuer": "聯博證券投資信託股份有限公司",
+      "issuer": "聯博投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -67808,8 +67683,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-06-09"
     },
     {
       "sym": "009813",
@@ -67849,7 +67723,7 @@
       "avg_value_1m": 52.53,
       "avg_volume": 4929282,
       "beneficiaries": 21940,
-      "issuer": "貝萊德證券投資信託股份有限公司",
+      "issuer": "貝萊德投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -67909,8 +67783,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-10-20"
     },
     {
       "sym": "3530",
@@ -68234,7 +68107,7 @@
       "avg_value_1m": 131.088,
       "avg_volume": 9404123,
       "beneficiaries": 23638,
-      "issuer": "中國信託證券投資信託股份有限公司",
+      "issuer": "中信投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -68294,8 +68167,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-01-22"
     },
     {
       "sym": "2538",
@@ -68825,7 +68697,7 @@
       "avg_value_1m": 52.255,
       "avg_volume": 7578009,
       "beneficiaries": 8140,
-      "issuer": "國泰證券投資信託股份有限公司",
+      "issuer": "國泰投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -68875,8 +68747,7 @@
       "holdings_count": "8",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-04-13"
     },
     {
       "sym": "00665L",
@@ -68915,7 +68786,7 @@
       "avg_value_1m": 189.036,
       "avg_volume": 19421540,
       "beneficiaries": 4632,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -68940,8 +68811,7 @@
       "holdings_count": "3",
       "holdings_source": "CMONEY",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2016-08-05"
     },
     {
       "sym": "6742",
@@ -69344,7 +69214,7 @@
       "avg_value_1m": 76.764,
       "avg_volume": 1252215,
       "beneficiaries": 20278,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -69404,8 +69274,7 @@
       "holdings_count": "50",
       "holdings_source": "FUBON",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2018-05-17"
     },
     {
       "sym": "2062",
@@ -70523,7 +70392,7 @@
       "avg_value_1m": 12.129,
       "avg_volume": 95651,
       "beneficiaries": 12670,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -70583,8 +70452,7 @@
       "holdings_count": "10",
       "holdings_source": "YUANTA+CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2006-08-31"
     },
     {
       "sym": "6614",
@@ -71196,7 +71064,7 @@
       "avg_value_1m": 33.709,
       "avg_volume": 2761079,
       "beneficiaries": 21818,
-      "issuer": "統一證券投資信託股份有限公司",
+      "issuer": "統一投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -71256,8 +71124,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-07-29"
     },
     {
       "sym": "1817",
@@ -71370,7 +71237,7 @@
       "avg_value_1m": 42.833,
       "avg_volume": 3691226,
       "beneficiaries": 8376,
-      "issuer": "凱基證券投資信託股份有限公司",
+      "issuer": "凱基投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -71430,8 +71297,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-09-24"
     },
     {
       "sym": "2613",
@@ -72423,7 +72289,7 @@
       "avg_value_1m": 808.152,
       "avg_volume": 18296341,
       "beneficiaries": 3764,
-      "issuer": "街口證券投資信託股份有限公司",
+      "issuer": "街口投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -72438,8 +72304,7 @@
       "holdings_count": "1",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-11-16"
     },
     {
       "sym": "1731",
@@ -73257,7 +73122,7 @@
       "avg_value_1m": 34.303,
       "avg_volume": 1494727,
       "beneficiaries": 9810,
-      "issuer": "凱基證券投資信託股份有限公司",
+      "issuer": "凱基投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -73317,8 +73182,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2024-10-23"
     },
     {
       "sym": "6141",
@@ -73569,7 +73433,7 @@
       "avg_value_1m": 23.264,
       "avg_volume": 937845,
       "beneficiaries": 9031,
-      "issuer": "凱基證券投資信託股份有限公司",
+      "issuer": "凱基投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -73629,8 +73493,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2023-06-02"
     },
     {
       "sym": "6152",
@@ -73742,7 +73605,7 @@
       "avg_value_1m": 31.651,
       "avg_volume": 1520161,
       "beneficiaries": 17913,
-      "issuer": "聯邦證券投資信託股份有限公司",
+      "issuer": "聯邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -73802,8 +73665,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-04-16"
     },
     {
       "sym": "2471",
@@ -74275,7 +74137,7 @@
       "avg_value_1m": 126.038,
       "avg_volume": 8036459,
       "beneficiaries": 25009,
-      "issuer": "第一金證券投資信託股份有限公司",
+      "issuer": "第一金投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -74335,8 +74197,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-01-07"
     },
     {
       "sym": "6165",
@@ -74733,7 +74594,7 @@
       "avg_value_1m": 62.8,
       "avg_volume": 3979821,
       "beneficiaries": 18327,
-      "issuer": "台新證券投資信託股份有限公司",
+      "issuer": "台新投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -74793,8 +74654,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2024-07-25"
     },
     {
       "sym": "1435",
@@ -75045,7 +74905,7 @@
       "avg_value_1m": 29.498,
       "avg_volume": 2045658,
       "beneficiaries": 16729,
-      "issuer": "台新證券投資信託股份有限公司",
+      "issuer": "台新投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -75105,8 +74965,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2024-12-06"
     },
     {
       "sym": "1530",
@@ -75511,7 +75370,7 @@
       "avg_value_1m": 21.044,
       "avg_volume": 1304105,
       "beneficiaries": 20150,
-      "issuer": "永豐證券投資信託股份有限公司",
+      "issuer": "永豐投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -75571,8 +75430,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2022-05-24"
     },
     {
       "sym": "4720",
@@ -75897,7 +75755,7 @@
       "avg_value_1m": 26.174,
       "avg_volume": 691194,
       "beneficiaries": 14321,
-      "issuer": "永豐證券投資信託股份有限公司",
+      "issuer": "永豐投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -75957,8 +75815,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2021-12-15"
     },
     {
       "sym": "3588",
@@ -76290,7 +76147,7 @@
       "avg_value_1m": 13.726,
       "avg_volume": 255488,
       "beneficiaries": 9522,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -76350,8 +76207,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2015-11-06"
     },
     {
       "sym": "4106",
@@ -77033,7 +76889,7 @@
       "avg_value_1m": 67.929,
       "avg_volume": 1493601,
       "beneficiaries": 18412,
-      "issuer": "兆豐國際證券投資信託股份有限公司",
+      "issuer": "兆豐國際投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -77093,8 +76949,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2022-08-08"
     },
     {
       "sym": "2115",
@@ -77276,7 +77131,7 @@
       "avg_value_1m": 36.748,
       "avg_volume": 1329749,
       "beneficiaries": 16479,
-      "issuer": "國泰證券投資信託股份有限公司",
+      "issuer": "國泰投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -77336,8 +77191,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2022-09-26"
     },
     {
       "sym": "3052",
@@ -77667,7 +77521,7 @@
       "avg_value_1m": 29.152,
       "avg_volume": 2007028,
       "beneficiaries": 17712,
-      "issuer": "中國信託證券投資信託股份有限公司",
+      "issuer": "中信投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -77727,8 +77581,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2022-01-25"
     },
     {
       "sym": "4555",
@@ -78126,7 +77979,7 @@
       "avg_value_1m": 23.15,
       "avg_volume": 848188,
       "beneficiaries": 8075,
-      "issuer": "國泰證券投資信託股份有限公司",
+      "issuer": "國泰投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -78186,8 +78039,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2015-04-01"
     },
     {
       "sym": "2429",
@@ -79009,7 +78861,7 @@
       "avg_value_1m": 27.454,
       "avg_volume": 929079,
       "beneficiaries": 11805,
-      "issuer": "中國信託證券投資信託股份有限公司",
+      "issuer": "中信投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -79069,8 +78921,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2022-06-29"
     },
     {
       "sym": "1533",
@@ -79484,7 +79335,7 @@
       "avg_value_1m": 32.852,
       "avg_volume": 1672733,
       "beneficiaries": 5676,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -79509,8 +79360,7 @@
       "holdings_count": "3",
       "holdings_source": "CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-09-01"
     },
     {
       "sym": "6142",
@@ -79905,7 +79755,7 @@
       "avg_value_1m": 14.407,
       "avg_volume": 424613,
       "beneficiaries": 8582,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -79965,8 +79815,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2016-03-29"
     },
     {
       "sym": "5244",
@@ -80495,7 +80344,7 @@
       "avg_value_1m": 50.403,
       "avg_volume": 5020308,
       "beneficiaries": 17621,
-      "issuer": "玉山證券投資信託股份有限公司",
+      "issuer": "玉山投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -80555,8 +80404,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-09-02"
     },
     {
       "sym": "00954",
@@ -80596,7 +80444,7 @@
       "avg_value_1m": 55.495,
       "avg_volume": 3194405,
       "beneficiaries": 12273,
-      "issuer": "中國信託證券投資信託股份有限公司",
+      "issuer": "中信投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -80656,8 +80504,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2024-08-20"
     },
     {
       "sym": "4155",
@@ -80842,7 +80689,7 @@
       "avg_value_1m": 6.918,
       "avg_volume": 287369,
       "beneficiaries": 5920,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -80862,8 +80709,7 @@
       "holdings_count": "2",
       "holdings_source": "YUANTA+CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2009-08-17"
     },
     {
       "sym": "7631",
@@ -81189,7 +81035,7 @@
       "avg_value_1m": 13.633,
       "avg_volume": 240921,
       "beneficiaries": 12955,
-      "issuer": "第一金證券投資信託股份有限公司",
+      "issuer": "第一金投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -81249,8 +81095,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2018-04-18"
     },
     {
       "sym": "2239",
@@ -82496,7 +82341,7 @@
       "avg_value_1m": 57.762,
       "avg_volume": 697774,
       "beneficiaries": 10738,
-      "issuer": "復華證券投資信託股份有限公司",
+      "issuer": "復華投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -82556,8 +82401,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2018-04-20"
     },
     {
       "sym": "6807",
@@ -82668,7 +82512,7 @@
       "avg_value_1m": 38.77,
       "avg_volume": 4051631,
       "beneficiaries": 9531,
-      "issuer": "國泰證券投資信託股份有限公司",
+      "issuer": "國泰投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -82693,8 +82537,7 @@
       "holdings_count": "3",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-02-06"
     },
     {
       "sym": "8072",
@@ -83022,7 +82865,7 @@
       "avg_value_1m": 14.213,
       "avg_volume": 185257,
       "beneficiaries": 7106,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -83082,8 +82925,7 @@
       "holdings_count": "10",
       "holdings_source": "YUANTA+CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2016-06-15"
     },
     {
       "sym": "4414",
@@ -83317,8 +83159,7 @@
           1.7087
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-12-19"
     },
     {
       "sym": "2702",
@@ -83570,7 +83411,7 @@
       "avg_value_1m": 83.475,
       "avg_volume": 6003364,
       "beneficiaries": 15956,
-      "issuer": "台新證券投資信託股份有限公司",
+      "issuer": "台新投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -83630,8 +83471,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-12-30"
     },
     {
       "sym": "6405",
@@ -83879,7 +83719,7 @@
       "avg_value_1m": 6.927,
       "avg_volume": 269172,
       "beneficiaries": 12749,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -83939,8 +83779,7 @@
       "holdings_count": "30",
       "holdings_source": "FUBON",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2018-02-08"
     },
     {
       "sym": "3027",
@@ -84190,7 +84029,7 @@
       "avg_value_1m": 107.489,
       "avg_volume": 9654338,
       "beneficiaries": 14686,
-      "issuer": "永豐證券投資信託股份有限公司",
+      "issuer": "永豐投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -84250,8 +84089,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-08-03"
     },
     {
       "sym": "3557",
@@ -84719,7 +84557,7 @@
       "avg_value_1m": 12.239,
       "avg_volume": 1058343,
       "beneficiaries": 11920,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -84779,8 +84617,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2021-10-04"
     },
     {
       "sym": "006203",
@@ -84820,7 +84657,7 @@
       "avg_value_1m": 3.271,
       "avg_volume": 18452,
       "beneficiaries": 3108,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -84880,8 +84717,7 @@
       "holdings_count": "10",
       "holdings_source": "YUANTA+CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2011-05-12"
     },
     {
       "sym": "3021",
@@ -85060,7 +84896,7 @@
       "avg_value_1m": 58.405,
       "avg_volume": 1745203,
       "beneficiaries": 2304,
-      "issuer": "國泰證券投資信託股份有限公司",
+      "issuer": "國泰投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -85100,8 +84936,7 @@
       "holdings_count": "6",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2016-03-18"
     },
     {
       "sym": "6558",
@@ -85563,7 +85398,7 @@
       "avg_value_1m": 2.878,
       "avg_volume": 192645,
       "beneficiaries": 7413,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -85623,8 +85458,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-11-29"
     },
     {
       "sym": "00917",
@@ -85664,7 +85498,7 @@
       "avg_value_1m": 30.185,
       "avg_volume": 1299008,
       "beneficiaries": 13106,
-      "issuer": "中國信託證券投資信託股份有限公司",
+      "issuer": "中信投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -85724,8 +85558,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2022-08-26"
     },
     {
       "sym": "1735",
@@ -85838,7 +85671,7 @@
       "avg_value_1m": 17.191,
       "avg_volume": 1359617,
       "beneficiaries": 5533,
-      "issuer": "中國信託證券投資信託股份有限公司",
+      "issuer": "中信投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -85898,8 +85731,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2024-11-14"
     },
     {
       "sym": "1410",
@@ -86154,7 +85986,7 @@
       "avg_value_1m": 17.536,
       "avg_volume": 1084127,
       "beneficiaries": 12426,
-      "issuer": "兆豐國際證券投資信託股份有限公司",
+      "issuer": "兆豐國際投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -86214,8 +86046,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2023-09-01"
     },
     {
       "sym": "2250",
@@ -86750,7 +86581,7 @@
       "avg_value_1m": 53.603,
       "avg_volume": 28671270,
       "beneficiaries": 7493,
-      "issuer": "國泰證券投資信託股份有限公司",
+      "issuer": "國泰投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -86790,8 +86621,7 @@
       "holdings_count": "6",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2016-07-14"
     },
     {
       "sym": "1906",
@@ -86957,8 +86787,7 @@
           3.26
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2023-05-24"
     },
     {
       "sym": "1466",
@@ -87497,7 +87326,7 @@
       "avg_value_1m": 82.668,
       "avg_volume": 4818486,
       "beneficiaries": 2140,
-      "issuer": "復華證券投資信託股份有限公司",
+      "issuer": "復華投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -87522,8 +87351,7 @@
       "holdings_count": "3",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2016-01-27"
     },
     {
       "sym": "4190",
@@ -88338,7 +88166,7 @@
       "avg_value_1m": 33.647,
       "avg_volume": 2409691,
       "beneficiaries": 5721,
-      "issuer": "中國信託證券投資信託股份有限公司",
+      "issuer": "中信投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -88398,8 +88226,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2024-11-14"
     },
     {
       "sym": "3321",
@@ -88521,7 +88348,7 @@
       "avg_value_1m": 20.113,
       "avg_volume": 1113908,
       "beneficiaries": 14034,
-      "issuer": "野村證券投資信託股份有限公司",
+      "issuer": "野村投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -88581,8 +88408,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2024-09-20"
     },
     {
       "sym": "1449",
@@ -88675,14 +88501,13 @@
       "avg_value_1m": 217.615,
       "avg_volume": 20960681,
       "beneficiaries": 5923,
-      "issuer": "玉山證券投資信託股份有限公司",
+      "issuer": "玉山投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
       "ytd_return_pct": null,
       "holdings": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-11-11"
     },
     {
       "sym": "1805",
@@ -88918,7 +88743,7 @@
       "avg_value_1m": 45.089,
       "avg_volume": 4747379,
       "beneficiaries": 11611,
-      "issuer": "富蘭克林華美證券投資信託股份有限公司",
+      "issuer": "富蘭克林華美投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -88978,8 +88803,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-10-29"
     },
     {
       "sym": "00639",
@@ -89019,7 +88843,7 @@
       "avg_value_1m": 15.657,
       "avg_volume": 948801,
       "beneficiaries": 5684,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -89079,8 +88903,7 @@
       "holdings_count": "10",
       "holdings_source": "FUBON+CMONEY",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2015-06-09"
     },
     {
       "sym": "6674",
@@ -89327,7 +89150,7 @@
       "avg_value_1m": 26.147,
       "avg_volume": 520317,
       "beneficiaries": 11420,
-      "issuer": "兆豐國際證券投資信託股份有限公司",
+      "issuer": "兆豐國際投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -89387,8 +89210,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2022-06-27"
     },
     {
       "sym": "1445",
@@ -89497,7 +89319,7 @@
       "avg_value_1m": 16.374,
       "avg_volume": 6169360,
       "beneficiaries": 3217,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -89527,8 +89349,7 @@
       "holdings_count": "4",
       "holdings_source": "FUBON+CMONEY",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-02-21"
     },
     {
       "sym": "1474",
@@ -90129,7 +89950,7 @@
       "avg_value_1m": 10.208,
       "avg_volume": 488365,
       "beneficiaries": 10070,
-      "issuer": "兆豐國際證券投資信託股份有限公司",
+      "issuer": "兆豐國際投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -90189,8 +90010,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2023-01-13"
     },
     {
       "sym": "6994",
@@ -90301,7 +90121,7 @@
       "avg_value_1m": 11.973,
       "avg_volume": 246491,
       "beneficiaries": 9012,
-      "issuer": "國泰證券投資信託股份有限公司",
+      "issuer": "國泰投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -90361,8 +90181,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2020-03-30"
     },
     {
       "sym": "009812",
@@ -90402,7 +90221,7 @@
       "avg_value_1m": 12.503,
       "avg_volume": 1047576,
       "beneficiaries": 5696,
-      "issuer": "野村證券投資信託股份有限公司",
+      "issuer": "野村投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -90437,8 +90256,7 @@
       "holdings_count": "5",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-09-18"
     },
     {
       "sym": "6916",
@@ -90900,7 +90718,7 @@
       "avg_value_1m": 10.464,
       "avg_volume": 546279,
       "beneficiaries": 7362,
-      "issuer": "兆豐國際證券投資信託股份有限公司",
+      "issuer": "兆豐國際投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -90960,8 +90778,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2024-05-20"
     },
     {
       "sym": "4440",
@@ -91067,7 +90884,7 @@
       "avg_value_1m": 35.631,
       "avg_volume": 3577798,
       "beneficiaries": 9213,
-      "issuer": "第一金證券投資信託股份有限公司",
+      "issuer": "第一金投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -91127,8 +90944,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-07-15"
     },
     {
       "sym": "00643",
@@ -91168,7 +90984,7 @@
       "avg_value_1m": 53.123,
       "avg_volume": 2873755,
       "beneficiaries": 3190,
-      "issuer": "群益證券投資信託股份有限公司",
+      "issuer": "群益投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -91228,8 +91044,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2015-12-02"
     },
     {
       "sym": "00676R",
@@ -91268,7 +91083,7 @@
       "avg_value_1m": 50.331,
       "avg_volume": 8025929,
       "beneficiaries": 3848,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -91298,8 +91113,7 @@
       "holdings_count": "4",
       "holdings_source": "CMONEY",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2016-10-05"
     },
     {
       "sym": "4999",
@@ -91766,7 +91580,7 @@
       "avg_value_1m": 8.48,
       "avg_volume": 881758,
       "beneficiaries": 11508,
-      "issuer": "國泰證券投資信託股份有限公司",
+      "issuer": "國泰投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -91826,8 +91640,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2021-11-22"
     },
     {
       "sym": "3419",
@@ -92072,7 +91885,7 @@
       "avg_value_1m": 6.927,
       "avg_volume": 1247278,
       "beneficiaries": 2947,
-      "issuer": "國泰證券投資信託股份有限公司",
+      "issuer": "國泰投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -92102,8 +91915,7 @@
       "holdings_count": "4",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2016-10-17"
     },
     {
       "sym": "1418",
@@ -92410,8 +92222,7 @@
           2.9
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2011-01-27"
     },
     {
       "sym": "1337",
@@ -92519,7 +92330,7 @@
       "avg_value_1m": 13.353,
       "avg_volume": 744797,
       "beneficiaries": 7793,
-      "issuer": "野村證券投資信託股份有限公司",
+      "issuer": "野村投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -92579,8 +92390,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2024-05-09"
     },
     {
       "sym": "1776",
@@ -92693,7 +92503,7 @@
       "avg_value_1m": 17.082,
       "avg_volume": 659756,
       "beneficiaries": 4243,
-      "issuer": "華南永昌證券投資信託股份有限公司",
+      "issuer": "華南永昌投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -92753,8 +92563,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-05-16"
     },
     {
       "sym": "009801",
@@ -92794,7 +92603,7 @@
       "avg_value_1m": 14.712,
       "avg_volume": 1296558,
       "beneficiaries": 8379,
-      "issuer": "中國信託證券投資信託股份有限公司",
+      "issuer": "中信投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -92854,8 +92663,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-02-11"
     },
     {
       "sym": "006206",
@@ -92895,7 +92703,7 @@
       "avg_value_1m": 3.405,
       "avg_volume": 91013,
       "beneficiaries": 3004,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -92955,8 +92763,7 @@
       "holdings_count": "10",
       "holdings_source": "YUANTA+CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2012-05-11"
     },
     {
       "sym": "5546",
@@ -93209,7 +93016,7 @@
       "avg_value_1m": 30.877,
       "avg_volume": 1921276,
       "beneficiaries": 6221,
-      "issuer": "摩根證券投資信託股份有限公司",
+      "issuer": "摩根投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -93269,8 +93076,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-10-22"
     },
     {
       "sym": "8429",
@@ -93664,7 +93470,7 @@
       "avg_value_1m": 12.782,
       "avg_volume": 1262692,
       "beneficiaries": 3648,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -93724,8 +93530,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-10-14"
     },
     {
       "sym": "1526",
@@ -93834,7 +93639,7 @@
       "avg_value_1m": 9.596,
       "avg_volume": 590576,
       "beneficiaries": 6442,
-      "issuer": "野村證券投資信託股份有限公司",
+      "issuer": "野村投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -93894,8 +93699,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-01-09"
     },
     {
       "sym": "00737",
@@ -93935,7 +93739,7 @@
       "avg_value_1m": 8.814,
       "avg_volume": 234820,
       "beneficiaries": 5328,
-      "issuer": "國泰證券投資信託股份有限公司",
+      "issuer": "國泰投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -93995,8 +93799,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2018-06-11"
     },
     {
       "sym": "8940",
@@ -94177,7 +93980,7 @@
       "avg_value_1m": 6.762,
       "avg_volume": 350701,
       "beneficiaries": 6850,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -94237,8 +94040,7 @@
       "holdings_count": "10",
       "holdings_source": "FUBON+CMONEY",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2022-01-24"
     },
     {
       "sym": "6908",
@@ -94417,7 +94219,7 @@
       "avg_value_1m": 12.111,
       "avg_volume": 706273,
       "beneficiaries": 4624,
-      "issuer": "華南永昌證券投資信託股份有限公司",
+      "issuer": "華南永昌投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -94477,8 +94279,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-03-23"
     },
     {
       "sym": "3057",
@@ -94588,7 +94389,7 @@
       "avg_value_1m": 84.888,
       "avg_volume": 8452272,
       "beneficiaries": 5564,
-      "issuer": "兆豐國際證券投資信託股份有限公司",
+      "issuer": "兆豐國際投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -94648,8 +94449,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-10-29"
     },
     {
       "sym": "00983A",
@@ -94689,7 +94489,7 @@
       "avg_value_1m": 37.384,
       "avg_volume": 3210584,
       "beneficiaries": 8093,
-      "issuer": "中國信託證券投資信託股份有限公司",
+      "issuer": "中信投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -94749,8 +94549,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-06-18"
     },
     {
       "sym": "8201",
@@ -95497,7 +95296,7 @@
       "avg_value_1m": 16.383,
       "avg_volume": 1640126,
       "beneficiaries": 2650,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -95557,8 +95356,7 @@
       "holdings_count": "10",
       "holdings_source": "FUBON+CMONEY",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-10-14"
     },
     {
       "sym": "3018",
@@ -95737,7 +95535,7 @@
       "avg_value_1m": 32.451,
       "avg_volume": 347693,
       "beneficiaries": 1249,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -95767,8 +95565,7 @@
       "holdings_count": "4",
       "holdings_source": "FUBON+CMONEY",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2015-09-10"
     },
     {
       "sym": "3494",
@@ -95941,7 +95738,7 @@
       "avg_value_1m": 10.865,
       "avg_volume": 87858,
       "beneficiaries": 1506,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -95956,8 +95753,7 @@
       "holdings_count": "1",
       "holdings_source": "CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2015-12-14"
     },
     {
       "sym": "006207",
@@ -95997,7 +95793,7 @@
       "avg_value_1m": 8.678,
       "avg_volume": 269129,
       "beneficiaries": 1628,
-      "issuer": "復華證券投資信託股份有限公司",
+      "issuer": "復華投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -96057,8 +95853,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2012-06-22"
     },
     {
       "sym": "00739",
@@ -96098,7 +95893,7 @@
       "avg_value_1m": 2.522,
       "avg_volume": 91290,
       "beneficiaries": 1939,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -96158,8 +95953,7 @@
       "holdings_count": "10",
       "holdings_source": "YUANTA+CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2018-06-27"
     },
     {
       "sym": "2929",
@@ -96320,8 +96114,7 @@
           3.9984
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-06-03"
     },
     {
       "sym": "1441",
@@ -96642,7 +96435,7 @@
       "avg_value_1m": 15.66,
       "avg_volume": 329724,
       "beneficiaries": 1065,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -96667,8 +96460,7 @@
       "holdings_count": "3",
       "holdings_source": "CMONEY",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2016-03-29"
     },
     {
       "sym": "00709",
@@ -96708,7 +96500,7 @@
       "avg_value_1m": 3.648,
       "avg_volume": 94125,
       "beneficiaries": 2125,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -96768,8 +96560,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-08-15"
     },
     {
       "sym": "2911",
@@ -96956,7 +96747,7 @@
       "avg_value_1m": 5.662,
       "avg_volume": 1354570,
       "beneficiaries": 2194,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -96976,8 +96767,7 @@
       "holdings_count": "2",
       "holdings_source": "CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2015-12-14"
     },
     {
       "sym": "3432",
@@ -97086,7 +96876,7 @@
       "avg_value_1m": 15.879,
       "avg_volume": 398837,
       "beneficiaries": 3708,
-      "issuer": "群益證券投資信託股份有限公司",
+      "issuer": "群益投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -97146,8 +96936,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-01-16"
     },
     {
       "sym": "3150",
@@ -97481,7 +97270,7 @@
       "avg_value_1m": 11.31,
       "avg_volume": 159497,
       "beneficiaries": 1595,
-      "issuer": "國泰證券投資信託股份有限公司",
+      "issuer": "國泰投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -97541,8 +97330,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2016-05-09"
     },
     {
       "sym": "009809",
@@ -97582,7 +97370,7 @@
       "avg_value_1m": 13.041,
       "avg_volume": 884730,
       "beneficiaries": 2544,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -97642,8 +97430,7 @@
       "holdings_count": "34",
       "holdings_source": "FUBON",
       "holdings_date": "2026/11/05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-10-14"
     },
     {
       "sym": "8101",
@@ -97752,7 +97539,7 @@
       "avg_value_1m": 2.779,
       "avg_volume": 191482,
       "beneficiaries": 2641,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -97812,8 +97599,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2022-05-20"
     },
     {
       "sym": "00668",
@@ -97853,7 +97639,7 @@
       "avg_value_1m": 8.059,
       "avg_volume": 137097,
       "beneficiaries": 2026,
-      "issuer": "國泰證券投資信託股份有限公司",
+      "issuer": "國泰投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -97913,8 +97699,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2016-10-17"
     },
     {
       "sym": "3593",
@@ -98036,7 +97821,7 @@
       "avg_value_1m": 7.094,
       "avg_volume": 405535,
       "beneficiaries": 2457,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -98096,8 +97881,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-07-28"
     },
     {
       "sym": "00986A",
@@ -98137,7 +97921,7 @@
       "avg_value_1m": 8.194,
       "avg_volume": 616695,
       "beneficiaries": 4544,
-      "issuer": "台新證券投資信託股份有限公司",
+      "issuer": "台新投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -98197,8 +97981,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-08-27"
     },
     {
       "sym": "00674R",
@@ -98250,7 +98033,7 @@
       "avg_value_1m": 10.995,
       "avg_volume": 1370977,
       "beneficiaries": 1142,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -98270,8 +98053,7 @@
       "holdings_count": "2",
       "holdings_source": "CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2016-10-07"
     },
     {
       "sym": "00920",
@@ -98311,7 +98093,7 @@
       "avg_value_1m": 11.498,
       "avg_volume": 496727,
       "beneficiaries": 5905,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -98371,8 +98153,7 @@
       "holdings_count": "10",
       "holdings_source": "FUBON+CMONEY",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2022-10-20"
     },
     {
       "sym": "00956",
@@ -98412,7 +98193,7 @@
       "avg_value_1m": 5.819,
       "avg_volume": 462540,
       "beneficiaries": 3263,
-      "issuer": "中國信託證券投資信託股份有限公司",
+      "issuer": "中信投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -98472,8 +98253,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2024-08-20"
     },
     {
       "sym": "0057",
@@ -98513,7 +98293,7 @@
       "avg_value_1m": 9.238,
       "avg_volume": 33992,
       "beneficiaries": 2904,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -98573,8 +98353,7 @@
       "holdings_count": "50",
       "holdings_source": "FUBON",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2008-02-27"
     },
     {
       "sym": "00714",
@@ -98614,7 +98393,7 @@
       "avg_value_1m": 4.864,
       "avg_volume": 227056,
       "beneficiaries": 2276,
-      "issuer": "群益證券投資信託股份有限公司",
+      "issuer": "群益投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -98674,8 +98453,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-10-27"
     },
     {
       "sym": "009810",
@@ -98715,7 +98493,7 @@
       "avg_value_1m": 4.873,
       "avg_volume": 245238,
       "beneficiaries": 1846,
-      "issuer": "玉山證券投資信託股份有限公司",
+      "issuer": "玉山投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -98765,8 +98543,7 @@
       "holdings_count": "8",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-07-16"
     },
     {
       "sym": "2314",
@@ -98890,7 +98667,7 @@
       "avg_value_1m": 2.027,
       "avg_volume": 30971,
       "beneficiaries": 2164,
-      "issuer": "台新證券投資信託股份有限公司",
+      "issuer": "台新投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -98950,8 +98727,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-08-12"
     },
     {
       "sym": "00641R",
@@ -98990,7 +98766,7 @@
       "avg_value_1m": 6.917,
       "avg_volume": 1734626,
       "beneficiaries": 1216,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -99025,8 +98801,7 @@
       "holdings_count": "5",
       "holdings_source": "CMONEY",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2015-09-10"
     },
     {
       "sym": "1213",
@@ -99135,7 +98910,7 @@
       "avg_value_1m": 1.147,
       "avg_volume": 26009,
       "beneficiaries": 1016,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -99195,8 +98970,7 @@
       "holdings_count": "10",
       "holdings_source": "YUANTA+CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2016-06-15"
     },
     {
       "sym": "00899",
@@ -99236,7 +99010,7 @@
       "avg_value_1m": 3.563,
       "avg_volume": 147971,
       "beneficiaries": 3430,
-      "issuer": "富蘭克林華美證券投資信託股份有限公司",
+      "issuer": "富蘭克林華美投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -99296,8 +99070,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2022-01-21"
     },
     {
       "sym": "00972",
@@ -99336,7 +99109,7 @@
       "avg_value_1m": 4.457,
       "avg_volume": 220807,
       "beneficiaries": 1577,
-      "issuer": "野村證券投資信託股份有限公司",
+      "issuer": "野村投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -99396,8 +99169,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-01-09"
     },
     {
       "sym": "00686R",
@@ -99436,7 +99208,7 @@
       "avg_value_1m": 10.623,
       "avg_volume": 9497962,
       "beneficiaries": 1747,
-      "issuer": "群益證券投資信託股份有限公司",
+      "issuer": "群益投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -99491,8 +99263,7 @@
       "holdings_count": "9",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-03-30"
     },
     {
       "sym": "006204",
@@ -99532,7 +99303,7 @@
       "avg_value_1m": 4.271,
       "avg_volume": 20052,
       "beneficiaries": 1159,
-      "issuer": "永豐證券投資信託股份有限公司",
+      "issuer": "永豐投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -99592,8 +99363,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2011-09-28"
     },
     {
       "sym": "00683L",
@@ -99632,7 +99402,7 @@
       "avg_value_1m": 3.206,
       "avg_volume": 149436,
       "beneficiaries": 273,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -99657,8 +99427,7 @@
       "holdings_count": "3",
       "holdings_source": "CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-03-14"
     },
     {
       "sym": "00886",
@@ -99754,8 +99523,7 @@
           3.8
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2021-03-31"
     },
     {
       "sym": "00982T",
@@ -99794,7 +99562,7 @@
       "avg_value_1m": 15.523,
       "avg_volume": 1342075,
       "beneficiaries": 1854,
-      "issuer": "兆豐國際證券投資信託股份有限公司",
+      "issuer": "兆豐國際投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -99854,8 +99622,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-12-26"
     },
     {
       "sym": "00852L",
@@ -99894,7 +99661,7 @@
       "avg_value_1m": 11.395,
       "avg_volume": 361514,
       "beneficiaries": 573,
-      "issuer": "國泰證券投資信託股份有限公司",
+      "issuer": "國泰投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -99914,8 +99681,7 @@
       "holdings_count": "2",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-08-22"
     },
     {
       "sym": "00771",
@@ -99954,7 +99720,7 @@
       "avg_value_1m": 0.555,
       "avg_volume": 34936,
       "beneficiaries": 2055,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -100014,8 +99780,7 @@
       "holdings_count": "10",
       "holdings_source": "YUANTA+CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-05-16"
     },
     {
       "sym": "009807",
@@ -100110,8 +99875,7 @@
           1.9836
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-05-28"
     },
     {
       "sym": "00736",
@@ -100151,7 +99915,7 @@
       "avg_value_1m": 3.866,
       "avg_volume": 127535,
       "beneficiaries": 467,
-      "issuer": "國泰證券投資信託股份有限公司",
+      "issuer": "國泰投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -100211,8 +99975,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2018-06-11"
     },
     {
       "sym": "00651R",
@@ -100251,7 +100014,7 @@
       "avg_value_1m": 2.049,
       "avg_volume": 387681,
       "beneficiaries": 356,
-      "issuer": "復華證券投資信託股份有限公司",
+      "issuer": "復華投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -100271,8 +100034,7 @@
       "holdings_count": "2",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2016-01-27"
     },
     {
       "sym": "00783",
@@ -100312,7 +100074,7 @@
       "avg_value_1m": 4.948,
       "avg_volume": 172647,
       "beneficiaries": 789,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -100372,8 +100134,7 @@
       "holdings_count": "10",
       "holdings_source": "FUBON+CMONEY",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-03-27"
     },
     {
       "sym": "00638R",
@@ -100412,7 +100173,7 @@
       "avg_value_1m": 2.127,
       "avg_volume": 312899,
       "beneficiaries": 435,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -100432,8 +100193,7 @@
       "holdings_count": "2",
       "holdings_source": "CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2015-05-18"
     },
     {
       "sym": "00702",
@@ -100472,7 +100232,7 @@
       "avg_value_1m": 2.442,
       "avg_volume": 100757,
       "beneficiaries": 1151,
-      "issuer": "國泰證券投資信託股份有限公司",
+      "issuer": "國泰投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -100532,8 +100292,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-08-17"
     },
     {
       "sym": "00681R",
@@ -100572,7 +100331,7 @@
       "avg_value_1m": 2.417,
       "avg_volume": 111971,
       "beneficiaries": 108,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -100587,8 +100346,7 @@
       "holdings_count": "1",
       "holdings_source": "CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-01-17"
     },
     {
       "sym": "00689R",
@@ -100627,7 +100385,7 @@
       "avg_value_1m": 2.844,
       "avg_volume": 126974,
       "beneficiaries": 52,
-      "issuer": "國泰證券投資信託股份有限公司",
+      "issuer": "國泰投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -100652,8 +100410,7 @@
       "holdings_count": "3",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-04-13"
     },
     {
       "sym": "00998A",
@@ -100745,8 +100502,7 @@
           2.843
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-04-15"
     },
     {
       "sym": "00703",
@@ -100786,7 +100542,7 @@
       "avg_value_1m": 1.698,
       "avg_volume": 82964,
       "beneficiaries": 1008,
-      "issuer": "台新證券投資信託股份有限公司",
+      "issuer": "台新投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -100846,8 +100602,7 @@
       "holdings_count": "10",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-08-10"
     },
     {
       "sym": "00634R",
@@ -100886,7 +100641,7 @@
       "avg_value_1m": 1.448,
       "avg_volume": 458253,
       "beneficiaries": 709,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -100916,8 +100671,7 @@
       "holdings_count": "4",
       "holdings_source": "FUBON+CMONEY",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2014-11-25"
     },
     {
       "sym": "00684R",
@@ -100955,7 +100709,7 @@
       "avg_value_1m": 0.643,
       "avg_volume": 42128,
       "beneficiaries": 176,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -100980,8 +100734,7 @@
       "holdings_count": "3",
       "holdings_source": "CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-03-14"
     },
     {
       "sym": "00656R",
@@ -101020,7 +100773,7 @@
       "avg_value_1m": 1.965,
       "avg_volume": 329065,
       "beneficiaries": 281,
-      "issuer": "國泰證券投資信託股份有限公司",
+      "issuer": "國泰投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -101045,8 +100798,7 @@
       "holdings_count": "3",
       "holdings_source": "CMONEY",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2016-03-18"
     },
     {
       "sym": "00654R",
@@ -101085,7 +100837,7 @@
       "avg_value_1m": 0.592,
       "avg_volume": 87182,
       "beneficiaries": 388,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -101105,8 +100857,7 @@
       "holdings_count": "2",
       "holdings_source": "CMONEY",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2016-03-29"
     },
     {
       "sym": "00666R",
@@ -101145,7 +100896,7 @@
       "avg_value_1m": 1.247,
       "avg_volume": 136661,
       "beneficiaries": 105,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -101165,8 +100916,7 @@
       "holdings_count": "2",
       "holdings_source": "CMONEY",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2016-08-05"
     },
     {
       "sym": "00937B",
@@ -101257,8 +101007,7 @@
           1.5022
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2023-12-05"
     },
     {
       "sym": "00679B",
@@ -101348,8 +101097,7 @@
           2.99
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-01-17"
     },
     {
       "sym": "00687B",
@@ -101440,8 +101188,7 @@
           4.37
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-04-13"
     },
     {
       "sym": "00657K",
@@ -101481,7 +101228,7 @@
       "avg_value_1m": 0.005,
       "avg_volume": 200,
       "beneficiaries": 4,
-      "issuer": "國泰證券投資信託股份有限公司",
+      "issuer": "國泰投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -101541,8 +101288,7 @@
       "holdings_count": "10",
       "holdings_source": "YFINANCE",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-10-24"
     },
     {
       "sym": "00751B",
@@ -101633,8 +101379,7 @@
           0.76
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2018-10-03"
     },
     {
       "sym": "00720B",
@@ -101725,8 +101470,7 @@
           0.79
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2018-02-01"
     },
     {
       "sym": "00795B",
@@ -101817,8 +101561,7 @@
           5.8
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-04-11"
     },
     {
       "sym": "00636K",
@@ -101858,7 +101601,7 @@
       "avg_value_1m": 0.003,
       "avg_volume": 361,
       "beneficiaries": 8,
-      "issuer": "國泰證券投資信託股份有限公司",
+      "issuer": "國泰投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -101918,8 +101661,7 @@
       "holdings_count": "10",
       "holdings_source": "YFINANCE",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-10-24"
     },
     {
       "sym": "00772B",
@@ -102010,8 +101752,7 @@
           0.63
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-01-29"
     },
     {
       "sym": "00933B",
@@ -102102,8 +101843,7 @@
           2.4
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2023-10-19"
     },
     {
       "sym": "00725B",
@@ -102194,8 +101934,7 @@
           1.5
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2018-02-07"
     },
     {
       "sym": "00420A",
@@ -102251,7 +101990,7 @@
       "avg_value_1m": 0.004,
       "avg_volume": 205,
       "beneficiaries": 4,
-      "issuer": "國泰證券投資信託股份有限公司",
+      "issuer": "國泰投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -102311,8 +102050,7 @@
       "holdings_count": "10",
       "holdings_source": "YFINANCE",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-10-24"
     },
     {
       "sym": "009833",
@@ -102419,8 +102157,7 @@
           2.61
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2018-02-01"
     },
     {
       "sym": "00764B",
@@ -102511,8 +102248,7 @@
           7.0258
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2018-12-24"
     },
     {
       "sym": "00981B",
@@ -102602,8 +102338,7 @@
           2.32
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-03-10"
     },
     {
       "sym": "00696B",
@@ -102694,8 +102429,7 @@
           3.6352
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-06-08"
     },
     {
       "sym": "00948B",
@@ -102786,8 +102520,7 @@
           1.6
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2024-06-12"
     },
     {
       "sym": "00859B",
@@ -102878,8 +102611,7 @@
           0.9512
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-10-18"
     },
     {
       "sym": "00722B",
@@ -102970,8 +102702,7 @@
           2.111
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-12-15"
     },
     {
       "sym": "00864B",
@@ -103062,8 +102793,7 @@
           5.87
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-10-18"
     },
     {
       "sym": "00724B",
@@ -103154,8 +102884,7 @@
           2.0214
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-12-15"
     },
     {
       "sym": "00931B",
@@ -103246,8 +102975,7 @@
           4.09
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2023-08-07"
     },
     {
       "sym": "00411A",
@@ -103337,8 +103065,7 @@
           3.51
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-08-26"
     },
     {
       "sym": "00740B",
@@ -103429,8 +103156,7 @@
           1.0851
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2018-06-08"
     },
     {
       "sym": "00857B",
@@ -103521,8 +103247,7 @@
           6.04
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-09-30"
     },
     {
       "sym": "00950B",
@@ -103613,8 +103338,7 @@
           1.47
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2024-07-09"
     },
     {
       "sym": "00773B",
@@ -103705,8 +103429,7 @@
           2.16
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-01-29"
     },
     {
       "sym": "00981D",
@@ -103797,8 +103520,7 @@
           2.1
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-09-16"
     },
     {
       "sym": "00989B",
@@ -103889,8 +103611,7 @@
           1.4209
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-03-31"
     },
     {
       "sym": "00969B",
@@ -103981,8 +103702,7 @@
           5.84
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2024-12-09"
     },
     {
       "sym": "00694B",
@@ -104073,8 +103793,7 @@
           1.3051
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-06-08"
     },
     {
       "sym": "00959B",
@@ -104165,8 +103884,7 @@
           2.23
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2024-08-28"
     },
     {
       "sym": "00988B",
@@ -104257,8 +103975,7 @@
           2.21
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-03-25"
     },
     {
       "sym": "00746B",
@@ -104349,8 +104066,7 @@
           0.8786
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2018-08-15"
     },
     {
       "sym": "00723B",
@@ -104441,8 +104157,7 @@
           1.5463
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-12-15"
     },
     {
       "sym": "00984B",
@@ -104533,8 +104248,7 @@
           3.85
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-05-13"
     },
     {
       "sym": "00853B",
@@ -104625,8 +104339,7 @@
           0.97
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-09-04"
     },
     {
       "sym": "00968B",
@@ -104716,8 +104429,7 @@
           1.92
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2024-12-09"
     },
     {
       "sym": "00697B",
@@ -104808,8 +104520,7 @@
           6.62
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-06-23"
     },
     {
       "sym": "00990B",
@@ -104900,8 +104611,7 @@
           2.0
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-07-09"
     },
     {
       "sym": "00980T",
@@ -104992,8 +104702,7 @@
           2.29
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-08-15"
     },
     {
       "sym": "00987B",
@@ -105084,8 +104793,7 @@
           4.11
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-01-22"
     },
     {
       "sym": "00768B",
@@ -105176,8 +104884,7 @@
           3.697
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-01-28"
     },
     {
       "sym": "00987D",
@@ -105247,8 +104954,7 @@
           null
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-08-26"
     },
     {
       "sym": "00942B",
@@ -105339,8 +105045,7 @@
           1.6569
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2024-04-18"
     },
     {
       "sym": "00761B",
@@ -105431,8 +105136,7 @@
           0.72
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2018-11-30"
     },
     {
       "sym": "00980D",
@@ -105523,8 +105227,7 @@
           0.6823
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-08-04"
     },
     {
       "sym": "00970B",
@@ -105615,8 +105318,7 @@
           1.2312
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2024-12-17"
     },
     {
       "sym": "00779B",
@@ -105707,8 +105409,7 @@
           5.36
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-02-14"
     },
     {
       "sym": "00862B",
@@ -105799,8 +105500,7 @@
           1.39
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-10-18"
     },
     {
       "sym": "00726B",
@@ -105891,8 +105591,7 @@
           1.56
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2018-02-07"
     },
     {
       "sym": "00966B",
@@ -105983,8 +105682,7 @@
           2.45
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2024-12-16"
     },
     {
       "sym": "00695B",
@@ -106075,8 +105773,7 @@
           7.5444
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-06-08"
     },
     {
       "sym": "00799B",
@@ -106167,8 +105864,7 @@
           1.47
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-05-03"
     },
     {
       "sym": "00985D",
@@ -106259,8 +105955,7 @@
           1.0
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-03-30"
     },
     {
       "sym": "00867B",
@@ -106351,8 +106046,7 @@
           2.0784
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-11-15"
     },
     {
       "sym": "00782B",
@@ -106443,8 +106137,7 @@
           1.55
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-03-07"
     },
     {
       "sym": "00863B",
@@ -106535,8 +106228,7 @@
           2.15
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-10-18"
     },
     {
       "sym": "00780B",
@@ -106627,8 +106319,7 @@
           3.17
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-03-07"
     },
     {
       "sym": "00756B",
@@ -106719,8 +106410,7 @@
           2.7007
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2018-10-22"
     },
     {
       "sym": "00986D",
@@ -106811,8 +106501,7 @@
           5.034
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-04-15"
     },
     {
       "sym": "00754B",
@@ -106903,8 +106592,7 @@
           3.0058
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2018-10-22"
     },
     {
       "sym": "00983B",
@@ -106995,8 +106683,7 @@
           3.45
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-05-13"
     },
     {
       "sym": "00849B",
@@ -107087,8 +106774,7 @@
           1.82
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-07-30"
     },
     {
       "sym": "00992B",
@@ -107172,8 +106858,7 @@
           2.84
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-10-08"
     },
     {
       "sym": "00957B",
@@ -107207,7 +106892,7 @@
       "avg_value_1m": 13.67,
       "avg_volume": 1009770,
       "beneficiaries": 3831,
-      "issuer": "兆豐投信",
+      "issuer": "兆豐國際投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -107264,8 +106949,7 @@
           1.33
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2024-09-10"
     },
     {
       "sym": "00967B",
@@ -107355,8 +107039,7 @@
           5.59
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2024-12-09"
     },
     {
       "sym": "00980B",
@@ -107447,8 +107130,7 @@
           1.5262
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-01-22"
     },
     {
       "sym": "00792B",
@@ -107539,8 +107221,7 @@
           1.2253
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-04-03"
     },
     {
       "sym": "00890B",
@@ -107631,8 +107312,7 @@
           1.52
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2021-05-10"
     },
     {
       "sym": "00848B",
@@ -107723,8 +107403,7 @@
           1.87
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-07-30"
     },
     {
       "sym": "00842B",
@@ -107815,8 +107494,7 @@
           3.3608
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-06-14"
     },
     {
       "sym": "00884B",
@@ -107907,8 +107585,7 @@
           2.13
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2021-02-04"
     },
     {
       "sym": "00860B",
@@ -107999,8 +107676,7 @@
           3.1946
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-10-18"
     },
     {
       "sym": "00760B",
@@ -108091,8 +107767,7 @@
           1.581
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2018-11-14"
     },
     {
       "sym": "00727B",
@@ -108183,8 +107858,7 @@
           1.54
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2018-02-07"
     },
     {
       "sym": "00844B",
@@ -108275,8 +107949,7 @@
           1.9335
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-07-18"
     },
     {
       "sym": "00741B",
@@ -108367,8 +108040,7 @@
           1.3616
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2018-06-08"
     },
     {
       "sym": "00958B",
@@ -108459,8 +108131,7 @@
           2.88
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2024-09-18"
     },
     {
       "sym": "00755B",
@@ -108551,8 +108222,7 @@
           1.3732
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2018-10-22"
     },
     {
       "sym": "00789B",
@@ -108643,8 +108313,7 @@
           1.891
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-03-20"
     },
     {
       "sym": "00791B",
@@ -108735,8 +108404,7 @@
           2.5
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-03-20"
     },
     {
       "sym": "00759B",
@@ -108827,8 +108495,7 @@
           1.64
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2018-11-14"
     },
     {
       "sym": "00758B",
@@ -108919,8 +108586,7 @@
           1.399
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2018-11-14"
     },
     {
       "sym": "00778B",
@@ -109011,8 +108677,7 @@
           3.93
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-02-14"
     },
     {
       "sym": "00834B",
@@ -109103,8 +108768,7 @@
           2.38
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-05-09"
     },
     {
       "sym": "00781B",
@@ -109195,8 +108859,7 @@
           2.63
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-03-07"
     },
     {
       "sym": "009825",
@@ -109275,8 +108938,7 @@
           3.5713
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2026-07-17"
     },
     {
       "sym": "00750B",
@@ -109367,8 +109029,7 @@
           1.23
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2018-09-20"
     },
     {
       "sym": "00845B",
@@ -109459,8 +109120,7 @@
           1.1925
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-07-16"
     },
     {
       "sym": "00788B",
@@ -109551,8 +109211,7 @@
           0.85
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-04-02"
     },
     {
       "sym": "00846B",
@@ -109643,8 +109302,7 @@
           2.1261
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-07-16"
     },
     {
       "sym": "00777B",
@@ -109735,8 +109393,7 @@
           1.01
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-02-14"
     },
     {
       "sym": "00840B",
@@ -109827,8 +109484,7 @@
           1.35
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-06-10"
     },
     {
       "sym": "00786B",
@@ -109918,8 +109574,7 @@
           1.98
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-04-02"
     },
     {
       "sym": "00749B",
@@ -110010,8 +109665,7 @@
           1.29
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2018-09-20"
     },
     {
       "sym": "00841B",
@@ -110102,8 +109756,7 @@
           2.24
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-06-10"
     },
     {
       "sym": "00785B",
@@ -110194,8 +109847,7 @@
           2.8357
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-03-27"
     },
     {
       "sym": "00856B",
@@ -110286,8 +109938,7 @@
           3.92
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-09-30"
     },
     {
       "sym": "00687C",
@@ -110378,8 +110029,7 @@
           4.37
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-01-10"
     },
     {
       "sym": "00836B",
@@ -110470,8 +110120,7 @@
           1.49
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-05-22"
     },
     {
       "sym": "009806",
@@ -110565,8 +110214,7 @@
           1.854
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-05-28"
     },
     {
       "sym": "00734B",
@@ -110657,8 +110305,7 @@
           2.8498
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2018-05-24"
     },
     {
       "sym": "00982B",
@@ -110692,7 +110339,7 @@
       "avg_value_1m": 1.04,
       "avg_volume": 106000,
       "beneficiaries": 736,
-      "issuer": "富蘭克林華美",
+      "issuer": "富蘭克林華美投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -110749,8 +110396,7 @@
           1.42
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-04-28"
     },
     {
       "sym": "00625K",
@@ -110787,7 +110433,7 @@
       "avg_value_1m": 0.013,
       "avg_volume": 1462,
       "beneficiaries": 12,
-      "issuer": "富邦證券投資信託股份有限公司",
+      "issuer": "富邦投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -110847,8 +110493,7 @@
       "holdings_count": "10",
       "holdings_source": "YFINANCE",
       "holdings_date": "2026/11/04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2016-08-08"
     },
     {
       "sym": "00643K",
@@ -110886,7 +110531,7 @@
       "avg_value_1m": 0.014,
       "avg_volume": 3505,
       "beneficiaries": 5,
-      "issuer": "群益證券投資信託股份有限公司",
+      "issuer": "群益投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -110946,8 +110591,7 @@
       "holdings_count": "10",
       "holdings_source": "YFINANCE",
       "holdings_date": null,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2016-08-26"
     },
     {
       "sym": "00707R",
@@ -110983,7 +110627,7 @@
       "avg_value_1m": 0.173,
       "avg_volume": 5483,
       "beneficiaries": 22,
-      "issuer": "元大證券投資信託股份有限公司",
+      "issuer": "元大投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -111003,8 +110647,7 @@
       "holdings_count": "2",
       "holdings_source": "CMONEY",
       "holdings_date": "2026-11-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2017-09-01"
     },
     {
       "sym": "1538",
@@ -111161,8 +110804,7 @@
           1.55
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2019-04-02"
     },
     {
       "sym": "00870B",
@@ -111252,8 +110894,7 @@
           2.36
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2020-01-09"
     },
     {
       "sym": "00986B",
@@ -111286,7 +110927,7 @@
       "avg_value_1m": 1.47,
       "avg_volume": 146978,
       "beneficiaries": 371,
-      "issuer": "富蘭克林華美",
+      "issuer": "富蘭克林華美投信",
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18,
@@ -111343,8 +110984,7 @@
           2.42
         ]
       ],
-      "fee_source": "aum_tier",
-      "fee_verified": "pending"
+      "listing_date": "2025-11-12"
     },
     {
       "sym": "1808",
