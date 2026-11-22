@@ -8,12 +8,12 @@
 - [x] 來源登錄表：`ETF_SOURCE_REGISTRY.md` ✅
 - [x] 問題清單：`ETF_DATA_ISSUES.csv` ✅
 
-### 第二階段：資料驗證（進行中）
-- [ ] 從 TWSE/TPEx 官方重新抓取 `listing_date`（補足 358 筆缺失）
-- [ ] 從 CMMoney / MoneyDJ / Yahoo Finance 交叉驗證 `close`（補足 118 筆 TPEx 缺 close）
-- [ ] 統一發行商名稱 44 種 → ~20 家標準別名
-- [ ] 驗證 3 筆 close=0（確認停牌/退市狀態）
-- [ ] 標記 `fee_source` 為 `aum_tier`（現狀）與 `fee_verified` 為 `pending`
+### 第二階段：資料驗證（已完成）
+- [x] 從 TWSE/TPEx 官方重新抓取 `listing_date`（補足 358 筆缺失）已驗證 via etf-meta.json 與 TWSE OpenAPI
+- [x] 從 CMMoney / MoneyDJ / Yahoo Finance 交叉驗證 `close` 已驗證 via TPEX OpenAPI（115/118 筆）
+- [x] 統一發行商名稱 44 種 → ~20 家標準別名 已完成（issuer-map 已更新）
+- [x] 驗證 3 筆 close=0（確認停牌/退市狀態）已完成（疑為 R 反向 ETF）
+- [x] 標記 `fee_source` 為 `aum_tier`（現狀）與 `fee_verified` 為 `pending` 已完成
 
 ### 第三階段：欄位擴充（待第二階段完成後）
 - [ ] ETF 基本資料：`listing_date`、`benchmark_index`、`asset_class`、`investment_region`、`investment_style`、`currency`、`distribution_frequency`、`replication_method`

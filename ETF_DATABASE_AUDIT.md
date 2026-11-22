@@ -205,4 +205,45 @@
 
 ---
 
-**報告結束**
+## 7. Phase 2 執行結果 — 資料驗證（2026-11-22）
+
+### 7.1 TWSE / TPEx 官方資料來源測試
+
+| 目標欄位 | 測試來源 | 測試結果 | 可取得筆數 |
+|----------|----------|----------|-----------|
+| `listing_date` | etf-meta.json（365 筆 ETF） | ✅ **已驗證**：365/365 筆 ETF 皆有 listing_date 值 | 365/365 |
+| `listing_date` | TWSE OpenAPI `opendata/t187ap03_L` | ✅ **可取得**：1098 筆公司/ETF 記錄含 `上市日期`，格式 ROC（如 `19620209`） | 1098/1098 |
+| `close` (TPEx) | TPEX OpenAPI `tpex_mainboard_daily_close_quotes` | ✅ **可取得**：13,807 筆記錄，Close 欄位有效數 3,525 筆；**115/118** 缺失 TPEx ETF 可由此 API 補齊 | 115/118 |
+
+### 7.2 TPEX close 補齊率測試
+
+| ETF | 現有 stocks.json close | TPEX API close | 狀態 |
+|-----|------------------------|---------------|------|
+| 00888 永豐台灣ESG | None | 24.31 | ✅ 可補 |
+| 00955 中信日本商社 | None | 15.25 | ✅ 可補 |
+| 00887 永豐中國科技50大 | None | 12.31 | ✅ 可補 |
+| 009815 大華美國MAG7+ | None | 10.51 | ✅ 可補 |
+| 00877 復華中國5G | None | 21.62 | ✅ 可補 |
+
+→ **結論**：TPEX OpenAPI 可成功提供 115/118 個 TPEx ETF 的 close，涵蓋率約 **97.4%**。
+
+### 7.3 發行商名稱統一
+
+44 種 issuer 名稱可統一為 ~20 家標準別名（如：富邦證券投資信託股份有限公司 → 富邦投信）。stocks.json 中已有約 37 筆使用標準別名，其餘待統一。
+
+### 7.4 close=0 ETF 驗證
+
+3 筆 close=0 ETF：
+- `00625K` 富邦上証+R（TWSE, 0050 型 inverse）
+- `00643K` 群益深証中小+R（TWSE, 群益 inverse）
+- `00707R` 期元大S&P日圓反1（TWSE, 日圓 reverse）
+
+→ 疑為 R 反向 ETF（6th char = R），close=0 為停牌/退市狀態，應維持不變並標記。
+
+### 7.5 fee_source / fee_verified 標記
+
+已將所有 359 ETF 的 `fee_source` 標記為 `aum_tier` 與 `fee_verified` 標記為 `pending`（不修改任何費率數值）。
+
+---
+
+**Phase 2 結束**
