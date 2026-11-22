@@ -198,13 +198,13 @@
 
     <section class="dv-card" aria-labelledby="dvDcfTitle">
       <h3 id="dvDcfTitle">DCF 試算（5 年）</h3>
-      <p class="dv-sub">以基期自由現金流預估未來 5 年，再以永續成長終值折現。台股目前沒有現金流資料，需自行輸入；美股會自動帶入過去 12 個月的資料。</p>
+      <p class="dv-sub" id="dvIntro">以基期自由現金流預估未來 5 年，再以永續成長終值折現。</p>
       <label class="dv-field"><span>選擇股票</span>
         <input class="dv-input" id="dvPick" list="dvList" placeholder="輸入代號" onchange="MKLAB_DCF.selectStock(this.value)">
       </label>
       <datalist id="dvList"></datalist>
       <div class="dv-inputs" style="margin-top:12px;">
-        <label class="dv-field"><span>基期自由現金流（百萬）</span>
+        <label class="dv-field"><span>基期自由現金流（<span id="dvFcfCur">NT$</span> 百萬）</span>
           <input class="dv-input" id="dvFcf" type="number" inputmode="decimal" step="any" oninput="MKLAB_DCF.calc()">
           <small id="dvFcfHint"></small></label>
         <label class="dv-field"><span>目前股價</span>
@@ -218,7 +218,7 @@
           <input class="dv-input" id="dvWacc" type="number" inputmode="decimal" step="0.5" value="9" oninput="MKLAB_DCF.calc()"></label>
         <label class="dv-field"><span>股數（百萬股）</span>
           <input class="dv-input" id="dvShares" type="number" inputmode="decimal" step="any" oninput="MKLAB_DCF.calc()"></label>
-        <label class="dv-field"><span>淨負債（百萬）</span>
+        <label class="dv-field"><span>淨負債（<span id="dvNetDebtCur">NT$</span> 百萬）</span>
           <input class="dv-input" id="dvNetDebt" type="number" inputmode="decimal" step="any" value="0" oninput="MKLAB_DCF.calc()">
           <small>負債減現金；負值代表淨現金</small></label>
       </div>

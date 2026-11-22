@@ -74,9 +74,10 @@
       .map(s => ({
         sym: s.sym, name: s.name, price: s.price, pe: s.pe, pb: s.pb,
         divPct: s.div, group: s.industry || s.sector || null,
-        sharesMln: s.shares_mln,
-        fcf: s.fcf_musd,
-        netDebt: (s.debt_musd != null && s.cash_musd != null) ? s.debt_musd - s.cash_musd : null,
+        // US: 原始檔沒有 shares/fcf/debt/cash；shares 以 市值/股價 回推（百萬股）
+        sharesMln: (s.shares) ? s.shares / 1e6 : ((s.market_cap != null && s.market_cap > 0 && s.price > 0) ? s.market_cap / s.price / 1e6 : null),
+        fcf: null,
+        netDebt: null,
         currency: 'US$',
       }));
   }
@@ -232,6 +233,7 @@
     } else {
       setText('dvFcfHint', r.fcf == null ? '此股票缺少自由現金流，請自行輸入。' : '已由 yfinance 過去 12 個月資料帶入（USD 百萬）。');
     }
+    applyMarketText();
     calc();
   }
 
@@ -416,10 +418,22 @@
     calc();
   }
 
+  function setCur(sel, cur) { const n = el(sel); if (n) n.textContent = cur; }
+  function applyMarketText() {
+    const isTw = (market === 'tw');
+    const cur = isTw ? 'NT$' : 'US$';
+    setCur('dvFcfCur', cur);
+    setCur('dvNetDebtCur', cur);
+    setCur('dvIntro', isTw
+      ? '以基期自由現金流預估未來 5 年，再以永續成長終值折現。台股目前沒有現金流資料，需自行輸入。'
+      : '以基期自由現金流預估未來 5 年，再以永續成長終值折現。美股原始資料未提供自由現金流，請自行輸入。');
+    // hint 由 selectStock 依檔次設定，這裡不主動清空
+  }
   function setMarket(m, btn) {
     market = m;
     document.querySelectorAll('#dvMarket button').forEach(b => b.classList.toggle('on', b === btn));
     clearDetail();
+    applyMarketText();
     loadMarket(m).then(() => { buildPicker(); applyVal(); })
       .catch(() => setText('dvCount', '資料載入失敗'));
   }
@@ -444,7 +458,7 @@
     loadPrefs();
     bindTableClick();
     clearDetail();
-    loadMarket('tw').then(() => { buildPicker(); applyVal(); })
+    loadMarket(market).then(() => { buildPicker(); applyVal(); })
       .catch(() => setText('dvCount', '資料載入失敗'));
   }
 

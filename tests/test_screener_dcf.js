@@ -44,10 +44,11 @@ const fixtures = {
     { sym: '1101', name: '台泥', security_type: 'stock', price: 40, pe: null, pb: 1.2, eps: -0.5, div: 3.75, ind: '水泥工業', shares: 5000000000, source: 'TWSE' },
     { sym: '0050', name: '元大台灣50', security_type: 'etf', price: 60, pe: null, pb: null, eps: null, ind: null, source: 'TWSE' },
   ] },
+  // 真實結構：美股資料只有市值(market_cap)與 EPS，沒有 shares/fcf/debt/cash
   'us/us-stocks': { stocks: [
-    { sym: 'AAPL', name: 'Apple', price: 342.56, pe: 38.1, pb: 44.4, eps: 8.98, div: 0.32, industry: 'Consumer Electronics', sector: 'Technology', shares_mln: 14776.35, fcf_musd: 99584, cash_musd: 61000, debt_musd: 98000 },
-    { sym: 'MSFT', name: 'Microsoft', price: 523.88, pe: 27.3, pb: 8.3, eps: 19.16, div: 0.75, industry: 'Software', sector: 'Technology', shares_mln: 7430, fcf_musd: 70000, cash_musd: 30000, debt_musd: 40000 },
-    { sym: 'NVDA', name: 'NVIDIA', price: 166.19, pe: 21, pb: 17, eps: 7.91, div: 0.02, industry: 'Semiconductors', sector: 'Technology', shares_mln: 24300, fcf_musd: null, cash_musd: null, debt_musd: null },
+    { sym: 'AAPL', name: 'Apple', price: 342.56, pe: 38.1, pb: 44.4, eps: 8.98, div: 0.32, industry: 'Consumer Electronics', sector: 'Technology', market_cap: 4978144444416 },
+    { sym: 'MSFT', name: 'Microsoft', price: 523.88, pe: 27.3, pb: 8.3, eps: 19.16, div: 0.75, industry: 'Software', sector: 'Technology', market_cap: 3890000000000 },
+    { sym: 'NVDA', name: 'NVIDIA', price: 166.19, pe: 21, pb: 17, eps: 7.91, div: 0.02, industry: 'Semiconductors', sector: 'Technology', market_cap: 4058000000000 },
   ] },
 };
 
@@ -189,14 +190,33 @@ const find = (node, cls) => node.children.find(c => c.className === cls);
     assert.ok(/缺少自由現金流/.test(el('dvFcfHint').textContent));
   });
 
-  await t('美股：AAPL 帶入 FCF、股數與淨負債（負債 − 現金）', async () => {
+  await t('美股：shares 由市值/股價回推；FCF/淨負債留空由使用者輸入', async () => {
     DCF.selectStock('AAPL'); await tick();
-    assert.strictEqual(parseFloat(el('dvFcf').value), 99584);
-    assert.strictEqual(parseFloat(el('dvNetDebt').value), 37000);
-    assert.ok(/帶入/.test(el('dvFcfHint').textContent));
+    // shares = market_cap / price / 1e6 = 4978144444416 / 342.56 / 1e6 ≈ 14533.0 百萬股
+    assert.ok(Math.abs(parseFloat(el('dvShares').value) - 14533.0) < 1, el('dvShares').value);
+    assert.strictEqual(el('dvFcf').value, '');
+    assert.strictEqual(parseFloat(el('dvNetDebt').value), 0);
+    assert.ok(/缺少自由現金流/.test(el('dvFcfHint').textContent));
+  });
+
+  await t('美股：選單(datalist)載入美股股票清單', async () => {
+    const dl = el('dvList');
+    const syms = dl.children.map(o => o.value);
+    assert.deepStrictEqual(syms, ['AAPL', 'MSFT', 'NVDA'], JSON.stringify(syms));
+  });
+
+  await t('切換市場：單位與說明文字隨市場改變', async () => {
+    DCF.setMarket('us', {}); await tick(); await tick();
+    assert.strictEqual(el('dvFcfCur').textContent, 'US$');
+    assert.strictEqual(el('dvNetDebtCur').textContent, 'US$');
+    assert.ok(/美股/.test(el('dvIntro').textContent), el('dvIntro').textContent);
+    DCF.setMarket('tw', {}); await tick(); await tick();
+    assert.strictEqual(el('dvFcfCur').textContent, 'NT$');
+    assert.ok(/台股/.test(el('dvIntro').textContent), el('dvIntro').textContent);
   });
 
   await t('匯出：估值表 CSV 註冊到設定抽屜，並輸出目前篩選結果', async () => {
+    DCF.setMarket('us', {}); await tick(); await tick();
     assert.ok(registered['匯出 DCF 估值表 CSV（目前分頁）'], '未註冊匯出');
     DCF.applyVal();
     exportCalls.length = 0;
