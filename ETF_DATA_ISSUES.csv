@@ -1,0 +1,1442 @@
+﻿sym,name,issue_code,issue_desc,cause,source,suggestion
+0050,元大台灣50,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+0050,元大台灣50,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+0050,元大台灣50,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+0056,元大高股息,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+0056,元大高股息,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00878,國泰永續高股息,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00878,國泰永續高股息,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00919,群益台灣精選高息,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00919,群益台灣精選高息,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00919,群益台灣精選高息,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+006208,富邦台50,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00631L,元大台灣50正2,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00631L,元大台灣50正2,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00631L,元大台灣50正2,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00981A,主動統一台股增長,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00981A,主動統一台股增長,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00981A,主動統一台股增長,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00981A,主動統一台股增長,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+009816,凱基台灣TOP50,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009816,凱基台灣TOP50,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00918,大華優利高填息30,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00918,大華優利高填息30,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+0052,富邦科技,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00929,復華台灣科技優息,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00929,復華台灣科技優息,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00929,復華台灣科技優息,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00406A,主動中信台灣收益,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00406A,主動中信台灣收益,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00406A,主動中信台灣收益,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00406A,主動中信台灣收益,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00881,國泰台灣科技龍頭,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00881,國泰台灣科技龍頭,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00403A,主動統一升級50,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00403A,主動統一升級50,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00403A,主動統一升級50,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00403A,主動統一升級50,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00713,元大台灣高息低波,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00713,元大台灣高息低波,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00685L,群益臺灣加權正2,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00685L,群益臺灣加權正2,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00685L,群益臺灣加權正2,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00685L,群益臺灣加權正2,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00685L,群益臺灣加權正2,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00830,國泰費城半導體,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00830,國泰費城半導體,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00830,國泰費城半導體,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00922,國泰台灣領袖50,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00922,國泰台灣領袖50,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00922,國泰台灣領袖50,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00927,群益半導體收益,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00927,群益半導體收益,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00927,群益半導體收益,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00927,群益半導體收益,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00927,群益半導體收益,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00891,中信關鍵半導體,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00891,中信關鍵半導體,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00891,中信關鍵半導體,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00891,中信關鍵半導體,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00940,元大台灣價值高息,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00940,元大台灣價值高息,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00940,元大台灣價值高息,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00991A,主動復華未來50,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00991A,主動復華未來50,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00991A,主動復華未來50,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00991A,主動復華未來50,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00991A,主動復華未來50,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00646,元大S&P500,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00646,元大S&P500,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00692,富邦公司治理,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00692,富邦公司治理,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00935,野村臺灣新科技50,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00935,野村臺灣新科技50,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00935,野村臺灣新科技50,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00935,野村臺灣新科技50,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00953B,群益優選非投等債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00953B,群益優選非投等債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00953B,群益優選非投等債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00712,復華富時不動產,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00712,復華富時不動產,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00712,復華富時不動產,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00712,復華富時不動產,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00988A,主動統一全球創新,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00988A,主動統一全球創新,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00988A,主動統一全球創新,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00982A,主動群益台灣強棒,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00982A,主動群益台灣強棒,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00982A,主動群益台灣強棒,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00982A,主動群益台灣強棒,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00982A,主動群益台灣強棒,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00992A,主動群益科技創新,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00992A,主動群益科技創新,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00992A,主動群益科技創新,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00992A,主動群益科技創新,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00992A,主動群益科技創新,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00757,統一FANG+,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00757,統一FANG+,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00757,統一FANG+,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00757,統一FANG+,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00850,元大臺灣ESG永續,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00850,元大臺灣ESG永續,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00923,群益台ESG低碳50,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00923,群益台ESG低碳50,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00923,群益台ESG低碳50,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00882,中信中國高股息,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00882,中信中國高股息,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00882,中信中國高股息,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00990A,主動元大AI新經濟,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00990A,主動元大AI新經濟,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00632R,元大台灣50反1,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00632R,元大台灣50反1,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00632R,元大台灣50反1,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00939,統一台灣高息動能,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00939,統一台灣高息動能,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00939,統一台灣高息動能,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00939,統一台灣高息動能,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00400A,主動國泰動能高息,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00400A,主動國泰動能高息,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00400A,主動國泰動能高息,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00400A,主動國泰動能高息,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00400A,主動國泰動能高息,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00400A,主動國泰動能高息,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00675L,富邦臺灣加權正2,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00675L,富邦臺灣加權正2,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00675L,富邦臺灣加權正2,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00675L,富邦臺灣加權正2,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00900,富邦特選高股息30,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00900,富邦特選高股息30,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00662,富邦NASDAQ,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00662,富邦NASDAQ,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00985A,主動野村台灣50,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00985A,主動野村台灣50,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00985A,主動野村台灣50,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00985A,主動野村台灣50,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00985A,主動野村台灣50,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00888,永豐台灣ESG,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00888,永豐台灣ESG,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00888,永豐台灣ESG,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00888,永豐台灣ESG,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00888,永豐台灣ESG,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00865B,國泰US短期公債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00865B,國泰US短期公債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00865B,國泰US短期公債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00407A,主動凱基台灣,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00407A,主動凱基台灣,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00407A,主動凱基台灣,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00407A,主動凱基台灣,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00407A,主動凱基台灣,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00405A,主動富邦台灣龍耀,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00405A,主動富邦台灣龍耀,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00405A,主動富邦台灣龍耀,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00405A,主動富邦台灣龍耀,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00915,凱基優選高股息30,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00915,凱基優選高股息30,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00915,凱基優選高股息30,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00670L,富邦NASDAQ正2,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00670L,富邦NASDAQ正2,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00670L,富邦NASDAQ正2,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00670L,富邦NASDAQ正2,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00980A,主動野村臺灣優選,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00980A,主動野村臺灣優選,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00980A,主動野村臺灣優選,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00980A,主動野村臺灣優選,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00980A,主動野村臺灣優選,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00893,國泰智能電動車,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00893,國泰智能電動車,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00893,國泰智能電動車,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00924,復華S&P500成長,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00924,復華S&P500成長,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00924,復華S&P500成長,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00934,中信成長高股息,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00934,中信成長高股息,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00934,中信成長高股息,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00711B,復華彭博新興債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00711B,復華彭博新興債,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00711B,復華彭博新興債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00711B,復華彭博新興債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00637L,元大滬深300正2,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00637L,元大滬深300正2,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00637L,元大滬深300正2,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00663L,國泰臺灣加權正2,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00663L,國泰臺灣加權正2,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00663L,國泰臺灣加權正2,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00663L,國泰臺灣加權正2,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00663L,國泰臺灣加權正2,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00673R,期元大S&P原油反1,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00673R,期元大S&P原油反1,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00673R,期元大S&P原油反1,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00673R,期元大S&P原油反1,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00945B,凱基美國非投等債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00945B,凱基美國非投等債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00945B,凱基美國非投等債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00984D,主動聯博全球非投,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00984D,主動聯博全球非投,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00984D,主動聯博全球非投,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00896,中信綠能及電動車,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00896,中信綠能及電動車,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00896,中信綠能及電動車,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00947,台新臺灣IC設計,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00947,台新臺灣IC設計,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00947,台新臺灣IC設計,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00947,台新臺灣IC設計,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00947,台新臺灣IC設計,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00892,富邦台灣半導體,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00892,富邦台灣半導體,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00892,富邦台灣半導體,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00892,富邦台灣半導體,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00409A,主動復華全球50,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00409A,主動復華全球50,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00409A,主動復華全球50,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00941,中信上游半導體,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00941,中信上游半導體,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00941,中信上游半導體,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00885,富邦越南,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00885,富邦越南,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00885,富邦越南,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00415A,主動群益核心50,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00415A,主動群益核心50,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00415A,主動群益核心50,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00415A,主動群益核心50,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00415A,主動群益核心50,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00415A,主動群益核心50,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00961,FT臺灣永續高息,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00961,FT臺灣永續高息,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00961,FT臺灣永續高息,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00961,FT臺灣永續高息,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+009828,中信台日韓PCB,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+009828,中信台日韓PCB,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+009828,中信台日韓PCB,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009828,中信台日韓PCB,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+009828,中信台日韓PCB,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+009828,中信台日韓PCB,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00708L,期元大S&P黃金正2,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00708L,期元大S&P黃金正2,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00708L,期元大S&P黃金正2,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00708L,期元大S&P黃金正2,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00997A,主動群益美國增長,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00997A,主動群益美國增長,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00997A,主動群益美國增長,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+009826,貝萊德世界股票,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+009826,貝萊德世界股票,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009826,貝萊德世界股票,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+009826,貝萊德世界股票,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+009820,元大納斯達克精選,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+009820,元大納斯達克精選,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+009820,元大納斯達克精選,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00735,國泰臺韓科技,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00735,國泰臺韓科技,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00735,國泰臺韓科技,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+009805,台新美國電力基建,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+009805,台新美國電力基建,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009805,台新美國電力基建,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00965,元大航太防衛科技,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00965,元大航太防衛科技,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00999A,主動野村臺灣高息,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00999A,主動野村臺灣高息,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00999A,主動野村臺灣高息,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00999A,主動野村臺灣高息,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00999A,主動野村臺灣高息,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00999A,主動野村臺灣高息,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00984A,主動安聯台灣高息,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00984A,主動安聯台灣高息,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00984A,主動安聯台灣高息,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00984A,主動安聯台灣高息,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00984A,主動安聯台灣高息,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00984A,主動安聯台灣高息,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+009802,富邦旗艦50,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+009802,富邦旗艦50,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00985B,群益ESG投等債0-5,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00985B,群益ESG投等債0-5,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00985B,群益ESG投等債0-5,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00680L,元大美債20正2,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00680L,元大美債20正2,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00680L,元大美債20正2,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00680L,元大美債20正2,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00955,中信日本商社,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00955,中信日本商社,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00955,中信日本商社,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00955,中信日本商社,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00955,中信日本商社,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00905,FT臺灣Smart,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00905,FT臺灣Smart,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00905,FT臺灣Smart,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00905,FT臺灣Smart,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00775B,台新投等債15+,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00775B,台新投等債15+,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00775B,台新投等債15+,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00775B,台新投等債15+,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00418A,主動復華台灣新星,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00418A,主動復華台灣新星,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00418A,主動復華台灣新星,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00418A,主動復華台灣新星,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00418A,主動復華台灣新星,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00701,國泰股利精選30,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00701,國泰股利精選30,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00701,國泰股利精選30,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00876,元大全球5G,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00876,元大全球5G,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00876,元大全球5G,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00993A,主動安聯台灣,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00993A,主動安聯台灣,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00993A,主動安聯台灣,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00993A,主動安聯台灣,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00993A,主動安聯台灣,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00904,台新臺灣半導體30,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00904,台新臺灣半導體30,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00904,台新臺灣半導體30,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00904,台新臺灣半導體30,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00904,台新臺灣半導體30,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+009821,野村稀土關鍵資源,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+009821,野村稀土關鍵資源,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+009821,野村稀土關鍵資源,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009821,野村稀土關鍵資源,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00412A,主動安聯亞半導體,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00412A,主動安聯亞半導體,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00412A,主動安聯亞半導體,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00412A,主動安聯亞半導體,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00412A,主動安聯亞半導體,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00412A,主動安聯亞半導體,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00895,富邦未來車,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00895,富邦未來車,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00895,富邦未來車,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00991B,貝萊德A級公司債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00991B,貝萊德A級公司債,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00991B,貝萊德A級公司債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00991B,貝萊德A級公司債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+009803,玉山市值動能50,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+009803,玉山市值動能50,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009803,玉山市值動能50,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00887,永豐中國科技50大,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00887,永豐中國科技50大,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00887,永豐中國科技50大,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00887,永豐中國科技50大,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00887,永豐中國科技50大,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00416A,主動台新臺灣中小,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00416A,主動台新臺灣中小,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00416A,主動台新臺灣中小,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00416A,主動台新臺灣中小,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00416A,主動台新臺灣中小,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00416A,主動台新臺灣中小,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00770,國泰北美科技,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00770,國泰北美科技,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00770,國泰北美科技,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00894,中信小資高價30,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00894,中信小資高價30,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00894,中信小資高價30,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00894,中信小資高價30,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00753L,中信中國50正2,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00753L,中信中國50正2,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00753L,中信中國50正2,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00753L,中信中國50正2,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00753L,中信中國50正2,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00753L,中信中國50正2,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00690,兆豐藍籌30,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00690,兆豐藍籌30,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00690,兆豐藍籌30,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00690,兆豐藍籌30,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00946,群益科技高息成長,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00946,群益科技高息成長,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00946,群益科技高息成長,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00946,群益科技高息成長,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+009819,中信數據及電力,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+009819,中信數據及電力,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+009819,中信數據及電力,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009819,中信數據及電力,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00910,第一金太空衛星,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00910,第一金太空衛星,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00910,第一金太空衛星,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00910,第一金太空衛星,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00752,中信中國50,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00752,中信中國50,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00752,中信中國50,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00633L,富邦上証正2,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00633L,富邦上証正2,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00633L,富邦上証正2,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00861,元大全球未來通訊,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00861,元大全球未來通訊,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009815,大華美國MAG7+,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+009815,大華美國MAG7+,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009815,大華美國MAG7+,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+009815,大華美國MAG7+,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+009815,大華美國MAG7+,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00402A,主動安聯美國科技,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00402A,主動安聯美國科技,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00402A,主動安聯美國科技,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00402A,主動安聯美國科技,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+0055,元大MSCI金融,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+0055,元大MSCI金融,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009829,大華韓國KOSPI50,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+009829,大華韓國KOSPI50,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009829,大華韓國KOSPI50,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00877,復華中國5G,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00877,復華中國5G,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00877,復華中國5G,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00877,復華中國5G,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00877,復華中國5G,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00762,元大全球AI,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00762,元大全球AI,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00858,永豐美國500大,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00858,永豐美國500大,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00858,永豐美國500大,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00858,永豐美國500大,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00858,永豐美國500大,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00996A,主動兆豐台灣豐收,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00996A,主動兆豐台灣豐收,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00996A,主動兆豐台灣豐收,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00996A,主動兆豐台灣豐收,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00996A,主動兆豐台灣豐收,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+009824,群益美國科技巨頭,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+009824,群益美國科技巨頭,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009824,群益美國科技巨頭,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00909,國泰數位支付服務,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00909,國泰數位支付服務,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00909,國泰數位支付服務,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00909,國泰數位支付服務,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+009800,中信NASDAQ,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+009800,中信NASDAQ,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+009800,中信NASDAQ,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009800,中信NASDAQ,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00949,復華日本龍頭,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00949,復華日本龍頭,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00949,復華日本龍頭,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+0053,元大科技市值,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+0053,元大科技市值,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+0053,元大科技市值,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+006205,富邦上証,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+006205,富邦上証,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00401A,主動摩根台灣鑫收,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00401A,主動摩根台灣鑫收,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00401A,主動摩根台灣鑫收,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00401A,主動摩根台灣鑫收,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+009823,群益S&P500,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+009823,群益S&P500,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009823,群益S&P500,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+009823,群益S&P500,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+009823,群益S&P500,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00710B,復華彭博非投等債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00710B,復華彭博非投等債,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00710B,復華彭博非投等債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00710B,復華彭博非投等債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00952,凱基台灣AI50,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00952,凱基台灣AI50,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00952,凱基台灣AI50,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00952,凱基台灣AI50,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00930,永豐ESG低碳高息,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00930,永豐ESG低碳高息,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00930,永豐ESG低碳高息,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00930,永豐ESG低碳高息,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00936,台新永續高息中小,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00936,台新永續高息中小,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00936,台新永續高息中小,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00936,台新永續高息中小,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00404A,主動聯博動能50,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00404A,主動聯博動能50,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00404A,主動聯博動能50,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00404A,主動聯博動能50,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+009813,貝萊德標普卓越50,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+009813,貝萊德標普卓越50,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009813,貝萊德標普卓越50,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00995A,主動中信台灣卓越,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00995A,主動中信台灣卓越,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00995A,主動中信台灣卓越,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00995A,主動中信台灣卓越,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00688L,國泰20年美債正2,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00688L,國泰20年美債正2,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00688L,國泰20年美債正2,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00688L,國泰20年美債正2,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00688L,國泰20年美債正2,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00665L,富邦恒生國企正2,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00665L,富邦恒生國企正2,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00665L,富邦恒生國企正2,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00665L,富邦恒生國企正2,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00733,富邦臺灣中小,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00733,富邦臺灣中小,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00733,富邦臺灣中小,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+0051,元大中型100,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+0051,元大中型100,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+0051,元大中型100,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+0051,元大中型100,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+009811,統一美國50,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+009811,統一美國50,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009811,統一美國50,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00981T,平衡凱基雙核收息,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00981T,平衡凱基雙核收息,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00981T,平衡凱基雙核收息,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00715L,期街口布蘭特正2,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00715L,期街口布蘭特正2,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00715L,期街口布蘭特正2,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00715L,期街口布蘭特正2,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00938,凱基優選30,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00938,凱基優選30,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00938,凱基優選30,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00926,凱基全球菁英55,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00926,凱基全球菁英55,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00926,凱基全球菁英55,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+009804,聯邦台精彩50,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+009804,聯邦台精彩50,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009804,聯邦台精彩50,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00994A,主動第一金台股優,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00994A,主動第一金台股優,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00994A,主動第一金台股優,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00994A,主動第一金台股優,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00994A,主動第一金台股優,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00951,台新日本半導體,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00951,台新日本半導體,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00951,台新日本半導體,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00962,台新AI優息動能,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00962,台新AI優息動能,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00962,台新AI優息動能,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00962,台新AI優息動能,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00907,永豐優息存股,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00907,永豐優息存股,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00907,永豐優息存股,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00907,永豐優息存股,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00901,永豐智能車供應鏈,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00901,永豐智能車供應鏈,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00901,永豐智能車供應鏈,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00645,富邦日本,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00645,富邦日本,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00645,富邦日本,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00913,兆豐台灣晶圓製造,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00913,兆豐台灣晶圓製造,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00913,兆豐台灣晶圓製造,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00913,兆豐台灣晶圓製造,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00913,兆豐台灣晶圓製造,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00916,國泰全球品牌50,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00916,國泰全球品牌50,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00916,國泰全球品牌50,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00916,國泰全球品牌50,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00902,中信電池及儲能,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00902,中信電池及儲能,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00902,中信電池及儲能,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00636,國泰中國A50,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00636,國泰中國A50,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00636,國泰中國A50,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00912,中信臺灣智慧50,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00912,中信臺灣智慧50,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00912,中信臺灣智慧50,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00912,中信臺灣智慧50,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00706L,期元大S&P日圓正2,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00706L,期元大S&P日圓正2,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00706L,期元大S&P日圓正2,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00652,富邦印度,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00652,富邦印度,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009827,玉山未來全球算力,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+009827,玉山未來全球算力,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009827,玉山未來全球算力,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+009827,玉山未來全球算力,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00954,中信日本半導體,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00954,中信日本半導體,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00954,中信日本半導體,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+0061,元大寶滬深,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+0061,元大寶滬深,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00728,第一金工業30,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00728,第一金工業30,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00728,第一金工業30,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00728,第一金工業30,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00731,復華富時高息低波,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00731,復華富時高息低波,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00731,復華富時高息低波,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00731,復華富時高息低波,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+009817,國泰日本不動產,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+009817,國泰日本不動產,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009817,國泰日本不動產,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00661,元大日經225,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00661,元大日經225,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009814,富邦標普500,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+009814,富邦標普500,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009814,富邦標普500,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+009814,富邦標普500,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+009814,富邦標普500,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00987A,主動台新優勢成長,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00987A,主動台新優勢成長,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00987A,主動台新優勢成長,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00987A,主動台新優勢成長,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00987A,主動台新優勢成長,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00730,富邦臺灣優質高息,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00730,富邦臺灣優質高息,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00730,富邦臺灣優質高息,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00410A,主動永豐科技趨勢,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00410A,主動永豐科技趨勢,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00410A,主動永豐科技趨勢,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00410A,主動永豐科技趨勢,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00410A,主動永豐科技趨勢,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00897,富邦基因免疫生技,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00897,富邦基因免疫生技,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00897,富邦基因免疫生技,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+006203,元大MSCI台灣,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+006203,元大MSCI台灣,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+006203,元大MSCI台灣,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+006203,元大MSCI台灣,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00655L,國泰中國A50正2,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00655L,國泰中國A50正2,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00655L,國泰中國A50正2,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00655L,國泰中國A50正2,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00717,富邦美國特別股,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00717,富邦美國特別股,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00917,中信特選金融,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00917,中信特選金融,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00917,中信特選金融,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00917,中信特選金融,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00963,中信全球高股息,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00963,中信全球高股息,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00963,中信全球高股息,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00963,中信全球高股息,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00932,兆豐永續高息等權,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00932,兆豐永續高息等權,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00932,兆豐永續高息等權,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00932,兆豐永續高息等權,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00664R,國泰臺灣加權反1,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00664R,國泰臺灣加權反1,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00664R,國泰臺灣加權反1,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00664R,國泰臺灣加權反1,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00928,中信上櫃ESG 30,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00928,中信上櫃ESG 30,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00928,中信上櫃ESG 30,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00928,中信上櫃ESG 30,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00928,中信上櫃ESG 30,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00650L,復華香港正2,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00650L,復華香港正2,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00650L,復華香港正2,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00650L,復華香港正2,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00650L,復華香港正2,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00964,中信亞太高股息,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00964,中信亞太高股息,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00964,中信亞太高股息,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00960,野村全球航運龍頭,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00960,野村全球航運龍頭,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00960,野村全球航運龍頭,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00413A,主動玉山關鍵科技,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00413A,主動玉山關鍵科技,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00413A,主動玉山關鍵科技,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00413A,主動玉山關鍵科技,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00413A,主動玉山關鍵科技,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+009831,FT核心AI電力算力,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+009831,FT核心AI電力算力,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009831,FT核心AI電力算力,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+009831,FT核心AI電力算力,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00639,富邦深100,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00639,富邦深100,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00911,兆豐洲際半導體,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00911,兆豐洲際半導體,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00911,兆豐洲際半導體,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00671R,富邦NASDAQ反1,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00671R,富邦NASDAQ反1,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00671R,富邦NASDAQ反1,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00921,兆豐龍頭等權重,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00921,兆豐龍頭等權重,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00921,兆豐龍頭等權重,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00875,國泰網路資安,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00875,國泰網路資安,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00875,國泰網路資安,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00875,國泰網路資安,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00875,國泰網路資安,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+009812,野村日本東證,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+009812,野村日本東證,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+009812,野村日本東證,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009812,野村日本東證,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00943,兆豐電子高息等權,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00943,兆豐電子高息等權,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00943,兆豐電子高息等權,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00943,兆豐電子高息等權,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00408A,主動第一金優股息,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00408A,主動第一金優股息,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00408A,主動第一金優股息,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00408A,主動第一金優股息,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00408A,主動第一金優股息,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00643,群益深証中小,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00643,群益深証中小,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00643,群益深証中小,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00676R,富邦臺灣加權反1,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00676R,富邦臺灣加權反1,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00676R,富邦臺灣加權反1,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00898,國泰基因免疫革命,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00898,國泰基因免疫革命,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00898,國泰基因免疫革命,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00669R,國泰美國道瓊反1,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00669R,國泰美國道瓊反1,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00669R,國泰美國道瓊反1,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00669R,國泰美國道瓊反1,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00669R,國泰美國道瓊反1,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+006201,元大富櫃50,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+006201,元大富櫃50,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+006201,元大富櫃50,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+006201,元大富櫃50,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+006201,元大富櫃50,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00944,野村趨勢動能高息,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00944,野村趨勢動能高息,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00944,野村趨勢動能高息,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00944,野村趨勢動能高息,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00944,野村趨勢動能高息,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+009808,華南永昌優選50,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+009808,華南永昌優選50,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009808,華南永昌優選50,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+009801,中信美國創新科技,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+009801,中信美國創新科技,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+009801,中信美國創新科技,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009801,中信美國創新科技,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+006206,元大上證50,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+006206,元大上證50,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00989A,主動摩根美國科技,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00989A,主動摩根美國科技,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00989A,主動摩根美國科技,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00989A,主動摩根美國科技,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00983D,主動富邦複合收益,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00983D,主動富邦複合收益,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00983D,主動富邦複合收益,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00971,野村美國研發龍頭,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00971,野村美國研發龍頭,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00971,野村美國研發龍頭,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00971,野村美國研發龍頭,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00737,國泰AI機器人,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00737,國泰AI機器人,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00737,國泰AI機器人,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00903,富邦元宇宙,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00903,富邦元宇宙,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009818,華南永昌NASDAQxT,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+009818,華南永昌NASDAQxT,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+009818,華南永昌NASDAQxT,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009818,華南永昌NASDAQxT,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+009832,兆豐美國黃金,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+009832,兆豐美國黃金,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+009832,兆豐美國黃金,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009832,兆豐美國黃金,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+009832,兆豐美國黃金,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00983A,主動中信ARK創新,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00983A,主動中信ARK創新,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00983A,主動中信ARK創新,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00983A,主動中信ARK創新,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00982D,主動富邦動態入息,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00982D,主動富邦動態入息,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00640L,富邦日本正2,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00640L,富邦日本正2,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00640L,富邦日本正2,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00640L,富邦日本正2,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00647L,元大S&P500正2,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00647L,元大S&P500正2,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00647L,元大S&P500正2,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+006207,復華滬深,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+006207,復華滬深,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+006207,復華滬深,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+006207,復華滬深,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00739,元大MSCI A股,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00739,元大MSCI A股,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009822,華南永昌未來金融,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+009822,華南永昌未來金融,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009822,華南永昌未來金融,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+009822,華南永昌未來金融,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+009822,華南永昌未來金融,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00653L,富邦印度正2,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00653L,富邦印度正2,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00653L,富邦印度正2,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00709,富邦歐洲,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00709,富邦歐洲,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00709,富邦歐洲,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00648R,元大S&P500反1,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00648R,元大S&P500反1,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00648R,元大S&P500反1,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00678,群益那斯達克生技,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00678,群益那斯達克生技,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00678,群益那斯達克生技,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00657,國泰日經225,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00657,國泰日經225,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00657,國泰日經225,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+009809,富邦淨零ESG50,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+009809,富邦淨零ESG50,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00908,富邦入息REITs+,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00908,富邦入息REITs+,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00668,國泰美國道瓊,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00668,國泰美國道瓊,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00668,國泰美國道瓊,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00668,國泰美國道瓊,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00700,富邦恒生國企,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00700,富邦恒生國企,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00700,富邦恒生國企,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00986A,主動台新龍頭成長,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00986A,主動台新龍頭成長,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00986A,主動台新龍頭成長,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00674R,期元大S&P黃金反1,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00674R,期元大S&P黃金反1,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00674R,期元大S&P黃金反1,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00674R,期元大S&P黃金反1,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00920,富邦ESG綠色電力,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00920,富邦ESG綠色電力,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00920,富邦ESG綠色電力,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00956,中信日經高股息,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00956,中信日經高股息,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00956,中信日經高股息,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00956,中信日經高股息,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+0057,富邦摩台,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+0057,富邦摩台,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+0057,富邦摩台,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00714,群益道瓊美國地產,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00714,群益道瓊美國地產,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00714,群益道瓊美國地產,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00714,群益道瓊美國地產,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+009810,玉山全球藍籌100,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+009810,玉山全球藍籌100,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009810,玉山全球藍籌100,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00851,台新全球AI,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00851,台新全球AI,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00851,台新全球AI,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00851,台新全球AI,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00641R,富邦日本反1,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00641R,富邦日本反1,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00641R,富邦日本反1,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00660,元大歐洲50,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00660,元大歐洲50,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00660,元大歐洲50,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00899,FT潔淨能源,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00899,FT潔淨能源,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00899,FT潔淨能源,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00972,野村日本動能高息,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00972,野村日本動能高息,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00972,野村日本動能高息,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00972,野村日本動能高息,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00972,野村日本動能高息,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00686R,群益臺灣加權反1,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00686R,群益臺灣加權反1,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00686R,群益臺灣加權反1,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00686R,群益臺灣加權反1,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+006204,永豐臺灣加權,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+006204,永豐臺灣加權,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+006204,永豐臺灣加權,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+006204,永豐臺灣加權,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+006204,永豐臺灣加權,price_close_diff,price vs close 差異超過 5%,拆股調整或日期不同步,官方調整資料,標記拆股調整說明
+00683L,期元大美元指正2,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00683L,期元大美元指正2,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00683L,期元大美元指正2,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00886,永豐美國科技,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00886,永豐美國科技,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00886,永豐美國科技,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00886,永豐美國科技,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00886,永豐美國科技,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00982T,平衡兆豐台美動能,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00982T,平衡兆豐台美動能,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00982T,平衡兆豐台美動能,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00982T,平衡兆豐台美動能,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00852L,國泰美國道瓊正2,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00852L,國泰美國道瓊正2,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00852L,國泰美國道瓊正2,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00852L,國泰美國道瓊正2,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00852L,國泰美國道瓊正2,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00771,元大US高息特別股,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00771,元大US高息特別股,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00771,元大US高息特別股,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+009807,台新標普科技精選,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+009807,台新標普科技精選,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009807,台新標普科技精選,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+009807,台新標普科技精選,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+009807,台新標普科技精選,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00736,國泰新興市場,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00736,國泰新興市場,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00736,國泰新興市場,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00736,國泰新興市場,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00651R,復華香港反1,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00651R,復華香港反1,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00651R,復華香港反1,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00651R,復華香港反1,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00651R,復華香港反1,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00783,富邦中証500,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00783,富邦中証500,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00783,富邦中証500,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00638R,元大滬深300反1,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00638R,元大滬深300反1,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00638R,元大滬深300反1,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00638R,元大滬深300反1,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00702,國泰標普低波高息,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00702,國泰標普低波高息,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00702,國泰標普低波高息,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00702,國泰標普低波高息,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00702,國泰標普低波高息,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00681R,元大美債20反1,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00681R,元大美債20反1,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00681R,元大美債20反1,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00681R,元大美債20反1,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00689R,國泰20年美債反1,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00689R,國泰20年美債反1,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00689R,國泰20年美債反1,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00689R,國泰20年美債反1,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00689R,國泰20年美債反1,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00998A,主動復華金融股息,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00998A,主動復華金融股息,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00998A,主動復華金融股息,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00998A,主動復華金融股息,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00998A,主動復華金融股息,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00703,台新MSCI中國,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00703,台新MSCI中國,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00703,台新MSCI中國,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00634R,富邦上証反1,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00634R,富邦上証反1,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00634R,富邦上証反1,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00684R,期元大美元指反1,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00684R,期元大美元指反1,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00684R,期元大美元指反1,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00684R,期元大美元指反1,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00656R,國泰中國A50反1,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00656R,國泰中國A50反1,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00656R,國泰中國A50反1,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00656R,國泰中國A50反1,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00654R,富邦印度反1,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00654R,富邦印度反1,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00654R,富邦印度反1,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00666R,富邦恒生國企反1,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00666R,富邦恒生國企反1,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00666R,富邦恒生國企反1,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00666R,富邦恒生國企反1,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00937B,群益ESG投等債20+,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00937B,群益ESG投等債20+,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00937B,群益ESG投等債20+,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00937B,群益ESG投等債20+,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00679B,元大美債20年,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00679B,元大美債20年,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00679B,元大美債20年,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00679B,元大美債20年,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00687B,國泰20年美債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00687B,國泰20年美債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00687B,國泰20年美債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00687B,國泰20年美債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00657K,國泰日經225+U,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00657K,國泰日經225+U,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00657K,國泰日經225+U,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00657K,國泰日經225+U,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00751B,元大AAA至A公司債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00751B,元大AAA至A公司債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00751B,元大AAA至A公司債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00751B,元大AAA至A公司債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00720B,元大投資級公司債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00720B,元大投資級公司債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00720B,元大投資級公司債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00720B,元大投資級公司債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00795B,中信美國公債20年,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00795B,中信美國公債20年,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00795B,中信美國公債20年,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00795B,中信美國公債20年,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00795B,中信美國公債20年,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00636K,國泰中國A50+U,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00636K,國泰中國A50+U,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00636K,國泰中國A50+U,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00636K,國泰中國A50+U,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00772B,中信高評級公司債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00772B,中信高評級公司債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00772B,中信高評級公司債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00772B,中信高評級公司債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00933B,國泰10Y+金融債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00933B,國泰10Y+金融債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00933B,國泰10Y+金融債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00933B,國泰10Y+金融債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00725B,國泰投資級公司債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00725B,國泰投資級公司債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00725B,國泰投資級公司債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00725B,國泰投資級公司債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00668K,國泰美國道瓊+U,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00668K,國泰美國道瓊+U,ohlc,OHLC 價格區間不一致,"close 超出 [low, high]",同一來源不同日期導致,統一取用同一個交易日
+00668K,國泰美國道瓊+U,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00668K,國泰美國道瓊+U,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00719B,元大美債1-3,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00719B,元大美債1-3,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00719B,元大美債1-3,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00719B,元大美債1-3,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00719B,元大美債1-3,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00764B,群益25年美債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00764B,群益25年美債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00764B,群益25年美債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00764B,群益25年美債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00764B,群益25年美債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00981B,第一金優選非投債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00981B,第一金優選非投債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00981B,第一金優選非投債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00981B,第一金優選非投債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00981B,第一金優選非投債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00696B,富邦美債20年,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00696B,富邦美債20年,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00696B,富邦美債20年,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00696B,富邦美債20年,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00696B,富邦美債20年,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00948B,中信優息投資級債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00948B,中信優息投資級債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00948B,中信優息投資級債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00948B,中信優息投資級債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00948B,中信優息投資級債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00859B,群益0-1年美債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00859B,群益0-1年美債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00859B,群益0-1年美債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00859B,群益0-1年美債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00859B,群益0-1年美債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00722B,群益投資級電信債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00722B,群益投資級電信債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00722B,群益投資級電信債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00722B,群益投資級電信債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00722B,群益投資級電信債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00864B,中信美國公債0-1,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00864B,中信美國公債0-1,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00864B,中信美國公債0-1,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00864B,中信美國公債0-1,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00864B,中信美國公債0-1,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00724B,群益投資級金融債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00724B,群益投資級金融債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00724B,群益投資級金融債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00724B,群益投資級金融債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00724B,群益投資級金融債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00931B,統一美債20年,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00931B,統一美債20年,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00931B,統一美債20年,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00931B,統一美債20年,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00931B,統一美債20年,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00411A,主動統一前沿科技,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00411A,主動統一前沿科技,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00411A,主動統一前沿科技,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00411A,主動統一前沿科技,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00411A,主動統一前沿科技,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00740B,富邦全球投等債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00740B,富邦全球投等債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00740B,富邦全球投等債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00740B,富邦全球投等債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00740B,富邦全球投等債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00857B,永豐20年美公債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00857B,永豐20年美公債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00857B,永豐20年美公債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00857B,永豐20年美公債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00857B,永豐20年美公債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00950B,凱基A級公司債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00950B,凱基A級公司債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00950B,凱基A級公司債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00950B,凱基A級公司債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00950B,凱基A級公司債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00773B,中信優先金融債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00773B,中信優先金融債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00773B,中信優先金融債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00773B,中信優先金融債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00773B,中信優先金融債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00981D,主動中信非投等債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00981D,主動中信非投等債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00981D,主動中信非投等債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00981D,主動中信非投等債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00981D,主動中信非投等債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00989B,台新美國非投等債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00989B,台新美國非投等債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00989B,台新美國非投等債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00989B,台新美國非投等債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00989B,台新美國非投等債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00969B,元大零息超長美債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00969B,元大零息超長美債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00969B,元大零息超長美債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00969B,元大零息超長美債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00969B,元大零息超長美債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00694B,富邦美債1-3,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00694B,富邦美債1-3,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00694B,富邦美債1-3,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00694B,富邦美債1-3,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00694B,富邦美債1-3,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00959B,大華投等美債15Y+,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00959B,大華投等美債15Y+,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00959B,大華投等美債15Y+,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00959B,大華投等美債15Y+,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00959B,大華投等美債15Y+,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00988B,玉山嚴選非投債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00988B,玉山嚴選非投債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00988B,玉山嚴選非投債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00988B,玉山嚴選非投債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00988B,玉山嚴選非投債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00746B,富邦A級公司債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00746B,富邦A級公司債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00746B,富邦A級公司債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00746B,富邦A級公司債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00746B,富邦A級公司債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00723B,群益投資級科技債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00723B,群益投資級科技債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00723B,群益投資級科技債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00723B,群益投資級科技債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00723B,群益投資級科技債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00984B,大華優利美A債15,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00984B,大華優利美A債15,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00984B,大華優利美A債15,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00984B,大華優利美A債15,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00984B,大華優利美A債15,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00853B,統一美債10年Aa-A,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00853B,統一美債10年Aa-A,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00853B,統一美債10年Aa-A,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00853B,統一美債10年Aa-A,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00853B,統一美債10年Aa-A,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00968B,元大優息投等債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00968B,元大優息投等債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00968B,元大優息投等債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00968B,元大優息投等債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00968B,元大優息投等債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00697B,元大美債7-10,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00697B,元大美債7-10,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00697B,元大美債7-10,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00697B,元大美債7-10,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00697B,元大美債7-10,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00990B,國泰收益非投等債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00990B,國泰收益非投等債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00990B,國泰收益非投等債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00990B,國泰收益非投等債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00990B,國泰收益非投等債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00980T,平衡凱基美國TOP,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00980T,平衡凱基美國TOP,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00980T,平衡凱基美國TOP,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00980T,平衡凱基美國TOP,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00980T,平衡凱基美國TOP,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00987B,野村10+澳洲公債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00987B,野村10+澳洲公債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00987B,野村10+澳洲公債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00987B,野村10+澳洲公債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00987B,野村10+澳洲公債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00768B,復華20年美債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00768B,復華20年美債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00768B,復華20年美債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00768B,復華20年美債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00768B,復華20年美債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00987D,主動統一美債量化,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00987D,主動統一美債量化,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00987D,主動統一美債量化,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00987D,主動統一美債量化,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00987D,主動統一美債量化,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00942B,台新美A公司債20+,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00942B,台新美A公司債20+,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00942B,台新美A公司債20+,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00942B,台新美A公司債20+,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00942B,台新美A公司債20+,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00761B,國泰A級公司債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00761B,國泰A級公司債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00761B,國泰A級公司債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00761B,國泰A級公司債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00761B,國泰A級公司債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00980D,主動聯博投等入息,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00980D,主動聯博投等入息,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00980D,主動聯博投等入息,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00980D,主動聯博投等入息,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00980D,主動聯博投等入息,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00970B,台新BBB投等債20+,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00970B,台新BBB投等債20+,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00970B,台新BBB投等債20+,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00970B,台新BBB投等債20+,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00970B,台新BBB投等債20+,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00779B,凱基美債25+,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00779B,凱基美債25+,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00779B,凱基美債25+,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00779B,凱基美債25+,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00779B,凱基美債25+,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00862B,中信投資級公司債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00862B,中信投資級公司債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00862B,中信投資級公司債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00862B,中信投資級公司債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00862B,中信投資級公司債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00726B,國泰新興投等債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00726B,國泰新興投等債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00726B,國泰新興投等債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00726B,國泰新興投等債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00726B,國泰新興投等債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00966B,統一ESG投等債15+,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00966B,統一ESG投等債15+,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00966B,統一ESG投等債15+,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00966B,統一ESG投等債15+,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00966B,統一ESG投等債15+,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00695B,富邦美債7-10,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00695B,富邦美債7-10,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00695B,富邦美債7-10,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00695B,富邦美債7-10,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00695B,富邦美債7-10,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00799B,國泰A級醫療債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00799B,國泰A級醫療債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00799B,國泰A級醫療債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00799B,國泰A級醫療債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00799B,國泰A級醫療債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00985D,主動貝萊德優投等,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00985D,主動貝萊德優投等,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00985D,主動貝萊德優投等,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00985D,主動貝萊德優投等,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00985D,主動貝萊德優投等,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00867B,台新A-BBB電信債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00867B,台新A-BBB電信債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00867B,台新A-BBB電信債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00867B,台新A-BBB電信債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00867B,台新A-BBB電信債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00782B,國泰A級公用債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00782B,國泰A級公用債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00782B,國泰A級公用債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00782B,國泰A級公用債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00782B,國泰A級公用債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00863B,中信全球電信債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00863B,中信全球電信債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00863B,中信全球電信債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00863B,中信全球電信債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00863B,中信全球電信債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00780B,國泰A級金融債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00780B,國泰A級金融債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00780B,國泰A級金融債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00780B,國泰A級金融債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00780B,國泰A級金融債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00756B,群益投等新興公債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00756B,群益投等新興公債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00756B,群益投等新興公債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00756B,群益投等新興公債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00756B,群益投等新興公債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00986D,主動復華金融債息,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00986D,主動復華金融債息,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00986D,主動復華金融債息,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00986D,主動復華金融債息,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00986D,主動復華金融債息,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00754B,群益AAA-AA公司債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00754B,群益AAA-AA公司債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00754B,群益AAA-AA公司債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00754B,群益AAA-AA公司債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00754B,群益AAA-AA公司債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00983B,大華優利美公債20,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00983B,大華優利美公債20,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00983B,大華優利美公債20,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00983B,大華優利美公債20,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00983B,大華優利美公債20,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00849B,中信EM主權債0-5,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00849B,中信EM主權債0-5,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00849B,中信EM主權債0-5,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00849B,中信EM主權債0-5,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00849B,中信EM主權債0-5,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00992B,街口優息非投債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00992B,街口優息非投債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00992B,街口優息非投債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00992B,街口優息非投債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00992B,街口優息非投債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00957B,兆豐US優選投等債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00957B,兆豐US優選投等債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00957B,兆豐US優選投等債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00957B,兆豐US優選投等債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00957B,兆豐US優選投等債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00967B,元大優息美債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00967B,元大優息美債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00967B,元大優息美債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00967B,元大優息美債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00967B,元大優息美債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00980B,台新特選IG債10+,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00980B,台新特選IG債10+,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00980B,台新特選IG債10+,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00980B,台新特選IG債10+,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00980B,台新特選IG債10+,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00792B,群益A級公司債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00792B,群益A級公司債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00792B,群益A級公司債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00792B,群益A級公司債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00792B,群益A級公司債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00890B,凱基ESG BBB債15+,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00890B,凱基ESG BBB債15+,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00890B,凱基ESG BBB債15+,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00890B,凱基ESG BBB債15+,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00890B,凱基ESG BBB債15+,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00848B,中信新興亞洲債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00848B,中信新興亞洲債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00848B,中信新興亞洲債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00848B,中信新興亞洲債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00848B,中信新興亞洲債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00842B,台新美元銀行債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00842B,台新美元銀行債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00842B,台新美元銀行債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00842B,台新美元銀行債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00842B,台新美元銀行債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00884B,中信低碳新興債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00884B,中信低碳新興債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00884B,中信低碳新興債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00884B,中信低碳新興債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00884B,中信低碳新興債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00860B,群益1-5Y投資級債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00860B,群益1-5Y投資級債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00860B,群益1-5Y投資級債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00860B,群益1-5Y投資級債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00860B,群益1-5Y投資級債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00760B,復華新興企業債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00760B,復華新興企業債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00760B,復華新興企業債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00760B,復華新興企業債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00760B,復華新興企業債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00727B,國泰優選非投等債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00727B,國泰優選非投等債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00727B,國泰優選非投等債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00727B,國泰優選非投等債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00727B,國泰優選非投等債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00844B,台新15年IG金融債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00844B,台新15年IG金融債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00844B,台新15年IG金融債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00844B,台新15年IG金融債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00844B,台新15年IG金融債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00741B,富邦全球非投等債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00741B,富邦全球非投等債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00741B,富邦全球非投等債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00741B,富邦全球非投等債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00741B,富邦全球非投等債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00958B,永豐ESG銀行債15+,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00958B,永豐ESG銀行債15+,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00958B,永豐ESG銀行債15+,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00958B,永豐ESG銀行債15+,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00958B,永豐ESG銀行債15+,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00755B,群益投資級公用債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00755B,群益投資級公用債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00755B,群益投資級公用債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00755B,群益投資級公用債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00755B,群益投資級公用債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00789B,復華公司債A3,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00789B,復華公司債A3,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00789B,復華公司債A3,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00789B,復華公司債A3,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00789B,復華公司債A3,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00791B,復華信用債1-5,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00791B,復華信用債1-5,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00791B,復華信用債1-5,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00791B,復華信用債1-5,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00791B,復華信用債1-5,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00759B,復華製藥債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00759B,復華製藥債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00759B,復華製藥債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00759B,復華製藥債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00759B,復華製藥債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00758B,復華能源債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00758B,復華能源債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00758B,復華能源債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00758B,復華能源債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00758B,復華能源債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00778B,凱基金融債20+,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00778B,凱基金融債20+,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00778B,凱基金融債20+,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00778B,凱基金融債20+,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00778B,凱基金融債20+,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00834B,第一金金融債10+,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00834B,第一金金融債10+,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00834B,第一金金融債10+,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00834B,第一金金融債10+,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00834B,第一金金融債10+,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00781B,國泰A級科技債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00781B,國泰A級科技債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00781B,國泰A級科技債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00781B,國泰A級科技債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00781B,國泰A級科技債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+009825,聯邦美國金融創新,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+009825,聯邦美國金融創新,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009825,聯邦美國金融創新,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+009825,聯邦美國金融創新,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+009825,聯邦美國金融創新,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00750B,凱基科技債10+,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00750B,凱基科技債10+,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00750B,凱基科技債10+,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00750B,凱基科技債10+,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00750B,凱基科技債10+,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00845B,富邦新興投等債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00845B,富邦新興投等債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00845B,富邦新興投等債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00845B,富邦新興投等債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00845B,富邦新興投等債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00788B,元大10年IG電能債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00788B,元大10年IG電能債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00788B,元大10年IG電能債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00788B,元大10年IG電能債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00788B,元大10年IG電能債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00846B,富邦歐洲銀行債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00846B,富邦歐洲銀行債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00846B,富邦歐洲銀行債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00846B,富邦歐洲銀行債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00846B,富邦歐洲銀行債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00777B,凱基AAA至A公司債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00777B,凱基AAA至A公司債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00777B,凱基AAA至A公司債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00777B,凱基AAA至A公司債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00777B,凱基AAA至A公司債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00840B,凱基IG精選15+,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00840B,凱基IG精選15+,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00840B,凱基IG精選15+,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00840B,凱基IG精選15+,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00840B,凱基IG精選15+,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00786B,元大10年IG銀行債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00786B,元大10年IG銀行債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00786B,元大10年IG銀行債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00786B,元大10年IG銀行債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00786B,元大10年IG銀行債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00749B,凱基新興債10+,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00749B,凱基新興債10+,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00749B,凱基新興債10+,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00749B,凱基新興債10+,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00749B,凱基新興債10+,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00841B,凱基AAA-AA公司債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00841B,凱基AAA-AA公司債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00841B,凱基AAA-AA公司債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00841B,凱基AAA-AA公司債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00841B,凱基AAA-AA公司債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00785B,富邦金融投等債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00785B,富邦金融投等債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00785B,富邦金融投等債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00785B,富邦金融投等債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00785B,富邦金融投等債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00856B,永豐1-3年美公債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00856B,永豐1-3年美公債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00856B,永豐1-3年美公債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00856B,永豐1-3年美公債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00856B,永豐1-3年美公債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00687C,國泰20年美債+櫃U,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00687C,國泰20年美債+櫃U,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00687C,國泰20年美債+櫃U,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00687C,國泰20年美債+櫃U,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00687C,國泰20年美債+櫃U,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00836B,永豐10年A公司債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00836B,永豐10年A公司債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00836B,永豐10年A公司債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00836B,永豐10年A公司債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00836B,永豐10年A公司債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+009806,台新標普500,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+009806,台新標普500,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+009806,台新標普500,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+009806,台新標普500,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+009806,台新標普500,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00734B,台新JPM新興債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00734B,台新JPM新興債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00734B,台新JPM新興債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00734B,台新JPM新興債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00734B,台新JPM新興債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00982B,FT投資級債20+,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00982B,FT投資級債20+,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00982B,FT投資級債20+,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00982B,FT投資級債20+,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00982B,FT投資級債20+,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00625K,富邦上証+R,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00625K,富邦上証+R,close_zero,close=0，疑似停牌/退市,無法取得即時價格,MoneyDJ/投信官網,標記為非交易中
+00625K,富邦上証+R,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00643K,群益深証中小+R,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00643K,群益深証中小+R,close_zero,close=0，疑似停牌/退市,無法取得即時價格,MoneyDJ/投信官網,標記為非交易中
+00643K,群益深証中小+R,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00643K,群益深証中小+R,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00707R,期元大S&P日圓反1,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00707R,期元大S&P日圓反1,close_zero,close=0，疑似停牌/退市,無法取得即時價格,MoneyDJ/投信官網,標記為非交易中
+00707R,期元大S&P日圓反1,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00707R,期元大S&P日圓反1,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00787B,元大10年IG醫療債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00787B,元大10年IG醫療債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00787B,元大10年IG醫療債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00787B,元大10年IG醫療債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00787B,元大10年IG醫療債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00870B,元大15年EM主權債,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00870B,元大15年EM主權債,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00870B,元大15年EM主權債,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00870B,元大15年EM主權債,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00870B,元大15年EM主權債,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
+00986B,FT金融債10+,fee_default,管理費及保管費均為預設值 0.15%/0.03%/0.18%,TWSE/TPEx AUM 階梯試算值,unknown,保持原值，標記 pending
+00986B,FT金融債10+,listing_date,缺失 listing_date,未填入上市/上櫃日期,TWSE/TPEx 官方 CSV/API,從官方資料補齊
+00986B,FT金融債10+,ind,缺失 產業分類,未填入產業別,TWSE 產業分類代碼,根據產業別 code 填入
+00986B,FT金融債10+,close,缺失 close,TPEx ETF 未提供收盤價,MoneyDJ/Yahoo Finance,交叉驗證後補寫
+00986B,FT金融債10+,holdings_date,holdings 有值但缺失日期,不確認持股資料日期,投信官方持股頁/CMoney,標註 holdings_date
