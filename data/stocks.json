@@ -525,7 +525,7 @@
       "last_distribution_date": "2026-07-21",
       "last_distribution_amount": 0.6,
       "return_5y": 174.17,
-      "fee_source": "moneydj_aum_tier",
+      "fee_source": "moneydj",
       "fee_verified": "conflict",
       "currency": "TWD",
       "holdings_verified": "partial",
@@ -537,7 +537,8 @@
       "volatility_1y": 31.86,
       "sharpe_ratio": 0.93,
       "annualized_return_3y": 41.67,
-      "annualized_return_5y": 23.31
+      "annualized_return_5y": 23.31,
+      "note": "mgmt=0.05vs0.15; cust=0.025vs0.07; total=0.075vs0.22"
     },
     {
       "sym": "2881",
@@ -1831,7 +1832,7 @@
       "last_distribution_date": "2026-10-22",
       "last_distribution_amount": 1.72,
       "return_5y": 112.46,
-      "fee_source": "moneydj_aum_tier",
+      "fee_source": "moneydj",
       "fee_verified": "conflict",
       "currency": "TWD",
       "holdings_verified": "partial",
@@ -1843,7 +1844,8 @@
       "volatility_1y": 25.03,
       "sharpe_ratio": 0.88,
       "annualized_return_3y": 20.2,
-      "annualized_return_5y": 16.95
+      "annualized_return_5y": 16.95,
+      "note": "mgmt=0.08vs0.4; cust=0.03vs0.17; total=0.11vs0.57"
     },
     {
       "sym": "2884",
@@ -2285,7 +2287,7 @@
       "last_distribution_date": "2026-11-17",
       "last_distribution_amount": 1.25,
       "return_5y": 126.15,
-      "fee_source": "moneydj_aum_tier",
+      "fee_source": "moneydj",
       "fee_verified": "conflict",
       "currency": "TWD",
       "holdings_verified": "partial",
@@ -2297,7 +2299,8 @@
       "volatility_1y": 22.18,
       "sharpe_ratio": 1.03,
       "annualized_return_3y": 21.87,
-      "annualized_return_5y": 18.47
+      "annualized_return_5y": 18.47,
+      "note": "mgmt=0.08vs0.25; cust=0.03vs0.28; total=0.11vs0.53"
     },
     {
       "sym": "2890",
@@ -2577,7 +2580,7 @@
       "last_distribution_date": "2026-09-16",
       "last_distribution_amount": 1.1,
       "return_5y": 174.15,
-      "fee_source": "moneydj_aum_tier",
+      "fee_source": "moneydj",
       "fee_verified": "conflict",
       "currency": "TWD",
       "holdings_verified": "partial",
@@ -2588,7 +2591,8 @@
       "max_drawdown": -23.39,
       "volatility_1y": 19.97,
       "sharpe_ratio": 1.46,
-      "annualized_return_3y": 23.49
+      "annualized_return_3y": 23.49,
+      "note": "mgmt=0.08vs0.3; cust=0.03vs0.39; total=0.11vs0.69"
     },
     {
       "sym": "2059",
@@ -3753,7 +3757,7 @@
       "last_distribution_date": "2026-11-17",
       "last_distribution_amount": 3.88,
       "return_5y": 174.23,
-      "fee_source": "moneydj_aum_tier",
+      "fee_source": "moneydj",
       "fee_verified": "conflict",
       "currency": "TWD",
       "holdings_total_count": 50,
@@ -3767,7 +3771,8 @@
       "volatility_1y": 31.91,
       "sharpe_ratio": 0.95,
       "annualized_return_3y": 41.69,
-      "annualized_return_5y": 23.32
+      "annualized_return_5y": 23.32,
+      "note": "cust=0.03vs0.13; total=0.13vs0.23"
     },
     {
       "sym": "4958",
