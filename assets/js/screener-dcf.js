@@ -70,7 +70,9 @@ function num(id) {
         sharesMln: s.shares ? s.shares / 1e6 : null,
         fcf: null,                                   // 台股目前沒有現金流資料
         netDebt: null,
+        isBank: /金融|金控|銀行|保險|證券|金融保險/i.test(s.ind || ''),
         currency: 'NT$',
+        security_type: s.security_type,
       }));
   }
   function normUs(doc) {
@@ -79,6 +81,7 @@ function num(id) {
       .map(s => ({
         sym: s.sym, name: s.name, price: s.price, pe: s.pe, pb: s.pb,
         divPct: s.div, group: s.industry || s.sector || null,
+        security_type: s.security_type,
         isBank: /bank|bancorp|financial services/i.test(s.industry || s.sector || ''),
         sharesMln: (s.shares_mln != null) ? s.shares_mln : ((s.market_cap != null && s.market_cap > 0 && s.price > 0) ? s.market_cap / s.price / 1e6 : null),
         fcf: (s.fcf_musd != null) ? s.fcf_musd : null,
@@ -234,7 +237,7 @@ function num(id) {
     setInput('dvFcf', r.fcf != null ? Number(r.fcf.toFixed(2)) : null);
     setInput('dvNetDebt', r.netDebt != null ? Number(r.netDebt.toFixed(2)) : null);
     if (market === 'tw') {
-      setText('dvFcfHint', '台股目前沒有現金流量資料，請依財報自行估算後輸入（NT$ 百萬）。');
+      setText('dvFcfHint', '目前台股沒有自動取得完整現金流量表資料，請依財報自行估算並輸入 FCF 代理值（NT$ 百萬）。');
     } else {
       setText('dvFcfHint', r.fcf == null ? '此股票缺少自由現金流，請自行輸入。' : '已由 yfinance 過去 12 個月資料帶入（USD 百萬）。');
     }
@@ -258,8 +261,15 @@ function num(id) {
     [out, warnBox, chart, sens].forEach(n => { if (n) n.textContent = ''; });
     if (!out) return;
 
-    if (selected && selected.isBank) {
-      out.appendChild(el2('p', 'dv-hint is-error', '模型不適用：金融業（銀行）不建議使用一般企業 EV / Net Debt / WACC DCF 估值，請改用其他方法。'));
+    const blocked = selected && (selected.security_type !== 'stock' || selected.isBank);
+    if (blocked) {
+      let msg = '';
+      if (selected.security_type !== 'stock') {
+        msg = '模型不適用：ETF 不建議使用一般企業 EV / Net Debt / WACC DCF 估值，請改用其他方法。';
+      } else {
+        msg = '模型不適用：金融業（銀行）不建議使用一般企業 EV / Net Debt / WACC DCF 估值，請改用其他方法。';
+      }
+      out.appendChild(el2('p', 'dv-hint is-error', msg));
       return;
     }
 

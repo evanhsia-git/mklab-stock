@@ -106,7 +106,7 @@ const find = (node, cls) => node.children.find(c => c.className === cls);
     assert.ok(Math.abs(parseFloat(el('dvShares').value) - 25932.370067) < 0.01);
     assert.strictEqual(el('dvPrice').value, '2100');
     assert.strictEqual(el('dvFcf').value, '');
-    assert.ok(/自行估算後輸入/.test(el('dvFcfHint').textContent));
+    assert.ok(/自行估算.*輸入/.test(el('dvFcfHint').textContent));
   });
 
   await t('個股細節：五種方法長條圖（4 種合理價 + 綜合參考價）', async () => {
