@@ -1,6 +1,6 @@
 {
   "meta": {
-    "as_of": "2026-11-22 03:53:26 UTC",
+    "as_of": "2026-11-22 06:14:00 UTC",
     "source": "Yahoo Finance (yfinance)",
     "note": "候選池排序取前 30 大市值；非官方美股交易所資料，僅供研究參考，非投資建議。",
     "candidate_pool_size": 60,
@@ -35,7 +35,13 @@
       "shares_is_estimated": false,
       "chg_1m": -1.55,
       "chg_ytd": 26.45,
-      "chg_1y": 28.0
+      "chg_1y": 28.0,
+      "revenue_musd": 478834.0,
+      "gross_profit_musd": 233602.0,
+      "operating_income_musd": 158063.0,
+      "net_income_musd": 132175.0,
+      "ocf_musd": 145097.0,
+      "capex_musd": -9041.0
     },
     {
       "sym": "MSFT",
@@ -65,7 +71,13 @@
       "shares_is_estimated": false,
       "chg_1m": -6.84,
       "chg_ytd": 1.02,
-      "chg_1y": 0.48
+      "chg_1y": 0.48,
+      "revenue_musd": 331839.0,
+      "gross_profit_musd": 225465.0,
+      "operating_income_musd": 155237.0,
+      "net_income_musd": 133749.0,
+      "ocf_musd": 182935.0,
+      "capex_musd": -115948.0
     },
     {
       "sym": "GOOGL",
@@ -95,7 +107,13 @@
       "shares_is_estimated": false,
       "chg_1m": -18.18,
       "chg_ytd": -15.08,
-      "chg_1y": -9.16
+      "chg_1y": -9.16,
+      "revenue_musd": 402836.0,
+      "gross_profit_musd": 240301.0,
+      "operating_income_musd": 129039.0,
+      "net_income_musd": 132170.0,
+      "ocf_musd": 164713.0,
+      "capex_musd": -91447.0
     },
     {
       "sym": "GOOG",
@@ -125,7 +143,13 @@
       "shares_is_estimated": false,
       "chg_1m": -17.7,
       "chg_ytd": -15.71,
-      "chg_1y": -9.66
+      "chg_1y": -9.66,
+      "revenue_musd": 402836.0,
+      "gross_profit_musd": 240301.0,
+      "operating_income_musd": 129039.0,
+      "net_income_musd": 132170.0,
+      "ocf_musd": 164713.0,
+      "capex_musd": -91447.0
     },
     {
       "sym": "NVDA",
@@ -155,7 +179,13 @@
       "shares_is_estimated": false,
       "chg_1m": -40.85,
       "chg_ytd": -32.53,
-      "chg_1y": -32.54
+      "chg_1y": -32.54,
+      "revenue_musd": 215938.0,
+      "gross_profit_musd": 153463.0,
+      "operating_income_musd": 130387.0,
+      "net_income_musd": 120067.0,
+      "ocf_musd": 102718.0,
+      "capex_musd": -6042.0
     },
     {
       "sym": "AMZN",
@@ -185,7 +215,13 @@
       "shares_is_estimated": false,
       "chg_1m": -1.42,
       "chg_ytd": 6.93,
-      "chg_1y": 10.84
+      "chg_1y": 10.84,
+      "revenue_musd": 716924.0,
+      "gross_profit_musd": 360510.0,
+      "operating_income_musd": 79975.0,
+      "net_income_musd": 77670.0,
+      "ocf_musd": 139514.0,
+      "capex_musd": -131819.0
     },
     {
       "sym": "AVGO",
@@ -215,7 +251,13 @@
       "shares_is_estimated": false,
       "chg_1m": -5.83,
       "chg_ytd": -11.56,
-      "chg_1y": -13.47
+      "chg_1y": -13.47,
+      "revenue_musd": 63887.0,
+      "gross_profit_musd": 43294.0,
+      "operating_income_musd": 26075.0,
+      "net_income_musd": 23126.0,
+      "ocf_musd": 27537.0,
+      "capex_musd": -623.0
     },
     {
       "sym": "META",
@@ -245,7 +287,13 @@
       "shares_is_estimated": false,
       "chg_1m": -13.56,
       "chg_ytd": -14.82,
-      "chg_1y": -4.67
+      "chg_1y": -4.67,
+      "revenue_musd": 200966.0,
+      "gross_profit_musd": 164791.0,
+      "operating_income_musd": 83276.0,
+      "net_income_musd": 60458.0,
+      "ocf_musd": 115800.0,
+      "capex_musd": -69691.0
     },
     {
       "sym": "TSLA",
@@ -275,7 +323,13 @@
       "shares_is_estimated": false,
       "chg_1m": -7.68,
       "chg_ytd": -23.1,
-      "chg_1y": -14.4
+      "chg_1y": -14.4,
+      "revenue_musd": 94827.0,
+      "gross_profit_musd": 17094.0,
+      "operating_income_musd": 4849.0,
+      "net_income_musd": 3794.0,
+      "ocf_musd": 14747.0,
+      "capex_musd": -8527.0
     },
     {
       "sym": "BRK-B",
@@ -305,7 +359,13 @@
       "shares_is_estimated": false,
       "chg_1m": 4.21,
       "chg_ytd": 13.4,
-      "chg_1y": 13.71
+      "chg_1y": 13.71,
+      "revenue_musd": 410522.0,
+      "gross_profit_musd": null,
+      "operating_income_musd": null,
+      "net_income_musd": 66968.0,
+      "ocf_musd": 45969.0,
+      "capex_musd": -20927.0
     },
     {
       "sym": "LLY",
@@ -335,7 +395,13 @@
       "shares_is_estimated": false,
       "chg_1m": 3.22,
       "chg_ytd": 26.11,
-      "chg_1y": 29.12
+      "chg_1y": 29.12,
+      "revenue_musd": 65179.0,
+      "gross_profit_musd": 54127.0,
+      "operating_income_musd": 29696.0,
+      "net_income_musd": 20640.0,
+      "ocf_musd": 16813.0,
+      "capex_musd": -10849.0
     },
     {
       "sym": "WMT",
@@ -365,7 +431,13 @@
       "shares_is_estimated": false,
       "chg_1m": 5.64,
       "chg_ytd": 15.58,
-      "chg_1y": 28.24
+      "chg_1y": 28.24,
+      "revenue_musd": 713163.0,
+      "gross_profit_musd": 177768.0,
+      "operating_income_musd": 29825.0,
+      "net_income_musd": 21893.0,
+      "ocf_musd": 41565.0,
+      "capex_musd": -26642.0
     },
     {
       "sym": "JPM",
@@ -395,7 +467,13 @@
       "shares_is_estimated": false,
       "chg_1m": -7.73,
       "chg_ytd": -1.77,
-      "chg_1y": 4.37
+      "chg_1y": 4.37,
+      "revenue_musd": 181847.0,
+      "gross_profit_musd": null,
+      "operating_income_musd": null,
+      "net_income_musd": 57048.0,
+      "ocf_musd": -147782.0,
+      "capex_musd": null
     },
     {
       "sym": "V",
@@ -425,7 +503,13 @@
       "shares_is_estimated": false,
       "chg_1m": -2.83,
       "chg_ytd": 15.49,
-      "chg_1y": 24.96
+      "chg_1y": 24.96,
+      "revenue_musd": 45903.0,
+      "gross_profit_musd": 36903.0,
+      "operating_income_musd": 29874.0,
+      "net_income_musd": 23504.0,
+      "ocf_musd": 23728.0,
+      "capex_musd": -1671.0
     },
     {
       "sym": "AMD",
@@ -455,7 +539,13 @@
       "shares_is_estimated": false,
       "chg_1m": -16.45,
       "chg_ytd": 98.16,
-      "chg_1y": 89.84
+      "chg_1y": 89.84,
+      "revenue_musd": 34639.0,
+      "gross_profit_musd": 17152.0,
+      "operating_income_musd": 3694.0,
+      "net_income_musd": 4335.0,
+      "ocf_musd": 7709.0,
+      "capex_musd": -974.0
     },
     {
       "sym": "XOM",
@@ -485,7 +575,13 @@
       "shares_is_estimated": false,
       "chg_1m": -9.67,
       "chg_ytd": 36.47,
-      "chg_1y": 39.95
+      "chg_1y": 39.95,
+      "revenue_musd": 323905.0,
+      "gross_profit_musd": 71240.0,
+      "operating_income_musd": 33938.0,
+      "net_income_musd": 28844.0,
+      "ocf_musd": 51970.0,
+      "capex_musd": -28358.0
     },
     {
       "sym": "JNJ",
@@ -515,7 +611,13 @@
       "shares_is_estimated": false,
       "chg_1m": 1.07,
       "chg_ytd": 32.8,
-      "chg_1y": 36.57
+      "chg_1y": 36.57,
+      "revenue_musd": 94193.0,
+      "gross_profit_musd": 63937.0,
+      "operating_income_musd": 25596.0,
+      "net_income_musd": 26804.0,
+      "ocf_musd": 24530.0,
+      "capex_musd": -5217.0
     },
     {
       "sym": "MA",
@@ -545,7 +647,13 @@
       "shares_is_estimated": false,
       "chg_1m": -1.2,
       "chg_ytd": 10.29,
-      "chg_1y": 18.71
+      "chg_1y": 18.71,
+      "revenue_musd": 32791.0,
+      "gross_profit_musd": 25540.0,
+      "operating_income_musd": 19514.0,
+      "net_income_musd": 14968.0,
+      "ocf_musd": 17648.0,
+      "capex_musd": -1215.0
     },
     {
       "sym": "ABBV",
@@ -575,7 +683,13 @@
       "shares_is_estimated": false,
       "chg_1m": 0.35,
       "chg_ytd": 29.01,
-      "chg_1y": 26.56
+      "chg_1y": 26.56,
+      "revenue_musd": 61160.0,
+      "gross_profit_musd": 42956.0,
+      "operating_income_musd": 20091.0,
+      "net_income_musd": 4226.0,
+      "ocf_musd": 19030.0,
+      "capex_musd": -1214.0
     },
     {
       "sym": "COST",
@@ -605,7 +719,13 @@
       "shares_is_estimated": false,
       "chg_1m": 8.4,
       "chg_ytd": 28.56,
-      "chg_1y": 24.48
+      "chg_1y": 24.48,
+      "revenue_musd": 303154.0,
+      "gross_profit_musd": 38875.0,
+      "operating_income_musd": 11685.0,
+      "net_income_musd": 9226.0,
+      "ocf_musd": 15817.0,
+      "capex_musd": -6435.0
     },
     {
       "sym": "KO",
@@ -635,7 +755,13 @@
       "shares_is_estimated": false,
       "chg_1m": 1.73,
       "chg_ytd": 41.43,
-      "chg_1y": 40.02
+      "chg_1y": 40.02,
+      "revenue_musd": 47941.0,
+      "gross_profit_musd": 29544.0,
+      "operating_income_musd": 14911.0,
+      "net_income_musd": 13107.0,
+      "ocf_musd": 7408.0,
+      "capex_musd": -2112.0
     },
     {
       "sym": "CVX",
@@ -665,7 +791,13 @@
       "shares_is_estimated": false,
       "chg_1m": -7.31,
       "chg_ytd": 41.7,
-      "chg_1y": 42.36
+      "chg_1y": 42.36,
+      "revenue_musd": 184432.0,
+      "gross_profit_musd": 56086.0,
+      "operating_income_musd": 16674.0,
+      "net_income_musd": 12299.0,
+      "ocf_musd": 33939.0,
+      "capex_musd": -17347.0
     },
     {
       "sym": "PG",
@@ -695,7 +827,13 @@
       "shares_is_estimated": false,
       "chg_1m": 2.96,
       "chg_ytd": 21.61,
-      "chg_1y": 18.57
+      "chg_1y": 18.57,
+      "revenue_musd": 87032.0,
+      "gross_profit_musd": 43670.0,
+      "operating_income_musd": 19748.0,
+      "net_income_musd": 16046.0,
+      "ocf_musd": 19556.0,
+      "capex_musd": -4409.0
     },
     {
       "sym": "CSCO",
@@ -725,7 +863,13 @@
       "shares_is_estimated": false,
       "chg_1m": -13.59,
       "chg_ytd": 19.85,
-      "chg_1y": 17.77
+      "chg_1y": 17.77,
+      "revenue_musd": 63325.0,
+      "gross_profit_musd": 40860.0,
+      "operating_income_musd": 16061.0,
+      "net_income_musd": 13267.0,
+      "ocf_musd": 14177.0,
+      "capex_musd": -1410.0
     },
     {
       "sym": "HD",
@@ -755,7 +899,13 @@
       "shares_is_estimated": false,
       "chg_1m": 3.45,
       "chg_ytd": 0.67,
-      "chg_1y": 4.23
+      "chg_1y": 4.23,
+      "revenue_musd": 164683.0,
+      "gross_profit_musd": 54865.0,
+      "operating_income_musd": 20890.0,
+      "net_income_musd": 14156.0,
+      "ocf_musd": 16325.0,
+      "capex_musd": -3679.0
     },
     {
       "sym": "MRK",
@@ -785,7 +935,13 @@
       "shares_is_estimated": false,
       "chg_1m": -9.18,
       "chg_ytd": 29.66,
-      "chg_1y": 44.81
+      "chg_1y": 44.81,
+      "revenue_musd": 65011.0,
+      "gross_profit_musd": 48629.0,
+      "operating_income_musd": 22107.0,
+      "net_income_musd": 18254.0,
+      "ocf_musd": 16472.0,
+      "capex_musd": -4112.0
     },
     {
       "sym": "BAC",
@@ -815,7 +971,13 @@
       "shares_is_estimated": false,
       "chg_1m": -7.91,
       "chg_ytd": -13.1,
-      "chg_1y": -7.65
+      "chg_1y": -7.65,
+      "revenue_musd": 113097.0,
+      "gross_profit_musd": null,
+      "operating_income_musd": null,
+      "net_income_musd": 30509.0,
+      "ocf_musd": 12613.0,
+      "capex_musd": null
     },
     {
       "sym": "GE",
@@ -845,7 +1007,13 @@
       "shares_is_estimated": false,
       "chg_1m": 5.48,
       "chg_ytd": 0.94,
-      "chg_1y": 3.48
+      "chg_1y": 3.48,
+      "revenue_musd": 45855.0,
+      "gross_profit_musd": 14438.0,
+      "operating_income_musd": 8680.0,
+      "net_income_musd": 8704.0,
+      "ocf_musd": 8537.0,
+      "capex_musd": -1273.0
     },
     {
       "sym": "ORCL",
@@ -875,7 +1043,13 @@
       "shares_is_estimated": false,
       "chg_1m": -19.4,
       "chg_ytd": -47.39,
-      "chg_1y": -54.53
+      "chg_1y": -54.53,
+      "revenue_musd": 67357.0,
+      "gross_profit_musd": 44336.0,
+      "operating_income_musd": 22444.0,
+      "net_income_musd": 17087.0,
+      "ocf_musd": 31977.0,
+      "capex_musd": -55663.0
     },
     {
       "sym": "UNH",
@@ -905,7 +1079,13 @@
       "shares_is_estimated": false,
       "chg_1m": -20.03,
       "chg_ytd": 4.99,
-      "chg_1y": 12.88
+      "chg_1y": 12.88,
+      "revenue_musd": 447567.0,
+      "gross_profit_musd": 82917.0,
+      "operating_income_musd": 18964.0,
+      "net_income_musd": 12056.0,
+      "ocf_musd": 19697.0,
+      "capex_musd": -3622.0
     }
   ]
 }
