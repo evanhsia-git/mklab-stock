@@ -32,7 +32,7 @@ def check_3_no_fabricated_data():
     issues = []
     for r in etfs:
         fee_src = r.get('fee_source')
-        if fee_src not in ['aum_tier', 'official', 'manual']:
+        if fee_src not in ['aum_tier', 'official', 'manual', 'moneydj', 'moneydj_aum_tier']:
             issues.append(f"{r['sym']}: 未知 fee_source={fee_src}")
     return issues
 

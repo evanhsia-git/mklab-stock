@@ -1,6 +1,0 @@
-﻿sym,name,issuer,aum_100m,current_mgmt,current_cust,current_total,moneydj_mgmt,moneydj_total,moneydj_other_incl_custody,status,note
-0050,元大台灣50,元大投信,12000,0.05,0.025,0.075,0.15,0.22,0.07,conflict,mgmt=DIFF(0.15vs0.05); total=DIFF(0.22vs0.075)
-0056,元大高股息,元大投信,7601,0.08,0.03,0.11,0.4,0.57,0.17,conflict,mgmt=DIFF(0.4vs0.08); total=DIFF(0.57vs0.11)
-00878,國泰永續高股息,國泰投信,6181,0.08,0.03,0.11,0.25,0.53,0.28,conflict,mgmt=DIFF(0.25vs0.08); total=DIFF(0.53vs0.11)
-00919,群益台灣精選高息,群益投信,5919,0.08,0.03,0.11,0.3,0.69,0.39,conflict,mgmt=DIFF(0.3vs0.08); total=DIFF(0.69vs0.11)
-006208,富邦台50,富邦投信,4099,0.1,0.03,0.13,0.1,0.23,0.13,conflict,mgmt=match; total=DIFF(0.23vs0.13)
