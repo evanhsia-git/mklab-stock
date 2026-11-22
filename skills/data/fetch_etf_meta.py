@@ -37,10 +37,9 @@ TZ = dt.timezone(dt.timedelta(hours=8))
 
 UA = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/124 Safari/537.36"}
 
-# Ivan 2026-11-15 提供並驗證過的完整網址（篩選條件為預設：規模/報酬/收盤全區間）
-TWSE_CSV_URL = ("https://wwwc.twse.com.tw/zh/ETFortune/etfExcel"
-                "?rangeTotalAv=1&rangeTotalAv=25608&rangeValueYTD=0&rangeValueYTD=13083"
-                "&rangeClose1=0&rangeClose1=306&stkNo=&sort=&orderBy=")
+# 2026-11-23：改用無參數全量版。原 11-15 的 range 篩選參數版實測會漏 0050（248 vs 250 檔，
+# TWSE 端點行為變化；0050 缺失連鎖：分類檔掉 0050 → stocks.json 降級 unverified，見當日 commit）。
+TWSE_CSV_URL = "https://wwwc.twse.com.tw/zh/ETFortune/etfExcel"
 TPEX_API_URL = "https://info.tpex.org.tw/api/etfFilter"
 TPEX_API_REFERER = "https://info.tpex.org.tw/ETF/zh/filter.html"
 
@@ -163,15 +162,38 @@ def main():
 
     notes, provenance = [], {}
 
-    # --- TWSE：官方自動 → 人工 CSV 備援 ---
+    # 2026-11-23：核心 ETF 存在性／檔數驟降防護（學自 active-etf 的 count-drop guard）。
+    # HTTP 200 不代表內容完整：當日來源短暫異常可能缺 0050 等大戶（2026-11-23 凌晨實例：
+    # 官方 CSV 缺 0050 被當成功寫入 → 分類檔連鎖掉 0050 → stocks.json 0050 降級 unverified）。
+    # 缺核心 ETF 或檔數驟降 >10% 一律視同抓取失敗，走人工 CSV → 再不行沿用上次結果。
+    prev_syms = {e.get("sym") for e in prev_twse}
+
+    def _twse_ok(rows):
+        syms = {e.get("sym") for e in rows}
+        missing = [s for s in ("0050", "006208", "009816") if s in prev_syms and s not in syms]
+        if missing:
+            return False, f"缺核心 ETF {missing}"
+        if prev_twse and len(rows) < len(prev_twse) * 0.9:
+            return False, f"檔數驟降 {len(prev_twse)}→{len(rows)}"
+        return True, ""
+
+    # --- TWSE：官方自動 → 人工 CSV 備援 → 上次結果 ---
     try:
         twse, provenance["TWSE"] = fetch_twse()
+        ok, why = _twse_ok(twse)
+        if not ok:
+            raise ValueError(f"官方 CSV 內容異常（{why}）")
         notes.append(f"TWSE 官方 CSV 自動抓取 {len(twse)} 檔")
     except Exception as e:  # noqa: BLE001
         print(f"[warn] TWSE 自動抓取失敗（{e}），改用人工 CSV 備援", file=sys.stderr)
         twse, provenance["TWSE"] = pem.parse_twse(), "manual"
-        notes.append(f"TWSE 自動抓取失敗（{e}）→ 人工 CSV 備援 {len(twse)} 檔" if twse
-                     else f"TWSE 自動抓取失敗（{e}）且無人工 CSV")
+        ok, why = _twse_ok(twse)
+        if not ok:
+            # 人工備援檔可能已被壞資料覆寫（fetch_twse 會同步更新 raw CSV）→ 沿用上次結果
+            twse, provenance["TWSE"] = prev_twse, "previous"
+            notes.append(f"TWSE 自動與人工 CSV 皆異常（{why}）→ 沿用上次結果 {len(twse)} 檔")
+        else:
+            notes.append(f"TWSE 自動抓取失敗（{e}）→ 人工 CSV 備援 {len(twse)} 檔")
 
     # --- TPEx：官方 API → 人工 CSV → 上次結果 ---
     try:

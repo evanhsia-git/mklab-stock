@@ -1,19 +1,19 @@
 {
   "meta": {
     "as_of": "2026-11-23",
-    "fetched_at": "2026-11-23T01:40:45+08:00",
+    "fetched_at": "2026-11-23T02:26:20+08:00",
     "source": "TWSE ETF投資篩選器（官方 CSV）＋ TPEx ETF投資篩選器（官方 api/etfFilter）；自動化優先、失敗由人工 CSV 備援",
     "provenance": {
       "TWSE": "auto",
       "TPEx": "auto"
     },
-    "count": 366,
+    "count": 368,
     "counts": {
-      "TWSE": 248,
+      "TWSE": 250,
       "TPEx": 118
     },
     "endpoints": {
-      "TWSE": "https://wwwc.twse.com.tw/zh/ETFortune/etfExcel?rangeTotalAv=1&rangeTotalAv=25608&rangeValueYTD=0&rangeValueYTD=13083&rangeClose1=0&rangeClose1=306&stkNo=&sort=&orderBy=",
+      "TWSE": "https://wwwc.twse.com.tw/zh/ETFortune/etfExcel",
       "TPEx": "https://info.tpex.org.tw/api/etfFilter"
     },
     "manual_source_urls": {
@@ -22,7 +22,7 @@
     },
     "note": "資產規模、受益人數為抓取當下的快照值（非即時）。上市/上櫃日期、發行人為低頻變動欄位。人工備援方式見 parse_etf_meta.py 檔頭。經理費/保管費係依 AUM 階梯試算（0億含以上0.15%、1000億不含以上0.10%、5000億不含以上0.08%、10000億不含以上0.05%；保管費0億含以上0.03%、10000億不含以上0.025%），實際費率請以各發行機構官方披露為準。",
     "log": [
-      "TWSE 官方 CSV 自動抓取 248 檔",
+      "TWSE 官方 CSV 自動抓取 250 檔",
       "TPEx 官方 API 自動抓取 118 檔"
     ]
   },
@@ -284,6 +284,22 @@
       "total_fee": 0.18
     },
     {
+      "sym": "00419A",
+      "name": "主動施羅德AI台股",
+      "market": "TWSE",
+      "listing_date": "2026-11-26",
+      "tracking_index": null,
+      "net_assets_100m": 0,
+      "avg_value_1m": 0,
+      "avg_volume": 0,
+      "beneficiaries": null,
+      "issuer": null,
+      "ytd_return_pct": null,
+      "management_fee": 0.15,
+      "custody_fee": 0.03,
+      "total_fee": 0.18
+    },
+    {
       "sym": "00420A",
       "name": "主動野村亞洲科技",
       "market": "TWSE",
@@ -298,6 +314,22 @@
       "management_fee": 0.15,
       "custody_fee": 0.03,
       "total_fee": 0.18
+    },
+    {
+      "sym": "0050",
+      "name": "元大台灣50",
+      "market": "TWSE",
+      "listing_date": "2003-06-30",
+      "tracking_index": "富時臺灣證券交易所臺灣50指數",
+      "net_assets_100m": 22168,
+      "avg_value_1m": 13805.345,
+      "avg_volume": 148175130,
+      "beneficiaries": 4038137,
+      "issuer": "元大證券投資信託股份有限公司",
+      "ytd_return_pct": null,
+      "management_fee": 0.05,
+      "custody_fee": 0.025,
+      "total_fee": 0.07500000000000001
     },
     {
       "sym": "0051",

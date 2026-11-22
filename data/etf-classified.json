@@ -2,7 +2,7 @@
   "meta": {
     "as_of": "2026-11-23",
     "rules_version": "4.0.0",
-    "count": 360,
+    "count": 362,
     "excluded_count": 6,
     "excluded_syms": [
       "00635U",
@@ -13,13 +13,13 @@
       "00763U"
     ],
     "category_counts": {
-      "active": 38,
+      "active": 39,
       "dividend_high": 33,
       "active_cap": 24,
       "tech": 35,
-      "theme": 80,
+      "theme": 81,
       "global": 81,
-      "market_cap": 90,
+      "market_cap": 91,
       "fx": 6,
       "leveraged": 21,
       "inverse": 20,
@@ -281,6 +281,20 @@
       "pay_frequency": null
     },
     {
+      "sym": "00419A",
+      "name": "主動施羅德AI台股",
+      "market": "TWSE",
+      "categories": [
+        "active",
+        "theme"
+      ],
+      "category_reasons": {
+        "active": "尾碼 A",
+        "theme": "名稱含「AI」"
+      },
+      "pay_frequency": null
+    },
+    {
       "sym": "00420A",
       "name": "主動野村亞洲科技",
       "market": "TWSE",
@@ -293,6 +307,18 @@
         "active": "尾碼 A",
         "tech": "名稱含「科技」",
         "theme": "科技型歸主題型"
+      },
+      "pay_frequency": null
+    },
+    {
+      "sym": "0050",
+      "name": "元大台灣50",
+      "market": "TWSE",
+      "categories": [
+        "market_cap"
+      ],
+      "category_reasons": {
+        "market_cap": "一般指數型，預設被動市值型"
       },
       "pay_frequency": null
     },
