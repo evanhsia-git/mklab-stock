@@ -525,9 +525,14 @@
       "last_distribution_date": "2026-07-21",
       "last_distribution_amount": 0.6,
       "return_5y": 174.17,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj_aum_tier",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 184.31,
+      "return_10y": 555.41,
+      "dividend_frequency": "5x/year"
     },
     {
       "sym": "2881",
@@ -1821,9 +1826,14 @@
       "last_distribution_date": "2026-10-22",
       "last_distribution_amount": 1.72,
       "return_5y": 112.46,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj_aum_tier",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 73.68,
+      "return_10y": 299.94,
+      "dividend_frequency": "quarterly"
     },
     {
       "sym": "2884",
@@ -2265,9 +2275,14 @@
       "last_distribution_date": "2026-11-17",
       "last_distribution_amount": 1.25,
       "return_5y": 126.15,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj_aum_tier",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 81.03,
+      "return_10y": 199.4,
+      "dividend_frequency": "quarterly"
     },
     {
       "sym": "2890",
@@ -2547,9 +2562,14 @@
       "last_distribution_date": "2026-09-16",
       "last_distribution_amount": 1.1,
       "return_5y": 174.15,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj_aum_tier",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 88.34,
+      "return_10y": 174.15,
+      "dividend_frequency": "quarterly"
     },
     {
       "sym": "2059",
@@ -3714,9 +3734,16 @@
       "last_distribution_date": "2026-11-17",
       "last_distribution_amount": 3.88,
       "return_5y": 174.23,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj_aum_tier",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 50,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": 184.48,
+      "return_10y": 560.84,
+      "dividend_frequency": "quarterly"
     },
     {
       "sym": "4958",
@@ -4922,9 +4949,15 @@
       "holdings_date": "2026-11-05",
       "listing_date": "2014-10-31",
       "return_5y": 234.85,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj_aum_tier",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 8,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": 245.37,
+      "return_10y": 1851.06
     },
     {
       "sym": "3036",
@@ -5248,9 +5281,12 @@
       "last_distribution_date": "2026-09-16",
       "last_distribution_amount": 0.63,
       "return_5y": 97.83,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj_aum_tier",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 97.83
     },
     {
       "sym": "2449",
@@ -5642,9 +5678,12 @@
       "holdings_date": null,
       "listing_date": "2026-02-03",
       "return_5y": 26.0,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj_aum_tier",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 26.0
     },
     {
       "sym": "1590",
@@ -6676,9 +6715,14 @@
       "last_distribution_date": "2026-09-18",
       "last_distribution_amount": 1.75,
       "return_5y": 195.36,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj_aum_tier",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 105.81,
+      "return_10y": 195.36,
+      "dividend_frequency": "quarterly"
     },
     {
       "sym": "6213",
@@ -7011,9 +7055,16 @@
       "last_distribution_date": "2026-04-20",
       "last_distribution_amount": 1.199,
       "return_5y": -61.43,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj_aum_tier",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 50,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": -57.86,
+      "return_10y": 20.32,
+      "dividend_frequency": "semi-annual"
     },
     {
       "sym": "3702",
@@ -7263,9 +7314,14 @@
       "last_distribution_date": "2026-11-18",
       "last_distribution_amount": 0.38,
       "return_5y": 86.01,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj_aum_tier",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 56.01,
+      "return_10y": 86.01,
+      "dividend_frequency": "monthly"
     },
     {
       "sym": "1504",
@@ -7585,9 +7641,12 @@
       "last_distribution_date": "2026-11-03",
       "last_distribution_amount": 0.138,
       "return_5y": -37.68,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj_aum_tier",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": -37.68
     },
     {
       "sym": "2337",
@@ -7837,9 +7896,14 @@
       "last_distribution_date": "2026-08-18",
       "last_distribution_amount": 4.6,
       "return_5y": 192.63,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj_aum_tier",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 181.86,
+      "return_10y": 270.34,
+      "dividend_frequency": "semi-annual"
     },
     {
       "sym": "6415",
@@ -8792,9 +8856,12 @@
       "holdings_date": null,
       "listing_date": "2026-05-12",
       "return_5y": -29.8,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj_aum_tier",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": -29.8
     },
     {
       "sym": "6789",
@@ -8968,9 +9035,14 @@
       "last_distribution_date": "2026-09-21",
       "last_distribution_amount": 1.25,
       "return_5y": 95.32,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj_aum_tier",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 54.7,
+      "return_10y": 246.85,
+      "dividend_frequency": "5x/year"
     },
     {
       "sym": "6526",
@@ -10448,9 +10520,13 @@
       "holdings_date": null,
       "listing_date": "2017-03-30",
       "return_5y": 240.57,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 234.56,
+      "return_10y": 1531.99
     },
     {
       "sym": "6442",
@@ -10826,9 +10902,14 @@
       "last_distribution_date": "2026-01-20",
       "last_distribution_amount": 9.0,
       "return_5y": 179.24,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 165.12,
+      "return_10y": 552.35,
+      "dividend_frequency": "annual"
     },
     {
       "sym": "1229",
@@ -11076,9 +11157,14 @@
       "last_distribution_date": "2026-10-19",
       "last_distribution_amount": 2.1,
       "return_5y": 174.03,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 149.88,
+      "return_10y": 174.03,
+      "dividend_frequency": "semi-annual"
     },
     {
       "sym": "6196",
@@ -11908,9 +11994,14 @@
       "last_distribution_date": "2026-10-19",
       "last_distribution_amount": 2.0,
       "return_5y": 146.05,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 130.14,
+      "return_10y": 146.05,
+      "dividend_frequency": "quarterly"
     },
     {
       "sym": "1717",
@@ -12627,9 +12718,14 @@
       "last_distribution_date": "2026-11-17",
       "last_distribution_amount": 1.55,
       "return_5y": 125.01,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 145.04,
+      "return_10y": 165.71,
+      "dividend_frequency": "quarterly"
     },
     {
       "sym": "2915",
@@ -13161,9 +13257,13 @@
       "last_distribution_date": "2026-11-10",
       "last_distribution_amount": 0.06,
       "return_5y": 20.38,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 20.38,
+      "dividend_frequency": "monthly"
     },
     {
       "sym": "2889",
@@ -14106,9 +14206,12 @@
       "last_distribution_date": "2026-07-21",
       "last_distribution_amount": 0.77,
       "return_5y": 7.73,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 7.73
     },
     {
       "sym": "2258",
@@ -14426,9 +14529,13 @@
       "holdings_date": "2026-11-05",
       "listing_date": "2015-12-14",
       "return_5y": 84.02,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 68.49,
+      "return_10y": 257.73
     },
     {
       "sym": "6944",
@@ -14825,9 +14932,16 @@
       "last_distribution_date": "2026-11-17",
       "last_distribution_amount": 1.721,
       "return_5y": 154.92,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 50,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": 157.7,
+      "return_10y": 456.97,
+      "dividend_frequency": "semi-annual"
     },
     {
       "sym": "3030",
@@ -15443,9 +15557,13 @@
       "last_distribution_date": "2026-09-16",
       "last_distribution_amount": 1.83,
       "return_5y": 206.85,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 206.85,
+      "dividend_frequency": "semi-annual"
     },
     {
       "sym": "1907",
@@ -15696,9 +15814,13 @@
       "last_distribution_date": "2026-11-04",
       "last_distribution_amount": 0.067,
       "return_5y": 13.17,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 13.18,
+      "dividend_frequency": "monthly"
     },
     {
       "sym": "00712",
@@ -15803,9 +15925,14 @@
       "last_distribution_date": "2026-09-17",
       "last_distribution_amount": 0.2,
       "return_5y": -30.08,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": -11.68,
+      "return_10y": -33.72,
+      "dividend_frequency": "6x/year"
     },
     {
       "sym": "8112",
@@ -16854,9 +16981,12 @@
       "holdings_date": null,
       "listing_date": "2025-11-05",
       "return_5y": 16.4,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 16.4
     },
     {
       "sym": "4766",
@@ -17182,9 +17312,13 @@
       "last_distribution_date": "2026-11-17",
       "last_distribution_amount": 0.78,
       "return_5y": 62.52,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 62.52,
+      "dividend_frequency": "quarterly"
     },
     {
       "sym": "2504",
@@ -17726,9 +17860,12 @@
       "last_distribution_date": "2026-10-19",
       "last_distribution_amount": 0.85,
       "return_5y": 13.77,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 13.77
     },
     {
       "sym": "3715",
@@ -18030,9 +18167,13 @@
       "holdings_date": null,
       "listing_date": "2018-12-06",
       "return_5y": 130.97,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 108.14,
+      "return_10y": 526.5
     },
     {
       "sym": "2421",
@@ -18847,9 +18988,14 @@
       "last_distribution_date": "2026-11-20",
       "last_distribution_amount": 1.0,
       "return_5y": 154.45,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 147.24,
+      "return_10y": 376.63,
+      "dividend_frequency": "quarterly"
     },
     {
       "sym": "3019",
@@ -19027,9 +19173,14 @@
       "last_distribution_date": "2026-08-18",
       "last_distribution_amount": 3.05,
       "return_5y": 170.32,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 144.42,
+      "return_10y": 170.32,
+      "dividend_frequency": "semi-annual"
     },
     {
       "sym": "6116",
@@ -20715,9 +20866,14 @@
       "last_distribution_date": "2026-07-16",
       "last_distribution_amount": 0.55,
       "return_5y": 58.8,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 70.16,
+      "return_10y": 51.65,
+      "dividend_frequency": "semi-annual"
     },
     {
       "sym": "00990A",
@@ -20818,9 +20974,12 @@
       "holdings_date": "2026-11-05",
       "listing_date": "2025-12-22",
       "return_5y": 17.8,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 17.8
     },
     {
       "sym": "8028",
@@ -21117,9 +21276,15 @@
       "holdings_date": "2026-11-05",
       "listing_date": "2014-10-31",
       "return_5y": 137.57,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 6,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": 161.92,
+      "return_10y": -24.35
     },
     {
       "sym": "2204",
@@ -21885,9 +22050,13 @@
       "last_distribution_date": "2026-11-03",
       "last_distribution_amount": 0.15,
       "return_5y": 61.77,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 61.77,
+      "dividend_frequency": "monthly"
     },
     {
       "sym": "00400A",
@@ -21989,9 +22158,13 @@
       "last_distribution_date": "2026-11-06",
       "last_distribution_amount": 0.12,
       "return_5y": 2.26,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 2.26,
+      "dividend_frequency": "5x/year"
     },
     {
       "sym": "6456",
@@ -22205,9 +22378,15 @@
       "holdings_date": "2026/11/04",
       "listing_date": "2016-10-05",
       "return_5y": 229.16,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 5,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": 226.76,
+      "return_10y": 1775.26
     },
     {
       "sym": "3413",
@@ -22744,9 +22923,16 @@
       "last_distribution_date": "2026-11-17",
       "last_distribution_amount": 0.075,
       "return_5y": 63.6,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 30,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": 59.62,
+      "return_10y": 63.6,
+      "dividend_frequency": "monthly"
     },
     {
       "sym": "2535",
@@ -23074,9 +23260,13 @@
       "holdings_source": "FUBON+CMONEY",
       "holdings_date": "2026/11/04",
       "return_5y": -62.77,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj_aum_tier",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": -65.01,
+      "return_10y": 4.24
     },
     {
       "sym": "2362",
@@ -23398,9 +23588,12 @@
       "last_distribution_date": "2026-10-19",
       "last_distribution_amount": 2.15,
       "return_5y": 61.62,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 61.62
     },
     {
       "sym": "5234",
@@ -23643,9 +23836,11 @@
         ]
       ],
       "listing_date": "2021-03-31",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "6579",
@@ -27998,9 +28193,13 @@
       "holdings_date": null,
       "listing_date": "2019-11-25",
       "return_5y": 38.99,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "bond",
+      "return_3y": 16.59,
+      "return_10y": 27.0
     },
     {
       "sym": "2103",
@@ -28610,9 +28809,12 @@
       "holdings_date": null,
       "listing_date": "2026-06-24",
       "return_5y": -37.5,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": -37.5
     },
     {
       "sym": "3376",
@@ -28930,9 +29132,14 @@
       "holdings_date": "2026/11/04",
       "listing_date": "2026-06-09",
       "return_5y": -44.3,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 47,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_10y": -44.3
     },
     {
       "sym": "3149",
@@ -31017,9 +31224,14 @@
       "last_distribution_date": "2026-09-16",
       "last_distribution_amount": 0.6,
       "return_5y": 157.61,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 71.96,
+      "return_10y": 157.61,
+      "dividend_frequency": "5x/year"
     },
     {
       "sym": "00670L",
@@ -31090,9 +31302,15 @@
       "holdings_date": "2026/11/04",
       "listing_date": "2017-02-21",
       "return_5y": 16.4,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 4,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": 80.37,
+      "return_10y": 664.75
     },
     {
       "sym": "3592",
@@ -31768,9 +31986,13 @@
       "last_distribution_date": "2026-11-17",
       "last_distribution_amount": 0.688,
       "return_5y": 75.8,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 75.8,
+      "dividend_frequency": "quarterly"
     },
     {
       "sym": "2010",
@@ -31945,9 +32167,13 @@
       "holdings_date": null,
       "listing_date": "2021-07-01",
       "return_5y": 105.69,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 113.87,
+      "return_10y": 150.8
     },
     {
       "sym": "3028",
@@ -32382,9 +32608,15 @@
       "holdings_date": null,
       "listing_date": "2023-04-26",
       "return_5y": 103.4,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 8,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": 77.38,
+      "return_10y": 103.4
     },
     {
       "sym": "4551",
@@ -32562,9 +32794,13 @@
       "last_distribution_date": "2026-11-17",
       "last_distribution_amount": 0.5,
       "return_5y": 93.81,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 93.81,
+      "dividend_frequency": "monthly"
     },
     {
       "sym": "1710",
@@ -32881,9 +33117,14 @@
       "last_distribution_date": "2026-09-17",
       "last_distribution_amount": 0.2,
       "return_5y": -4.2,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 16.09,
+      "return_10y": 13.88,
+      "dividend_frequency": "6x/year"
     },
     {
       "sym": "8908",
@@ -33590,9 +33831,15 @@
       "holdings_date": "2026-11-05",
       "listing_date": "2015-05-18",
       "return_5y": -30.43,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 3,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": 7.5,
+      "return_10y": 17.83
     },
     {
       "sym": "2031",
@@ -35781,9 +36028,13 @@
       "holdings_date": null,
       "listing_date": "2016-07-14",
       "return_5y": -53.18,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": -52.71,
+      "return_10y": 170.04
     },
     {
       "sym": "3022",
@@ -36008,9 +36259,15 @@
       "holdings_date": "2026-11-05",
       "listing_date": "2016-10-07",
       "return_5y": -16.4,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 3,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": 46.63,
+      "return_10y": -47.5
     },
     {
       "sym": "4441",
@@ -36403,9 +36660,13 @@
       "last_distribution_date": "2026-11-17",
       "last_distribution_amount": 0.097,
       "return_5y": 15.97,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 15.97,
+      "dividend_frequency": "monthly"
     },
     {
       "sym": "2338",
@@ -37377,9 +37638,13 @@
       "last_distribution_date": "2026-11-03",
       "last_distribution_amount": 0.085,
       "return_5y": 2.02,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "bond",
+      "return_10y": 2.02,
+      "dividend_frequency": "6x/year"
     },
     {
       "sym": "7780",
@@ -37717,9 +37982,14 @@
       "last_distribution_date": "2026-09-16",
       "last_distribution_amount": 1.45,
       "return_5y": 101.82,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 82.69,
+      "return_10y": 104.92,
+      "dividend_frequency": "quarterly"
     },
     {
       "sym": "00947",
@@ -37824,9 +38094,13 @@
       "last_distribution_date": "2026-10-16",
       "last_distribution_amount": 2.0,
       "return_5y": 69.25,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 69.25,
+      "dividend_frequency": "quarterly"
     },
     {
       "sym": "3416",
@@ -39663,9 +39937,16 @@
       "last_distribution_date": "2026-11-17",
       "last_distribution_amount": 4.0,
       "return_5y": 102.58,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 30,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": 149.33,
+      "return_10y": 137.25,
+      "dividend_frequency": "semi-annual"
     },
     {
       "sym": "1307",
@@ -40055,9 +40336,12 @@
       "holdings_date": null,
       "listing_date": "2026-09-02",
       "return_5y": -33.57,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": -33.57
     },
     {
       "sym": "6464",
@@ -40453,9 +40737,12 @@
       "holdings_date": null,
       "listing_date": "2024-03-15",
       "return_5y": 45.73,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 45.73
     },
     {
       "sym": "00885",
@@ -40557,9 +40844,13 @@
       "holdings_date": "2026/11/04",
       "listing_date": "2021-04-19",
       "return_5y": -0.52,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 35.59,
+      "return_10y": 15.07
     },
     {
       "sym": "2527",
@@ -41009,9 +41300,11 @@
       "holdings_source": "CMONEY",
       "holdings_date": null,
       "listing_date": "2026-10-20",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "4771",
@@ -41188,9 +41481,13 @@
       "last_distribution_date": "2026-11-17",
       "last_distribution_amount": 0.09,
       "return_5y": 32.88,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 32.88,
+      "dividend_frequency": "monthly"
     },
     {
       "sym": "6790",
@@ -41359,9 +41656,12 @@
       "holdings_date": null,
       "listing_date": "2026-09-02",
       "return_5y": -42.3,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": -42.3
     },
     {
       "sym": "8341",
@@ -41942,9 +42242,15 @@
       "holdings_date": "2026-11-05",
       "listing_date": "2017-09-01",
       "return_5y": 83.69,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 3,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": 110.23,
+      "return_10y": 152.13
     },
     {
       "sym": "00997A",
@@ -42047,9 +42353,12 @@
       "last_distribution_date": "2026-07-06",
       "last_distribution_amount": 0.37,
       "return_5y": -11.39,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": -11.39
     },
     {
       "sym": "5292",
@@ -43862,9 +44171,12 @@
       "holdings_date": null,
       "listing_date": "2026-08-03",
       "return_5y": -4.0,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": -4.0
     },
     {
       "sym": "3049",
@@ -44037,9 +44349,12 @@
       "holdings_date": "2026-11-05",
       "listing_date": "2026-04-23",
       "return_5y": -11.7,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": -11.7
     },
     {
       "sym": "00735",
@@ -44144,9 +44459,14 @@
       "last_distribution_date": "2026-07-16",
       "last_distribution_amount": 3.0,
       "return_5y": 191.8,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 207.26,
+      "return_10y": 429.11,
+      "dividend_frequency": "semi-annual"
     },
     {
       "sym": "6534",
@@ -44325,9 +44645,12 @@
       "last_distribution_date": "2026-10-16",
       "last_distribution_amount": 0.3,
       "return_5y": 39.62,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 39.62
     },
     {
       "sym": "00965",
@@ -44429,9 +44752,12 @@
       "holdings_date": "2026-11-05",
       "listing_date": "2024-11-26",
       "return_5y": 40.47,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 40.47
     },
     {
       "sym": "2852",
@@ -44730,9 +45056,12 @@
       "last_distribution_date": "2026-09-16",
       "last_distribution_amount": 0.29,
       "return_5y": -22.49,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": -22.49
     },
     {
       "sym": "6914",
@@ -45486,9 +45815,13 @@
       "last_distribution_date": "2026-10-19",
       "last_distribution_amount": 0.473,
       "return_5y": 19.56,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 19.56,
+      "dividend_frequency": "quarterly"
     },
     {
       "sym": "1110",
@@ -45885,9 +46218,15 @@
       "last_distribution_date": "2026-09-16",
       "last_distribution_amount": 0.189,
       "return_5y": 56.5,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 50,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_10y": 56.5,
+      "dividend_frequency": "quarterly"
     },
     {
       "sym": "6277",
@@ -46066,9 +46405,13 @@
       "last_distribution_date": "2026-11-04",
       "last_distribution_amount": 0.053,
       "return_5y": 10.31,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 10.31,
+      "dividend_frequency": "monthly"
     },
     {
       "sym": "2013",
@@ -46794,9 +47137,15 @@
       "holdings_date": "2026-11-05",
       "listing_date": "2017-01-17",
       "return_5y": -75.44,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 5,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": -24.73,
+      "return_10y": -68.92
     },
     {
       "sym": "00955",
@@ -46893,9 +47242,11 @@
         ]
       ],
       "listing_date": "2024-08-20",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "2484",
@@ -47215,9 +47566,14 @@
       "last_distribution_date": "2026-10-19",
       "last_distribution_amount": 0.6,
       "return_5y": 148.5,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 135.55,
+      "return_10y": 148.5,
+      "dividend_frequency": "5x/year"
     },
     {
       "sym": "5222",
@@ -47819,9 +48175,14 @@
       "last_distribution_date": "2026-11-16",
       "last_distribution_amount": 0.35,
       "return_5y": -8.88,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 12.18,
+      "return_10y": 2.94,
+      "dividend_frequency": "5x/year"
     },
     {
       "sym": "2419",
@@ -48063,8 +48424,8 @@
       "ytd_return_pct": null,
       "holdings": null,
       "listing_date": "2026-11-11",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
       "currency": "TWD"
     },
     {
@@ -49521,9 +49882,14 @@
       "last_distribution_date": "2026-08-18",
       "last_distribution_amount": 1.6,
       "return_5y": 108.17,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 90.51,
+      "return_10y": 215.6,
+      "dividend_frequency": "3x/year"
     },
     {
       "sym": "4169",
@@ -49985,9 +50351,13 @@
       "holdings_date": "2026-11-05",
       "listing_date": "2020-07-07",
       "return_5y": 102.36,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 122.96,
+      "return_10y": 235.0
     },
     {
       "sym": "5236",
@@ -50385,9 +50755,12 @@
       "holdings_date": null,
       "listing_date": "2026-02-03",
       "return_5y": -18.8,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": -18.8
     },
     {
       "sym": "8215",
@@ -51139,9 +51512,14 @@
       "last_distribution_date": "2026-10-16",
       "last_distribution_amount": 2.2,
       "return_5y": 149.89,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 163.89,
+      "return_10y": 149.89,
+      "dividend_frequency": "5x/year"
     },
     {
       "sym": "3032",
@@ -51384,9 +51762,12 @@
       "holdings_date": null,
       "listing_date": "2026-06-17",
       "return_5y": -34.0,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": -34.0
     },
     {
       "sym": "00412A",
@@ -51477,9 +51858,11 @@
       "holdings_source": "CMONEY",
       "holdings_date": null,
       "listing_date": "2026-10-13",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "9905",
@@ -51872,9 +52255,13 @@
       "holdings_date": "2026/11/04",
       "listing_date": "2021-08-12",
       "return_5y": 117.41,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 115.2,
+      "return_10y": 181.33
     },
     {
       "sym": "1436",
@@ -52400,9 +52787,14 @@
       "last_distribution_date": "2026-11-18",
       "last_distribution_amount": 0.073,
       "return_5y": 0.6,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 8,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_10y": 0.6
     },
     {
       "sym": "1444",
@@ -52865,9 +53257,13 @@
       "last_distribution_date": "2026-09-15",
       "last_distribution_amount": 0.9,
       "return_5y": 76.87,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 76.87,
+      "dividend_frequency": "quarterly"
     },
     {
       "sym": "6947",
@@ -53033,9 +53429,11 @@
         ]
       ],
       "listing_date": "2021-03-31",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "2305",
@@ -54135,9 +54533,11 @@
       "holdings_source": "CMONEY",
       "holdings_date": null,
       "listing_date": "2026-11-03",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "1305",
@@ -54595,9 +54995,14 @@
       "last_distribution_date": "2026-09-16",
       "last_distribution_amount": 6.0,
       "return_5y": 119.42,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 113.37,
+      "return_10y": 373.71,
+      "dividend_frequency": "semi-annual"
     },
     {
       "sym": "3056",
@@ -55283,9 +55688,14 @@
       "last_distribution_date": "2026-11-17",
       "last_distribution_amount": 1.0,
       "return_5y": 172.26,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 173.4,
+      "return_10y": 191.71,
+      "dividend_frequency": "quarterly"
     },
     {
       "sym": "1603",
@@ -55636,9 +56046,15 @@
       "holdings_date": null,
       "listing_date": "2018-10-31",
       "return_5y": -73.54,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 2,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": -22.65,
+      "return_10y": -66.2
     },
     {
       "sym": "6184",
@@ -56405,9 +56821,14 @@
       "last_distribution_date": "2026-11-17",
       "last_distribution_amount": 2.0,
       "return_5y": 153.43,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 166.84,
+      "return_10y": 406.87,
+      "dividend_frequency": "5x/year"
     },
     {
       "sym": "7730",
@@ -57165,9 +57586,13 @@
       "last_distribution_date": "2026-11-04",
       "last_distribution_amount": 0.058,
       "return_5y": 37.36,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 37.36,
+      "dividend_frequency": "monthly"
     },
     {
       "sym": "2302",
@@ -57340,9 +57765,12 @@
       "holdings_date": null,
       "listing_date": "2026-04-23",
       "return_5y": -11.3,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": -11.3
     },
     {
       "sym": "4994",
@@ -57517,9 +57945,13 @@
       "holdings_date": null,
       "listing_date": "2022-07-20",
       "return_5y": 199.47,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 192.26,
+      "return_10y": 199.47
     },
     {
       "sym": "00752",
@@ -57621,9 +58053,13 @@
       "holdings_date": null,
       "listing_date": "2018-10-31",
       "return_5y": -15.29,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 10.42,
+      "return_10y": 1.7
     },
     {
       "sym": "00633L",
@@ -57704,9 +58140,15 @@
       "holdings_date": "2026/11/04",
       "listing_date": "2014-11-25",
       "return_5y": -33.77,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 6,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": 2.51,
+      "return_10y": 5.24
     },
     {
       "sym": "3504",
@@ -57879,9 +58321,13 @@
       "holdings_date": "2026-11-05",
       "listing_date": "2019-11-19",
       "return_5y": 131.26,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 126.41,
+      "return_10y": 256.25
     },
     {
       "sym": "6743",
@@ -58555,9 +59001,11 @@
         ]
       ],
       "listing_date": "2026-01-26",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "3054",
@@ -58793,9 +59241,14 @@
       "holdings_date": null,
       "listing_date": "2026-06-09",
       "return_5y": -18.04,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 8,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_10y": -18.04
     },
     {
       "sym": "4540",
@@ -59399,9 +59852,14 @@
       "last_distribution_date": "2025-11-21",
       "last_distribution_amount": 1.25,
       "return_5y": 102.13,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 95.66,
+      "return_10y": 314.58,
+      "dividend_frequency": "annual"
     },
     {
       "sym": "6862",
@@ -59643,9 +60101,12 @@
       "holdings_date": null,
       "listing_date": "2026-08-21",
       "return_5y": -22.7,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": -22.7
     },
     {
       "sym": "1472",
@@ -60649,9 +61110,11 @@
         ]
       ],
       "listing_date": "2020-07-22",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "6776",
@@ -60826,9 +61289,13 @@
       "holdings_date": "2026-11-05",
       "listing_date": "2019-01-23",
       "return_5y": 92.44,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 91.58,
+      "return_10y": 349.47
     },
     {
       "sym": "1217",
@@ -61361,9 +61828,11 @@
         ]
       ],
       "listing_date": "2019-09-30",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "6689",
@@ -61539,9 +62008,12 @@
       "last_distribution_date": "2026-10-19",
       "last_distribution_amount": 0.73,
       "return_5y": -10.43,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": -10.43
     },
     {
       "sym": "1457",
@@ -62215,9 +62687,12 @@
       "holdings_date": null,
       "listing_date": "2026-06-25",
       "return_5y": -10.6,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": -10.6
     },
     {
       "sym": "2012",
@@ -62756,9 +63231,13 @@
       "last_distribution_date": "2026-04-20",
       "last_distribution_amount": 2.75,
       "return_5y": 139.11,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 106.36,
+      "return_10y": 139.11
     },
     {
       "sym": "3031",
@@ -64378,9 +64857,12 @@
       "holdings_date": null,
       "listing_date": "2025-02-11",
       "return_5y": 20.1,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 20.1
     },
     {
       "sym": "3338",
@@ -65633,9 +66115,12 @@
       "last_distribution_date": "2026-11-18",
       "last_distribution_amount": 3.02,
       "return_5y": 42.76,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 42.76
     },
     {
       "sym": "6155",
@@ -65963,9 +66448,14 @@
       "last_distribution_date": "2025-11-21",
       "last_distribution_amount": 3.0,
       "return_5y": 192.37,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 184.78,
+      "return_10y": 709.49,
+      "dividend_frequency": "annual"
     },
     {
       "sym": "7821",
@@ -66211,9 +66701,13 @@
       "holdings_date": "2026/11/04",
       "listing_date": "2011-09-26",
       "return_5y": 2.69,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 24.53,
+      "return_10y": 35.28
     },
     {
       "sym": "2516",
@@ -66677,9 +67171,12 @@
       "last_distribution_date": "2026-11-13",
       "last_distribution_amount": 0.138,
       "return_5y": 5.54,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 5.54
     },
     {
       "sym": "2748",
@@ -67417,9 +67914,11 @@
         ]
       ],
       "listing_date": "2026-06-25",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00710B",
@@ -67524,9 +68023,14 @@
       "last_distribution_date": "2026-09-17",
       "last_distribution_amount": 0.39,
       "return_5y": 41.45,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 23.57,
+      "return_10y": 56.47,
+      "dividend_frequency": "6x/year"
     },
     {
       "sym": "8438",
@@ -67845,9 +68349,13 @@
       "last_distribution_date": "2026-11-17",
       "last_distribution_amount": 0.12,
       "return_5y": 34.84,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 34.84,
+      "dividend_frequency": "monthly"
     },
     {
       "sym": "1451",
@@ -68094,9 +68602,14 @@
       "last_distribution_date": "2026-09-23",
       "last_distribution_amount": 0.815,
       "return_5y": 68.16,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 55.23,
+      "return_10y": 68.16,
+      "dividend_frequency": "6x/year"
     },
     {
       "sym": "00936",
@@ -68200,9 +68713,13 @@
       "last_distribution_date": "2026-11-16",
       "last_distribution_amount": 0.16,
       "return_5y": 30.86,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 30.86,
+      "dividend_frequency": "monthly"
     },
     {
       "sym": "5706",
@@ -68377,9 +68894,12 @@
       "last_distribution_date": "2026-09-16",
       "last_distribution_amount": 0.36,
       "return_5y": -27.83,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": -27.83
     },
     {
       "sym": "009813",
@@ -68481,9 +69001,12 @@
       "holdings_date": null,
       "listing_date": "2025-10-20",
       "return_5y": 3.68,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 3.68
     },
     {
       "sym": "3530",
@@ -68872,9 +69395,12 @@
       "last_distribution_date": "2026-10-19",
       "last_distribution_amount": 0.5,
       "return_5y": 6.74,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 6.74
     },
     {
       "sym": "2538",
@@ -69456,9 +69982,15 @@
       "holdings_date": null,
       "listing_date": "2017-04-13",
       "return_5y": -75.39,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 8,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": -24.11,
+      "return_10y": -69.0
     },
     {
       "sym": "00665L",
@@ -69524,9 +70056,15 @@
       "holdings_date": "2026/11/04",
       "listing_date": "2016-08-05",
       "return_5y": -54.93,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 3,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": 5.59,
+      "return_10y": -64.98
     },
     {
       "sym": "6742",
@@ -69994,9 +70532,16 @@
       "last_distribution_date": "2026-10-19",
       "last_distribution_amount": 1.487,
       "return_5y": 36.21,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 50,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": -2.83,
+      "return_10y": 226.08,
+      "dividend_frequency": "3x/year"
     },
     {
       "sym": "2062",
@@ -71179,9 +71724,14 @@
       "last_distribution_date": "2025-11-21",
       "last_distribution_amount": 3.0,
       "return_5y": 102.73,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 66.04,
+      "return_10y": 469.99,
+      "dividend_frequency": "annual"
     },
     {
       "sym": "6614",
@@ -71855,9 +72405,12 @@
       "holdings_date": null,
       "listing_date": "2025-07-29",
       "return_5y": 25.2,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 25.2
     },
     {
       "sym": "1817",
@@ -72035,9 +72588,13 @@
       "last_distribution_date": "2026-11-17",
       "last_distribution_amount": 0.082,
       "return_5y": 15.5,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 15.5,
+      "dividend_frequency": "11x/year"
     },
     {
       "sym": "2613",
@@ -73046,9 +73603,15 @@
       "holdings_date": null,
       "listing_date": "2017-11-16",
       "return_5y": 482.69,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 1,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": 269.96,
+      "return_10y": 203.0
     },
     {
       "sym": "1731",
@@ -73931,9 +74494,13 @@
       "last_distribution_date": "2026-11-17",
       "last_distribution_amount": 0.35,
       "return_5y": 59.95,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 59.95,
+      "dividend_frequency": "quarterly"
     },
     {
       "sym": "6141",
@@ -74249,9 +74816,13 @@
       "last_distribution_date": "2025-12-16",
       "last_distribution_amount": 1.47,
       "return_5y": 98.27,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 82.24,
+      "return_10y": 98.27
     },
     {
       "sym": "6152",
@@ -74428,9 +74999,12 @@
       "last_distribution_date": "2026-07-16",
       "last_distribution_amount": 1.53,
       "return_5y": 99.28,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 99.28
     },
     {
       "sym": "2471",
@@ -74967,9 +75541,12 @@
       "last_distribution_date": "2026-09-18",
       "last_distribution_amount": 0.257,
       "return_5y": 10.58,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 10.58
     },
     {
       "sym": "6165",
@@ -75431,9 +76008,12 @@
       "last_distribution_date": "2026-11-16",
       "last_distribution_amount": 2.0,
       "return_5y": 15.99,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 15.99
     },
     {
       "sym": "1435",
@@ -75749,9 +76329,13 @@
       "last_distribution_date": "2026-11-16",
       "last_distribution_amount": 0.08,
       "return_5y": 17.48,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 17.48,
+      "dividend_frequency": "monthly"
     },
     {
       "sym": "1530",
@@ -76221,9 +76805,14 @@
       "last_distribution_date": "2026-10-27",
       "last_distribution_amount": 0.268,
       "return_5y": 41.99,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 39.94,
+      "return_10y": 41.99,
+      "dividend_frequency": "6x/year"
     },
     {
       "sym": "4720",
@@ -76613,9 +77202,13 @@
       "last_distribution_date": "2025-11-25",
       "last_distribution_amount": 2.6,
       "return_5y": 178.0,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 166.39,
+      "return_10y": 178.0
     },
     {
       "sym": "3588",
@@ -77009,9 +77602,13 @@
       "holdings_date": "2026/11/04",
       "listing_date": "2015-11-06",
       "return_5y": 93.96,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 63.64,
+      "return_10y": 183.74
     },
     {
       "sym": "4106",
@@ -77758,9 +78355,14 @@
       "last_distribution_date": "2026-08-18",
       "last_distribution_amount": 1.78,
       "return_5y": 179.95,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 143.91,
+      "return_10y": 179.95,
+      "dividend_frequency": "3x/year"
     },
     {
       "sym": "2115",
@@ -78007,9 +78609,13 @@
       "last_distribution_date": "2026-06-16",
       "last_distribution_amount": 1.92,
       "return_5y": 99.28,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 61.08,
+      "return_10y": 99.28
     },
     {
       "sym": "3052",
@@ -78401,9 +79007,13 @@
       "holdings_date": null,
       "listing_date": "2022-01-25",
       "return_5y": -33.53,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": -7.17,
+      "return_10y": -33.53
     },
     {
       "sym": "4555",
@@ -78863,9 +79473,13 @@
       "holdings_date": null,
       "listing_date": "2015-04-01",
       "return_5y": -1.88,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 19.22,
+      "return_10y": 47.59
     },
     {
       "sym": "2429",
@@ -79752,9 +80366,14 @@
       "last_distribution_date": "2026-10-19",
       "last_distribution_amount": 1.8,
       "return_5y": 125.83,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 111.22,
+      "return_10y": 125.83,
+      "dividend_frequency": "quarterly"
     },
     {
       "sym": "1533",
@@ -80195,9 +80814,15 @@
       "holdings_date": "2026-11-05",
       "listing_date": "2017-09-01",
       "return_5y": 27.61,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 3,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": 152.97,
+      "return_10y": -6.31
     },
     {
       "sym": "6142",
@@ -80654,9 +81279,13 @@
       "holdings_date": "2026/11/04",
       "listing_date": "2016-03-29",
       "return_5y": 25.94,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 10.94,
+      "return_10y": 91.19
     },
     {
       "sym": "5244",
@@ -81246,9 +81875,11 @@
       "holdings_source": "CMONEY",
       "holdings_date": null,
       "listing_date": "2026-09-02",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00954",
@@ -81350,9 +81981,12 @@
       "holdings_date": null,
       "listing_date": "2024-08-20",
       "return_5y": 24.1,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 24.1
     },
     {
       "sym": "4155",
@@ -81559,9 +82193,15 @@
       "holdings_date": "2026-11-05",
       "listing_date": "2009-08-17",
       "return_5y": -5.76,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 2,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": 20.17,
+      "return_10y": 32.33
     },
     {
       "sym": "7631",
@@ -81952,9 +82592,14 @@
       "last_distribution_date": "2026-09-18",
       "last_distribution_amount": 0.77,
       "return_5y": 98.88,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 117.46,
+      "return_10y": 255.4,
+      "dividend_frequency": "6x/year"
     },
     {
       "sym": "2239",
@@ -83265,9 +83910,14 @@
       "last_distribution_date": "2026-11-18",
       "last_distribution_amount": 1.828,
       "return_5y": 102.49,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 64.42,
+      "return_10y": 191.9,
+      "dividend_frequency": "6x/year"
     },
     {
       "sym": "6807",
@@ -83405,9 +84055,14 @@
       "holdings_date": null,
       "listing_date": "2026-02-06",
       "return_5y": -12.6,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 3,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_10y": -12.6
     },
     {
       "sym": "8072",
@@ -83797,9 +84452,13 @@
       "holdings_date": "2026-11-05",
       "listing_date": "2016-06-15",
       "return_5y": 97.28,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 76.68,
+      "return_10y": 221.55
     },
     {
       "sym": "4414",
@@ -84034,9 +84693,12 @@
         ]
       ],
       "listing_date": "2025-12-19",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_date": "2026/11/04",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "2702",
@@ -84350,9 +85012,12 @@
       "holdings_date": null,
       "listing_date": "2025-12-30",
       "return_5y": 3.2,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 3.2
     },
     {
       "sym": "6405",
@@ -84665,9 +85330,16 @@
       "last_distribution_date": "2026-11-17",
       "last_distribution_amount": 0.11,
       "return_5y": 59.58,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 30,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": 49.73,
+      "return_10y": 92.73,
+      "dividend_frequency": "monthly"
     },
     {
       "sym": "3027",
@@ -84979,9 +85651,12 @@
       "holdings_date": null,
       "listing_date": "2026-08-03",
       "return_5y": -18.6,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": -18.6
     },
     {
       "sym": "3557",
@@ -85511,9 +86186,13 @@
       "holdings_date": "2026/11/04",
       "listing_date": "2021-10-04",
       "return_5y": -7.52,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 91.2,
+      "return_10y": -13.07
     },
     {
       "sym": "006203",
@@ -85618,9 +86297,14 @@
       "last_distribution_date": "2026-07-21",
       "last_distribution_amount": 1.25,
       "return_5y": 160.85,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 169.2,
+      "return_10y": 540.3,
+      "dividend_frequency": "quarterly"
     },
     {
       "sym": "3021",
@@ -85841,9 +86525,15 @@
       "holdings_date": null,
       "listing_date": "2016-03-18",
       "return_5y": -38.84,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 6,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": 3.05,
+      "return_10y": 5.02
     },
     {
       "sym": "6558",
@@ -86370,9 +87060,14 @@
       "last_distribution_date": "2026-10-19",
       "last_distribution_amount": 0.141,
       "return_5y": -1.48,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 5.2,
+      "return_10y": -3.0,
+      "dividend_frequency": "5x/year"
     },
     {
       "sym": "00917",
@@ -86477,9 +87172,13 @@
       "last_distribution_date": "2026-01-20",
       "last_distribution_amount": 3.5,
       "return_5y": 116.58,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 106.4,
+      "return_10y": 116.58
     },
     {
       "sym": "1735",
@@ -86657,9 +87356,13 @@
       "last_distribution_date": "2026-11-17",
       "last_distribution_amount": 0.1,
       "return_5y": 36.05,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 36.05,
+      "dividend_frequency": "monthly"
     },
     {
       "sym": "1410",
@@ -86979,9 +87682,14 @@
       "last_distribution_date": "2026-11-17",
       "last_distribution_amount": 0.23,
       "return_5y": 15.06,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 13.09,
+      "return_10y": 15.06,
+      "dividend_frequency": "quarterly"
     },
     {
       "sym": "2250",
@@ -87558,9 +88266,15 @@
       "holdings_date": null,
       "listing_date": "2016-07-14",
       "return_5y": -66.28,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 6,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": -62.57,
+      "return_10y": -89.26
     },
     {
       "sym": "1906",
@@ -87727,9 +88441,11 @@
         ]
       ],
       "listing_date": "2023-05-24",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "1466",
@@ -88295,9 +89011,15 @@
       "holdings_date": null,
       "listing_date": "2016-01-27",
       "return_5y": -41.33,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 3,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": 20.07,
+      "return_10y": -33.23
     },
     {
       "sym": "4190",
@@ -89177,9 +89899,13 @@
       "last_distribution_date": "2026-11-17",
       "last_distribution_amount": 0.2,
       "return_5y": 49.93,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 49.93,
+      "dividend_frequency": "monthly"
     },
     {
       "sym": "3321",
@@ -89366,9 +90092,13 @@
       "last_distribution_date": "2026-10-19",
       "last_distribution_amount": 0.28,
       "return_5y": 53.8,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 53.8,
+      "dividend_frequency": "quarterly"
     },
     {
       "sym": "1449",
@@ -89468,8 +90198,8 @@
       "ytd_return_pct": null,
       "holdings": null,
       "listing_date": "2026-11-11",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
       "currency": "TWD"
     },
     {
@@ -89767,9 +90497,11 @@
       "holdings_source": "CMONEY",
       "holdings_date": null,
       "listing_date": "2026-10-29",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00639",
@@ -89871,9 +90603,13 @@
       "holdings_date": "2026/11/04",
       "listing_date": "2015-06-09",
       "return_5y": -24.76,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 11.86,
+      "return_10y": 24.65
     },
     {
       "sym": "6674",
@@ -90185,9 +90921,14 @@
       "last_distribution_date": "2026-07-16",
       "last_distribution_amount": 3.5,
       "return_5y": 248.26,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 151.27,
+      "return_10y": 248.26,
+      "dividend_frequency": "semi-annual"
     },
     {
       "sym": "1445",
@@ -90328,9 +91069,15 @@
       "holdings_date": "2026/11/04",
       "listing_date": "2017-02-21",
       "return_5y": -44.21,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 4,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": -43.51,
+      "return_10y": -86.5
     },
     {
       "sym": "1474",
@@ -90996,9 +91743,14 @@
       "last_distribution_date": "2026-09-16",
       "last_distribution_amount": 1.0,
       "return_5y": 62.95,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 31.6,
+      "return_10y": 62.95,
+      "dividend_frequency": "quarterly"
     },
     {
       "sym": "6994",
@@ -91171,9 +91923,13 @@
       "holdings_date": null,
       "listing_date": "2020-03-30",
       "return_5y": 81.15,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 109.07,
+      "return_10y": 195.0
     },
     {
       "sym": "009812",
@@ -91250,9 +92006,14 @@
       "holdings_date": null,
       "listing_date": "2025-09-18",
       "return_5y": 20.6,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 5,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_10y": 20.6
     },
     {
       "sym": "6916",
@@ -91779,9 +92540,13 @@
       "last_distribution_date": "2026-11-17",
       "last_distribution_amount": 0.35,
       "return_5y": 26.08,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 26.08,
+      "dividend_frequency": "monthly"
     },
     {
       "sym": "4440",
@@ -91952,9 +92717,12 @@
       "last_distribution_date": "2026-10-21",
       "last_distribution_amount": 0.21,
       "return_5y": -30.13,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": -30.13
     },
     {
       "sym": "00643",
@@ -92056,9 +92824,13 @@
       "holdings_date": null,
       "listing_date": "2015-12-02",
       "return_5y": -23.8,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 14.81,
+      "return_10y": -1.87
     },
     {
       "sym": "00676R",
@@ -92129,9 +92901,15 @@
       "holdings_date": "2026/11/04",
       "listing_date": "2016-10-05",
       "return_5y": 111.96,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 4,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": 132.66,
+      "return_10y": -31.85
     },
     {
       "sym": "4999",
@@ -92660,9 +93438,13 @@
       "holdings_date": null,
       "listing_date": "2021-11-22",
       "return_5y": 5.22,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 48.02,
+      "return_10y": 4.8
     },
     {
       "sym": "3419",
@@ -92939,9 +93721,15 @@
       "holdings_date": null,
       "listing_date": "2016-10-17",
       "return_5y": -25.2,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 4,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": -29.35,
+      "return_10y": -69.94
     },
     {
       "sym": "1418",
@@ -93249,9 +94037,12 @@
         ]
       ],
       "listing_date": "2011-01-27",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_date": "2026-11-05",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "1337",
@@ -93424,9 +94215,13 @@
       "last_distribution_date": "2026-11-17",
       "last_distribution_amount": 0.109,
       "return_5y": 31.97,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 31.97,
+      "dividend_frequency": "monthly"
     },
     {
       "sym": "1776",
@@ -93604,9 +94399,13 @@
       "last_distribution_date": "2026-11-17",
       "last_distribution_amount": 0.76,
       "return_5y": 77.38,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 77.38,
+      "dividend_frequency": "quarterly"
     },
     {
       "sym": "009801",
@@ -93711,9 +94510,12 @@
       "last_distribution_date": "2026-08-18",
       "last_distribution_amount": 1.0,
       "return_5y": 9.51,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 9.51
     },
     {
       "sym": "006206",
@@ -93815,9 +94617,13 @@
       "holdings_date": "2026-11-05",
       "listing_date": "2012-05-11",
       "return_5y": 2.96,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 25.48,
+      "return_10y": 36.62
     },
     {
       "sym": "5546",
@@ -94132,9 +94938,12 @@
       "holdings_date": null,
       "listing_date": "2025-10-22",
       "return_5y": -2.4,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": -2.4
     },
     {
       "sym": "8429",
@@ -94593,9 +95402,13 @@
       "last_distribution_date": "2026-11-17",
       "last_distribution_amount": 0.061,
       "return_5y": 4.77,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 4.77,
+      "dividend_frequency": "11x/year"
     },
     {
       "sym": "1526",
@@ -94769,9 +95582,12 @@
       "last_distribution_date": "2025-12-16",
       "last_distribution_amount": 1.0,
       "return_5y": 18.41,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 18.41
     },
     {
       "sym": "00737",
@@ -94873,9 +95689,13 @@
       "holdings_date": null,
       "listing_date": "2018-06-11",
       "return_5y": 1.72,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 24.17,
+      "return_10y": 77.25
     },
     {
       "sym": "8940",
@@ -95118,9 +95938,13 @@
       "holdings_date": "2026/11/04",
       "listing_date": "2022-01-24",
       "return_5y": 17.0,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 52.08,
+      "return_10y": 17.0
     },
     {
       "sym": "6908",
@@ -95361,9 +96185,12 @@
       "holdings_date": null,
       "listing_date": "2026-03-23",
       "return_5y": 18.8,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 18.8
     },
     {
       "sym": "3057",
@@ -95534,9 +96361,11 @@
       "holdings_source": "CMONEY",
       "holdings_date": null,
       "listing_date": "2026-10-29",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00983A",
@@ -95638,9 +96467,12 @@
       "holdings_date": null,
       "listing_date": "2025-06-18",
       "return_5y": 5.4,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 5.4
     },
     {
       "sym": "8201",
@@ -96452,9 +97284,13 @@
       "last_distribution_date": "2026-11-17",
       "last_distribution_amount": 0.052,
       "return_5y": 0.77,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 0.77,
+      "dividend_frequency": "11x/year"
     },
     {
       "sym": "3018",
@@ -96665,9 +97501,15 @@
       "holdings_date": "2026/11/04",
       "listing_date": "2015-09-10",
       "return_5y": 175.19,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 4,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": 107.43,
+      "return_10y": 432.5
     },
     {
       "sym": "3494",
@@ -96857,9 +97699,15 @@
       "holdings_date": "2026-11-05",
       "listing_date": "2015-12-14",
       "return_5y": 54.97,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 1,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": 96.26,
+      "return_10y": 450.34
     },
     {
       "sym": "006207",
@@ -96961,9 +97809,13 @@
       "holdings_date": null,
       "listing_date": "2012-06-22",
       "return_5y": -3.89,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 22.36,
+      "return_10y": 36.59
     },
     {
       "sym": "00739",
@@ -97068,9 +97920,13 @@
       "last_distribution_date": "2025-10-23",
       "last_distribution_amount": 0.9,
       "return_5y": -8.92,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 18.08,
+      "return_10y": 30.66
     },
     {
       "sym": "2929",
@@ -97232,9 +98088,11 @@
         ]
       ],
       "listing_date": "2026-06-03",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "1441",
@@ -97582,9 +98440,15 @@
       "holdings_date": "2026/11/04",
       "listing_date": "2016-03-29",
       "return_5y": 10.85,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 3,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": 4.59,
+      "return_10y": 161.42
     },
     {
       "sym": "00709",
@@ -97686,9 +98550,13 @@
       "holdings_date": "2026/11/04",
       "listing_date": "2017-08-15",
       "return_5y": 60.25,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 51.42,
+      "return_10y": 92.3
     },
     {
       "sym": "2911",
@@ -97897,9 +98765,15 @@
       "holdings_date": "2026-11-05",
       "listing_date": "2015-12-14",
       "return_5y": -33.7,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 2,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": -36.93,
+      "return_10y": -76.24
     },
     {
       "sym": "3432",
@@ -98070,9 +98944,13 @@
       "holdings_date": null,
       "listing_date": "2017-01-16",
       "return_5y": 57.96,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 69.36,
+      "return_10y": 117.2
     },
     {
       "sym": "3150",
@@ -98468,9 +99346,13 @@
       "holdings_date": null,
       "listing_date": "2016-05-09",
       "return_5y": 88.34,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 75.67,
+      "return_10y": 205.72
     },
     {
       "sym": "009809",
@@ -98575,9 +99457,14 @@
       "last_distribution_date": "2026-09-16",
       "last_distribution_amount": 0.215,
       "return_5y": 46.38,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 34,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_10y": 46.38
     },
     {
       "sym": "8101",
@@ -98751,9 +99638,14 @@
       "last_distribution_date": "2026-10-19",
       "last_distribution_amount": 0.145,
       "return_5y": 20.53,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 45.66,
+      "return_10y": 20.53,
+      "dividend_frequency": "quarterly"
     },
     {
       "sym": "00668",
@@ -98855,9 +99747,13 @@
       "holdings_date": null,
       "listing_date": "2016-10-17",
       "return_5y": 64.17,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 49.51,
+      "return_10y": 183.73
     },
     {
       "sym": "3593",
@@ -99041,9 +99937,13 @@
       "holdings_date": "2026/11/04",
       "listing_date": "2017-07-28",
       "return_5y": 0.37,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 27.01,
+      "return_10y": -19.35
     },
     {
       "sym": "00986A",
@@ -99145,9 +100045,12 @@
       "holdings_date": null,
       "listing_date": "2025-08-27",
       "return_5y": 22.6,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 22.6
     },
     {
       "sym": "00674R",
@@ -99221,9 +100124,15 @@
       "holdings_date": "2026-11-05",
       "listing_date": "2016-10-07",
       "return_5y": 172.49,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 2,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": 168.91,
+      "return_10y": 66.68
     },
     {
       "sym": "00920",
@@ -99328,9 +100237,13 @@
       "last_distribution_date": "2025-01-17",
       "last_distribution_amount": 0.206,
       "return_5y": 37.07,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 45.2,
+      "return_10y": 37.07
     },
     {
       "sym": "00956",
@@ -99435,9 +100348,13 @@
       "last_distribution_date": "2026-10-19",
       "last_distribution_amount": 0.3,
       "return_5y": 48.74,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 48.74,
+      "dividend_frequency": "quarterly"
     },
     {
       "sym": "0057",
@@ -99542,9 +100459,15 @@
       "last_distribution_date": "2016-08-02",
       "last_distribution_amount": 1.685,
       "return_5y": 155.27,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 50,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": 169.7,
+      "return_10y": 504.17
     },
     {
       "sym": "00714",
@@ -99649,9 +100572,14 @@
       "last_distribution_date": "2026-10-19",
       "last_distribution_amount": 0.123,
       "return_5y": 11.23,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 30.65,
+      "return_10y": 44.15,
+      "dividend_frequency": "quarterly"
     },
     {
       "sym": "009810",
@@ -99743,9 +100671,14 @@
       "holdings_date": null,
       "listing_date": "2025-07-16",
       "return_5y": 34.87,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 8,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_10y": 34.87
     },
     {
       "sym": "2314",
@@ -99934,9 +100867,13 @@
       "last_distribution_date": "2026-10-16",
       "last_distribution_amount": 2.5,
       "return_5y": 70.26,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 89.44,
+      "return_10y": 230.08
     },
     {
       "sym": "00641R",
@@ -100012,9 +100949,15 @@
       "holdings_date": "2026/11/04",
       "listing_date": "2015-09-10",
       "return_5y": -59.29,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 5,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": -48.06,
+      "return_10y": -78.84
     },
     {
       "sym": "1213",
@@ -100188,9 +101131,13 @@
       "last_distribution_date": "2020-10-28",
       "last_distribution_amount": 0.36,
       "return_5y": 41.52,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 42.9,
+      "return_10y": 122.81
     },
     {
       "sym": "00899",
@@ -100292,9 +101239,13 @@
       "holdings_date": null,
       "listing_date": "2022-01-21",
       "return_5y": -0.75,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 9.97,
+      "return_10y": -0.75
     },
     {
       "sym": "00972",
@@ -100397,9 +101348,11 @@
       "dividend_yield_ttm": 0.9883,
       "last_distribution_date": "2026-09-16",
       "last_distribution_amount": 0.22,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00686R",
@@ -100495,9 +101448,15 @@
       "holdings_date": null,
       "listing_date": "2017-03-30",
       "return_5y": -65.17,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 9,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": -61.37,
+      "return_10y": -87.6
     },
     {
       "sym": "006204",
@@ -100602,9 +101561,14 @@
       "last_distribution_date": "2025-10-23",
       "last_distribution_amount": 3.259,
       "return_5y": 128.59,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 122.35,
+      "return_10y": 435.35,
+      "dividend_frequency": "annual"
     },
     {
       "sym": "00683L",
@@ -100670,9 +101634,15 @@
       "holdings_date": "2026-11-05",
       "listing_date": "2017-03-14",
       "return_5y": 26.58,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 3,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": 2.49,
+      "return_10y": 17.52
     },
     {
       "sym": "00886",
@@ -100769,9 +101739,11 @@
         ]
       ],
       "listing_date": "2021-03-31",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00982T",
@@ -100875,9 +101847,12 @@
       "last_distribution_date": "2026-09-16",
       "last_distribution_amount": 1.0,
       "return_5y": 26.74,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_10y": 26.74
     },
     {
       "sym": "00852L",
@@ -100938,9 +101913,15 @@
       "holdings_date": null,
       "listing_date": "2019-08-22",
       "return_5y": 34.28,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 2,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": 56.52,
+      "return_10y": 98.47
     },
     {
       "sym": "00771",
@@ -101044,9 +102025,14 @@
       "last_distribution_date": "2026-11-20",
       "last_distribution_amount": 0.21,
       "return_5y": -2.25,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 6.27,
+      "return_10y": 0.58,
+      "dividend_frequency": "5x/year"
     },
     {
       "sym": "009807",
@@ -101142,9 +102128,11 @@
         ]
       ],
       "listing_date": "2025-05-28",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00736",
@@ -101249,9 +102237,14 @@
       "last_distribution_date": "2026-07-16",
       "last_distribution_amount": 0.25,
       "return_5y": 36.48,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 46.91,
+      "return_10y": 62.25,
+      "dividend_frequency": "semi-annual"
     },
     {
       "sym": "00651R",
@@ -101312,9 +102305,15 @@
       "holdings_date": null,
       "listing_date": "2016-01-27",
       "return_5y": -23.32,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 2,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": -34.53,
+      "return_10y": -51.62
     },
     {
       "sym": "00783",
@@ -101416,9 +102415,13 @@
       "holdings_date": "2026/11/04",
       "listing_date": "2019-03-27",
       "return_5y": -6.17,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 18.78,
+      "return_10y": 14.15
     },
     {
       "sym": "00638R",
@@ -101479,9 +102482,15 @@
       "holdings_date": "2026-11-05",
       "listing_date": "2015-05-18",
       "return_5y": -5.25,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 2,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": -21.7,
+      "return_10y": -56.65
     },
     {
       "sym": "00702",
@@ -101585,9 +102594,14 @@
       "last_distribution_date": "2026-07-16",
       "last_distribution_amount": 0.68,
       "return_5y": 57.21,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 43.6,
+      "return_10y": 73.02,
+      "dividend_frequency": "semi-annual"
     },
     {
       "sym": "00681R",
@@ -101643,9 +102657,15 @@
       "holdings_date": "2026-11-05",
       "listing_date": "2017-01-17",
       "return_5y": 70.47,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 1,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": 4.58,
+      "return_10y": 12.12
     },
     {
       "sym": "00689R",
@@ -101711,9 +102731,15 @@
       "holdings_date": null,
       "listing_date": "2017-04-13",
       "return_5y": 70.66,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 3,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": 5.38,
+      "return_10y": 17.5
     },
     {
       "sym": "00998A",
@@ -101806,9 +102832,11 @@
         ]
       ],
       "listing_date": "2026-04-15",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00703",
@@ -101910,9 +102938,13 @@
       "holdings_date": null,
       "listing_date": "2017-08-10",
       "return_5y": -15.96,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 11.95,
+      "return_10y": -13.35
     },
     {
       "sym": "00634R",
@@ -101983,9 +103015,15 @@
       "holdings_date": "2026/11/04",
       "listing_date": "2014-11-25",
       "return_5y": -9.82,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 4,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": -23.01,
+      "return_10y": -61.34
     },
     {
       "sym": "00684R",
@@ -102050,9 +103088,15 @@
       "holdings_date": "2026-11-05",
       "listing_date": "2017-03-14",
       "return_5y": -19.71,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 3,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": -6.77,
+      "return_10y": -27.63
     },
     {
       "sym": "00656R",
@@ -102118,9 +103162,15 @@
       "holdings_date": null,
       "listing_date": "2016-03-18",
       "return_5y": -8.03,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 3,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": -21.75,
+      "return_10y": -60.08
     },
     {
       "sym": "00654R",
@@ -102181,9 +103231,15 @@
       "holdings_date": "2026/11/04",
       "listing_date": "2016-03-29",
       "return_5y": -21.61,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 2,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": -14.51,
+      "return_10y": -66.94
     },
     {
       "sym": "00666R",
@@ -102244,9 +103300,15 @@
       "holdings_date": "2026/11/04",
       "listing_date": "2016-08-05",
       "return_5y": -19.63,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 2,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": -34.18,
+      "return_10y": -46.26
     },
     {
       "sym": "00937B",
@@ -102338,9 +103400,11 @@
         ]
       ],
       "listing_date": "2023-12-05",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj_aum_tier",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00679B",
@@ -102431,9 +103495,12 @@
         ]
       ],
       "listing_date": "2017-01-17",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj_aum_tier",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_date": "2026-11-05",
+      "holdings_verified": "partial",
+      "holdings_type": "bond"
     },
     {
       "sym": "00687B",
@@ -102525,9 +103592,11 @@
         ]
       ],
       "listing_date": "2017-04-13",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj_aum_tier",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "bond"
     },
     {
       "sym": "00657K",
@@ -102629,9 +103698,13 @@
       "holdings_date": null,
       "listing_date": "2017-10-24",
       "return_5y": 59.49,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 79.91,
+      "return_10y": -7.4
     },
     {
       "sym": "00751B",
@@ -102723,9 +103796,12 @@
         ]
       ],
       "listing_date": "2018-10-03",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj_aum_tier",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_date": "2026-11-05",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00720B",
@@ -102817,9 +103893,12 @@
         ]
       ],
       "listing_date": "2018-02-01",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj_aum_tier",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_date": "2026-11-05",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00795B",
@@ -102911,9 +103990,11 @@
         ]
       ],
       "listing_date": "2019-04-11",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00636K",
@@ -103015,9 +104096,13 @@
       "holdings_date": null,
       "listing_date": "2017-10-24",
       "return_5y": -19.67,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 13.32,
+      "return_10y": -56.5
     },
     {
       "sym": "00772B",
@@ -103109,9 +104194,11 @@
         ]
       ],
       "listing_date": "2019-01-29",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj_aum_tier",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00933B",
@@ -103203,9 +104290,11 @@
         ]
       ],
       "listing_date": "2023-10-19",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj_aum_tier",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00725B",
@@ -103297,9 +104386,11 @@
         ]
       ],
       "listing_date": "2018-02-07",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj_aum_tier",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00420A",
@@ -103417,9 +104508,13 @@
       "holdings_date": null,
       "listing_date": "2017-10-24",
       "return_5y": 38.75,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 46.45,
+      "return_10y": -15.06
     },
     {
       "sym": "009833",
@@ -103527,9 +104622,12 @@
         ]
       ],
       "listing_date": "2018-02-01",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_date": "2026-11-05",
+      "holdings_verified": "partial",
+      "holdings_type": "bond"
     },
     {
       "sym": "00764B",
@@ -103621,9 +104719,11 @@
         ]
       ],
       "listing_date": "2018-12-24",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00981B",
@@ -103714,9 +104814,11 @@
         ]
       ],
       "listing_date": "2025-03-10",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00696B",
@@ -103808,9 +104910,12 @@
         ]
       ],
       "listing_date": "2017-06-08",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_date": "2026/11/04",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00948B",
@@ -103902,9 +105007,11 @@
         ]
       ],
       "listing_date": "2024-06-12",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00859B",
@@ -103996,9 +105103,11 @@
         ]
       ],
       "listing_date": "2019-10-18",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00722B",
@@ -104090,9 +105199,11 @@
         ]
       ],
       "listing_date": "2017-12-15",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00864B",
@@ -104184,9 +105295,11 @@
         ]
       ],
       "listing_date": "2019-10-18",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00724B",
@@ -104278,9 +105391,11 @@
         ]
       ],
       "listing_date": "2017-12-15",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00931B",
@@ -104372,9 +105487,11 @@
         ]
       ],
       "listing_date": "2023-08-07",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00411A",
@@ -104465,9 +105582,11 @@
         ]
       ],
       "listing_date": "2026-08-26",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00740B",
@@ -104559,9 +105678,12 @@
         ]
       ],
       "listing_date": "2018-06-08",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_date": "2026/11/04",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00857B",
@@ -104653,9 +105775,11 @@
         ]
       ],
       "listing_date": "2019-09-30",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00950B",
@@ -104747,9 +105871,11 @@
         ]
       ],
       "listing_date": "2024-07-09",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00773B",
@@ -104841,9 +105967,11 @@
         ]
       ],
       "listing_date": "2019-01-29",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00981D",
@@ -104935,9 +106063,11 @@
         ]
       ],
       "listing_date": "2025-09-16",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00989B",
@@ -105029,9 +106159,11 @@
         ]
       ],
       "listing_date": "2026-03-31",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00969B",
@@ -105123,9 +106255,12 @@
         ]
       ],
       "listing_date": "2024-12-09",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_date": "2026-11-05",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00694B",
@@ -105217,9 +106352,12 @@
         ]
       ],
       "listing_date": "2017-06-08",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_date": "2026/11/04",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00959B",
@@ -105311,9 +106449,11 @@
         ]
       ],
       "listing_date": "2024-08-28",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00988B",
@@ -105405,9 +106545,11 @@
         ]
       ],
       "listing_date": "2026-03-25",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00746B",
@@ -105499,9 +106641,12 @@
         ]
       ],
       "listing_date": "2018-08-15",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_date": "2026/11/04",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00723B",
@@ -105593,9 +106738,11 @@
         ]
       ],
       "listing_date": "2017-12-15",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00984B",
@@ -105687,9 +106834,11 @@
         ]
       ],
       "listing_date": "2025-05-13",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00853B",
@@ -105781,9 +106930,11 @@
         ]
       ],
       "listing_date": "2019-09-04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00968B",
@@ -105874,9 +107025,12 @@
         ]
       ],
       "listing_date": "2024-12-09",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_date": "2026-11-05",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00697B",
@@ -105968,9 +107122,12 @@
         ]
       ],
       "listing_date": "2017-06-23",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_date": "2026-11-05",
+      "holdings_verified": "partial",
+      "holdings_type": "bond"
     },
     {
       "sym": "00990B",
@@ -106062,9 +107219,11 @@
         ]
       ],
       "listing_date": "2026-07-09",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00980T",
@@ -106156,9 +107315,11 @@
         ]
       ],
       "listing_date": "2025-08-15",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00987B",
@@ -106250,9 +107411,11 @@
         ]
       ],
       "listing_date": "2026-01-22",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00768B",
@@ -106344,9 +107507,11 @@
         ]
       ],
       "listing_date": "2019-01-28",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00987D",
@@ -106417,9 +107582,13 @@
         ]
       ],
       "listing_date": "2026-08-26",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 6,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity"
     },
     {
       "sym": "00942B",
@@ -106511,9 +107680,11 @@
         ]
       ],
       "listing_date": "2024-04-18",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00761B",
@@ -106605,9 +107776,11 @@
         ]
       ],
       "listing_date": "2018-11-30",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00980D",
@@ -106699,9 +107872,11 @@
         ]
       ],
       "listing_date": "2025-08-04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "bond"
     },
     {
       "sym": "00970B",
@@ -106793,9 +107968,11 @@
         ]
       ],
       "listing_date": "2024-12-17",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00779B",
@@ -106887,9 +108064,11 @@
         ]
       ],
       "listing_date": "2019-02-14",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00862B",
@@ -106981,9 +108160,11 @@
         ]
       ],
       "listing_date": "2019-10-18",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00726B",
@@ -107075,9 +108256,11 @@
         ]
       ],
       "listing_date": "2018-02-07",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "bond"
     },
     {
       "sym": "00966B",
@@ -107169,9 +108352,11 @@
         ]
       ],
       "listing_date": "2024-12-16",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00695B",
@@ -107263,9 +108448,12 @@
         ]
       ],
       "listing_date": "2017-06-08",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_date": "2026/11/04",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00799B",
@@ -107357,9 +108545,11 @@
         ]
       ],
       "listing_date": "2019-05-03",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00985D",
@@ -107451,9 +108641,11 @@
         ]
       ],
       "listing_date": "2026-03-30",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00867B",
@@ -107545,9 +108737,11 @@
         ]
       ],
       "listing_date": "2019-11-15",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00782B",
@@ -107639,9 +108833,11 @@
         ]
       ],
       "listing_date": "2019-03-07",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00863B",
@@ -107733,9 +108929,11 @@
         ]
       ],
       "listing_date": "2019-10-18",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00780B",
@@ -107827,9 +109025,11 @@
         ]
       ],
       "listing_date": "2019-03-07",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00756B",
@@ -107921,9 +109121,11 @@
         ]
       ],
       "listing_date": "2018-10-22",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00986D",
@@ -108015,9 +109217,11 @@
         ]
       ],
       "listing_date": "2026-04-15",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "bond"
     },
     {
       "sym": "00754B",
@@ -108109,9 +109313,11 @@
         ]
       ],
       "listing_date": "2018-10-22",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00983B",
@@ -108203,9 +109409,11 @@
         ]
       ],
       "listing_date": "2025-05-13",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00849B",
@@ -108297,9 +109505,11 @@
         ]
       ],
       "listing_date": "2019-07-30",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00992B",
@@ -108384,9 +109594,11 @@
         ]
       ],
       "listing_date": "2026-10-08",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00957B",
@@ -108478,9 +109690,11 @@
         ]
       ],
       "listing_date": "2024-09-10",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00967B",
@@ -108571,9 +109785,12 @@
         ]
       ],
       "listing_date": "2024-12-09",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_date": "2026-11-05",
+      "holdings_verified": "partial",
+      "holdings_type": "bond"
     },
     {
       "sym": "00980B",
@@ -108665,9 +109882,11 @@
         ]
       ],
       "listing_date": "2025-01-22",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00792B",
@@ -108759,9 +109978,11 @@
         ]
       ],
       "listing_date": "2019-04-03",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00890B",
@@ -108853,9 +110074,11 @@
         ]
       ],
       "listing_date": "2021-05-10",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00848B",
@@ -108947,9 +110170,11 @@
         ]
       ],
       "listing_date": "2019-07-30",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00842B",
@@ -109041,9 +110266,11 @@
         ]
       ],
       "listing_date": "2019-06-14",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00884B",
@@ -109135,9 +110362,11 @@
         ]
       ],
       "listing_date": "2021-02-04",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00860B",
@@ -109229,9 +110458,11 @@
         ]
       ],
       "listing_date": "2019-10-18",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00760B",
@@ -109323,9 +110554,11 @@
         ]
       ],
       "listing_date": "2018-11-14",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00727B",
@@ -109417,9 +110650,11 @@
         ]
       ],
       "listing_date": "2018-02-07",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00844B",
@@ -109511,9 +110746,11 @@
         ]
       ],
       "listing_date": "2019-07-18",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00741B",
@@ -109605,9 +110842,12 @@
         ]
       ],
       "listing_date": "2018-06-08",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_date": "2026/11/04",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00958B",
@@ -109699,9 +110939,11 @@
         ]
       ],
       "listing_date": "2024-09-18",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00755B",
@@ -109793,9 +111035,11 @@
         ]
       ],
       "listing_date": "2018-10-22",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00789B",
@@ -109887,9 +111131,11 @@
         ]
       ],
       "listing_date": "2019-03-20",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00791B",
@@ -109981,9 +111227,11 @@
         ]
       ],
       "listing_date": "2019-03-20",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00759B",
@@ -110075,9 +111323,11 @@
         ]
       ],
       "listing_date": "2018-11-14",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00758B",
@@ -110169,9 +111419,11 @@
         ]
       ],
       "listing_date": "2018-11-14",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00778B",
@@ -110263,9 +111515,11 @@
         ]
       ],
       "listing_date": "2019-02-14",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00834B",
@@ -110357,9 +111611,11 @@
         ]
       ],
       "listing_date": "2019-05-09",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00781B",
@@ -110451,9 +111707,11 @@
         ]
       ],
       "listing_date": "2019-03-07",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "009825",
@@ -110533,9 +111791,11 @@
         ]
       ],
       "listing_date": "2026-07-17",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00750B",
@@ -110627,9 +111887,11 @@
         ]
       ],
       "listing_date": "2018-09-20",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00845B",
@@ -110721,9 +111983,12 @@
         ]
       ],
       "listing_date": "2019-07-16",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_date": "2026/11/04",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00788B",
@@ -110815,9 +112080,12 @@
         ]
       ],
       "listing_date": "2019-04-02",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_date": "2026-11-05",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00846B",
@@ -110909,9 +112177,12 @@
         ]
       ],
       "listing_date": "2019-07-16",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_date": "2026/11/04",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00777B",
@@ -111003,9 +112274,11 @@
         ]
       ],
       "listing_date": "2019-02-14",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00840B",
@@ -111097,9 +112370,11 @@
         ]
       ],
       "listing_date": "2019-06-10",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00786B",
@@ -111190,9 +112465,12 @@
         ]
       ],
       "listing_date": "2019-04-02",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_date": "2026-11-05",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00749B",
@@ -111284,9 +112562,11 @@
         ]
       ],
       "listing_date": "2018-09-20",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00841B",
@@ -111378,9 +112658,11 @@
         ]
       ],
       "listing_date": "2019-06-10",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00785B",
@@ -111472,9 +112754,12 @@
         ]
       ],
       "listing_date": "2019-03-27",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_date": "2026/11/04",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00856B",
@@ -111566,9 +112851,11 @@
         ]
       ],
       "listing_date": "2019-09-30",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00687C",
@@ -111660,9 +112947,11 @@
         ]
       ],
       "listing_date": "2025-01-10",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "bond"
     },
     {
       "sym": "00836B",
@@ -111754,9 +113043,11 @@
         ]
       ],
       "listing_date": "2019-05-22",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "009806",
@@ -111851,9 +113142,11 @@
         ]
       ],
       "listing_date": "2025-05-28",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00734B",
@@ -111945,9 +113238,11 @@
         ]
       ],
       "listing_date": "2018-05-24",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00982B",
@@ -112039,9 +113334,11 @@
         ]
       ],
       "listing_date": "2025-04-28",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00625K",
@@ -112140,9 +113437,13 @@
       "holdings_date": "2026/11/04",
       "listing_date": "2016-08-08",
       "return_5y": -8.38,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": 8.85,
+      "return_10y": 29.23
     },
     {
       "sym": "00643K",
@@ -112242,9 +113543,13 @@
       "holdings_date": null,
       "listing_date": "2016-08-26",
       "return_5y": -28.27,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity",
+      "return_3y": -31.63,
+      "return_10y": -6.12
     },
     {
       "sym": "00707R",
@@ -112302,9 +113607,15 @@
       "holdings_date": "2026-11-05",
       "listing_date": "2017-09-01",
       "return_5y": 57.62,
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_total_count": 2,
+      "holdings_verified": "partial",
+      "holdings_coverage_pct": 100.0,
+      "holdings_type": "equity",
+      "return_3y": 16.55,
+      "return_10y": 61.41
     },
     {
       "sym": "1538",
@@ -112462,9 +113773,12 @@
         ]
       ],
       "listing_date": "2019-04-02",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_date": "2026-11-05",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "00870B",
@@ -112555,9 +113869,12 @@
         ]
       ],
       "listing_date": "2020-01-09",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_date": "2026-11-05",
+      "holdings_verified": "partial",
+      "holdings_type": "bond"
     },
     {
       "sym": "00986B",
@@ -112648,9 +113965,11 @@
         ]
       ],
       "listing_date": "2025-11-12",
-      "fee_source": "aum_tier",
-      "fee_verified": "pending",
-      "currency": "TWD"
+      "fee_source": "moneydj",
+      "fee_verified": "conflict",
+      "currency": "TWD",
+      "holdings_verified": "partial",
+      "holdings_type": "equity"
     },
     {
       "sym": "1808",
