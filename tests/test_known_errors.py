@@ -402,6 +402,14 @@ check("ETF 每日淨值：快照涵蓋 ≥300 檔", len(_nav_doc.get('navs') or 
       f"目前 {len((_nav_doc.get('navs') or {}))} 檔")
 check("ETF 每日淨值：檔案為緊湊格式",
       _nav_bytes == json.dumps(_nav_doc, ensure_ascii=False, separators=(",", ":")).encode("utf-8"))
+
+# ETF 持股歷史（2026-11-22 新增：月檔 TSV 累積，供 compare 頁換股比對；唯一鍵 record_date+etf_code+stock_code）
+_hidx = json.loads(open('data/etf-holdings-history/index.json', 'rb').read())
+check("ETF 持股歷史：索引含 ≥1 個月份檔", len(_hidx.get('months') or []) >= 1,
+      f"months={(_hidx.get('months') or [])}")
+_hhdr = open('data/etf-holdings-history/' + (_hidx['months'][0]) + '.tsv', encoding='utf-8').readline().strip()
+check("ETF 持股歷史：TSV 欄位正確",
+      _hhdr == "record_date\tetf_code\tstock_code\tstock_name\tweight", f"header={_hhdr!r}")
 _slim_writers = (_fd2 + _fin
                  + open('skills/data/compute_indicators.py', encoding='utf-8').read()
                  + open('skills/data/integrate_official_company.py', encoding='utf-8').read())

@@ -67,6 +67,11 @@
 </div>
 <div id="cmpHoldings"></div>
 
+<div class="muted-small-top" style="margin:8px 0;">
+  <label><input type="checkbox" id="cmpDiffChk" onchange="toggleCmpDiff(this.checked)"> 換股比對（歷史持股 diff：選 ETF 與兩個快照日期；快照由每月持股更新自動累積）</label>
+</div>
+<div id="cmpDiff"></div>
+
 <script src="assets/js/data-client.js"></script>
 <script src="assets/js/mklab-core.js"></script>
 <script src="vendor/echarts.min.js"></script>
@@ -329,9 +334,125 @@
     box.innerHTML = html;
   }
 
+  // ===== 換股比對（歷史持股 diff，2026-11-22 新增）=====
+  // 資料源：data/etf-holdings-history/{index.json, YYYY-MM.tsv}（accumulate_etf_holdings_history.py 每月累積）。
+  // 設計學自 dj8111/taiwan-etf-holdings 的 record_date 快照概念；唯一鍵 record_date+etf_code+stock_code。
+  const DIFF_KEY = 'mk_cmp_diff';
+  let showDiff = false;
+  try { showDiff = localStorage.getItem(DIFF_KEY) === '1'; } catch (e) {}
+  let diffIndex = null, diffCache = {}, diffRows = null;
+  function toggleCmpDiff(on) {
+    showDiff = !!on;
+    try { localStorage.setItem(DIFF_KEY, on ? '1' : '0'); } catch (e) {}
+    renderDiff();
+  }
+  window.toggleCmpDiff = toggleCmpDiff;
+  async function ensureDiffIndex() {
+    if (diffIndex) return diffIndex;
+    try {
+      diffIndex = await (await fetch('data/etf-holdings-history/index.json')).json();
+    } catch (e) { diffIndex = { months: [] }; }
+    return diffIndex;
+  }
+  async function loadDiffMonth(m) {
+    if (diffCache[m]) return diffCache[m];
+    try {
+      const t = await (await fetch('data/etf-holdings-history/' + m + '.tsv')).text();
+      diffCache[m] = t.trim().split(/\r?\n/).slice(1).filter(Boolean).map(l => l.split('\t'));
+    } catch (e) { diffCache[m] = []; }
+    return diffCache[m];
+  }
+  function renderDiff() {
+    const box = document.getElementById('cmpDiff');
+    if (!box) return;
+    const chk = document.getElementById('cmpDiffChk');
+    if (chk) chk.checked = showDiff;
+    if (!showDiff) { box.innerHTML = ''; return; }
+    box.innerHTML = '<p class="muted-small-top">換股比對載入中…</p>';
+    ensureDiffIndex().then(async idx => {
+      let all = [];
+      for (const m of (idx.months || [])) all = all.concat(await loadDiffMonth(m));
+      diffRows = all;
+      drawDiff(box, idx);
+    });
+  }
+  function diffDatesFor(sym) {
+    const set = new Set((diffRows || []).filter(r => r[1] === sym).map(r => r[0]));
+    return [...set].sort();
+  }
+  function drawDiff(box, idx) {
+    const list = getList();
+    const etfDates = {};
+    (diffRows || []).forEach(r => {
+      if (list.includes(r[1])) (etfDates[r[1]] = etfDates[r[1]] || new Set()).add(r[0]);
+    });
+    const syms = Object.keys(etfDates).sort();
+    if (!syms.length) {
+      box.innerHTML = '<p class="muted-small-top">歷史持股尚未涵蓋比較清單中的 ETF（每月持股更新後會自動累積；目前僅有來源含基準日的檔案會入史）。</p>';
+      return;
+    }
+    const prevSym = (document.getElementById('cmpDiffSym') || {}).value;
+    const sym = (prevSym && etfDates[prevSym]) ? prevSym : syms[syms.length - 1];
+    const dates = diffDatesFor(sym);
+    const prevD1 = (document.getElementById('cmpDiffD1') || {}).value;
+    const prevD2 = (document.getElementById('cmpDiffD2') || {}).value;
+    const d1 = (prevD1 && dates.includes(prevD1)) ? prevD1 : (dates.length > 1 ? dates[dates.length - 2] : dates[0]);
+    const d2 = (prevD2 && dates.includes(prevD2)) ? prevD2 : dates[dates.length - 1];
+    const opts = (ds, sel) => ds.map(d => `<option${d === sel ? ' selected' : ''}>${d}</option>`).join('');
+    box.innerHTML =
+      '<div style="margin:8px 0;">' +
+      '<label>ETF <select id="cmpDiffSym" onchange="onDiffCtl()">' + opts(syms, sym) + '</select></label> ' +
+      '<label>舊快照 <select id="cmpDiffD1" onchange="onDiffCtl()">' + opts(dates, d1) + '</select></label> ' +
+      '<label>新快照 <select id="cmpDiffD2" onchange="onDiffCtl()">' + opts(dates, d2) + '</select></label>' +
+      '</div><div id="cmpDiffOut"></div>';
+    onDiffCtl();
+  }
+  function onDiffCtl() {
+    const sym = document.getElementById('cmpDiffSym').value;
+    const d1 = document.getElementById('cmpDiffD1').value;
+    const d2 = document.getElementById('cmpDiffD2').value;
+    const rows = (diffRows || []).filter(r => r[1] === sym && (r[0] === d1 || r[0] === d2) && !isNoise(r[2], r[3]));
+    const h1 = {}, h2 = {};
+    rows.forEach(r => { (r[0] === d1 ? h1 : h2)[r[2]] = [r[3], parseFloat(r[4])]; });
+    const added = Object.keys(h2).filter(c => !(c in h1)).sort();
+    const removed = Object.keys(h1).filter(c => !(c in h2)).sort();
+    const changed = Object.keys(h1).filter(c => c in h2)
+      .map(c => [c, h2[c][0], h1[c][1], h2[c][1]])
+      .filter(x => Math.abs(x[3] - x[2]) >= 0.01)
+      .sort((a, b) => Math.abs(b[3] - b[2]) - Math.abs(a[3] - a[2]));
+    let html = '';
+    if (d1 === d2) {
+      html = '<p class="muted-small-top">目前該 ETF 只有 ' + dates1Text(sym) + '；待下次持股更新累積新快照後即可比對。</p>';
+    } else {
+      html += '<p class="muted-small-top">快照規模：' + Object.keys(h1).length + ' 檔 → ' + Object.keys(h2).length + ' 檔' +
+        '（已過濾現金／期貨等非個股列）</p>';
+      if (added.length) {
+        html += '<p><b>＋ 新增 ' + added.length + ' 檔</b></p><div class="table-wrap"><table><thead><tr><th>代號</th><th>名稱</th><th>新權重%</th></tr></thead><tbody>' +
+          added.map(c => '<tr><td>' + c + '</td><td>' + h2[c][0] + '</td><td>' + h2[c][1].toFixed(2) + '</td></tr>').join('') + '</tbody></table></div>';
+      }
+      if (removed.length) {
+        html += '<p><b>－ 移除 ' + removed.length + ' 檔</b></p><div class="table-wrap"><table><thead><tr><th>代號</th><th>名稱</th><th>原權重%</th></tr></thead><tbody>' +
+          removed.map(c => '<tr><td>' + c + '</td><td>' + h1[c][0] + '</td><td>' + h1[c][1].toFixed(2) + '</td></tr>').join('') + '</tbody></table></div>';
+      }
+      if (changed.length) {
+        html += '<p><b>Δ 權重變動 ' + changed.length + ' 檔</b>（|Δ|≥0.01pp，依變動量排序' + (changed.length > 20 ? '，顯示前 20' : '') + '）</p>' +
+          '<div class="table-wrap"><table><thead><tr><th>代號</th><th>名稱</th><th>舊%</th><th>新%</th><th>Δpp</th></tr></thead><tbody>' +
+          changed.slice(0, 20).map(x => '<tr><td>' + x[0] + '</td><td>' + x[1] + '</td><td>' + x[2].toFixed(2) + '</td><td>' + x[3].toFixed(2) + '</td><td>' + (x[3] - x[2] > 0 ? '+' : '') + (x[3] - x[2]).toFixed(2) + '</td></tr>').join('') + '</tbody></table></div>';
+      }
+      if (!added.length && !removed.length && !changed.length) {
+        html += '<p class="muted-small-top">兩個快照之間沒有成份股增減或權重變動（|Δ|<0.01pp）。</p>';
+      }
+      html += '<p class="muted-small-top">註：比對基於歷史快照；官方完整清單與「前 10 大」來源的覆蓋範圍不同，跨來源日期比對時請留意。</p>';
+    }
+    document.getElementById('cmpDiffOut').innerHTML = html;
+  }
+  function dates1Text(sym) { const d = diffDatesFor(sym); return d.length ? d[0] : '（無）'; }
+  window.onDiffCtl = onDiffCtl;
+
   function renderAll() {
     renderMetricChecks();
     renderChips();
+    renderDiff();
     renderTable();
     renderReturns();
     renderHoldings();

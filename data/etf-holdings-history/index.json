@@ -1,0 +1,1 @@
+{"updated":"2026-11-22","months":["2026-11"],"columns":["record_date","etf_code","stock_code","stock_name","weight"],"note":"每月一檔；唯一鍵 record_date+etf_code+stock_code；來源為 data/etf-holdings.json 快照累積。"}
