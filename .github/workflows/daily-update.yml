@@ -272,3 +272,24 @@ jobs:
         run: bash scripts/ci_qa_gate.sh
       - name: 推送
         run: 'bash scripts/ci_commit_push.sh "data: ETF 補充資料與分類 $(date +%Y-%m-%d)" data/etf-meta.json data/etf-classified.json data/stocks.json data/raw/twse_etf.csv'
+
+
+  # ETF QA 自動化排程（A1）：每週一 17:00（台灣），跑 qa_phase4.py + ci_qa_gate.sh
+  etf-qa:
+    concurrency:
+      group: mklab-git-push
+      queue: max
+      cancel-in-progress: false
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 9 * * 1'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - name: Phase 4 QA Automation
+        run: python scripts/qa_phase4.py
+      - name: QA Gate
+        run: bash scripts/ci_qa_gate.sh
