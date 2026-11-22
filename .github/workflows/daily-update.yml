@@ -23,6 +23,7 @@ on:
     - cron: "45 22 2 * *"    # index-holdings：每月 2 日 隔日 06:45
     - cron: "0 10 20 * *"    # official-fundamentals：每月 20 日 18:00
     - cron: "0 10 * * 0"     # etf-meta：每週日 18:00
+    - cron: "0 9 * * 1"      # etf-qa：每週一 17:00（台灣）
   workflow_dispatch: {}
 
 permissions:
@@ -293,3 +294,5 @@ jobs:
         run: python scripts/qa_phase4.py
       - name: QA Gate
         run: bash scripts/ci_qa_gate.sh
+      - name: 推送（QA 不改資料時為 no-op；推送一律走共用腳本）
+        run: 'bash scripts/ci_commit_push.sh "qa: ETF QA 自動化 $(date +%F)" data/'
