@@ -301,11 +301,34 @@ console.log(`取得 ${data.length} 筆資料`);</pre>
 <p class="muted-small-top">完整 143 端點對照（每個端點的實測筆數、欄位、已使用／候選／範圍外分類）：
 repo 檔 <code>data/raw/twse-openapi-usage-map.md</code>。</p>
 </div>
-<div class="card src-card"><h2>13. 主動式 ETF（A 尾）發行商官方持股端點（13 家投信破解，2026-11-22 實測導入）</h2>
-<p>主動式 ETF 的 PCF（申購買回清單）由各投信官網每日公告，<b>官方直出完整持股＋股數＋受益人數</b>。
-本站以 <code>skills/data/fetch_etf_holdings_active.py</code> 每日採集（37 檔中 34 檔官方直出，其餘 CMoney 備援）。
+<div class="card src-card"><h2>13. ETF 發行商官方持股端點（14 家投信破解，2026-11-22 實測導入）</h2>
+<p>投信官網每日公告 PCF（申購買回清單），<b>官方直出完整持股＋股數＋受益人數</b>。
+本站以 <code>skills/data/fetch_etf_holdings_active.py</code> 每日採集——涵蓋全體 ETF（含 A 尾主動式）。
 端點與陷阱知識源自 <a href="https://github.com/nctuwanglin/active-etf" target="_blank" rel="noopener">nctuwanglin/active-etf</a> 的探勘，本站為自有實作；
 「基準日 vs 公告日」欄位對照是精華——取錯會把不同持股日的快照併成同日。</p>
+<h3>各發行商可獲取性總表（2026-11-23 實測，361 檔）</h3>
+<div class="table-wrap"><table><thead><tr><th>發行商</th><th>發行檔數</th><th>官方直出</th><th>官方＋CMoney 混合</th><th>CMoney 前 10 大</th><th>無資料</th><th>狀態</th></tr></thead><tbody>
+<tr><td>國泰投信</td><td>44</td><td class="ap-applied">31</td><td>—</td><td>13</td><td>—</td><td>✅ 破解（付費版 B 尾 13 檔無 PCF 報表）</td></tr>
+<tr><td>富邦投信</td><td>51</td><td class="ap-applied">11</td><td class="ap-applied">13</td><td>27</td><td>—</td><td>✅ 破解</td></tr>
+<tr><td>元大投信</td><td>50</td><td>—</td><td class="ap-applied">37</td><td>13</td><td>—</td><td>✅ 破解（混合）</td></tr>
+<tr><td>群益投信</td><td>29</td><td class="ap-applied">4</td><td>—</td><td>25</td><td>—</td><td>✅ 破解（A 尾）</td></tr>
+<tr><td>復華投信</td><td>22</td><td class="ap-applied">4</td><td>—</td><td>18</td><td>—</td><td>✅ 破解（A 尾）</td></tr>
+<tr><td>台新投信</td><td>22</td><td class="ap-applied">3</td><td>—</td><td>19</td><td>—</td><td>✅ 破解（A 尾）</td></tr>
+<tr><td>中信投信</td><td>35</td><td class="ap-applied">3</td><td>—</td><td>32</td><td>—</td><td>✅ 破解（A 尾）</td></tr>
+<tr><td>統一投信</td><td>11</td><td class="ap-applied">4</td><td>—</td><td>7</td><td>—</td><td>✅ 破解（A 尾）</td></tr>
+<tr><td>野村投信</td><td>11</td><td class="ap-applied">3</td><td>—</td><td>8</td><td>—</td><td>✅ 破解（A 尾）</td></tr>
+<tr><td>安聯投信</td><td>4</td><td class="ap-applied">4</td><td>—</td><td>—</td><td>—</td><td>✅ 破解（100%）</td></tr>
+<tr><td>第一金投信</td><td>6</td><td class="ap-applied">2</td><td>—</td><td>4</td><td>—</td><td>✅ 破解（A 尾；無清單端點→ID 掃描）</td></tr>
+<tr><td>凱基投信</td><td>18</td><td class="ap-applied">1</td><td>—</td><td>17</td><td>—</td><td>✅ 破解（A 尾）</td></tr>
+<tr><td>永豐投信</td><td>13</td><td class="ap-applied">1</td><td>—</td><td>12</td><td>—</td><td>✅ 破解（A 尾）</td></tr>
+<tr><td>聯博投信</td><td>3</td><td class="ap-applied">1</td><td>—</td><td>2</td><td>—</td><td>✅ 破解（A 尾）</td></tr>
+<tr><td>玉山投信</td><td>5</td><td class="ap-applied">1</td><td>—</td><td>4</td><td>—</td><td>✅ 破解（A 尾）</td></tr>
+<tr><td>摩根投信</td><td>2</td><td>—</td><td>—</td><td>2</td><td>—</td><td>🧪 已實作，2026-11-22 起端點 404（每日重試）</td></tr>
+<tr><td>兆豐國際投信</td><td>10</td><td>—</td><td>—</td><td>10</td><td>—</td><td>🧪 已實作，資料中心 IP 403</td></tr>
+<tr><td>大華銀／富蘭克林華美／貝萊德／華南永昌／聯邦／街口</td><td>23</td><td>—</td><td>—</td><td>23</td><td>—</td><td>⬜ 未破解（多為債券/海外型，CMoney 備援）</td></tr>
+<tr><td><b>合計</b></td><td><b>361</b></td><td class="ap-applied"><b>73</b></td><td class="ap-applied"><b>50</b></td><td><b>236</b></td><td><b>2</b></td><td><b>123 檔官方持股直出（34%）</b></td></tr>
+</tbody></table></div>
+<p class="src-note">搭配資料：費用三欄（經理費/保管費/合計費率）已於台股 ETF CSV 提供，保管費覆蓋 359/361（MoneyDJ 實抓，<code>integrate_etf_extras.py</code>）；官方持股總數僅標 73 檔官方完整清單（CMoney 樣本數不冒充總數）。</p>
 <div class="table-wrap"><table><thead><tr><th>發行商</th><th>端點</th><th>格式</th><th>獲取方法與陷阱（基準日欄位）</th><th>本站應用</th></tr></thead><tbody>
 <tr><td>統一 ezmoney</td><td><a href="https://www.ezmoney.com.tw/ETF/Transaction/PCF" target="_blank" rel="noopener">ezmoney.com.tw/ETF/Transaction/GetPCF</a></td><td><span class="src-tag json">JSON</span></td><td>先 GET PCF 頁建 session，抽 <code>DataFundList</code>（html-escaped JSON，代號↔內部碼）再 POST {fundCode, date:民國未來日}。基準日=<code>pcf[0].TranDate</code>（.NET 日期需 +8 時區解）</td><td class="ap-applied">✅ 已應用<br><small>4 檔（00403A/00981A 等，含受益人數）</small></td></tr>
 <tr><td>群益 capitalfund</td><td><a href="https://www.capitalfund.com.tw/CFWeb/api/etf/items" target="_blank" rel="noopener">capitalfund.com.tw/CFWeb/api/etf/buyback</a></td><td><span class="src-tag json">JSON</span></td><td>POST items {} 取代號↔fundNo → POST buyback {fundId}。基準日=<code>pcf.date2</code>（<code>date1</code> 是公告日勿用）。站有 Incapsula 但 JSON POST 可通</td><td class="ap-applied">✅ 已應用<br><small>4 檔（00982A 63 檔持股等）</small></td></tr>
