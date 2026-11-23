@@ -253,6 +253,8 @@ jobs:
         run: python skills/data/fetch_etf_holdings_cathay.py || echo "[warn] 國泰持股更新失敗，僅累積既有快照"
       - name: ETF 持股更新（聯邦官方 PCF；失敗不擋 job）
         run: python skills/data/fetch_etf_holdings_usitc.py || echo "[warn] 聯邦持股更新失敗，僅累積既有快照"
+      - name: ETF 持股更新（大華銀官方 PCF；缺憑證 bundle 即退出，失敗不擋 job）
+        run: python skills/data/fetch_etf_holdings_uobam.py || echo "[warn] 大華銀持股更新失敗，僅累積既有快照"
       - name: ETF 持股歷史累積（換股比對用，冪等）
         run: python skills/data/accumulate_etf_holdings_history.py
       - name: QA 閘門（提交前，錯誤即中止，不推送）
