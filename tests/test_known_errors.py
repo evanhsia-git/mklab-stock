@@ -385,9 +385,11 @@ check("stocks.json 格式：必須為緊湊格式（防縮排回歸）",
       _slim_bytes == json.dumps(_slim_doc, ensure_ascii=False, separators=(",", ":")).encode("utf-8"))
 # 防回歸（2026-11-22 瘦身 phase 2）：孤兒／無引用／全 null／重複欄位已移除，不得再出現。
 # official_* 與 data/official-fundamentals.json 逐筆重複；holdings 與 data/etf-holdings.json 重複；
-# 其餘為全 repo 無引用或全 null（custody_fee）。
-_PRUNED_P2 = ["annualized_return_3y", "annualized_return_5y", "custody_fee", "dividend_frequency",
-              "fee_checked_at", "holdings", "holdings_coverage_pct", "holdings_total_count",
+# 其餘為全 repo 無引用或全 null。
+# 2026-11-23：custody_fee（MoneyDJ 實抓 359 檔，skills/data/integrate_etf_extras.py）與
+# holdings_total_count（官方完整持股來源的真實總數；CMoney 樣本數不填）有真實資料源，正式回歸。
+_PRUNED_P2 = ["annualized_return_3y", "annualized_return_5y", "dividend_frequency",
+              "fee_checked_at", "holdings", "holdings_coverage_pct",
               "holdings_type", "holdings_verified", "last_distribution_date", "max_drawdown",
               "return_10y", "return_3y", "sharpe_ratio", "volatility_1y"]
 _p2_present = sorted({k for s in _slim_doc['stocks'] for k in s

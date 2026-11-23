@@ -1027,7 +1027,7 @@
   const TW_IDS = ['sym','name','ind','price','chg','chg_1m','chg_1y','pos52w_level','pe','pb','roe','roa','div','market_cap','rsi14','ma5','ma20'];
   const TW_SRC = 'TWSE OpenAPI（上市個股與 ETF）+ TPEx OpenAPI（僅上櫃 ETF）；ROE/ROA/EPS 為 TWSE 官方財報累計年化（EPS 欄位為年化 EPS）；RSI/MA/月漲跌/年漲跌/52週位階由歷史收盤價計算';
   const TW_SRC_URL = 'https://openapi.twse.com.tw/ ， https://www.tpex.org.tw/openapi/';
-  const TW_ETF_EXTRA = ['issuer','holdings10'];
+  const TW_ETF_EXTRA = ['issuer','management_fee','custody_fee','total_fee','holdings10'];
   const US_STOCK_IDS = ['sym','name','price','chg','pe','pb','roe','div','market_cap','sector','industry','currency'];
   const US_ETF_IDS = ['sym','name','price','chg','expense_ratio','yield','net_assets','ytd_return','category','currency'];
   const TODAY = () => new Date().toISOString().slice(0,10);
