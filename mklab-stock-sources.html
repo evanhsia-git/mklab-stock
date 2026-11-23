@@ -26,6 +26,13 @@
   .src-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
   .src-links a{padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);text-decoration:none}
   .src-note{border-left:3px solid var(--warn);padding-left:10px}
+  /* 2026-11-23：長網址／說明文字撐破表格寬度（手機尤甚——mobile.css 把 .table-wrap 改 overflow:visible）
+     → 儲存格內強制換行（white-space:normal 壓過主題對 code 的 nowrap；nowrap 會讓 overflow-wrap 失效），
+       換行後仍超寬的極端表格在小螢幕由容器橫向滾動承接，不再撐破版面 */
+  main table td, main table th,
+  main table td code, main table td a,
+  .src-card p, .src-note, .src-item small{ overflow-wrap:anywhere; word-break:break-word; white-space:normal; }
+  @media (max-width: 960px){ .table-wrap{ overflow-x:auto; } }
 </style>
 <style>
 .ap-applied{color:#2e7d32;font-weight:600}
