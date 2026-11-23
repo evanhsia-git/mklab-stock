@@ -461,8 +461,26 @@ try:
     check("國泰持股解析：fixture 含股數（4 欄 items，供 scale 校正）",
           _fx_items and len(_fx_items[0]) == 4 and isinstance(_fx_items[0][3], int),
           f"首筆 {_fx_items[0] if _fx_items else None}")
-except ImportError:
+except (ImportError, SystemExit):
+    # SystemExit：fetch_etf_holdings_cathay.py 頂部對缺 pandas 以 sys.exit 退出（非 ImportError）；
+    # CI 的精簡 python 環境沒有 pandas → fixture 測試優雅略過，不得讓整份測試退出（2026-11-23）。
     check("國泰持股解析：fixture 測試略過（缺 pandas）", True)
+
+# 2026-11-23 閘門升級：虧損公司不得有 PE（11-20 official-fundamentals 班 NEG_EPS_PE 26 檔
+# BLOCK 的根因＝apply_pe_from_eps 退回分支在 EPS≤0 時仍套用官方公告 PE）
+sys.path.insert(0, os.path.join(ROOT, "skills", "data"))
+import data_rules as _dr  # noqa: E402
+_r = {"price": 20.0, "eps": -1.5, "pe_official": 15.0}
+_dr.apply_pe_from_eps(_r)
+check("虧損公司（EPS≤0）pe 必為 null（不退回官方公告 PE）",
+      _r.get("pe") is None and _r.get("pe_src") is None, f"pe={_r.get('pe')}, src={_r.get('pe_src')}")
+
+# 2026-11-22 etf-meta 班曾推進缺 0050 的資料（本測試層當時不在排程閘門內）——
+# 核心 ETF 必須存在於官方清單與 stocks.json，缺任一即擋（與 fetch_etf_meta 的
+# count-drop guard 互為雙保險：來源端擋寫入、測試端擋推送）。
+for _sym in ("0050", "006208", "009816"):
+    check(f"etf-meta.json 必須含核心 ETF {_sym}",
+          any(e.get("sym") == _sym for e in json.load(open("data/etf-meta.json", encoding="utf-8"))["etfs"]))
 _slim_writers = (_fd2 + _fin
                  + open('skills/data/compute_indicators.py', encoding='utf-8').read()
                  + open('skills/data/integrate_official_company.py', encoding='utf-8').read())

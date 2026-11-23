@@ -223,6 +223,12 @@ def apply_pe_from_eps(rec: Dict[str, Any]) -> None:
     if pe_calc is not None:
         rec["pe"], rec["pe_src"] = pe_calc, "computed"
         return
+    # 2026-11-23：EPS≤0（虧損／無 EPS）時官方公告 PE 無意義——11-20 official-fundamentals 班
+    # 實測 26 檔「EPS≤0 卻有 PE」NEG_EPS_PE BLOCK，源頭正是此退回分支。虧損一律 pe=None。
+    _e = _num_or_none(rec.get("eps"))
+    if _e is not None and _e <= 0:
+        rec["pe"], rec["pe_src"] = None, None
+        return
     off = rec.get("pe_official")
     if _is_num(off):
         rec["pe"], rec["pe_src"] = off, "official"
