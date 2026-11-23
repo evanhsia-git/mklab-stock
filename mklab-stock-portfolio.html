@@ -18,6 +18,25 @@
   .pf-legend { font-size: 12px; }
   .pf-legend div { display: flex; align-items: center; gap: 6px; margin: 3px 0; }
   .pf-legend span.dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; background: var(--dot-fill, var(--accent)); }
+  /* 四維評分條 */
+  .sc-dims { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin: 10px 0; }
+  .sc-dim { border: 1px solid var(--border); border-radius: 10px; padding: 10px; }
+  .sc-dim .lbl { font-size: 12px; color: var(--muted); }
+  .sc-dim .val { font-size: 20px; font-weight: 700; }
+  .sc-bar { height: 6px; border-radius: 3px; background: var(--bg); margin-top: 6px; overflow: hidden; }
+  .sc-bar i { display: block; height: 100%; border-radius: 3px; }
+  .sc-rating { font-size: 22px; font-weight: 800; }
+  .sc-upgrade { font-size: 13px; margin-top: 8px; }
+  .pf-actions { margin: 14px 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  /* 列印／PDF：白底、隱藏導航與輸入元件、卡片不跨頁 */
+  @media print {
+    body { background: #fff !important; color: #000 !important; }
+    .sticky-header, .drawer, .drawer-mask, .freshness, .pf-form, .pf-actions,
+    .no-print, .row-input, .seg, .del, #addTip { display: none !important; }
+    .card, .table-wrap { box-shadow: none !important; border: 1px solid #bbb !important; break-inside: avoid; }
+    .section-title { break-after: avoid; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
 </style>
 </head>
 <body>
@@ -99,6 +118,23 @@
       <button class="btn-primary" onclick="addNote()">新增</button>
     </div>
   </div>
+</div>
+
+<div class="section-title">🧭 四維評分與升評路徑<span class="hint">示意版：基本面 25＋技術 25＋估值 25＋動能 25</span></div>
+<div class="card" id="scoreCard">
+  <p class="muted-small-top" id="scoreEmpty">尚未新增持股——新增持股後，這裡會對每檔標的算出四維評分、評級與「距下一級還差什麼」。</p>
+  <div id="scoreBody"></div>
+</div>
+
+<div class="section-title">💰 股息工具<span class="hint">年配息試算＋配息安全檢查（依官方股利與 EPS）</span></div>
+<div class="card" id="divCard">
+  <p class="muted-small-top" id="divEmpty">尚未新增持股——新增持股後顯示每檔的年配息試算與配息安全檢查。</p>
+  <div id="divBody"></div>
+</div>
+
+<div class="pf-actions no-print">
+  <button class="btn-primary" onclick="window.print()">📥 下載 PDF（列印／另存 PDF）</button>
+  <span class="text-muted text-sm">列印時自動隱藏輸入區與按鈕，白底排版適合存檔或分享。</span>
 </div>
 
 <script src="assets/js/data-client.js"></script>
@@ -286,6 +322,163 @@
     renderChart(rows);
     renderTable(rows);
     refreshNotesArea(rows);
+    renderScore4D(rows);
+    renderDividendTools(rows);
+  }
+
+  // ── 四維評分（示意版；權重可在此調整）──
+  const SC_WEIGHTS = { fund: 25, tech: 25, val: 25, mom: 25 };
+  const RATINGS = [
+    { min: 70, label: '🚀 TRIPLE CONFIRMED', color: '#2e7d32' },
+    { min: 65, label: '✅ STRONG BUY', color: '#2e7d32' },
+    { min: 55, label: '📈 BUY', color: '#5a9e2f' },
+    { min: 40, label: '👀 WATCH', color: '#8a6d00' },
+    { min: 25, label: '⬛ HOLD', color: '#9aa0a6' },
+    { min: 0, label: '❌ REDUCE', color: '#c62828' },
+  ];
+  function clamp(x, cap) { return Math.max(0, Math.min(cap, x)); }
+  function score4d(row) {
+    const r = ALL.find(x => String(x.sym) === row.sym) || {};
+    const isEtf = isEtfSym(row.sym);
+    // 基本面 25：ROE 分級 + 連續配息年數（ETF 無個股基本面 → null，僅標註）
+    let fund = null;
+    if (!isEtf) {
+      const roe = r.roe == null ? null : Number(r.roe);
+      let f = 0;
+      if (roe != null) f = roe >= 20 ? 15 : roe >= 15 ? 12 : roe >= 8 ? 8 : roe > 0 ? 4 : 0;
+      const streak = r.div_streak_years == null ? 0 : Number(r.div_streak_years) || 0;
+      f += streak >= 10 ? 10 : streak >= 5 ? 7 : streak >= 2 ? 4 : 0;
+      fund = clamp(f, SC_WEIGHTS.fund);
+    }
+    // 技術 25：RSI14 區間 + 站上 MA30 + KD 黃金
+    let tech = null;
+    if (r.rsi14 != null || r.ma30 != null || r.kd_k != null) {
+      const p = r.price, ma = r.ma30;
+      let t = 0;
+      const rsi = r.rsi14 == null ? null : Number(r.rsi14);
+      if (rsi != null) t += (rsi >= 50 && rsi <= 70) ? 10 : (rsi > 70 && rsi <= 80) ? 6 : (rsi > 80) ? 3 : (rsi >= 40) ? 6 : 3;
+      if (p != null && ma != null) t += p > ma ? 8 : 3;
+      if (r.kd_k != null && r.kd_d != null) t += Number(r.kd_k) > Number(r.kd_d) ? 7 : 3;
+      tech = clamp(t, SC_WEIGHTS.tech);
+    }
+    // 估值 25：PE 分級 + 現金殖利率加分（ETF 用折溢價替代：貼近 0 → 估值中性高分）
+    let val = null;
+    if (isEtf) {
+      const pd = row.premiumDiscountPct; // 之後由 renderScore4D 帶入
+      val = pd == null ? 18 : (Math.abs(pd) <= 1 ? 22 : Math.abs(pd) <= 2 ? 16 : 10);
+    } else if (r.pe != null) {
+      const pe = Number(r.pe);
+      let v = pe <= 0 ? 15 : pe < 10 ? 25 : pe < 15 ? 22 : pe < 20 ? 18 : pe < 30 ? 12 : pe < 50 ? 6 : 2;
+      const yld = (r.div_cash_latest != null && r.price > 0) ? Number(r.div_cash_latest) / r.price * 100 : null;
+      if (yld != null) v += yld >= 6 ? 5 : yld >= 4.5 ? 3 : 0;
+      val = clamp(v, SC_WEIGHTS.val);
+    }
+    // 動能 25：MA30 偏離 + 當日漲跌
+    let mom = null;
+    if (r.price != null && (r.ma30 != null || r.chg != null)) {
+      const dev = (r.ma30 != null && r.price != null) ? (r.price / r.ma30 - 1) * 100 : null;
+      let m = 12.5;
+      if (dev != null) m += clamp(dev * 0.5, -8, 8);
+      if (row.pnlPct != null) m += clamp(row.pnlPct * 0.3, -5, 5);
+      mom = clamp(m, SC_WEIGHTS.mom);
+    }
+    const parts = [fund, tech, val, mom].filter(x => x != null);
+    const total = parts.length ? parts.reduce((s, x) => s + x, 0) : null;
+    const rating = total == null ? null : RATINGS.find(r => total >= r.min);
+    return { fund, tech, val, mom, total, rating, isEtf };
+  }
+  function bar(cls, val, cap, color) {
+    const pct = val == null ? 0 : Math.round(val / cap * 100);
+    return `<div class="sc-bar"><i style="width:${pct}%;background:${color}"></i></div>`;
+  }
+  function renderScore4D(rows) {
+    const empty = document.getElementById('scoreEmpty');
+    const body = document.getElementById('scoreBody');
+    if (!rows.length) { empty.style.display = 'block'; body.innerHTML = ''; return; }
+    empty.style.display = 'none';
+    // ETF 折溢價（etf-nav.json）
+    const etfSyms = rows.filter(r => isEtfSym(r.sym)).map(r => r.sym);
+    const pdMap = {};
+    const finish = () => {
+      body.innerHTML = rows.map(row => {
+        const r = ALL.find(x => String(x.sym) === row.sym) || {};
+        const sc = score4d({ sym: row.sym, pnlPct: row.pnlPct, premiumDiscountPct: pdMap[row.sym] });
+        if (sc.total == null) return `<div class="sc-dims" style="grid-template-columns:1fr"><div class="sc-dim"><b>${row.sym} ${row.name}</b><div class="text-muted text-sm">資料不足，無法評分。</div></div></div>`;
+        // 升評路徑：四維中最弱一維的改善建議
+        const dims = [
+          { k: '基本面', v: sc.fund, cap: 25, color: '#5a9e2f', tip: r.roe == null ? '等待財報更新' : (r.roe >= 15 ? 'ROE 已達高標' : `ROE ${r.roe}%，升至 15% 以上可提高基本分`) },
+          { k: '技術', v: sc.tech, cap: 25, color: '#4f8ef7', tip: (r.price != null && r.ma30 != null && r.price <= r.ma30) ? `現價在 MA30（${Math.round(r.ma30)}）之下，站回均線可 +5 分` : (r.kd_k != null && r.kd_d != null && Number(r.kd_k) <= Number(r.kd_d)) ? 'KD 死叉中，轉黃金交叉可 +4 分' : '技術面尚可' },
+          { k: '估值', v: sc.val, cap: 25, color: '#b978f7', tip: r.pe != null ? (r.pe >= 20 ? `PE ${r.pe} 偏高，降至 20 以下可 +6~10 分` : `PE ${r.pe} 合理`) : '折溢價接近 0，估值中性' },
+          { k: '動能', v: sc.mom, cap: 25, color: '#f79b48', tip: '動能依均線偏離與報酬即時計算' },
+        ];
+        const weakest = [...dims].filter(d => d.v != null).sort((a, b) => (a.v / a.cap) - (b.v / b.cap))[0];
+        const next = RATINGS.find(rt => sc.total < rt.min);
+        const upgrade = next ? `<div class="sc-upgrade">⬆️ 距 <b>${next.label}</b> 還差 <b>${(next.min - sc.total).toFixed(1)} 分</b>——最弱維度：<b>${weakest.k}（${weakest.v}/${weakest.cap}）</b>，${weakest.tip}</div>`
+                             : `<div class="sc-upgrade">🏆 已是最高評級。</div>`;
+        return `<div style="margin-bottom:14px;">
+          <div class="card" style="margin:0 0 8px;padding:10px 12px;">
+            <b>${row.sym} ${row.name}</b>
+            <span class="sc-rating" style="color:${sc.rating.color};float:right;">${sc.rating.label}　${sc.total.toFixed(0)}<span class="text-muted text-sm">/100</span></span>
+          </div>
+          <div class="sc-dims">
+            ${dims.map(d => `<div class="sc-dim"><div class="lbl">${d.k}</div><div class="val">${d.v == null ? '—' : d.v.toFixed(1)}<span class="text-muted text-sm">/${d.cap}</span></div>${bar('', d.v, d.cap, d.color)}</div>`).join('')}
+          </div>
+          ${upgrade}
+        </div>`;
+      }).join('');
+    };
+    if (etfSyms.length) {
+      MKLAB.data.json('etf-nav').then(nav => {
+        (nav.navs || {}).hasOwnProperty && etfSyms.forEach(s => { const n = (nav.navs || {})[s]; if (n) pdMap[s] = n.premium_discount_pct; });
+        finish();
+      }).catch(finish);
+    } else finish();
+  }
+
+  // ── 股息工具：年配息試算 + 配息安全 ──
+  function renderDividendTools(rows) {
+    const empty = document.getElementById('divEmpty');
+    const body = document.getElementById('divBody');
+    if (!rows.length) { empty.style.display = 'block'; body.innerHTML = ''; return; }
+    empty.style.display = 'none';
+    const items = rows.map(row => {
+      const r = ALL.find(x => String(x.sym) === row.sym) || {};
+      const div = r.div_cash_latest == null ? null : Number(r.div_cash_latest);
+      const eps = r.eps == null ? null : Number(r.eps);
+      if (div == null) return null;
+      const yld = r.price > 0 ? div / r.price * 100 : null;
+      const annual = row.shares * div;
+      const payout = (eps != null && eps > 0) ? div / eps * 100 : null;
+      const streak = r.div_streak_years == null ? null : Number(r.div_streak_years);
+      const safe = payout == null ? '<span class="text-muted text-sm">—</span>'
+        : payout > 100 ? '<span style="color:#c62828;font-weight:700">⚠️ 配息率 ' + payout.toFixed(0) + '%（超過 EPS，注意來源是否為資本公積）</span>'
+        : payout > 80 ? '<span style="color:#8a6d00;font-weight:700">🟡 配息率 ' + payout.toFixed(0) + '%（偏高）</span>'
+        : '<span style="color:#2e7d32;font-weight:700">✅ 配息率 ' + payout.toFixed(0) + '%</span>';
+      return { sym: row.sym, name: row.name, shares: row.shares, div, yld, annual, streak, safe };
+    }).filter(Boolean);
+    if (!items.length) {
+      body.innerHTML = '<p class="muted-small-top">目前持股沒有官方現金股利資料（div_cash_latest 缺，或為 ETF）。</p>';
+      return;
+    }
+    const totalAnnual = items.reduce((s, i) => s + i.annual, 0);
+    body.innerHTML = `
+      <div class="pf-summary" style="margin-bottom:12px;">
+        <div class="card"><div class="card-title">年配息合計</div><div class="card-val">${Math.round(totalAnnual).toLocaleString()}</div></div>
+        <div class="card"><div class="card-title">有配息持股</div><div class="card-val">${items.length}<span class="text-muted text-sm"> 檔</span></div></div>
+      </div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>代號</th><th>名稱</th><th style="text-align:right">持股(股)</th><th style="text-align:right">每股股利</th><th style="text-align:right">現金殖利率</th><th style="text-align:right">年配息</th><th style="text-align:right">連續配息</th><th>配息安全</th></tr></thead>
+        <tbody>${items.map(i => `<tr>
+          <td>${i.sym}</td><td>${i.name}</td>
+          <td style="text-align:right">${i.shares.toLocaleString()}</td>
+          <td style="text-align:right">${i.div}</td>
+          <td style="text-align:right">${i.yld == null ? '—' : i.yld.toFixed(2) + '%'}</td>
+          <td style="text-align:right">${Math.round(i.annual).toLocaleString()}</td>
+          <td style="text-align:right">${i.streak == null ? '—' : i.streak + ' 年'}</td>
+          <td>${i.safe}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>
+      <p class="muted-small-top">配息率＝每股股利 ÷ EPS；&gt;100% 表示配息超過當期盈餘（可能含資本公積或一次性收益）。殖利率以最新收盤價計算，每日更新。</p>`;
   }
 
   // ── 個股筆記（從 research 頁移過來；持股不只一檔，所以改用下拉選單挑要寫筆記的股票）──
