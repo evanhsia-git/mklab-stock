@@ -17,7 +17,6 @@
     <div id="utilbar" class="utilbar">
     <a class="brand" id="brand" href="index.html" aria-label="回首頁"></a>
     <span class="spacer"></span>
-    <!-- 手機導航按鈕 - 由 CSS media query 控制顯示/隱藏 -->
     <button class="mobile-menu-btn" onclick="MKLAB.Drawer.toggle()" aria-label="開啟選單">
       <span class="hamburger">☰</span>
     </button>
@@ -25,86 +24,94 @@
 <nav id="mainNav" class="nav" aria-label="主導覽"></nav>
   <div class="freshness" aria-live="polite">資料載入中…</div>
 </header>
-<!-- Mobile navigation placeholder -->
 <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
   <button class="close-x" onclick="MKLAB.Drawer.close()" aria-label="關閉抽屜">×</button>
-  <div class="drawer-content" id="drawerContent">
-    <!-- 由 MKLAB.Drawer.init() 動態注入 drawerHTML() -->
-  </div>
+  <div class="drawer-content" id="drawerContent"></div>
 </aside>
 <div class="drawer-mask" onclick="MKLAB.Drawer.close()" aria-hidden="true"></div>
 <main class="wrap">
 
-
-
 <div class="card">
-  <h2>📋 mklab-stock 開發日誌</h2>
-  <p class="text-muted">記錄專案架構演進、關鍵決策、技術債清理與部署歷程。最新在上。</p>
-  <div class="kv"><span>專案狀態</span><b>生產部署中 (GitHub Pages)</b></div>
-  <div class="kv"><span>架構版本</span><b>Web Components + ES Modules (v2.0)</b></div>
-  <div class="kv"><span>部署分支</span><b>main → GitHub Pages</b></div>
-  <div class="kv"><span>專案結構</span><b>skills/ (Skills First) + templates/ + build/ + assets/（GitHub Pages 原生）</b></div>
+  <h2>📋 開發日誌（除錯記憶 × 待辦 × Handoff）</h2>
+  <p class="text-muted">只保留未來開發會用到的東西：踩過的坑、必須注意的事件、未完成／待開發清單、接手指引。歷史版本演進紀錄已移除（詳 git log）。</p>
+  <div class="kv"><span>專案狀態</span><b>生產部署中（main → GitHub Pages）</b></div>
+  <div class="kv"><span>測試／閘門</span><b>test_known_errors 161-162 項＋qa_gate（2026-11-23 起排程 job 內建全套）</b></div>
+  <div class="kv"><span>主動式 ETF 官方持股</span><b>37 檔中 34 檔官方直出（13 家投信破解）</b></div>
   <div class="kv"><span>資料同步日</span><b id="logSyncDate">載入中…</b></div>
+  <div class="kv"><span>本頁整理日</span><b>2026-11-23</b></div>
 </div>
 
 <div class="card">
-  <h3>v2.1 — 表格模組統一化與死碼清理（2026-07-22）</h3>
+  <h2>🐞 除錯記憶（踩過的坑，改程式前先看這）</h2>
+  <h3>資料來源端</h3>
   <ul>
-    <li><b>統一 DataTable</b>：首頁「績效表現」「市值前 10 大」原本用獨立的 <code>&lt;mklab-datatable&gt;</code> Web Component（Shadow DOM 版），排序邏輯與 <code>MKLAB.DataTable</code> 各自實作、行為不一致（含排序失效 bug）。已全面改為與 Screener/Research/Industry/Watchlist 相同的 <code>MKLAB.DataTable</code>，全站表格共用同一套排序/分頁/樣式邏輯。</li>
-    <li><b>移除死碼</b>：<code>&lt;mklab-datatable&gt;</code>、<code>&lt;mklab-drawer&gt;</code>、<code>&lt;mklab-router&gt;</code> 三個 Web Component 從未被兩份以上頁面同時正確使用（<code>mklab-router</code> 甚至會攔截所有 <code>href="/..."</code> 連結卻無實際作用），已從 <code>assets/js/mklab-wc.js</code> 移除，僅保留仍在使用中的 <code>&lt;mklab-kline&gt;</code>。</li>
-    <li><b>共用黃標文字</b>：新增 <code>MKLAB.setFreshness()</code>，統一「資料以 X 收盤為準」文字並自動正規化日期格式（相容 <code>20260713</code> 與 <code>2026-07-13</code> 兩種來源格式），取代 6 個頁面各自重複的字串拼接程式碼。</li>
-    <li><b>桌面版抽屜修復</b>：桌面版原本把抽屜寫死成一直顯示在頁面中的區塊（<code>position:relative</code>），改為預設隱藏、點擊設定鍵才浮現的錨定面板。</li>
-    <li><b>CSS 修復</b>：<code>mklab-theme.css</code> 一批 research/industry 頁樣式誤用 <code>=</code> 取代 <code>:</code> 導致整段宣告失效；<code>--bg-elevated</code> 變數缺定義導致手機版抽屜背景透明。均已修正。</li>
+    <li><b>TWSE ETFortune <code>etfExcel</code>：HTTP 200 ≠ 內容完整</b>。帶 range 篩選參數的 URL 實測回 248 檔（<b>漏 0050</b>），無參數版 250 檔才完整（2026-11-23 已改無參數版）。防護雙保險：<code>fetch_etf_meta.py</code> 的核心 ETF 驟降 guard（缺 0050/006208/009816 或檔數-10% 視同抓取失敗走備援）＋ <code>test_known_errors</code> 的核心 ETF 存在性檢查。</li>
+    <li><b>11-22 P0 教訓</b>：抓取成功但內容缺大戶 → 連鎖（分類檔掉 0050 → stocks.json 降級 unverified → CI 紅燈）。任何「官方清單類」資料都應有核心項目存在性檢查。</li>
+    <li><b>排程閘門曾是盲區</b>：<code>ci_qa_gate.sh</code> 原只跑 <code>qa_gate.py</code>，<code>test_known_errors.py</code>（P0-1 分類一致性等 150+ 項）只在 push 後才跑 → 壞資料先上線、事後諸葛。2026-11-23 起排程 job 閘門已同級（兩者都跑）。</li>
+    <li><b>基準日 vs 公告日</b>（取錯會把不同持股日的快照併成同日）：群益 <code>date2</code>（date1=公告日）、國泰 <code>preDateC</code>、台新 <code>NAV_DATE</code>（PUB_DATE=公告日）、玉山/安聯 <code>CNavDt</code>（CPcfdate=公告日）、野村 <code>CNavDtStr</code>、聯博 basket <code>asOfDate</code>。全文：skill <code>taiwan-etf-holdings/references/issuer-sources.md</code> 附錄 A。</li>
+    <li><b>bot 挑戰偵測</b>：野村等投信以 <b>HTTP 200 回驗證圖</b>（非 JSON）→ 用 PNG/JPEG/GIF magic bytes 辨識，否則誤報「程式壞掉」。</li>
+    <li><b>.NET 日期 <code>/Date(ms)/</code> 必須 +8 時區</b>解，否則少一天。</li>
+    <li><b>雙層 JSON</b>：中信 ETFHoldingWeight、第一金 WebAPI（<code>{"d":"&lt;JSON 字串&gt;"}</code>）都要 <code>json.loads</code> 兩次。</li>
+    <li><b>pandas 3.0</b>：<code>astype(str)</code> 保留 NaN 為 float 字串——逐格轉換，別整欄轉。</li>
+    <li><b>SystemExit 陷阱</b>：腳本用 <code>sys.exit()</code> 處理缺依賴時，呼叫端 <code>except ImportError</code> 捕不到（SystemExit 不繼承它）→ 要 <code>except (ImportError, SystemExit)</code>。</li>
+    <li><b>TWSE MIS 反向 API</b>（<code>mis.twse.com.tw/stock/data/all_etf.txt</code>）需 <code>Referer: …/etf_nav.jsp</code>；單請求全市場淨值/折溢價，只給最新一筆 → 每日累積。</li>
+    <li><b>資料中心 IP 封鎖</b>：兆豐 403（本站與上游 nctuwanglin/active-etf 同結論）、摩根 Excel 端點 404（2026-11-22 起）、TWSE OpenAPI 部分端點回 Swagger UI 殼——境外 VPS 環境限制，本機/台灣出口可能正常。</li>
+    <li><b>HTML 解析（投信 PCF 頁）</b>：凱基有<b>兩份相同持股表</b>只取第一份＋欄位必 strip（漏了掉近半持股）；永豐留 <b>36 個空表格模板</b>只掃第一、二表頭之間；第一金代號藏在<b>渲染後表格的 td</b>（非「股票代號：XXX」字面量）；兆豐 WebForms 要把 <b>hidden 欄位整包原封帶回</b>；台新只掃「股數」表頭之後（期貨表在前）。</li>
+    <li><b>聯博</b>：只取 <code>holdings-section-equity</code> 分段（期貨權重可達 16%）；ISIN 可自行合成＝TW000＋代號＋Luhn 檢查碼。</li>
+  </ul>
+  <h3>演算法端</h3>
+  <ul>
+    <li><b>申贖分離（scale 校正）</b>：ETF 被申購/贖回時全部持股等比例增減——那是資金流不是換股。scale＝共同持股股數比值的<b>真中位數</b>（偶數取左右平均；取右側會漏判，上游歷史真踩過）；雙門檻：校正後股數 ≥5% <b>且</b> 權重 ≥0.1pp；common&lt;3 或 scale 超界 [0.2,5] → <code>quality=insufficient_scale</code>，校正欄位歸 null 寧缺勿假。</li>
+    <li><b>缺股數不假造</b>：無股數的來源退回純權重比對，UI 必須明示「無法分離申購贖回」。</li>
   </ul>
 </div>
 
 <div class="card">
-  <h3>v2.0 — Web Components 重構（2026-07-18）</h3>
+  <h2>⚠️ 開發注意事件（架構與約定）</h2>
   <ul>
-    <li><b>重構路線</b>：放棄 React/Vite/npm（違反零依賴），改採 <b>原生 Web Components / classic script</b>。</li>
-    <li><b>元件庫</b>：原 <code>assets/js/mklab-wc.js</code>（<code>&lt;mklab-kline&gt;</code>）已於 2026-11-04 移除；K 線圖改由 <code>assets/js/mklab-chart.js</code>（ECharts）提供。</li>
-    <li><b>資料層</b>：<code>assets/js/data-client.js</code>（IIFE、快取、ETag、內建鍵 <code>stocks</code>/<code>indices</code>/<code>twiiKline</code>），統一取代各頁散落 <code>fetch()</code>。</li>
-    <li><b>表格元件</b>：所有股票/績效表格統一使用 <code>assets/js/mklab-core.js</code> 的 <code>MKLAB.DataTable</code>（vanilla，非 Web Component），支援 <code>cols</code>、<code>pageSize</code>、<code>defaultSort</code>、<code>pagerId</code>、<code>fieldMap</code>。</li>
-    <li><b>所有主題頁</b>：Market / Screener / Research / Industry / Watchlist / Help / Log 全部統一引入 <code>assets/js/data-client.js</code> + <code>assets/js/mklab-core.js</code>。</li>
-    <li><b>Build 系統（已演進）</b>：原 <code>build/build_pages.py</code> 將 <code>templates/</code> + <code>pages/</code> 組裝為根目錄完整 HTML；現已改為 <code>build/template_sync.py</code>（Template Synchronizer），根目錄 HTML 為唯一來源，<code>pages/</code> 已移除。</li>
-    <li><b>QA Gate</b>：Python/JSON/HTML/Link/Chart 全自動檢測，全綠 <code>ALLOW DEPLOY</code>。</li>
+    <li><b>CI 結構</b>：每個排程班只跑一個 job（分時 cron，避免互搶）——「一班只有一個 job、其餘 skipped」是設計不是漏跑。閘門：<code>scripts/ci_qa_gate.sh</code>（qa_gate.py＋test_known_errors.py），錯誤即中止不推送。</li>
+    <li><b>stocks.json 體積預算 1,300KB</b>：緊湊格式、無孤兒欄位（有防回歸測試）。不把 SQLite/大 JSON 塞進 git。</li>
+    <li><b>歷史累積設計</b>：ETP 持股歷史＝<code>data/etf-holdings-history/*.tsv</code>（六欄：record_date/etf_code/stock_code/stock_name/weight/<b>shares</b>，record_date+etf_code+stock_code 唯一去重冪等）；ETF 淨值歷史＝<code>data/etf-nav-history/*.csv</code>。items 第 4 欄＝股數（缺則 null，前端退回權重比對）。</li>
+    <li><b>stale carry</b>：單檔抓取失敗保留舊資料標 <code>stale</code>；來源回舊（asof 較舊）不覆蓋較新資料。</li>
+    <li><b>主動式 ETF 採集</b>：<code>fetch_etf_holdings_active.py</code> 13 家投信 adapter；每日工作流自動跑（含 --only 重試失敗清單、冪等）；第一金 fundID 快取在 <code>data/raw/firstsec-fundids.json</code>。</li>
   </ul>
 </div>
 
 <div class="card">
-  <h3>v1.x — 靜態頁面 + vanilla JS（2026-07-15 前）</h3>
-  <ul>
-    <li>純靜態 HTML + vanilla JS，無建置步驟。</li>
-    <li>各頁面獨立 <code>fetch('data/*.json')</code>，程式碼重複、維護困難。</li>
-    <li><code>mklab-core.js</code> 提供 <code>MKLAB.DataTable</code>、<code>MKLAB.Drawer</code>、<code>MKLAB.Shell</code>、<code>MKLAB.Watch</code>。</li>
-    <li><code>data/twii_kdata.js</code> 掛載 <code>window.TWII_KDATA</code> 供 K 線圖讀取。</li>
-    <li>GitHub Actions 每日抓取 TWSE 收盤價、yfinance 補齊 ROE/ROA，產出 <code>data/stocks.json</code>、<code>data/industry.json</code>、<code>data/history/*.json</code>。</li>
-  </ul>
-</div>
-
-<div class="card">
-  <h3>關鍵技術債清理</h3>
-  <ul>
-    <li><b>data/twii_kdata.js</b>：原用 <code>const TWII_KDATA</code> → 不掛 <code>window</code>，改為 <code>if(typeof window!=='undefined')window.TWII_KDATA=TWII_KDATA;</code>。</li>
-    <li><b>Demo 頁路徑</b>：<code>prototypes/</code> 子目錄下 script src 改用絕對路徑 <code>/vendor/...</code>、<code>/data/...</code>、<code>/assets/...</code>，避免相對路徑 404。</li>
-    <li><b>瀏覽器快取</b>：Demo 頁 script src 加 <code>?v=</code> cache-bust。</li>
-    <li><b>圖表庫</b>：已改用 ECharts（<code>vendor/echarts.min.js</code>）；原 LightweightCharts 與 <code>vendor/lightweight-charts.min.js</code> 已移除。</li>
-    <li><b>HTML 驗證</b>：<code>skills/html-health/check_html_health.py</code> 的 <code>escape_in_code_pre</code> 必須真正轉義為 <code>&lt;style&gt;&lt;/style&gt;</code>（曾因自我替換 bug 導致誤報）。</li>
-    <li><b>QA Gate Links 檢查</b>：<code>data:</code>/<code>mailto:</code>/<code>javascript:</code>/<code>#</code> 協議必須排除，否則 favicon 的 <code>data:image/svg+xml</code> 被誤判 404。</li>
-    <li><b><code>MKLAB</code> 全域物件</b>：<code>mklab-core.js</code> 用 IIFE + <code>global.MKLAB = {...}</code> 匯出，頁面 <code>&lt;script&gt;&lt;/script&gt;</code> 必須在 core.js 之後執行。</li>
-    <li><b>Build 後根目錄 HTML 需 git add</b>：<code>build/template_sync.py</code> 同步輸出到專案根，CI 部署的是根目錄檔案，不是 <code>pages/</code>。</li>
-  </ul>
-</div>
-
-<div class="card">
-  <h3>部署歷程</h3>
+  <h2>🚧 待開發／未完成</h2>
   <table>
-    <thead><tr><th>日期</th><th>分支</th><th>操作</th><th>備註</th></tr></thead>
+    <thead><tr><th>項目</th><th>現況</th><th>下一步</th></tr></thead>
     <tbody>
-      <tr><td>2026-07-18</td><td>dev/web-components</td><td>WC 重構完成，QA Gate 全綠</td><td>待合併 main 部署</td></tr>
-      <tr><td>2026-07-15</td><td>main</td><td>靜態頁部署</td><td>備份分支 backup/static-2026-07-15</td></tr>
+      <tr><td>00401A／00989A 摩根官方持股</td><td>Excel 端點自 2026-11-22 起從 VPS 404（每日工作流自動重試中）；暫走 CMoney 備援＋標 stale</td><td>無需人工——端點恢復即自動補上；若一週未恢復，改試台灣出口或瀏覽器渲染</td></tr>
+      <tr><td>00996A 兆豐官方持股</td><td>403 對資料中心 IP（GitHub Actions 與本站 VPS 皆實測）</td><td>等解封；adapter 已實作保留（WebForms hidden 整包帶回）</td></tr>
+      <tr><td>TAIFEX OpenAPI</td><td>spec 已解析（135 端點）；資料端點從境外 VPS 一律回 Swagger UI 殼</td><td>自台灣網路環境驗證資料端點（集保同 IP 可通，非普遍封鎖）</td></tr>
+      <tr><td>TDCC 集保 OpenAPI</td><td>134 端點；1-5 股權分散表、2-41 ETF 月分析表已實測可通</td><td>整合進管線（籌碼面資料源）</td></tr>
+      <tr><td>換股比對歷史深度</td><td>A 尾官方持股 2026-11-22 起累積，多數 ETF 僅 1 個快照 → 顯示「單快照無法比對」屬正常</td><td>等歷史自然累積 2+ 快照後，scale 校正與 ADD/REMOVE/INCREASE/DECREASE 事件才完整生效</td></tr>
+      <tr><td>ETF 費用率 fee_verified 人工複核</td><td>MoneyDJ 實抓已上線（359 檔），逐檔人工確認未做</td><td>分批抽查（優先大流量 ETF）</td></tr>
+      <tr><td>受益人數交叉驗證</td><td>官方（投信 PCF，每日）與 TWSE ETFortune（日更）兩口徑並存</td><td>差異大時以官方 PCF 為準；建立比對檢查</td></tr>
+      <tr><td>official-fundamentals 班</td><td>11-20 曾因 NEG_EPS_PE 26 檔 BLOCK（根因已修：虧損公司 pe=None）</td><td>下次班（11-27）確認綠燈</td></tr>
     </tbody>
   </table>
+</div>
+
+<div class="card">
+  <h2>🤝 Handoff（接手必讀）</h2>
+  <h3>知識地圖</h3>
+  <ul>
+    <li><b>13 家投信破解全文</b>（端點／基準日欄位對照／陷阱／本站應用狀態）：skill <code>taiwan-etf-holdings/references/issuer-sources.md</code> 附錄 A ↔ 網站 <code>mklab-stock-sources.html</code> 第 13 卡 ↔ Obsidian Vault <code>resources/market-data-sources.md</code>（三處互為鏡像，改一處同步三處）。</li>
+    <li><b>TWSE OpenAPI 143 端點盤點</b>：<code>data/raw/twse-openapi-full.md</code>＋<code>data/raw/twse-openapi-usage-map.md</code>。</li>
+  </ul>
+  <h3>關鍵腳本（skills/data/）</h3>
+  <ul>
+    <li><code>fetch_etf_holdings_active.py</code> 主動式 ETF 13 家採集（stale carry＋--only 重試）｜<code>fetch_etf_holdings_cathay.py</code> 國泰官方 Excel｜<code>fetch_etf_nav.py</code> MIS 淨值/折溢價｜<code>fetch_etf_meta.py</code> ETF 清單（含核心 ETF guard）｜<code>etf_holdings_diff.py</code> 申贖分離 diff（CLI：<code>--sym 00878</code>／<code>--list</code>）｜<code>accumulate_etf_holdings_history.py</code> 歷史累積｜<code>classify_etf.py</code>＋<code>compute_indicators.py</code> 分類與指標鏈。</li>
+  </ul>
+  <h3>驗證與部署</h3>
+  <ul>
+    <li>本機： <code>/root/venvs/quant/bin/python3 tests/test_known_errors.py</code>（161-162 項）→ <code>bash scripts/ci_qa_gate.sh</code> → node <code>tests/*.js</code> → 瀏覽器實看。</li>
+    <li>部署：只動 main；<b>push 前必先 <code>git pull --rebase origin main</code></b>（排程班每小時級都在 commit，直接 push 常撞）。</li>
+    <li>排程班失敗排查順序：<code>gh run list --event schedule</code> → 找 failure 班 → <code>gh api …/runs/&lt;id&gt;/jobs</code> 看哪個 job → 看該 job「QA 閘門」步驟 log（2026-11-23 起含 test_known_errors，FAIL 明細直接可見）。</li>
+    <li>改資料腳本後務必讓對應防回歸測試同步更新（fixtures 在 <code>tests/fixtures/etf/</code>）。</li>
+  </ul>
 </div>
 
 <script src="assets/js/data-client.js"></script>
@@ -113,7 +120,6 @@
 async function loadMeta() {
   try {
     const d = await MKLAB.data.json('stocks');
-    // 原本判斷 Array.isArray(d)，但 stocks.json 是物件（{meta, stocks}），條件永遠不成立，同步日期從不顯示
     const asof = MKLAB.applyFreshness(d);
     document.getElementById('logSyncDate').textContent = asof ? MKLAB.formatAsOf(asof) : '無法載入';
   } catch(e) {
@@ -131,7 +137,6 @@ if (document.readyState === 'complete') bootLog();
 else window.addEventListener('load', bootLog);
 </script>
 </main>
-<!-- Mobile navigation placeholder -->
 <footer class="footer" role="contentinfo">
   <div class="footer-inner">
     <span class="disclaimer-footer">免責聲明：本網站所有資料與評分僅供研究與教育參考，不構成任何投資建議。使用者應自行判斷並承擔投資風險。</span>
