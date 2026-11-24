@@ -129,6 +129,10 @@ def import_income_balance(stamp_info):
     c_assets = find_col(bh, exact="資產總計")
     c_eq_parent = find_col(bh, exact="歸屬於母公司業主之權益合計")
     c_liab = _opt(bh, exact="負債總計")
+    # Piotroski 台股層（2026-11-24）：流動資產/流動負債/股本（CSV 既有欄，僅 import 取用）
+    c_ca = _opt(bh, exact="流動資產")
+    c_cl = _opt(bh, exact="流動負債")
+    c_cap = _opt(bh, exact="股本")
 
     bal = {r[c_sym_b].strip(): r for r in brows if r and r[c_sym_b].strip()}
     MONTHS = {"1": 3, "2": 6, "3": 9, "4": 12}
@@ -182,6 +186,9 @@ def import_income_balance(stamp_info):
             "assets_total_thousand": assets,
             "roe_annualized_pct": round(ni_p * factor / eq_p * 100, 2) if ni_p is not None and eq_p else None,
             "roa_annualized_pct": round(ni_t * factor / assets * 100, 2) if ni_t is not None and assets else None,
+            "current_assets_thousand": num(b[c_ca]) if b and c_ca is not None else None,
+            "current_liabilities_thousand": num(b[c_cl]) if b and c_cl is not None else None,
+            "capital_thousand": num(b[c_cap]) if b and c_cap is not None else None,
         }
         out[sym] = rec
     if not out:
@@ -193,6 +200,142 @@ def import_income_balance(stamp_info):
     return out, {"period": max(periods, key=lambda k: periods[k]), "periods": periods,
                  "asof": max(asofs) if asofs else None,
                  "files": [os.path.basename(inc_path[0]), os.path.basename(bal_path[0])]}
+
+
+def _read_mops_csv(fname):
+    """讀 MOPS 彙總 CSV → {代號: dict}；缺檔回 None（缺值不補值）。"""
+    paths = glob.glob(os.path.join(SRC, fname))
+    if not paths:
+        return None
+    rows = list(csv.DictReader(open(paths[0], encoding="utf-8-sig")))
+    return {str(r.get("公司代號", "")).strip(): r for r in rows if str(r.get("公司代號", "")).strip()}
+
+
+def compute_piotroski(cur, prev_year, prev_period_ok):
+    """Piotroski F（台股版，2026-11-24）——項缺不計＋covered 如實；同期比鎖死。
+
+    - Δ 項僅在 prev_year 存在且「報表年度/季別＝本期-1 年同季」時計（YTD 對 YTD 同期比；
+      拿不同長度的累計期間相比是語意錯誤，寧可 null）
+    - 第 9 項台股版＝「股本未增加」代理（面額制下股本↑＝增發；股本欄來源 t187ap07/t163sb05）
+    - 金融保險業無「營業毛利」→ Δ毛利率該項如實 null
+    回傳 (scores dict, missing list)；scores 無 piotroski_f 當 covered=0。
+    """
+    missing = []
+    p = {}
+
+    def flag(key, cond):
+        """cond=None＝輸入缺（該項不計）；True/False＝評分。"""
+        if cond is None:
+            missing.append(key)
+            return None
+        p[key] = 1 if cond else 0
+        return p[key]
+
+    ni, assets = cur.get("ni_total_ytd_thousand"), cur.get("assets_total_thousand")
+    cfo = cur.get("cfo_ytd_thousand")
+    rev, gp = cur.get("revenue_ytd_thousand"), cur.get("gross_profit_ytd_thousand")
+    liab, ca, cl = (cur.get("liabilities_total_thousand"), cur.get("current_assets_thousand"),
+                    cur.get("current_liabilities_thousand"))
+    cap = cur.get("capital_thousand")
+    roa = ni / assets if (ni is not None and assets) else None
+
+    flag("ROA>0", None if roa is None else roa > 0)
+    flag("CFO>0", None if cfo is None else cfo > 0)
+    flag("CFO>NI", None if (cfo is None or ni is None) else cfo > ni)
+
+    if not prev_period_ok or prev_year is None:
+        missing.append("prev_year（去年同期對照缺失，Δ 項不計）")
+        py = {}
+    else:
+        py = prev_year
+    py_ni, py_assets = py.get("ni"), py.get("assets")
+    py_rev, py_gp = py.get("revenue"), py.get("gross")
+    py_liab, py_ca, py_cl = py.get("liabilities"), py.get("current_assets"), py.get("current_liabilities")
+    py_cap = py.get("capital")
+    py_roa = py_ni / py_assets if (py_ni is not None and py_assets) else None
+
+    flag("ΔROA>0", None if (roa is None or py_roa is None) else roa > py_roa)
+    flag("Δ槓桿降", (liab / assets < py_liab / py_assets)
+         if None not in (liab, assets, py_liab, py_assets) and assets and py_assets else None)
+    flag("Δ流動比升", (ca / cl > py_ca / py_cl)
+         if None not in (ca, cl, py_ca, py_cl) and cl and py_cl else None)
+    flag("Δ毛利率升", (gp / rev > py_gp / py_rev)
+         if None not in (gp, rev, py_gp, py_rev) and rev and py_rev else None)
+    flag("Δ週轉升", (rev / assets > py_rev / py_assets)
+         if None not in (rev, assets, py_rev, py_assets) and assets and py_assets else None)
+    flag("股本未增", None if (cap is None or py_cap is None) else cap <= py_cap)
+
+    got = [v for v in p.values() if v is not None]
+    if not got:
+        return {}, missing
+    return {"piotroski_f": sum(got), "piotroski_covered": f"{len(got)}/9", "piotroski_detail": p}, missing
+
+
+def import_piotroski_layer(fin, cur_period):
+    """Piotroski 台股層：CFO 本期欄＋prev_year 對照（同期鎖）＋9 項評分。
+
+    輸入 CSV（fetch_official_fundamentals.py 的 MOPS 增強層產出；缺檔→如實 null）：
+      mops-t163sb20_latest.csv（本期 CFO）、mops-t163sb20_prevyear.csv / 04 / 05（去年同期）
+    prev_year 的「報表年度/季別」必須＝本期-1 年同季，否則整體不採用（同期比鎖）。
+    """
+    _iso_year, q = cur_period.split("Q")  # "2026Q2" → ("2026", "2")
+    y_roc = int(_iso_year) - 1911
+    cfo_cur = _read_mops_csv("mops-t163sb20_latest.csv")
+    cfo_prev = _read_mops_csv("mops-t163sb20_prevyear.csv")
+    inc_prev = _read_mops_csv("mops-t163sb04_prevyear.csv")
+    bal_prev = _read_mops_csv("mops-t163sb05_prevyear.csv")
+
+    # 去年同期期別驗證：本期 2026Q2 → 需要 (114, 2)
+    want = (str(y_roc - 1), str(q))
+    def _period_ok(tbl):
+        if not tbl:
+            return False
+        sample = next(iter(tbl.values()))
+        return (sample.get("報表年度"), sample.get("報表季別")) == want
+
+    prev_ok = _period_ok(cfo_prev) and _period_ok(inc_prev) and _period_ok(bal_prev)
+    if not prev_ok:
+        _log(f"⚠️ 去年同期 MOPS 檔期別不符或缺檔（需要 {want[0]}Q{want[1]}）——prev_year 與 Δ 項如實 null")
+
+    n_cfo, n_prev = 0, 0
+    for sym, rec in fin.items():
+        if cfo_cur and cfo_cur.get(sym):
+            v = num(cfo_cur[sym].get("營業活動之淨現金流入（流出）"))
+            rec["cfo_ytd_thousand"] = v
+            if v is not None:
+                n_cfo += 1
+        prev = None
+        if prev_ok:
+            p4, p5, p20 = inc_prev.get(sym), bal_prev.get(sym), (cfo_prev or {}).get(sym)
+            if p4 and p5:
+                num_of = lambda tbl, c: num(tbl.get(c)) if tbl else None
+                prev = {
+                    "period": f"{int(want[0]) + 1911}Q{want[1]}",
+                    "revenue": num_of(p4, "營業收入"),
+                    "gross": num_of(p4, "營業毛利（毛損）淨額"),
+                    "ni": num_of(p4, "本期淨利（淨損）"),
+                    "assets": num_of(p5, "資產總計"),
+                    "liabilities": num_of(p5, "負債總計"),
+                    "current_assets": num_of(p5, "流動資產"),
+                    "current_liabilities": num_of(p5, "流動負債"),
+                    "capital": num_of(p5, "股本"),
+                    "cfo": num_of(p20, "營業活動之淨現金流入（流出）") if p20 else None,
+                }
+                n_prev += 1
+        scores, _missing = compute_piotroski(rec, prev, prev_ok and prev is not None)
+        if scores:
+            rec.update(scores)
+        else:
+            rec["piotroski_f"] = None
+            rec["piotroski_covered"] = "0/9"
+        if prev is not None:
+            rec["prev_year"] = prev  # 壓縮快照（Piotroski 所需欄集；下輪重算可還原）
+
+    have_f = sum(1 for r in fin.values() if r.get("piotroski_f") is not None)
+    cov9 = sum(1 for r in fin.values() if (r.get("piotroski_covered") or "").startswith("9/"))
+    _log(f"Piotroski：有分 {have_f}/{len(fin)}，covered 9/9 共 {cov9} 家，CFO 欄 {n_cfo} 家，"
+         f"prev_year 對照 {n_prev} 家（同期鎖 {'通過' if prev_ok else '未通過→Δ 項 null'}）")
+    return fin
 
 
 def import_dividends():
@@ -285,6 +428,8 @@ def main():
               for p in glob.glob(os.path.join(SRC, "*"))}
 
     fin, fin_info = import_income_balance(None)
+    if fin and fin_info:
+        fin = import_piotroski_layer(fin, fin_info["period"])
     div = import_dividends()
     etf = import_etf_basic(None)
 
@@ -299,11 +444,19 @@ def main():
                    "同一份快照可能同時含不同季別（MOPS 增量批次與既有快照合併所致）；營收年增率需月營收檔，尚未提供；"
                    "gross_margin_pct=營業毛利淨額/營業收入、operating_margin_pct=營業利益/營業收入、"
                    "net_margin_pct=本期淨利/營業收入、debt_ratio_pct=負債總計/資產總計，皆為累計期間比率（不年化）；"
+                   "piotroski_f=Piotroski F 台股版（9 項，項缺不計＋piotroski_covered 標記；Δ 項以 MOPS 彙總表"
+                   "去年同期 YTD 同期比（期別鎖定，跨期比較不計）；第 9 項為股本未增加代理（面額制下股本↑＝增發）；"
+                   "cfo_ytd_thousand=MOPS 現金流量彙總表營業活動之淨現金流入（仟元，YTD）；"
                    "缺欄位一律 null，不以 0 冒充"),
     }
 
+    # piotroski_detail 不存檔（膨脹抑制：9 項明細要時由 compute_piotroski 重算；
+    # 存 piotroski_f＋covered 兩欄＋prev_year 壓縮快照即可）
+    for rec in fin.values():
+        rec.pop("piotroski_detail", None)
     with open(os.path.join(DATA, "official-fundamentals.json"), "w", encoding="utf-8") as f:
-        json.dump({"meta": src_meta, "financial": fin, "dividend": div}, f, ensure_ascii=False, indent=2)
+        json.dump({"meta": src_meta, "financial": fin, "dividend": div}, f,
+                  ensure_ascii=False, separators=(",", ":"))
     with open(os.path.join(DATA, "etf-official.json"), "w", encoding="utf-8") as f:
         json.dump({"meta": src_meta, "etfs": etf}, f, ensure_ascii=False, indent=2)
 
