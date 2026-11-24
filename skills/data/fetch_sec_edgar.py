@@ -17,7 +17,9 @@ import json, sys, os, time
 from urllib.request import Request, urlopen
 from urllib.error import URLError, HTTPError
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# skills/data/fetch_sec_edgar.py → repo 根（parents[2] 慣例；2026-11-24 #311 修正：原 dirname
+# 兩層只到 skills/，指向不存在的 skills/data/us/us-stocks.json）
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 US_STOCKS = os.path.join(ROOT, "data", "us", "us-stocks.json")
 
 # SEC 要求 User-Agent 包含聯絡資訊
@@ -35,6 +37,9 @@ def fetch_company_facts(cik: str) -> dict:
         return {}
 
 def main():
+    if not os.path.exists(US_STOCKS):
+        print(f"⚠️ {US_STOCKS} 不存在，SEC EDGAR 跳過（缺清單不擋 job）")
+        return
     with open(US_STOCKS, "r", encoding="utf-8") as f:
         data = json.load(f)
     stocks = data.get("stocks", [])
