@@ -167,6 +167,10 @@ def main():
                 "asof": asof or (day.isoformat() if day else None),
                 "items": items,
                 "n_listed": len(items),
+                # PCF 同頁官方基本面（供 verify_pcf_nav 交叉核對 TWSE MIS 淨值）
+                "nav": (extra or {}).get("nav"),
+                "units": (extra or {}).get("units"),
+                "futures": (extra or {}).get("futures") or [],
             }
         print(f"  [{i}/{len(targets)}] {sym} ✅ {vmsg}，asof={asof}，"
               f"官方淨值={((extra or {}).get('nav'))}，官方單位數={((extra or {}).get('units'))}")

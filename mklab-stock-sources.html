@@ -327,11 +327,11 @@ repo 檔 <code>data/raw/twse-openapi-usage-map.md</code>。</p>
 <tr><td>兆豐國際投信</td><td>10</td><td>—</td><td>—</td><td>10</td><td>—</td><td>🧪 已實作，資料中心 IP 403</td></tr>
 <tr><td>聯邦投信</td><td>2</td><td class="ap-applied"><b>2</b></td><td>—</td><td>—</td><td>—</td><td class="ap-applied">✅ <b>已整合</b><br><small>USITC PCF，2026-11-24 上線（50/30 筆＋期貨分離，src=USITC）</small></td></tr>
 <tr><td>大華銀投信</td><td>6</td><td class="ap-applied"><b>6</b></td><td>—</td><td>—</td><td>—</td><td class="ap-applied">✅ <b>已整合</b><br><small>UOBAM PCF，2026-11-23 上線（自訂 CA bundle 全憑證驗證，secure.globalsign.net 鏡像取 R46 中繼）</small></td></tr>
-<tr><td>富蘭克林華美投信</td><td>6</td><td>—</td><td>—</td><td>6</td><td>—</td><td class="ap-notapplied">🟡 API 框架已明<br><small>持股檔案端點待定位；官方月報 top10 可作降級層</small></td></tr>
+<tr><td>富蘭克林華美投信</td><td>6</td><td class="ap-applied"><b>2</b>（月報 top10）</td><td>—</td><td>4</td><td>—</td><td class="ap-applied">✅ <b>月報層已整合</b><br><small>FTFT_MONTHLY：00905/00961 官方前十大（2026/10/31 基準）；海外/債券型月報無代號保留 CMoney</small></td></tr>
 <tr><td>貝萊德投信</td><td>4</td><td>—</td><td>—</td><td>4</td><td>—</td><td class="ap-notapplied">🔴 403 Akamai（二次確認，不繞過）</td></tr>
 <tr><td>華南永昌投信</td><td>3</td><td>—</td><td>—</td><td>3</td><td>—</td><td class="ap-notapplied">🔴 SysLogin 授權門檻（不逆向）</td></tr>
-<tr><td>街口投信</td><td>2</td><td>—</td><td>—</td><td>2</td><td>—</td><td class="ap-notapplied">🟡 官網 jkoam.com 已尋獲<br><small>檔案端點待解；00715L 期貨槓反語意</small></td></tr>
-<tr><td><b>合計</b></td><td><b>361</b></td><td class="ap-applied"><b>81</b></td><td class="ap-applied"><b>50</b></td><td><b>228</b></td><td><b>2</b></td><td><b>131 檔官方持股直出（36%）</b></td></tr>
+<tr><td>街口投信</td><td>2</td><td>—</td><td>—</td><td>2</td><td>—</td><td class="ap-notapplied">🔴 端點已破（GetFundFileLink {"FundNo"}）但月報＝2 頁簡式無持倉<br><small>維持 CMoney；00715L 期貨槓反語意</small></td></tr>
+<tr><td><b>合計</b></td><td><b>361</b></td><td class="ap-applied"><b>83</b></td><td class="ap-applied"><b>50</b></td><td><b>226</b></td><td><b>2</b></td><td><b>133 檔官方持股直出（37%）</b></td></tr>
 </tbody></table></div>
 <p class="src-note">搭配資料：費用三欄（經理費/保管費/合計費率）已於台股 ETF CSV 提供，保管費覆蓋 359/361（MoneyDJ 實抓，<code>integrate_etf_extras.py</code>）；官方持股總數僅標 73 檔官方完整清單（CMoney 樣本數不冒充總數）。</p>
 <div class="table-wrap"><table><thead><tr><th>發行商</th><th>端點</th><th>格式</th><th>獲取方法與陷阱（基準日欄位）</th><th>本站應用</th></tr></thead><tbody>

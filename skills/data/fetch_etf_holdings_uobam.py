@@ -203,6 +203,10 @@ def main():
                 "asof": asof or (day.isoformat() if day else None),
                 "items": items,
                 "n_listed": len(items),
+                # PCF 同檔官方基本面（供 verify_pcf_nav 交叉核對 TWSE MIS 淨值）
+                "aum": (extra or {}).get("aum"),
+                "units": (extra or {}).get("units"),
+                "nav": (extra or {}).get("nav"),
             }
         print(f"  [{i}/{len(targets)}] {sym} ✅ {vmsg}（{kind}型），asof={asof}，"
               f"官方淨資產={(extra or {}).get('aum')}")
