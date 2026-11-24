@@ -45,6 +45,8 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
+      - name: 安裝依賴（runner 預裝會隨映像更新變動，顯式安裝不靠運氣）
+        run: pip install requests
       - name: 抓取當日收盤（TWSE/TPEx）
         run: python skills/data/fetch_data.py daily
       - name: 快照確定性修正（單位／EPS-PE／股本缺口，冪等）
@@ -67,6 +69,11 @@ jobs:
         run: python skills/data/compute_industry.py
       - name: 全市場 ETF 每日淨值／折溢價（TWSE MIS 反向 API，歷史月檔累積）
         run: python skills/data/fetch_etf_nav.py
+      - name: 官方持股每日更新（國泰／聯邦／大華銀 PCF；缺憑證或單家失敗不擋 job）
+        run: |
+          python skills/data/fetch_etf_holdings_cathay.py || echo "[warn] 國泰持股更新失敗"
+          python skills/data/fetch_etf_holdings_usitc.py || echo "[warn] 聯邦持股更新失敗"
+          python skills/data/fetch_etf_holdings_uobam.py || echo "[warn] 大華銀持股更新失敗"
       - name: 主動式 ETF 官方持股（13 家投信破解；單檔失敗標 stale 不中斷）
         run: python skills/data/fetch_etf_holdings_active.py
       - name: ETF 持股歷史累積（冪等，供換股比對）
@@ -249,14 +256,6 @@ jobs:
         run: python skills/data/import_official_fundamentals.py
       - name: 公司基本資料（產業、上市日）
         run: python skills/data/integrate_official_company.py
-      - name: ETF 持股更新（國泰官方 API；失敗不擋 job）
-        run: python skills/data/fetch_etf_holdings_cathay.py || echo "[warn] 國泰持股更新失敗，僅累積既有快照"
-      - name: ETF 持股更新（聯邦官方 PCF；失敗不擋 job）
-        run: python skills/data/fetch_etf_holdings_usitc.py || echo "[warn] 聯邦持股更新失敗，僅累積既有快照"
-      - name: ETF 持股更新（大華銀官方 PCF；缺憑證 bundle 即退出，失敗不擋 job）
-        run: python skills/data/fetch_etf_holdings_uobam.py || echo "[warn] 大華銀持股更新失敗，僅累積既有快照"
-      - name: ETF 持股歷史累積（換股比對用，冪等）
-        run: python skills/data/accumulate_etf_holdings_history.py
       - name: QA 閘門（提交前，錯誤即中止，不推送）
         run: bash scripts/ci_qa_gate.sh
       - name: 推送
