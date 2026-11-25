@@ -1,0 +1,20 @@
+{
+  "_comment": "QA 報告完整性契約單一真相源（qa_gate.py 與 ci_qa_verdict.py 共用）。新增/移除檢查時更新 expected_checks_total 與 required_checks；required 只列 name 恆穩定項（禁止動態/條件式 name——資料品質規則通過時才出現聚合名，有問題時以 [CODE] 動態名呈現，故不列入；其保護由 expected_checks_total 精確總數涵蓋——漏跑任何一項都會被攔）。",
+  "schema_version": "2.0",
+  "expected_checks_total": 69,
+  "expected_checks_min": 60,
+  "required_checks": [
+    "股票代號唯一",
+    "無髒值 (NaN/null/undefined/Infinity/空字串/非法'-')",
+    "OHLC 合理性 (L<=O,C<=H, H>=L, 價格>0, 成交量>=0, 市值>0)",
+    "異常漲跌檢查 (>10.5% 警示 / >30% 阻擋)",
+    "meta 統計與實際陣列一致",
+    "行情日期合理（非未來日期）、stale 資料明示",
+    "stocks.json Schema",
+    "industry.json Schema",
+    "Python 第三方依賴全部登記於 requirements.txt",
+    "資料檔案大小預算（膨脹監控）",
+    "結構健康檢查",
+    "內部連結 HTTP 200 (本地)"
+  ]
+}

@@ -55,6 +55,21 @@ else:
     _HEALTH_IMPORT_ERROR = None
 
 
+# ============================================================
+# 報告完整性契約（Data Protection v2.1）— 單一真相源
+# qa_checks.json：schema_version／expected_checks_total／min／required_checks
+# qa_gate（產生端）與 ci_qa_verdict（驗證端）都從此檔讀取，避免多處同步。
+# - required 只列「name 恆穩定」項（禁止含當日數據的動態 name）
+# - expected_checks_total 為精確總數：漏跑/湊數任何一項都會在兩端被攔
+# ============================================================
+with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "qa_checks.json"), encoding="utf-8") as _cf:
+    _QA_CONTRACT = json.load(_cf)
+SCHEMA_VERSION = _QA_CONTRACT["schema_version"]
+EXPECTED_CHECKS_TOTAL = _QA_CONTRACT["expected_checks_total"]
+EXPECTED_CHECKS_MIN = _QA_CONTRACT["expected_checks_min"]
+REQUIRED_CHECKS = tuple(_QA_CONTRACT["required_checks"])
+
+
 @dataclass
 class Check:
     cat: str
@@ -106,8 +121,15 @@ errors = 0
 warnings = 0
 
 
+executed_names = []
+
+
 def add(c: Check):
     global errors, warnings
+    # 重複 name 視為湊數（報告完整性契約）：立即失敗，不產出報告。
+    if c.name in executed_names:
+        raise RuntimeError(f"duplicate check name: {c.name}")
+    executed_names.append(c.name)
     checks.append(c)
     if c.status == "ERROR":
         errors += 1
@@ -923,7 +945,23 @@ def run():
     print(report)
     if "--json" in sys.argv:
         jp = sys.argv[sys.argv.index("--json") + 1]
-        json.dump({"allow_deploy": not block, "errors": errors, "warnings": warnings,
+        # ============================================================
+        # 報告完整性門檻（fail closed：不足即不產出報告）
+        # ============================================================
+        missing_required = [n for n in REQUIRED_CHECKS if n not in executed_names]
+        if missing_required:
+            raise RuntimeError(f"required checks missing: {missing_required}")
+        if len(checks) < EXPECTED_CHECKS_MIN:
+            raise RuntimeError(f"check count {len(checks)} below floor {EXPECTED_CHECKS_MIN}")
+        if len(executed_names) != EXPECTED_CHECKS_TOTAL:
+            # 精確總數對照（漏跑/湊數任何一項→不產出報告，fail closed）
+            raise RuntimeError(
+                f"executed {len(executed_names)} != expected_checks_total {EXPECTED_CHECKS_TOTAL}")
+        json.dump({"schema_version": SCHEMA_VERSION,
+                   "allow_deploy": not block, "errors": errors, "warnings": warnings,
+                   "expected_checks": len(executed_names),
+                   "scan_completed": True,
+                   "required_checks": list(REQUIRED_CHECKS),
                    "checks": [{k: getattr(c, k) for k in ("cat", "name", "status", "detail")} for c in checks]},
                   open(jp, "w"), ensure_ascii=False, indent=2)
     return 1 if block else 0
