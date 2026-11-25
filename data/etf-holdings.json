@@ -10895,7 +10895,20 @@
     ]
    ],
    "nav_official": 62.69,
-   "note": "官方持股比重表（megafunds.com.tw id 頁面）；站方 Akamai 封機房 IP，由用戶瀏覽器 2026-11-25 採集；基準日 2026-11-24"
+   "note": "官方持股比重表（megafunds.com.tw id 頁面）；站方 Akamai 封機房 IP，由用戶瀏覽器 2026-11-25 採集；基準日 2026-11-24",
+   "fees_official": {
+    "management_fee": 0.32,
+    "custody_fee": 0.035,
+    "mgmt_range": null,
+    "cust_range": null,
+    "establish_date": "2017-03-27",
+    "custodian": "臺中商銀",
+    "fund_manager": "詹佳峰",
+    "bloomberg": "00690 TT Equity",
+    "distribution": "季配息",
+    "type": "國內ETF",
+    "source": "megafunds.com.tw 產品頁（用戶瀏覽器 2026-11-25 採集）"
+   }
   },
   "00692": {
    "name": "富邦公司治理",
@@ -20962,7 +20975,20 @@
     ]
    ],
    "nav_official": 40.35,
-   "note": "官方持股比重表（megafunds.com.tw id 頁面）；站方 Akamai 封機房 IP，由用戶瀏覽器 2026-11-25 採集；基準日 2026-11-24；海外持股代號剝 _US 後綴（USITC 同款陷阱）"
+   "note": "官方持股比重表（megafunds.com.tw id 頁面）；站方 Akamai 封機房 IP，由用戶瀏覽器 2026-11-25 採集；基準日 2026-11-24；海外持股代號剝 _US 後綴（USITC 同款陷阱）",
+   "fees_official": {
+    "management_fee": 0.85,
+    "custody_fee": 0.2,
+    "mgmt_range": null,
+    "cust_range": null,
+    "establish_date": "2022-06-17",
+    "custodian": "華南商業銀行",
+    "fund_manager": "詹佳峰",
+    "bloomberg": "00911 TT Equity",
+    "distribution": "半年配息",
+    "type": "海外ETF",
+    "source": "megafunds.com.tw 產品頁（用戶瀏覽器 2026-11-25 採集）"
+   }
   },
   "00912": {
    "name": "中信臺灣智慧 50",
@@ -21216,7 +21242,20 @@
     ]
    ],
    "nav_official": 37.7,
-   "note": "官方持股比重表（megafunds.com.tw id 頁面）；站方 Akamai 封機房 IP，由用戶瀏覽器 2026-11-25 採集；基準日 2026-11-24"
+   "note": "官方持股比重表（megafunds.com.tw id 頁面）；站方 Akamai 封機房 IP，由用戶瀏覽器 2026-11-25 採集；基準日 2026-11-24",
+   "fees_official": {
+    "management_fee": null,
+    "custody_fee": null,
+    "mgmt_range": "0.45~0.40%",
+    "cust_range": "0.040~0.035%",
+    "establish_date": "2022-08-01",
+    "custodian": "華南商業銀行",
+    "fund_manager": "吳朋鴻",
+    "bloomberg": "00913 TT Equity",
+    "distribution": "半年配息",
+    "type": "國內ETF",
+    "source": "megafunds.com.tw 產品頁（用戶瀏覽器 2026-11-25 採集）"
+   }
   },
   "00915": {
    "name": "凱基優選高股息30",
@@ -22176,7 +22215,20 @@
     ]
    ],
    "nav_official": 20.62,
-   "note": "官方持股比重表（megafunds.com.tw id 頁面）；站方 Akamai 封機房 IP，由用戶瀏覽器 2026-11-25 採集；基準日 2026-11-24"
+   "note": "官方持股比重表（megafunds.com.tw id 頁面）；站方 Akamai 封機房 IP，由用戶瀏覽器 2026-11-25 採集；基準日 2026-11-24",
+   "fees_official": {
+    "management_fee": null,
+    "custody_fee": null,
+    "mgmt_range": "0.15~0.45%",
+    "cust_range": "0.030~0.040%",
+    "establish_date": "2023-01-04",
+    "custodian": "彰化商業銀行",
+    "fund_manager": "吳朋鴻",
+    "bloomberg": "00921 TT Equity",
+    "distribution": "季配息",
+    "type": "國內ETF",
+    "source": "megafunds.com.tw 產品頁（用戶瀏覽器 2026-11-25 採集）"
+   }
   },
   "00922": {
    "name": "國泰台灣領袖50",
@@ -23156,7 +23208,20 @@
     ]
    ],
    "nav_official": 15.38,
-   "note": "官方持股比重表（megafunds.com.tw id 頁面）；站方 Akamai 封機房 IP，由用戶瀏覽器 2026-11-25 採集；基準日 2026-11-24"
+   "note": "官方持股比重表（megafunds.com.tw id 頁面）；站方 Akamai 封機房 IP，由用戶瀏覽器 2026-11-25 採集；基準日 2026-11-24",
+   "fees_official": {
+    "management_fee": null,
+    "custody_fee": null,
+    "mgmt_range": "0.15~0.45%",
+    "cust_range": "0.030~0.040%",
+    "establish_date": "2023-08-22",
+    "custodian": "彰化商業銀行",
+    "fund_manager": "詹佳峰",
+    "bloomberg": "00932 TT Equity",
+    "distribution": "季配息",
+    "type": "國內ETF",
+    "source": "megafunds.com.tw 產品頁（用戶瀏覽器 2026-11-25 採集）"
+   }
   },
   "00934": {
    "name": "中信成長高股息",
@@ -23896,7 +23961,20 @@
     ]
    ],
    "nav_official": 17.85,
-   "note": "官方持股比重表（megafunds.com.tw id 頁面）；站方 Akamai 封機房 IP，由用戶瀏覽器 2026-11-25 採集；基準日 2026-11-24"
+   "note": "官方持股比重表（megafunds.com.tw id 頁面）；站方 Akamai 封機房 IP，由用戶瀏覽器 2026-11-25 採集；基準日 2026-11-24",
+   "fees_official": {
+    "management_fee": null,
+    "custody_fee": null,
+    "mgmt_range": "0.25~0.45%",
+    "cust_range": "0.030~0.040%",
+    "establish_date": "2024-05-09",
+    "custodian": "臺灣土地銀行",
+    "fund_manager": "吳朋鴻",
+    "bloomberg": "00943 TT Equity",
+    "distribution": "月配息",
+    "type": "國內ETF",
+    "source": "megafunds.com.tw 產品頁（用戶瀏覽器 2026-11-25 採集）"
+   }
   },
   "00944": {
    "name": "野村趨勢動能高息",
@@ -28490,7 +28568,20 @@
     ]
    ],
    "nav_official": 12.8764,
-   "note": "官方持股比重表（megafunds.com.tw id 頁面）；站方 Akamai 封機房 IP，由用戶瀏覽器 2026-11-25 採集；基準日 2026-11-24"
+   "note": "官方持股比重表（megafunds.com.tw id 頁面）；站方 Akamai 封機房 IP，由用戶瀏覽器 2026-11-25 採集；基準日 2026-11-24",
+   "fees_official": {
+    "management_fee": 0.8,
+    "custody_fee": null,
+    "mgmt_range": null,
+    "cust_range": "0.14~0.18%",
+    "establish_date": "2025-12-16",
+    "custodian": "元大銀行",
+    "fund_manager": "詹佳峰",
+    "bloomberg": "00982T TT Equity",
+    "distribution": "半年配息",
+    "type": "平衡式ETF",
+    "source": "megafunds.com.tw 產品頁（用戶瀏覽器 2026-11-25 採集）"
+   }
   },
   "009831": {
    "name": "FT核心AI電力算力",
@@ -28912,7 +29003,20 @@
     ]
    ],
    "nav_official": 8.65,
-   "note": "官方持股比重表（megafunds.com.tw id 頁面）；站方 Akamai 封機房 IP，由用戶瀏覽器 2026-11-25 採集；基準日 2026-11-24；海外持股代號剝 _US 後綴（USITC 同款陷阱）"
+   "note": "官方持股比重表（megafunds.com.tw id 頁面）；站方 Akamai 封機房 IP，由用戶瀏覽器 2026-11-25 採集；基準日 2026-11-24；海外持股代號剝 _US 後綴（USITC 同款陷阱）",
+   "fees_official": {
+    "management_fee": 0.68,
+    "custody_fee": 0.15,
+    "mgmt_range": null,
+    "cust_range": null,
+    "establish_date": "2026-10-16",
+    "custodian": "土地銀行",
+    "fund_manager": "吳朋鴻",
+    "bloomberg": "009832 TT Equity",
+    "distribution": "半年配息",
+    "type": "海外ETF",
+    "source": "megafunds.com.tw 產品頁（用戶瀏覽器 2026-11-25 採集）"
+   }
   },
   "00983A": {
    "name": "主動中信ARK創新",
@@ -32612,7 +32716,20 @@
     ]
    ],
    "nav_official": 9.55,
-   "note": "官方持股比重表（megafunds.com.tw id=23）；站方 Akamai 封機房 IP，由用戶瀏覽器 2026-11-25 採集；基準日 2026-11-24"
+   "note": "官方持股比重表（megafunds.com.tw id=23）；站方 Akamai 封機房 IP，由用戶瀏覽器 2026-11-25 採集；基準日 2026-11-24",
+   "fees_official": {
+    "management_fee": 0.8,
+    "custody_fee": 0.04,
+    "mgmt_range": null,
+    "cust_range": null,
+    "establish_date": "2026-03-16",
+    "custodian": "元大銀行",
+    "fund_manager": "王仲良",
+    "bloomberg": "00996A TT Equity",
+    "distribution": "季配息",
+    "type": "主動式ETF",
+    "source": "megafunds.com.tw 產品頁（用戶瀏覽器 2026-11-25 採集）"
+   }
   },
   "00997A": {
    "name": "主動群益美國增長",
@@ -39570,7 +39687,20 @@
     ]
    ],
    "nav_official": 13.0309,
-   "note": "官方持股比重表（megafunds.com.tw id 頁面）；站方 Akamai 封機房 IP，由用戶瀏覽器 2026-11-25 採集；基準日 2026-11-24；items 代號為 ISIN（債券），第 4 欄為面額非股數"
+   "note": "官方持股比重表（megafunds.com.tw id 頁面）；站方 Akamai 封機房 IP，由用戶瀏覽器 2026-11-25 採集；基準日 2026-11-24；items 代號為 ISIN（債券），第 4 欄為面額非股數",
+   "fees_official": {
+    "management_fee": null,
+    "custody_fee": null,
+    "mgmt_range": "0.2~0.3%",
+    "cust_range": "0.06~0.10%",
+    "establish_date": "2024-08-29",
+    "custodian": "臺灣銀行(股)公司",
+    "fund_manager": "陳彥諦",
+    "bloomberg": "00957B TT Equity",
+    "distribution": "月配息",
+    "type": "債券ETF",
+    "source": "megafunds.com.tw 產品頁（用戶瀏覽器 2026-11-25 採集）"
+   }
   },
   "00958B": {
    "name": "永豐ESG銀行債15+",
