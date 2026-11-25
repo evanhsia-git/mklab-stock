@@ -634,11 +634,9 @@ check("CI：每個 job 的推送步驟都走共用腳本 scripts/ci_commit_push.
 # 若未來改為「衝突即中止」，必須同時提供人工解鎖程序，否則倒退無法自癒。
 check("CI：推送合併衝突取遠端（-X theirs），不得用 -X ours（舊 checkout 會把遠端較新資料覆蓋回舊的）",
       '-X ours' not in wf2 and '-X ours' not in _ci_push and '-X theirs' in _ci_push)
-# 2026-11-25：v2.0 push 腳本重試語法為 for((attempt=1;attempt<=5))＋push refs/heads/main
-# （原 until 迴圈），行為等價（push 失敗→遞增等待→重新合併遠端→再試），斷言同步更新。
-check("CI：推送有重試（被其他 job 插隊時不會直接失敗）",
-      'attempt<=5' in _ci_push and 'git push origin HEAD:refs/heads/main' in _ci_push
-      and 'sleep "$((attempt * 5))"' in _ci_push)
+# 2026-11-25 整合（ChatGPT 版決策）：推送重試改由 _push_retry_ok「行為測試」驗證
+# （pre-receive 拒絕一次→Attempt 2/5→成功發布），不再比對腳本字面語法——
+# 字面斷言在重試語法調整時會碎（原 until→for 已碎過一次），行為測試驗的是真正結果。
 
 # 資料新鮮度守門：重現 2026-11-03 事故
 # （過時 checkout 的整檔重寫在 merge 時勝出，讓 stocks.json 由 11-02 退回 10-30，
