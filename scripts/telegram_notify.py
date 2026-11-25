@@ -59,13 +59,17 @@ class Result:
 
 _TOKEN_RE = re.compile(r"bot(\d{4,}):([A-Za-z0-9_-]{8,})")
 _NUM_RE = re.compile(r"\b(\d{5,})\b")
+_GH_TOKEN_RE = re.compile(r"(?:github_pat_|ghp_|gho_|ghs_|ghr_)[A-Za-z0-9_]+")
+_BEARER_RE = re.compile(r"(Bearer|token)\s+[A-Za-z0-9_\-\.]+")
 
 
 def mask_secret(text: str) -> str:
-    """遮蔽例外訊息／日誌中的敏感資訊：bot token、數字型 chat_id。"""
+    """遮蔽例外訊息／日誌中的敏感資訊：bot token、GitHub token、數字型 chat_id。"""
     if not text:
         return ""
     text = _TOKEN_RE.sub(lambda m: f"bot{m.group(1)}:***", text)
+    text = _GH_TOKEN_RE.sub("***", text)
+    text = _BEARER_RE.sub(r"\1 ***", text)
     text = _NUM_RE.sub(lambda m: "*" * min(len(m.group(1)), 6), text)
     return text
 

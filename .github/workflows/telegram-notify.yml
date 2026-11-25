@@ -1,0 +1,47 @@
+name: telegram-notify
+
+# Phase 4-7：正式通知整合（v1.1）——以 workflow_run 監聽既有 workflow 的完成事件。
+# 安全設計：
+# - 零修改既有 workflow（daily-update / qa-gate / Pages 完全不動，通知不在其內）
+# - permissions 最小化：actions: read（查 runs/jobs/artifacts）＋contents: read（raw 檔）
+# - workflow_run 事件在預設分支執行 → Secrets 可用且不受 PR fork 影響
+# - 通知模組自身失敗 exit 0，不觸發任何事件循環（不監聽自己）
+# - 防濫發：見 scripts/telegram_report.py 模組說明
+#   （其他班 run 靜默／qa-gate 與 pages 成功靜默／失敗彙整一則／無每檔股票通知）
+
+on:
+  workflow_run:
+    workflows:
+      - "daily-update"
+      - "qa-gate"
+      - "pages build and deployment"
+    types:
+      - completed
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      WF_RUN_NAME: ${{ github.event.workflow_run.name }}
+      WF_RUN_ID: ${{ github.event.workflow_run.id }}
+      WF_RUN_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+      WF_RUN_HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+      WF_RUN_URL: ${{ github.event.workflow_run.html_url }}
+      WF_RUN_STARTED_AT: ${{ github.event.workflow_run.run_started_at }}
+      WF_RUN_UPDATED_AT: ${{ github.event.workflow_run.updated_at }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: 組訊息並發送（失敗不影響主流程）
+        run: python3 scripts/telegram_report.py

@@ -75,7 +75,11 @@ repo 頁面 → **Actions → Telegram Notification Test → Run workflow**
 
 Workflow 會先跑完整單元測試（32 情境）再執行發送。
 
-## 6. 通知事件分類（v1.1 計畫——尚未整合至正式流程）
+## 6. 通知事件分類（v1.1 已實作——telegram-notify.yml workflow_run 監聽器）
+
+**架構**：不修改任何既有 workflow。`.github/workflows/telegram-notify.yml`
+監聽 daily-update／qa-gate／pages build and deployment 的完成事件，
+呼叫 `scripts/telegram_report.py` 組訊息後發送（零侵入、單檔回退）。
 
 | 級別 | 事件 | 通知與否 |
 |---|---|---|
