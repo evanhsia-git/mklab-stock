@@ -628,7 +628,11 @@ check("CI：每個 job 的推送步驟都走共用腳本 scripts/ci_commit_push.
       f"jobs={_job_ct} 呼叫={wf2.count('bash scripts/ci_commit_push.sh')}")
 check("CI：推送合併衝突取遠端（-X theirs），不得用 -X ours（舊 checkout 會把遠端較新資料覆蓋回舊的）",
       '-X ours' not in wf2 and '-X ours' not in _ci_push and '-X theirs' in _ci_push)
-check("CI：推送有重試（被其他 job 插隊時不會直接失敗）", 'until [' in _ci_push and 'git push origin HEAD:main' in _ci_push)
+# 2026-11-25：v2.0 push 腳本重試語法為 for((attempt=1;attempt<=5))＋push refs/heads/main
+# （原 until 迴圈），行為等價（push 失敗→遞增等待→重新合併遠端→再試），斷言同步更新。
+check("CI：推送有重試（被其他 job 插隊時不會直接失敗）",
+      'attempt<=5' in _ci_push and 'git push origin HEAD:refs/heads/main' in _ci_push
+      and 'sleep "$((attempt * 5))"' in _ci_push)
 
 # 資料新鮮度守門：重現 2026-11-03 事故
 # （過時 checkout 的整檔重寫在 merge 時勝出，讓 stocks.json 由 11-02 退回 10-30，
@@ -645,9 +649,18 @@ def _freshness_guard_ok():
         os.makedirs(os.path.join(seed, "data")); os.makedirs(os.path.join(seed, "scripts"))
         with open(os.path.join(seed, "data/stocks.json"), "w") as f:
             f.write('{"meta":{"as_of":"2026-10-30"},"stocks":[{"sym":"2330","price":100}]}')
+        # 2026-11-25：freshness v2 對守門範圍內檔案不存在採 fail closed（exit 1）——
+        # fixture 必須齊備 data/industry.json（正式 repo 中為 tracked 檔，永遠存在）。
+        with open(os.path.join(seed, "data/industry.json"), "w") as f:
+            f.write('{"meta":{"as_of":"2026-10-30"},"industries":{}}')
         git("init", "-q", "-b", "main", cwd=seed)
-        for fn in ("ci_commit_push.sh", "ci_data_freshness.py"):
+        # 2026-11-25：v2.0 push 腳本要求 QA gate 存在（合併後必跑）——fixture 同步提供
+        # QA_GATE_PATH 指向的 mock gate（本測試驗的是 freshness 行為，QA 內容由其他層把關）。
+        for fn in ("ci_commit_push.sh", "ci_data_freshness.py", "ci_qa_gate.sh"):
             _sh.copy(os.path.join("scripts", fn), os.path.join(seed, "scripts", fn))
+        with open(os.path.join(seed, "scripts/mock_qa_gate.sh"), "w") as f:
+            f.write("#!/usr/bin/env bash\necho '[mock-qa] PASS'; exit 0\n")
+        os.chmod(os.path.join(seed, "scripts/mock_qa_gate.sh"), 0o755)
         idn = ["-c", "user.email=t@t", "-c", "user.name=t"]
         git(*idn, "add", "-A", cwd=seed); git(*idn, "commit", "-q", "-m", "seed", cwd=seed)
         git("remote", "add", "origin", os.path.join(t, "origin.git"), cwd=seed)
@@ -664,8 +677,9 @@ def _freshness_guard_ok():
         p = os.path.join(a, "data/stocks.json")
         d = json.load(open(p, encoding="utf-8")); d["meta"]["as_of"] = "2026-11-02"; d["stocks"][0]["price"] = 2370
         json.dump(d, open(p, "w", encoding="utf-8"))
+        _env = dict(os.environ, QA_GATE_PATH="scripts/mock_qa_gate.sh")
         r = subprocess.run(["bash", "scripts/ci_commit_push.sh", "A 每日更新", "data/"],
-                           cwd=a, capture_output=True, text=True, timeout=300)
+                           cwd=a, capture_output=True, text=True, timeout=300, env=_env)
         final = json.loads(git("show", "main:data/stocks.json", cwd=os.path.join(t, "origin.git")).stdout)
         ok = r.returncode == 0 and final["meta"]["as_of"] == "2026-11-02" and final["stocks"][0]["price"] == 2370
         return ok, f"rc={r.returncode} 遠端 as_of={final['meta']['as_of']} price={final['stocks'][0]['price']}"

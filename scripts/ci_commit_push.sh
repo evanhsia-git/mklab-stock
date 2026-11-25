@@ -1,84 +1,83 @@
 #!/usr/bin/env bash
-# CI 專用：提交並推送資料變更。
-# daily-update.yml 的 8 個 job 共用這一份，避免每個 job 各寫一套、下次修正又只改到一半。
-#
-# 用法：bash scripts/ci_commit_push.sh "<commit message>" <path> [<path>...]
-#
-# 為什麼不能只寫 git pull --no-rebase origin main -X ours：
-#   1. 本 job 的 checkout 可能在資料抓取期間就過時了。例如 weekly-roe 要跑約 64 分鐘，
-#      期間 daily job 早已把新資料推上去；如果舊 checkout 的檔案版本勝出，就會把
-#      較新的遠端資料覆蓋回舊的 —— 2026-11-02 就是這樣讓 stocks.json 的
-#      as_of 由 10-30（bot daily 07:02 推的）退回 10-27（weekly-roe 08:03 推的）。
-#   2. 所以合併遠端時，衝突一律取「遠端」(theirs)。遠端是較晚寫入的版本；最壞情況
-#      只是本輪這個 job 的更新被捨棄（下一輪會重算），但資料永遠不會倒退。
-#   3. push 之間仍可能被其他 job 插隊 → 重試 5 次（遞增等待），每次重試前重新合併遠端。
+# MKLAB-STOCK CI publisher — fail closed, no force push.
+# Usage: bash scripts/ci_commit_push.sh "<message>" <path> [<path>...]
+# QA_GATE_PATH may override the default repository-relative QA entrypoint.
+# Freshness guard retains its existing two-file interface until its implementation is audited.
 set -euo pipefail
-
-if [ "$#" -lt 2 ]; then
-  echo '用法：bash scripts/ci_commit_push.sh "<commit message>" <path> [<path>...]' >&2
-  exit 2
-fi
-MSG="$1"
-shift
-
-git config user.name "github-actions[bot]"
-git config user.email "github-actions[bot]@users.noreply.github.com"
-
-# 只加入實際存在的路徑：glob（如 data/us-history-*）沒有匹配時會保留字面字串，git add 會直接失敗
+export GIT_TERMINAL_PROMPT=0
+log() { printf '[ci-push] %s\n' "$*"; }
+die() { log "ERROR: $*" >&2; exit 1; }
+trap 'log "ERROR: command failed at line $LINENO" >&2' ERR
+(( $# >= 2 )) || die 'Usage: ci_commit_push.sh "<message>" <path> [<path>...]'
+MSG=$1; shift
+ROOT=$(git rev-parse --show-toplevel)
+[[ "$PWD" == "$ROOT" ]] || die 'Run from repository root'
+FRESH=scripts/ci_data_freshness.py
+QA=${QA_GATE_PATH:-scripts/ci_qa_gate.sh}
+[[ -f "$FRESH" ]] || die "Missing freshness guard: $FRESH"
+[[ -f "$QA" ]] || die "Missing QA gate: $QA"
+git diff --cached --quiet || die 'Pre-existing staged changes; refusing mixed commit'
+[[ -z $(git ls-files -u) ]] || die 'Unmerged paths exist'
+for state in MERGE_HEAD CHERRY_PICK_HEAD REVERT_HEAD rebase-merge rebase-apply; do
+  [[ ! -e $(git rev-parse --git-path "$state") ]] || die "Git operation in progress: $state"
+done
+git config user.name 'github-actions[bot]'
+git config user.email 'github-actions[bot]@users.noreply.github.com'
 paths=()
 for p in "$@"; do
-  if compgen -G "$p" > /dev/null || [ -e "$p" ]; then paths+=("$p"); fi
+  # Include tracked deletions and Git pathspec matches; never expand via eval.
+  if [[ -e "$p" || -L "$p" ]] || [[ -n $(git ls-files -- "$p") ]]; then
+    paths+=("$p")
+  else
+    log "Unmatched path skipped: $p"
+  fi
 done
-if [ "${#paths[@]}" -eq 0 ]; then
-  echo "no paths to add (全部路徑不存在)"
-  exit 0
-fi
+(( ${#paths[@]} > 0 )) || { log 'No matching paths'; exit 0; }
 git add -- "${paths[@]}"
-if git diff --cached --quiet; then
-  echo "no changes"
-  exit 0
-fi
+git diff --cached --quiet && { log 'No changes'; exit 0; }
+# Unrelated tracked changes could affect QA without being published.
+git diff --quiet || die 'Unstaged tracked changes remain; refusing ambiguous candidate'
 git commit -m "$MSG"
-
-# 資料新鮮度守門（必須放在「合併後、推送前」）：
-#   -X theirs 只認「合併當下的遠端」，不比較資料日期 → 較舊的整檔重寫可能勝出。
-#   2026-11-03 事故：official-fundamentals job 的 stocks.json（as_of 10-30）在合併時
-#   勝過 daily job 已推上去的 11-02，導致價格倒退一天、與 history/industry 不一致。
-#   這裡比較 working／HEAD@{1}（合併前本機）／origin/main 三者的日期，只採最新版本。
-guard_freshness() {
-  [ -f scripts/ci_data_freshness.py ] || return 0
-  python3 scripts/ci_data_freshness.py data/stocks.json data/industry.json || true
-  if ! git diff --cached --quiet; then
-    git commit --amend --no-edit >/dev/null
-    echo "[freshness] 已把最新版本併回本次 commit"
-  fi
+fetch_main() {
+  git fetch --no-tags origin refs/heads/main:refs/remotes/origin/main
 }
-
-git fetch origin main   # 一定要先 fetch，否則本機的 origin/main 參照是舊的，會誤判成「遠端沒新東西」
-if git merge-base --is-ancestor origin/main HEAD; then
-  : # 遠端沒有新東西
-else
-  echo "遠端領先（其他 job 先推了），合併 origin/main：衝突取遠端較新版本"
-  if ! git merge --no-edit -X theirs origin/main; then
-    git merge --abort || true
-    echo "❌ 合併 origin/main 失敗（非內容衝突，可能是檔案刪改衝突），本次放棄推送" >&2
-    exit 1
+validate() {
+  [[ -f "$FRESH" && -f "$QA" ]] || die 'Required guard missing after merge'
+  # Existing guard may stage corrected data. Preserve that contract.
+  python3 "$FRESH" data/stocks.json data/industry.json || die 'Freshness guard failed'
+  git diff --quiet || die 'Freshness guard left unstaged tracked changes'
+  if ! git diff --cached --quiet; then
+    # Separate commit preserves merge ancestry and audit trail.
+    git commit -m 'ci: apply freshness guard corrections'
   fi
-fi
-guard_freshness
-
-n=0
-until [ "$n" -ge 5 ]; do
-  if git push origin HEAD:main; then
-    echo "✅ 已推送 $(git rev-parse --short HEAD)"
+  local checked
+  checked=$(git rev-parse HEAD)
+  bash "$QA" || die 'Post-merge QA failed'
+  [[ $(git rev-parse HEAD) == "$checked" ]] || die 'QA changed HEAD'
+  git diff --quiet && git diff --cached --quiet || die 'QA modified tracked data'
+  [[ -z $(git ls-files -u) ]] || die 'Unmerged paths after QA'
+}
+for ((attempt=1; attempt<=5; attempt++)); do
+  log "Attempt $attempt/5"
+  fetch_main || die 'Fetch failed; remote baseline unavailable'
+  remote=$(git rev-parse refs/remotes/origin/main)
+  if ! git merge-base --is-ancestor "$remote" HEAD; then
+    log 'Remote advanced; merging with remote preference on content conflicts'
+    if ! git merge --no-edit -X theirs "$remote"; then
+      git merge --abort || log 'Merge abort failed; inspect local checkout'
+      die 'Merge failed; no push attempted'
+    fi
+  fi
+  validate
+  git merge-base --is-ancestor "$remote" HEAD || die 'Candidate does not contain fetched remote baseline'
+  # Normal push rejects a concurrent non-fast-forward update atomically.
+  if git push origin HEAD:refs/heads/main; then
+    log "Published $(git rev-parse HEAD)"
     exit 0
   fi
-  n=$((n + 1))
-  echo "⚠️ push 失敗，重試 $n/5（等 $((n * 5)) 秒後重新合併遠端）"
-  sleep $((n * 5))
-  git pull --no-rebase origin main -X theirs --no-edit || true
-  guard_freshness
+  if (( attempt < 5 )); then
+    log "Push failed; retry after $((attempt * 5)) seconds"
+    sleep "$((attempt * 5))"
+  fi
 done
-
-echo "❌ push 連續失敗 5 次" >&2
-exit 1
+die 'Push failed after 5 attempts; local commits retained for inspection'

@@ -1,80 +1,122 @@
 #!/usr/bin/env python3
-"""資料新鮮度守門（由 ci_commit_push.sh 在「合併後、推送前」呼叫）。
-
-為什麼需要：
-  多個 job 都會整檔重寫 data/stocks.json、data/industry.json，而 `git merge -X theirs`
-  只認「合併當下的遠端」，**不比較資料日期**。2026-11-03 的事故就是這樣發生的：
-  daily job 已把 stocks.json 推到 2026-11-02（history/industry 也已是 11-02），
-  但另一個 job 的合併把較舊的 2026-10-30 版本選成結果 → 價格倒退一天，
-  網站出現「stocks.json 說 10-30、industry.json 說 11-02」的不一致，5 項測試轉紅。
-
-做法：
-  對每個檔案比較三個候選的日期欄位（meta.as_of / as_of / date / last_updated）：
-    1. working  目前工作檔（合併後的結果）
-    2. HEAD@{1} 合併前的本機版本（本次 job 自己算出來的資料）
-    3. origin/main 遠端版本
-  若最新版本不是目前的工作檔，就改用最新版本（staged，由呼叫端 amend 進本次 commit）。
-  只會讓資料前進，不會後退；無法解析日期的檔案一律不動。
-
-用法：python3 scripts/ci_data_freshness.py data/stocks.json data/industry.json
+"""Freshness guard v2.0 — compare calendar dates, stage recovery before push.
+Default scope is unchanged. Date-only comparison preserves same-day tie policy.
+Invalid working data may be restored from a valid Git candidate; otherwise fail.
+The caller must run full QA and commit staged corrections before pushing.
 """
 import json
+import re
 import subprocess
 import sys
+from datetime import date, datetime
+from pathlib import Path
 
-DATE_FIELDS = ("as_of", "date", "last_updated", "updated")
+DATE_FIELDS = ("as_of", "asof", "date", "last_updated", "updated", "updated_at")
 
 
-def _date(text):
-    if not text:
+def _normalize(value):
+    if not isinstance(value, str):
         return None
+    value = value.strip()
     try:
-        doc = json.loads(text)
-    except Exception:
-        return None
-    meta = doc.get("meta", doc) if isinstance(doc, dict) else {}
-    if not isinstance(meta, dict):
-        return None
-    for k in DATE_FIELDS:
-        v = meta.get(k)
-        if isinstance(v, str) and v.strip():
-            return v.strip()
+        if re.fullmatch(r"[0-9]{8}", value):
+            return date(int(value[:4]), int(value[4:6]), int(value[6:])).isoformat()
+        match = re.fullmatch(r"([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})", value)
+        if match:
+            return date(*map(int, match.groups())).isoformat()
+        if re.fullmatch(r"[0-9]{4}-[0-9]{2}-[0-9]{2}[T ][0-9]{2}:[0-9]{2}(?::[0-9]{2}(?:\.[0-9]{1,6})?)?(?:Z|[+-][0-9]{2}:[0-9]{2})?", value):
+            return datetime.fromisoformat(value.replace("Z", "+00:00")).date().isoformat()
+    except ValueError:
+        pass
     return None
 
 
+def _date(text):
+    try:
+        doc = json.loads(text)
+    except (ValueError, TypeError):
+        return None
+    if not isinstance(doc, dict):
+        return None
+    # Prefer metadata and existing field order; do not hide an invalid
+    # authoritative date behind a later ingestion timestamp.
+    for obj in (doc.get("meta"), doc):
+        if not isinstance(obj, dict):
+            continue
+        for key in DATE_FIELDS:
+            if key in obj:
+                return _normalize(obj[key])
+    return None
+
+
+def _git(*args):
+    return subprocess.run(["git", *args], capture_output=True, text=True, encoding="utf-8")
+
+
+def _resolve(ref, optional=False):
+    result = _git("rev-parse", "--verify", "--quiet", ref + "^{commit}")
+    if result.returncode == 0:
+        return result.stdout.strip()
+    if optional and result.returncode in (1, 128):
+        print(f"[freshness] WARNING: unavailable optional ref {ref}", file=sys.stderr)
+        return None
+    raise RuntimeError(f"Cannot resolve {ref}: {result.stderr.strip()}")
+
+
 def _show(ref, path):
-    r = subprocess.run(["git", "show", f"{ref}:{path}"], capture_output=True, text=True)
-    return r.stdout if r.returncode == 0 else None
+    if ref is None:
+        return None
+    listing = _git("ls-tree", "-z", ref, "--", path)
+    if listing.returncode:
+        raise RuntimeError(listing.stderr.strip())
+    if not listing.stdout:
+        return None
+    result = _git("show", f"{ref}:{path}")
+    if result.returncode:
+        raise RuntimeError(result.stderr.strip())
+    return result.stdout
 
 
 def main(paths):
-    replaced = 0
-    for p in paths:
-        try:
-            with open(p, encoding="utf-8") as f:
-                working = f.read()
-        except OSError:
-            continue
-        candidates = {"working": working}
-        for ref in ("HEAD@{1}", "origin/main"):
-            text = _show(ref, p)
-            if text:
-                candidates[ref] = text
-        dates = {ref: _date(text) for ref, text in candidates.items()}
-        dated = {ref: d for ref, d in dates.items() if d}
-        if not dated:
-            continue
-        best = max(dated, key=lambda ref: dated[ref])
-        if best == "working":
-            print(f"[freshness] ✅ {p} 目前版本 {dated['working']} 已是最新"
-                  + (f"（其他候選：{ {k: v for k, v in dated.items() if k != 'working'} }）" if len(dated) > 1 else ""))
-            continue
-        print(f"[freshness] ⚠️ {p} 目前版本 {dates.get('working')} 較舊 → 改用 {best} 的 {dated[best]}")
-        subprocess.run(["git", "checkout", best, "--", p], check=True)
-        replaced += 1
-    if replaced:
-        print(f"[freshness] 已回退 {replaced} 個會被資料倒退覆蓋的檔案（呼叫端需 amend 進本次 commit）")
-    return 0
+    try:
+        remote = _resolve("origin/main")
+        previous = _resolve("HEAD@{1}", optional=True)
+        plan = []
+        for p in dict.fromkeys(paths):
+            if Path(p).is_absolute() or ".." in Path(p).parts or p.startswith("-"):
+                raise RuntimeError(f"Invalid repository path: {p}")
+            try:
+                working = Path(p).read_text(encoding="utf-8")
+            except (OSError, UnicodeError) as exc:
+                raise RuntimeError(f"Cannot read {p}: {exc}") from exc
+            refs = {"HEAD@{1}": previous, "origin/main": remote}
+            candidates = {"working": working}
+            for label, sha in refs.items():
+                text = _show(sha, p)
+                if text is not None:
+                    candidates[label] = text
+            dates = {label: _date(text) for label, text in candidates.items()}
+            for label, value in dates.items():
+                if value is None:
+                    print(f"[freshness] WARNING: {p}: invalid date/JSON in {label}", file=sys.stderr)
+            valid = {label: value for label, value in dates.items() if value is not None}
+            if not valid:
+                raise RuntimeError(f"{p}: no valid dated candidate")
+            # Dict order preserves original tie policy: working, previous, remote.
+            best = max(valid, key=valid.get)
+            print(f"[freshness] {p}: {dates}; selected {best}")
+            if best != "working":
+                plan.append((p, refs[best], valid[best]))
+        # Validate all paths before staging any recovery.
+        for p, sha, expected in plan:
+            subprocess.run(["git", "checkout", sha, "--", p], check=True)
+            if _date(Path(p).read_text(encoding="utf-8")) != expected:
+                raise RuntimeError(f"Recovery verification failed: {p}")
+        print(f"[freshness] OK: {len(plan)} correction(s) staged; caller must run QA")
+        return 0
+    except (OSError, UnicodeError, RuntimeError, subprocess.CalledProcessError) as exc:
+        print(f"[freshness] ERROR: {exc}", file=sys.stderr)
+        return 1
 
 
 if __name__ == "__main__":
