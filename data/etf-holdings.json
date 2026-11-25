@@ -26,7 +26,8 @@
    "USITC": 2,
    "NOMURA": 3,
    "ESUN": 1,
-   "MEGA": 10
+   "MEGA": 10,
+   "HUA NAN": 3
   },
   "official_url_note": "official_url＝投信官網 ETF 產品頁（持股/費用揭露頁）。僅填已人工確認的真實網址，未填＝尚未補齊（新增欄位 2026-11-25，將逐步人工補齊）。"
  },
@@ -25924,61 +25925,77 @@
    "market": "TWSE",
    "issuer": "華南永昌證券投資信託股份",
    "n": null,
-   "src": "CMONEY",
-   "asof": "",
+   "src": "HUA NAN",
+   "asof": "2025/05/06",
    "items": [
     [
      "2330",
      "台積電",
-     40.2727
+     40.23,
+     191000
     ],
     [
      "2454",
      "聯發科技",
-     6.0796
+     6.5,
+     17000
     ],
     [
      "2317",
      "鴻海精密",
-     3.2293
+     3.08,
+     144000
     ],
     [
      "2881",
      "富邦金控",
-     2.9859
+     2.8,
+     206575
     ],
     [
      "2308",
      "台達電子",
-     2.7729
+     2.56,
+     25000
     ],
     [
      "2891",
      "中信金控",
-     2.4424
-    ],
-    [
-     "2303",
-     "聯華電子",
-     2.3787
-    ],
-    [
-     "3711",
-     "日月光投控",
-     2.2802
-    ],
-    [
-     "2882",
-     "國泰金控",
-     2.1193
-    ],
-    [
-     "2887",
-     "台新新光金",
-     1.953
+     2.45,
+     371000
     ]
    ],
-   "n_listed": 10
+   "n_listed": 6,
+   "fees_official": {
+    "management_fee": "TIERED",
+    "custody_fee": 0.035,
+    "establish_date": "2025/05/06",
+    "listing_date": "2025/05/16",
+    "custodian": "元大商業銀行",
+    "isin": "TW0000098086",
+    "distribution": "季配",
+    "type": "國內股票ETF",
+    "aum_twd": 10.58829767,
+    "source": "HUA NAN 官網頁（用戶瀏覽器 2026-11-25 採集）",
+    "mgmt_fee_schedule": [
+     {
+      "max_yi": 1000.0,
+      "rate": 0.15
+     },
+     {
+      "min_yi": 1000.0,
+      "max_yi": 5000.0,
+      "rate": 0.1
+     },
+     {
+      "min_yi": 5000.0,
+      "rate": 0.05
+     }
+    ],
+    "mgmt_fee_current": 0.15,
+    "fee_basis": "依基金規模級距（淨資產 10.6 億元）",
+    "semantics": "top10 部分揭露（列 6 筆合計 57.62%，非完整清單）"
+   }
   },
   "009809": {
    "name": "富邦淨零ESG50",
@@ -26774,61 +26791,61 @@
    "market": "TWSE",
    "issuer": "華南永昌證券投資信託股份",
    "n": null,
-   "src": "CMONEY",
-   "asof": "",
+   "src": "HUA NAN",
+   "asof": "2026/03/11",
    "items": [
     [
-     "AAPL US",
+     "AAPL",
      "APPLE INC",
-     14.8629
+     17.39,
+     11473
     ],
     [
-     "MSFT US",
+     "MSFT",
      "MICROSOFT CORP",
-     14.1326
+     14.76,
+     6950
     ],
     [
-     "NVDA US",
+     "NVDA",
      "NVIDIA CORP",
-     13.2835
+     10.95,
+     16465
     ],
     [
-     "META US",
+     "META",
      "Meta平台公司",
-     6.5327
+     6.8,
+     2695
     ],
     [
-     "GOOGL US",
+     "GOOGL",
      "ALPHABET INC-CL A",
-     6.0025
+     6.56,
+     5492
     ],
     [
-     "AVGO US",
-     "BROADCOM LTD",
-     5.7721
-    ],
-    [
-     "GOOG US",
+     "GOOG",
      "ALPHABET INC-CL C",
-     5.6183
-    ],
-    [
-     "MU US",
-     "MICRON TECHNOLOGY INC",
-     4.6052
-    ],
-    [
-     "AMD US",
-     "ADVANCED MICRO DEVICES",
-     3.7668
-    ],
-    [
-     "PLTR US",
-     "帕蘭提爾科技公司",
-     1.9248
+     6.12,
+     5173
     ]
    ],
-   "n_listed": 10
+   "n_listed": 6,
+   "fees_official": {
+    "management_fee": 0.3,
+    "custody_fee": 0.17,
+    "establish_date": "2026/03/11",
+    "listing_date": "2026/03/23",
+    "custodian": "彰化商業銀行",
+    "isin": "TW0000098185",
+    "distribution": "不配息",
+    "type": "海外股票ETF",
+    "aum_twd": 7.89367277,
+    "source": "HUA NAN 官網頁（用戶瀏覽器 2026-11-25 採集）",
+    "semantics": "top10 部分揭露（列 6 筆合計 62.58%，非完整清單）",
+    "note": "頁面含兩份比重卡片（同持股不同計算基準/日期），取第一份；待人工核對"
+   }
   },
   "009819": {
    "name": "中信數據及電力",
@@ -41225,61 +41242,61 @@
    "market": "TPEX",
    "issuer": "華南永昌投信",
    "n": null,
-   "src": "CMONEY",
-   "asof": "",
+   "src": "HUA NAN",
+   "asof": "2026/05/22",
    "items": [
     [
-     "V UN",
+     "V",
      "威士卡",
-     10.1309
+     11.33,
+     4209
     ],
     [
-     "MA UN",
+     "MA",
      "萬事達卡",
-     9.9349
+     11.22,
+     2682
     ],
     [
-     "HOOD UW",
-     "羅賓漢市場公司",
-     7.8805
-    ],
-    [
-     "MELI UW",
-     "美卡多公司",
-     7.6622
-    ],
-    [
-     "NU UN",
+     "NU",
      "NU控股有限公司(開曼群島)",
-     6.9999
+     8.07,
+     105324
     ],
     [
-     "FISV UW",
+     "MELI",
+     "美卡多公司",
+     7.55,
+     806
+    ],
+    [
+     "HOOD",
+     "羅賓漢市場公司",
+     6.81,
+     16067
+    ],
+    [
+     "FISV",
      "Fiserv公司",
-     4.9386
-    ],
-    [
-     "CRCL UN",
-     "Circle網路集團公司",
-     4.2153
-    ],
-    [
-     "PYPL UW",
-     "Paypal控股有限公司",
-     4.1855
-    ],
-    [
-     "XYZ UN",
-     "布洛克公司",
-     4.136
-    ],
-    [
-     "COIN UW",
-     "比特幣基地全球公司",
-     3.9984
+     5.59,
+     14773
     ]
    ],
-   "n_listed": 10
+   "n_listed": 6,
+   "fees_official": {
+    "management_fee": 0.9,
+    "custody_fee": 0.2,
+    "establish_date": "2026/05/22",
+    "listing_date": "2026/06/03",
+    "custodian": "臺灣中小企業銀行",
+    "isin": "TW0000098227",
+    "distribution": "不配息",
+    "type": "海外股票ETF",
+    "aum_twd": 5.16680177,
+    "source": "HUA NAN 官網頁（用戶瀏覽器 2026-11-25 採集）",
+    "semantics": "top10 部分揭露（列 6 筆合計 50.57%，非完整清單）",
+    "note": "頁面含兩份比重卡片（同持股不同計算基準/日期），取第一份；待人工核對"
+   }
   },
   "009823": {
    "name": "群益 S&P500",
