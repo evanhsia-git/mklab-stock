@@ -1,0 +1,94 @@
+name: telegram-test
+
+# Telegram 通知獨立測試（Phase 3）——手動觸發，與資料更新／部署完全隔離。
+# 安全設計：
+# - permissions 僅 contents: read（無寫入權限）
+# - 不修改任何股市資料、不觸發 Pages 部署
+# - timeout 5 分鐘（網路重試最壞情況：3 次×(429 停等 30s＋timeout 10s)×3 段，綽綽有餘）
+# - 通知模組預設 exit 0（失敗不影響主流程）；此處用 --strict 讓 FAILED 顯性化，
+#   僅作用於本測試 workflow，不改變資料更新流程行為
+# - Secrets 未設定時模組輸出 SKIPPED，workflow 仍 success（Fork 即可運作）
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "dry-run＝不實際發送（無 Secrets 也可跑）；real＝實際發送到 Telegram"
+        required: false
+        default: "dry-run"
+        type: choice
+        options:
+          - dry-run
+          - real
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: 單元測試（mock，不碰真 API）
+        run: python -m unittest tests.test_telegram_notify -v
+
+      - name: 準備測試訊息
+        run: |
+          cat > /tmp/tg-test-msg.txt <<'EOF'
+          🧪 MKLAB-STOCK Telegram 通知測試
+
+          狀態：SUCCESS
+          專案：MKLAB-STOCK
+          執行環境：GitHub Actions
+          執行時間：Asia/Taipei
+          Workflow：Telegram Notification Test
+
+          Telegram 通知系統運作正常。
+          EOF
+
+      - name: Dry-run 測試（不需 Secrets）
+        if: inputs.mode == 'dry-run'
+        run: python3 scripts/telegram_notify.py --message-file /tmp/tg-test-msg.txt --dry-run
+
+      - name: 實際發送測試（需 Secrets）
+        if: inputs.mode == 'real'
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          # 只發送一次：結果存檔再解析，避免重複發送
+          python3 scripts/telegram_notify.py --message-file /tmp/tg-test-msg.txt --strict | tee /tmp/tg-result.txt
+          RESULT=$(grep TELEGRAM_RESULT /tmp/tg-result.txt | cut -d= -f2)
+          echo "TG_RESULT=$RESULT" >> "$GITHUB_ENV"
+
+      - name: 測試結果判定
+        if: always()
+        run: |
+          MODE="${{ inputs.mode }}"
+          if [ "$MODE" = "dry-run" ]; then
+            echo "🧪 Dry-run 測試完成（未實際發送）。"
+          else
+            case "${TG_RESULT:-UNKNOWN}" in
+              SENT)
+                echo "✅ 測試成功：訊息已實際發送到 Telegram。"
+                ;;
+              SKIPPED)
+                echo "⏭️ 未設定 Secrets（TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID）——測試以 SKIPPED 結束，非失敗。"
+                echo "請依 docs/TELEGRAM_NOTIFICATION.md 設定 Secrets 後重新執行。"
+                ;;
+              FAILED)
+                echo "❌ 發送失敗：請檢查 Token 是否有效、Chat ID 是否正確（見 docs/TELEGRAM_NOTIFICATION.md 故障排除）。"
+                exit 1
+                ;;
+              *)
+                echo "⚠️ 狀態不明：${TG_RESULT:-UNKNOWN}——請檢查上方日誌。"
+                exit 1
+                ;;
+            esac
+          fi
