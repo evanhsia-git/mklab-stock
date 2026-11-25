@@ -357,6 +357,42 @@ def run():
         c.error(f"檢查失敗: {e}", "", "requirements.txt")
     add(c)
 
+    # 資料檔案大小預算（膨脹監控，2026-11-25 phase 3）：
+    # 檔案大小 ≠ 網站載入大小（GitHub Pages 自動 gzip，stocks.json 1299KB→傳輸 249KB 實測）；
+    # 預算守的是 git 體積增長（每日班 diff）與極端膨脹。分級：≤WARN ok、>WARN warning、>ERROR block。
+    c = Check("CI", "資料檔案大小預算（膨脹監控）")
+    try:
+        import gzip as _gz
+        _BUDGETS = [  # (檔案, WARN_KB, ERROR_KB)——WARN≈現況+30%，ERROR≈+60%
+            ("data/stocks.json", 1500, 2000),
+            ("data/official-fundamentals.json", 1500, 2200),
+            ("data/market-extras.json", 1200, 1800),
+            ("data/twii-long.json", 500, 800),
+            ("data/etf-holdings.json", 500, 800),
+        ]
+        for _rel, _warn, _err in _BUDGETS:
+            _fp = os.path.join(ROOT, _rel)
+            if not os.path.exists(_fp):
+                c.warn(f"{_rel} 不存在（預算 {_warn}KB 未生效）")
+                continue
+            _kb = os.path.getsize(_fp) / 1024
+            _gzk = len(_gz.compress(open(_fp, "rb").read())) / 1024
+            _msg = f"{_rel}: {_kb:.0f} KB（網站 gzip 傳輸 {_gzk:.0f} KB）／預算 WARN {_warn} ERROR {_err}"
+            if _kb > _err:
+                c.error(f"{_msg}——超 ERROR 預算，需瘦身或重新評估預算", "", _rel)
+            elif _kb > _warn:
+                c.warn(f"{_msg}——超 WARN 預算，膨脹趨勢需關注")
+            else:
+                c.ok(_msg)
+        # 白名單外的 data/*.json 大檔提醒登記
+        for _f in glob.glob(os.path.join(ROOT, "data", "*.json")):
+            _rel = os.path.relpath(_f, ROOT)
+            if _rel not in [b[0] for b in _BUDGETS] and os.path.getsize(_f) / 1024 > 800:
+                c.warn(f"{_rel}: {os.path.getsize(_f)/1024:.0f} KB 未登記預算——加入 _BUDGETS 以納入監控")
+    except Exception as e:
+        c.error(f"檢查失敗: {e}", "", "data/")
+    add(c)
+
     # P0-6 / P1-1：meta 統計必須與實際陣列一致（count / sources / price_asof_counts）
     c = Check("Data", "meta 統計與實際陣列一致")
     try:
