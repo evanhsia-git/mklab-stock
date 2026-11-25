@@ -20,6 +20,14 @@ on:
         options:
           - dry-run
           - real
+      message:
+        description: "test＝固定測試訊息；db-status＝目前資料庫狀態（股票數量等，實讀 stocks.json）"
+        required: false
+        default: "test"
+        type: choice
+        options:
+          - test
+          - db-status
 
 permissions:
   contents: read
@@ -38,9 +46,12 @@ jobs:
       - name: 單元測試（mock，不碰真 API）
         run: python -m unittest tests.test_telegram_notify -v
 
-      - name: 準備測試訊息
+      - name: 準備訊息（test＝固定測試訊息；db-status＝實讀資料庫）
         run: |
-          cat > /tmp/tg-test-msg.txt <<'EOF'
+          if [ "${{ inputs.message }}" = "db-status" ]; then
+            python3 scripts/db_status_message.py > /tmp/tg-test-msg.txt
+          else
+            cat > /tmp/tg-test-msg.txt <<'EOF'
           🧪 MKLAB-STOCK Telegram 通知測試
 
           狀態：SUCCESS
@@ -51,6 +62,7 @@ jobs:
 
           Telegram 通知系統運作正常。
           EOF
+          fi
 
       - name: Dry-run 測試（不需 Secrets）
         if: inputs.mode == 'dry-run'
