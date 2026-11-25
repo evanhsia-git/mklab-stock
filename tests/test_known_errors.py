@@ -420,8 +420,11 @@ _dup, _badw = [], []
 for _sym, _e in _ah.items():
     if not isinstance(_e, dict):
         continue
-    _codes = [it[0] for it in (_e.get('items') or []) if it]
-    if len(_codes) != len(set(_codes)):
+    # 2026-11-25：重複判定改為 (代號, 權重) 對——特別股/債券型同一 ticker 會有多檔真實持倉
+    # （實證 00717 富邦美國特別股：WFC MTN 與 WFC 一般債權重不同＝不同檔，非解析錯誤）；
+    # 完全同列（同代號且同權重）才是解析錯誤（重複計數會讓 diff 少算、反查多算）。
+    _pairs = [(it[0], it[2]) for it in (_e.get('items') or []) if it]
+    if len(_pairs) != len(set(_pairs)):
         _dup.append(_sym)
     for it in (_e.get('items') or []):
         # 只驗台股個股代碼（純數字 4-6 碼）：期貨/黃金等衍生品列的「權重」是名目部位，可 >100%
