@@ -6,11 +6,11 @@
   "note": "n = 可證實的成份股總數（官方直出完整清單者）；只取得權重前 10 大、無法證實總數時為 null。src：CATHAY/FUBON/YUANTA/USITC/UOBAM＝投信官方直出，CMoney＝第三方備援（前 10 大），YFINANCE＝yfinance 備援。USITC/UOBAM 為 PCF 申贖組合（涵蓋率>98%，非全部持股）。",
   "src_counts": {
    "CATHAY": 31,
-   "CMONEY": 228,
+   "CMONEY": 220,
    "ALLIANZ": 4,
    "PRESIDENT": 4,
    "AB": 1,
-   "FUBON": 11,
+   "FUBON": 19,
    "CTBC": 3,
    "KGI": 1,
    "FIRSTSEC": 2,
@@ -6459,62 +6459,3712 @@
    "name": "富邦日本",
    "market": "TWSE",
    "issuer": "富邦證券投資信託股份有限",
-   "n": null,
-   "src": "CMONEY",
-   "asof": "2026/11/04",
+   "n": 616,
+   "src": "FUBON",
+   "asof": "2026-11-24",
    "items": [
     [
-     "202612JTIZ6F",
-     "東證指數期貨",
-     8.0584
-    ],
-    [
-     "8306 JP",
+     "8306",
      "Mitsubishi UFJ Financial Group Inc",
-     3.5284
+     3.4316,
+     129500
     ],
     [
-     "7203 JP",
+     "7203",
      "Toyota Motor Corp",
-     2.5134
+     2.8467,
+     102400
     ],
     [
-     "6098 JP",
-     "Recruit Holdings Co Ltd",
-     2.2856
-    ],
-    [
-     "8316 JP",
-     "Sumitomo Mitsui Financial Group Inc",
-     2.2664
-    ],
-    [
-     "6758 JP",
+     "6758",
      "Sony Corp",
-     2.2239
+     2.5293,
+     69700
     ],
     [
-     "6501 JP",
+     "6098",
+     "Recruit Holdings Co Ltd",
+     2.3535,
+     16100
+    ],
+    [
+     "8316",
+     "Sumitomo Mitsui Financial Group Inc",
+     2.2714,
+     88900
+    ],
+    [
+     "6501",
      "Hitachi Ltd",
-     2.1057
+     2.2134,
+     53000
     ],
     [
-     "6857 JP",
-     "ADVANTEST CORP",
-     1.9092
-    ],
-    [
-     "8411 JP",
+     "8411",
      "Mizuho Financial Group Inc",
-     1.7449
+     1.8484,
+     28550
     ],
     [
-     "8035 JP",
+     "8035",
      "Tokyo Electron Ltd",
-     1.7124
+     1.6449,
+     21900
+    ],
+    [
+     "8766",
+     "Tokio Marine Holdings Inc",
+     1.5553,
+     316600
+    ],
+    [
+     "8058",
+     "Mitsubishi Corp",
+     1.5548,
+     37600
+    ],
+    [
+     "6857",
+     "ADVANTEST CORP",
+     1.5343,
+     6700
+    ],
+    [
+     "6861",
+     "KEYENCE CORP",
+     1.4118,
+     11400
+    ],
+    [
+     "8001",
+     "ITOCHU Corp",
+     1.379,
+     74100
+    ],
+    [
+     "8031",
+     "Mitsui & Co Ltd",
+     1.1976,
+     31300
+    ],
+    [
+     "4502",
+     "Takeda Pharmaceutical Co Ltd",
+     1.1085,
+     18700
+    ],
+    [
+     "9984",
+     "SoftBank Group Corp",
+     1.0659,
+     40100
+    ],
+    [
+     "9983",
+     "FAST RETAILING CO LTD",
+     1.0584,
+     1500
+    ],
+    [
+     "7974",
+     "Nintendo Co Ltd",
+     1.0175,
+     14000
+    ],
+    [
+     "7011",
+     "Mitsubishi Heavy Industries Ltd",
+     0.931,
+     39400
+    ],
+    [
+     "6503",
+     "Mitsubishi Electric Corp",
+     0.8964,
+     23100
+    ],
+    [
+     "4063",
+     "Shin-Etsu Chemical Co Ltd",
+     0.8525,
+     18600
+    ],
+    [
+     "6981",
+     "Murata Manufacturing Co Ltd",
+     0.8206,
+     18100
+    ],
+    [
+     "9432",
+     "Nippon Telegraph & Telephone Corp",
+     0.801,
+     574000
+    ],
+    [
+     "7741",
+     "Hoya Corp",
+     0.7773,
+     3900
+    ],
+    [
+     "9433",
+     "KDDI Corp",
+     0.7274,
+     31200
+    ],
+    [
+     "8053",
+     "Sumitomo Corp",
+     0.7192,
+     55900
+    ],
+    [
+     "8002",
+     "Marubeni Corp",
+     0.6794,
+     18100
+    ],
+    [
+     "9434",
+     "SOFTBANK CORP",
+     0.6738,
+     337200
+    ],
+    [
+     "6752",
+     "Panasonic Corp",
+     0.663,
+     26800
+    ],
+    [
+     "8725",
+     "MS&AD Insurance Group Holdings Inc",
+     0.6596,
+     15100
+    ],
+    [
+     "7267",
+     "Honda Motor Co Ltd",
+     0.6192,
+     42400
+    ],
+    [
+     "8630",
+     "Sompo Holdings Inc",
+     0.612,
+     10200
+    ],
+    [
+     "6367",
+     "Daikin Industries Ltd",
+     0.6013,
+     3000
+    ],
+    [
+     "8591",
+     "ORIX Corp",
+     0.5824,
+     13100
+    ],
+    [
+     "8750",
+     "Dai-ichi Life Holdings Inc",
+     0.5797,
+     39500
+    ],
+    [
+     "7182",
+     "Japan Post Bank Co Ltd",
+     0.5763,
+     22300
+    ],
+    [
+     "6702",
+     "Fujitsu Ltd",
+     0.5733,
+     20300
+    ],
+    [
+     "2914",
+     "Japan Tobacco Inc",
+     0.5615,
+     12500
+    ],
+    [
+     "285A",
+     "KIOXIA HOLDINGS CORP",
+     0.5598,
+     8300
+    ],
+    [
+     "6701",
+     "NEC Corp",
+     0.5427,
+     14900
+    ],
+    [
+     "4578",
+     "Otsuka Holdings Co Ltd",
+     0.5286,
+     5100
+    ],
+    [
+     "6301",
+     "Komatsu Ltd",
+     0.4945,
+     10200
+    ],
+    [
+     "4503",
+     "Astellas Pharma Inc",
+     0.4574,
+     19700
+    ],
+    [
+     "6723",
+     "RENESAS ELECTRONICS CORP",
+     0.4496,
+     20400
+    ],
+    [
+     "6954",
+     "FANUC Corp",
+     0.4487,
+     10000
+    ],
+    [
+     "4568",
+     "Daiichi Sankyo Co Ltd",
+     0.4343,
+     18900
+    ],
+    [
+     "8308",
+     "Resona Holdings Inc",
+     0.4331,
+     25200
+    ],
+    [
+     "8309",
+     "Sumitomo Mitsui Trust Holdings Inc",
+     0.4297,
+     30500
+    ],
+    [
+     "4901",
+     "FUJIFILM Holdings Corp",
+     0.422,
+     13500
+    ],
+    [
+     "8802",
+     "Mitsubishi Estate Co Ltd",
+     0.4096,
+     12300
+    ],
+    [
+     "8604",
+     "Nomura Holdings Inc",
+     0.4057,
+     33700
+    ],
+    [
+     "4661",
+     "Oriental Land Co Ltd/Japan",
+     0.4041,
+     12600
+    ],
+    [
+     "5108",
+     "Bridgestone Corp",
+     0.4017,
+     11100
+    ],
+    [
+     "4519",
+     "Chugai Pharmaceutical Co Ltd",
+     0.3861,
+     6500
+    ],
+    [
+     "6178",
+     "Japan Post Holdings Co Ltd",
+     0.3854,
+     19800
+    ],
+    [
+     "9020",
+     "East Japan Railway Co",
+     0.3851,
+     11500
+    ],
+    [
+     "7751",
+     "Canon Inc",
+     0.3832,
+     9400
+    ],
+    [
+     "8801",
+     "Mitsui Fudosan Co Ltd",
+     0.3775,
+     29400
+    ],
+    [
+     "6146",
+     "DISCO CORP",
+     0.3748,
+     1000
+    ],
+    [
+     "5802",
+     "Sumitomo Electric Industries Ltd",
+     0.354,
+     32200
+    ],
+    [
+     "3382",
+     "Seven & i Holdings Co Ltd",
+     0.3528,
+     19900
+    ],
+    [
+     "6762",
+     "TDK Corp",
+     0.3465,
+     18200
+    ],
+    [
+     "7269",
+     "Suzuki Motor Corp",
+     0.3373,
+     18400
+    ],
+    [
+     "5803",
+     "FUJIKURA",
+     0.337,
+     16600
+    ],
+    [
+     "2802",
+     "AJINOMOTO CO INC",
+     0.3365,
+     9900
+    ],
+    [
+     "4452",
+     "Kao Corp",
+     0.3329,
+     9900
+    ],
+    [
+     "5401",
+     "Nippon Steel & Sumitomo Metal Corp",
+     0.33,
+     58600
+    ],
+    [
+     "8015",
+     "Toyota Tsusho Corp",
+     0.3288,
+     6600
+    ],
+    [
+     "7832",
+     "Bandai Namco Holdings Inc",
+     0.3242,
+     5500
+    ],
+    [
+     "9022",
+     "Central Japan Railway Co",
+     0.312,
+     8500
+    ],
+    [
+     "5020",
+     "JXTG Holdings Inc",
+     0.3035,
+     31600
+    ],
+    [
+     "6273",
+     "SMC CORP",
+     0.3017,
+     600
+    ],
+    [
+     "4543",
+     "Terumo Corp",
+     0.2952,
+     13800
+    ],
+    [
+     "6902",
+     "Denso Corp",
+     0.2942,
+     18200
+    ],
+    [
+     "7936",
+     "Asics Corp",
+     0.2883,
+     8300
+    ],
+    [
+     "1605",
+     "Inpex Corp",
+     0.2677,
+     9800
+    ],
+    [
+     "6971",
+     "Kyocera Corp",
+     0.2624,
+     11100
+    ],
+    [
+     "8267",
+     "Aeon Co Ltd",
+     0.2603,
+     26020
+    ],
+    [
+     "6920",
+     "LASERTEC CORP",
+     0.2508,
+     900
+    ],
+    [
+     "9101",
+     "Nippon Yusen KK",
+     0.2466,
+     4400
+    ],
+    [
+     "9735",
+     "Secom Co Ltd",
+     0.2454,
+     4000
+    ],
+    [
+     "7013",
+     "IHI Corp",
+     0.2426,
+     12700
+    ],
+    [
+     "9503",
+     "Kansai Electric Power Co Inc/The",
+     0.2392,
+     11300
+    ],
+    [
+     "1925",
+     "Daiwa House Industry Co Ltd",
+     0.2367,
+     12300
+    ],
+    [
+     "2502",
+     "Asahi Group Holdings Ltd",
+     0.2301,
+     15400
+    ],
+    [
+     "2503",
+     "Kirin Holdings Co Ltd",
+     0.2281,
+     8900
+    ],
+    [
+     "4307",
+     "Nomura Research Institute Ltd",
+     0.2276,
+     4420
+    ],
+    [
+     "8601",
+     "Daiwa Securities Group Inc",
+     0.2272,
+     15900
+    ],
+    [
+     "9766",
+     "KONAMI CORP",
+     0.2255,
+     900
+    ],
+    [
+     "4062",
+     "Ibiden Co Ltd",
+     0.2165,
+     4800
+    ],
+    [
+     "4507",
+     "Shionogi & Co Ltd",
+     0.2158,
+     8300
+    ],
+    [
+     "8697",
+     "Japan Exchange Group Inc",
+     0.2145,
+     12100
+    ],
+    [
+     "6326",
+     "Kubota Corp",
+     0.2139,
+     10700
+    ],
+    [
+     "8830",
+     "SUMITOMO REALTY & DEVELOPMNT",
+     0.2082,
+     7300
+    ],
+    [
+     "9104",
+     "Mitsui OSK Lines Ltd",
+     0.2041,
+     3700
+    ],
+    [
+     "1802",
+     "Obayashi Corp",
+     0.2039,
+     7500
+    ],
+    [
+     "7453",
+     "RYOHIN KEIKAKU CO LTD",
+     0.1985,
+     4800
+    ],
+    [
+     "8795",
+     "T&D Holdings Inc",
+     0.1973,
+     4900
+    ],
+    [
+     "4004",
+     "RESONAC HOLDINGS CORP",
+     0.1956,
+     1900
+    ],
+    [
+     "1928",
+     "Sekisui House Ltd",
+     0.1886,
+     6600
+    ],
+    [
+     "3407",
+     "Asahi Kasei Corp",
+     0.1871,
+     14900
+    ],
+    [
+     "9532",
+     "Osaka Gas Co Ltd",
+     0.1859,
+     3900
+    ],
+    [
+     "4684",
+     "Obic Co Ltd",
+     0.1833,
+     3500
+    ],
+    [
+     "7733",
+     "Olympus Corp",
+     0.1806,
+     11300
+    ],
+    [
+     "6988",
+     "Nitto Denko Corp",
+     0.1802,
+     6300
+    ],
+    [
+     "1812",
+     "Kajima Corp",
+     0.17,
+     4500
+    ],
+    [
+     "9531",
+     "Tokyo Gas Co Ltd",
+     0.1688,
+     3100
+    ],
+    [
+     "4911",
+     "Shiseido Co Ltd",
+     0.1674,
+     4700
+    ],
+    [
+     "1801",
+     "Taisei Corp",
+     0.1667,
+     1800
+    ],
+    [
+     "9502",
+     "Chubu Electric Power Co Inc",
+     0.1658,
+     8300
+    ],
+    [
+     "7309",
+     "Shimano Inc",
+     0.159,
+     900
+    ],
+    [
+     "3402",
+     "Toray Industries Inc",
+     0.156,
+     14100
+    ],
+    [
+     "7532",
+     "PAN PACIFIC INTERNATIONAL HOLD",
+     0.1555,
+     22400
+    ],
+    [
+     "7272",
+     "Yamaha Motor Co Ltd",
+     0.1534,
+     10300
+    ],
+    [
+     "9201",
+     "Japan Airlines Co Ltd",
+     0.1524,
+     5100
+    ],
+    [
+     "9697",
+     "CAPCOM",
+     0.152,
+     4200
+    ],
+    [
+     "9202",
+     "ANA Holdings Inc",
+     0.1486,
+     5300
+    ],
+    [
+     "6361",
+     "EBARA CORP",
+     0.1467,
+     5000
+    ],
+    [
+     "6532",
+     "BAYCURRENT CONSULTING INC",
+     0.1451,
+     1300
+    ],
+    [
+     "7186",
+     "CONCORDIA FINANCIAL GROUP LT",
+     0.1415,
+     10700
+    ],
+    [
+     "7270",
+     "Subaru Corp",
+     0.1402,
+     6200
+    ],
+    [
+     "8473",
+     "SBI Holdings Inc/Japan",
+     0.1396,
+     6200
+    ],
+    [
+     "9021",
+     "West Japan Railway Co",
+     0.1371,
+     5000
+    ],
+    [
+     "4689",
+     "Yahoo Japan Corp",
+     0.1349,
+     32200
+    ],
+    [
+     "6383",
+     "DAIFUKU CO LTD",
+     0.1321,
+     3600
+    ],
+    [
+     "8331",
+     "CHIBA BANK LTD/THE",
+     0.1313,
+     6600
+    ],
+    [
+     "3563",
+     "FOOD & LIFE COS LTD",
+     0.1288,
+     2500
+    ],
+    [
+     "4612",
+     "Nippon Paint Holdings Co Ltd",
+     0.1288,
+     11100
+    ],
+    [
+     "5713",
+     "SUMITOMO METAL MINING CO LTD",
+     0.1262,
+     2700
+    ],
+    [
+     "4188",
+     "Mitsubishi Chemical Holdings Corp",
+     0.1252,
+     14600
+    ],
+    [
+     "7550",
+     "ZENSHO CO LTD",
+     0.1251,
+     1100
+    ],
+    [
+     "6504",
+     "FUJI ELECTRIC CO LTD",
+     0.1244,
+     1400
+    ],
+    [
+     "9843",
+     "Nitori Holdings Co Ltd",
+     0.1215,
+     4000
+    ],
+    [
+     "4523",
+     "Eisai Co Ltd",
+     0.1214,
+     2700
+    ],
+    [
+     "7167",
+     "足利控股有限公司",
+     0.1213,
+     10300
+    ],
+    [
+     "5016",
+     "JX ADVANCED METALS CORP",
+     0.1195,
+     7370
+    ],
+    [
+     "8113",
+     "Unicharm Corp",
+     0.1186,
+     13100
+    ],
+    [
+     "4091",
+     "Taiyo Nippon Sanso Corp",
+     0.1175,
+     2400
+    ],
+    [
+     "7012",
+     "Kawasaki Heavy Industries Ltd",
+     0.1169,
+     8900
+    ],
+    [
+     "6586",
+     "Makita Corp",
+     0.1165,
+     2600
+    ],
+    [
+     "5801",
+     "FURUKAWA ELECTRIC CO LTD",
+     0.1153,
+     7600
+    ],
+    [
+     "9107",
+     "KAWASAKI KISEN KAISHA LTD",
+     0.1152,
+     4500
+    ],
+    [
+     "7701",
+     "SHIMADZU CORP",
+     0.1148,
+     3000
+    ],
+    [
+     "5831",
+     "SHIZUOKA FINANCIAL GROUP INC",
+     0.1138,
+     4500
+    ],
+    [
+     "2269",
+     "MEIJI Holdings Co Ltd",
+     0.1133,
+     2900
+    ],
+    [
+     "5334",
+     "NITERRA CO LTD",
+     0.1119,
+     3700
+    ],
+    [
+     "9147",
+     "NIPPON EXPRESS HOLDINGS CO LTD",
+     0.1115,
+     2300
+    ],
+    [
+     "3099",
+     "Isetan Mitsukoshi Holdings Ltd",
+     0.1113,
+     7400
+    ],
+    [
+     "3659",
+     "NEXON CO LTD",
+     0.111,
+     4300
+    ],
+    [
+     "8593",
+     "Mitsubishi UFJ Lease & Finance Co Ltd",
+     0.1099,
+     10300
+    ],
+    [
+     "9042",
+     "Hankyu Hanshin Holdings Inc",
+     0.1059,
+     2700
+    ],
+    [
+     "5411",
+     "JFE Holdings Inc",
+     0.1039,
+     7000
+    ],
+    [
+     "6525",
+     "KOKUSAI ELECTRIC CORP",
+     0.1033,
+     2200
+    ],
+    [
+     "2801",
+     "KIKKOMAN CORP",
+     0.1022,
+     6800
+    ],
+    [
+     "7735",
+     "DAINIPPON SCREEN MFG CO LTD",
+     0.1022,
+     1600
+    ],
+    [
+     "8136",
+     "Sanrio Co Ltd",
+     0.1017,
+     11900
+    ],
+    [
+     "6869",
+     "Sysmex Corp",
+     0.1014,
+     5700
+    ],
+    [
+     "3088",
+     "MATSUKIYOCOCOKARA & CO",
+     0.1005,
+     4100
+    ],
+    [
+     "2768",
+     "Sojitz Corp",
+     0.1001,
+     2500
+    ],
+    [
+     "1803",
+     "Shimizu Corp",
+     0.0991,
+     5600
+    ],
+    [
+     "7202",
+     "Isuzu Motors Ltd",
+     0.0991,
+     5900
+    ],
+    [
+     "8354",
+     "Fukuoka Financial Group Inc",
+     0.099,
+     1800
+    ],
+    [
+     "3003",
+     "HULIC CO LTD",
+     0.0976,
+     6000
+    ],
+    [
+     "7912",
+     "DAI NIPPON PRINTING CO LTD",
+     0.097,
+     4500
+    ],
+    [
+     "6448",
+     "Brother Industries Ltd",
+     0.0964,
+     2700
+    ],
+    [
+     "9684",
+     "SQUARE ENIX HOLDINGS CO LTD",
+     0.0951,
+     3200
+    ],
+    [
+     "1878",
+     "Daito Trust Construction Co Ltd",
+     0.0942,
+     3500
+    ],
+    [
+     "3197",
+     "SKYLARK HOLDINGS CO LTD",
+     0.0942,
+     3000
+    ],
+    [
+     "5333",
+     "NGK INSULATORS LTD",
+     0.0925,
+     2500
+    ],
+    [
+     "5844",
+     "KYOTO FINANCIAL GROUP INC",
+     0.0919,
+     2800
+    ],
+    [
+     "7747",
+     "ASAHI INTECC CO.,LTD.",
+     0.0911,
+     2500
+    ],
+    [
+     "7259",
+     "Aisin Seiki Co Ltd",
+     0.0904,
+     5100
+    ],
+    [
+     "9602",
+     "Toho Co Ltd/Tokyo",
+     0.0895,
+     6000
+    ],
+    [
+     "4204",
+     "Sekisui Chemical Co Ltd",
+     0.0892,
+     4100
+    ],
+    [
+     "2875",
+     "TOYO SUISAN KAISHA LTD",
+     0.0891,
+     1000
+    ],
+    [
+     "4528",
+     "ONO PHARMACEUTICAL CO LTD",
+     0.088,
+     4300
+    ],
+    [
+     "9962",
+     "MISUMI GROUP INC",
+     0.0879,
+     2900
+    ],
+    [
+     "8359",
+     "HACHIJUNI BANK LTD/THE",
+     0.0861,
+     4600
+    ],
+    [
+     "7181",
+     "Japan Post Insurance Co Ltd",
+     0.0859,
+     5900
+    ],
+    [
+     "6479",
+     "MINEBEA CO LTD",
+     0.0858,
+     3700
+    ],
+    [
+     "5201",
+     "AGC Inc/Japan",
+     0.0852,
+     2200
+    ],
+    [
+     "6841",
+     "Yokogawa Electric Corp",
+     0.0849,
+     2400
+    ],
+    [
+     "5019",
+     "IDEMITSU KOSAN CO LTD",
+     0.0839,
+     8600
+    ],
+    [
+     "6963",
+     "Rohm Co Ltd",
+     0.0827,
+     3500
+    ],
+    [
+     "8729",
+     "Sony Financial Holdings Inc",
+     0.0827,
+     68600
+    ],
+    [
+     "4755",
+     "Rakuten Inc",
+     0.0793,
+     17000
+    ],
+    [
+     "4768",
+     "OTSUKA CORP",
+     0.0786,
+     2400
+    ],
+    [
+     "8377",
+     "Hokuhoku Financial Group Inc",
+     0.0774,
+     13200
+    ],
+    [
+     "4324",
+     "Dentsu Inc",
+     0.0764,
+     2500
+    ],
+    [
+     "9005",
+     "Tokyu Corp",
+     0.0759,
+     5800
+    ],
+    [
+     "2587",
+     "Suntory Beverage & Food Ltd",
+     0.0746,
+     1700
+    ],
+    [
+     "5406",
+     "Kobe Steel Ltd",
+     0.0742,
+     4700
+    ],
+    [
+     "7911",
+     "TOPPAN HOLDINGS INC",
+     0.0742,
+     5100
+    ],
+    [
+     "2267",
+     "Yakult Honsha Co Ltd",
+     0.0736,
+     3100
+    ],
+    [
+     "8334",
+     "GUNMA BANK LTD/THE",
+     0.0727,
+     3700
+    ],
+    [
+     "4732",
+     "USS Co Ltd",
+     0.0718,
+     4800
+    ],
+    [
+     "3626",
+     "TIS INC",
+     0.0711,
+     2000
+    ],
+    [
+     "4005",
+     "Sumitomo Chemical Co Ltd",
+     0.0711,
+     18100
+    ],
+    [
+     "9024",
+     "Seibu Holdings Inc",
+     0.0699,
+     2400
+    ],
+    [
+     "6645",
+     "Omron Corp",
+     0.0696,
+     1800
+    ],
+    [
+     "4704",
+     "Trend Micro Inc/Japan",
+     0.069,
+     1100
+    ],
+    [
+     "6845",
+     "AZBIL CORP",
+     0.0689,
+     5500
+    ],
+    [
+     "5830",
+     "IYOGIN HOLDINGS INC",
+     0.0684,
+     2700
+    ],
+    [
+     "3436",
+     "SUMCO",
+     0.0682,
+     4000
+    ],
+    [
+     "9041",
+     "Kintetsu Group Holdings Co Ltd",
+     0.0674,
+     2200
+    ],
+    [
+     "5929",
+     "SANWA HOLDINGS CORP",
+     0.0669,
+     2000
+    ],
+    [
+     "6506",
+     "Yaskawa Electric Corp",
+     0.0665,
+     2300
+    ],
+    [
+     "9435",
+     "HIKARI TSUSHIN INC",
+     0.0663,
+     200
+    ],
+    [
+     "3086",
+     "J Front Retailing Co Ltd",
+     0.0661,
+     2600
+    ],
+    [
+     "6724",
+     "Seiko Epson Corp",
+     0.0655,
+     2900
+    ],
+    [
+     "9501",
+     "Tokyo Electric Power Co Holdings Inc",
+     0.0655,
+     18800
+    ],
+    [
+     "7201",
+     "Nissan Motor Co Ltd",
+     0.0653,
+     28900
+    ],
+    [
+     "9831",
+     "YAMADA DENKI CO LTD",
+     0.0638,
+     9500
+    ],
+    [
+     "7459",
+     "Medipal Holdings Corp",
+     0.0637,
+     2400
+    ],
+    [
+     "6976",
+     "TAIYO YUDEN CO LTD",
+     0.0634,
+     1100
+    ],
+    [
+     "5706",
+     "MITSUI MINING & SMELTING CO",
+     0.063,
+     6300
+    ],
+    [
+     "5332",
+     "TOTO Ltd",
+     0.0626,
+     1400
+    ],
+    [
+     "1944",
+     "Kinden Corp",
+     0.0625,
+     1300
+    ],
+    [
+     "6856",
+     "HORIBA LTD",
+     0.0624,
+     400
+    ],
+    [
+     "7261",
+     "Mazda Motor Corp",
+     0.0622,
+     6900
+    ],
+    [
+     "2501",
+     "SAPPORO HOLDINGS LTD",
+     0.062,
+     3400
+    ],
+    [
+     "3064",
+     "MONOTARO CO LTD",
+     0.0617,
+     3100
+    ],
+    [
+     "2413",
+     "M3 Inc",
+     0.0613,
+     4200
+    ],
+    [
+     "3289",
+     "東急不動產控股公司",
+     0.0607,
+     6200
+    ],
+    [
+     "4021",
+     "Nissan Chemical Corp",
+     0.0607,
+     1100
+    ],
+    [
+     "7752",
+     "Ricoh Co Ltd",
+     0.0592,
+     4400
+    ],
+    [
+     "4536",
+     "Santen Pharmaceutical Co Ltd",
+     0.0583,
+     3500
+    ],
+    [
+     "4186",
+     "TOKYO OHKA KOGYO CO LTD",
+     0.0579,
+     1000
+    ],
+    [
+     "5101",
+     "YOKOHAMA RUBBER CO LTD",
+     0.0578,
+     1000
+    ],
+    [
+     "6465",
+     "HOSHIZAKI ELECTRIC CO LTD",
+     0.057,
+     1300
+    ],
+    [
+     "4042",
+     "TOSOH CORP",
+     0.0566,
+     2800
+    ],
+    [
+     "6113",
+     "Amada Holdings Co Ltd",
+     0.0562,
+     3000
+    ],
+    [
+     "9506",
+     "Tohoku Electric Power Co Inc",
+     0.0561,
+     5500
+    ],
+    [
+     "4676",
+     "Fuji Media Holdings Inc",
+     0.0551,
+     1700
+    ],
+    [
+     "9001",
+     "Tobu Railway Co Ltd",
+     0.0549,
+     2300
+    ],
+    [
+     "5076",
+     "INFRONEER HOLDINGS INC",
+     0.0548,
+     3000
+    ],
+    [
+     "6370",
+     "Kurita Water Industries Ltd",
+     0.0548,
+     1200
+    ],
+    [
+     "8233",
+     "TAKASHIMAYA CO LTD",
+     0.0548,
+     3100
+    ],
+    [
+     "2897",
+     "NISSIN FOODS HOLDINGS CO LTD",
+     0.0543,
+     2300
+    ],
+    [
+     "7337",
+     "HIROGIN HOLDINGS INC",
+     0.0542,
+     3100
+    ],
+    [
+     "4151",
+     "KYOWA HAKKO KIRIN CO LTD",
+     0.0539,
+     2500
+    ],
+    [
+     "6806",
+     "HIROSE ELECTRIC CO LTD",
+     0.0539,
+     300
+    ],
+    [
+     "8341",
+     "77 BANK LTD/THE",
+     0.0535,
+     2000
+    ],
+    [
+     "2002",
+     "Nisshin Seifun Group Inc",
+     0.0532,
+     2700
+    ],
+    [
+     "3861",
+     "Oji Holdings Corp",
+     0.0532,
+     7800
+    ],
+    [
+     "6965",
+     "Hamamatsu Photonics KK",
+     0.053,
+     3200
+    ],
+    [
+     "9401",
+     "TOKYO BROADCASTING SYSTEM",
+     0.0521,
+     1000
+    ],
+    [
+     "1942",
+     "KANDENKO CO LTD",
+     0.052,
+     1400
+    ],
+    [
+     "8358",
+     "Suruga Bank Ltd",
+     0.0518,
+     2400
+    ],
+    [
+     "4751",
+     "CYBERAGENT INC",
+     0.0514,
+     4700
+    ],
+    [
+     "8439",
+     "CENTURY TOKYO LEASING CORP",
+     0.0511,
+     2400
+    ],
+    [
+     "3391",
+     "TSURUHA HOLDINGS INC",
+     0.051,
+     2500
+    ],
+    [
+     "9009",
+     "KEISEI ELECTRIC RAILWAY CO",
+     0.051,
+     4000
+    ],
+    [
+     "9007",
+     "ODAKYU ELECTRIC RAILWAY CO",
+     0.0509,
+     3400
+    ],
+    [
+     "2181",
+     "TEMP HOLDINGS CO LTD",
+     0.0502,
+     21300
+    ],
+    [
+     "2212",
+     "YAMAZAKI BAKING CO LTD",
+     0.0502,
+     1400
+    ],
+    [
+     "5938",
+     "LIXIL Group Corp",
+     0.0502,
+     3600
+    ],
+    [
+     "8303",
+     "Shinsei Bank Ltd",
+     0.0501,
+     3500
+    ],
+    [
+     "4912",
+     "LION CORP",
+     0.0496,
+     2600
+    ],
+    [
+     "9861",
+     "YOSHINOYA HOLDINGS CO LTD",
+     0.0495,
+     1200
+    ],
+    [
+     "4527",
+     "ROHTO PHARMACEUTICAL CO LTD",
+     0.0493,
+     2200
+    ],
+    [
+     "8804",
+     "Tokyo Tatemono Co Ltd",
+     0.0493,
+     1800
+    ],
+    [
+     "9142",
+     "KYUSHU RAILWAY CO",
+     0.0493,
+     1600
+    ],
+    [
+     "4506",
+     "DAINIPPON PHARMA CO LTD",
+     0.0491,
+     3200
+    ],
+    [
+     "3774",
+     "INTERNET INITIATIVE JAPAN",
+     0.0489,
+     1500
+    ],
+    [
+     "1911",
+     "SUMITOMO FORESTRY CO LTD",
+     0.0486,
+     5300
+    ],
+    [
+     "5105",
+     "TOYO TIRE & RUBBER CO LTD",
+     0.0483,
+     1500
+    ],
+    [
+     "9513",
+     "Electric Power Development Co Ltd",
+     0.0482,
+     1500
+    ],
+    [
+     "6302",
+     "SUMITOMO HEAVY INDUSTRIES",
+     0.0479,
+     1200
+    ],
+    [
+     "9507",
+     "SHIKOKU ELECTRIC POWER CO",
+     0.0476,
+     3000
+    ],
+    [
+     "8418",
+     "YAMAGUCHI FINANCIAL GROUP IN",
+     0.0474,
+     2000
+    ],
+    [
+     "9048",
+     "NAGOYA RAILROAD CO LTD",
+     0.0474,
+     2900
+    ],
+    [
+     "8227",
+     "SHIMAMURA CO LTD",
+     0.0473,
+     1600
+    ],
+    [
+     "2579",
+     "COCA-COLA WEST CO LTD",
+     0.0472,
+     1300
+    ],
+    [
+     "6136",
+     "OSG Corp",
+     0.0471,
+     1700
+    ],
+    [
+     "6460",
+     "Sega Sammy Holdings Inc",
+     0.047,
+     1700
+    ],
+    [
+     "5832",
+     "CHUGIN FINANCIAL GROUP INC",
+     0.0467,
+     1700
+    ],
+    [
+     "8524",
+     "NORTH PACIFIC BANK LTD",
+     0.0466,
+     5000
+    ],
+    [
+     "3105",
+     "NISSHINBO HOLDINGS INC",
+     0.0465,
+     3000
+    ],
+    [
+     "9143",
+     "SG HOLDINGS CO LTD",
+     0.0465,
+     3500
+    ],
+    [
+     "7189",
+     "NISHI-NIPPON FINANCIAL HOLDING INC.",
+     0.0464,
+     1300
+    ],
+    [
+     "5711",
+     "Mitsubishi Materials Corp",
+     0.0458,
+     1500
+    ],
+    [
+     "7180",
+     "KYUSHU FINANCIAL GROUP INC",
+     0.0458,
+     4000
+    ],
+    [
+     "8304",
+     "AOZORA BANK LTD",
+     0.0454,
+     1800
+    ],
+    [
+     "2282",
+     "NH FOODS LTD",
+     0.0452,
+     2700
+    ],
+    [
+     "6473",
+     "JTEKT Corp",
+     0.0452,
+     2800
+    ],
+    [
+     "4183",
+     "MITSUI CHEMICALS INC",
+     0.0451,
+     3300
+    ],
+    [
+     "8020",
+     "KANEMATSU CORP",
+     0.045,
+     2400
+    ],
+    [
+     "9504",
+     "CHUGOKU ELECTRIC POWER CO",
+     0.045,
+     5100
+    ],
+    [
+     "9023",
+     "TOKYO METRO CO LTD",
+     0.0448,
+     3700
+    ],
+    [
+     "9706",
+     "Japan Airport Terminal Co Ltd",
+     0.0447,
+     800
+    ],
+    [
+     "2809",
+     "KEWPIE CORP",
+     0.0445,
+     1100
+    ],
+    [
+     "5901",
+     "TOYO SEIKAN KAISHA LTD",
+     0.0444,
+     1200
+    ],
+    [
+     "7276",
+     "KOITO MANUFACTURING CO LTD",
+     0.0444,
+     2200
+    ],
+    [
+     "1860",
+     "TODA CORP",
+     0.0442,
+     3800
+    ],
+    [
+     "4203",
+     "SUMITOMO BAKELITE CO LTD",
+     0.0442,
+     800
+    ],
+    [
+     "2371",
+     "Kakaku.com Inc",
+     0.0439,
+     1400
+    ],
+    [
+     "4613",
+     "Kansai Paint Co Ltd",
+     0.0438,
+     1800
+    ],
+    [
+     "5857",
+     "ASAHI HOLDINGS INC",
+     0.0438,
+     1600
+    ],
+    [
+     "6417",
+     "SANKYO CO LTD",
+     0.0436,
+     2400
+    ],
+    [
+     "1721",
+     "COMSYS HOLDINGS CORP",
+     0.0435,
+     1000
+    ],
+    [
+     "7581",
+     "SAIZERIYA CO LTD",
+     0.0434,
+     600
+    ],
+    [
+     "4182",
+     "MITSUBISHI GAS CHEMICAL CO",
+     0.0432,
+     1700
+    ],
+    [
+     "4403",
+     "NOF CORP",
+     0.0432,
+     2100
+    ],
+    [
+     "8088",
+     "IWATANI CORP",
+     0.043,
+     2800
+    ],
+    [
+     "3132",
+     "MACNICA FUJI ELECTRONICS HOLDINGS INC",
+     0.0429,
+     1700
+    ],
+    [
+     "3231",
+     "NOMURA REAL ESTATE HOLDINGS",
+     0.0429,
+     5800
+    ],
+    [
+     "4733",
+     "OBIC BUSINESS CONSULTANTS",
+     0.0428,
+     500
+    ],
+    [
+     "5393",
+     "NICHIAS CORP",
+     0.0428,
+     1700
+    ],
+    [
+     "7951",
+     "YAMAHA CORP",
+     0.0428,
+     3600
+    ],
+    [
+     "9404",
+     "NIPPON TELEVISION NETWORK",
+     0.0428,
+     1800
+    ],
+    [
+     "2531",
+     "TAKARA HOLDINGS INC",
+     0.0427,
+     1900
+    ],
+    [
+     "9064",
+     "Yamato Holdings Co Ltd",
+     0.0424,
+     2200
+    ],
+    [
+     "3038",
+     "KOBE BUSSAN CO LTD",
+     0.0423,
+     1700
+    ],
+    [
+     "3941",
+     "RENGO CO LTD",
+     0.0423,
+     3500
+    ],
+    [
+     "8253",
+     "Credit Saison Co Ltd",
+     0.0421,
+     1100
+    ],
+    [
+     "2331",
+     "SOHGO SECURITY SERVICES CO",
+     0.042,
+     3600
+    ],
+    [
+     "7282",
+     "TOYODA GOSEI CO LTD",
+     0.0417,
+     5000
+    ],
+    [
+     "1969",
+     "TAKASAGO THERMAL ENGINEERING",
+     0.0416,
+     1200
+    ],
+    [
+     "3092",
+     "ZOZO Inc",
+     0.0415,
+     4200
+    ],
+    [
+     "4385",
+     "MERCARI INC",
+     0.0415,
+     1500
+    ],
+    [
+     "7988",
+     "NIFCO INC",
+     0.0415,
+     2000
+    ],
+    [
+     "8078",
+     "HANWA CO LTD",
+     0.0414,
+     3000
+    ],
+    [
+     "3405",
+     "Kuraray Co Ltd",
+     0.0412,
+     2800
+    ],
+    [
+     "2810",
+     "HOUSE FOODS CORPORATION",
+     0.0411,
+     1000
+    ],
+    [
+     "5233",
+     "Taiheiyo Cement Corp",
+     0.0408,
+     1300
+    ],
+    [
+     "6592",
+     "MABUCHI MOTOR CO LTD",
+     0.0408,
+     2800
+    ],
+    [
+     "9364",
+     "KAMIGUMI CO LTD",
+     0.0408,
+     1000
+    ],
+    [
+     "4118",
+     "KANEKA CORP",
+     0.0407,
+     800
+    ],
+    [
+     "7729",
+     "Tokyo Seimitsu Co Ltd",
+     0.0407,
+     400
+    ],
+    [
+     "9065",
+     "SANKYU INC",
+     0.0405,
+     3000
+    ],
+    [
+     "6305",
+     "HITACHI CONSTRUCTION MACHINE",
+     0.0404,
+     1000
+    ],
+    [
+     "8060",
+     "CANON MARKETING JAPAN INC",
+     0.0403,
+     1200
+    ],
+    [
+     "4967",
+     "KOBAYASHI PHARMACEUTICAL CO",
+     0.0402,
+     700
+    ],
+    [
+     "7867",
+     "TOMY COMPANY LTD",
+     0.0402,
+     900
+    ],
+    [
+     "9533",
+     "TOHO GAS CO LTD",
+     0.0401,
+     4000
+    ],
+    [
+     "2784",
+     "ALFRESA HOLDINGS CORP",
+     0.0399,
+     2100
+    ],
+    [
+     "2264",
+     "MORINAGA MILK INDUSTRY CO",
+     0.0397,
+     4000
+    ],
+    [
+     "5110",
+     "SUMITOMO RUBBER INDUSTRIES",
+     0.0397,
+     2500
+    ],
+    [
+     "8012",
+     "NAGASE & CO LTD",
+     0.0393,
+     4300
+    ],
+    [
+     "5301",
+     "TOKAI CARBON CO LTD",
+     0.0385,
+     3100
+    ],
+    [
+     "7762",
+     "CITIZEN WATCH CO LTD",
+     0.0385,
+     2400
+    ],
+    [
+     "4626",
+     "TAIYO HOLDINGS CO LTD",
+     0.0384,
+     1000
+    ],
+    [
+     "9987",
+     "SUZUKEN CO LTD",
+     0.0383,
+     1600
+    ],
+    [
+     "3994",
+     "MONEY FORWARD INC",
+     0.038,
+     700
+    ],
+    [
+     "8252",
+     "Marui Group Co Ltd",
+     0.038,
+     1600
+    ],
+    [
+     "6481",
+     "THK Co Ltd",
+     0.0379,
+     1000
+    ],
+    [
+     "7164",
+     "ZENKOKU HOSHO CO LTD",
+     0.0378,
+     1400
+    ],
+    [
+     "1808",
+     "HASEKO CORP",
+     0.0376,
+     1800
+    ],
+    [
+     "4544",
+     "MIRACA HOLDINGS INC",
+     0.0376,
+     1100
+    ],
+    [
+     "1951",
+     "KYOWA EXEO CORP",
+     0.0375,
+     1900
+    ],
+    [
+     "4202",
+     "Daicel Corp",
+     0.0374,
+     3000
+    ],
+    [
+     "6952",
+     "Casio Computer Co Ltd",
+     0.0373,
+     2100
+    ],
+    [
+     "9008",
+     "KEIO CORP",
+     0.0373,
+     6000
+    ],
+    [
+     "1893",
+     "PENTA-OCEAN CONSTRUCTION CO",
+     0.0372,
+     3500
+    ],
+    [
+     "7984",
+     "KOKUYO CO LTD",
+     0.0372,
+     5200
+    ],
+    [
+     "2222",
+     "KOTOBUKI SPIRITS CO LTD",
+     0.0371,
+     1600
+    ],
+    [
+     "9006",
+     "KEIKYU CORP",
+     0.037,
+     2800
+    ],
+    [
+     "1959",
+     "KYUDENKO CORP",
+     0.0369,
+     600
+    ],
+    [
+     "4208",
+     "UBE INDUSTRIES LTD",
+     0.0369,
+     1400
+    ],
+    [
+     "5471",
+     "DAIDO STEEL CO LTD",
+     0.0369,
+     2500
+    ],
+    [
+     "5444",
+     "Yamato Kogyo Co Ltd",
+     0.0368,
+     400
+    ],
+    [
+     "5714",
+     "DOWA HOLDINGS CO LTD",
+     0.0368,
+     600
+    ],
+    [
+     "5838",
+     "RAKUTEN BANK LTD",
+     0.0367,
+     1100
+    ],
+    [
+     "3397",
+     "TORIDOLL.CORP",
+     0.0365,
+     800
+    ],
+    [
+     "7419",
+     "NOJIMA CO.,LTD.",
+     0.0364,
+     3300
+    ],
+    [
+     "3107",
+     "DAIWABO HOLDINGS CO LTD",
+     0.0362,
+     1200
+    ],
+    [
+     "3401",
+     "TEIJIN LTD",
+     0.0361,
+     2600
+    ],
+    [
+     "5947",
+     "RINNAI CORP",
+     0.036,
+     1200
+    ],
+    [
+     "6770",
+     "Alps Electric Co Ltd",
+     0.0359,
+     2200
+    ],
+    [
+     "3288",
+     "OPEN HOUSE CO LTD",
+     0.0358,
+     600
+    ],
+    [
+     "6923",
+     "Stanley Electric Co Ltd",
+     0.0358,
+     1400
+    ],
+    [
+     "6951",
+     "JEOL LTD",
+     0.0356,
+     600
+    ],
+    [
+     "5214",
+     "NIPPON ELECTRIC GLASS CO LTD",
+     0.0355,
+     900
+    ],
+    [
+     "9045",
+     "KEIHAN ELECTRIC RAILWAY CO",
+     0.0354,
+     1300
+    ],
+    [
+     "5021",
+     "COSMO ENERGY HOLDINGS CO LTD",
+     0.0353,
+     1300
+    ],
+    [
+     "9044",
+     "NANKAI ELECTRIC RAILWAY CO",
+     0.0353,
+     1400
+    ],
+    [
+     "2433",
+     "HAKUHODO DY HOLDINGS INC",
+     0.0352,
+     3100
+    ],
+    [
+     "8050",
+     "SEIKO HOLDINGS CORP",
+     0.035,
+     500
+    ],
+    [
+     "4631",
+     "DIC CORP",
+     0.0349,
+     900
+    ],
+    [
+     "9069",
+     "SENKO CO LTD",
+     0.0349,
+     1800
+    ],
+    [
+     "1963",
+     "JGC CORP",
+     0.0348,
+     2100
+    ],
+    [
+     "2871",
+     "NICHIREI CORP",
+     0.0348,
+     1800
+    ],
+    [
+     "9989",
+     "SUNDRUG CO LTD",
+     0.0348,
+     1000
+    ],
+    [
+     "4205",
+     "ZEON CORP",
+     0.0347,
+     2100
+    ],
+    [
+     "5991",
+     "NHK SPRING CO LTD",
+     0.0346,
+     1600
+    ],
+    [
+     "8174",
+     "NIPPON GAS CO LTD",
+     0.0346,
+     4500
+    ],
+    [
+     "9934",
+     "INABA DENKI SANGYO CO LTD",
+     0.0343,
+     1600
+    ],
+    [
+     "6471",
+     "NSK Ltd",
+     0.0342,
+     4400
+    ],
+    [
+     "7003",
+     "Mitsui E&S Holdings Co Ltd",
+     0.0342,
+     1300
+    ],
+    [
+     "9072",
+     "NIKKON HOLDINGS CO LTD",
+     0.0342,
+     1000
+    ],
+    [
+     "3291",
+     "飯田集團控股有限公司",
+     0.034,
+     2100
+    ],
+    [
+     "4114",
+     "NIPPON SHOKUBAI CO LTD",
+     0.034,
+     1700
+    ],
+    [
+     "1332",
+     "NIPPON SUISAN KAISHA LTD",
+     0.0338,
+     3700
+    ],
+    [
+     "7731",
+     "Nikon Corp",
+     0.0338,
+     2600
+    ],
+    [
+     "7956",
+     "Pigeon Corp",
+     0.0337,
+     1700
+    ],
+    [
+     "9468",
+     "KADOKAWA DWANGO公司",
+     0.0337,
+     1200
+    ],
+    [
+     "2206",
+     "EZAKI GLICO CO LTD",
+     0.0335,
+     800
+    ],
+    [
+     "2229",
+     "卡樂B株式會社",
+     0.0334,
+     1200
+    ],
+    [
+     "5344",
+     "MARUWA CO LTD",
+     0.0334,
+     100
+    ],
+    [
+     "3387",
+     "CREATE RESTAURANTS HOLDINGS INC",
+     0.0333,
+     4600
+    ],
+    [
+     "1417",
+     "MIRAIT HOLDINGS CORP",
+     0.0331,
+     1200
+    ],
+    [
+     "6268",
+     "NABTESCO CORP",
+     0.0331,
+     1200
+    ],
+    [
+     "2670",
+     "ABC-MART INC",
+     0.033,
+     1200
+    ],
+    [
+     "3769",
+     "GMO PAYMENT GATEWAY INC",
+     0.0329,
+     500
+    ],
+    [
+     "4716",
+     "ORACLE CORP JAPAN",
+     0.0329,
+     400
+    ],
+    [
+     "6135",
+     "MAKINO MILLING MACHINE CO",
+     0.0329,
+     1500
+    ],
+    [
+     "4681",
+     "RESORTTRUST INC",
+     0.0327,
+     2200
+    ],
+    [
+     "7616",
+     "COLOWIDE CO LTD",
+     0.0326,
+     1600
+    ],
+    [
+     "3635",
+     "TECMO KOEI HOLDINGS CO LTD",
+     0.0325,
+     2000
+    ],
+    [
+     "8242",
+     "H2O RETAILING CORP",
+     0.0325,
+     1400
+    ],
+    [
+     "8056",
+     "NIHON UNISYS LTD",
+     0.0324,
+     800
+    ],
+    [
+     "2730",
+     "EDION CORP",
+     0.0323,
+     1500
+    ],
+    [
+     "5463",
+     "MARUICHI STEEL TUBE LTD",
+     0.0323,
+     2400
+    ],
+    [
+     "9616",
+     "KYORITSU MAINTENANCE CO LTD",
+     0.0323,
+     1000
+    ],
+    [
+     "4043",
+     "TOKUYAMA CORPORATION",
+     0.0322,
+     1100
+    ],
+    [
+     "6269",
+     "MODEC INC",
+     0.0322,
+     500
+    ],
+    [
+     "9303",
+     "SUMITOMO WAREHOUSE CO LTD",
+     0.0322,
+     1000
+    ],
+    [
+     "1719",
+     "HAZAMA CORP",
+     0.0319,
+     2200
+    ],
+    [
+     "6371",
+     "TSUBAKIMOTO CHAIN CO",
+     0.0315,
+     1500
+    ],
+    [
+     "8022",
+     "MIZUNO CORP",
+     0.0315,
+     900
+    ],
+    [
+     "4680",
+     "ROUND ONE CORP",
+     0.0312,
+     2600
+    ],
+    [
+     "8425",
+     "IBJ LEASING CO LTD",
+     0.0312,
+     2700
+    ],
+    [
+     "5631",
+     "JAPAN STEEL WORKS LTD",
+     0.0311,
+     800
+    ],
+    [
+     "6134",
+     "富士機械製造有限公司",
+     0.0311,
+     800
+    ],
+    [
+     "6323",
+     "RORZE CORPORATION",
+     0.031,
+     1200
+    ],
+    [
+     "4980",
+     "DEXERIALS CORP",
+     0.0309,
+     1900
+    ],
+    [
+     "3048",
+     "BIC CAMERA INC",
+     0.0306,
+     2000
+    ],
+    [
+     "4401",
+     "ADEKA CORP",
+     0.0306,
+     900
+    ],
+    [
+     "8098",
+     "INABATA & CO LTD",
+     0.0305,
+     900
+    ],
+    [
+     "8381",
+     "SAN-IN GODO BANK LTD/THE",
+     0.0305,
+     1800
+    ],
+    [
+     "3110",
+     "NITTO BOSEKI CO LTD",
+     0.0302,
+     1500
+    ],
+    [
+     "6925",
+     "USHIO INC",
+     0.0302,
+     1300
+    ],
+    [
+     "7327",
+     "Daishi Hokuetsu Financial Group Inc",
+     0.0301,
+     1700
+    ],
+    [
+     "7649",
+     "SUGI HOLDINGS CO LTD",
+     0.0301,
+     2600
+    ],
+    [
+     "2327",
+     "NS SOLUTIONS CORP",
+     0.0299,
+     900
+    ],
+    [
+     "6674",
+     "GS YUASA CORP",
+     0.0299,
+     900
+    ],
+    [
+     "4666",
+     "PARK24 CO LTD",
+     0.0298,
+     2000
+    ],
+    [
+     "6141",
+     "DMG Mori Co Ltd",
+     0.0295,
+     1400
+    ],
+    [
+     "4540",
+     "TSUMURA & CO",
+     0.0294,
+     900
+    ],
+    [
+     "3050",
+     "DCM HOLDINGS CO LTD",
+     0.0293,
+     2100
+    ],
+    [
+     "6787",
+     "MEIKO ELECTRONICS CO.,LTD.",
+     0.0293,
+     400
+    ],
+    [
+     "9759",
+     "NIPPON SYSTEM DEVELOPMENT CO",
+     0.0289,
+     1100
+    ],
+    [
+     "6005",
+     "MIURA CO LTD",
+     0.0287,
+     1200
+    ],
+    [
+     "6432",
+     "竹內製作所有限公司",
+     0.0285,
+     500
+    ],
+    [
+     "3549",
+     "KUSURI NO AOKI  HOLDINGS CO LTD",
+     0.0283,
+     700
+    ],
+    [
+     "9301",
+     "MITSUBISHI LOGISTICS CORP",
+     0.0281,
+     2700
+    ],
+    [
+     "8282",
+     "K'S HOLDINGS CORP",
+     0.028,
+     1900
+    ],
+    [
+     "9509",
+     "HOKKAIDO ELECTRIC POWER CO",
+     0.028,
+     3200
+    ],
+    [
+     "4061",
+     "DENKI KAGAKU KOGYO K K",
+     0.0277,
+     1200
+    ],
+    [
+     "6728",
+     "ULVAC INC",
+     0.0277,
+     500
+    ],
+    [
+     "8876",
+     "利樂股份有限公司",
+     0.0276,
+     1400
+    ],
+    [
+     "6849",
+     "NIHON KOHDEN CORP",
+     0.0275,
+     2200
+    ],
+    [
+     "8111",
+     "GOLDWIN INC",
+     0.0275,
+     1500
+    ],
+    [
+     "4272",
+     "NIPPON KAYAKU CO LTD",
+     0.0273,
+     1800
+    ],
+    [
+     "6754",
+     "ANRITSU CORP",
+     0.0273,
+     1400
+    ],
+    [
+     "8410",
+     "Seven Bank Ltd",
+     0.0273,
+     9400
+    ],
+    [
+     "9744",
+     "MEITEC CORP",
+     0.0273,
+     1000
+    ],
+    [
+     "8086",
+     "NIPRO CORP",
+     0.0272,
+     2200
+    ],
+    [
+     "9076",
+     "SEINO HOLDINGS CO LTD",
+     0.0272,
+     1300
+    ],
+    [
+     "6526",
+     "SOCIONEXT INC",
+     0.0271,
+     2000
+    ],
+    [
+     "2201",
+     "MORINAGA & CO LTD",
+     0.0269,
+     1300
+    ],
+    [
+     "1662",
+     "JAPAN PETROLEUM EXPLORATION",
+     0.0267,
+     2200
+    ],
+    [
+     "4902",
+     "Konica Minolta Inc",
+     0.0265,
+     6000
+    ],
+    [
+     "9449",
+     "GMO INTERNET INC",
+     0.0265,
+     1000
+    ],
+    [
+     "9505",
+     "HOKURIKU ELECTRIC POWER CO",
+     0.0264,
+     3100
+    ],
+    [
+     "8129",
+     "TOHO HOLDINGS CO LTD",
+     0.0261,
+     800
+    ],
+    [
+     "2811",
+     "KAGOME CO LTD",
+     0.026,
+     1100
+    ],
+    [
+     "1833",
+     "OKUMURA CORP",
+     0.0258,
+     600
+    ],
+    [
+     "3349",
+     "COSMOS PHARMACEUTICAL CORP",
+     0.0257,
+     500
+    ],
+    [
+     "9605",
+     "TOEI CO LTD",
+     0.0257,
+     500
+    ],
+    [
+     "5384",
+     "FUJIMI INC",
+     0.0255,
+     1100
+    ],
+    [
+     "2593",
+     "ITO EN LTD",
+     0.0252,
+     900
+    ],
+    [
+     "4922",
+     "KOSE CORP",
+     0.025,
+     500
+    ],
+    [
+     "4194",
+     "VISIONAL INC",
+     0.0248,
+     300
+    ],
+    [
+     "417A",
+     "BLUE ZONES HOLDINGS CO LTD",
+     0.0243,
+     1500
+    ],
+    [
+     "4665",
+     "Duskin Co Ltd",
+     0.0243,
+     600
+    ],
+    [
+     "6622",
+     "DAIHEN CORP",
+     0.0241,
+     1500
+    ],
+    [
+     "4206",
+     "AICA KOGYO CO LTD",
+     0.024,
+     700
+    ],
+    [
+     "6871",
+     "MICRONICS JAPAN CO.,LTD.",
+     0.024,
+     300
+    ],
+    [
+     "7458",
+     "DAIICHIKOSHO CO.,LTD.",
+     0.0239,
+     1600
+    ],
+    [
+     "9003",
+     "SOTETSU HOLDINGS INC",
+     0.0238,
+     1100
+    ],
+    [
+     "6436",
+     "AMANO CORP",
+     0.0236,
+     800
+    ],
+    [
+     "6315",
+     "TOWA CORP",
+     0.0235,
+     1200
+    ],
+    [
+     "8570",
+     "AEON CREDIT SERVICE CO LTD",
+     0.0233,
+     2000
+    ],
+    [
+     "7476",
+     "AS ONE CORP",
+     0.0232,
+     1100
+    ],
+    [
+     "2432",
+     "DENA CO LTD",
+     0.0231,
+     1100
+    ],
+    [
+     "3360",
+     "SHIP HEALTHCARE HOLDINGS INC",
+     0.023,
+     1100
+    ],
+    [
+     "7211",
+     "Mitsubishi Motors Corp",
+     0.023,
+     9200
+    ],
+    [
+     "9682",
+     "DTS CORP",
+     0.023,
+     2400
+    ],
+    [
+     "6407",
+     "CKD CORP",
+     0.0229,
+     700
+    ],
+    [
+     "1820",
+     "NISHIMATSU CONSTRUCTION CO",
+     0.0228,
+     500
+    ],
+    [
+     "9793",
+     "DAISEKI CO LTD",
+     0.0226,
+     800
+    ],
+    [
+     "3591",
+     "WACOAL HOLDINGS CORP",
+     0.0225,
+     700
+    ],
+    [
+     "6544",
+     "JAPAN ELEVATOR SERVICE HOLDING",
+     0.0225,
+     2200
+    ],
+    [
+     "8572",
+     "ACOM CO LTD",
+     0.0225,
+     6200
+    ],
+    [
+     "7780",
+     "MENICON CO LTD",
+     0.0224,
+     1400
+    ],
+    [
+     "3923",
+     "RAKUS CO LTD",
+     0.0222,
+     2800
+    ],
+    [
+     "5805",
+     "SWCC CORP",
+     0.0221,
+     1500
+    ],
+    [
+     "4812",
+     "INFO SERVICES INTL DENTSU",
+     0.0217,
+     900
+    ],
+    [
+     "6590",
+     "SHIBAURA MECHATRONICS CORP",
+     0.0213,
+     1000
+    ],
+    [
+     "4887",
+     "SAWAI GROUP HOLDINGS CO LTD",
+     0.021,
+     1600
+    ],
+    [
+     "2127",
+     "Nihon M&A Center Inc",
+     0.0208,
+     4000
+    ],
+    [
+     "4516",
+     "NIPPON SHINYAKU CO LTD",
+     0.0208,
+     800
+    ],
+    [
+     "6368",
+     "ORGANO CORP",
+     0.0208,
+     1500
+    ],
+    [
+     "4927",
+     "POLA ORBIS HOLDINGS INC",
+     0.0207,
+     1700
+    ],
+    [
+     "7313",
+     "TS TECH CO LTD",
+     0.0206,
+     1500
+    ],
+    [
+     "1414",
+     "SHO-BOND HOLDINGS CO LTD",
+     0.0202,
+     2000
+    ],
+    [
+     "8424",
+     "FUYO GENERAL LEASE CO LTD",
+     0.0202,
+     600
+    ],
+    [
+     "2726",
+     "PAL CO LTD",
+     0.0199,
+     1600
+    ],
+    [
+     "6103",
+     "OKUMA CORP",
+     0.0195,
+     600
+    ],
+    [
+     "3697",
+     "SHIFT INC.",
+     0.0191,
+     2200
+    ],
+    [
+     "7004",
+     "HITACHI ZOSEN CORP",
+     0.0191,
+     2400
+    ],
+    [
+     "9412",
+     "SKY PERFECT JSAT HOLDINGS",
+     0.0191,
+     1400
+    ],
+    [
+     "3116",
+     "TOYOTA BOSHOKU CORP",
+     0.0187,
+     1100
+    ],
+    [
+     "4041",
+     "NIPPON SODA",
+     0.0186,
+     600
+    ],
+    [
+     "9627",
+     "AIN PHARMACIEZ INC",
+     0.0176,
+     400
+    ],
+    [
+     "3765",
+     "GUNGHO ONLINE ENTERTAINMENT,INC.",
+     0.017,
+     800
+    ],
+    [
+     "7014",
+     "NAMURA造船有限公司",
+     0.0167,
+     600
+    ],
+    [
+     "6753",
+     "SHARP CORP",
+     0.0158,
+     3900
+    ],
+    [
+     "4919",
+     "MILBON CO LTD",
+     0.0156,
+     500
+    ],
+    [
+     "6055",
+     "JAPAN MATERIAL CO LTD",
+     0.0156,
+     1200
+    ],
+    [
+     "1980",
+     "DAI-DAN CO LTD",
+     0.0151,
+     600
+    ],
+    [
+     "4044",
+     "CENTRAL GLASS CO LTD",
+     0.0148,
+     400
+    ],
+    [
+     "8698",
+     "MONEX GROUP INC",
+     0.0145,
+     3200
+    ],
+    [
+     "8522",
+     "BANK OF NAGOYA LTD/THE",
+     0.0142,
+     300
+    ],
+    [
+     "6632",
+     "JVC KENWOOD HOLDINGS INC",
+     0.0137,
+     2100
+    ],
+    [
+     "6707",
+     "SANKEN ELECTRIC",
+     0.0136,
+     300
+    ],
+    [
+     "3865",
+     "HOKUETSU KISHU PAPER CO LTD",
+     0.0135,
+     1900
+    ],
+    [
+     "543A",
+     "ARCHION CORP",
+     0.0121,
+     5500
+    ],
+    [
+     "7516",
+     "KOHNAN SHOJI CO LTD",
+     0.0119,
+     300
+    ],
+    [
+     "3778",
+     "SAKURA INTERNET INC.",
+     0.0116,
+     500
+    ],
+    [
+     "1766",
+     "TOKEN CORP",
+     0.0113,
+     100
+    ],
+    [
+     "4587",
+     "PEPTIDREAM INC.",
+     0.0113,
+     1300
+    ],
+    [
+     "9869",
+     "KATO SANGYO CO LTD",
+     0.0112,
+     200
+    ],
+    [
+     "6516",
+     "SANYO DENKI CO LTD",
+     0.0111,
+     300
+    ],
+    [
+     "7552",
+     "HAPPINET CORP",
+     0.0111,
+     200
+    ],
+    [
+     "9722",
+     "FUJITA KANKO INC",
+     0.011,
+     500
+    ],
+    [
+     "7846",
+     "PILOT CORP",
+     0.0108,
+     600
+    ],
+    [
+     "2602",
+     "NISSHIN OILLIO GROUP LTD/THE",
+     0.0105,
+     600
+    ],
+    [
+     "9601",
+     "SHOCHIKU CO LTD",
+     0.0104,
+     100
+    ],
+    [
+     "6651",
+     "NITTO KOGYO CORP",
+     0.01,
+     300
+    ],
+    [
+     "3097",
+     "MONOGATARI CORP/THE",
+     0.0099,
+     200
+    ],
+    [
+     "7148",
+     "FINANCIAL PARTNERS GROUP CO LTD",
+     0.0099,
+     900
+    ],
+    [
+     "8057",
+     "UCHIDA YOKO CO LTD",
+     0.0099,
+     500
+    ],
+    [
+     "2760",
+     "TOKYO ELECTRON DEVICE LTD",
+     0.0097,
+     300
+    ],
+    [
+     "1515",
+     "NITTETSU MINING CO LTD",
+     0.0093,
+     500
+    ],
+    [
+     "5331",
+     "NORITAKE CO LTD",
+     0.0093,
+     400
+    ],
+    [
+     "8032",
+     "JAPAN PULP & PAPER CO LTD",
+     0.0093,
+     1000
+    ],
+    [
+     "1518",
+     "MITSUI MATSUSHIMA CO LTD",
+     0.009,
+     500
+    ],
+    [
+     "6966",
+     "MITSUI HIGH-TEC INC",
+     0.009,
+     1500
+    ],
+    [
+     "7173",
+     "Tokyo Kiraboshi Financial Group Inc",
+     0.009,
+     800
+    ],
+    [
+     "7380",
+     "JUROKU FINANCIAL GROUP INC",
+     0.009,
+     500
+    ],
+    [
+     "7740",
+     "TAMRON CO LTD",
+     0.009,
+     800
+    ],
+    [
+     "9110",
+     "NS UNITED KAIUN KAISHA LTD",
+     0.0088,
+     100
+    ],
+    [
+     "3106",
+     "KURABO INDUSTRIES LTD",
+     0.0086,
+     500
+    ],
+    [
+     "6457",
+     "Glory Ltd",
+     0.0086,
+     200
+    ],
+    [
+     "5482",
+     "AICHI STEEL CORP",
+     0.0085,
+     400
+    ],
+    [
+     "8366",
+     "SHIGA BANK LTD/THE",
+     0.0085,
+     500
+    ],
+    [
+     "7381",
+     "HOKKOKU FINANCIAL HOLDINGS INC",
+     0.0084,
+     1000
+    ],
+    [
+     "8386",
+     "HYAKUJUSHI BANK LTD/THE",
+     0.0083,
+     400
+    ],
+    [
+     "8154",
+     "KAGA ELECTRONICS CO LTD",
+     0.0081,
+     200
+    ],
+    [
+     "5232",
+     "SUMITOMO OSAKA CEMENT CO LTD",
+     0.008,
+     600
+    ],
+    [
+     "6490",
+     "PILLAR CORP /JAPAN",
+     0.008,
+     100
+    ],
+    [
+     "8153",
+     "MOS FOOD SERVICES INC",
+     0.008,
+     200
+    ],
+    [
+     "9302",
+     "MITSUI-SOKO CO LTD",
+     0.008,
+     300
+    ],
+    [
+     "4686",
+     "JUSTSYSTEMS CORP",
+     0.0079,
+     200
+    ],
+    [
+     "6258",
+     "HIRATA CORPORATION",
+     0.0078,
+     300
+    ],
+    [
+     "8803",
+     "HEIWA REAL ESTATE CO LTD",
+     0.0078,
+     400
+    ],
+    [
+     "1861",
+     "KUMAGAI GUMI CO LTD",
+     0.0077,
+     800
+    ],
+    [
+     "8059",
+     "DAIICHI JITSUGYO CO LTD",
+     0.0077,
+     300
+    ],
+    [
+     "7242",
+     "KAYABA INDUSTRY CO LTD",
+     0.0076,
+     600
+    ],
+    [
+     "1899",
+     "FUKUDA CORP",
+     0.0075,
+     200
+    ],
+    [
+     "3002",
+     "GUNZE LTD",
+     0.0072,
+     200
+    ],
+    [
+     "5273",
+     "MITANI SEKISAN CO LTD",
+     0.0072,
+     400
+    ],
+    [
+     "9746",
+     "TKC CORP",
+     0.0072,
+     200
+    ],
+    [
+     "8388",
+     "AWA BANK LTD/THE",
+     0.0071,
+     500
+    ],
+    [
+     "6875",
+     "MEGACHIPS CORP",
+     0.007,
+     100
+    ],
+    [
+     "9889",
+     "JBCC HOLDINGS INC",
+     0.007,
+     400
+    ],
+    [
+     "1377",
+     "SAKATA SEED CORP",
+     0.0069,
+     200
+    ],
+    [
+     "5192",
+     "MITSUBOSHI BELTING CO LTD",
+     0.0069,
+     200
+    ],
+    [
+     "6866",
+     "HIOKI E E CORP",
+     0.0069,
+     100
+    ],
+    [
+     "8370",
+     "KIYO BANK LTD/THE",
+     0.0069,
+     600
+    ],
+    [
+     "9010",
+     "FUJI KYUKO CO LTD",
+     0.0069,
+     300
+    ],
+    [
+     "4023",
+     "KUREHA CORP",
+     0.0068,
+     200
+    ],
+    [
+     "4368",
+     "FUSO CHEMICAL CO.,LTD.",
+     0.0068,
+     300
+    ],
+    [
+     "8367",
+     "NANTO BANK LTD/THE",
+     0.0068,
+     500
+    ],
+    [
+     "6507",
+     "SINFONIA TECHNOLOGY CO LTD",
+     0.0067,
+     100
+    ],
+    [
+     "8218",
+     "KOMERI CO LTD",
+     0.0067,
+     200
+    ],
+    [
+     "7389",
+     "AICHI FINANCIAL GROUP INC",
+     0.0066,
+     500
+    ],
+    [
+     "6284",
+     "NISSEI ASB MACHINE CO LTD",
+     0.0065,
+     100
+    ],
+    [
+     "6961",
+     "ENPLAS CORP",
+     0.0065,
+     100
+    ],
+    [
+     "2121",
+     "MIXI,INC.",
+     0.0064,
+     200
+    ],
+    [
+     "4521",
+     "KAKEN PHARMACEUTICAL CO LTD",
+     0.0063,
+     200
+    ],
+    [
+     "8345",
+     "BANK OF IWATE LTD/THE",
+     0.0062,
+     400
+    ],
+    [
+     "9336",
+     "DAIEI KANKYO CO LTD",
+     0.0062,
+     200
+    ],
+    [
+     "2296",
+     "ITOHAM YONEKYU HOLDINGS INC",
+     0.0061,
+     160
+    ],
+    [
+     "6420",
+     "FUKUSHIMA INDUSTRIES CORP",
+     0.0061,
+     200
+    ],
+    [
+     "9267",
+     "GENKY DRUGSTORES CO LTD",
+     0.0061,
+     200
+    ],
+    [
+     "1961",
+     "SANKI ENGINEERING CO LTD",
+     0.006,
+     300
+    ],
+    [
+     "9948",
+     "ARCS CO LTD",
+     0.006,
+     200
+    ],
+    [
+     "167A",
+     "RYOYO RYOSAN HOLDINGS INC",
+     0.0059,
+     232
+    ],
+    [
+     "4480",
+     "MEDLEY INC",
+     0.0059,
+     400
+    ],
+    [
+     "4825",
+     "WEATHERNEWS INC",
+     0.0059,
+     400
+    ],
+    [
+     "6454",
+     "MAX CO LTD",
+     0.0059,
+     400
+    ],
+    [
+     "8361",
+     "OGAKI KYORITSU BANK LTD/THE",
+     0.0059,
+     500
+    ],
+    [
+     "1333",
+     "MARUHA NICHIRO CORP",
+     0.0058,
+     600
+    ],
+    [
+     "4483",
+     "JMDC INC",
+     0.0058,
+     200
+    ],
+    [
+     "5451",
+     "YODOGAWA STEEL WORKS LTD",
+     0.0058,
+     500
+    ],
+    [
+     "6877",
+     "OBARA CORP",
+     0.0058,
+     100
+    ],
+    [
+     "8336",
+     "MUSASHINO BANK LTD/THE",
+     0.0058,
+     300
+    ],
+    [
+     "3569",
+     "SEIREN CO LTD",
+     0.0057,
+     200
+    ],
+    [
+     "4958",
+     "T HASEGAWA CO LTD",
+     0.0057,
+     200
+    ],
+    [
+     "6941",
+     "YAMAICHI ELECTRONICS CO LTD",
+     0.0057,
+     100
+    ],
+    [
+     "9068",
+     "MARUZEN SHOWA UNYU CO LTD",
+     0.0057,
+     200
+    ],
+    [
+     "9824",
+     "SENSHU ELECTRIC CO.,LTD.",
+     0.0057,
+     100
     ]
    ],
-   "n_listed": 10
+   "n_listed": 616,
+   "fees_official": {
+    "source": "富邦投信 Assets.aspx 官方直出（完整持股）",
+    "aum_twd": null
+   }
   },
   "00646": {
    "name": "元大S&P500",
@@ -6666,61 +10316,320 @@
    "market": "TWSE",
    "issuer": "富邦證券投資信託股份有限",
    "n": null,
-   "src": "CMONEY",
-   "asof": "2026/11/04",
+   "src": "FUBON",
+   "asof": "2026-11-23",
    "items": [
     [
-     "202611GINX6F",
-     "印度50輕巧指數期貨",
-     11.2749
-    ],
-    [
-     "HDFCB IS",
+     "HDFCB",
      "HDFC Bank Ltd",
-     8.8934
+     9.164,
+     638175
     ],
     [
-     "ICICIBC IS",
-     "ICICI Bank Ltd",
-     8.039
-    ],
-    [
-     "RELIANCE IS",
-     "RELIANCE INDUSTRIES LTD",
-     6.9038
-    ],
-    [
-     "BHARTI IS",
+     "BHARTI",
      "Bharti Airtel Ltd",
-     5.0883
+     4.7332,
+     126645
     ],
     [
-     "LT IS",
-     "Larsen & Toubro Ltd",
-     3.7373
-    ],
-    [
-     "INFO IS",
-     "Infosys Ltd",
-     3.203
-    ],
-    [
-     "SBIN IS",
+     "SBIN",
      "State Bank of India",
-     3.1832
+     3.422,
+     172063
     ],
     [
-     "AXSB IS",
+     "AXSB",
      "Axis Bank Ltd",
-     2.7899
+     2.9189,
+     119716
     ],
     [
-     "KMB IS",
-     "Kotak Mahindra Bank Ltd",
-     2.7375
+     "INFO",
+     "Infosys Ltd",
+     2.8485,
+     147025
+    ],
+    [
+     "SUNP",
+     "Sun Pharmaceutical Industries Ltd",
+     1.4395,
+     44078
+    ],
+    [
+     "MSIL",
+     "Maruti Suzuki India Ltd",
+     1.4196,
+     5771
+    ],
+    [
+     "TTAN",
+     "Titan Co Ltd",
+     1.4163,
+     17235
+    ],
+    [
+     "HUVR",
+     "Hindustan Unilever Ltd",
+     1.3947,
+     39339
+    ],
+    [
+     "UTCEM",
+     "UltraTech Cement Ltd",
+     1.1714,
+     5274
+    ],
+    [
+     "NTPC",
+     "NTPC Ltd",
+     1.1678,
+     210841
+    ],
+    [
+     "HCLT",
+     "HCL Technologies Ltd",
+     1.1192,
+     46723
+    ],
+    [
+     "ADSEZ",
+     "Adani Ports & Special Economic Zone Ltd",
+     1.0987,
+     32607
+    ],
+    [
+     "SHFL",
+     "SHRIRAM FINANCE LTD",
+     1.0872,
+     62173
+    ],
+    [
+     "TATA",
+     "Tata Steel Ltd",
+     1.0536,
+     368134
+    ],
+    [
+     "HNDL",
+     "Hindalco Industries Ltd",
+     1.0153,
+     64220
+    ],
+    [
+     "INDIGO",
+     "INTERGLOBE AVIATION LTD",
+     0.9748,
+     10052
+    ],
+    [
+     "JSTL",
+     "JSW Steel Ltd",
+     0.9228,
+     40061
+    ],
+    [
+     "BJAUT",
+     "Bajaj Auto Ltd",
+     0.9045,
+     4840
+    ],
+    [
+     "PWGR",
+     "Power Grid Corp of India Ltd",
+     0.8768,
+     188541
+    ],
+    [
+     "APNT",
+     "Asian Paints Ltd",
+     0.8521,
+     18808
+    ],
+    [
+     "GRASIM",
+     "Grasim Industries Ltd",
+     0.8489,
+     15722
+    ],
+    [
+     "TECHM",
+     "Tech Mahindra Ltd",
+     0.825,
+     26435
+    ],
+    [
+     "BJFIN",
+     "Bajaj Finserv Ltd",
+     0.7996,
+     24223
+    ],
+    [
+     "TRENT",
+     "TRENT LTD",
+     0.7806,
+     13858
+    ],
+    [
+     "COAL",
+     "Coal India Ltd",
+     0.7129,
+     106289
+    ],
+    [
+     "APHS",
+     "APOLLO HOSPITALS ENTERPRISE",
+     0.7004,
+     4309
+    ],
+    [
+     "NEST",
+     "NESTLE INDIA LTD",
+     0.6849,
+     29871
+    ],
+    [
+     "DRRD",
+     "Dr Reddy's Laboratories Ltd",
+     0.6555,
+     27053
+    ],
+    [
+     "ONGC",
+     "Oil & Natural Gas Corp Ltd",
+     0.6327,
+     161699
+    ],
+    [
+     "CIPLA",
+     "Cipla Ltd/India",
+     0.5753,
+     23408
+    ],
+    [
+     "JIOFIN",
+     "JIO FINANCIAL SERVICES LTD",
+     0.5272,
+     136661
+    ],
+    [
+     "TMPV",
+     "TATA MOTORS PASSENGER VEHICLES",
+     0.3961,
+     87108
     ]
    ],
-   "n_listed": 10
+   "n_listed": 33,
+   "fees_official": {
+    "source": "富邦投信 Assets.aspx 官方直出（完整持股）",
+    "aum_twd": null,
+    "semantics": "部分揭露 33 筆合計 49.14%"
+   },
+   "extra": {
+    "futures": [
+     [
+      "ICICIBC IS",
+      "ICICI Bank Ltd",
+      "298,417",
+      8.3079
+     ],
+     [
+      "RELIANCE IS",
+      "RELIANCE INDUSTRIES LTD",
+      "278,386",
+      6.6039
+     ],
+     [
+      "LT IS",
+      "Larsen & Toubro Ltd",
+      "48,737",
+      3.5085
+     ],
+     [
+      "KMB IS",
+      "Kotak Mahindra Bank Ltd",
+      "306,569",
+      2.7068
+     ],
+     [
+      "MM IS",
+      "Mahindra & Mahindra Ltd",
+      "37,207",
+      2.2783
+     ],
+     [
+      "BAF IS",
+      "Bajaj Finance Ltd",
+      "113,602",
+      2.1852
+     ],
+     [
+      "ITC IS",
+      "ITC Ltd",
+      "401,422",
+      2.1216
+     ],
+     [
+      "ETERNAL IS",
+      "ETERNAL LTD",
+      "301,678",
+      1.9181
+     ],
+     [
+      "TCS IS",
+      "Tata Consultancy Services Ltd",
+      "42,506",
+      1.836
+     ],
+     [
+      "BSE IS",
+      "BSE LTD",
+      "17,002",
+      1.1216
+     ],
+     [
+      "BHE IS",
+      "BHARAT ELECTRONICS LTD",
+      "158,906",
+      1.1043
+     ],
+     [
+      "EIM IS",
+      "Eicher Motors Ltd",
+      "5,765",
+      0.8272
+     ],
+     [
+      "ADE IS",
+      "ADANI ENTERPRISES LTD",
+      "14,091",
+      0.6625
+     ],
+     [
+      "MAXHEALT IS",
+      "MAX HEALTHCARE INSTITUTE LTD",
+      "30,977",
+      0.5926
+     ],
+     [
+      "SBILIFE IS",
+      "SBI LIFE INSURANCE",
+      "18,691",
+      0.5923
+     ],
+     [
+      "TATACONS IS",
+      "TATACONS CONSUMER PRODUCTS LTD",
+      "28,915",
+      0.5752
+     ],
+     [
+      "HDFCLIFE IS",
+      "HDFC Life Insurance Co Ltd",
+      "44,777",
+      0.452
+     ]
+    ]
+   }
   },
   "00653L": {
    "name": "富邦印度正2",
@@ -11218,62 +15127,296 @@
    "name": "富邦恒生國企",
    "market": "TWSE",
    "issuer": "富邦證券投資信託股份有限",
-   "n": null,
-   "src": "CMONEY",
-   "asof": "2026/11/04",
+   "n": 38,
+   "src": "FUBON",
+   "asof": "2026-11-24",
    "items": [
     [
-     "202611HHIX6F",
-     "H股指數期貨",
-     11.7298
-    ],
-    [
-     "939 HK",
-     "建設銀行",
-     8.8545
-    ],
-    [
-     "9988 HK",
+     "9988",
      "阿里巴巴－SW",
-     7.5549
+     6.6781,
+     87978
     ],
     [
-     "700 HK",
-     "騰訊控股",
-     7.54
-    ],
-    [
-     "1398 HK",
+     "1398",
      "工商銀行",
-     6.0159
+     6.3973,
+     901459
     ],
     [
-     "1810 HK",
+     "1810",
      "小米集團－Ｗ",
-     4.8414
+     4.8261,
+     197219
     ],
     [
-     "3988 HK",
+     "3988",
      "中國銀行",
-     3.9358
+     4.4233,
+     776351
     ],
     [
-     "3690 HK",
+     "3690",
      "美團－Ｗ",
-     3.8946
+     3.5998,
+     60721
     ],
     [
-     "2318 HK",
+     "2318",
      "中國平安",
-     3.2458
+     3.4004,
+     73355
     ],
     [
-     "9999 HK",
+     "6160",
+     "百濟神州",
+     2.9132,
+     13200
+    ],
+    [
+     "9999",
      "網易－Ｓ",
-     3.0017
+     2.767,
+     19208
+    ],
+    [
+     "1211",
+     "比亞迪股份",
+     2.2356,
+     40149
+    ],
+    [
+     "3968",
+     "招商銀行",
+     2.0958,
+     42622
+    ],
+    [
+     "1288",
+     "農業銀行",
+     1.9523,
+     319602
+    ],
+    [
+     "2628",
+     "中國人壽",
+     1.6201,
+     80927
+    ],
+    [
+     "9618",
+     "京東集團－ＳＷ",
+     1.5201,
+     16962
+    ],
+    [
+     "2899",
+     "ZIJIN MINING GROUP CO LTD - H",
+     1.4249,
+     66000
+    ],
+    [
+     "9987",
+     "百勝中國",
+     1.3671,
+     3750
+    ],
+    [
+     "1801",
+     "信達生物",
+     1.348,
+     18000
+    ],
+    [
+     "1088",
+     "中國神華",
+     1.2962,
+     34832
+    ],
+    [
+     "2328",
+     "中國財險",
+     1.1818,
+     76000
+    ],
+    [
+     "2020",
+     "安踏體育",
+     1.138,
+     15329
+    ],
+    [
+     "9961",
+     "攜程集團－Ｓ",
+     1.1019,
+     3798
+    ],
+    [
+     "9992",
+     "泡泡瑪特",
+     1.0209,
+     8000
+    ],
+    [
+     "9888",
+     "百度集團－ＳＷ",
+     0.9856,
+     17106
+    ],
+    [
+     "2423",
+     "貝殼－Ｗ",
+     0.9814,
+     22700
+    ],
+    [
+     "9633",
+     "農夫山泉",
+     0.9415,
+     21984
+    ],
+    [
+     "1109",
+     "華潤置地",
+     0.8889,
+     35133
+    ],
+    [
+     "3328",
+     "交通銀行",
+     0.7802,
+     95902
+    ],
+    [
+     "1093",
+     "石藥集團",
+     0.616,
+     87494
+    ],
+    [
+     "2057",
+     "中通快遞－Ｗ",
+     0.6069,
+     4200
+    ],
+    [
+     "1658",
+     "郵儲銀行",
+     0.6059,
+     119629
+    ],
+    [
+     "1024",
+     "快手－Ｗ",
+     0.6035,
+     33124
+    ],
+    [
+     "9868",
+     "小鵬汽車－Ｗ",
+     0.5789,
+     17762
+    ],
+    [
+     "2015",
+     "理想汽車－Ｗ",
+     0.571,
+     14944
+    ],
+    [
+     "1378",
+     "中國宏橋",
+     0.5675,
+     37500
+    ],
+    [
+     "3692",
+     "翰森製藥",
+     0.4618,
+     16000
+    ],
+    [
+     "9926",
+     "康方生物",
+     0.4077,
+     8000
+    ],
+    [
+     "6618",
+     "京東健康",
+     0.3738,
+     12260
+    ],
+    [
+     "9660",
+     "地平線機器人－Ｗ",
+     0.3482,
+     127200
+    ],
+    [
+     "2313",
+     "申洲國際",
+     0.346,
+     9047
     ]
    ],
-   "n_listed": 10
+   "n_listed": 38,
+   "fees_official": {
+    "source": "富邦投信 Assets.aspx 官方直出（完整持股）",
+    "aum_twd": null
+   },
+   "extra": {
+    "futures": [
+     [
+      "939 HK",
+      "建設銀行",
+      "1,012,527",
+      9.5838
+     ],
+     [
+      "700 HK",
+      "騰訊控股",
+      "22,045",
+      6.954
+     ],
+     [
+      "857 HK",
+      "中國石油股份",
+      "230,603",
+      2.0379
+     ],
+     [
+      "992 HK",
+      "聯想集團",
+      "81,963",
+      1.3805
+     ],
+     [
+      "386 HK",
+      "中國石油化工股份",
+      "246,214",
+      1.0208
+     ],
+     [
+      "175 HK",
+      "吉利汽車",
+      "71,083",
+      0.873
+     ],
+     [
+      "267 HK",
+      "中信股份",
+      "63,388",
+      0.6994
+     ],
+     [
+      "688 HK",
+      "中國海外發展",
+      "41,969",
+      0.4104
+     ]
+    ]
+   }
   },
   "00701": {
    "name": "國泰股利精選30",
@@ -11922,61 +16065,2588 @@
    "market": "TWSE",
    "issuer": "富邦證券投資信託股份有限",
    "n": null,
-   "src": "CMONEY",
-   "asof": "2026/11/04",
+   "src": "FUBON",
+   "asof": "2026-11-24",
    "items": [
     [
-     "ASML NA",
+     "ASML",
      "ASML Holding NV",
-     3.9445
+     3.6752,
+     464
     ],
     [
-     "ROP SE",
-     "ROCHE HOLDING AG",
-     2.3102
-    ],
-    [
-     "NOVN SE",
+     "NOVN",
      "Novartis AG",
-     2.0781
+     2.0646,
+     2236
     ],
     [
-     "HSBA LN",
+     "HSBA",
      "HSBC Holdings PLC",
-     2.0631
+     2.0069,
+     20545
     ],
     [
-     "SHEL LN",
+     "SHEL",
      "SHELL PLC",
-     2.0219
+     1.958,
+     6993
     ],
     [
-     "AZN LN",
-     "AstraZeneca PLC",
-     1.9187
-    ],
-    [
-     "NESN SE",
+     "NESN",
      "Nestle SA",
-     1.8338
+     1.9105,
+     3084
     ],
     [
-     "202612FXXPZ6F",
-     "Stoxx歐洲600指數",
-     1.676
+     "UBSG",
+     "UBS Group AG",
+     0.9936,
+     3708
     ],
     [
-     "SAP GY",
-     "SAP SE",
-     1.5921
+     "BBVA",
+     "Banco Bilbao Vizcaya Argentaria SA",
+     0.9732,
+     6727
     ],
     [
-     "SIE GY",
-     "Siemens AG",
-     1.5189
+     "ULVR",
+     "Unilever PLC",
+     0.9724,
+     2489
+    ],
+    [
+     "NOVOB",
+     "NOVO NORDISK A/S",
+     0.9221,
+     3806
+    ],
+    [
+     "ABBN",
+     "ABB Ltd",
+     0.872,
+     1856
+    ],
+    [
+     "BATS",
+     "British American Tobacco PLC",
+     0.8533,
+     2431
+    ],
+    [
+     "ZURN",
+     "Zurich Insurance Group AG",
+     0.8039,
+     176
+    ],
+    [
+     "INGA",
+     "ING Groep NV",
+     0.6173,
+     3440
+    ],
+    [
+     "MUV2",
+     "Muenchener Rueckversicherungs-Gesellschaft AG in Muenchen",
+     0.5804,
+     150
+    ],
+    [
+     "ENEL",
+     "Enel SpA",
+     0.5743,
+     9243
+    ],
+    [
+     "LLOY",
+     "Lloyds Banking Group PLC",
+     0.5382,
+     71934
+    ],
+    [
+     "INVEB",
+     "Investor AB",
+     0.5233,
+     2147
+    ],
+    [
+     "BARC",
+     "Barclays PLC",
+     0.511,
+     16156
+    ],
+    [
+     "ARGX",
+     "ARGENX SE",
+     0.4466,
+     76
+    ],
+    [
+     "LSEG",
+     "LONDON STOCK EXCHANGE GROUP PL",
+     0.4374,
+     557
+    ],
+    [
+     "GLEN",
+     "Glencore PLC",
+     0.4332,
+     12454
+    ],
+    [
+     "BAYN",
+     "Bayer AG",
+     0.4141,
+     1207
+    ],
+    [
+     "LONN",
+     "Lonza Group AG",
+     0.4066,
+     86
+    ],
+    [
+     "SREN",
+     "Swiss Re AG",
+     0.3966,
+     362
+    ],
+    [
+     "ENGI",
+     "Engie SA",
+     0.357,
+     2199
+    ],
+    [
+     "VOLVB",
+     "Volvo AB",
+     0.352,
+     1920
+    ],
+    [
+     "STAN",
+     "Standard Chartered PLC",
+     0.3382,
+     2197
+    ],
+    [
+     "CABK",
+     "CaixaBank SA",
+     0.3353,
+     4441
+    ],
+    [
+     "ATCOA",
+     "ATLAS COPCO AB-A SHS",
+     0.3346,
+     3110
+    ],
+    [
+     "EOAN",
+     "E.ON SE",
+     0.334,
+     2725
+    ],
+    [
+     "RACE",
+     "Ferrari NV",
+     0.3334,
+     140
+    ],
+    [
+     "TSCO",
+     "Tesco PLC",
+     0.333,
+     7687
+    ],
+    [
+     "HOLN",
+     "HOLCIM LTD",
+     0.3178,
+     604
+    ],
+    [
+     "GALD",
+     "GALDERMA GROUP AG",
+     0.2908,
+     221
+    ],
+    [
+     "ASSAB",
+     "Assa Abloy AB",
+     0.2699,
+     1191
+    ],
+    [
+     "GIVN",
+     "GIVAUDAN-REG",
+     0.2647,
+     9
+    ],
+    [
+     "NOKIA",
+     "Nokia",
+     0.2631,
+     5990
+    ],
+    [
+     "EXPN",
+     "Experian PLC",
+     0.2568,
+     1105
+    ],
+    [
+     "SIKA",
+     "SIKA AG-BR",
+     0.2549,
+     192
+    ],
+    [
+     "DANSKE",
+     "DANSKE BANK A/S",
+     0.2471,
+     771
+    ],
+    [
+     "SAND",
+     "Sandvik AB",
+     0.2388,
+     1255
+    ],
+    [
+     "GMAB",
+     "GENMAB A/S",
+     0.2385,
+     71
+    ],
+    [
+     "SWEDA",
+     "Swedbank AB",
+     0.2349,
+     976
+    ],
+    [
+     "SEBA",
+     "SKANDINAVISKA ENSKILDA BANKEN",
+     0.2277,
+     1807
+    ],
+    [
+     "SLHN",
+     "Swiss Life Holding AG",
+     0.2266,
+     33
+    ],
+    [
+     "SAMPO",
+     "SAMPO OYJ",
+     0.2046,
+     3124
+    ],
+    [
+     "ERICB",
+     "Telefonaktiebolaget LM Ericsson",
+     0.1956,
+     3203
+    ],
+    [
+     "STMMI",
+     "STMICROELECTRONICS NV",
+     0.1933,
+     816
+    ],
+    [
+     "ATCOB",
+     "Atlas Copco B",
+     0.1815,
+     1925
+    ],
+    [
+     "AIBG",
+     "AIB GROUP PLC",
+     0.1804,
+     2494
+    ],
+    [
+     "CCEP",
+     "COCA-COLA EUROPACIFIC PARTNERS",
+     0.1794,
+     255
+    ],
+    [
+     "LISP",
+     "CHOCOLADEFABRIKEN LINDT-PC",
+     0.1792,
+     3
+    ],
+    [
+     "BMPS",
+     "BANCA MONTE DEI PASCHI DI SIEN",
+     0.1771,
+     2505
+    ],
+    [
+     "ADYEN",
+     "ADYEN NA Equity",
+     0.1766,
+     32
+    ],
+    [
+     "GEBN",
+     "Geberit AG",
+     0.176,
+     42
+    ],
+    [
+     "HEIA",
+     "Heineken NV",
+     0.1732,
+     313
+    ],
+    [
+     "SHBA",
+     "Svenska Handelsbanken AB",
+     0.1702,
+     1813
+    ],
+    [
+     "PHIA",
+     "Koninklijke Philips NV",
+     0.1684,
+     953
+    ],
+    [
+     "EQNR",
+     "EQUINOR ASA",
+     0.1672,
+     714
+    ],
+    [
+     "SCMN",
+     "Swisscom AG",
+     0.164,
+     32
+    ],
+    [
+     "NSISB",
+     "NOVONESIS (NOVOZYMES) B",
+     0.1638,
+     426
+    ],
+    [
+     "SGSN",
+     "SGS SA-REG",
+     0.1606,
+     219
+    ],
+    [
+     "AMRZ",
+     "AMRIZE LTD",
+     0.1603,
+     656
+    ],
+    [
+     "LGEN",
+     "Legal & General Group PLC",
+     0.1585,
+     6803
+    ],
+    [
+     "AENA",
+     "AENA SME SA",
+     0.1575,
+     851
+    ],
+    [
+     "DSFIR",
+     "DSM-FIRMENICH AG",
+     0.1549,
+     221
+    ],
+    [
+     "KNEBV",
+     "KONE OYJ-B",
+     0.1522,
+     402
+    ],
+    [
+     "HNR1",
+     "HANNOVER RUECKVERSICHERU-REG",
+     0.1512,
+     77
+    ],
+    [
+     "HEXAB",
+     "Hexagon AB",
+     0.1489,
+     2511
+    ],
+    [
+     "BIRG",
+     "BANK OF IRELAND GROUP PLC",
+     0.1475,
+     1215
+    ],
+    [
+     "HBAN",
+     "HELVETIA BALOISE HOLDING AG",
+     0.145,
+     92
+    ],
+    [
+     "SAABB",
+     "SAAB AB",
+     0.1427,
+     395
+    ],
+    [
+     "INVEA",
+     "INVESTOR AB-A SHS",
+     0.1369,
+     573
+    ],
+    [
+     "KYGA",
+     "KERRY GROUP PLC",
+     0.1306,
+     191
+    ],
+    [
+     "PGHN",
+     "Partners Group AG",
+     0.1264,
+     28
+    ],
+    [
+     "SOON",
+     "SONOVA HOLDING AG-REG",
+     0.124,
+     59
+    ],
+    [
+     "VACN",
+     "VAT GROUP AG",
+     0.1228,
+     35
+    ],
+    [
+     "HLMA",
+     "HALMA PLC",
+     0.1175,
+     450
+    ],
+    [
+     "BAMI",
+     "BANCO BPM SPA",
+     0.1163,
+     1292
+    ],
+    [
+     "SGRO",
+     "SEGRO PLC",
+     0.1162,
+     1614
+    ],
+    [
+     "LOGN",
+     "LOGITECH INTERNATIONAL SA",
+     0.116,
+     195
+    ],
+    [
+     "EPIA",
+     "EPIROC AB-A",
+     0.1111,
+     848
+    ],
+    [
+     "CLNX",
+     "CELLNEX TELECOM S.A.U.",
+     0.1105,
+     655
+    ],
+    [
+     "BAER",
+     "Julius Baer Group Ltd",
+     0.1101,
+     245
+    ],
+    [
+     "STMN",
+     "Straumann Hld N",
+     0.1058,
+     134
+    ],
+    [
+     "HEN3",
+     "Henkel AG & Co KGaA VORZUG",
+     0.1048,
+     183
+    ],
+    [
+     "ALFA",
+     "ALFA LAVAL AB",
+     0.104,
+     335
+    ],
+    [
+     "SPSN",
+     "SWISS PRIME SITE-REG",
+     0.1018,
+     108
+    ],
+    [
+     "VOW3",
+     "VOLKSWAGEN AG",
+     0.1015,
+     247
+    ],
+    [
+     "ASRNL",
+     "ASR NEDERLAND NV",
+     0.1007,
+     197
+    ],
+    [
+     "SCHP",
+     "Schindler Holding (Cert)",
+     0.1002,
+     48
+    ],
+    [
+     "WRT1V",
+     "WARTSILA OYJ",
+     0.098,
+     618
+    ],
+    [
+     "ITRK",
+     "Intertek Group PLC",
+     0.0979,
+     209
+    ],
+    [
+     "NTGY",
+     "NATURGY ENERGY GROUP SA",
+     0.0973,
+     491
+    ],
+    [
+     "CARLB",
+     "CARLSBERG AS-B",
+     0.0963,
+     110
+    ],
+    [
+     "KNIN",
+     "KUEHNE & NAGEL INTL AG-REG",
+     0.0953,
+     61
+    ],
+    [
+     "BNZL",
+     "BUNZL PLC",
+     0.0925,
+     407
+    ],
+    [
+     "TELIA",
+     "Telia Co AB",
+     0.089,
+     2996
+    ],
+    [
+     "METSO",
+     "METSO OYJ",
+     0.0879,
+     938
+    ],
+    [
+     "ANTO",
+     "ANTOFAGASTA PLC",
+     0.0873,
+     435
+    ],
+    [
+     "ORNBV",
+     "ORION OYJ-CLASS B",
+     0.0872,
+     129
+    ],
+    [
+     "PNDORA",
+     "PANDORA A/S",
+     0.0856,
+     105
+    ],
+    [
+     "DPLM",
+     "DIPLOMA PLC",
+     0.0844,
+     163
+    ],
+    [
+     "FORTUM",
+     "FORTUM OYJ",
+     0.0833,
+     572
+    ],
+    [
+     "BESI",
+     "BE SEMICONDUCTOR INDUSTRIES",
+     0.0825,
+     88
+    ],
+    [
+     "AKZA",
+     "Akzo Nobel NV",
+     0.0819,
+     205
+    ],
+    [
+     "MOWI",
+     "MOWI ASA",
+     0.0802,
+     584
+    ],
+    [
+     "ORSTED",
+     "ORSTED AS",
+     0.0802,
+     664
+    ],
+    [
+     "NESTE",
+     "NESTE OYJ",
+     0.0765,
+     489
+    ],
+    [
+     "COLOB",
+     "COLOPLAST-B",
+     0.0762,
+     171
+    ],
+    [
+     "MONC",
+     "Moncler",
+     0.0762,
+     285
+    ],
+    [
+     "HEIO",
+     "Heineken Holding NV",
+     0.0746,
+     141
+    ],
+    [
+     "TRELB",
+     "TRELLEBORG AB-B SHS",
+     0.0724,
+     271
+    ],
+    [
+     "TEL2B",
+     "TELE2 AB-B SHS",
+     0.0722,
+     761
+    ],
+    [
+     "PSON",
+     "PEARSON PLC",
+     0.0706,
+     687
+    ],
+    [
+     "SDLF",
+     "STANDARD LIFE PLC",
+     0.0696,
+     1007
+    ],
+    [
+     "SMIN",
+     "SMITHS GROUP PLC",
+     0.0695,
+     351
+    ],
+    [
+     "SBRY",
+     "SAINSBURY (J) PLC",
+     0.0692,
+     2565
+    ],
+    [
+     "AKRBP",
+     "AKER BP ASA",
+     0.0683,
+     370
+    ],
+    [
+     "SKAB",
+     "SKANSKA AB-B SHS",
+     0.0673,
+     383
+    ],
+    [
+     "KESKOB",
+     "Kesko B",
+     0.0628,
+     379
+    ],
+    [
+     "SKFB",
+     "SKF AB-B SHARES",
+     0.0625,
+     409
+    ],
+    [
+     "MICC",
+     "MAGNUM ICE CREAM CO NV/THE",
+     0.0619,
+     548
+    ],
+    [
+     "SOBI",
+     "SWEDISH ORPHAN BIOVITRUM AB",
+     0.0619,
+     216
+    ],
+    [
+     "GALP",
+     "GALP ENERGIA SGPS SA-B SHRS",
+     0.0618,
+     514
+    ],
+    [
+     "SPIE",
+     "SPIE SA",
+     0.061,
+     209
+    ],
+    [
+     "GBLB",
+     "GROUPE BRUXELLES LAMBERT SA",
+     0.06,
+     116
+    ],
+    [
+     "CRDA",
+     "CRODA INTERNATIONAL PLC",
+     0.0599,
+     199
+    ],
+    [
+     "STLAM",
+     "STELLANTIS NV",
+     0.0598,
+     2905
+    ],
+    [
+     "BEAN",
+     "BELIMO HOLDING AG-REG",
+     0.0592,
+     11
+    ],
+    [
+     "SECUB",
+     "SECURITAS AB-B SHS",
+     0.0579,
+     608
+    ],
+    [
+     "LAND",
+     "LAND SECURITIES GROUP PLC",
+     0.0577,
+     1059
+    ],
+    [
+     "SUBC",
+     "SUBSEA 7 SA",
+     0.056,
+     280
+    ],
+    [
+     "WISE",
+     "WISE PLC",
+     0.0559,
+     814
+    ],
+    [
+     "SCAB",
+     "SVENSKA CELLULOSA AB-B SHS",
+     0.0553,
+     841
+    ],
+    [
+     "EDEN",
+     "EDENRED",
+     0.0544,
+     324
+    ],
+    [
+     "PSPN",
+     "PSP SWISS PROPERTY AG",
+     0.0543,
+     51
+    ],
+    [
+     "BEIJB",
+     "BEIJER REF AB",
+     0.0536,
+     579
+    ],
+    [
+     "DHER",
+     "DELIVERY HERO SE",
+     0.0536,
+     226
+    ],
+    [
+     "INDUC",
+     "Industrivarden AB C Free",
+     0.0533,
+     178
+    ],
+    [
+     "ADDTB",
+     "ADDTECH AB",
+     0.0526,
+     280
+    ],
+    [
+     "CTEC",
+     "ConvaTec Group",
+     0.0524,
+     2432
+    ],
+    [
+     "ACKB",
+     "ACKERMANS & VAN HAAREN",
+     0.0522,
+     31
+    ],
+    [
+     "SCHN",
+     "Schindler Holding (Reg)",
+     0.0511,
+     25
+    ],
+    [
+     "HWDN",
+     "HOWDEN JOINERY GROUP PLC",
+     0.0509,
+     806
+    ],
+    [
+     "ACLN",
+     "ACCELLERON INDUSTRIES LTD",
+     0.0506,
+     110
+    ],
+    [
+     "SIGN",
+     "SIG GROUP AG",
+     0.0502,
+     454
+    ],
+    [
+     "WEIR",
+     "WEIR GROUP PLC/THE",
+     0.0499,
+     302
+    ],
+    [
+     "TRYG",
+     "TRYG A/S",
+     0.0496,
+     338
+    ],
+    [
+     "SYENS",
+     "SYENSQO SA",
+     0.0494,
+     101
+    ],
+    [
+     "NIBEB",
+     "NIBE INDUSTRIER AB-B SHS",
+     0.0482,
+     1862
+    ],
+    [
+     "ABVX",
+     "ABIVAX SA",
+     0.0476,
+     106
+    ],
+    [
+     "EPIB",
+     "EPIROC AB-B",
+     0.0476,
+     424
+    ],
+    [
+     "BRBY",
+     "Burberry Group PLC",
+     0.0469,
+     513
+    ],
+    [
+     "INDT",
+     "INDUTRADE AB",
+     0.0454,
+     300
+    ],
+    [
+     "STERV",
+     "STORA ENSO OYJ-R SHS",
+     0.0454,
+     763
+    ],
+    [
+     "IMCD",
+     "IMCD NV",
+     0.0452,
+     67
+    ],
+    [
+     "MTLN",
+     "METLEN ENERGY & METALS PLC",
+     0.0443,
+     163
+    ],
+    [
+     "RAND",
+     "RANDSTAD NV",
+     0.0424,
+     155
+    ],
+    [
+     "AUTO",
+     "Auto Trader Group",
+     0.0413,
+     952
+    ],
+    [
+     "LIFCOB",
+     "LIFCO AB-B SHS",
+     0.0408,
+     246
+    ],
+    [
+     "FRES",
+     "FRESNILLO PLC",
+     0.0378,
+     224
+    ],
+    [
+     "BTRW",
+     "BARRATT REDROW PLC",
+     0.0375,
+     1573
+    ],
+    [
+     "VOLVA",
+     "VOLVO AB",
+     0.0366,
+     200
+    ],
+    [
+     "FHZN",
+     "Flughafen Zurich",
+     0.035,
+     23
+    ],
+    [
+     "ELISA",
+     "ELISA OYJ",
+     0.034,
+     161
+    ],
+    [
+     "INDUA",
+     "INDUSTRIVARDEN AB-A SHS",
+     0.034,
+     113
+    ],
+    [
+     "BMED",
+     "Banca Mediolanum",
+     0.0339,
+     243
+    ],
+    [
+     "EMSN",
+     "Ems Chemie I",
+     0.0293,
+     5
+    ],
+    [
+     "DEMANT",
+     "DEMANT A/S",
+     0.0281,
+     96
+    ],
+    [
+     "BARN",
+     "BARRY CALLEBAUT AG-REG",
+     0.0269,
+     3
+    ],
+    [
+     "GETIB",
+     "GETINGE AB",
+     0.0253,
+     156
+    ],
+    [
+     "AXFO",
+     "AXFOOD AB",
+     0.0246,
+     147
+    ],
+    [
+     "ANDR",
+     "ANDRITZ AG",
+     0.0244,
+     48
+    ],
+    [
+     "AMUN",
+     "Amundi",
+     0.0241,
+     40
+    ],
+    [
+     "TPRO",
+     "TECHNOPROBE SPA",
+     0.024,
+     203
+    ],
+    [
+     "BLND",
+     "BRITISH LAND CO PLC",
+     0.0236,
+     698
+    ],
+    [
+     "CAST",
+     "CASTELLUM AB",
+     0.0231,
+     298
+    ],
+    [
+     "AVOL",
+     "AVOLTA AG",
+     0.0224,
+     65
+    ],
+    [
+     "BCVN",
+     "Banque Cantonale Vaudoise",
+     0.0217,
+     23
+    ],
+    [
+     "TEMN",
+     "TEMENOS AG - REG",
+     0.0214,
+     39
+    ],
+    [
+     "VSURE",
+     "VERISURE PLC",
+     0.0211,
+     318
+    ],
+    [
+     "EDPR",
+     "EDP RENEWABLES SA",
+     0.0204,
+     239
+    ],
+    [
+     "SSABB",
+     "SSAB AB(SSABB)",
+     0.0199,
+     395
+    ],
+    [
+     "LUNDB",
+     "LUNDBERGS AB-B SHS",
+     0.0189,
+     55
+    ],
+    [
+     "KMAR",
+     "KONGSBERG MARITIME AS",
+     0.0182,
+     539
+    ],
+    [
+     "VEND",
+     "VEND MARKETPLACES ASA",
+     0.017,
+     125
+    ],
+    [
+     "WISA",
+     "WISA GROUP OYJ",
+     0.0023,
+     705
     ]
    ],
-   "n_listed": 10
+   "n_listed": 188,
+   "fees_official": {
+    "source": "富邦投信 Assets.aspx 官方直出（完整持股）",
+    "aum_twd": null,
+    "semantics": "部分揭露 188 筆合計 41.84%"
+   },
+   "extra": {
+    "futures": [
+     [
+      "ROP SE",
+      "ROCHE HOLDING AG",
+      "843",
+      2.4501
+     ],
+     [
+      "AZN LN",
+      "AstraZeneca PLC",
+      "1,796",
+      1.9724
+     ],
+     [
+      "SAP GY",
+      "SAP SE",
+      "1,169",
+      1.4652
+     ],
+     [
+      "SIE GY",
+      "Siemens AG",
+      "867",
+      1.4558
+     ],
+     [
+      "ALV GY",
+      "Allianz SE",
+      "455",
+      1.366
+     ],
+     [
+      "TTE FP",
+      "TOTALENERGIES SE",
+      "2,398",
+      1.2283
+     ],
+     [
+      "IBE SQ",
+      "IBERDROLA SA",
+      "7,967",
+      1.2004
+     ],
+     [
+      "SAN SQ",
+      "Banco Santander SA",
+      "17,271",
+      1.1892
+     ],
+     [
+      "RR/ LN",
+      "Rolls-Royce Holdings PLC",
+      "10,047",
+      1.0315
+     ],
+     [
+      "SU FP",
+      "Schneider Electric SE",
+      "666",
+      0.9929
+     ],
+     [
+      "AI FP",
+      "Air Liquide SA",
+      "759",
+      0.9415
+     ],
+     [
+      "AIR FP",
+      "Airbus SE",
+      "699",
+      0.8925
+     ],
+     [
+      "UCG IM",
+      "UniCredit SpA",
+      "1,694",
+      0.8459
+     ],
+     [
+      "SAF FP",
+      "Safran SA",
+      "412",
+      0.8125
+     ],
+     [
+      "BP/ LN",
+      "BP PLC",
+      "18,784",
+      0.8061
+     ],
+     [
+      "OR FP",
+      "L'Oreal SA",
+      "274",
+      0.7966
+     ],
+     [
+      "SAN FP",
+      "SANOFI",
+      "1,288",
+      0.7947
+     ],
+     [
+      "CFR SE",
+      "Cie Financiere Richemont SA",
+      "637",
+      0.7871
+     ],
+     [
+      "MC FP",
+      "LVMH Moet Hennessy Louis Vuitton SE",
+      "295",
+      0.7677
+     ],
+     [
+      "DTE GY",
+      "Deutsche Telekom AG",
+      "4,106",
+      0.7261
+     ],
+     [
+      "GSK LN",
+      "GSK PLC",
+      "4,776",
+      0.7155
+     ],
+     [
+      "ENR GY",
+      "SIEMENS ENERGY AG",
+      "904",
+      0.7026
+     ],
+     [
+      "BNP FP",
+      "BNP Paribas SA",
+      "1,168",
+      0.6953
+     ],
+     [
+      "ISP IM",
+      "Intesa Sanpaolo SpA",
+      "18,227",
+      0.6834
+     ],
+     [
+      "NG/ LN",
+      "National Grid PLC",
+      "6,101",
+      0.6011
+     ],
+     [
+      "CS FP",
+      "AXA SA",
+      "1,996",
+      0.5964
+     ],
+     [
+      "ABI BB",
+      "ANHEUSER-BUSCH INBEV NV",
+      "1,162",
+      0.5569
+     ],
+     [
+      "RIO LN",
+      "Rio Tinto PLC",
+      "1,239",
+      0.542
+     ],
+     [
+      "ITX SQ",
+      "Industria de Diseno Textil SA",
+      "1,364",
+      0.5243
+     ],
+     [
+      "BA/ LN",
+      "BAE Systems PLC",
+      "3,512",
+      0.5135
+     ],
+     [
+      "REL LN",
+      "RELX PLC",
+      "2,090",
+      0.498
+     ],
+     [
+      "DB1 GY",
+      "Deutsche Boerse AG",
+      "224",
+      0.4673
+     ],
+     [
+      "IFX GY",
+      "Infineon Technologies AG",
+      "1,601",
+      0.4617
+     ],
+     [
+      "NWG LN",
+      "NATWEST GROUP PLC",
+      "9,799",
+      0.45
+     ],
+     [
+      "CPG LN",
+      "COMPASS GROUP PLC",
+      "2,087",
+      0.4447
+     ],
+     [
+      "DG FP",
+      "Vinci SA",
+      "596",
+      0.4391
+     ],
+     [
+      "NDA FH",
+      "NORDEA BANK ABP",
+      "3,942",
+      0.4251
+     ],
+     [
+      "DHL GY",
+      "DEUTSCHE GROUP AG",
+      "1,131",
+      0.42
+     ],
+     [
+      "DBK GY",
+      "Deutsche Bank AG",
+      "2,109",
+      0.4158
+     ],
+     [
+      "DGE LN",
+      "Diageo PLC",
+      "2,737",
+      0.4119
+     ],
+     [
+      "EL FP",
+      "EssilorLuxottica SA",
+      "349",
+      0.403
+     ],
+     [
+      "BAS GY",
+      "BASF SE",
+      "1,086",
+      0.3519
+     ],
+     [
+      "RMS FP",
+      "Hermes International",
+      "42",
+      0.3464
+     ],
+     [
+      "ENI IM",
+      "Eni SpA",
+      "2,203",
+      0.3458
+     ],
+     [
+      "RKT LN",
+      "RECKITT BENCKISER GROUP PLC",
+      "768",
+      0.3455
+     ],
+     [
+      "GLE FP",
+      "Societe Generale SA",
+      "826",
+      0.3442
+     ],
+     [
+      "BN FP",
+      "Danone SA",
+      "753",
+      0.3421
+     ],
+     [
+      "AAL LN",
+      "ANGLO AMERICAN PLC",
+      "1,348",
+      0.3337
+     ],
+     [
+      "G IM",
+      "Assicurazioni Generali SpA",
+      "1,141",
+      0.326
+     ],
+     [
+      "RWE GY",
+      "RWE AG",
+      "859",
+      0.3226
+     ],
+     [
+      "SSE LN",
+      "SSE PLC",
+      "1,489",
+      0.308
+     ],
+     [
+      "HLN LN",
+      "HALEON PLC",
+      "10,921",
+      0.3019
+     ],
+     [
+      "SDZ SE",
+      "SANDOZ GROUP AG",
+      "497",
+      0.2894
+     ],
+     [
+      "PRX NA",
+      "PROSUS",
+      "1,424",
+      0.2891
+     ],
+     [
+      "DSV DC",
+      "DSV A/S",
+      "233",
+      0.2827
+     ],
+     [
+      "UCB BB",
+      "UCB SA",
+      "143",
+      0.2714
+     ],
+     [
+      "RHM GY",
+      "RHEINMETALL AG",
+      "56",
+      0.2712
+     ],
+     [
+      "ALC SE",
+      "ALCON INC",
+      "583",
+      0.2679
+     ],
+     [
+      "ORA FP",
+      "Orange SA",
+      "2,562",
+      0.2582
+     ],
+     [
+      "SGO FP",
+      "Cie de Saint-Gobain",
+      "539",
+      0.2571
+     ],
+     [
+      "AD NA",
+      "Koninklijke Ahold Delhaize NV",
+      "1,088",
+      0.2536
+     ],
+     [
+      "LR FP",
+      "Legrand SA",
+      "304",
+      0.2512
+     ],
+     [
+      "REP SQ",
+      "Repsol SA",
+      "1,337",
+      0.2465
+     ],
+     [
+      "III LN",
+      "3i Group PLC",
+      "1,174",
+      0.2452
+     ],
+     [
+      "EBS AV",
+      "ERSTE GROUP BANK AG",
+      "335",
+      0.241
+     ],
+     [
+      "ASM NA",
+      "ASM INTERNATIONAL NV",
+      "56",
+      0.2353
+     ],
+     [
+      "PRU LN",
+      "Prudential PLC",
+      "3,094",
+      0.2293
+     ],
+     [
+      "MBG GY",
+      "MERCEDES-BENZ GROUP AG",
+      "930",
+      0.2291
+     ],
+     [
+      "PRY IM",
+      "PRYSMIAN SPA",
+      "352",
+      0.2284
+     ],
+     [
+      "AV/ LN",
+      "Aviva PLC",
+      "3,842",
+      0.2258
+     ],
+     [
+      "ADS GY",
+      "adidas AG",
+      "195",
+      0.2162
+     ],
+     [
+      "IMB LN",
+      "Imperial Brands PLC",
+      "917",
+      0.2064
+     ],
+     [
+      "FER SQ",
+      "FERROVIAL SE",
+      "579",
+      0.2046
+     ],
+     [
+      "KBC BB",
+      "KBC BANKVERZEKERINGSHOLDING",
+      "283",
+      0.2033
+     ],
+     [
+      "AMS SQ",
+      "Amadeus IT Group SA",
+      "503",
+      0.202
+     ],
+     [
+      "DNB NO",
+      "DNB ASA",
+      "1,004",
+      0.2005
+     ],
+     [
+      "CBK GY",
+      "Commerzbank AG",
+      "827",
+      0.1938
+     ],
+     [
+      "PUB FP",
+      "Publicis Groupe SA",
+      "285",
+      0.1904
+     ],
+     [
+      "VWS DC",
+      "VESTAS WIND SYSTEM",
+      "1,267",
+      0.1896
+     ],
+     [
+      "IHG LN",
+      "INTERCONTINENTAL HOTELS GROUP",
+      "180",
+      0.1885
+     ],
+     [
+      "VOD LN",
+      "Vodafone Group PLC",
+      "23,092",
+      0.1873
+     ],
+     [
+      "ABN NA",
+      "ABN AMRO BANK NV-CVA",
+      "716",
+      0.1838
+     ],
+     [
+      "HEI GY",
+      "HEIDELBERG MATERIALS AG",
+      "155",
+      0.1798
+     ],
+     [
+      "FRE GY",
+      "Fresenius SE & Co KGaA",
+      "505",
+      0.1752
+     ],
+     [
+      "NXT LN",
+      "NEXT PLC",
+      "139",
+      0.172
+     ],
+     [
+      "MT NA",
+      "ArcelorMittal",
+      "517",
+      0.1713
+     ],
+     [
+      "PKO PW",
+      "PKO BANK POLSKI SA",
+      "1,029",
+      0.1709
+     ],
+     [
+      "VIE FP",
+      "Veolia Environnement SA",
+      "747",
+      0.1684
+     ],
+     [
+      "DTG GY",
+      "DAIMLER TRUCK HOLDING AG",
+      "635",
+      0.168
+     ],
+     [
+      "ML FP",
+      "Cie Generale des Etablissements Michelin SCA",
+      "814",
+      0.1675
+     ],
+     [
+      "LDO IM",
+      "Leonardo",
+      "515",
+      0.167
+     ],
+     [
+      "HO FP",
+      "Thales SA",
+      "110",
+      0.1666
+     ],
+     [
+      "NN NA",
+      "NN Group NV",
+      "314",
+      0.1609
+     ],
+     [
+      "WKL NA",
+      "Wolters Kluwer NV",
+      "268",
+      0.1528
+     ],
+     [
+      "MRK GY",
+      "MERCK KGAA",
+      "155",
+      0.1525
+     ],
+     [
+      "MTX GY",
+      "MTU AERO ENGINES AG",
+      "66",
+      0.148
+     ],
+     [
+      "UMG NA",
+      "UNIVERSAL MUSIC GROUP NV",
+      "1,313",
+      0.1464
+     ],
+     [
+      "CAP FP",
+      "Capgemini SE",
+      "185",
+      0.1463
+     ],
+     [
+      "BMW GY",
+      "Bayerische Motoren Werke AG",
+      "414",
+      0.1453
+     ],
+     [
+      "BPE IM",
+      "BPER BANCA SPA",
+      "1,814",
+      0.1452
+     ],
+     [
+      "SAB SQ",
+      "BANCO DE SABADELL SA",
+      "5,973",
+      0.1383
+     ],
+     [
+      "ESSITYB SS",
+      "Essity AB",
+      "770",
+      0.1313
+     ],
+     [
+      "KPN NA",
+      "Koninklijke KPN NV",
+      "4,573",
+      0.1309
+     ],
+     [
+      "PKN PW",
+      "ORLEN SA",
+      "714",
+      0.128
+     ],
+     [
+      "ENX FP",
+      "EURONEXT NV",
+      "114",
+      0.1269
+     ],
+     [
+      "SHL GY",
+      "SIEMENS HEALTHINEERS AG",
+      "442",
+      0.1262
+     ],
+     [
+      "UU/ LN",
+      "UNITED UTILITIES GROUP PLC",
+      "1,008",
+      0.1235
+     ],
+     [
+      "ACS SQ",
+      "ACS Actividades Cons y Serv",
+      "221",
+      0.1205
+     ],
+     [
+      "FBK IM",
+      "Finecobank",
+      "828",
+      0.1175
+     ],
+     [
+      "ACA FP",
+      "Credit Agricole SA",
+      "1,159",
+      0.1174
+     ],
+     [
+      "INF LN",
+      "INFORMA PLC",
+      "1,771",
+      0.1174
+     ],
+     [
+      "DSY FP",
+      "Dassault Systemes SE",
+      "791",
+      0.1166
+     ],
+     [
+      "EDP PL",
+      "EDP SA",
+      "3,534",
+      0.1143
+     ],
+     [
+      "KER FP",
+      "Kering SA",
+      "96",
+      0.1139
+     ],
+     [
+      "SY1 GY",
+      "Symrise AG",
+      "181",
+      0.1137
+     ],
+     [
+      "TRN IM",
+      "TERNA SPA",
+      "1,837",
+      0.1134
+     ],
+     [
+      "RI FP",
+      "Pernod Ricard SA",
+      "238",
+      0.1131
+     ],
+     [
+      "SGE LN",
+      "Sage Group PLC/The",
+      "1,218",
+      0.1099
+     ],
+     [
+      "KOG NO",
+      "KONGSBERG GRUPPEN ASA",
+      "539",
+      0.1097
+     ],
+     [
+      "SRG IM",
+      "Snam SpA",
+      "2,756",
+      0.1088
+     ],
+     [
+      "BT/A LN",
+      "BT Group PLC",
+      "6,658",
+      0.1084
+     ],
+     [
+      "KRX ID",
+      "KINGSPAN GROUP PLC",
+      "181",
+      0.1078
+     ],
+     [
+      "VNA GY",
+      "Vonovia SE",
+      "948",
+      0.1066
+     ],
+     [
+      "TEF SQ",
+      "Telefonica SA",
+      "4,663",
+      0.1046
+     ],
+     [
+      "BG AV",
+      "BAWAG GROUP AG",
+      "98",
+      0.1039
+     ],
+     [
+      "RO SE",
+      "Roche Hldgs (BR)",
+      "35",
+      0.1035
+     ],
+     [
+      "ELE SQ",
+      "Endesa",
+      "363",
+      0.102
+     ],
+     [
+      "EQT SS",
+      "EQT AB",
+      "577",
+      0.1015
+     ],
+     [
+      "UPM FH",
+      "UPM-KYMMENE OYJ",
+      "705",
+      0.1006
+     ],
+     [
+      "ADM LN",
+      "ADMIRAL GROUP PLC",
+      "321",
+      0.1001
+     ],
+     [
+      "ALE PW",
+      "ALLEGRO.EU SA",
+      "1,001",
+      0.0982
+     ],
+     [
+      "BOL SS",
+      "BOLIDEN AB",
+      "367",
+      0.0972
+     ],
+     [
+      "IAG LN",
+      "INTL CONSOLIDATED AIRLINE-DI",
+      "2,723",
+      0.096
+     ],
+     [
+      "URW FP",
+      "UNIBAIL-RODAMCO-WESTFIELD",
+      "156",
+      0.0936
+     ],
+     [
+      "CCH LN",
+      "Coca-Cola HBC AG",
+      "272",
+      0.0933
+     ],
+     [
+      "SN/ LN",
+      "Smith & Nephew PLC",
+      "1,005",
+      0.092
+     ],
+     [
+      "AC FP",
+      "ACCOR SA",
+      "276",
+      0.0893
+     ],
+     [
+      "ERF FP",
+      "EUROFINS SCIENTIFIC",
+      "156",
+      0.089
+     ],
+     [
+      "PST IM",
+      "Poste Italiane",
+      "581",
+      0.0889
+     ],
+     [
+      "RTO LN",
+      "RENTOKIL INITIAL PLC",
+      "2,945",
+      0.087
+     ],
+     [
+      "AGS BB",
+      "AGEAS",
+      "174",
+      0.0865
+     ],
+     [
+      "MKS LN",
+      "MARKS & SPENCER GROUP PLC",
+      "2,388",
+      0.0851
+     ],
+     [
+      "BVI FP",
+      "BUREAU VERITAS SA",
+      "428",
+      0.0841
+     ],
+     [
+      "BCP PL",
+      "BANCO COMERCIAL PORTUGUES SA",
+      "11,975",
+      0.0835
+     ],
+     [
+      "LPP PW",
+      "LPP SA",
+      "2",
+      0.0811
+     ],
+     [
+      "AGN NA",
+      "Aegon NV",
+      "1,619",
+      0.0807
+     ],
+     [
+      "UNI IM",
+      "UNIPOL GRUPPO SPA",
+      "494",
+      0.0806
+     ],
+     [
+      "G1A GY",
+      "GEA GROUP AG",
+      "169",
+      0.0768
+     ],
+     [
+      "PZU PW",
+      "POWSZECHNY ZAKLAD UBEZPIECZE",
+      "745",
+      0.0768
+     ],
+     [
+      "SVT LN",
+      "SEVERN TRENT PLC",
+      "287",
+      0.0745
+     ],
+     [
+      "PEO PW",
+      "BANK PEKAO SA",
+      "198",
+      0.0741
+     ],
+     [
+      "IMI LN",
+      "IMI PLC",
+      "337",
+      0.0737
+     ],
+     [
+      "CNA LN",
+      "Centrica PLC",
+      "6,257",
+      0.0732
+     ],
+     [
+      "TEL NO",
+      "TELENOR ASA",
+      "905",
+      0.0729
+     ],
+     [
+      "KGF LN",
+      "KINGFISHER PLC",
+      "2,475",
+      0.0723
+     ],
+     [
+      "LI FP",
+      "KLEPIERRE",
+      "289",
+      0.072
+     ],
+     [
+      "OMV AV",
+      "OMV AG",
+      "160",
+      0.0718
+     ],
+     [
+      "TEN IM",
+      "TENARIS SA",
+      "443",
+      0.0716
+     ],
+     [
+      "BEI GY",
+      "Beiersdorf AG",
+      "131",
+      0.0696
+     ],
+     [
+      "CA FP",
+      "Carrefour SA",
+      "766",
+      0.0695
+     ],
+     [
+      "EDV LN",
+      "ENDEAVOUR MINING PLC",
+      "273",
+      0.0694
+     ],
+     [
+      "NHY NO",
+      "NORSK HYDRO ASA",
+      "1,755",
+      0.0691
+     ],
+     [
+      "QIA GY",
+      "QIAGEN NV",
+      "225",
+      0.0671
+     ],
+     [
+      "BKT SQ",
+      "Bankinter",
+      "724",
+      0.0659
+     ],
+     [
+      "MNG LN",
+      "M&G PLC",
+      "2,664",
+      0.0652
+     ],
+     [
+      "RXL FP",
+      "REXEL SA",
+      "301",
+      0.0648
+     ],
+     [
+      "TLX GY",
+      "Talanx AG",
+      "73",
+      0.0645
+     ],
+     [
+      "FGR FP",
+      "EIFFAGE",
+      "91",
+      0.0636
+     ],
+     [
+      "CON GY",
+      "Continental AG",
+      "140",
+      0.0634
+     ],
+     [
+      "HMB SS",
+      "Hennes & Mauritz AB",
+      "571",
+      0.061
+     ],
+     [
+      "FME GY",
+      "Fresenius Medical Care AG & Co KGaA",
+      "241",
+      0.0608
+     ],
+     [
+      "EVO SS",
+      "EVOLUTION AB",
+      "118",
+      0.0607
+     ],
+     [
+      "KGH PW",
+      "KGHM POLSKA MIEDZ SA",
+      "174",
+      0.0604
+     ],
+     [
+      "HSX LN",
+      "HISCOX LTD",
+      "386",
+      0.0599
+     ],
+     [
+      "DCC LN",
+      "DCC ENERGY PLC",
+      "117",
+      0.0596
+     ],
+     [
+      "ORK NO",
+      "ORKLA ASA",
+      "926",
+      0.0586
+     ],
+     [
+      "SCR FP",
+      "SCOR SE",
+      "249",
+      0.0585
+     ],
+     [
+      "HEN GY",
+      "Henkel AG & Co KGaA",
+      "111",
+      0.0572
+     ],
+     [
+      "EN FP",
+      "Bouygues SA",
+      "204",
+      0.0569
+     ],
+     [
+      "ABF LN",
+      "Associated British Foods PLC",
+      "348",
+      0.0556
+     ],
+     [
+      "KBX GY",
+      "KNORR-BREMSE AG",
+      "92",
+      0.0556
+     ],
+     [
+      "EXO NA",
+      "EXOR NV",
+      "118",
+      0.0548
+     ],
+     [
+      "WTB LN",
+      "WHITBREAD PLC",
+      "246",
+      0.054
+     ],
+     [
+      "MRO LN",
+      "MELROSE INDUSTRIES PLC",
+      "1,434",
+      0.0535
+     ],
+     [
+      "RBI AV",
+      "RAIFFEISEN BANK INTERNATIONA",
+      "140",
+      0.0535
+     ],
+     [
+      "DIM FP",
+      "SARTORIUS STEDIM BIOTECH",
+      "36",
+      0.0529
+     ],
+     [
+      "ICG LN",
+      "ICG PLC",
+      "368",
+      0.0518
+     ],
+     [
+      "RED SQ",
+      "REDEIA CORP SA",
+      "467",
+      0.0517
+     ],
+     [
+      "GAW LN",
+      "GAMES WORKSHOP GROUP PLC",
+      "40",
+      0.0515
+     ],
+     [
+      "AM FP",
+      "Dassault Aviation S.A.",
+      "26",
+      0.0512
+     ],
+     [
+      "STJ LN",
+      "ST JAMES'S PLACE PLC",
+      "616",
+      0.051
+     ],
+     [
+      "BNR GY",
+      "BRENNTAG SE",
+      "138",
+      0.0503
+     ],
+     [
+      "IG IM",
+      "Italgas",
+      "847",
+      0.0499
+     ],
+     [
+      "MAERSKB DC",
+      "AP MOLLER-MAERSK A/S-B",
+      "3",
+      0.0499
+     ],
+     [
+      "MAERSKA DC",
+      "A P Moller - Maersk A",
+      "3",
+      0.0492
+     ],
+     [
+      "EBP PW",
+      "ERSTE BANK POLSKA SA",
+      "42",
+      0.0489
+     ],
+     [
+      "SPX LN",
+      "SPIRAX-SARCO ENGINEERING PLC",
+      "83",
+      0.0483
+     ],
+     [
+      "YAR NO",
+      "YARA INTERNATIONAL ASA",
+      "208",
+      0.0476
+     ],
+     [
+      "SW FP",
+      "SODEXO SA",
+      "120",
+      0.0475
+     ],
+     [
+      "IDR SQ",
+      "INDRA SISTEMAS SA",
+      "138",
+      0.0473
+     ],
+     [
+      "GJF NO",
+      "GJENSIDIGE FORSIKRING ASA",
+      "273",
+      0.0467
+     ],
+     [
+      "TUB BB",
+      "FINANCIERE DE TUBIZE SA",
+      "30",
+      0.0467
+     ],
+     [
+      "MBK PW",
+      "MBANK SA",
+      "19",
+      0.0455
+     ],
+     [
+      "HAG GY",
+      "HENSOLDT AG",
+      "87",
+      0.0444
+     ],
+     [
+      "HOT GY",
+      "HOCHTIEF AG",
+      "20",
+      0.0444
+     ],
+     [
+      "JMT PL",
+      "JERONIMO MARTINS",
+      "345",
+      0.0444
+     ],
+     [
+      "G24 GY",
+      "SCOUT24 SE",
+      "79",
+      0.0432
+     ],
+     [
+      "UHR SE",
+      "Swatch Group AG/The",
+      "31",
+      0.0426
+     ],
+     [
+      "LHA GY",
+      "DEUTSCHE LUFTHANSA-REG",
+      "737",
+      0.0425
+     ],
+     [
+      "ZAL GY",
+      "Zalando SE",
+      "219",
+      0.0419
+     ],
+     [
+      "RNO FP",
+      "Renault SA",
+      "232",
+      0.0409
+     ],
+     [
+      "MRL SQ",
+      "Merlin Properties Socimi SA",
+      "557",
+      0.0404
+     ],
+     [
+      "GET FP",
+      "GETLINK SE",
+      "293",
+      0.0391
+     ],
+     [
+      "ELI BB",
+      "ELIA GROUP SA/NV",
+      "45",
+      0.0386
+     ],
+     [
+      "RYA ID",
+      "RYANAIR HOLDINGS PLC",
+      "230",
+      0.0379
+     ],
+     [
+      "BIM FP",
+      "BIOMERIEUX",
+      "61",
+      0.037
+     ],
+     [
+      "DNP PW",
+      "DINO POLSKA SA",
+      "670",
+      0.0362
+     ],
+     [
+      "SQN SE",
+      "SWISSQUOTE GROUP HOLDING SA",
+      "150",
+      0.0357
+     ],
+     [
+      "ADP FP",
+      "ADP",
+      "43",
+      0.0337
+     ],
+     [
+      "IPN FP",
+      "IPSEN",
+      "30",
+      0.033
+     ],
+     [
+      "EVD GY",
+      "CTS EVENTIM",
+      "80",
+      0.0329
+     ],
+     [
+      "ANA SQ",
+      "Acciona S.A.",
+      "26",
+      0.0317
+     ],
+     [
+      "GFC FP",
+      "Gecina SA",
+      "76",
+      0.0312
+     ],
+     [
+      "MAP SQ",
+      "Mapfre S.A.",
+      "1,073",
+      0.0284
+     ],
+     [
+      "MB IM",
+      "MEDIOBANCA SPA",
+      "157",
+      0.0267
+     ],
+     [
+      "AAK SS",
+      "AAK AB",
+      "267",
+      0.0266
+     ],
+     [
+      "ALO FP",
+      "ALSTOM",
+      "445",
+      0.0253
+     ],
+     [
+      "FRA GY",
+      "FRAPORT AG",
+      "54",
+      0.0233
+     ],
+     [
+      "NEM GY",
+      "NEMETSCHEK SE",
+      "66",
+      0.0229
+     ],
+     [
+      "AYV FP",
+      "AYVENS SA",
+      "361",
+      0.0222
+     ],
+     [
+      "EVK GY",
+      "Evonik Industries AG",
+      "176",
+      0.0214
+     ],
+     [
+      "CPR IM",
+      "DAVIDE CAMPARI-MILANO SPA",
+      "482",
+      0.021
+     ],
+     [
+      "JD/ LN",
+      "JD SPORTS FASHION PLC",
+      "3,025",
+      0.0205
+     ],
+     [
+      "COV FP",
+      "COVIVIO",
+      "65",
+      0.0185
+     ],
+     [
+      "BZU IM",
+      "BUZZI UNICEM SPA",
+      "59",
+      0.0165
+     ],
+     [
+      "RAA GY",
+      "RATIONAL AG",
+      "4",
+      0.0161
+     ],
+     [
+      "KGX GY",
+      "Kion Group GmbH",
+      "81",
+      0.016
+     ],
+     [
+      "WDP BB",
+      "WAREHOUSES DE PAUW CVA",
+      "119",
+      0.0148
+     ],
+     [
+      "CSG NA",
+      "CSG NV",
+      "191",
+      0.0112
+     ],
+     [
+      "BOL FP",
+      "BOLLORE",
+      "454",
+      0.0107
+     ]
+    ]
+   }
   },
   "00710B": {
    "name": "復華彭博非投等債(原簡稱:FH彭博非投等債)",
@@ -12304,61 +18974,1400 @@
    "market": "TWSE",
    "issuer": "富邦證券投資信託股份有限",
    "n": null,
-   "src": "CMONEY",
-   "asof": "2026/11/04",
+   "src": "FUBON",
+   "asof": "2026-11-24",
    "items": [
     [
      "STRC",
      "STRATEGY INC 10 PERP A.",
-     6.742
-    ],
-    [
-     "BA A",
-     "BOEING CO/THE 6 2027/10/15",
-     4.5451
-    ],
-    [
-     "GOOGN",
-     "ALPHABET INC 6.25 2029/5/15 B",
-     4.467
+     6.9531,
+     34108
     ],
     [
      "GOOGM",
      "ALPHABET INC 6.25 2029/5/15 A",
-     4.4627
+     4.6238,
+     53591
     ],
     [
-     "ORCL D",
+     "GOOGN",
+     "ALPHABET INC 6.25 2029/5/15 B",
+     4.6082,
+     53591
+    ],
+    [
+     "ORCL",
      "ORACLE CORP 6.5 2029/1/15 D",
-     2.7977
+     2.6935,
+     35627
     ],
     [
      "SMCIP",
      "SUPER MICRO COMPUTER INC 7 2029/6/1",
-     2.7097
-    ],
-    [
-     "HPE C",
-     "HP ENTERPRISE CO 7.625 2027/9/1",
-     2.6541
-    ],
-    [
-     "C N",
-     "CITIGROUP CAPITAL XIII 12.02159 2040/10/30",
-     1.6864
-    ],
-    [
-     "ALB A",
-     "ALBEMARLE CORP 7.25 2027/3/1",
-     1.3565
+     2.2151,
+     26526
     ],
     [
      "MCHPP",
      "MICROCHIP TECHNOLOGY INC 7.5 2028/3/15",
-     1.3099
+     1.0903,
+     10296
+    ],
+    [
+     "STRF",
+     "MICROSTRATEGY INC 10 PERP",
+     0.7051,
+     3531
+    ],
+    [
+     "SATA",
+     "STRIVE INC 12 PERP A",
+     0.6688,
+     3586
+    ],
+    [
+     "ARES",
+     "ARES MANAGEMENT CORP 6.75 2027/10/1 B",
+     0.5266,
+     5954
+    ],
+    [
+     "SCHW",
+     "CHARLES SCHWAB CORP 5.95 PERP D",
+     0.4921,
+     11587
+    ],
+    [
+     "STRK",
+     "MICROSTRATEGY INC 8 PERP",
+     0.4546,
+     3591
+    ],
+    [
+     "CHSCO",
+     "CHS INC 7.875 PERP 1",
+     0.443,
+     8974
+    ],
+    [
+     "STRD",
+     "MICROSTRATEGY INC 10 PERP A",
+     0.4377,
+     3456
+    ],
+    [
+     "BANC",
+     "BANC OF CALIFORNIA INC 7.75 PERP F",
+     0.4301,
+     8345
+    ],
+    [
+     "AGNCP",
+     "AGNC INVESTMENT CORP 6.125 PERP F",
+     0.4271,
+     8438
+    ],
+    [
+     "CHSCL",
+     "CHS INC 7.5 PERP 4",
+     0.4071,
+     8421
+    ],
+    [
+     "FITB",
+     "FIFTH THIRD BANCORP 7.67122 PERP I",
+     0.3742,
+     7133
+    ],
+    [
+     "AGNCO",
+     "AGNC INVESTMENT CORP 6.5 PERP E",
+     0.3439,
+     6641
+    ],
+    [
+     "RITM",
+     "RITHM CAPITAL CORP 7 PERP D",
+     0.3435,
+     6726
+    ],
+    [
+     "CHSCM",
+     "CHS INC 6.75 PERP 3",
+     0.3349,
+     7658
+    ],
+    [
+     "RITM",
+     "RITHM CAPITAL CORP 6.375 PERP C",
+     0.3181,
+     7022
+    ],
+    [
+     "HBANL",
+     "HUNTINGTON BANCSHARES 6.875 PERP J",
+     0.3045,
+     5908
+    ],
+    [
+     "LILAP",
+     "LIBERTY LATIN AMERICAN 9 PERP A",
+     0.2887,
+     7204
+    ],
+    [
+     "CHSCN",
+     "CHS INC 7.1 PERP 2",
+     0.2852,
+     6358
+    ],
+    [
+     "SCHW",
+     "CHARLES SCHWAB CORP 4.45 PERP J",
+     0.2806,
+     8792
+    ],
+    [
+     "AGNCN",
+     "AGNC INVESTMENT CORP 10.76648 PERP C",
+     0.2725,
+     5227
+    ],
+    [
+     "HBANP",
+     "HUNTINGTON BANCSHARES 4.5 PERP H",
+     0.2603,
+     8216
+    ],
+    [
+     "CHSCP",
+     "CHS INC 8 PERP",
+     0.2546,
+     4878
+    ],
+    [
+     "VOYA",
+     "VOYA FINANCIAL INC 5.35 PERP B",
+     0.2463,
+     5055
+    ],
+    [
+     "FOUR",
+     "SHIFT4 PAYMENTS INC 6 2028/5/1",
+     0.2438,
+     2164
+    ],
+    [
+     "ACGLO",
+     "ARCH CAPITAL GROUP LTD 5.45 PERP F",
+     0.2422,
+     6601
+    ],
+    [
+     "FCNCP",
+     "FIRST CITIZENS BANCSHARE 5.375 PERP A",
+     0.2397,
+     6685
+    ],
+    [
+     "KREF",
+     "KKR REAL ESTATE FIN 6.5 PERP A",
+     0.2397,
+     6294
+    ],
+    [
+     "NTRSO",
+     "NORTHERN TRUST CORP 4.7 PERP E",
+     0.2395,
+     6737
+    ],
+    [
+     "RITM",
+     "RITHM CAPITAL CORP 7.125 PERP B",
+     0.2271,
+     4724
+    ],
+    [
+     "ACGLN",
+     "ARCH CAPITAL GROUP LTD 4.55 PERP G",
+     0.2263,
+     7374
+    ],
+    [
+     "LANDP",
+     "GLADSTONE LAND CORP 6 PERP C",
+     0.2116,
+     5416
+    ],
+    [
+     "DHCNI",
+     "DIVERSIFIED HEALTHCARE T 5.625 2042/8/1",
+     0.2012,
+     5680
+    ],
+    [
+     "BHFAO",
+     "BRIGHTHOUSE FINANCIAL IN 6.75 PERP B",
+     0.1993,
+     8344
+    ],
+    [
+     "AGNCM",
+     "AGNC INVESTMENT CORP 6.875 PERP D",
+     0.1956,
+     3975
+    ],
+    [
+     "FBRT",
+     "FRANKLIN BSP REALTY TRST 7.5 PERP E",
+     0.1927,
+     5793
+    ],
+    [
+     "BHFAN",
+     "BRIGHTHOUSE FINANCIAL IN 5.375 PERP C",
+     0.1917,
+     9763
+    ],
+    [
+     "BHFAP",
+     "BRIGHTHOUSE FINANCIAL IN 6.6 PERP A",
+     0.1772,
+     7589
+    ],
+    [
+     "OZKAP",
+     "BANK OZK 4.625 PERP A",
+     0.1764,
+     5940
+    ],
+    [
+     "FITB",
+     "FIFTH THIRD BANCORP 6 PERP A",
+     0.176,
+     4109
+    ],
+    [
+     "FITB",
+     "FIFTH THIRD BANCORP 4.95 PERP K",
+     0.1751,
+     5049
+    ],
+    [
+     "FCNCO",
+     "FIRST CITIZENS BANCSHARE 5.625 PERP C",
+     0.1727,
+     4743
+    ],
+    [
+     "WAFDP",
+     "WAFD INC 4.875 PERP A",
+     0.1676,
+     5975
+    ],
+    [
+     "BHFAM",
+     "BRIGHTHOUSE FINANCIAL IN 4.625 PERP D",
+     0.1577,
+     8627
+    ],
+    [
+     "AGNCL",
+     "AGNC INVESTMENT CORP 7.75 PERP G",
+     0.1516,
+     3153
+    ],
+    [
+     "LANDO",
+     "GLADSTONE LAND CORP 6 PERP B",
+     0.1512,
+     3876
+    ],
+    [
+     "RITM",
+     "RITHM CAPITAL CORP 7.5 PERP A",
+     0.136,
+     2762
+    ],
+    [
+     "WTFCN",
+     "WINTRUST FINANCIAL CORP 7.875 PERP F",
+     0.0938,
+     1781
+    ],
+    [
+     "FITB",
+     "FIFTH THIRD BANCORP 6.875 PERP",
+     0.0843,
+     1606
+    ],
+    [
+     "CHAD",
+     "DEFI DEVELOPMENT CORP 13 PERP C",
+     0.0655,
+     3145
+    ],
+    [
+     "PNFP",
+     "PINNACLE FINANCL PARTNRS 8.397 PERP B",
+     0.0644,
+     1223
+    ],
+    [
+     "AGNCZ",
+     "AGNC INVESTMENT CORP 8.75 PERP H",
+     0.0581,
+     1196
+    ],
+    [
+     "RITM",
+     "RITHM CAPITAL CORP 8.75 PERP E",
+     0.0555,
+     1259
+    ],
+    [
+     "VLYPN",
+     "VALLEY NATIONAL BANCORP 8.25 PERP C",
+     0.0478,
+     921
+    ],
+    [
+     "MBINL",
+     "MERCHANTS BANCORP 7.625 PERP",
+     0.0405,
+     898
+    ],
+    [
+     "UMBFO",
+     "UMB FINANCIAL CORP 7.75 PERP",
+     0.0382,
+     728
+    ],
+    [
+     "BMNP",
+     "BITMINE IMMERSION TECH 9.5 PERP A",
+     0.0379,
+     194
+    ],
+    [
+     "ADAMM",
+     "ADAMAS TRUST INC 11.2827202441406 PERP E",
+     0.0277,
+     636
+    ],
+    [
+     "BUSEP",
+     "FIRST BUSEY CORPORATION 8.25 PERP B",
+     0.0273,
+     522
+    ],
+    [
+     "FCNCN",
+     "FIRST CITIZENS BANCSHARE 6.625 PERP E",
+     0.0202,
+     438
+    ],
+    [
+     "IIPR",
+     "INNOVATIVE INDUSTRIAL 9 PERP A",
+     0.0096,
+     208
+    ],
+    [
+     "TRTN",
+     "TRITON INTERNATIONAL LTD 7.625 PERP",
+     0.0058,
+     138
+    ],
+    [
+     "RITM",
+     "RITHM CAPITAL CORP 8.75 PERP F",
+     0.0032,
+     74
+    ],
+    [
+     "PNFP",
+     "PINNACLE FINANCL PARTNRS 6.75 PERP C",
+     0.0029,
+     67
+    ],
+    [
+     "TRTN",
+     "TRITON INTERNATIONAL LTD 7.5 PERP G",
+     0.0021,
+     52
     ]
    ],
-   "n_listed": 10
+   "n_listed": 70,
+   "fees_official": {
+    "source": "富邦投信 Assets.aspx 官方直出（完整持股）",
+    "aum_twd": null,
+    "semantics": "部分揭露 70 筆合計 36.26%"
+   },
+   "extra": {
+    "futures": [
+     [
+      "BA A",
+      "BOEING CO/THE 6 2027/10/15",
+      "41,273",
+      4.5154
+     ],
+     [
+      "HPE C",
+      "HP ENTERPRISE CO 7.625 2027/9/1",
+      "10,488",
+      2.2513
+     ],
+     [
+      "C N",
+      "CITIGROUP CAPITAL XIII 12.02159 2040/10/30",
+      "32,482",
+      1.788
+     ],
+     [
+      "ALB A",
+      "ALBEMARLE CORP 7.25 2027/3/1",
+      "16,263",
+      1.2404
+     ],
+     [
+      "JPM C",
+      "JPMORGAN CHASE & CO 6 PERP EE",
+      "25,388",
+      1.155
+     ],
+     [
+      "KKR D",
+      "KKR & CO INC 6.25 2028/3/1 D",
+      "12,878",
+      1.0633
+     ],
+     [
+      "WFC Z",
+      "WELLS FARGO & COMPANY 4.75 PERP Z",
+      "29,442",
+      1.0411
+     ],
+     [
+      "JPM M",
+      "JPMORGAN CHASE & CO 4.2 PERP MM",
+      "28,888",
+      0.9245
+     ],
+     [
+      "JPM L",
+      "JPMORGAN CHASE & CO 4.625 PERP LL",
+      "25,977",
+      0.8974
+     ],
+     [
+      "JPM D",
+      "JPMORGAN CHASE & CO 5.75 PERP DD",
+      "19,310",
+      0.8286
+     ],
+     [
+      "BAC B",
+      "BANK OF AMERICA CORP 6 PERP GG",
+      "18,711",
+      0.8282
+     ],
+     [
+      "BAC M",
+      "BANK OF AMERICA CORP 5.375 PERP KK",
+      "20,417",
+      0.8122
+     ],
+     [
+      "COF I",
+      "CAPITAL ONE FINANCIAL CO 5 PERP I",
+      "22,389",
+      0.7609
+     ],
+     [
+      "PCG X",
+      "PG&E CORP 6 2027/12/1 A",
+      "10,410",
+      0.7596
+     ],
+     [
+      "GS D",
+      "GOLDMAN SACHS GROUP INC 6.30069 PERP D",
+      "20,273",
+      0.7359
+     ],
+     [
+      "MS Q",
+      "MORGAN STANLEY 6.625 PERP Q",
+      "14,981",
+      0.7262
+     ],
+     [
+      "JPM K",
+      "JPMORGAN CHASE & CO 4.55 PERP JJ",
+      "21,174",
+      0.7222
+     ],
+     [
+      "MS I",
+      "MORGAN STANLEY 6.375 PERP I",
+      "15,261",
+      0.7022
+     ],
+     [
+      "BAC N",
+      "BANK OF AMERICA CORP 5 PERP LL",
+      "18,856",
+      0.7021
+     ],
+     [
+      "MS E",
+      "MORGAN STANLEY 7.125 PERP E",
+      "13,337",
+      0.6874
+     ],
+     [
+      "MS P",
+      "MORGAN STANLEY 6.5 PERP P",
+      "14,340",
+      0.673
+     ],
+     [
+      "T C",
+      "AT&T INC 4.75 PERP C",
+      "20,053",
+      0.656
+     ],
+     [
+      "ALL H",
+      "ALLSTATE CORP 5.1 PERP H",
+      "16,804",
+      0.6387
+     ],
+     [
+      "DUK A",
+      "DUKE ENERGY CORP 5.75 PERP A",
+      "14,711",
+      0.6318
+     ],
+     [
+      "MS F",
+      "MORGAN STANLEY 6.875 PERP F",
+      "12,854",
+      0.6317
+     ],
+     [
+      "MS K",
+      "MORGAN STANLEY 5.85 PERP K",
+      "14,889",
+      0.6274
+     ],
+     [
+      "T A",
+      "AT&T INC 5 PERP A",
+      "17,552",
+      0.61
+     ],
+     [
+      "BAC Q",
+      "BANK OF AMERICA CORP 4.25 PERP QQ",
+      "19,183",
+      0.6043
+     ],
+     [
+      "WFC A",
+      "WELLS FARGO & COMPANY 4.7 PERP AA",
+      "17,393",
+      0.602
+     ],
+     [
+      "ATH A",
+      "ATHENE HOLDING LTD 6.35 PERP A",
+      "12,848",
+      0.5992
+     ],
+     [
+      "WFC D",
+      "WELLS FARGO & COMPANY 4.25 PERP DD",
+      "18,894",
+      0.5932
+     ],
+     [
+      "BAC K",
+      "BANK OF AMERICA CORP 5.875 PERP HH",
+      "13,454",
+      0.5868
+     ],
+     [
+      "MS O",
+      "MORGAN STANLEY 4.25 PERP O",
+      "17,351",
+      0.543
+     ],
+     [
+      "BAC O",
+      "BANK OF AMERICA CORP 4.375 PERP NN",
+      "16,854",
+      0.5425
+     ],
+     [
+      "COF J",
+      "CAPITAL ONE FINANCIAL CO 4.8 PERP J",
+      "16,517",
+      0.5424
+     ],
+     [
+      "WFC C",
+      "WELLS FARGO & COMPANY 4.375 PERP CC",
+      "16,711",
+      0.539
+     ],
+     [
+      "MET E",
+      "METLIFE INC 5.625 PERP E",
+      "12,786",
+      0.5379
+     ],
+     [
+      "MTB J",
+      "M&T BANK CORPORATION 7.5 PERP J",
+      "9,933",
+      0.5264
+     ],
+     [
+      "USB H",
+      "US BANCORP 6.25548 PERP B*",
+      "15,223",
+      0.5243
+     ],
+     [
+      "KEY L",
+      "KEYCORP 6.2 PERP",
+      "9,951",
+      0.5137
+     ],
+     [
+      "TFC R",
+      "TRUIST FINANCIAL CORP 4.75 PERP R",
+      "14,823",
+      0.4929
+     ],
+     [
+      "MET F",
+      "METLIFE INC 4.75 PERP F",
+      "13,766",
+      0.4916
+     ],
+     [
+      "MS A",
+      "MORGAN STANLEY 6.35548 PERP A",
+      "13,166",
+      0.4754
+     ],
+     [
+      "WFC Y",
+      "WELLS FARGO & COMPANY 5.625 PERP Y",
+      "11,014",
+      0.4648
+     ],
+     [
+      "ALL J",
+      "ALLSTATE CORP 7.375 PERP J",
+      "8,691",
+      0.4593
+     ],
+     [
+      "GS A",
+      "GOLDMAN SACHS GROUP INC 6.38069 PERP A",
+      "12,530",
+      0.4558
+     ],
+     [
+      "JPM J",
+      "JPMORGAN CHASE & CO 4.75 PERP GG",
+      "12,659",
+      0.4481
+     ],
+     [
+      "ALL B",
+      "ALLSTATE CORP 8.82048 2053/1/15",
+      "8,190",
+      0.4344
+     ],
+     [
+      "RF C",
+      "REGIONS FINANCIAL CORP 5.7 PERP C",
+      "8,266",
+      0.4091
+     ],
+     [
+      "JXN A",
+      "JACKSON FINANCIAL INC 8 PERP",
+      "7,797",
+      0.4056
+     ],
+     [
+      "EQH A",
+      "EQUITABLE HOLDINGS INC 5.25 PERP A",
+      "11,029",
+      0.3978
+     ],
+     [
+      "TDS V",
+      "TELEPHONE & DATA SYS 6 PERP VV",
+      "11,740",
+      0.3953
+     ],
+     [
+      "SCE M",
+      "SCE TRUST VII 7.5 PERP M",
+      "8,952",
+      0.3901
+     ],
+     [
+      "BAC P",
+      "BANK OF AMERICA CORP 4.125 PERP PP",
+      "12,706",
+      0.387
+     ],
+     [
+      "SYF A",
+      "SYNCHRONY FINANCIAL 5.625 PERP A",
+      "11,201",
+      0.3869
+     ],
+     [
+      "NLY F",
+      "ANNALY CAPITAL MGMT 9.54036998535156 PERP F",
+      "7,178",
+      0.3801
+     ],
+     [
+      "KEY I",
+      "KEYCORP 6.125 PERP E",
+      "7,038",
+      0.3712
+     ],
+     [
+      "ATH E",
+      "ATHENE HOLDING LTD 7.75 PERP E",
+      "7,232",
+      0.3668
+     ],
+     [
+      "RF F",
+      "REGIONS FINANCIAL CORP 6.95 PERP",
+      "7,107",
+      0.3654
+     ],
+     [
+      "USB R",
+      "US BANCORP 4 PERP M",
+      "12,496",
+      0.3619
+     ],
+     [
+      "SYF B",
+      "SYNCHRONY FINANCIAL 8.25 PERP B",
+      "6,973",
+      0.3592
+     ],
+     [
+      "USB P",
+      "US BANCORP 5.5 PERP K",
+      "8,823",
+      0.3561
+     ],
+     [
+      "NLY G",
+      "ANNALY CAPITAL MGMT 9.82843 PERP G",
+      "6,641",
+      0.3454
+     ],
+     [
+      "MET A",
+      "METLIFE INC 6.67104 PERP A",
+      "8,773",
+      0.3453
+     ],
+     [
+      "AXS E",
+      "AXIS CAPITAL HLDGS LTD 5.5 PERP E",
+      "9,430",
+      0.3289
+     ],
+     [
+      "LNC D",
+      "LINCOLN NATIONAL CORP 9 PERP D",
+      "6,094",
+      0.3254
+     ],
+     [
+      "BAC S",
+      "BANK OF AMERICA CORP 4.75 PERP SS",
+      "9,187",
+      0.3212
+     ],
+     [
+      "COF L",
+      "CAPITAL ONE FINANCIAL CO 4.375 PERP L",
+      "10,410",
+      0.3108
+     ],
+     [
+      "C R",
+      "CITIGROUP INC 6.25 PERP II",
+      "6,676",
+      0.3104
+     ],
+     [
+      "MS L",
+      "MORGAN STANLEY 4.875 PERP L",
+      "8,474",
+      0.3003
+     ],
+     [
+      "CFG H",
+      "CITIZENS FINANCIAL GROUP 7.375 PERP",
+      "5,875",
+      0.2968
+     ],
+     [
+      "PSA P",
+      "PUBLIC STORAGE 4 PERP P",
+      "10,221",
+      0.2955
+     ],
+     [
+      "STT G",
+      "STATE STREET CORP 5.35 PERP G",
+      "7,469",
+      0.2941
+     ],
+     [
+      "TFC O",
+      "TRUIST FINANCIAL CORP 5.25 PERP O",
+      "7,832",
+      0.289
+     ],
+     [
+      "ATH D",
+      "ATHENE HOLDING LTD 4.875 PERP D",
+      "9,986",
+      0.2862
+     ],
+     [
+      "RLJ A",
+      "RLJ LODGING TRUST 1.95 PERP A",
+      "5,741",
+      0.2821
+     ],
+     [
+      "KEY K",
+      "KEYCORP 5.625 PERP G",
+      "7,007",
+      0.2739
+     ],
+     [
+      "SCE N",
+      "SCE TRUST VIII 6.95 PERP N",
+      "6,649",
+      0.2717
+     ],
+     [
+      "BML L",
+      "BANK OF AMERICA CORP 6.12854 PERP 5",
+      "7,281",
+      0.2662
+     ],
+     [
+      "KEY J",
+      "KEYCORP 5.65 PERP F",
+      "6,766",
+      0.2633
+     ],
+     [
+      "CFG E",
+      "CITIZENS FINANCIAL GROUP 5 PERP E",
+      "7,363",
+      0.2602
+     ],
+     [
+      "PSA L",
+      "PUBLIC STORAGE 4.625 PERP L",
+      "7,712",
+      0.2571
+     ],
+     [
+      "WAL A",
+      "WESTERN ALLIANCE BANCORP 4.25 PERP A",
+      "5,060",
+      0.2478
+     ],
+     [
+      "PBI B",
+      "PITNEY BOWES INC 6.7 2043/3/7",
+      "6,027",
+      0.2439
+     ],
+     [
+      "MTB H",
+      "M&T BANK CORPORATION 5.625 PERP H",
+      "4,617",
+      0.2435
+     ],
+     [
+      "HIG G",
+      "HARTFORD FINL SVCS GRP 6 PERP G",
+      "5,518",
+      0.2427
+     ],
+     [
+      "USB S",
+      "US BANCORP 4.5 PERP O",
+      "7,469",
+      0.2407
+     ],
+     [
+      "DLR L",
+      "DIGITAL REALTY TRUST INC 5.2 PERP L",
+      "6,786",
+      0.2399
+     ],
+     [
+      "TDS U",
+      "TELEPHONE & DATA SYS 6.625 PERP UU",
+      "6,397",
+      0.2363
+     ],
+     [
+      "RNR G",
+      "RENAISSANCERE HOLDINGS L 4.2 PERP G",
+      "8,046",
+      0.2321
+     ],
+     [
+      "USB Q",
+      "US BANCORP 3.75 PERP L",
+      "8,371",
+      0.231
+     ],
+     [
+      "PSA I",
+      "PUBLIC STORAGE 4.875 PERP I",
+      "6,519",
+      0.2293
+     ],
+     [
+      "SCE L",
+      "SCE TRUST VI 5 PERP",
+      "7,535",
+      0.2293
+     ],
+     [
+      "RF E",
+      "REGIONS FINANCIAL CORP 4.45 PERP E",
+      "7,350",
+      0.2289
+     ],
+     [
+      "PSA G",
+      "PUBLIC STORAGE 5.05 PERP G",
+      "6,258",
+      0.2274
+     ],
+     [
+      "FLG A",
+      "FLAGSTAR FINANCIAL INC 6.375 PERP A.",
+      "4,687",
+      0.2237
+     ],
+     [
+      "UMH D",
+      "UMH PROPERTIES INC 6.375 PERP D",
+      "5,353",
+      0.2228
+     ],
+     [
+      "HPP C",
+      "HUDSON PACIFIC PROPERTIE 4.75 PERP C",
+      "7,870",
+      0.2202
+     ],
+     [
+      "PSA F",
+      "PUBLIC STORAGE 5.15 PERP F",
+      "5,886",
+      0.2183
+     ],
+     [
+      "PSA H",
+      "PUBLIC STORAGE 5.6 PERP H",
+      "5,249",
+      0.2119
+     ],
+     [
+      "COF N",
+      "CAPITAL ONE FINANCIAL CO 4.25 PERP N",
+      "7,277",
+      0.2116
+     ],
+     [
+      "AHL D",
+      "ASPEN INSURANCE HLDG LTD 5.625 PERP *",
+      "5,707",
+      0.2072
+     ],
+     [
+      "CIM B",
+      "CHIMERA INVESTMENT CORP 8 PERP B",
+      "5,336",
+      0.2046
+     ],
+     [
+      "SF C",
+      "STIFEL FINANCIAL CORP 6.125 PERP C",
+      "4,994",
+      0.2024
+     ],
+     [
+      "ATH B",
+      "ATHENE HOLDING LTD 5.625 PERP B",
+      "6,085",
+      0.2021
+     ],
+     [
+      "PSA R",
+      "PUBLIC STORAGE 4 PERP R",
+      "6,955",
+      0.2014
+     ],
+     [
+      "MFA C",
+      "MFA FINANCIAL INC 6.5 PERP C",
+      "5,064",
+      0.2009
+     ],
+     [
+      "BML H",
+      "BANK OF AMERICA CORP 6.29819 PERP 02",
+      "5,632",
+      0.1999
+     ],
+     [
+      "ALL I",
+      "ALLSTATE CORP 4.75 PERP I",
+      "5,629",
+      0.199
+     ],
+     [
+      "SLG I",
+      "SL GREEN REALTY CORP 6.5 PERP I",
+      "4,536",
+      0.1987
+     ],
+     [
+      "BAC E",
+      "BANK OF AMERICA CORP 5.99133 PERP E",
+      "5,699",
+      0.1986
+     ],
+     [
+      "VNO M",
+      "VORNADO REALTY TRUST 5.25 PERP M",
+      "6,037",
+      0.1954
+     ],
+     [
+      "VNO L",
+      "VORNADO REALTY TRUST 5.4 PERP L",
+      "5,868",
+      0.1927
+     ],
+     [
+      "RNR F",
+      "RENAISSANCERE HOLDINGS L 5.75 PERP F",
+      "4,796",
+      0.1885
+     ],
+     [
+      "MTB L",
+      "M&T BANK CORPORATION 6.625 PERP L",
+      "4,193",
+      0.1881
+     ],
+     [
+      "EQH C",
+      "EQUITABLE HOLDINGS INC 4.3 PERP C",
+      "6,129",
+      0.1854
+     ],
+     [
+      "KIM L",
+      "KIMCO REALTY CORP 5.125 PERP L",
+      "4,811",
+      0.1841
+     ],
+     [
+      "SF D",
+      "STIFEL FINANCIAL CORP 4.5 PERP D",
+      "5,950",
+      0.1841
+     ],
+     [
+      "KIM M",
+      "KIMCO REALTY CORP 5.25 PERP M",
+      "4,712",
+      0.1828
+     ],
+     [
+      "VNO N",
+      "VORNADO REALTY TRUST 5.25 PERP N",
+      "5,667",
+      0.1819
+     ],
+     [
+      "BML J",
+      "BANK OF AMERICA CORP 6.39819 PERP 4",
+      "4,778",
+      0.1795
+     ],
+     [
+      "PSA J",
+      "PUBLIC STORAGE 4.7 PERP J",
+      "5,226",
+      0.1775
+     ],
+     [
+      "JSM",
+      "Navient LLC 6.0% Sr Notes",
+      "5,743",
+      0.1766
+     ],
+     [
+      "DLR K",
+      "DIGITAL REALTY TRUST INC 5.85 PERP K",
+      "4,396",
+      0.1764
+     ],
+     [
+      "IVR C",
+      "INVESCO MORTGAGE CAPITAL 7.5 PERP C",
+      "3,678",
+      0.1732
+     ],
+     [
+      "VNO O",
+      "VORNADO REALTY TRUST 4.45 PERP O",
+      "6,145",
+      0.1668
+     ],
+     [
+      "ARR C",
+      "ARMOUR RESIDENTIAL REIT 7 PERP C",
+      "4,455",
+      0.1636
+     ],
+     [
+      "AHL E",
+      "ASPEN INSURANCE HLDG LTD 5.625 PERP **",
+      "4,476",
+      0.162
+     ],
+     [
+      "SCE G",
+      "SCE TRUST II 5.1 PERP",
+      "5,016",
+      0.1557
+     ],
+     [
+      "CIM C",
+      "CHIMERA INVESTMENT CORP 7.75 PERP C",
+      "4,378",
+      0.1531
+     ],
+     [
+      "PMT C",
+      "PENNYMAC MTGE INVESTMENT 6.75 PERP C",
+      "4,732",
+      0.152
+     ],
+     [
+      "MFA B",
+      "MFA FINANCIAL INC 7.5 PERP B",
+      "4,523",
+      0.1516
+     ],
+     [
+      "PMT B",
+      "PENNYMAC MTGE INVESTMENT 8 PERP B",
+      "4,086",
+      0.1512
+     ],
+     [
+      "CIM D",
+      "CHIMERA INVESTMENT CORP 8 PERP D",
+      "3,961",
+      0.1502
+     ],
+     [
+      "PSA S",
+      "PUBLIC STORAGE 4.1 PERP S",
+      "5,093",
+      0.1502
+     ],
+     [
+      "PSA N",
+      "PUBLIC STORAGE 3.875 PERP N",
+      "5,300",
+      0.1485
+     ],
+     [
+      "DLR J",
+      "DIGITAL REALTY TRUST INC 5.25 PERP J",
+      "4,108",
+      0.1482
+     ],
+     [
+      "CMS C",
+      "CMS ENERGY CORP 4.2 PERP C",
+      "4,521",
+      0.1434
+     ],
+     [
+      "GS C",
+      "GOLDMAN SACHS GROUP INC 6.37765003112793 PERP C",
+      "3,862",
+      0.1425
+     ],
+     [
+      "BNY K",
+      "BANK OF NY MELLON CORP 6.15 PERP K",
+      "2,754",
+      0.1393
+     ],
+     [
+      "AUB A",
+      "ATLANTIC UNION BANKSHARE 6.875 PERP A",
+      "3,142",
+      0.1377
+     ],
+     [
+      "ADC A",
+      "AGREE REALTY CORP 4.25 PERP A",
+      "4,264",
+      0.1362
+     ],
+     [
+      "MTB K",
+      "M&T BANK CORPORATION 6.35 PERP K",
+      "2,981",
+      0.1305
+     ],
+     [
+      "BOH B",
+      "BANK OF HAWAII CORP 8 PERP",
+      "2,400",
+      0.1281
+     ],
+     [
+      "FHN H",
+      "FIRST HORIZON CORP 6.75 PERP H",
+      "2,805",
+      0.1264
+     ],
+     [
+      "PSA O",
+      "PUBLIC STORAGE 3.9 PERP O",
+      "4,450",
+      0.1258
+     ],
+     [
+      "QXO B",
+      "QXO INC 5.5 2028/5/15",
+      "1,536",
+      0.1072
+     ],
+     [
+      "CIM A",
+      "CHIMERA INVESTMENT CORP 8 PERP A",
+      "3,137",
+      0.1037
+     ],
+     [
+      "PSA T",
+      "PUBLIC STORAGE 6 PERP T",
+      "2,314",
+      0.1032
+     ],
+     [
+      "CFG I",
+      "CITIZENS FINANCIAL GROUP 6.5 PERP I",
+      "1,387",
+      0.0695
+     ],
+     [
+      "ABR D",
+      "ARBOR REALTY TRUST INC 6.375 PERP D",
+      "5,800",
+      0.0653
+     ],
+     [
+      "NLY J",
+      "ANNALY CAPITAL MGMT 8.875 PERP J",
+      "953",
+      0.0497
+     ],
+     [
+      "AHL F",
+      "ASPEN INSURANCE HLDG LTD 7 PERP",
+      "879",
+      0.039
+     ],
+     [
+      "PSA K",
+      "PUBLIC STORAGE 4.75 PERP K",
+      "797",
+      0.0272
+     ],
+     [
+      "BW A",
+      "BABCOCK & WILCOX ENTERPR 7.75 PERP A",
+      "665",
+      0.0248
+     ],
+     [
+      "TFC I",
+      "TRUIST FIN CORP 4 PERP I",
+      "598",
+      0.0207
+     ],
+     [
+      "WHR A",
+      "WHIRLPOOL CORP 8.5 2029/2/15 A",
+      "337",
+      0.0168
+     ],
+     [
+      "LOB A",
+      "LIVE OAK BANCSHARES 8.375 PERP A",
+      "347",
+      0.0165
+     ],
+     [
+      "ANG D",
+      "AMERICAN NATIONAL GROUP 7.375 PERP .",
+      "275",
+      0.0118
+     ],
+     [
+      "BFH B",
+      "BREAD FINANCIAL HLDGS 8.875 PERP B",
+      "198",
+      0.0087
+     ]
+    ]
+   }
   },
   "00728": {
    "name": "第一金工業30",
@@ -19554,62 +27563,302 @@
    "name": "富邦基因免疫生技",
    "market": "TWSE",
    "issuer": "富邦證券投資信託股份有限",
-   "n": null,
-   "src": "CMONEY",
-   "asof": "2026/11/04",
+   "n": 38,
+   "src": "FUBON",
+   "asof": "2026-11-24",
    "items": [
     [
-     "MRNA US",
+     "MRNA",
      "MODERNA INC",
-     14.3608
+     13.8646,
+     29860
     ],
     [
-     "GMAB DC",
+     "GMAB",
      "GENMAB A/S",
-     5.753
+     6.522,
+     5749
     ],
     [
-     "TWST US",
+     "TWST",
      "TWIST BIOSCIENCE CORP",
-     5.4312
+     4.5501,
+     20465
     ],
     [
-     "REGN US",
+     "REGN",
      "REGENERON PHARMACEUTICALS INC",
-     3.8613
+     4.4929,
+     2229
     ],
     [
-     "BAYN GY",
-     "Bayer AG",
-     3.8429
-    ],
-    [
-     "EXEL US",
-     "EXELIXIS INC",
-     3.6399
-    ],
-    [
-     "4502 JP",
+     "4502",
      "Takeda Pharmaceutical Co Ltd",
-     3.5759
+     4.1662,
+     46050
     ],
     [
-     "RVMD US",
+     "BAYN",
+     "Bayer AG",
+     3.9265,
+     33892
+    ],
+    [
+     "EXEL",
+     "EXELIXIS INC",
+     3.7023,
+     26880
+    ],
+    [
+     "VRTX",
+     "VERTEX PHARMACEUTICALS INC",
+     3.6504,
+     3170
+    ],
+    [
+     "RVMD",
      "REVOLUTION MEDICINES INC",
-     3.5286
+     3.512,
+     9493
     ],
     [
-     "CAI US",
-     "CARIS LIFE SCIENCES INC",
-     3.3681
+     "INCY",
+     "INCYTE CORP",
+     3.4924,
+     13836
     ],
     [
-     "MRK US",
-     "MERCK & CO INC",
-     3.2822
+     "BNTX",
+     "BIONTECH SE",
+     2.9334,
+     16083
+    ],
+    [
+     "IOVA",
+     "IOVANCE BIOTHERAPEUTICS INC",
+     2.5827,
+     172551
+    ],
+    [
+     "ABCL",
+     "ABCELLERA BIOLOGICS INC",
+     2.3325,
+     104317
+    ],
+    [
+     "IDYA",
+     "IDEAYA BIOSCIENCES INC",
+     2.2246,
+     36954
+    ],
+    [
+     "IBRX",
+     "IMMUNITYBIO INC",
+     2.0498,
+     167306
+    ],
+    [
+     "4528",
+     "ONO PHARMACEUTICAL CO LTD",
+     1.5683,
+     50200
+    ],
+    [
+     "RCUS",
+     "ARCUS BIOSCIENCES INC",
+     1.3554,
+     37207
+    ],
+    [
+     "CRSP",
+     "CRISPR THERAPEUTICS AG",
+     1.1465,
+     12732
+    ],
+    [
+     "NVAX",
+     "NOVAVAX INC",
+     1.1287,
+     69442
+    ],
+    [
+     "NUVB",
+     "NUVATION BIO INC",
+     0.9495,
+     109923
+    ],
+    [
+     "PSNL",
+     "PERSONALIS INC",
+     0.8178,
+     27565
+    ],
+    [
+     "XNCR",
+     "XENCOR INC",
+     0.7745,
+     9934
+    ],
+    [
+     "RIGL",
+     "RIGEL PHARMACEUTICALS INC",
+     0.7267,
+     7956
+    ],
+    [
+     "6887",
+     "東陽光藥",
+     0.7042,
+     72200
+    ],
+    [
+     "KURA",
+     "KURA ONCOLOGY INC",
+     0.6539,
+     38217
+    ],
+    [
+     "JANX",
+     "JANUX THERAPEUTICS INC",
+     0.5935,
+     25451
+    ],
+    [
+     "CRVS",
+     "CORVUS PHARMACEUTICALS INC",
+     0.5933,
+     28103
+    ],
+    [
+     "VSTM",
+     "VERASTEM INC",
+     0.5755,
+     36416
+    ],
+    [
+     "ALVO",
+     "ALVOTECH SA",
+     0.4339,
+     50122
+    ],
+    [
+     "PACB",
+     "PACIFIC BIOSCIENCES OF CALIFOR",
+     0.4286,
+     127210
+    ],
+    [
+     "NTLA",
+     "INTELLIA THERAPEUTICS INC",
+     0.4046,
+     18836
+    ],
+    [
+     "2595",
+     "勁方醫藥－Ｂ",
+     0.3891,
+     86200
+    ],
+    [
+     "DSGN",
+     "DESIGN THERAPEUTICS INC",
+     0.3519,
+     16750
+    ],
+    [
+     "CTMX",
+     "CYTOMX THERAPEUTICS INC",
+     0.3459,
+     77011
+    ],
+    [
+     "2696",
+     "復宏漢霖",
+     0.3171,
+     27900
+    ],
+    [
+     "OCGN",
+     "OCUGEN INC",
+     0.2657,
+     148052
+    ],
+    [
+     "174900",
+     "ABCLON INC",
+     0.2542,
+     7078
+    ],
+    [
+     "PRME",
+     "PRIME MEDICINE INC",
+     0.113,
+     13503
     ]
    ],
-   "n_listed": 10
+   "n_listed": 38,
+   "fees_official": {
+    "source": "富邦投信 Assets.aspx 官方直出（完整持股）",
+    "aum_twd": null
+   },
+   "extra": {
+    "futures": [
+     [
+      "MRK US",
+      "MERCK & CO INC",
+      "11,728",
+      3.3904
+     ],
+     [
+      "ROP SE",
+      "ROCHE HOLDING AG",
+      "3,439",
+      3.3745
+     ],
+     [
+      "SAN FP",
+      "SANOFI",
+      "15,722",
+      3.2753
+     ],
+     [
+      "IPN FP",
+      "IPSEN",
+      "7,766",
+      2.8889
+     ],
+     [
+      "GSK LN",
+      "GSK PLC",
+      "54,603",
+      2.7618
+     ],
+     [
+      "CAI US",
+      "CARIS LIFE SCIENCES INC",
+      "54,470",
+      2.0644
+     ],
+     [
+      "VIR US",
+      "VIR BIOTECHNOLOGY INC",
+      "59,291",
+      1.1586
+     ],
+     [
+      "VLA FP",
+      "VALNEVA SE",
+      "71,454",
+      0.3785
+     ],
+     [
+      "DNA US",
+      "GINKGO BIOWORKS HOLDINGS INC",
+      "20,733",
+      0.3183
+     ]
+    ]
+   }
   },
   "00898": {
    "name": "國泰基因免疫革命",
@@ -20509,61 +28758,200 @@
    "market": "TWSE",
    "issuer": "富邦證券投資信託股份有限",
    "n": null,
-   "src": "CMONEY",
-   "asof": "2026/11/04",
+   "src": "FUBON",
+   "asof": "2026-11-24",
    "items": [
     [
-     "PHP LN",
-     "PRIMARY HEALTH PROPERTIES",
-     4.3188
-    ],
-    [
-     "823 HK",
-     "領展房產基金",
-     4.2833
-    ],
-    [
-     "144 HK",
-     "招商局港口",
-     4.1675
-    ],
-    [
-     "PK US",
-     "PARK HOTELS & RESORTS INC",
-     4.0971
-    ],
-    [
-     "576 HK",
-     "浙江滬杭甬",
-     4.0505
-    ],
-    [
-     "SUPR LN",
-     "SUPERMARKET INCOME REIT PLC",
-     3.8408
-    ],
-    [
-     "LAND LN",
+     "LAND",
      "LAND SECURITIES GROUP PLC",
-     3.7807
+     3.8635,
+     62528
     ],
     [
-     "LMP LN",
-     "LONDONMETRIC房地產公開有限公司",
-     3.76
+     "SUPR",
+     "SUPERMARKET INCOME REIT PLC",
+     3.7878,
+     513206
     ],
     [
-     "177 HK",
-     "江蘇寧滬高速公路",
-     3.7393
-    ],
-    [
-     "CICT SP",
+     "CICT",
      "CAPITALAND INTEGRATED COMMER",
-     3.5695
+     3.6223,
+     298041
+    ],
+    [
+     "8963",
+     "INVINCIBLE INVESTMENT CORP",
+     3.5237,
+     1300
+    ],
+    [
+     "LREIT",
+     "LENDLEASE GLOBAL",
+     3.4444,
+     1236200
+    ],
+    [
+     "BLND",
+     "BRITISH LAND CO PLC",
+     3.3322,
+     86929
+    ],
+    [
+     "KREIT",
+     "KEPPEL REIT",
+     3.2981,
+     776800
+    ],
+    [
+     "8985",
+     "JAPAN HOTEL REIT INVESTMENT CORPORATION",
+     3.2952,
+     900
+    ],
+    [
+     "CARM",
+     "CARMILA SA",
+     3.1437,
+     27490
+    ],
+    [
+     "3471",
+     "MITSUI FUDOSAN LOGISTICS PARK",
+     2.9454,
+     700
+    ],
+    [
+     "MPACT",
+     "MAPLETREE PAN ASIA COMMERCIAL",
+     2.9143,
+     494700
+    ],
+    [
+     "FCPT",
+     "FOUR CORNERS PROPERTY TRUST IN",
+     2.8741,
+     17900
+    ],
+    [
+     "MINT",
+     "MAPLETREE INDUSTRIAL TRUST",
+     2.642,
+     309200
+    ],
+    [
+     "3309",
+     "SEKISUI HOUSE REIT INC",
+     2.5324,
+     900
     ]
    ],
-   "n_listed": 10
+   "n_listed": 14,
+   "fees_official": {
+    "source": "富邦投信 Assets.aspx 官方直出（完整持股）",
+    "aum_twd": null,
+    "semantics": "部分揭露 14 筆合計 45.22%"
+   },
+   "extra": {
+    "futures": [
+     [
+      "144 HK",
+      "招商局港口",
+      "292,000",
+      4.3829
+     ],
+     [
+      "823 HK",
+      "領展房產基金",
+      "127,100",
+      4.3488
+     ],
+     [
+      "PHP LN",
+      "PRIMARY HEALTH PROPERTIES",
+      "505,644",
+      4.3216
+     ],
+     [
+      "576 HK",
+      "浙江滬杭甬",
+      "764,000",
+      4.0474
+     ],
+     [
+      "PK US",
+      "PARK HOTELS & RESORTS INC",
+      "36,701",
+      4.0309
+     ],
+     [
+      "LMP LN",
+      "LONDONMETRIC房地產公開有限公司",
+      "225,842",
+      3.6808
+     ],
+     [
+      "177 HK",
+      "江蘇寧滬高速公路",
+      "392,000",
+      3.5879
+     ],
+     [
+      "MRP US",
+      "MILLROSE PROPERTIES INC",
+      "19,346",
+      3.3928
+     ],
+     [
+      "BYG LN",
+      "BIG YELLOW GROUP PLC",
+      "37,588",
+      2.9774
+     ],
+     [
+      "FCT SP",
+      "FRASERS CENTREPOINT TRUST",
+      "257,700",
+      2.8721
+     ],
+     [
+      "GFC FP",
+      "Gecina SA",
+      "5,690",
+      2.6559
+     ],
+     [
+      "SUN SP",
+      "SUNTEC REIT",
+      "388,800",
+      2.6412
+     ],
+     [
+      "DEI US",
+      "DOUGLAS EMMETT INC",
+      "40,678",
+      2.6355
+     ],
+     [
+      "DEA US",
+      "EASTERLY GOVERNMENT PROPERTIES",
+      "17,268",
+      2.6045
+     ],
+     [
+      "GNL US",
+      "GLOBAL NET LEASE INC",
+      "56,695",
+      2.5304
+     ],
+     [
+      "ALX AU",
+      "ATLAS ARTERIA LTD",
+      "133,045",
+      2.3051
+     ]
+    ]
+   }
   },
   "00909": {
    "name": "國泰數位支付服務",
@@ -40867,62 +49255,2864 @@
    "name": "富邦標普500",
    "market": "TPEX",
    "issuer": "富邦投信",
-   "n": null,
-   "src": "CMONEY",
-   "asof": "2026/11/04",
+   "n": 159,
+   "src": "FUBON",
+   "asof": "2026-11-24",
    "items": [
     [
-     "AAPL US",
+     "AAPL",
      "APPLE INC",
-     7.6786
+     8.2986,
+     11892
     ],
     [
-     "NVDA US",
+     "NVDA",
      "NVIDIA CORP",
-     7.2911
+     6.0389,
+     19720
     ],
     [
-     "MSFT US",
+     "MSFT",
      "MICROSOFT CORP",
-     6.2136
+     5.9167,
+     6051
     ],
     [
-     "AMZN US",
+     "AMZN",
      "AMAZON.COM INC",
-     3.9309
+     3.9768,
+     7998
     ],
     [
-     "GOOGL US",
+     "GOOGL",
      "Alphabet Inc-CL A",
-     2.5524
+     2.6299,
+     4782
     ],
     [
-     "AVGO US",
+     "AVGO",
      "BROADCOM INC",
-     2.3311
+     2.3005,
+     3877
     ],
     [
-     "202612ESZ6F",
-     "E-迷你S&P500指數期貨",
-     2.1371
-    ],
-    [
-     "META US",
-     "META PLATFORMS INC",
-     2.0915
-    ],
-    [
-     "GOOG US",
+     "GOOG",
      "Alphabet Inc-CL C",
-     2.056
+     2.1112,
+     3873
     ],
     [
-     "LLY US",
-     "ELI LILLY & CO",
-     1.7087
+     "META",
+     "META PLATFORMS INC",
+     2.0889,
+     1797
+    ],
+    [
+     "TSLA",
+     "TESLA INC",
+     1.7407,
+     2296
+    ],
+    [
+     "ABBV",
+     "ABBVIE INC",
+     0.8522,
+     1440
+    ],
+    [
+     "COST",
+     "COSTCO WHOLESALE CORP",
+     0.7767,
+     361
+    ],
+    [
+     "PLTR",
+     "PALANTIR TECHNOLOGIES INC",
+     0.5956,
+     1875
+    ],
+    [
+     "CSCO",
+     "CISCO SYSTEMS INC",
+     0.595,
+     3212
+    ],
+    [
+     "PANW",
+     "PALO ALTO NETWORKS INC",
+     0.4619,
+     664
+    ],
+    [
+     "INTC",
+     "INTEL CORP",
+     0.4373,
+     4049
+    ],
+    [
+     "AMAT",
+     "APPLIED MATERIALS INC",
+     0.4128,
+     647
+    ],
+    [
+     "AMGN",
+     "AMGEN INC",
+     0.4119,
+     441
+    ],
+    [
+     "LRCX",
+     "LAM RESEARCH CORP",
+     0.3943,
+     1020
+    ],
+    [
+     "NFLX",
+     "NETFLIX INC",
+     0.3936,
+     3393
+    ],
+    [
+     "GILD",
+     "GILEAD SCIENCES INC",
+     0.3549,
+     1010
+    ],
+    [
+     "ORCL",
+     "ORACLE CORP",
+     0.3455,
+     1601
+    ],
+    [
+     "CRWD",
+     "CROWDSTRIKE HOLDINGS INC",
+     0.3449,
+     830
+    ],
+    [
+     "ANET",
+     "ARISTA NETWORKS INC",
+     0.2833,
+     853
+    ],
+    [
+     "QCOM",
+     "QUALCOMM INC",
+     0.2828,
+     870
+    ],
+    [
+     "KLAC",
+     "KLA CORP",
+     0.2805,
+     1065
+    ],
+    [
+     "ISRG",
+     "INTUITIVE SURGICAL INC",
+     0.2466,
+     288
+    ],
+    [
+     "SCHW",
+     "CHARLES SCHWAB CORP/THE",
+     0.2452,
+     1325
+    ],
+    [
+     "VRTX",
+     "VERTEX PHARMACEUTICALS INC",
+     0.23,
+     207
+    ],
+    [
+     "SPGI",
+     "S&P GLOBAL INC",
+     0.2206,
+     246
+    ],
+    [
+     "UBER",
+     "UBER TECHNOLOGIES INC",
+     0.2121,
+     1664
+    ],
+    [
+     "SBUX",
+     "STARBUCKS CORP",
+     0.1947,
+     929
+    ],
+    [
+     "MRVL",
+     "MARVELL TECHNOLOGY GROUP LTD",
+     0.1851,
+     714
+    ],
+    [
+     "BKNG",
+     "BOOKING HOLDINGS INC",
+     0.1768,
+     612
+    ],
+    [
+     "MRSH",
+     "MARSH & MCLENNAN COS INC",
+     0.1634,
+     389
+    ],
+    [
+     "REGN",
+     "REGENERON PHARMACEUTICALS INC",
+     0.1556,
+     80
+    ],
+    [
+     "ADBE",
+     "ADOBE INC",
+     0.1481,
+     324
+    ],
+    [
+     "SNDK",
+     "SANDISK CORP",
+     0.1462,
+     952
+    ],
+    [
+     "CMCSA",
+     "COMCAST CORP",
+     0.1442,
+     2884
+    ],
+    [
+     "DELL",
+     "DELL TECHNOLOGIES INC",
+     0.1437,
+     247
+    ],
+    [
+     "MDLZ",
+     "MONDELEZ INTERNATIONAL INC",
+     0.1373,
+     1040
+    ],
+    [
+     "MRNA",
+     "MODERNA INC",
+     0.1357,
+     303
+    ],
+    [
+     "FTNT",
+     "FORTINET INC",
+     0.131,
+     502
+    ],
+    [
+     "CDNS",
+     "CADENCE DESIGN SYSTEMS INC",
+     0.1309,
+     224
+    ],
+    [
+     "TMUS",
+     "T-MOBILE US INC",
+     0.1295,
+     393
+    ],
+    [
+     "SNPS",
+     "SYNOPSYS INC",
+     0.1275,
+     156
+    ],
+    [
+     "CTAS",
+     "CINTAS CORP",
+     0.1245,
+     280
+    ],
+    [
+     "ORLY",
+     "O''REILLY AUTOMOTIVE INC",
+     0.1239,
+     659
+    ],
+    [
+     "INTU",
+     "INTUIT INC",
+     0.1228,
+     223
+    ],
+    [
+     "ABNB",
+     "AIRBNB INC",
+     0.1168,
+     342
+    ],
+    [
+     "ROST",
+     "ROSS STORES INC",
+     0.1163,
+     261
+    ],
+    [
+     "TRGP",
+     "TARGA RESOURCES CORP",
+     0.0976,
+     175
+    ],
+    [
+     "DASH",
+     "DOORDASH INC",
+     0.0968,
+     307
+    ],
+    [
+     "MNST",
+     "MONSTER BEVERAGE CORP",
+     0.0968,
+     1165
+    ],
+    [
+     "NXPI",
+     "NXP SEMICONDUCTORS NV",
+     0.0967,
+     205
+    ],
+    [
+     "FAST",
+     "FASTENAL CO",
+     0.0963,
+     935
+    ],
+    [
+     "MPWR",
+     "MONOLITHIC POWER SYSTEMS INC",
+     0.0938,
+     40
+    ],
+    [
+     "IDXX",
+     "IDEXX LABORATORIES INC",
+     0.0898,
+     64
+    ],
+    [
+     "PCAR",
+     "PACCAR INC",
+     0.089,
+     429
+    ],
+    [
+     "DDOG",
+     "DATADOG INC",
+     0.0889,
+     273
+    ],
+    [
+     "ADSK",
+     "AUTODESK INC",
+     0.0866,
+     172
+    ],
+    [
+     "HOOD",
+     "ROBINHOOD MARKETS INC",
+     0.0833,
+     644
+    ],
+    [
+     "HONA",
+     "HONEYWELL AEROSPACE INC",
+     0.0786,
+     258
+    ],
+    [
+     "FERG",
+     "FERGUSON ENTERPRISES INC",
+     0.0785,
+     158
+    ],
+    [
+     "PYPL",
+     "PAYPAL HOLDINGS INC",
+     0.0771,
+     697
+    ],
+    [
+     "CVNA",
+     "CARVANA CO",
+     0.0763,
+     587
+    ],
+    [
+     "NDAQ",
+     "NASDAQ INC",
+     0.0755,
+     360
+    ],
+    [
+     "GRMN",
+     "GARMIN LTD",
+     0.075,
+     135
+    ],
+    [
+     "KEYS",
+     "KEYSIGHT TECHNOLOGIES INC",
+     0.0745,
+     139
+    ],
+    [
+     "FITB",
+     "FIFTH THIRD BANCORP",
+     0.0744,
+     739
+    ],
+    [
+     "MSCI",
+     "MSCI INC",
+     0.0737,
+     59
+    ],
+    [
+     "VYLR",
+     "VYLOR SPINCO",
+     0.0735,
+     544
+    ],
+    [
+     "EBAY",
+     "EBAY INC",
+     0.073,
+     326
+    ],
+    [
+     "CARR",
+     "CARRIER GLOBAL CORP",
+     0.0698,
+     672
+    ],
+    [
+     "LITE",
+     "LUMENTUM HOLDINGS INC",
+     0.0691,
+     72
+    ],
+    [
+     "VEEV",
+     "VEEVA SYSTEMS INC",
+     0.0657,
+     122
+    ],
+    [
+     "BIIB",
+     "BIOGEN INC",
+     0.0636,
+     120
+    ],
+    [
+     "TTWO",
+     "TAKE-TWO INTERACTIVE SOFTWARE",
+     0.0621,
+     143
+    ],
+    [
+     "COHR",
+     "COHERENT CORP",
+     0.0618,
+     160
+    ],
+    [
+     "CBRE",
+     "CBRE GROUP INC",
+     0.061,
+     232
+    ],
+    [
+     "CBOE",
+     "CBOE GLOBAL MARKETS INC",
+     0.0607,
+     85
+    ],
+    [
+     "ACGL",
+     "ARCH CAPITAL GROUP LTD",
+     0.0598,
+     277
+    ],
+    [
+     "GEHC",
+     "GE HEALTHCARE TECHNOLOGIES INC",
+     0.0598,
+     368
+    ],
+    [
+     "PAYX",
+     "PAYCHEX INC",
+     0.0591,
+     261
+    ],
+    [
+     "FANG",
+     "DIAMONDBACK ENERGY INC",
+     0.0579,
+     167
+    ],
+    [
+     "WDAY",
+     "WORKDAY INC",
+     0.0579,
+     164
+    ],
+    [
+     "IBKR",
+     "INTERACTIVE BROKERS GROUP INC",
+     0.0543,
+     369
+    ],
+    [
+     "CIEN",
+     "CIENA CORP",
+     0.0542,
+     115
+    ],
+    [
+     "OKTA",
+     "OKTA INC",
+     0.0527,
+     135
+    ],
+    [
+     "NTAP",
+     "NETAPP INC",
+     0.0514,
+     160
+    ],
+    [
+     "DXCM",
+     "DEXCOM INC",
+     0.0512,
+     307
+    ],
+    [
+     "ODFL",
+     "OLD DOMINION FREIGHT LINE INC",
+     0.0507,
+     152
+    ],
+    [
+     "FISV",
+     "Fiserv Inc",
+     0.05,
+     433
+    ],
+    [
+     "ILMN",
+     "ILLUMINA INC",
+     0.0495,
+     123
+    ],
+    [
+     "MCHP",
+     "MICROCHIP TECHNOLOGY INC",
+     0.049,
+     442
+    ],
+    [
+     "NTRS",
+     "NORTHERN TRUST CORP",
+     0.0487,
+     149
+    ],
+    [
+     "HBAN",
+     "HUNTINGTON BANCSHARES INC/OH",
+     0.0479,
+     1646
+    ],
+    [
+     "DLTR",
+     "DOLLAR TREE INC",
+     0.0478,
+     157
+    ],
+    [
+     "OTIS",
+     "OTIS WORLDWIDE CORP",
+     0.0478,
+     310
+    ],
+    [
+     "CPAY",
+     "CORPAY INC",
+     0.0476,
+     54
+    ],
+    [
+     "ARES",
+     "ARES MANAGEMENT CORP",
+     0.0474,
+     182
+    ],
+    [
+     "CINF",
+     "CINCINNATI FINANCIAL CORP",
+     0.0468,
+     125
+    ],
+    [
+     "STLD",
+     "STEEL DYNAMICS INC",
+     0.0466,
+     110
+    ],
+    [
+     "VLTO",
+     "VERALTO CORP",
+     0.0466,
+     199
+    ],
+    [
+     "TWLO",
+     "TWILIO INC",
+     0.0444,
+     125
+    ],
+    [
+     "ULTA",
+     "ULTA BEAUTY INC",
+     0.0442,
+     35
+    ],
+    [
+     "CTSH",
+     "Cognizant Technology Solutions Corp",
+     0.0441,
+     367
+    ],
+    [
+     "CPRT",
+     "COPART INC",
+     0.0438,
+     687
+    ],
+    [
+     "EXPE",
+     "EXPEDIA GROUP INC",
+     0.0438,
+     93
+    ],
+    [
+     "VRSK",
+     "VERISK ANALYTICS INC",
+     0.0426,
+     106
+    ],
+    [
+     "AXON",
+     "AXON ENTERPRISE INC",
+     0.0415,
+     66
+    ],
+    [
+     "EXPD",
+     "EXPEDITORS INTERNATIONAL OF WA",
+     0.0413,
+     106
+    ],
+    [
+     "VRSN",
+     "VERISIGN INC",
+     0.0412,
+     66
+    ],
+    [
+     "CASY",
+     "CASEY'S GENERAL STORES INC",
+     0.0406,
+     30
+    ],
+    [
+     "FLEX",
+     "FLEX LTD",
+     0.0394,
+     301
+    ],
+    [
+     "COIN",
+     "COINBASE GLOBAL INC",
+     0.0367,
+     182
+    ],
+    [
+     "VTRS",
+     "VIATRIS INC",
+     0.0366,
+     936
+    ],
+    [
+     "HUBB",
+     "HUBBELL INC",
+     0.0357,
+     43
+    ],
+    [
+     "TROW",
+     "T ROWE PRICE GROUP INC",
+     0.0353,
+     174
+    ],
+    [
+     "FOXA",
+     "FOX CORP",
+     0.0344,
+     268
+    ],
+    [
+     "INCY",
+     "INCYTE CORP",
+     0.0338,
+     139
+    ],
+    [
+     "AMCR",
+     "AMCOR PLC",
+     0.0332,
+     377
+    ],
+    [
+     "TSCO",
+     "TRACTOR SUPPLY CO",
+     0.033,
+     425
+    ],
+    [
+     "EVRG",
+     "EVERGY INC",
+     0.0323,
+     188
+    ],
+    [
+     "SWKS",
+     "SKYWORKS SOLUTIONS INC",
+     0.0296,
+     186
+    ],
+    [
+     "FFIV",
+     "F5 INC",
+     0.0287,
+     46
+    ],
+    [
+     "BALL",
+     "BALL CORP",
+     0.0277,
+     216
+    ],
+    [
+     "RVTY",
+     "REVVITY INC",
+     0.0274,
+     91
+    ],
+    [
+     "NDSN",
+     "NORDSON CORP",
+     0.0271,
+     43
+    ],
+    [
+     "JBHT",
+     "JB HUNT TRANSPORT SERVICES INC",
+     0.0264,
+     60
+    ],
+    [
+     "CHRW",
+     "CH ROBINSON WORLDWIDE INC",
+     0.0263,
+     95
+    ],
+    [
+     "ALLE",
+     "ALLEGION PLC",
+     0.0258,
+     69
+    ],
+    [
+     "LDOS",
+     "LEIDOS HOLDINGS INC",
+     0.0258,
+     102
+    ],
+    [
+     "FSLR",
+     "FIRST SOLAR INC",
+     0.0256,
+     88
+    ],
+    [
+     "FICO",
+     "FAIR ISAAC CORP",
+     0.0249,
+     18
+    ],
+    [
+     "CHTR",
+     "CHARTER COMMUNICATIONS INC",
+     0.0243,
+     91
+    ],
+    [
+     "ZBRA",
+     "ZEBRA TECHNOLOGIES CORP",
+     0.0242,
+     39
+    ],
+    [
+     "FDXF",
+     "FEDEX FREIGHT HOLDING CO INC",
+     0.0219,
+     97
+    ],
+    [
+     "CSGP",
+     "COSTAR GROUP INC",
+     0.0212,
+     330
+    ],
+    [
+     "RDDT",
+     "REDDIT INC",
+     0.0211,
+     119
+    ],
+    [
+     "GDDY",
+     "GODADDY INC",
+     0.0207,
+     103
+    ],
+    [
+     "AKAM",
+     "AKAMAI TECHNOLOGIES INC",
+     0.0205,
+     117
+    ],
+    [
+     "SOLV",
+     "SOLVENTUM CORP",
+     0.0205,
+     118
+    ],
+    [
+     "SMCI",
+     "SUPER MICRO COMPUTER INC",
+     0.0204,
+     459
+    ],
+    [
+     "TRMB",
+     "TRIMBLE INC",
+     0.0204,
+     190
+    ],
+    [
+     "JKHY",
+     "JACK HENRY & ASSOCIATES INC",
+     0.0202,
+     58
+    ],
+    [
+     "ECHO",
+     "ECHOSTAR CORP",
+     0.019,
+     113
+    ],
+    [
+     "GNRC",
+     "GENERAC HOLDINGS INC",
+     0.0187,
+     48
+    ],
+    [
+     "DECK",
+     "DECKERS OUTDOOR CORP",
+     0.0184,
+     111
+    ],
+    [
+     "TECH",
+     "BIO-TECHNE CORP",
+     0.0183,
+     128
+    ],
+    [
+     "LULU",
+     "LULULEMON ATHLETICA INC",
+     0.0177,
+     85
+    ],
+    [
+     "ALGN",
+     "ALIGN TECHNOLOGY INC",
+     0.0175,
+     54
+    ],
+    [
+     "PODD",
+     "INSULET CORP",
+     0.0157,
+     57
+    ],
+    [
+     "NWSA",
+     "NEWS CORP",
+     0.015,
+     294
+    ],
+    [
+     "HSIC",
+     "HENRY SCHEIN INC",
+     0.0134,
+     78
+    ],
+    [
+     "NCLH",
+     "NORWEGIAN CRUISE LINE HOLDINGS",
+     0.0126,
+     374
+    ],
+    [
+     "APTV",
+     "APTIV PLC",
+     0.0124,
+     169
+    ],
+    [
+     "ERIE",
+     "ERIE INDEMNITY CO",
+     0.0114,
+     21
+    ],
+    [
+     "WYNN",
+     "WYNN RESORTS LTD",
+     0.0099,
+     60
+    ],
+    [
+     "SKYD",
+     "SKYDANCE CORP",
+     0.0056,
+     444
     ]
    ],
-   "n_listed": 10
+   "n_listed": 159,
+   "fees_official": {
+    "source": "富邦投信 Assets.aspx 官方直出（完整持股）",
+    "aum_twd": null
+   },
+   "extra": {
+    "futures": [
+     [
+      "LLY US",
+      "ELI LILLY & CO",
+      "652",
+      1.8087
+     ],
+     [
+      "BRK/B US",
+      "BERKSHIRE HATHAWAY INC",
+      "1,518",
+      1.7269
+     ],
+     [
+      "JPM US",
+      "JPMORGAN CHASE & CO",
+      "2,166",
+      1.3536
+     ],
+     [
+      "MU US",
+      "MICRON TECHNOLOGY INC",
+      "921",
+      1.1431
+     ],
+     [
+      "V US",
+      "VISA INC",
+      "1,389",
+      1.1409
+     ],
+     [
+      "AMD US",
+      "ADVANCED MICRO DEVICES",
+      "1,330",
+      1.0832
+     ],
+     [
+      "JNJ US",
+      "JOHNSON & JOHNSON",
+      "1,964",
+      1.0701
+     ],
+     [
+      "XOM US",
+      "EXXON MOBIL CORP",
+      "3,351",
+      1.045
+     ],
+     [
+      "WMT US",
+      "WALMART INC",
+      "3,631",
+      0.9468
+     ],
+     [
+      "MA US",
+      "MASTERCARD INC",
+      "659",
+      0.8409
+     ],
+     [
+      "CVX US",
+      "CHEVRON CORP",
+      "1,610",
+      0.6623
+     ],
+     [
+      "PG US",
+      "PROCTER & GAMBLE CO/THE",
+      "1,894",
+      0.6438
+     ],
+     [
+      "KO US",
+      "COCA-COLA CO/THE",
+      "3,155",
+      0.607
+     ],
+     [
+      "HD US",
+      "HOME DEPOT INC/THE",
+      "813",
+      0.5667
+     ],
+     [
+      "MRK US",
+      "MERCK & CO INC",
+      "2,010",
+      0.5608
+     ],
+     [
+      "GE US",
+      "GENERAL ELECTRIC CO",
+      "845",
+      0.5296
+     ],
+     [
+      "BAC US",
+      "BANK OF AMERICA CORP",
+      "5,299",
+      0.5071
+     ],
+     [
+      "UNH US",
+      "UNITEDHEALTH GROUP INC",
+      "731",
+      0.4925
+     ],
+     [
+      "PM US",
+      "PHILIP MORRIS INTERNATIONAL IN",
+      "1,270",
+      0.4604
+     ],
+     [
+      "RTX US",
+      "RTX CORP",
+      "1,098",
+      0.4227
+     ],
+     [
+      "TMO US",
+      "THERMO FISHER SCIENTIFIC INC",
+      "301",
+      0.4126
+     ],
+     [
+      "CAT US",
+      "CATERPILLAR INC",
+      "375",
+      0.3995
+     ],
+     [
+      "WFC US",
+      "WELLS FARGO & CO",
+      "2,464",
+      0.3942
+     ],
+     [
+      "LIN US",
+      "LINDE PLC",
+      "376",
+      0.3829
+     ],
+     [
+      "TXN US",
+      "TEXAS INSTRUMENTS INC",
+      "745",
+      0.3794
+     ],
+     [
+      "GS US",
+      "GOLDMAN SACHS GROUP INC/THE",
+      "237",
+      0.3764
+     ],
+     [
+      "IBM US",
+      "INTERNATIONAL BUSINESS MACHINE",
+      "768",
+      0.3566
+     ],
+     [
+      "DIS US",
+      "WALT DISNEY CO/THE",
+      "1,407",
+      0.3397
+     ],
+     [
+      "MS US",
+      "MORGAN STANLEY",
+      "973",
+      0.3236
+     ],
+     [
+      "MCD US",
+      "MCDONALD'S CORP",
+      "577",
+      0.3192
+     ],
+     [
+      "VZ US",
+      "VERIZON COMMUNICATIONS INC",
+      "3,386",
+      0.3147
+     ],
+     [
+      "PEP US",
+      "PEPSICO INC",
+      "1,112",
+      0.3127
+     ],
+     [
+      "GEV US",
+      "GE VERNOVA INC",
+      "217",
+      0.3082
+     ],
+     [
+      "C US",
+      "CITIGROUP INC",
+      "1,367",
+      0.3067
+     ],
+     [
+      "ABT US",
+      "ABBOTT LABORATORIES",
+      "1,410",
+      0.2928
+     ],
+     [
+      "APH US",
+      "AMPHENOL CORP",
+      "2,009",
+      0.2909
+     ],
+     [
+      "NEE US",
+      "NEXTERA ENERGY INC",
+      "1,700",
+      0.2833
+     ],
+     [
+      "UNP US",
+      "UNION PACIFIC CORP",
+      "484",
+      0.2774
+     ],
+     [
+      "BLK US",
+      "BLACKROCK INC",
+      "117",
+      0.2642
+     ],
+     [
+      "AXP US",
+      "AMERICAN EXPRESS CO",
+      "429",
+      0.2609
+     ],
+     [
+      "PFE US",
+      "PFIZER INC",
+      "4,644",
+      0.2604
+     ],
+     [
+      "COP US",
+      "CONOCOPHILLIPS",
+      "979",
+      0.2597
+     ],
+     [
+      "TJX US",
+      "TJX COS INC/THE",
+      "900",
+      0.2551
+     ],
+     [
+      "CRM US",
+      "SALESFORCE INC",
+      "667",
+      0.254
+     ],
+     [
+      "T US",
+      "AT&T INC",
+      "5,584",
+      0.2518
+     ],
+     [
+      "DE US",
+      "DEERE & CO",
+      "205",
+      0.2479
+     ],
+     [
+      "ADI US",
+      "ANALOG DEVICES INC",
+      "397",
+      0.2448
+     ],
+     [
+      "DHR US",
+      "DANAHER CORP",
+      "510",
+      0.2302
+     ],
+     [
+      "ACN US",
+      "ACCENTURE PLC",
+      "499",
+      0.2284
+     ],
+     [
+      "PGR US",
+      "PROGRESSIVE CORP/THE",
+      "474",
+      0.2201
+     ],
+     [
+      "CB US",
+      "CHUBB LTD",
+      "286",
+      0.2115
+     ],
+     [
+      "LOW US",
+      "LOWE''S COS INC",
+      "457",
+      0.208
+     ],
+     [
+      "BA US",
+      "BOEING CO/THE",
+      "644",
+      0.2076
+     ],
+     [
+      "BMY US",
+      "BRISTOL-MYERS SQUIBB CO",
+      "1,665",
+      0.2035
+     ],
+     [
+      "MCK US",
+      "MCKESSON CORP",
+      "95",
+      0.2018
+     ],
+     [
+      "MO US",
+      "ALTRIA GROUP INC",
+      "1,361",
+      0.2006
+     ],
+     [
+      "ETN US",
+      "EATON CORP PLC",
+      "316",
+      0.1988
+     ],
+     [
+      "ADP US",
+      "AUTOMATIC DATA PROCESSING INC",
+      "324",
+      0.1984
+     ],
+     [
+      "LMT US",
+      "LOCKHEED MARTIN CORP",
+      "165",
+      0.1907
+     ],
+     [
+      "MDT US",
+      "MEDTRONIC PLC",
+      "997",
+      0.1888
+     ],
+     [
+      "PH US",
+      "PARKER-HANNIFIN CORP",
+      "103",
+      0.1839
+     ],
+     [
+      "SYK US",
+      "STRYKER CORP",
+      "284",
+      0.1813
+     ],
+     [
+      "COF US",
+      "CAPITAL ONE FINANCIAL CORP",
+      "500",
+      0.1787
+     ],
+     [
+      "CME US",
+      "CME GROUP INC",
+      "293",
+      0.1785
+     ],
+     [
+      "STX US",
+      "SEAGATE TECHNOLOGY HOLDINGS PL",
+      "185",
+      0.1759
+     ],
+     [
+      "SO US",
+      "SOUTHERN CO/THE",
+      "937",
+      0.1737
+     ],
+     [
+      "NEM US",
+      "NEWMONT CORP",
+      "859",
+      0.1687
+     ],
+     [
+      "APP US",
+      "APPLOVIN CORP",
+      "221",
+      0.1659
+     ],
+     [
+      "CVS US",
+      "CVS HEALTH CORP",
+      "1,042",
+      0.1657
+     ],
+     [
+      "DUK US",
+      "DUKE ENERGY CORP",
+      "635",
+      0.1638
+     ],
+     [
+      "MPC US",
+      "MARATHON PETROLEUM CORP",
+      "229",
+      0.1602
+     ],
+     [
+      "WDC US",
+      "WESTERN DIGITAL CORP",
+      "294",
+      0.1587
+     ],
+     [
+      "BNY US",
+      "BANK OF NEW YORK MELLON CORP/T",
+      "553",
+      0.1582
+     ],
+     [
+      "ICE US",
+      "INTERCONTINENTAL EXCHANGE INC",
+      "457",
+      0.1575
+     ],
+     [
+      "MMM US",
+      "3M CO",
+      "420",
+      0.1549
+     ],
+     [
+      "NOW US",
+      "SERVICENOW INC",
+      "842",
+      0.1522
+     ],
+     [
+      "PSX US",
+      "PHILLIPS 66",
+      "325",
+      0.1517
+     ],
+     [
+      "VLO US",
+      "VALERO ENERGY CORP",
+      "235",
+      0.1503
+     ],
+     [
+      "CSX US",
+      "CSX CORP",
+      "1,510",
+      0.149
+     ],
+     [
+      "WM US",
+      "WASTE MANAGEMENT INC",
+      "303",
+      0.1461
+     ],
+     [
+      "USB US",
+      "US BANCORP",
+      "1,270",
+      0.1453
+     ],
+     [
+      "BX US",
+      "BLACKSTONE INC",
+      "612",
+      0.1439
+     ],
+     [
+      "GD US",
+      "GENERAL DYNAMICS CORP",
+      "207",
+      0.1434
+     ],
+     [
+      "PWR US",
+      "QUANTA SERVICES INC",
+      "123",
+      0.1429
+     ],
+     [
+      "MAR US",
+      "MARRIOTT INTERNATIONAL INC/MD",
+      "174",
+      0.1427
+     ],
+     [
+      "TT US",
+      "TRANE TECHNOLOGIES PLC",
+      "179",
+      0.1426
+     ],
+     [
+      "MSI US",
+      "MOTOROLA SOLUTIONS INC",
+      "135",
+      0.141
+     ],
+     [
+      "EMR US",
+      "EMERSON ELECTRIC CO",
+      "455",
+      0.1407
+     ],
+     [
+      "PNC US",
+      "PNC FINANCIAL SERVICES GROUP I",
+      "325",
+      0.14
+     ],
+     [
+      "ELV US",
+      "ELEVANCE HEALTH INC",
+      "177",
+      0.1364
+     ],
+     [
+      "HWM US",
+      "HOWMET AEROSPACE INC",
+      "325",
+      0.135
+     ],
+     [
+      "TRV US",
+      "TRAVELERS COS INC/THE",
+      "170",
+      0.1343
+     ],
+     [
+      "JCI US",
+      "JOHNSON CONTROLS INTERNATIONAL",
+      "494",
+      0.1334
+     ],
+     [
+      "UPS US",
+      "UNITED PARCEL SERVICE INC",
+      "611",
+      0.1334
+     ],
+     [
+      "HLT US",
+      "HILTON WORLDWIDE HOLDINGS INC",
+      "183",
+      0.1314
+     ],
+     [
+      "CEG US",
+      "CONSTELLATION ENERGY GROUP",
+      "269",
+      0.1298
+     ],
+     [
+      "GLW US",
+      "CORNING",
+      "646",
+      0.1297
+     ],
+     [
+      "WMB US",
+      "WILLIAMS COS INC/THE",
+      "997",
+      0.1296
+     ],
+     [
+      "SHW US",
+      "SHERWIN-WILLIAMS CO/THE",
+      "186",
+      0.1292
+     ],
+     [
+      "TGT US",
+      "TARGET CORP",
+      "370",
+      0.1283
+     ],
+     [
+      "RCL US",
+      "ROYAL CARIBBEAN CRUISES LTD",
+      "203",
+      0.1273
+     ],
+     [
+      "CL US",
+      "COLGATE-PALMOLIVE CO",
+      "650",
+      0.1271
+     ],
+     [
+      "ECL US",
+      "ECOLAB INC",
+      "206",
+      0.1246
+     ],
+     [
+      "EOG US",
+      "EOG RESOURCES INC",
+      "427",
+      0.1233
+     ],
+     [
+      "NOC US",
+      "NORTHROP GRUMMAN CORP",
+      "109",
+      0.1183
+     ],
+     [
+      "AJG US",
+      "ARTHUR J GALLAGHER & CO",
+      "209",
+      0.1181
+     ],
+     [
+      "ITW US",
+      "ILLINOIS TOOL WORKS INC",
+      "211",
+      0.1179
+     ],
+     [
+      "AON US",
+      "AON PLC",
+      "173",
+      0.1169
+     ],
+     [
+      "CI US",
+      "CIGNA GROUP/THE",
+      "215",
+      0.1165
+     ],
+     [
+      "GM US",
+      "GENERAL MOTORS CO",
+      "715",
+      0.116
+     ],
+     [
+      "MCO US",
+      "MOODY''S CORP",
+      "121",
+      0.1157
+     ],
+     [
+      "NSC US",
+      "NORFOLK SOUTHERN CORP",
+      "183",
+      0.1147
+     ],
+     [
+      "HON US",
+      "HONEYWELL INTERNATIONAL INC",
+      "258",
+      0.1143
+     ],
+     [
+      "HCA US",
+      "HCA HEALTHCARE INC",
+      "120",
+      0.1139
+     ],
+     [
+      "SLB US",
+      "SLB LTD",
+      "1,209",
+      0.1119
+     ],
+     [
+      "AEP US",
+      "AMERICAN ELECTRIC POWER",
+      "444",
+      0.1113
+     ],
+     [
+      "APD US",
+      "AIR PRODUCTS AND CHEMICALS INC",
+      "181",
+      0.11
+     ],
+     [
+      "FCX US",
+      "FREEPORT-MCMORAN INC",
+      "1,170",
+      0.11
+     ],
+     [
+      "ALL US",
+      "ALLSTATE CORP/THE",
+      "206",
+      0.1097
+     ],
+     [
+      "FDX US",
+      "FEDEX CORP",
+      "179",
+      0.1087
+     ],
+     [
+      "VRT US",
+      "VERTIV HOLDINGS CO",
+      "314",
+      0.1075
+     ],
+     [
+      "KMB US",
+      "KIMBERLY-CLARK CORP",
+      "500",
+      0.1071
+     ],
+     [
+      "COR US",
+      "CENCORA INC",
+      "155",
+      0.1068
+     ],
+     [
+      "CAH US",
+      "CARDINAL HEALTH INC",
+      "190",
+      0.1047
+     ],
+     [
+      "URI US",
+      "UNITED RENTALS INC",
+      "51",
+      0.1034
+     ],
+     [
+      "KKR US",
+      "KKR & CO INC",
+      "563",
+      0.1032
+     ],
+     [
+      "BSX US",
+      "BOSTON SCIENTIFIC CORP",
+      "1,181",
+      0.1027
+     ],
+     [
+      "TDG US",
+      "TRANSDIGM GROUP INC",
+      "45",
+      0.1001
+     ],
+     [
+      "CRH US",
+      "CRH PLC",
+      "542",
+      0.1
+     ],
+     [
+      "EW US",
+      "EDWARDS LIFESCIENCES CORP",
+      "470",
+      0.0983
+     ],
+     [
+      "KMI US",
+      "KINDER MORGAN INC",
+      "1,597",
+      0.0978
+     ],
+     [
+      "TEL US",
+      "TE CONNECTIVITY PLC",
+      "236",
+      0.097
+     ],
+     [
+      "GWW US",
+      "WW GRAINGER INC",
+      "35",
+      0.0964
+     ],
+     [
+      "BDX US",
+      "BECTON DICKINSON & CO",
+      "222",
+      0.0962
+     ],
+     [
+      "D US",
+      "DOMINION ENERGY INC",
+      "717",
+      0.095
+     ],
+     [
+      "TFC US",
+      "TRUIST FINANCIAL CORP",
+      "995",
+      0.0931
+     ],
+     [
+      "CMI US",
+      "CUMMINS INC",
+      "112",
+      0.0915
+     ],
+     [
+      "APO US",
+      "APOLLO GLOBAL MANAGEMENT INC",
+      "385",
+      0.0909
+     ],
+     [
+      "NUE US",
+      "NUCOR CORP",
+      "185",
+      0.0904
+     ],
+     [
+      "AFL US",
+      "AFLAC INC",
+      "364",
+      0.0902
+     ],
+     [
+      "AZO US",
+      "AUTOZONE INC",
+      "13",
+      0.0859
+     ],
+     [
+      "OKE US",
+      "ONEOK INC",
+      "514",
+      0.0858
+     ],
+     [
+      "HPE US",
+      "HEWLETT PACKARD ENTERPRISE CO",
+      "1,080",
+      0.0855
+     ],
+     [
+      "MET US",
+      "METLIFE INC",
+      "435",
+      0.085
+     ],
+     [
+      "AME US",
+      "AMETEK INC",
+      "187",
+      0.0838
+     ],
+     [
+      "A US",
+      "AGILENT TECHNOLOGIES INC",
+      "230",
+      0.0831
+     ],
+     [
+      "SRE US",
+      "SEMPRA",
+      "533",
+      0.0827
+     ],
+     [
+      "KDP US",
+      "KEURIG DR PEPPER INC",
+      "1,156",
+      0.0815
+     ],
+     [
+      "XEL US",
+      "XCEL ENERGY INC",
+      "509",
+      0.081
+     ],
+     [
+      "DAL US",
+      "DELTA AIR LINES INC",
+      "485",
+      0.0807
+     ],
+     [
+      "RSG US",
+      "REPUBLIC SERVICES INC",
+      "160",
+      0.0795
+     ],
+     [
+      "ETR US",
+      "ENTERGY CORP",
+      "380",
+      0.0793
+     ],
+     [
+      "HUM US",
+      "HUMANA INC",
+      "98",
+      0.0777
+     ],
+     [
+      "LHX US",
+      "L3HARRIS TECHNOLOGIES INC",
+      "152",
+      0.0773
+     ],
+     [
+      "EXC US",
+      "EXELON CORP",
+      "841",
+      0.0766
+     ],
+     [
+      "WAB US",
+      "WESTINGHOUSE AIR BRAKE TECHNOL",
+      "138",
+      0.0762
+     ],
+     [
+      "ROP US",
+      "ROPER TECHNOLOGIES INC",
+      "81",
+      0.076
+     ],
+     [
+      "CMG US",
+      "CHIPOTLE MEXICAN GRILL INC",
+      "1,031",
+      0.0752
+     ],
+     [
+      "F US",
+      "FORD MOTOR CO",
+      "3,192",
+      0.0751
+     ],
+     [
+      "BE US",
+      "BLOOM ENERGY CORP",
+      "240",
+      0.0739
+     ],
+     [
+      "BKR US",
+      "BAKER HUGHES CO",
+      "809",
+      0.0731
+     ],
+     [
+      "DVN US",
+      "DEVON ENERGY CORP",
+      "896",
+      0.0729
+     ],
+     [
+      "WAT US",
+      "WATERS CORP",
+      "80",
+      0.0728
+     ],
+     [
+      "YUM US",
+      "YUM! BRANDS INC",
+      "222",
+      0.0727
+     ],
+     [
+      "STT US",
+      "STATE STREET CORP",
+      "224",
+      0.071
+     ],
+     [
+      "ED US",
+      "CONSOLIDATED EDISON INC",
+      "301",
+      0.0709
+     ],
+     [
+      "AMP US",
+      "AMERIPRISE FINANCIAL INC",
+      "72",
+      0.0706
+     ],
+     [
+      "NKE US",
+      "NIKE INC",
+      "980",
+      0.069
+     ],
+     [
+      "AIG US",
+      "AMERICAN INTERNATIONAL GROUP I",
+      "426",
+      0.0682
+     ],
+     [
+      "ROK US",
+      "ROCKWELL AUTOMATION INC",
+      "90",
+      0.0677
+     ],
+     [
+      "IQV US",
+      "IQVIA HOLDINGS INC",
+      "134",
+      0.0665
+     ],
+     [
+      "PRU US",
+      "PRUDENTIAL FINANCIAL INC",
+      "281",
+      0.0659
+     ],
+     [
+      "XYZ US",
+      "BLOCK INC",
+      "441",
+      0.0644
+     ],
+     [
+      "KR US",
+      "KROGER CO/THE",
+      "464",
+      0.0641
+     ],
+     [
+      "FIX US",
+      "COMFORT SYSTEMS USA INC",
+      "29",
+      0.0626
+     ],
+     [
+      "OXY US",
+      "OCCIDENTAL PETROLEUM CORP",
+      "595",
+      0.0625
+     ],
+     [
+      "DHI US",
+      "DR HORTON INC",
+      "207",
+      0.062
+     ],
+     [
+      "WEC US",
+      "WEC ENERGY GROUP INC",
+      "266",
+      0.0619
+     ],
+     [
+      "SYY US",
+      "SYSCO CORP",
+      "390",
+      0.0616
+     ],
+     [
+      "VST US",
+      "VISTRA CORP",
+      "257",
+      0.0611
+     ],
+     [
+      "HIG US",
+      "HARTFORD INSURANCE GROUP INC/T",
+      "221",
+      0.0601
+     ],
+     [
+      "PEG US",
+      "PUBLIC SERVICE ENTERPRISE GROU",
+      "406",
+      0.0599
+     ],
+     [
+      "VMC US",
+      "VULCAN MATERIALS CO",
+      "106",
+      0.0594
+     ],
+     [
+      "CCL US",
+      "CARNIVAL CORP",
+      "1,038",
+      0.0581
+     ],
+     [
+      "RMD US",
+      "RESMED INC",
+      "118",
+      0.0566
+     ],
+     [
+      "UAL US",
+      "UNITED AIRLINES HOLDINGS INC",
+      "264",
+      0.056
+     ],
+     [
+      "ZTS US",
+      "ZOETIS INC",
+      "337",
+      0.0541
+     ],
+     [
+      "MTD US",
+      "METTLER-TOLEDO INTERNATIONAL I",
+      "16",
+      0.0537
+     ],
+     [
+      "TER US",
+      "TERADYNE INC",
+      "127",
+      0.0533
+     ],
+     [
+      "WTW US",
+      "WILLIS TOWERS WATSON PLC",
+      "76",
+      0.0519
+     ],
+     [
+      "CNC US",
+      "CENTENE CORP",
+      "403",
+      0.0511
+     ],
+     [
+      "MLM US",
+      "MARTIN MARIETTA MATERIALS INC",
+      "49",
+      0.0508
+     ],
+     [
+      "AEE US",
+      "AMEREN CORP",
+      "226",
+      0.0505
+     ],
+     [
+      "PCG US",
+      "PG&E CORP",
+      "1,795",
+      0.0503
+     ],
+     [
+      "ADM US",
+      "ARCHER-DANIELS-MIDLAND CO",
+      "393",
+      0.0502
+     ],
+     [
+      "MTB US",
+      "M&T BANK CORP",
+      "118",
+      0.0498
+     ],
+     [
+      "EQT US",
+      "EQT CORP",
+      "510",
+      0.0496
+     ],
+     [
+      "P US",
+      "EVERPURE INC",
+      "271",
+      0.0492
+     ],
+     [
+      "DG US",
+      "DOLLAR GENERAL CORP",
+      "180",
+      0.0491
+     ],
+     [
+      "LH US",
+      "LABCORP HOLDINGS INC",
+      "66",
+      0.0489
+     ],
+     [
+      "AWK US",
+      "AMERICAN WATER WORKS CO INC",
+      "162",
+      0.048
+     ],
+     [
+      "DGX US",
+      "QUEST DIAGNOSTICS INC",
+      "90",
+      0.0471
+     ],
+     [
+      "ATO US",
+      "ATMOS ENERGY CORP",
+      "138",
+      0.0467
+     ],
+     [
+      "LYV US",
+      "LIVE NATION ENTERTAINMENT INC",
+      "129",
+      0.0466
+     ],
+     [
+      "TDY US",
+      "TELEDYNE TECHNOLOGIES INC",
+      "38",
+      0.0466
+     ],
+     [
+      "DTE US",
+      "DTE ENERGY CO",
+      "170",
+      0.0461
+     ],
+     [
+      "IR US",
+      "INGERSOLL RAND INC",
+      "281",
+      0.0459
+     ],
+     [
+      "EME US",
+      "EMCOR GROUP INC",
+      "36",
+      0.0448
+     ],
+     [
+      "RJF US",
+      "RAYMOND JAMES FINANCIAL INC",
+      "141",
+      0.0446
+     ],
+     [
+      "DOV US",
+      "DOVER CORP",
+      "110",
+      0.0443
+     ],
+     [
+      "DRI US",
+      "DARDEN RESTAURANTS INC",
+      "93",
+      0.044
+     ],
+     [
+      "ES US",
+      "EVERSOURCE ENERGY",
+      "307",
+      0.0439
+     ],
+     [
+      "WST US",
+      "WEST PHARMACEUTICAL SERVICES I",
+      "57",
+      0.0436
+     ],
+     [
+      "PPG US",
+      "PPG INDUSTRIES INC",
+      "181",
+      0.0433
+     ],
+     [
+      "EL US",
+      "ESTEE LAUDER COS INC/THE",
+      "202",
+      0.043
+     ],
+     [
+      "CHD US",
+      "CHURCH & DWIGHT CO INC",
+      "193",
+      0.0427
+     ],
+     [
+      "CNP US",
+      "CENTERPOINT ENERGY INC",
+      "537",
+      0.0426
+     ],
+     [
+      "PPL US",
+      "PPL CORP",
+      "613",
+      0.0424
+     ],
+     [
+      "HSY US",
+      "HERSHEY CO/THE",
+      "119",
+      0.0414
+     ],
+     [
+      "CFG US",
+      "CITIZENS FINANCIAL GROUP INC",
+      "343",
+      0.0413
+     ],
+     [
+      "HAL US",
+      "HALLIBURTON CO",
+      "679",
+      0.0413
+     ],
+     [
+      "TPR US",
+      "TAPESTRY INC",
+      "162",
+      0.0411
+     ],
+     [
+      "HPQ US",
+      "HP INC",
+      "745",
+      0.041
+     ],
+     [
+      "STE US",
+      "STERIS PLC",
+      "79",
+      0.0404
+     ],
+     [
+      "WSM US",
+      "WILLIAMS-SONOMA INC",
+      "96",
+      0.0404
+     ],
+     [
+      "FE US",
+      "FIRSTENERGY CORP",
+      "424",
+      0.0395
+     ],
+     [
+      "OMC US",
+      "OMNICOM GROUP INC",
+      "224",
+      0.0393
+     ],
+     [
+      "PHM US",
+      "PULTEGROUP INC",
+      "153",
+      0.0392
+     ],
+     [
+      "EIX US",
+      "EDISON INTERNATIONAL",
+      "314",
+      0.0385
+     ],
+     [
+      "ON US",
+      "ON SEMICONDUCTOR CORP",
+      "317",
+      0.0384
+     ],
+     [
+      "JBL US",
+      "JABIL INC",
+      "85",
+      0.0379
+     ],
+     [
+      "RF US",
+      "REGIONS FINANCIAL CORP",
+      "694",
+      0.0376
+     ],
+     [
+      "Q US",
+      "QNITY ELECTRONICS INC",
+      "170",
+      0.0366
+     ],
+     [
+      "LUV US",
+      "SOUTHWEST AIRLINES CO",
+      "399",
+      0.036
+     ],
+     [
+      "CMS US",
+      "CMS ENERGY CORP",
+      "256",
+      0.0358
+     ],
+     [
+      "XYL US",
+      "XYLEM INC/NY",
+      "190",
+      0.0356
+     ],
+     [
+      "KHC US",
+      "KRAFT HEINZ CO/THE",
+      "705",
+      0.0355
+     ],
+     [
+      "SYF US",
+      "SYNCHRONY FINANCIAL",
+      "265",
+      0.0354
+     ],
+     [
+      "BRO US",
+      "BROWN & BROWN INC",
+      "234",
+      0.035
+     ],
+     [
+      "IFF US",
+      "INTERNATIONAL FLAVORS & FRAGRA",
+      "208",
+      0.0349
+     ],
+     [
+      "NI US",
+      "NISOURCE INC",
+      "391",
+      0.0347
+     ],
+     [
+      "EFX US",
+      "EQUIFAX INC",
+      "96",
+      0.0345
+     ],
+     [
+      "PKG US",
+      "PACKAGING CORP OF AMERICA",
+      "72",
+      0.0341
+     ],
+     [
+      "PFG US",
+      "PRINCIPAL FINANCIAL GROUP INC",
+      "159",
+      0.034
+     ],
+     [
+      "PTC US",
+      "PTC INC",
+      "88",
+      0.0339
+     ],
+     [
+      "BR US",
+      "BROADRIDGE FINANCIAL SOLUTIONS",
+      "93",
+      0.0338
+     ],
+     [
+      "DOW US",
+      "DOW INC",
+      "589",
+      0.0336
+     ],
+     [
+      "GPN US",
+      "GLOBAL PAYMENTS INC",
+      "181",
+      0.0336
+     ],
+     [
+      "SW US",
+      "SMURFIT WESTROCK PLC",
+      "427",
+      0.0336
+     ],
+     [
+      "ZBH US",
+      "ZIMMER BIOMET HOLDINGS INC",
+      "155",
+      0.0332
+     ],
+     [
+      "CDW US",
+      "CDW CORP/DE",
+      "102",
+      0.033
+     ],
+     [
+      "STZ US",
+      "CONSTELLATION BRANDS INC",
+      "122",
+      0.033
+     ],
+     [
+      "DD US",
+      "DUPONT DE NEMOURS INC",
+      "110",
+      0.0326
+     ],
+     [
+      "FTV US",
+      "FORTIVE CORP",
+      "246",
+      0.0318
+     ],
+     [
+      "BBY US",
+      "BEST BUY CO INC",
+      "161",
+      0.0316
+     ],
+     [
+      "NRG US",
+      "NRG ENERGY INC",
+      "171",
+      0.0306
+     ],
+     [
+      "EXE US",
+      "EXPAND ENERGY CORP",
+      "189",
+      0.0305
+     ],
+     [
+      "GIS US",
+      "GENERAL MILLS INC",
+      "436",
+      0.0305
+     ],
+     [
+      "LNT US",
+      "ALLIANT ENERGY CORP",
+      "211",
+      0.0301
+     ],
+     [
+      "SNA US",
+      "SNAP-ON INC",
+      "42",
+      0.0296
+     ],
+     [
+      "L US",
+      "LOEWS CORP",
+      "135",
+      0.0294
+     ],
+     [
+      "KEY US",
+      "KEYCORP",
+      "739",
+      0.029
+     ],
+     [
+      "TSN US",
+      "TYSON FOODS INC",
+      "230",
+      0.0287
+     ],
+     [
+      "WRB US",
+      "W R BERKLEY CORP",
+      "185",
+      0.0287
+     ],
+     [
+      "J US",
+      "JACOBS SOLUTIONS INC",
+      "95",
+      0.0284
+     ],
+     [
+      "CF US",
+      "CF INDUSTRIES HOLDINGS INC",
+      "123",
+      0.0283
+     ],
+     [
+      "MAS US",
+      "MASCO CORP",
+      "161",
+      0.027
+     ],
+     [
+      "GPC US",
+      "GENUINE PARTS CO",
+      "112",
+      0.0267
+     ],
+     [
+      "IEX US",
+      "IDEX CORP",
+      "60",
+      0.0266
+     ],
+     [
+      "LEN US",
+      "LENNAR CORP",
+      "158",
+      0.0264
+     ],
+     [
+      "SWK US",
+      "STANLEY BLACK & DECKER INC",
+      "123",
+      0.0264
+     ],
+     [
+      "IP US",
+      "INTERNATIONAL PAPER CO",
+      "432",
+      0.026
+     ],
+     [
+      "GEN US",
+      "GEN DIGITAL INC",
+      "439",
+      0.0259
+     ],
+     [
+      "CRL US",
+      "CHARLES RIVER LABORATORIES INT",
+      "39",
+      0.0258
+     ],
+     [
+      "AIZ US",
+      "ASSURANT INC",
+      "40",
+      0.0254
+     ],
+     [
+      "HAS US",
+      "HASBRO INC",
+      "115",
+      0.0254
+     ],
+     [
+      "APA US",
+      "APA CORP",
+      "285",
+      0.0252
+     ],
+     [
+      "TYL US",
+      "TYLER TECHNOLOGIES INC",
+      "31",
+      0.0252
+     ],
+     [
+      "EG US",
+      "EVEREST GROUP LTD",
+      "29",
+      0.0244
+     ],
+     [
+      "RL US",
+      "RALPH LAUREN CORP",
+      "31",
+      0.0242
+     ],
+     [
+      "TPL US",
+      "TEXAS PACIFIC LAND CORP",
+      "48",
+      0.0237
+     ],
+     [
+      "LYB US",
+      "LYONDELLBASELL INDUSTRIES NV",
+      "211",
+      0.0231
+     ],
+     [
+      "NVR US",
+      "NVR INC",
+      "2",
+      0.0231
+     ],
+     [
+      "AVY US",
+      "AVERY DENNISON CORP",
+      "62",
+      0.0229
+     ],
+     [
+      "FIS US",
+      "FIDELITY NATIONAL INFORMATION",
+      "420",
+      0.0224
+     ],
+     [
+      "SJM US",
+      "J M SMUCKER CO/THE",
+      "87",
+      0.0224
+     ],
+     [
+      "TXT US",
+      "TEXTRON INC",
+      "140",
+      0.0224
+     ],
+     [
+      "BAX US",
+      "BAXTER INTERNATIONAL INC",
+      "421",
+      0.0223
+     ],
+     [
+      "BG US",
+      "BUNGE GLOBAL SA",
+      "128",
+      0.0212
+     ],
+     [
+      "CLX US",
+      "CLOROX CO/THE",
+      "99",
+      0.0208
+     ],
+     [
+      "MKC US",
+      "MCCORMICK & CO INC/MD",
+      "207",
+      0.02
+     ],
+     [
+      "PNW US",
+      "PINNACLE WEST CAPITAL CORP",
+      "99",
+      0.0199
+     ],
+     [
+      "IVZ US",
+      "INVESCO LTD",
+      "360",
+      0.0197
+     ],
+     [
+      "COO US",
+      "COOPER COS INC/THE",
+      "159",
+      0.0192
+     ],
+     [
+      "GL US",
+      "GLOBE LIFE INC",
+      "63",
+      0.0192
+     ],
+     [
+      "DPZ US",
+      "DOMINO'S PIZZA INC",
+      "27",
+      0.0189
+     ],
+     [
+      "HII US",
+      "HUNTINGTON INGALLS INDUSTRIES",
+      "32",
+      0.0184
+     ],
+     [
+      "FDS US",
+      "FACTSET RESEARCH SYSTEMS INC",
+      "29",
+      0.0183
+     ],
+     [
+      "PNR US",
+      "PENTAIR PLC",
+      "130",
+      0.0182
+     ],
+     [
+      "ROL US",
+      "ROLLINS INC",
+      "243",
+      0.0182
+     ],
+     [
+      "TKO US",
+      "TKO GROUP HOLDINGS INC",
+      "49",
+      0.0182
+     ],
+     [
+      "IT US",
+      "GARTNER INC",
+      "51",
+      0.0181
+     ],
+     [
+      "LII US",
+      "LENNOX INTERNATIONAL INC",
+      "26",
+      0.0175
+     ],
+     [
+      "LVS US",
+      "LAS VEGAS SANDS CORP",
+      "211",
+      0.0164
+     ],
+     [
+      "BEN US",
+      "FRANKLIN TEMPLETON INC",
+      "240",
+      0.0157
+     ],
+     [
+      "ALB US",
+      "ALBEMARLE CORP",
+      "96",
+      0.0152
+     ],
+     [
+      "UHS US",
+      "UNIVERSAL HEALTH SERVICES INC",
+      "42",
+      0.0151
+     ],
+     [
+      "FOX US",
+      "FOX CORP",
+      "109",
+      0.0125
+     ],
+     [
+      "AOS US",
+      "A O SMITH CORP",
+      "90",
+      0.0116
+     ],
+     [
+      "HRL US",
+      "HORMEL FOODS CORP",
+      "238",
+      0.0109
+     ],
+     [
+      "MOS US",
+      "MOSAIC CO/THE",
+      "259",
+      0.01
+     ],
+     [
+      "MGM US",
+      "MGM RESORTS INTERNATIONAL",
+      "144",
+      0.0097
+     ],
+     [
+      "DVA US",
+      "DAVITA INC",
+      "28",
+      0.009
+     ],
+     [
+      "BF/B US",
+      "BROWN-FORMAN CORP",
+      "144",
+      0.0084
+     ],
+     [
+      "NWS US",
+      "NEWS CORP",
+      "97",
+      0.0054
+     ]
+    ]
+   }
   },
   "009815": {
    "name": "大華美國MAG7+",
