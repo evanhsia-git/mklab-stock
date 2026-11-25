@@ -320,8 +320,12 @@ def run():
             problems.append(f"count meta={meta.get('count')} actual={len(stocks_list)}")
         act_src, act_pa = {}, {}
         for s_ in stocks_list:
-            act_src[s_.get("source")] = act_src.get(s_.get("source"), 0) + 1
-            act_pa[s_.get("price_asof")] = act_pa.get(s_.get("price_asof"), 0) + 1
+            # 鍵正規化：None → 'null'（JSON 物件鍵必為字串，meta 端序列化後就是 'null'；
+            # 2026-11-24 #313：CI 班某檔收盤抓失敗 price_asof=None，鍵型差異誤報 ERROR）
+            k_src = "null" if s_.get("source") is None else s_.get("source")
+            k_pa = "null" if s_.get("price_asof") is None else s_.get("price_asof")
+            act_src[k_src] = act_src.get(k_src, 0) + 1
+            act_pa[k_pa] = act_pa.get(k_pa, 0) + 1
         if meta.get("sources") != act_src:
             problems.append(f"sources meta={meta.get('sources')} actual={act_src}")
         if meta.get("price_asof_counts") != act_pa:

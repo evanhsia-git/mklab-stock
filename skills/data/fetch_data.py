@@ -188,8 +188,11 @@ def recompute_meta(doc):
     meta = doc.setdefault("meta", {})
     src, pa = {}, {}
     for s in stocks:
-        src[s.get("source")] = src.get(s.get("source"), 0) + 1
-        pa[s.get("price_asof")] = pa.get(s.get("price_asof"), 0) + 1
+        # 鍵正規化：None → 'null'（與 JSON 序列化語意一致；qa_gate 驗證端同規則，2026-11-24 #313）
+        k_src = "null" if s.get("source") is None else s.get("source")
+        k_pa = "null" if s.get("price_asof") is None else s.get("price_asof")
+        src[k_src] = src.get(k_src, 0) + 1
+        pa[k_pa] = pa.get(k_pa, 0) + 1
     meta["count"] = len(stocks)
     meta["sources"] = src
     meta["price_asof_counts"] = pa

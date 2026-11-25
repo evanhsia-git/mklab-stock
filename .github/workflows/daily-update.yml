@@ -45,8 +45,8 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
-      - name: 安裝依賴（runner 預裝會隨映像更新變動，顯式安裝不靠運氣）
-        run: pip install requests
+      - name: 安裝依賴（runner 預裝會隨映像更新變動，顯式安裝不靠運氣；pandas/openpyxl 供持股 adapter——#313 映像再度縮預裝）
+        run: pip install requests pandas openpyxl
       - name: 抓取當日收盤（TWSE/TPEx）
         run: python skills/data/fetch_data.py daily
       - name: 快照確定性修正（單位／EPS-PE／股本缺口，冪等）
