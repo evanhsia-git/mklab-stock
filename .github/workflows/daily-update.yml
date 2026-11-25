@@ -16,6 +16,7 @@ name: daily-update
 on:
   schedule:
     - cron: "0 9 * * 1-5"    # daily：週一至週五 17:00（台灣）
+    - cron: "0 13 * * 1-5"   # daily-retry：週一至週五 21:00（台灣）——09:00 cron 被 GitHub 延遲或失敗時的當日重試
     - cron: "0 10 * * 6"     # weekly-roe：每週六 18:00
     - cron: "30 9 * * 1-5"   # indices：週一至週五 17:30
     - cron: "0 22 * * 1-5"   # us-market：週一至週五 隔日 06:00
@@ -36,7 +37,7 @@ jobs:
       group: mklab-git-push
       queue: max
       cancel-in-progress: false
-    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 9 * * 1-5'
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 9 * * 1-5' || github.event.schedule == '0 13 * * 1-5'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -70,14 +71,27 @@ jobs:
         run: python skills/data/compute_industry.py
       - name: 全市場 ETF 每日淨值／折溢價（TWSE MIS 反向 API，歷史月檔累積）
         run: python skills/data/fetch_etf_nav.py
-      - name: 官方持股每日更新（國泰／聯邦／大華銀 PCF＋富蘭克林華美月報；缺憑證或單家失敗不擋 job）
+      # 2026-11-25：投信持股 15 天更新一次（每月 1/16 日）——耗時 98% 是等待 13 家投信
+      # 網站回應（實測 2m19s 中 user CPU 僅 1.6s），每日跑的邊際價值低；人工觸發不受限制。
+      # 2026-11-25：投信持股 15 天更新一次（每月 1/16 日）——耗時 98% 是等待 13 家投信
+      # 網站回應（實測 2m19s 中 user CPU 僅 1.6s），每日跑的邊際價值低；人工觸發不受限制。
+      - name: 官方持股更新（國泰／聯邦／大華銀 PCF＋富蘭克林華美月報；每月 1/16＋人工觸發）
         run: |
-          python skills/data/fetch_etf_holdings_cathay.py || echo "[warn] 國泰持股更新失敗"
-          python skills/data/fetch_etf_holdings_usitc.py || echo "[warn] 聯邦持股更新失敗"
-          python skills/data/fetch_etf_holdings_uobam.py || echo "[warn] 大華銀持股更新失敗"
-          pip install -r requirements.txt -q && python skills/data/fetch_etf_holdings_ftft_monthly.py || echo "[warn] FTFT 月報層更新失敗"
-      - name: 主動式 ETF 官方持股（13 家投信破解；單檔失敗標 stale 不中斷）
-        run: python skills/data/fetch_etf_holdings_active.py
+          if [[ "$(date +%-d)" =~ ^(1|16)$ ]] || [[ "${GITHUB_EVENT_NAME:-}" == "workflow_dispatch" ]]; then
+            python skills/data/fetch_etf_holdings_cathay.py || echo "[warn] 國泰持股更新失敗"
+            python skills/data/fetch_etf_holdings_usitc.py || echo "[warn] 聯邦持股更新失敗"
+            python skills/data/fetch_etf_holdings_uobam.py || echo "[warn] 大華銀持股更新失敗"
+            pip install -r requirements.txt -q && python skills/data/fetch_etf_holdings_ftft_monthly.py || echo "[warn] FTFT 月報層更新失敗"
+          else
+            echo "[skip] 投信持股 15 天制（每月 1/16 更新）"
+          fi
+      - name: 主動式 ETF 官方持股（13 家投信破解；每月 1/16＋人工觸發；單檔失敗標 stale 不中斷）
+        run: |
+          if [[ "$(date +%-d)" =~ ^(1|16)$ ]] || [[ "${GITHUB_EVENT_NAME:-}" == "workflow_dispatch" ]]; then
+            python skills/data/fetch_etf_holdings_active.py
+          else
+            echo "[skip] 主動式持股 15 天制（每月 1/16 更新）"
+          fi
       - name: ETF 持股歷史累積（冪等，供換股比對）
         run: python skills/data/accumulate_etf_holdings_history.py
       - name: PCF 淨值 vs TWSE MIS 獨立交叉核對（資料誠信報告，不擋 job）
