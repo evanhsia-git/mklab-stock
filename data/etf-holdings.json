@@ -6,7 +6,7 @@
   "note": "n = 可證實的成份股總數（官方直出完整清單者）；只取得權重前 10 大、無法證實總數時為 null。src：CATHAY/FUBON/YUANTA/USITC/UOBAM＝投信官方直出，CMoney＝第三方備援（前 10 大），YFINANCE＝yfinance 備援。USITC/UOBAM 為 PCF 申贖組合（涵蓋率>98%，非全部持股）。",
   "src_counts": {
    "CATHAY": 31,
-   "CMONEY": 230,
+   "CMONEY": 228,
    "ALLIANZ": 4,
    "PRESIDENT": 4,
    "AB": 1,
@@ -27,7 +27,8 @@
    "NOMURA": 3,
    "ESUN": 1,
    "MEGA": 10,
-   "HUA NAN": 3
+   "HUA NAN": 3,
+   "JPMORGAN": 2
   },
   "official_url_note": "official_url＝投信官網 ETF 產品頁（持股/費用揭露頁）。僅填已人工確認的真實網址，未填＝尚未補齊（新增欄位 2026-11-25，將逐步人工補齊）。"
  },
@@ -360,8 +361,8 @@
    "market": "TWSE",
    "issuer": "摩根證券投資信託股份有限",
    "n": 10,
-   "src": "CMONEY",
-   "asof": "",
+   "src": "JPMORGAN",
+   "asof": "2026/04/10",
    "items": [
     [
      "2330",
@@ -437,7 +438,8 @@
     "nav_official": "11.18 新台幣",
     "aum_twd": 42.67977755,
     "semantics": "top10（頁面僅列前十大，合計 43.79%，非完整清單）",
-    "source": "JPMORGAN 官網頁（用戶瀏覽器 2026-11-25 採集）"
+    "source": "JPMORGAN 官網頁（用戶瀏覽器 2026-11-25 採集）",
+    "nav_asof": "2026-11-24"
    }
   },
   "00402A": {
@@ -30876,8 +30878,8 @@
    "market": "TWSE",
    "issuer": "摩根證券投資信託股份有限",
    "n": 10,
-   "src": "CMONEY",
-   "asof": "",
+   "src": "JPMORGAN",
+   "asof": "2025/10/22",
    "items": [
     [
      "META",
@@ -30953,7 +30955,8 @@
     "nav_official": "14.5 新台幣",
     "aum_twd": 8.80016108,
     "semantics": "top10（頁面僅列前十大，合計 35.52%，非完整清單）",
-    "source": "JPMORGAN 官網頁（用戶瀏覽器 2026-11-25 採集）"
+    "source": "JPMORGAN 官網頁（用戶瀏覽器 2026-11-25 採集）",
+    "nav_asof": "2026-11-24"
    }
   },
   "00990A": {
