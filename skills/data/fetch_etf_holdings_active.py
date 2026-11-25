@@ -542,7 +542,11 @@ def _firstsec_peek(fid):
 
 
 def _firstsec_discover(code):
-    """第一金沒有清單端點：掃 FundDetail.aspx?ID=1-600（8 路平行，串流 300KB 截斷）。"""
+    """第一金沒有清單端點：掃 FundDetail.aspx?ID=1-600（8 路平行，串流 300KB 截斷）。
+
+    cache（data/raw/firstsec-fundids.json）已進 git——CI 每班直接命中，避免 600 個
+    逐 ID 探測（2026-11-24 #313：CI 無快照→全量掃描被站方限流，靜默吞錯誤報成「掃不到」）。
+    """
     cached = {}
     if IDS_CACHE.exists():
         cached = json.loads(IDS_CACHE.read_text(encoding="utf-8"))
@@ -550,6 +554,7 @@ def _firstsec_discover(code):
         return cached[code]
     import concurrent.futures
     found = [None]
+    errors = [0]
     with concurrent.futures.ThreadPoolExecutor(8) as ex:
         def probe(fid):
             if found[0]:
@@ -558,7 +563,7 @@ def _firstsec_discover(code):
                 if _firstsec_peek(fid) == code:
                     found[0] = str(fid)
             except requests.RequestException:
-                pass
+                errors[0] += 1
         list(ex.map(probe, range(1, 601)))
     if found[0]:
         cached[code] = found[0]
@@ -566,6 +571,9 @@ def _firstsec_discover(code):
         IDS_CACHE.write_text(json.dumps(cached, ensure_ascii=False, indent=1), encoding="utf-8")
         print(f"[firstsec] 發現 {code} = fundID {found[0]}（已快取 data/raw/firstsec-fundids.json）")
         return found[0]
+    if errors[0] > 500:
+        raise AdapterError(
+            f"firstsec: {code} 掃描時 {errors[0]}/600 個請求失敗（疑似被站方限流/擋 CI IP），非站方無此基金")
     raise AdapterError(f"firstsec: {code} 在 ID 1-600 掃不到（請人工查 FundDetail.aspx 補 source_id）")
 
 

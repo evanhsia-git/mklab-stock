@@ -15,6 +15,9 @@ data/raw/*
 !data/raw/twse-openapi-usage-map.md
 !data/raw/twse_etf_20261105_with_holdings.csv
 !data/raw/tpex_etf_20261105_with_holdings.csv
+# 第一金 fundID 快照（fetch_etf_holdings_active.py 的 firstsec adapter 依賴；
+# CI 無此檔會觸發 600 ID 全量掃描且被站方限流誤報「掃不到」——#313）
+!data/raw/firstsec-fundids.json
 
 data/daily-*.csv
 
