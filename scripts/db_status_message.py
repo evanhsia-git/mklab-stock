@@ -55,6 +55,8 @@ def build(stocks_path="data/stocks.json", us_path="data/us/us-stocks.json",
     now = dt.datetime.now(dt.timezone(dt.timedelta(hours=8)))
     return "\n".join([
         "📊 資料庫狀態:",
+        "目前資料庫日期:",
+        f"資料以 {asof} 收盤為準",
         f"總筆數: {m.get('count', 'N/A'):,}",
         *rows_short,
         f"📈 覆蓋率 - stocks.json (個股 {len(ind):,} 檔):",
