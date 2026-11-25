@@ -3,7 +3,7 @@
 # （qa_gate.py 會檢查；未登記＝QA 紅燈，本地就抓到，不用等 CI runner 炸——#308/#313 教訓：
 #   GitHub hosted runner 映像每週更新且縮減預裝，依賴 runner 恰好預裝＝賭運氣）
 requests
-pandas
+pandas>=3,<4
 openpyxl
 yfinance
 pypdf
