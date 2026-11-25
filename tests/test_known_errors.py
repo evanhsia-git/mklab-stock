@@ -626,14 +626,12 @@ _ci_push = re.sub(r'^\s*#.*$', '', _ci_push_raw, flags=re.M)  # 註解裡會提�
 check("CI：每個 job 的推送步驟都走共用腳本 scripts/ci_commit_push.sh（不再各 job 各寫一套）",
       wf2.count('bash scripts/ci_commit_push.sh') == _job_ct and 'git config user.name' not in wf2,
       f"jobs={_job_ct} 呼叫={wf2.count('bash scripts/ci_commit_push.sh')}")
-# 2026-11-25 設計決策（ChatGPT 版測試曾有「-X theirs 不得存在」斷言，未採納）：
-# 「衝突即中止」與「過時整檔重寫上線後的自動解鎖」互斥——B 過時重寫 10-30 已上線時，
-# A（較新 11-02）的推送必然 merge 衝突；若衝突即中止，10-30 倒退將永久卡死在遠端。
-# 現行設計：merge -X theirs 先解鎖（取遠端），再由 freshness guard 用 HEAD@{1} 救回較新資料——
-# 兩層組合已在「CI：資料新鮮度守門」行為測試中實證（遠端最終=11-02/price=2370）。
-# 若未來改為「衝突即中止」，必須同時提供人工解鎖程序，否則倒退無法自癒。
-check("CI：推送合併衝突取遠端（-X theirs），不得用 -X ours（舊 checkout 會把遠端較新資料覆蓋回舊的）",
-      '-X ours' not in wf2 and '-X ours' not in _ci_push and '-X theirs' in _ci_push)
+# 2026-11-25 設計決策（採納 ChatGPT v2.1 push 腳本）：合併衝突不再以 -X theirs 自動挑版本
+# （theirs 會靜默丟棄本次新產生的資料）——衝突即中止、不推送，由人工或下一輪排程處理。
+# 正常排程的遠端基準是自己的祖先（無 merge 需求），過時重寫會被下一輪正常資料以
+# fast-forward 取代——「資料新鮮度守門」行為測試在衝突中止設計下依然通過。
+check("CI：推送合併衝突中止（不得用 -X ours／-X theirs 自動挑版本，見 _conflict_abort_ok）",
+      '-X ours' not in wf2 and '-X ours' not in _ci_push and '-X theirs' not in _ci_push)
 # 2026-11-25 整合（ChatGPT 版決策）：推送重試改由 _push_retry_ok「行為測試」驗證
 # （pre-receive 拒絕一次→Attempt 2/5→成功發布），不再比對腳本字面語法——
 # 字面斷言在重試語法調整時會碎（原 until→for 已碎過一次），行為測試驗的是真正結果。
@@ -753,6 +751,66 @@ def _push_retry_ok():
 
 _retry_ok, _retry_detail = _push_retry_ok()
 check("CI：推送被拒（並發非快進）時會重試並最終發布（行為測試）", _retry_ok, _retry_detail)
+
+
+def _conflict_abort_ok():
+    """行為測試（2026-11-25 整合 ChatGPT v2.1）：本機與遠端改了同一行資料 →
+    腳本必須中止、不推送、不留下未完成的合併（不再以 -X theirs 靜默挑版本）。"""
+    import shutil as _sh
+    t = tempfile.mkdtemp()
+
+    def git(*a, cwd=t):
+        return subprocess.run(["git", *a], cwd=cwd, capture_output=True, text=True)
+
+    idn = ["-c", "user.email=t@t", "-c", "user.name=t"]
+    try:
+        git("init", "-q", "--bare", "--initial-branch=main", "origin.git")
+        seed = os.path.join(t, "seed")
+        os.makedirs(os.path.join(seed, "data")); os.makedirs(os.path.join(seed, "scripts"))
+        for fn, txt in (("data/stocks.json", '{"meta":{"as_of":"2026-10-30"},"stocks":[{"sym":"2330","price":100}]}'),
+                        ("data/industry.json", '{"meta":{"as_of":"2026-10-30"},"industries":{}}')):
+            with open(os.path.join(seed, fn), "w") as f:
+                f.write(txt)
+        for fn in ("ci_commit_push.sh", "ci_data_freshness.py"):
+            _sh.copy(os.path.join("scripts", fn), os.path.join(seed, "scripts", fn))
+        with open(os.path.join(seed, "scripts/ci_qa_gate.sh"), "w") as f:
+            f.write("#!/usr/bin/env bash\necho '[stub-qa] PASS'; exit 0\n")
+        os.chmod(os.path.join(seed, "scripts/ci_qa_gate.sh"), 0o755)
+        git("init", "-q", "-b", "main", cwd=seed)
+        git(*idn, "add", "-A", cwd=seed); git(*idn, "commit", "-q", "-m", "seed", cwd=seed)
+        git("remote", "add", "origin", os.path.join(t, "origin.git"), cwd=seed)
+        git("push", "-q", "origin", "main", cwd=seed)
+        # 本機先 clone（基底仍是 seed），之後遠端才推新版本，兩邊才會真正衝突
+        w = os.path.join(t, "W"); git("clone", "-q", os.path.join(t, "origin.git"), "W", cwd=t)
+        git(*idn, "config", "user.email", "t@t", cwd=w); git(*idn, "config", "user.name", "t", cwd=w)
+        # 遠端：另一個 job 先推了同一行的不同數值
+        o = os.path.join(t, "O"); git("clone", "-q", os.path.join(t, "origin.git"), "O", cwd=t)
+        git(*idn, "config", "user.email", "t@t", cwd=o); git(*idn, "config", "user.name", "t", cwd=o)
+        d = json.load(open(os.path.join(o, "data/stocks.json"), encoding="utf-8")); d["stocks"][0]["price"] = 2300
+        json.dump(d, open(os.path.join(o, "data/stocks.json"), "w", encoding="utf-8"))
+        git(*idn, "commit", "-qam", "remote update", cwd=o); git("push", "-q", "origin", "main", cwd=o)
+        remote_before = git("rev-parse", "main", cwd=os.path.join(t, "origin.git")).stdout.strip()
+        # 本機：同一行改成另一個數值，尚未 commit
+        d = json.load(open(os.path.join(w, "data/stocks.json"), encoding="utf-8")); d["stocks"][0]["price"] = 2370
+        json.dump(d, open(os.path.join(w, "data/stocks.json"), "w", encoding="utf-8"))
+        os.makedirs(os.path.join(w, "scripts"), exist_ok=True)
+        for fn in ("ci_commit_push.sh", "ci_data_freshness.py", "ci_qa_gate.sh"):
+            _sh.copy(os.path.join(seed, "scripts", fn), os.path.join(w, "scripts", fn))
+        r = subprocess.run(["bash", "scripts/ci_commit_push.sh", "conflict test", "data/stocks.json"],
+                           cwd=w, capture_output=True, text=True, timeout=300)
+        remote_after = git("rev-parse", "main", cwd=os.path.join(t, "origin.git")).stdout.strip()
+        merge_left = os.path.exists(os.path.join(w, ".git", "MERGE_HEAD"))
+        aborted = "Merge conflict with remote" in r.stderr
+        ok = r.returncode != 0 and aborted and remote_after == remote_before and not merge_left
+        return ok, f"rc={r.returncode} 中止={aborted} 遠端未變={remote_after == remote_before} 未完成合併={merge_left}"
+    except Exception as e:
+        return False, f"{type(e).__name__}: {e}"
+    finally:
+        _sh.rmtree(t, ignore_errors=True)
+
+
+_conflict_ok, _conflict_detail = _conflict_abort_ok()
+check("CI：本機與遠端衝突時中止、不推送、不留下未完成合併（行為測試）", _conflict_ok, _conflict_detail)
 
 # 指數替代 ETF 來源（2026-11-02：data/index-holdings/ 曾經 0 檔，job 卻顯示 success）
 _pr2 = {f['key']: f for f in _cfg['funds']}
