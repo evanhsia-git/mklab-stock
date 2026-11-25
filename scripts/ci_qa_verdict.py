@@ -40,6 +40,10 @@ EXPECTED_CHECKS_FLOOR = _CONTRACT["expected_checks_min"]
 REQUIRED_CHECKS = tuple(_CONTRACT["required_checks"])
 
 
+# 2026-11-25 整合 ChatGPT v2.1：status 枚舉常數化（產生端 qa_gate.py 的四值對應）
+STATUSES = ("PASS", "WARNING", "ERROR", "MANUAL")
+
+
 def validate(report):
     if not isinstance(report, dict):
         raise ValueError("報告必須為 JSON object")
@@ -73,7 +77,7 @@ def validate(report):
     # 2026-11-25 驗收修正：qa_gate.py 的 Check.manual() 產生合法的 MANUAL status
     # （Chart/Console/視覺回歸等人工驗證項，不計入自動阻擋）——原版會把正式報告
     # 全數誤擋（實證：現有 qa-result.json → "未知 status: 'MANUAL'"）。
-    counts = {"PASS": 0, "WARNING": 0, "ERROR": 0, "MANUAL": 0}
+    counts = {status: 0 for status in STATUSES}
     for i, check in enumerate(checks):
         if not isinstance(check, dict):
             raise ValueError(f"checks[{i}] 必須為 object")
@@ -105,14 +109,21 @@ def main(argv=None):
             report = json.load(stream, object_pairs_hook=unique_object,
                                parse_constant=reject_constant, parse_float=finite_float)
         counts = validate(report)
-    except (OSError, ValueError, RecursionError) as exc:
+    except (OSError, ValueError, TypeError, RecursionError) as exc:
         print(f"🔴 BLOCK：QA 報告無效 {path}: {exc}", file=sys.stderr)
         return 1
     allow = report["allow_deploy"]
-    print(f"allow_deploy={allow} critical_errors={counts['ERROR']} warnings={counts['WARNING']}")
+    # 2026-11-25 整合 ChatGPT v2.1 的呈現強化：WARNING 逐項列出＋MANUAL 計數提示
+    print(f"allow_deploy={allow} critical_errors={counts['ERROR']} "
+          f"warnings={counts['WARNING']} manual={counts['MANUAL']}")
     for check in report["checks"]:
         if check["status"] == "ERROR":
-            print(f"  ERROR  {check['cat']} / {check['name']}: {check['detail']}")
+            print(f"  ERROR   {check['cat']} / {check['name']}: {check['detail']}")
+    for check in report["checks"]:
+        if check["status"] == "WARNING":
+            print(f"  WARNING {check['cat']} / {check['name']}: {check['detail']}")
+    if counts["MANUAL"]:
+        print(f"  NOTE    {counts['MANUAL']} 項需人工驗證（不阻擋自動發布）")
     if not allow:
         print("🔴 BLOCK：存在 Critical ERROR，禁止提交／發布")
         return 1
