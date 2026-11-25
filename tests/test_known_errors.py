@@ -541,8 +541,14 @@ check("評分公式缺欄位不計分（不補 0）",
 
 # 個股 K 線檔：每檔行情都有對應 K 線，且最後一筆與行情收盤一致
 import os as _os
-kl_missing=[x['sym'] for x in S if not _os.path.exists(f"data/kline/{x['sym']}.json")]
-check("個股 K 線檔覆蓋所有股票", len(kl_missing)==0, f"缺 {len(kl_missing)} 檔")
+# 2026-11-25：尚未上市的標的（listing_date 晚於今天）沒有行情→不應要求 K 線檔
+# （實證 00419A 主動施羅德AI台股：官方清單已登錄、11-26 掛牌）
+import datetime as _dt_mod
+_today = _dt_mod.date.today().isoformat()
+kl_missing=[x['sym'] for x in S
+            if str(x.get('listing_date') or '9999-99-99')[:10] <= _today
+            and not _os.path.exists(f"data/kline/{x['sym']}.json")]
+check("個股 K 線檔覆蓋所有已上市股票（未上市豁免）", len(kl_missing)==0, f"缺 {len(kl_missing)} 檔")
 bad_last=[]
 for x in S[:200]:
     pth=f"data/kline/{x['sym']}.json"
