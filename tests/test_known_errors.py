@@ -626,6 +626,12 @@ _ci_push = re.sub(r'^\s*#.*$', '', _ci_push_raw, flags=re.M)  # 註解裡會提�
 check("CI：每個 job 的推送步驟都走共用腳本 scripts/ci_commit_push.sh（不再各 job 各寫一套）",
       wf2.count('bash scripts/ci_commit_push.sh') == _job_ct and 'git config user.name' not in wf2,
       f"jobs={_job_ct} 呼叫={wf2.count('bash scripts/ci_commit_push.sh')}")
+# 2026-11-25 設計決策（ChatGPT 版測試曾有「-X theirs 不得存在」斷言，未採納）：
+# 「衝突即中止」與「過時整檔重寫上線後的自動解鎖」互斥——B 過時重寫 10-30 已上線時，
+# A（較新 11-02）的推送必然 merge 衝突；若衝突即中止，10-30 倒退將永久卡死在遠端。
+# 現行設計：merge -X theirs 先解鎖（取遠端），再由 freshness guard 用 HEAD@{1} 救回較新資料——
+# 兩層組合已在「CI：資料新鮮度守門」行為測試中實證（遠端最終=11-02/price=2370）。
+# 若未來改為「衝突即中止」，必須同時提供人工解鎖程序，否則倒退無法自癒。
 check("CI：推送合併衝突取遠端（-X theirs），不得用 -X ours（舊 checkout 會把遠端較新資料覆蓋回舊的）",
       '-X ours' not in wf2 and '-X ours' not in _ci_push and '-X theirs' in _ci_push)
 # 2026-11-25：v2.0 push 腳本重試語法為 for((attempt=1;attempt<=5))＋push refs/heads/main
@@ -654,13 +660,14 @@ def _freshness_guard_ok():
         with open(os.path.join(seed, "data/industry.json"), "w") as f:
             f.write('{"meta":{"as_of":"2026-10-30"},"industries":{}}')
         git("init", "-q", "-b", "main", cwd=seed)
-        # 2026-11-25：v2.0 push 腳本要求 QA gate 存在（合併後必跑）——fixture 同步提供
-        # QA_GATE_PATH 指向的 mock gate（本測試驗的是 freshness 行為，QA 內容由其他層把關）。
+        # 2026-11-25：v2.0 push 腳本要求 QA gate 存在（合併後必跑）——fixture 以 stub
+        # 覆寫 seed 副本的 ci_qa_gate.sh（本測試驗的是 freshness 行為，QA 內容由其他層把關）。
+        # （2026-11-25 整合 ChatGPT 版：stub 直接覆寫副本比 QA_GATE_PATH 間接層更簡潔。）
         for fn in ("ci_commit_push.sh", "ci_data_freshness.py", "ci_qa_gate.sh"):
             _sh.copy(os.path.join("scripts", fn), os.path.join(seed, "scripts", fn))
-        with open(os.path.join(seed, "scripts/mock_qa_gate.sh"), "w") as f:
+        with open(os.path.join(seed, "scripts/ci_qa_gate.sh"), "w") as f:
             f.write("#!/usr/bin/env bash\necho '[mock-qa] PASS'; exit 0\n")
-        os.chmod(os.path.join(seed, "scripts/mock_qa_gate.sh"), 0o755)
+        os.chmod(os.path.join(seed, "scripts/ci_qa_gate.sh"), 0o755)
         idn = ["-c", "user.email=t@t", "-c", "user.name=t"]
         git(*idn, "add", "-A", cwd=seed); git(*idn, "commit", "-q", "-m", "seed", cwd=seed)
         git("remote", "add", "origin", os.path.join(t, "origin.git"), cwd=seed)
@@ -677,9 +684,8 @@ def _freshness_guard_ok():
         p = os.path.join(a, "data/stocks.json")
         d = json.load(open(p, encoding="utf-8")); d["meta"]["as_of"] = "2026-11-02"; d["stocks"][0]["price"] = 2370
         json.dump(d, open(p, "w", encoding="utf-8"))
-        _env = dict(os.environ, QA_GATE_PATH="scripts/mock_qa_gate.sh")
         r = subprocess.run(["bash", "scripts/ci_commit_push.sh", "A 每日更新", "data/"],
-                           cwd=a, capture_output=True, text=True, timeout=300, env=_env)
+                           cwd=a, capture_output=True, text=True, timeout=300)
         final = json.loads(git("show", "main:data/stocks.json", cwd=os.path.join(t, "origin.git")).stdout)
         ok = r.returncode == 0 and final["meta"]["as_of"] == "2026-11-02" and final["stocks"][0]["price"] == 2370
         return ok, f"rc={r.returncode} 遠端 as_of={final['meta']['as_of']} price={final['stocks'][0]['price']}"
@@ -691,6 +697,64 @@ def _freshness_guard_ok():
 
 _fresh_ok, _fresh_detail = _freshness_guard_ok()
 check("CI：資料新鮮度守門（過時整檔重寫不得讓資料倒退）", _fresh_ok, _fresh_detail)
+
+
+def _push_retry_ok():
+    """行為測試（2026-11-25 整合 ChatGPT 版）：遠端第一次推送拒絕（模擬其他 job 插隊的
+    非快進競態），腳本必須重試並最終成功發布——不只比對腳本字面有重試迴圈，而是實際跑。"""
+    import shutil as _sh
+    t = tempfile.mkdtemp()
+
+    def git(*a, cwd=t):
+        return subprocess.run(["git", *a], cwd=cwd, capture_output=True, text=True)
+
+    idn = ["-c", "user.email=t@t", "-c", "user.name=t"]
+    try:
+        git("init", "-q", "--bare", "--initial-branch=main", "origin.git")
+        seed = os.path.join(t, "seed")
+        os.makedirs(os.path.join(seed, "data")); os.makedirs(os.path.join(seed, "scripts"))
+        for fn, txt in (("data/stocks.json", '{"meta":{"as_of":"2026-10-30"},"stocks":[{"sym":"2330","price":100}]}'),
+                        ("data/industry.json", '{"meta":{"as_of":"2026-10-30"},"industries":{}}')):
+            with open(os.path.join(seed, fn), "w") as f:
+                f.write(txt)
+        for fn in ("ci_commit_push.sh", "ci_data_freshness.py"):
+            _sh.copy(os.path.join("scripts", fn), os.path.join(seed, "scripts", fn))
+        with open(os.path.join(seed, "scripts/ci_qa_gate.sh"), "w") as f:
+            f.write("#!/usr/bin/env bash\necho '[stub-qa] PASS'; exit 0\n")
+        os.chmod(os.path.join(seed, "scripts/ci_qa_gate.sh"), 0o755)
+        git("init", "-q", "-b", "main", cwd=seed)
+        git(*idn, "add", "-A", cwd=seed); git(*idn, "commit", "-q", "-m", "seed", cwd=seed)
+        git("remote", "add", "origin", os.path.join(t, "origin.git"), cwd=seed)
+        git("push", "-q", "origin", "main", cwd=seed)
+        # pre-receive hook：標記檔存在時拒絕一次（模擬非快進競態），然後移除標記
+        hook = os.path.join(t, "origin.git", "hooks", "pre-receive")
+        with open(hook, "w") as f:
+            f.write('#!/bin/sh\nif [ -f "$GIT_DIR/reject_once" ]; then rm -f "$GIT_DIR/reject_once"; '
+                    'echo "simulated concurrent push" >&2; exit 1; fi\nexit 0\n')
+        os.chmod(hook, 0o755)
+        open(os.path.join(t, "origin.git", "reject_once"), "w").close()
+        w = os.path.join(t, "W"); git("clone", "-q", os.path.join(t, "origin.git"), "W", cwd=t)
+        git(*idn, "config", "user.name", "t", cwd=w); git(*idn, "config", "user.email", "t@t", cwd=w)
+        p = os.path.join(w, "data/stocks.json")
+        d = json.load(open(p, encoding="utf-8")); d["stocks"][0]["price"] = 2370
+        json.dump(d, open(p, "w", encoding="utf-8"))
+        os.makedirs(os.path.join(w, "scripts"), exist_ok=True)
+        for fn in ("ci_commit_push.sh", "ci_data_freshness.py", "ci_qa_gate.sh"):
+            _sh.copy(os.path.join(seed, "scripts", fn), os.path.join(w, "scripts", fn))
+        r = subprocess.run(["bash", "scripts/ci_commit_push.sh", "retry test", "data/stocks.json"],
+                           cwd=w, capture_output=True, text=True, timeout=300)
+        final = json.loads(git("show", "main:data/stocks.json", cwd=os.path.join(t, "origin.git")).stdout)
+        retried = "Attempt 2/5" in r.stdout
+        ok = r.returncode == 0 and retried and final["stocks"][0]["price"] == 2370
+        return ok, f"rc={r.returncode} 重試={retried} 遠端 price={final['stocks'][0]['price']}"
+    except Exception as e:
+        return False, f"{type(e).__name__}: {e}"
+    finally:
+        _sh.rmtree(t, ignore_errors=True)
+
+
+_retry_ok, _retry_detail = _push_retry_ok()
+check("CI：推送被拒（並發非快進）時會重試並最終發布（行為測試）", _retry_ok, _retry_detail)
 
 # 指數替代 ETF 來源（2026-11-02：data/index-holdings/ 曾經 0 檔，job 卻顯示 success）
 _pr2 = {f['key']: f for f in _cfg['funds']}
