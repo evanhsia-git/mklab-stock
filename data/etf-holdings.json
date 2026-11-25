@@ -27,7 +27,8 @@
    "NOMURA": 3,
    "ESUN": 1,
    "MEGA": 10
-  }
+  },
+  "official_url_note": "official_url＝投信官網 ETF 產品頁（持股/費用揭露頁）。僅填已人工確認的真實網址，未填＝尚未補齊（新增欄位 2026-11-25，將逐步人工補齊）。"
  },
  "holdings": {
   "00400A": {
@@ -32729,7 +32730,8 @@
     "distribution": "季配息",
     "type": "主動式ETF",
     "source": "megafunds.com.tw 產品頁（用戶瀏覽器 2026-11-25 採集）"
-   }
+   },
+   "official_url": "https://www.megafunds.com.tw/MEGA/etf/etf_product.aspx?id=23"
   },
   "00997A": {
    "name": "主動群益美國增長",

@@ -1081,7 +1081,7 @@
       const h = H[e.sym];
       const items = (h && h.items) || [];
       const summary = items.slice(0, 10).map(it => it[0] + ' ' + it[1] + '(' + (it[2] == null ? '-' : it[2]) + '%)').join('；');
-      return Object.assign({}, e, { holdings10: summary || '-', holdings_src: h ? (h.src || '') : '' });
+      return Object.assign({}, e, { holdings10: summary || '-', holdings_src: h ? (h.src || '') : '', official_url: (h && h.official_url) || '' });
     });
     // 成份股明細區塊：每檔 ETF 的全部已存成份股（官方直出者可達 50 檔）
     const detail = [];
@@ -1097,7 +1097,7 @@
     });
     const holdCount = etfRows.filter(r => r.holdings_src).length;
     exportSections([
-      { title: 'ETF', rows: etfRows, cols: colsFrom(TW_IDS).concat(colsFrom(TW_ETF_EXTRA)).concat([{ id: 'holdings_src', label: '成份股來源' }]) },
+      { title: 'ETF', rows: etfRows, cols: colsFrom(TW_IDS).concat(colsFrom(TW_ETF_EXTRA)).concat([{ id: 'holdings_src', label: '成份股來源' }, { id: 'official_url', label: '官方網頁網址' }]) },
       { title: 'ETF 成份股明細', rows: detail, cols: [
         { id: 'etf', label: 'ETF代號' }, { id: 'etf_name', label: 'ETF名稱' }, { id: 'rank', label: '排名' },
         { id: 'code', label: '成份股代號' }, { id: 'stock_name', label: '成份股名稱' }, { id: 'weight', label: '權重(%)' },
