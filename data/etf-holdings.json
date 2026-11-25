@@ -358,63 +358,86 @@
    "name": "主動摩根台灣鑫收",
    "market": "TWSE",
    "issuer": "摩根證券投資信託股份有限",
-   "n": null,
+   "n": 10,
    "src": "CMONEY",
    "asof": "",
    "items": [
     [
      "2330",
      "台灣積體電路製造",
-     19.21
-    ],
-    [
-     "C_NTD",
-     "CASH",
-     9.53
+     19.32,
+     369823
     ],
     [
      "2454",
      "聯發科技",
-     5.24
+     5.58,
+     58800
     ],
     [
      "3711",
      "日月光",
-     4.38
+     3.39,
+     273000
     ],
     [
      "2891",
      "中國信託金融控股",
-     2.35
+     2.49,
+     1522000
     ],
     [
-     "2603",
-     "長榮海運",
-     2.28
+     "2886",
+     "兆豐金融控股",
+     2.34,
+     1817000
     ],
     [
-     "3008",
-     "大立光電",
-     2.24
+     "1477",
+     "聚陽實業",
+     2.26,
+     429600
+    ],
+    [
+     "1476",
+     "儒鴻企業",
+     2.19,
+     252000
     ],
     [
      "2303",
      "聯華電子",
-     2.21
+     2.18,
+     956000
     ],
     [
-     "2881",
-     "富邦金融控股",
-     2.05
+     "6223",
+     "旺矽科技",
+     2.04,
+     20800
     ],
     [
-     "2884",
-     "玉山金融控股",
-     2.04
+     "2603",
+     "長榮海運",
+     2.0,
+     332000
     ]
    ],
    "n_listed": 10,
-   "stale": true
+   "stale": true,
+   "fees_official": {
+    "management_fee": 0.6,
+    "custody_fee": 0.045,
+    "establish_date": "2026/03/31",
+    "listing_date": "2026/04/10",
+    "custodian": "國泰世華商業銀行股份有限公司",
+    "isin": "TW00000401A1",
+    "bloomberg": "00401A TT",
+    "nav_official": "11.18 新台幣",
+    "aum_twd": 42.67977755,
+    "semantics": "top10（頁面僅列前十大，合計 43.79%，非完整清單）",
+    "source": "JPMORGAN 官網頁（用戶瀏覽器 2026-11-25 採集）"
+   }
   },
   "00402A": {
    "name": "主動安聯美國科技",
@@ -30835,63 +30858,86 @@
    "name": "主動摩根美國科技",
    "market": "TWSE",
    "issuer": "摩根證券投資信託股份有限",
-   "n": null,
+   "n": 10,
    "src": "CMONEY",
    "asof": "",
    "items": [
     [
-     "NVDA",
-     "NVIDIA CORP",
-     4.51
-    ],
-    [
      "META",
      "META PLATFORMS INC-CLASS A",
-     4.29
-    ],
-    [
-     "CRWD",
-     "CROWDSTRIKE HOLDINGS INC - A",
-     3.78
-    ],
-    [
-     "AVGO",
-     "BROADCOM INC",
-     3.53
+     4.36,
+     1956
     ],
     [
      "PANW",
      "PALO ALTO NETWORKS INC",
-     3.49
-    ],
-    [
-     "TSLA",
-     "TESLA INC",
-     3.35
-    ],
-    [
-     "CRM",
-     "SALESFORCE INC",
-     3.34
-    ],
-    [
-     "MSFT",
-     "MICROSOFT CORP",
-     3.33
+     4.04,
+     3031
     ],
     [
      "TTWO",
      "TAKE-TWO INTERACTIVE SOFTWRE",
-     3.22
+     3.9,
+     4684
+    ],
+    [
+     "MSFT",
+     "MICROSOFT CORP",
+     3.76,
+     2006
+    ],
+    [
+     "CRWD",
+     "CROWDSTRIKE HOLDINGS INC - A",
+     3.71,
+     4654
+    ],
+    [
+     "TSLA",
+     "TESLA INC",
+     3.34,
+     2299
+    ],
+    [
+     "NET",
+     "CLOUDFLARE INC - CLASS A",
+     3.33,
+     3066
+    ],
+    [
+     "CRM",
+     "SALESFORCE INC",
+     3.23,
+     4425
+    ],
+    [
+     "SNOW",
+     "SNOWFLAKE INC-CLASS A",
+     2.93,
+     2859
     ],
     [
      "SHOP",
      "SHOPIFY INC - CLASS A",
-     3.12
+     2.92,
+     5839
     ]
    ],
    "n_listed": 10,
-   "stale": true
+   "stale": true,
+   "fees_official": {
+    "management_fee": 0.75,
+    "custody_fee": 0.15,
+    "establish_date": "2025/10/14",
+    "listing_date": "2025/10/22",
+    "custodian": "中國信託商業銀行股份有限公司",
+    "isin": "TW00000989A5",
+    "bloomberg": "00989A TT",
+    "nav_official": "14.5 新台幣",
+    "aum_twd": 8.80016108,
+    "semantics": "top10（頁面僅列前十大，合計 35.52%，非完整清單）",
+    "source": "JPMORGAN 官網頁（用戶瀏覽器 2026-11-25 採集）"
+   }
   },
   "00990A": {
    "name": "主動元大AI新經濟",
