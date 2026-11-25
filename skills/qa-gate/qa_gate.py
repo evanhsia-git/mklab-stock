@@ -311,6 +311,52 @@ def run():
         c.error(f"檢查失敗: {e}", "", stocks_path)
     add(c)
 
+    # 依賴登記（#313 教訓的根治）：腳本 import 的第三方套件必須在 requirements.txt——
+    # runner 預裝會隨映像更新縮水（#308 requests、#313 pandas 連續爆），顯式清單＋閘門防漏
+    c = Check("CI", "Python 第三方依賴全部登記於 requirements.txt")
+    try:
+        import ast as _ast
+        import glob as _glob
+        req_path = os.path.join(ROOT, "requirements.txt")
+        declared = set()
+        if os.path.exists(req_path):
+            for line in open(req_path, encoding="utf-8"):
+                line = line.strip()
+                if line and not line.startswith("#"):
+                    declared.add(re.split(r"[=<>!\[]", line)[0].strip().lower())
+        stdlib = set(getattr(sys, "stdlib_module_names", ()))
+        # 站內模組：與待檢腳本同目錄（或 scripts/）內存在的檔名即視為站內
+        repo_mods = {os.path.splitext(os.path.basename(p))[0]
+                     for p in _glob.glob(os.path.join(ROOT, "skills", "data", "*.py"))
+                     + _glob.glob(os.path.join(ROOT, "scripts", "*.py"))
+                     + _glob.glob(os.path.join(ROOT, "skills", "qa-gate", "*.py"))}
+        unregistered = []
+        for py in (_glob.glob(os.path.join(ROOT, "skills", "data", "*.py"))
+                   + _glob.glob(os.path.join(ROOT, "scripts", "*.py"))):
+            try:
+                tree = _ast.parse(open(py, encoding="utf-8").read())
+            except SyntaxError:
+                continue
+            for node in _ast.walk(tree):
+                mods = []
+                if isinstance(node, _ast.Import):
+                    mods = [a.name.split(".")[0] for a in node.names]
+                elif isinstance(node, _ast.ImportFrom) and node.module and node.level == 0:
+                    mods = [node.module.split(".")[0]]
+                for m_ in mods:
+                    if m_ in stdlib or m_ in repo_mods or m_ in declared or m_ == "qa_gate":
+                        continue
+                    rel = os.path.relpath(py, ROOT)
+                    unregistered.append(f"{m_}（{rel}）")
+        if unregistered:
+            c.error(f"未登記的第三方套件：{sorted(set(unregistered))}——加入 requirements.txt",
+                    "runner 預裝會縮水，未登記＝CI 隨機爆 ModuleNotFoundError", "requirements.txt")
+        else:
+            c.ok(f"所有第三方 import 已登記（{len(declared)} 個套件）")
+    except Exception as e:
+        c.error(f"檢查失敗: {e}", "", "requirements.txt")
+    add(c)
+
     # P0-6 / P1-1：meta 統計必須與實際陣列一致（count / sources / price_asof_counts）
     c = Check("Data", "meta 統計與實際陣列一致")
     try:

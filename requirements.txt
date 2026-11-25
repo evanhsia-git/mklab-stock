@@ -1,0 +1,11 @@
+# mklab-stock Python 第三方依賴（單一真相源）
+# 規則：skills/data/ 與 scripts/ 下任何腳本 import 的第三方套件必須登記於此
+# （qa_gate.py 會檢查；未登記＝QA 紅燈，本地就抓到，不用等 CI runner 炸——#308/#313 教訓：
+#   GitHub hosted runner 映像每週更新且縮減預裝，依賴 runner 恰好預裝＝賭運氣）
+requests
+pandas
+openpyxl
+yfinance
+pypdf
+certifi
+lxml

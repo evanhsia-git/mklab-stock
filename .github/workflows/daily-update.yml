@@ -45,8 +45,9 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
+          cache: 'pip' 
       - name: 安裝依賴（runner 預裝會隨映像更新變動，顯式安裝不靠運氣；pandas/openpyxl 供持股 adapter——#313 映像再度縮預裝）
-        run: pip install requests pandas openpyxl
+        run: pip install -r requirements.txt
       - name: 抓取當日收盤（TWSE/TPEx）
         run: python skills/data/fetch_data.py daily
       - name: 快照確定性修正（單位／EPS-PE／股本缺口，冪等）
@@ -74,7 +75,7 @@ jobs:
           python skills/data/fetch_etf_holdings_cathay.py || echo "[warn] 國泰持股更新失敗"
           python skills/data/fetch_etf_holdings_usitc.py || echo "[warn] 聯邦持股更新失敗"
           python skills/data/fetch_etf_holdings_uobam.py || echo "[warn] 大華銀持股更新失敗"
-          pip install pypdf -q && python skills/data/fetch_etf_holdings_ftft_monthly.py || echo "[warn] FTFT 月報層更新失敗"
+          pip install -r requirements.txt -q && python skills/data/fetch_etf_holdings_ftft_monthly.py || echo "[warn] FTFT 月報層更新失敗"
       - name: 主動式 ETF 官方持股（13 家投信破解；單檔失敗標 stale 不中斷）
         run: python skills/data/fetch_etf_holdings_active.py
       - name: ETF 持股歷史累積（冪等，供換股比對）
@@ -103,8 +104,9 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
+          cache: 'pip' 
       - name: 安裝 yfinance
-        run: pip install yfinance
+        run: pip install -r requirements.txt
       - name: 補 ROE/ROA（yfinance，每檔間隔 3 秒）
         run: python skills/data/fetch_data.py weekly
       - name: QA 閘門（提交前，錯誤即中止，不推送）
@@ -127,8 +129,9 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
+          cache: 'pip' 
       - name: 安裝 yfinance
-        run: pip install yfinance
+        run: pip install -r requirements.txt
       - name: 全球指數與 ETF（yfinance）
         run: python skills/data/fetch_data.py indices
       - name: 台股加權指數 K 線（yfinance ^TWII）
@@ -153,8 +156,9 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
+          cache: 'pip' 
       - name: 安裝 yfinance
-        run: pip install yfinance
+        run: pip install -r requirements.txt
       - name: 美股個股與 ETF 前 30 大（yfinance）
         run: python skills/data/fetch_us_data.py all
       - name: 美股月／年漲跌（yfinance 調整後歷史價，失敗保留前次值）
@@ -179,8 +183,9 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
+          cache: 'pip' 
       - name: 安裝依賴（yfinance 供輔助、requests 已內建）
-        run: pip install yfinance
+        run: pip install -r requirements.txt
       - name: 抓取 SEC EDGAR Company Facts 並更新 us-stocks.json
         run: python skills/data/fetch_sec_edgar.py
       - name: QA 閘門（提交前，錯誤即中止，不推送）
@@ -203,8 +208,9 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
+          cache: 'pip' 
       - name: 安裝 yfinance
-        run: pip install yfinance
+        run: pip install -r requirements.txt
       - name: 美股／全球／情緒每日收盤（yfinance）
         run: python skills/data/fetch_global_history.py
       - name: QA 閘門（提交前，錯誤即中止，不推送）
@@ -227,8 +233,9 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
+          cache: 'pip' 
       - name: 安裝解析套件
-        run: pip install pandas openpyxl lxml
+        run: pip install -r requirements.txt
       - name: 四大指數替代 ETF 持股
         run: python skills/data/fetch_index_holdings.py
       - name: QA 閘門（提交前，錯誤即中止，不推送）
@@ -251,8 +258,9 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
+          cache: 'pip' 
       - name: 安裝依賴（pandas/openpyxl 供國泰持股 Excel）
-        run: pip install pandas openpyxl
+        run: pip install -r requirements.txt
       - name: 下載 TWSE 官方財報與公司資料
         run: python skills/data/fetch_official_fundamentals.py
       - name: 匯入財報（ROE/ROA/EPS、股利）
@@ -281,6 +289,7 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
+          cache: 'pip' 
       - name: ETF 補充資料（規模／受益人數，官方自動化）
         run: python skills/data/fetch_etf_meta.py
       - name: ETF 分類（讀剛更新的官方清單；新上市 ETF 才不會停在 unverified）
@@ -310,6 +319,7 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
+          cache: 'pip' 
       - name: Phase 4 QA Automation
         run: python scripts/qa_phase4.py
       - name: QA Gate
