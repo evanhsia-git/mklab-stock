@@ -5,9 +5,11 @@
 GitHub cron 延遲 10.8h）。本哨兵與 CI 路徑完全獨立（本機 cron），
 任何一端出事都能叫人。
 
-輸出契約（Hermes cronjob no_agent / watchdog 模式）：
-- stdout 空＝一切正常（不發任何訊息，避免噪音）
-- 有輸出＝異常告警（逐字發送 Telegram）
+# 輸出契約（Hermes cronjob no_agent / watchdog 模式，job 7ad116fa5fe3，每日 22:00 台北）：
+# - stdout 空＝一切正常（不發任何訊息，避免噪音）
+# - 有輸出＝異常告警（逐字發送 Telegram）
+# ⚠️ cronjob 從 ~/.hermes/scripts/quality_sentinel.py 執行「真實複本」（symlink 會被
+#    traversal 防護拒絕）——本檔（repo）是主檔，任何改動後必須同步該副本。
 
 安全邊界：
 - 自癒只跑既有且冪等的每日管線＋完整 QA 閘門；QA exit 0 才允許推送
