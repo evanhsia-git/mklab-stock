@@ -34,7 +34,7 @@ def build(stocks_path="data/stocks.json", us_path="data/us/us-stocks.json",
 
     us = _load(us_path).get("meta", {})
     us_etf_doc = _load(us_etfs_path)
-    n_us_etf = len(us_etf_doc.get("stocks", [])) or None
+    n_us_etf = len(us_etf_doc.get("etfs") or us_etf_doc.get("stocks") or []) or None
     us_etf_date = us_etf_doc.get("meta", {}).get("as_of", "N/A")
 
     rows_short = []
