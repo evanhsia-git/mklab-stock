@@ -1,0 +1,36 @@
+name: lkg-promote
+# LKG v1.0 晉升 — 手動觸發（workflow_dispatch），預設 dry-run。
+# 正式晉升需輸入 apply=true；不啟用自動回滾；Tag 不強制覆蓋。
+on:
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: "dry-run(預設) / apply（實際建立 tag 與 manifest）"
+        required: false
+        default: "false"
+      sha:
+        description: "要晉升的 commit SHA（預設 workflow 觸發 SHA）"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: LKG promote (${{ inputs.apply == 'true' && 'apply' || 'dry-run' }})
+        env:
+          GITHUB_SHA: ${{ inputs.sha || github.sha }}
+        run: |
+          python3 scripts/lkg_manager.py --sha "$GITHUB_SHA" ${{ inputs.apply == 'true' && '--apply' || '' }}
+      - name: Push tag and metadata branch
+        if: ${{ inputs.apply == 'true' }}
+        run: |
+          TAG=$(git for-each-ref --count=1 --sort=-creatordate --format='%(refname:short)' refs/tags/lkg)
+          git push origin "refs/tags/$TAG"
+          git push origin "HEAD:refs/heads/ci-metadata" || echo "metadata push skipped (optimistic lock)"

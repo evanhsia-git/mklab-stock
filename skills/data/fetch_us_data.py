@@ -14,15 +14,15 @@ mklab-stock 美股資料抓取腳本（Build-Time, 雲端免 key，僅用 yfinan
     API，故不強求官方源，這點跟台股資料管線不同，需明確告知使用者。
   - 候選池機制：yfinance 沒有提供免費的「市值前 N 大」篩選端點，所以用一份人工
     維護、涵蓋範圍夠廣的候選代號清單（US_STOCK_CANDIDATES / US_ETF_CANDIDATES），
-    抓回每檔的即時市值後在本機排序，取前 30 大寫入輸出檔。候選池需要不定期更新
+    抓回每檔的即時市值/規模後在本機排序：個股取前 600 大、ETF 取前 120 大（2026-11-25 擴充）。
     （例如新股票晉升市值前段班、舊 ETF 下市），這是這個做法唯一的維護成本。
   - Graceful Degradation：單檔抓取失敗不中斷整批，該檔案跳過並記錄警告，其餘
     正常寫入；資料不足的欄位一律 null，不推測、不冒充。
   - 沿用台股腳本的防 ban 作法：逐檔 sleep，不併發大量請求。
 
 用法：
-  python3 skills/data/fetch_us_data.py stocks   # 美股市值前 30 大個股
-  python3 skills/data/fetch_us_data.py etfs     # 美股 ETF 規模前 30 大
+  python3 skills/data/fetch_us_data.py stocks   # 美股市值前 600 大個股（2026-11-25 擴充）
+  python3 skills/data/fetch_us_data.py etfs     # 美股 ETF 規模前 120 大（2026-11-25 擴充）
   python3 skills/data/fetch_us_data.py all      # 兩者都跑
 """
 import json
@@ -36,12 +36,13 @@ import data_rules  # 2026-11-13 共用資料品質規則
 OUT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "data", "us"))
 os.makedirs(OUT_DIR, exist_ok=True)
 
-SLEEP_SEC = 1.2  # 逐檔間隔，防止被 Yahoo Finance 暫時封鎖
-TOP_N = 30
+SLEEP_SEC = 0.8  # 逐檔間隔，防止被 Yahoo Finance 暫時封鎖（2026-11-25：擴充到 600 檔，縮短間隔控管總時長）
+TOP_N_STOCKS = 600  # 2026-11-25：美股個股擴充——universe（S&P500＋index-holdings 併入）全量抓取，上限 600
+TOP_N_ETFS = 120    # 2026-11-25：美股 ETF 擴充——候選池 130+ 取規模前 120 大
 
 # ===== 候選池：市值/規模夠大、實務上幾乎不會跌出前 30 名的常見標的 =====
 # 涵蓋範圍故意抓寬一點（遠多於 30 檔），抓回即時市值後在本機排序取前 30，
-# 這樣即使候選池排序過時，只要真正的前 30 大都還在池子裡，結果依然正確。
+# 這樣即使候選池排序過時，只要真正的目標標的都還在池子裡，結果依然正確。
 # 需要定期（例如每季）人工檢視一次，把新的超大型股/新 ETF 加進來。
 US_STOCK_CANDIDATES = [
     "AAPL", "MSFT", "GOOGL", "GOOG", "AMZN", "NVDA", "META", "TSLA", "BRK-B", "AVGO",
@@ -52,10 +53,28 @@ US_STOCK_CANDIDATES = [
     "QCOM", "SPGI", "BX", "AXP", "BA", "HON", "GS", "T", "RTX", "NKE",
 ]
 US_ETF_CANDIDATES = [
-    "SPY", "IVV", "VOO", "VTI", "QQQ", "VUG", "VTV", "BND", "AGG", "VEA",
-    "IEFA", "VWO", "IJH", "IJR", "VIG", "IWM", "GLD", "VXUS", "VO", "EFA",
-    "SCHD", "SCHX", "XLK", "XLF", "XLV", "XLE", "DIA", "VYM", "SLV", "TLT",
-    "HYG", "LQD", "SPYG", "SPYV", "MDY", "RSP", "VB", "VT", "SCHB", "ITOT",
+    # 寬基美股
+    "SPY", "IVV", "VOO", "VTI", "QQQ", "QQQM", "VUG", "VTV", "VOOG", "VOOV",
+    "SCHX", "SCHB", "ITOT", "VT", "SPTM", "VXF", "SPYG", "SPYV", "SCHG", "SCHV",
+    "IWF", "IWD", "IWM", "IJH", "IJR", "VB", "VO", "MDY", "RSP", "EWMC",
+    # 智慧貝塔／因子
+    "SCHD", "VYM", "SPHD", "SPYD", "USMV", "MTUM", "QUAL", "VLUE", "SIZE", "RDVY",
+    "VIG", "DGRO", "NOBL", "SDY", "VIGI",
+    # 產業
+    "XLK", "XLF", "XLV", "XLE", "XLU", "XLI", "XLP", "XLRE", "XLC", "XLB",
+    "SMH", "SOXX", "XSD", "IBB", "XBI", "XPH", "IHI", "ITA", "XME", "XOP",
+    "OIH", "GDX", "SIL", "JETS", "IYT", "XHB", "ITB", "KIE", "IAI", "IYT",
+    # 債券
+    "BND", "AGG", "TLT", "IEF", "SHY", "VGIT", "VGSH", "BIV", "BSV", "VCIT",
+    "VCSH", "GOVT", "TIP", "SCHP", "LQD", "HYG", "BNDX", "VTEB", "MUB", "SHYG",
+    "JNK", "EMB", "AGGY", "SPAB",
+    # 國際
+    "VEA", "IEFA", "VWO", "EFA", "EEM", "IEMG", "VXUS", "VPL", "VGK", "EWJ",
+    "MCHI", "INDA", "EWZ", "EWG", "EWU", "ACWI", "ACWX", "AIA", "EWH", "EWW",
+    # 商品
+    "GLD", "SLV", "IAU", "GLDM", "USO", "UNG", "DBC", "PDBC", "GDXJ",
+    # 其他規模大檔
+    "DIA", "VWOB", "BIL", "SGOV", "PDBC", "SCHO", "AVUV", "AVDV", "GSIG", "IEF",
 ]
 
 
@@ -68,17 +87,30 @@ def _log(msg):
 
 def _load_stock_candidates():
     """優先用 fetch_us_universe.py 產生的四大指數成分股清單（涵蓋面更完整、更即時），
-    該檔案不存在（例如還沒跑過 fetch_us_universe.py）時，退回內建的 US_STOCK_CANDIDATES。"""
+    該檔案不存在（例如還沒跑過 fetch_us_universe.py）時，退回內建的 US_STOCK_CANDIDATES。
+    2026-11-25：再併入 data/index-holdings/ 的 VOO/QQQ/SOXX/DIA 成分股 ticker
+    （Ivan 指定的五 ETF 擴充來源；SMH 官網 cookie 牆，與 SOXX 重疊度高不影響）。"""
+    syms = set()
     if os.path.exists(UNIVERSE_PATH):
         try:
             with open(UNIVERSE_PATH, encoding="utf-8") as f:
                 doc = json.load(f)
-            syms = sorted((doc.get("membership") or {}).keys())
-            if syms:
-                _log(f"候選池改用 data/us/index-universe.json（四大指數去重合計 {len(syms)} 檔）")
-                return syms
+            syms |= {s.strip().upper() for s in (doc.get("membership") or {}).keys() if s.strip()}
         except Exception as e:
-            _log(f"⚠️ 讀取 index-universe.json 失敗，退回內建候選池：{e}")
+            _log(f"⚠️ 讀取 index-universe.json 失敗：{e}")
+    for sym in ("VOO", "QQQ", "SOXX", "DIA"):
+        p = os.path.join(os.path.dirname(OUT_DIR), "index-holdings", f"{sym}.json")
+        try:
+            d = json.load(open(p, encoding="utf-8"))
+            for h in d.get("holdings") or []:
+                t = (h.get("ticker") or h.get("symbol") or h.get("Ticker") or "").strip().upper()
+                if t:
+                    syms.add(t)
+        except Exception:
+            continue
+    if syms:
+        _log(f"候選池：index-universe + index-holdings(VOO/QQQ/SOXX/DIA) 去重合計 {len(syms)} 檔")
+        return sorted(syms)
     return US_STOCK_CANDIDATES
 
 
@@ -144,7 +176,7 @@ def _fetch_one_etf(yf, sym):
             "price": price,
             "nav": info.get("navPrice"),  # 淨值（僅供參考，不用於 price）
             "chg": chg,
-            "net_assets": info.get("totalAssets"),  # 基金規模（近似市值，用於排序前 30 大）
+            "net_assets": info.get("totalAssets"),  # 基金規模（近似市值，用於排序前 120 大）
             # 2026-11-13：改用 netExpenseRatio（annualReportExpenseRatio 實測 30/30 都回 None）
             "expense_ratio": data_rules.us_expense_ratio_pct(info),
             "yield": round(info["yield"] * 100, 2) if info.get("yield") is not None else None,
@@ -169,7 +201,7 @@ def run_stocks():
 
     candidates = _load_stock_candidates()
     stamp = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
-    _log(f"開始抓美股個股候選池（{len(candidates)} 檔候選，取市值前 {TOP_N} 大）")
+    _log(f"開始抓美股個股候選池（{len(candidates)} 檔候選，取市值前 {TOP_N_STOCKS} 大）")
 
     results = []
     for i, sym in enumerate(candidates):
@@ -180,13 +212,13 @@ def run_stocks():
             time.sleep(SLEEP_SEC)
 
     results.sort(key=lambda r: r["market_cap"], reverse=True)
-    top = results[:TOP_N]
+    top = results[:TOP_N_STOCKS]
 
     doc = {
         "meta": {
             "as_of": stamp,
             "source": "Yahoo Finance (yfinance)",
-            "note": "候選池排序取前 30 大市值；非官方美股交易所資料，僅供研究參考，非投資建議。",
+            "note": "候選池=index-universe(S&P500)＋index-holdings(VOO/QQQ/SOXX/DIA) 成分股，抓即時市值後本機排序取前 600 大；非官方交易所資料，僅供研究參考，非投資建議。",
             "candidate_pool_size": len(candidates),
             "count": len(top),
         },
@@ -208,25 +240,26 @@ def run_etfs():
         return False
 
     stamp = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
-    _log(f"開始抓美股 ETF 候選池（{len(US_ETF_CANDIDATES)} 檔候選，取規模前 {TOP_N} 大）")
+    _log(f"開始抓美股 ETF 候選池（{len(US_ETF_CANDIDATES)} 檔候選，取規模前 {TOP_N_ETFS} 大）")
 
     results = []
-    for i, sym in enumerate(US_ETF_CANDIDATES):
+    etf_syms = list(dict.fromkeys(US_ETF_CANDIDATES))  # 去重保持順序
+    for i, sym in enumerate(etf_syms):
         row = _fetch_one_etf(yf, sym)
         if row and row.get("net_assets") is not None:
             results.append(row)
-        if i < len(US_ETF_CANDIDATES) - 1:
+        if i < len(etf_syms) - 1:
             time.sleep(SLEEP_SEC)
 
     results.sort(key=lambda r: r["net_assets"], reverse=True)
-    top = results[:TOP_N]
+    top = results[:TOP_N_ETFS]
 
     doc = {
         "meta": {
             "as_of": stamp,
             "source": "Yahoo Finance (yfinance)",
-            "note": "候選池排序取前 30 大基金規模（net_assets 近似值）；非官方交易所資料，僅供研究參考，非投資建議。",
-            "candidate_pool_size": len(US_ETF_CANDIDATES),
+            "note": "候選池=規模前 130 大美國 ETF 清單（含債券/商品/國際型），抓 net_assets 後本機排序取前 120 大；非官方交易所資料，僅供研究參考，非投資建議。",
+            "candidate_pool_size": len(etf_syms),
             "count": len(top),
         },
         "etfs": top,

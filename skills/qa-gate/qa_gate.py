@@ -391,6 +391,9 @@ def run():
             ("data/market-extras.json", 1200, 1800),
             ("data/twii-long.json", 500, 800),
             ("data/etf-holdings.json", 500, 800),
+            # 2026-11-25 美股擴充（個股 30→600、ETF 30→120）：新增預算
+            ("data/us/us-stocks.json", 500, 800),
+            ("data/us/us-etfs.json", 150, 250),
         ]
         for _rel, _warn, _err in _BUDGETS:
             _fp = os.path.join(ROOT, _rel)
