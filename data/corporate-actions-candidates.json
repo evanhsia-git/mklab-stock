@@ -6,6 +6,32 @@
   },
   "candidates": [
     {
+      "sym": "006201",
+      "name": "元大富櫃50",
+      "type": "split",
+      "ratio": null,
+      "implied_ratio": 1.35,
+      "halt_from": "2026-11-16",
+      "resume_date": "20261123",
+      "missing_trading_days": 4,
+      "status": "detected",
+      "source": "auto:price_discontinuity",
+      "source_note": "本站 K 線相鄰日跳空 -26.11%（20261113 收 36.88 → 20261123 收 27.25），期間缺 4 個交易日（停牌跡象），隱含倍數 1.35（＝新股/舊股，含停牌期間市場漲跌故為近似）。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
+    },
+    {
+      "sym": "00928",
+      "name": "中信上櫃ESG 30",
+      "type": "split",
+      "ratio": null,
+      "implied_ratio": 1.33,
+      "halt_from": "2026-11-16",
+      "resume_date": "20261123",
+      "missing_trading_days": 4,
+      "status": "detected",
+      "source": "auto:price_discontinuity",
+      "source_note": "本站 K 線相鄰日跳空 -24.76%（20261113 收 26.86 → 20261123 收 20.209999084472656），期間缺 4 個交易日（停牌跡象），隱含倍數 1.33（＝新股/舊股，含停牌期間市場漲跌故為近似）。可能是分割／反分割／減資，也可能是真實崩跌，須人工確認後才可寫入倍數並套用還原價。"
+    },
+    {
       "sym": "3714",
       "name": "富采",
       "type": "reverse_split",

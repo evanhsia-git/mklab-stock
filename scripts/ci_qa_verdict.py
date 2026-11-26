@@ -63,8 +63,12 @@ def validate(report):
         raise ValueError("checks 必須為非空 list")
     if report["expected_checks"] != len(checks):
         raise ValueError(f"expected_checks({report['expected_checks']}) != len(checks)({len(checks)})")
-    if len(checks) != EXPECTED_CHECKS_TOTAL:
-        raise ValueError(f"檢查總數 {len(checks)} != 契約 expected_checks_total {EXPECTED_CHECKS_TOTAL}（漏跑/湊數）")
+    # 2026-11-26：與 qa_gate 同步範圍化——條件式項（TWSE_T_MINUS_1/US_RETURNS_MISSING/
+    # 品質規則動態名）讓執行數合法浮動，只驗下限（防漏跑 fail closed），上限不設
+    _slack = _CONTRACT.get("conditional_check_slack", 3)
+    if len(checks) < EXPECTED_CHECKS_TOTAL - _slack:
+        raise ValueError(
+            f"檢查總數 {len(checks)} < 契約下限 {EXPECTED_CHECKS_TOTAL - _slack}（漏跑）")
     names = [c.get("name") if isinstance(c, dict) else None for c in checks]
     if len(names) != len(set(names)):
         raise ValueError("存在重複檢查名稱（湊數）")
