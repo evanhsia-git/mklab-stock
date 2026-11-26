@@ -584,6 +584,87 @@ check("評分公式缺欄位不計分（不補 0）",
       and _score_or_none(_smp) is not None)
 
 
+# ── 契約一致性測試（2026-11-26 方案 B）：scanner(qa_gate) 與 verdict 對同一報告
+#    的行為必須符合各自獨立的預期結果（不只互相比對）。契約已併入
+#    ci_qa_verdict.py（qa_gate 匯入同一常數），此組測試固化「兩端不漂移」。
+sys.path.insert(0, os.path.join(_REPO_ROOT, "scripts"))
+sys.path.insert(0, os.path.join(_REPO_ROOT, "skills", "qa-gate"))
+import ci_qa_verdict as _verdict  # noqa: E402
+import qa_gate as _qg  # noqa: E402
+
+check("契約匯入一致：qa_gate 與 verdict 的 EXPECTED_CHECKS_TOTAL 同源",
+      _qg.EXPECTED_CHECKS_TOTAL is _verdict.EXPECTED_CHECKS_TOTAL
+      and _qg.REQUIRED_CHECKS == _verdict.REQUIRED_CHECKS,
+      f"TOTAL={_verdict.EXPECTED_CHECKS_TOTAL} required={len(_verdict.REQUIRED_CHECKS)}")
+
+def _mk_report(nc=69, statuses=None, errors=None, warnings=None, allow=None,
+               required=None, schema="2.0", expected=None, names=None):
+    """產出合成 QA 報告（獨立預期結果的基準）。
+
+    前 len(required) 檢查使用 required_checks 的真實名稱（否則 verdict 的
+    「必要檢查漏跑」會擋掉一切合成報告），其餘為 c{i}。statuses 依序取用或輪替。
+    """
+    st = list(statuses or [])
+    req = list(_verdict.REQUIRED_CHECKS)
+    rows = []
+    for i in range(nc):
+        if i < len(req):
+            name = req[i]
+        else:
+            name = names[i] if names and i < len(names) else f"c{i}"
+        s = st[i % len(st)] if st else "PASS"
+        rows.append({"cat": "T", "name": name, "status": s, "detail": "x"})
+    e = sum(1 for r in rows if r["status"] == "ERROR") if errors is None else errors
+    w = sum(1 for r in rows if r["status"] == "WARNING") if warnings is None else warnings
+    return {"schema_version": schema, "scan_completed": True,
+            "allow_deploy": (e == 0) if allow is None else allow,
+            "errors": e, "warnings": w,
+            "expected_checks": nc if expected is None else expected,
+            "required_checks": list(_verdict.REQUIRED_CHECKS) if required is None else required,
+            "checks": rows}
+
+def _v(report_bytes):
+    """跑 verdict main()，回傳 exit code（0=ALLOW、1=BLOCK/無效）。"""
+    p = "/tmp/qa-consistency-report.json"
+    with open(p, "wb") as f:
+        f.write(report_bytes)
+    r = subprocess.run([sys.executable, "-c",
+                        "import sys; sys.path.insert(0,'scripts'); "
+                        "sys.exit(__import__('ci_qa_verdict').main([sys.argv[1]]))", p],
+                       capture_output=True, text=True, timeout=120)
+    return r.returncode
+
+check("一致性：69 項全 PASS → verdict ALLOW", _v(json.dumps(_mk_report(69)).encode()) == 0, "ALLOW")
+check("一致性：WARNING-only → verdict ALLOW（allow_deploy 不誤擋）",
+      _v(json.dumps(_mk_report(69, statuses=["WARNING"])).encode()) == 0, "ALLOW")
+check("一致性：含 MANUAL 項 → verdict ALLOW（合法狀態不誤擋）",
+      _v(json.dumps(_mk_report(69, statuses=["PASS", "MANUAL"])).encode()) == 0, "ALLOW")
+check("一致性：ERROR 報告 → verdict BLOCK（fail closed）",
+      _v(json.dumps(_mk_report(69, statuses=["ERROR"])).encode()) == 1, "BLOCK")
+check("一致性：偽造縮減 required_checks → 拒（契約真值比對）",
+      _v(json.dumps(_mk_report(69, required=_verdict.REQUIRED_CHECKS[:3])).encode()) == 1, "拒")
+check("一致性：偽造 expected_checks（自報 60 實 69）→ 拒（統計交叉重算）",
+      _v(json.dumps(_mk_report(69, expected=60)).encode()) == 1, "拒")
+check("一致性：重複檢查名 → 拒（湊數）",
+      _v(json.dumps(_mk_report(69, names=[f"n{i % 5}" for i in range(69)])).encode()) == 1, "拒")
+check("一致性：統計不一致（errors 欄 0 但含 ERROR）→ 拒",
+      _v(json.dumps(_mk_report(69, statuses=["ERROR"], errors=0)).encode()) == 1, "拒")
+check("一致性：allow_deploy 與 ERROR 不一致 → 拒",
+      _v(json.dumps(_mk_report(69, statuses=["ERROR"], allow=True)).encode()) == 1, "拒")
+check("一致性：錯誤 schema_version → 拒",
+      _v(json.dumps(_mk_report(69, schema="9.9")).encode()) == 1, "拒")
+check("一致性：未知 status 字串 → 拒",
+      _v(json.dumps(_mk_report(69, statuses=["OK!"])).encode()) == 1, "拒")
+check("一致性：67 項（低於契約下限 66? 否）→ 依下限判定",
+      _v(json.dumps(_mk_report(67)).encode()) == 0, "≥66 過")
+check("一致性：65 項（低於下限 69-3=66）→ 拒（漏跑防護）",
+      _v(json.dumps(_mk_report(65)).encode()) == 1, "拒")
+check("一致性：71 項（條件式項合法增加，上限不設）→ ALLOW",
+      _v(json.dumps(_mk_report(71)).encode()) == 0, "ALLOW")
+check("一致性：報告損壞（非法 JSON）→ 拒", _v(b"{broken") == 1, "拒")
+check("一致性：重複 JSON key → 拒", _v(b'{"a":1,"a":2}') == 1, "拒")
+check("一致性：NaN 常數 → 拒", _v(b'{"schema_version":"2.0","x":NaN}') == 1, "拒")
+
 # 個股 K 線檔：每檔行情都有對應 K 線，且最後一筆與行情收盤一致
 import os as _os
 # 2026-11-25：尚未上市的標的（listing_date 晚於今天）沒有行情→不應要求 K 線檔
