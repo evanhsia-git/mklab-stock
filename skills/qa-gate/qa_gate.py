@@ -961,10 +961,12 @@ def run():
         # 精確等號會誤攔正常資料差異（2026-11-25 daily 班 67!=69 實證）。
         # 防漏跑保護：低於 TOTAL-COND_SLACK 視同漏跑（fail closed），高於 TOTAL 視同湊數。
         _COND_SLACK = _QA_CONTRACT.get("conditional_check_slack", 3)
-        if len(executed_names) < EXPECTED_CHECKS_TOTAL - _COND_SLACK or len(executed_names) > EXPECTED_CHECKS_TOTAL:
-            # 範圍對照（漏跑/湊數→不產出報告，fail closed）
+        # 上限不設：資料品質規則「有問題時」聚合名拆成多條 [CODE] 動態名，executed
+        # 合法地增加（那是資料問題，應交由 verdict 判 BLOCK，不是 scanner 拒產報告）
+        if len(executed_names) < EXPECTED_CHECKS_TOTAL - _COND_SLACK:
+            # 下限對照（漏跑→不產出報告，fail closed）
             raise RuntimeError(
-                f"executed {len(executed_names)} outside [{EXPECTED_CHECKS_TOTAL - _COND_SLACK}, {EXPECTED_CHECKS_TOTAL}] (expected_checks_total)")
+                f"executed {len(executed_names)} < floor {EXPECTED_CHECKS_TOTAL - _COND_SLACK} (expected_checks_total {EXPECTED_CHECKS_TOTAL})")
         json.dump({"schema_version": SCHEMA_VERSION,
                    "allow_deploy": not block, "errors": errors, "warnings": warnings,
                    "expected_checks": len(executed_names),
