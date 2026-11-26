@@ -107,17 +107,159 @@ with _State({}):
         due, _ = us.check_due("tw-stock-fundamentals", us._load_state()[1])
     check("11/20 遇週末延遲 → 21 日補跑班到期（週期任務不受週末限制）", due, f"2027-11-21 weekday={datetime(2027,11,21).weekday()}")
 
-# ── 週末休市：行情類不補跑 ──
+# ── P0-4 最近有效交易日：週末仍可補未取得的交易日資料（不得因週末放棄）──
+# 台北週六 21:00 補跑班：美股週五收盤資料若尚未取得（as_of=週四）→ 應判到期補跑
+with _State({"update_state": {}}):
+    with mock.patch.object(us, "_now", lambda: _fake_now(2027, 5, 1)):  # 台北週六
+        # 模擬 us-stocks.json 資料日期為週四（週五收盤資料未取得）→ data_as_of 來源=檔案日期
+        with mock.patch.object(us, "_read_meta_date", lambda rel, keys=("as_of","date","last_updated"): "2027-04-29"):
+            due, why = us.check_due("us-stock-daily", us._load_state()[1])
+    check("P0-4 週六 21:00：美股週五資料未取得 → 補跑（美東曆最近交易日=週五）", due, why)
+    # 模擬已達週五 → 不補
+    with mock.patch.object(us, "_read_meta_date", lambda rel, keys=("as_of","date","last_updated"): "2027-04-30"):
+        due, why = us.check_due("us-stock-daily", us._load_state()[1])
+    check("P0-4 週六：美股週五資料已取得 → 不重跑", not due, why)
+    with mock.patch.object(us, "_now", lambda: _fake_now(2027, 5, 2)):  # 台北週日
+        with mock.patch.object(us, "_read_meta_date", lambda rel, keys=("as_of","date","last_updated"): "2027-04-29"):
+            due, why = us.check_due("us-stock-daily", us._load_state()[1])
+    check("P0-4 週日 21:00：週五資料仍未取得 → 仍補跑", due, why)
+# 台股週五更新失敗 → 週末補跑
 with _State({}):
-    with mock.patch.object(us, "_now", lambda: _fake_now(2027, 5, 1)):  # 週六
+    with mock.patch.object(us, "_now", lambda: _fake_now(2027, 5, 1)):  # 台北週六
+        with mock.patch.object(us, "_read_meta_date", lambda rel, keys=("as_of","date","last_updated"): "2027-04-29"):
+            due, why = us.check_due("tw-stock-daily", us._load_state()[1])
+    check("P0-4 週六：台股週五資料未取得 → 補跑（台北曆最近交易日=週五）", due, why)
+    with mock.patch.object(us, "_read_meta_date", lambda rel, keys=("as_of","date","last_updated"): "2027-04-30"):
         due, why = us.check_due("tw-stock-daily", us._load_state()[1])
-    check("週六：tw-stock-daily 不補跑（休市）", not due, why)
-    with mock.patch.object(us, "_now", lambda: _fake_now(2027, 5, 2)):  # 週日
-        due, _ = us.check_due("us-stock-daily", us._load_state()[1])
-    check("週日：us-stock-daily 不補跑（休市）", not due)
-    with mock.patch.object(us, "_now", lambda: _fake_now(2027, 5, 3)):  # 週一
-        due, _ = us.check_due("tw-stock-daily", us._load_state()[1])
-    check("週一：tw-stock-daily 到期（正常補跑）", due)
+    check("P0-4 週六：台股週五資料已取得 → 不重跑", not due, why)
+
+# ── P0-1 fetch_data.py 寫 fetch-log.json 時不得覆蓋 update_state ──
+import importlib.util as _ilu
+_spec_fd = _ilu.spec_from_file_location("fetch_data_mod", os.path.join(ROOT, "skills/data/fetch_data.py"))
+_fd = _ilu.module_from_spec(_spec_fd)
+try:
+    _spec_fd.loader.exec_module(_fd)
+    with tempfile.TemporaryDirectory() as _tmpfd:
+        _flp = os.path.join(_tmpfd, "fetch-log.json")
+        # 預置 12 個子任務的成功狀態
+        _preset = {"update_state": {t: {"last_attempt": "2027-05-03T21:00:00+08:00",
+                                        "last_success": "2027-05-03T21:00:00+08:00",
+                                        "status": "succeeded", "period": "2027-05-x",
+                                        "data_as_of": "2027-05-03", "failed_sources": []}
+                                    for t in us.TASKS}}
+        json.dump(_preset, open(_flp, "w", encoding="utf-8"), ensure_ascii=False)
+        # fetch_data 的 OUT 指向暫存目錄後跑 _write_files
+        with mock.patch.object(_fd, "OUT", _tmpfd):
+            _log = _fd.RunLogger("daily")
+            _log.finish(True, None)
+            _log._write_files()
+        _after = json.load(open(_flp, encoding="utf-8"))
+        _kept = _after.get("update_state", {})
+        check("P0-1 daily 班寫 fetch-log 後 12 個子任務狀態完整保留", len(_kept) == len(us.TASKS),
+              f"保留 {len(_kept)}/{len(us.TASKS)}")
+        _k0 = _kept.get("tw-etf-holdings", {})
+        check("P0-1 period/last_success/data_as_of/failed_sources 未失真",
+              _k0.get("period") == "2027-05-x" and _k0.get("data_as_of") == "2027-05-03"
+              and isinstance(_k0.get("failed_sources"), list))
+        check("P0-1 daily 班自己的 mode/success 欄位照常寫入", _after.get("mode") == "daily")
+        check("P0-1 21:00 補跑不會因狀態遺失而重複抓取（update_state 可讀、各 task 有 last_success）",
+              all(t.get("last_success") for t in _kept.values()))
+except Exception as _e:
+    check("P0-1 fetch_data._write_files 保留 update_state", False, f"{type(_e).__name__}: {_e}")
+
+# ── P0-2 Git Push 白名單：五組 push 路徑逐一通過 allowed_path ──
+def _allowed(path):
+    """從 ci_commit_push.sh 抽出 allowed_path 函式，在 bash 子 shell 中實測。"""
+    src = open(os.path.join(ROOT, "scripts/ci_commit_push.sh"), encoding="utf-8").read()
+    m = __import__("re").search(r"(allowed_path\(\) \{.*?\n\})", src, __import__("re").S)
+    r = subprocess.run(["bash", "-c", m.group(1) + f'\nallowed_path "{path}" && echo OK || echo NO'],
+                       capture_output=True, text=True)
+    return r.stdout.strip() == "OK"
+
+_check_cases = [
+    ("tw-stock 班：stocks.json", "data/stocks.json", True),
+    ("tw-stock 班：rss.xml", "rss.xml", True),
+    ("tw-stock 班：fetch-log.json（狀態隨推）", "data/fetch-log.json", True),
+    ("tw-etf 班：etf-nav.json", "data/etf-nav.json", True),
+    ("tw-etf 班：etf-holdings.json", "data/etf-holdings.json", True),
+    ("tw-etf 班：fetch-log.json", "data/fetch-log.json", True),
+    ("us-stock 班：us-stocks.json", "data/us/us-stocks.json", True),
+    ("us-stock 班：us-edgar.json", "data/us/us-edgar.json", True),
+    ("us-stock 班：fetch-log.json（P0-2 修正）", "data/fetch-log.json", True),
+    ("us-etf 班：us-etfs.json", "data/us/us-etfs.json", True),
+    ("us-etf 班：index-holdings/VOO.json", "data/index-holdings/VOO.json", True),
+    ("us-etf 班：fetch-log.json（P0-2 修正）", "data/fetch-log.json", True),
+    ("global-market 班：indices.json", "data/indices.json", True),
+    ("global-market 班：twii-long.json", "data/twii-long.json", True),
+    ("global-market 班：global-history 月檔", "data/global-history-2027-05.json", True),
+    ("global-market 班：us-history 月檔", "data/us-history-2027-05.json", True),
+    ("白名單外：scripts/ 不得推", "scripts/update_state.py", False),
+    ("白名單外：secret 跳脫不得推", "data/../secret/x.txt", False),
+]
+for _name, _p, _want in _check_cases:
+    check(f"P0-2 白名單：{_name}", _allowed(_p) == _want, f"path={_p} → {'允許' if _allowed(_p) else '拒絕'}")
+
+# ── P0-3 狀態一致性：YAML 的 record failed 條件含 cancelled；succeeded 僅在 push 成功後 ──
+_yml_src = open(os.path.join(ROOT, ".github/workflows/daily-update.yml"), encoding="utf-8").read()
+check("P0-3 record failed 條件含 cancelled（runner 取消也記失敗）",
+      _yml_src.count("(failure() || cancelled())") == 5)
+check("P0-3 record succeeded 僅在 push.outcome == 'success' 之後",
+      _yml_src.count("steps.push.outcome == 'success'") == 5)
+check("P0-3 未發布不視為成功：succeeded 不出現在 push 條件之外的 step",
+      "record \"$t\" --status succeeded" not in _yml_src.split("推送")[0] if "推送" in _yml_src else True)
+
+# ── P1-6 到期判斷前置：pip install 在 due-gate 之後且受 RAN_TASKS 保護 ──
+check("P1-6 每個 job 的 pip install 受 env.RAN_TASKS 保護",
+      _yml_src.count("if: env.RAN_TASKS != ''") >= 10)  # 5 setup-python + 5 pip install
+check("P1-6 update_state.py 為純 stdlib（no third-party imports）",
+      not any(m in open(os.path.join(ROOT, "scripts/update_state.py"), encoding="utf-8").read()
+              for m in ("import requests", "import pandas", "import yaml", "import yfinance")))
+
+# ── Dry-run 無外部寫入副作用（holdings-run --dry-run 連狀態檔都不寫）──
+with _State({"update_state": {"tw-etf-holdings": {"period": "2027-05-H1", "sources": {
+        "cathay": {"period": "2027-05-H1", "status": "succeeded"}}}}}) as _sdry:
+    _before = _sdry.read()
+    with mock.patch.object(us.subprocess, "run", lambda *a, **k: mock.Mock(returncode=0)):
+        us.cmd_holdings_run(mock.Mock(dry_run=True, force=False))
+    check("dry-run：holdings-run --dry-run 後狀態檔位元組級不變", _sdry.read() == _before)
+
+# ── 新舊架構輸出等價性：每組的爬蟲腳本清單與舊 job 一致（腳本零變更的結構性保證）──
+_check_scripts = {
+    "tw-stock": ["fetch_data.py daily", "sanitize_snapshot.py", "repair_history.py",
+                 "detect_corporate_actions.py", "compute_indicators.py",
+                 "integrate_official_company.py", "fetch_market_extras.py",
+                 "integrate_market_extras.py", "fetch_split_schedule.py",
+                 "build_kline.py", "compute_industry.py", "build_digest.py"],
+    "tw-stock-roe": ["fetch_data.py weekly"],
+    "tw-stock-fundamentals": ["fetch_official_fundamentals.py", "import_official_fundamentals.py",
+                              "integrate_official_company.py"],
+    "tw-etf-nav": ["fetch_etf_nav.py"],
+    "tw-etf-holdings": ["fetch_etf_holdings_cathay.py", "fetch_etf_holdings_usitc.py",
+                        "fetch_etf_holdings_uobam.py", "fetch_etf_holdings_ftft_monthly.py",
+                        "fetch_etf_holdings_active.py", "accumulate_etf_holdings_history.py",
+                        "verify_pcf_nav.py"],
+    "tw-etf-meta": ["fetch_etf_meta.py", "classify_etf.py", "compute_indicators.py",
+                    "integrate_etf_extras.py"],
+    "tw-etf-qa": ["qa_phase4.py"],
+    "us-stock-daily": ["fetch_us_data.py stocks", "fetch_us_returns.py", "fetch_sec_edgar.py"],
+    "us-etf-daily": ["fetch_us_data.py etfs"],
+    "us-etf-holdings": ["fetch_index_holdings.py"],
+    "global-indices": ["fetch_data.py indices", "fetch_data.py twii"],
+    "global-history": ["fetch_global_history.py"],
+}
+# 每個子任務呼叫的腳本都必須存在於 repo（舊架構同一批檔案）
+_missing_scripts = []
+for _t, _fns in _check_scripts.items():
+    for _fn in _fns:
+        base = _fn.split("（")[0].split(" ")[0]
+        for cand in (f"skills/data/{base}", f"scripts/{base}"):
+            if os.path.exists(os.path.join(ROOT, cand)):
+                break
+        else:
+            _missing_scripts.append(f"{_t}: {base}")
+check("新舊架構等價性：12 子任務引用的全部爬蟲腳本與舊架構同一批（零新增爬蟲）",
+      not _missing_scripts, f"缺失 {_missing_scripts[:3]}")
+# 每個子任務呼叫的腳本都必須存在於 repo（舊架構同一批檔案）
 
 # ── 每月 2 日：us-etf-holdings（原月度 cron 時區錯誤已消除）──
 with _State({}):

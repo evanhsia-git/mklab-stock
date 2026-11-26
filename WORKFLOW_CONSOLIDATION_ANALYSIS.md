@@ -317,3 +317,120 @@ job 的 if 條件（手動）：`inputs.group == 'all' || inputs.group == '<組�
 **已知風險與回退**：回退＝`git revert` 重構 commit（腳本層僅新增檔案，revert 後 update_state.py 不被任何 workflow 引用，無殘留影響）；首日部署風險由 telegram-notify 即時告警＋retry-or-report 一次自動重試兜底；新月度補跑機制若失效，資料檔日期檢查（本報告 8.4）提供人工 dry-run 驗證途徑。
 
 **待確認事項**：本節實作尚未 push；Ivan 確認後 push main，並觀察：① 17:30 台股晚班首跑 ② 次日 06:30 美股早班首跑 ③ 21:00 補跑班（應全 skip）④ 週六 ROE／週日 Meta／週一 QA 的 cron 分流。
+
+---
+
+## 九、Phase 5 最終驗收報告（2026-11-26，Ivan 審核規範九大項逐項）
+
+**P0 全部通過；P1 一項部分完成（風險已聲明）。commit：Phase 3/4=`7f70c957`、Phase 5 修正見最新 SHA（git log）。**
+
+### 9.1 P0-1 fetch-log.json 狀態覆蓋驗證 → **發現真 Bug 並已修正** ✅
+
+- **發現**：`fetch_data.py` 的 `RunLogger._write_files()` 以 `open("w")` + `json.dump(self.stats)` **整份覆寫** fetch-log.json——daily 班每次執行會**抹掉 update_state 全部狀態**（Ivan 預判正確）
+- **修正（最小幅度）**：`_write_files()` 讀取現有檔、保留 `update_state` dict、合併後寫回；檔案不存在或損壞時照常生成（不新增第二個狀態檔）
+- **測試**：預置 12 個子任務成功紀錄 → 執行 RunLogger("daily").finish+_write_files → 驗證 12 狀態完整保留（period/last_success/data_as_of/failed_sources 未失真）、daily 班自身 mode/success 照常寫入 → 21:00 補跑的 due 判斷可讀到狀態、不重複抓取
+
+### 9.2 P0-2 Git Push 白名單 → **修正 2 處並逐例驗證** ✅
+
+五組實際白名單（ci_commit_push.sh v2.2 `allowed_path`，bash 子 shell 實測 18 案例）：
+
+| Job | push 白名單（YAML 呼叫端） | 結果 |
+|---|---|---|
+| tw-stock | `data/ rss.xml` | stocks.json／etf-holdings/**fetch-log.json**／rss.xml ✓ |
+| tw-etf | `data/` | etf-nav／etf-holdings/**fetch-log.json** ✓ |
+| us-stock | `data/us/ data/fetch-log.json`（**Phase 5 修正：原漏 fetch-log.json**） | ✓ 18 案例全過 |
+| us-etf | `data/us/ data/index-holdings/ data/fetch-log.json`（**同上修正**） | ✓ |
+| global-market | `data/ data/us-history-* data/global-history-*` | indices/twii-long/**fetch-log.json**／歷史月檔 ✓ |
+
+- **負向案例**：`scripts/update_state.py`、`data/../secret/x.txt` 均被拒 ✓；未放寬為整個 data/ ✓
+- **fail-closed 確認**：`data/fetch-log.json` 符合 `data/*` 白名單，正常 push 不被拒
+
+### 9.3 P0-3 狀態一致性與失敗補跑 → **修正 cancelled 盲點** ✅
+
+| 情境 | 狀態處理 | 驗證 |
+|---|---|---|
+| 全部成功 | push 成功後 record succeeded（data_as_of 自動讀資料檔） | YAML 斷言：5 job 的 succeeded 均在 `steps.push.outcome == 'success'` 之後 |
+| 部分（holdings） | status=partial＋failed_sources 記錄，21:00 補跑班補齊 | holdings-run 測試 |
+| 全部失敗 | holdings-run exit 1 → job failure → record failed；下個 run 讀 main 上舊狀態（資料未更新→due）重跑 | 程式碼路徑＋YAML 斷言 |
+| QA Gate 失敗 | push 未執行 → `failure()` → record failed（main 上狀態維持上次成功；下 run 因資料未更新而 due） | ✓ |
+| Git Push 失敗 | `failure()` → record failed | ✓ |
+| Runner 中途取消 | **Phase 5 修正：record failed 條件改 `failure() \|\| cancelled()`**（原只 failure()，cancelled 時狀態不記） | YAML 斷言 5 處 |
+| 成功抓取但無新資料（假日） | record succeeded（data_as_of=舊交易日）；次日 check「last_success≠今天」→ due → 冪等重抓（fetch 腳本內建「舊資料不覆蓋新」防護） | check_due 測試 |
+| 狀態更新成功但發布失敗 | attempted 已寫（runner 副本）→ push 失敗 → record failed；未發布資料**永不視為成功**（succeeded 只在 push 成功後） | YAML 斷言 |
+
+### 9.4 P0-4 最近有效交易日判斷 → **重大改進：棄用星期幾擋，改雙市場工作日曆** ✅
+
+- **原缺陷**：`MARKET_CLOSED_TASKS` 用台北 weekday>=5 擋週末——**美股週五收盤資料若台北週六早班失敗，週六/日 21:00 補跑會被直接跳過，週五資料永久漏掉**（Ivan 預判正確）
+- **修正**：`_last_workday(market)`——台股用台北曆週一~五、**美股用美東曆週一~五**（`zoneinfo` 自動夏令/冬令），到期＝資料日期 < 最近有效交易日
+- **場景測試（全 PASS）**：
+  - 台北週六 21:00，美股 as_of=週四 → **補跑**（美東最近交易日=週五）
+  - 台北週日 21:00，仍未取得 → **仍補跑**
+  - 台北週六，台股 as_of=週四 → **補跑**（台北曆最近交易日=週五）
+  - 資料已達最近交易日 → 不重跑（冪等）
+  - 夏令/冬令：美東 16:00 收盤＝台北 04:00~05:00，06:30 班皆足夠晚 ✓；提早收盤日（台北 02:00 收）同樣 ✓
+  - **國定假日／美股休市日（已知限制）**：到期判斷會誤判 due → 跑步後資料日期不變 → record succeeded（當日）→ 次日再到期——**假日白跑 1 次冪等抓取，不覆蓋有效資料、不丟交易日資料**；零依賴交易日曆（不引入 pandas_market_calendars）為刻意取捨
+
+### 9.5 P1-5 投信持股部分失敗 → **部分完成，風險聲明** ⚠️
+
+- cathay/usitc/uobam/ftft：獨立腳本獨立狀態（per-source succeeded/failed），下次只補失敗來源 ✓（mock subprocess 實證：cathay 已成功跳過、只實跑 4 支）
+- **active 來源（13 家投信破解）的既有語意**：內部「單一投信失敗→該 entry 標 stale:true 保留舊值（不空資料覆蓋）→exit 0」——**因此 holdings 狀態的 active=succeeded 代表「管線執行完成」，不代表 13 家投信全數新鮮**。stale carry 是既有設計（QA 的持股完整性檢查兜底），本輪**未**將 active 內部 per-投信失敗對接到 failed_sources（需改動 active 腳本輸出介面，超出「不重新設計爬蟲」範圍）
+- **風險**：某投信站點持續失敗時，其資料 stale 到下半月週期才再試。緩解：stale entry 不覆蓋舊資料（寧缺勿假）、QA 持股檢查兜底、verify_pcf_nav 獨立核對
+- **不得以空資料覆蓋 LKG**：stale carry 保留既有 entry ✓、QA Gate 不得通過異常資料 ✓
+
+### 9.6 P1-6 21:00 補跑執行成本 → **due-gate 前置** ✅
+
+- **YAML 重排**：每 job 的順序改為 checkout → ctx → **due-gate**（stdlib 判斷到期子任務清單 → RAN_TASKS）→ setup-python + pip install（**if RAN_TASKS != ''**）→ 子任務執行（if contains）→ QA → push → record
+- **未到期任務**：只執行 checkout＋stdlib check（約 30~40 秒），**不裝 pip、不爬蟲、不 QA、不 push**
+- **每日實際統計（Phase 5 修正版）**：
+
+| 指標 | 舊架構 | 新架構（Phase 5） |
+|---|---|---|
+| 每日 job 啟動 | ~10（normal 9＋21:00 daily 重試 1） | **11**（正常班 6＋補跑班 5）——**啟動數微增** |
+| Runner 初始化（checkout） | 10/日 | 11/日（補跑 5 個僅 checkout+check） |
+| pip install 輪數 | 10/日 | **6/日**（補跑班全 not-due 時 0；部分到期時僅到期 job 裝） |
+| QA Gate 全鏈 | 10/日 | **6/日** |
+| git push 班次 | ~10/日（多 job 各推） | **6/日** |
+| 實際 runner 耗時 | ~10 job × 5-20 分 | 6 job × 5-20 分＋5 × ~0.5 分 ≈ **−35~40%** |
+
+- **誠實聲明**：job 定義 11→6（−45%）**不等於**執行成本 −45%——實際 runner 耗時降幅約 35~40%（補跑班啟動數微增、但單價極低）；精確數字以上線 7 天實測為準（規範九）
+
+### 9.7 七、Concurrency 與回退 ✅
+
+- **兩層 concurrency 保留**（workflow 層 data-update single＋job 層 mklab-git-push queue: max）
+- **鎖定範圍**：job 從排隊取得執行權**後才 checkout**（GitHub 行為：concurrency 是 job 啟動門檻）→ 取得鎖後 checkout 的就是最新 main，非舊事件 commit ✓
+- **所有寫入正式資料的 workflow**：daily-update（兩層鎖 ✓）；qa-gate（唯讀不 push，無需鎖）；lkg-promote 只推 `refs/tags` 與 `ci-metadata` 分支（**不碰 main 資料檔**，無競爭）；pages build 由 GitHub 管理
+- **等待中 run 被取代**：pending run 整個取消（含未執行子任務）→ 21:00 補跑班因「資料日期落後最近交易日」判斷補齊 ✓
+- **revert 評估**：`git revert` 重構 commit 回退程式與排程；**已發布的 fetch-log.json update_state 欄位**：revert 後 fetch_data.py 恢復整份覆寫（原行為），update_state 鍵在下個 daily 班自然消失——**無需人工清理**、歷史資料不刪、無 force push
+- actionlint：唯一報錯為 `concurrency.queue`（GitHub runtime 自 2024-11 起支援、原架構已實證運作；actionlint 1.7.7 schema 未跟上誤報——**不修改**，改掉 queue: max 會回復 sibling job 互相取消問題）
+
+### 9.8 八、最終測試結果 ✅
+
+| 測試 | 結果 |
+|---|---|
+| tests/test_workflow_consolidation.py（**擴充至 88 項**） | **88/88 PASS** |
+| tests/test_known_errors.py | **188/188 PASS** |
+| qa_gate.py --gate 全鏈 | passed（exit 0） |
+| actionlint 1.7.7（4 檔） | 僅 queue 誤報（見 9.7）；其餘 0 錯 |
+| 新舊架構等價性 | 12 子任務引用的爬蟲清單與舊架構同一批（測試固化）；腳本零變更 |
+| Dry-run 無外部寫入 | holdings-run --dry-run 後狀態檔位元組級不變；YAML push 條件 `!= 'dry-run'` 5 處 |
+| Telegram 相容 | telegram-notify 監聽 workflow 名「daily-update」（未變）＋conclusion；新 job 名為動態彙整 ✓ |
+| retry-or-report 相容 | needs 五組、skipped 不計 failure ✓ |
+
+### 9.9 九、報告修正（本節即修正內容）✅
+
+1. **Phase 2 預估 vs 實作**：第三節為 Phase 2 設計案、第八節為實作、本節為驗收——明確標記
+2. **時區舊錯誤**：第一節現況表中「index-holdings：每月 2 日 06:45」為**當時誤記**（實為台北 3 日）——已在 8.2 修正並由到期判斷消除
+3. **us 並行效能**：8.7 修正為「並行時長 ≈ 20 分 vs 合併 18 分，收益 <1 分鐘」
+4. **每日次數估算**：9.6 表（11 啟動/6 pip/6 QA/6 push——取代第八節過於樂觀的估算）
+5. **Schema 聲明修正**：**資料檔 Schema（stocks.json 等）完全不變**；但 **fetch-log.json Schema 有向下相容擴充**（新增頂層 update_state 鍵，daily 班既有欄位一律不動）——舊述「零 Schema 變更」僅適用於股市資料檔
+6. **Git 證據**：Phase 3/4=`7f70c957`、Phase 5 修正與本報告見最新 commit（`git log --oneline -3`）；測試指令：`python3 tests/test_workflow_consolidation.py`、`python3 tests/test_known_errors.py`、`python3 skills/qa-gate/qa_gate.py --gate`、`actionlint .github/workflows/*.yml`
+7. **未驗證項目（不得以預估代替實測）**：
+   - GitHub 真實環境的 cron 觸發延遲行為（本地僅靜態模擬）
+   - concurrency workflow 層 queue single 在新排程下的實際取代行為（本機無法重現多 run 併發）
+   - runner 上 update_state.py 的實際執行耗時與 21:00 補跑班全 skip 的實際時間
+   - telegram-notify 對新 job 名的實際訊息呈現
+   - **上線 7 天實測**：Actions 耗時、API 請求數、QA 次數、Git Push 次數、資料完整率（規範九）——部署後統計
+
+### 9.10 結論
+
+**P0-1～P0-4 全部通過**（其中 P0-1、P0-2、P0-3、P0-4 各發現並修正一項實際缺陷）；**P1-5 部分完成**（active 內部 per-投信對接未做，風險已聲明——stale carry 保護＋QA 兜底）；**P1-6 完成**。**等待 Ivan 最終批准後 push main**；上線後觀察 7 天並統計實際數據。

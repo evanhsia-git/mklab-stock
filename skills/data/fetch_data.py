@@ -91,7 +91,17 @@ class RunLogger:
     def _write_files(self):
         # 單一機器可讀檔案：摘要統計 + 完整過程 log 合併成一份，不再拆成 json/txt 兩份重複內容
         self.stats["log_lines"] = [f"[{l}] {m}" for l, m in self.entries]
-        with open(os.path.join(OUT, "fetch-log.json"), "w", encoding="utf-8") as f:
+        out_path = os.path.join(OUT, "fetch-log.json")
+        # 2026-11-26 五組整合：保留其他 job 寫入的 update_state 區塊（Phase 5 P0-1——
+        # 本檔原為整份覆寫，會抹掉 update_state.py 記錄的跨 job 狀態）。
+        try:
+            with open(out_path, encoding="utf-8") as _f:
+                _prev = json.load(_f)
+            if isinstance(_prev, dict) and isinstance(_prev.get("update_state"), dict):
+                self.stats["update_state"] = _prev["update_state"]
+        except (OSError, ValueError):
+            pass
+        with open(out_path, "w", encoding="utf-8") as f:
             json.dump(self.stats, f, ensure_ascii=False, indent=2)
 
 

@@ -110,26 +110,59 @@ TASKS = {
 }
 
 
-# 每日行情類：台股/美股週末休市，補跑班與手動 due-only 不在週末觸發
-#（週六/日的正常班不受影響——正常班不做 check）。週期任務（ROE/meta/QA/月度）不受限。
-MARKET_CLOSED_TASKS = {"tw-stock-daily", "us-stock-daily", "us-etf-daily"}
+# 每日行情類 → 對應市場（到期判斷以「最近有效交易日」為準，Phase 5 P0-4——
+# 不再用星期幾擋：台北週六日 21:00 補跑班仍可補「美股週五／台股週五」未取得的資料。
+# 交易日曆採「週一~五為工作日」（零依賴）；國定假日／美股休市日會讓 check 判斷到期、
+# 跑步後資料日期不變 → record succeeded（當日）→ 次日再到期 → 交易日恢復後自然取得。
+# 白跑成本可接受（冪等抓取），不得因週末放棄尚未取得的交易日資料（Ivan 審核規範四）。
+DAILY_TASK_MARKET = {
+    "tw-stock-daily": "tw",
+    "us-stock-daily": "us",
+    "us-etf-daily": "us",
+    "global-indices": "tw",      # indices.json 的 as_of 為台北更新日
+    "global-history": "us",      # 美股週期月檔（無單一日期欄位，以 last_success 代替）
+}
+
+
+def _last_workday(market, now=None):
+    """最近一個工作日（含今天，若今天是工作日）。tw=台北曆；us=美東曆（zoneinfo 自動夏令）。
+    now 可注入（測試用），需為 aware datetime。"""
+    try:
+        from zoneinfo import ZoneInfo
+        tz = _TPEI if market == "tw" else ZoneInfo("America/New_York")
+    except ImportError:
+        tz = _TPEI
+    d = (now.astimezone(tz) if now else datetime.now(tz)).date()
+    while d.weekday() >= 5:
+        d -= timedelta(days=1)
+    return d.isoformat()
 
 
 def check_due(task, state):
-    """回傳 (due: bool, 說明)。到期＝今天(台北)尚未 succeeded，且資料日期落後或屬週期任務。"""
+    """回傳 (due: bool, 說明)。到期＝資料/成功日期落後最近有效交易日，或週期任務本期未完成。"""
     info = TASKS.get(task)
     if info is None:
         raise SystemExit(f"unknown task: {task}")
     today = _today()
     rec = state.get(task) or {}
-    if task in MARKET_CLOSED_TASKS and _now().weekday() >= 5:
-        return False, "週末休市，行情類任務不補跑（下一個交易日的正常班會抓取）"
     last_success = rec.get("last_success")
     # last_success 存完整 ISO datetime（record 寫入時帶時分秒）——比較一律取日期部分 [:10]
     if last_success and last_success[:10] == today and rec.get("status") == "succeeded":
         return False, f"今天已 succeeded（{last_success}）"
     if last_success and last_success[:10] > today:
         return False, f"last_success {last_success} 在未來（時鐘異常防護）"
+
+    # ── 每日行情類：資料日期（或 last_success）至少要達到「最近有效交易日」──
+    if task in DAILY_TASK_MARKET:
+        lw = _last_workday(DAILY_TASK_MARKET[task], _now())
+        data_date = None
+        if info.get("file") and info["file"].startswith("data/") and not info["file"].endswith("/"):
+            data_date = _read_meta_date(info["file"])
+        if not data_date:
+            data_date = (last_success or "")[:10] or None
+        if not data_date or data_date < lw:
+            return True, f"資料日期 {data_date or '無'} < 最近交易日 {lw}（{DAILY_TASK_MARKET[task].upper()} 曆）"
+        return False, f"資料已達最近交易日（{data_date} = {lw}）"
 
     # 子任務級週期判斷
     if task == "tw-stock-fundamentals":
