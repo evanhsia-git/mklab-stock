@@ -104,9 +104,11 @@ for f in glob.glob('assets/js/*.js'):
 check("JavaScript 語法（所有頁面與 assets/js）", not errs, ",".join(errs))
 
 # GitHub Actions 手動執行不得被 schedule 條件跳過
+# 2026-11-26：語意精確化——只有「含 github.event.schedule 條件」的 if 行才可能
+# 在手動 dispatch 時跳過 job（retry-or-report 的 if: always() 不跳任何東西，不適用）
 wf = open('.github/workflows/daily-update.yml', encoding='utf-8').read()
-jobs_if = re.findall(r"if: (.*)", wf)
-check("P1-2 手動執行條件涵蓋 workflow_dispatch", all("workflow_dispatch" in x for x in jobs_if), f"{len(jobs_if)} 個 job")
+jobs_if = [x for x in re.findall(r"if: (.*)", wf) if 'github.event.schedule' in x]
+check("P1-2 手動執行條件涵蓋 workflow_dispatch", all("workflow_dispatch" in x for x in jobs_if), f"{len(jobs_if)} 個含 schedule 條件的 job")
 qa = open('.github/workflows/qa-gate.yml', encoding='utf-8').read()
 check("P1-1 QA 觸發涵蓋 assets/js 與 assets/css", "assets/js/**" in qa and "assets/css/**" in qa)
 

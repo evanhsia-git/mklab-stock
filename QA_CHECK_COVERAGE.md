@@ -140,3 +140,38 @@
 **新增流程**：事故 →（1）修復＋固化檢查項 →（2）本表記錄根因與固化位置 →（3）
 若屬新檢查類別，同步 qa_checks.json 與 qa_gate.py。已知外部限制（如摩根
 持股家用 IP 限定）不新增檢查項，記入 quality_sentinel.py 的 health_summary。
+
+### 2026-11-25~26 失敗班總盤點（8 班 6 根因，全數閉合）
+
+| 班號 | job | 根因 | 固化為 |
+|---|---|---|---|
+| #233 (11-02) | indices | `^TWIIE/^TWIIF` 假 ticker 404 | 指數清單清理（後續班成功實證） |
+| #247 (11-04) | weekly-roe | sources meta 過期 vs 實際陣列 | P1-1 meta 一律重算 |
+| #303 (11-20) | official-fundamentals | NEG_EPS_PE 26 檔假 PE | 寧缺勿假清理＋data_rules 檢查 |
+| #308 (11-23) | daily | fetch_etf_nav `import requests` runner 沒裝 | requirements.txt 登記＋QA「第三方依賴全登記」檢查 |
+| #311 (11-24) | sec-edgar | ROOT 路徑少一層 | `2e017313` 路徑修正 |
+| #313 (11-24) | daily | meta 鍵型 'null' vs None | qa_gate 鍵型正規化（見上表首行） |
+| #317/#319 (11-25) | daily | 契約精確總數 vs 條件式項浮動（67/68≠69） | `521f0ba6` 範圍下限契約＋`dc034d91` 上限撤除 |
+
+## 條件式檢查項登記制（2026-11-26 起）
+
+「只在特定資料條件下出現」的檢查項會讓 QA 執行數自然浮動（例如 TWSE_T_MINUS_1
+只在 TWSE 落後 TPEX 時出現）。**規範**：
+
+1. 新增條件式檢查項時，**必須**同步登記於 `skills/qa-gate/qa_checks.json` 的
+   `conditional_checks` 陣列（名稱、出現條件、等級）。
+2. `conditional_check_slack`（現值 3）= 契約允許的執行數下浮餘裕——
+   qa_gate 只驗下限 `executed >= TOTAL - slack`（防漏跑，fail closed），上限不設
+   （資料品質規則拆動態名屬合法增加，交由 verdict 判定 BLOCK）。
+3. **禁止**把條件式項列入 `required_checks`（名稱不恆定）。
+4. slack 不足以涵蓋新登記的條件式項時，調高 `conditional_check_slack`。
+
+## 失敗班自動重試分級（P2，2026-11-26 起）
+
+daily-update.yml 新增 `retry-or-report` job（needs 全部 job、if: always()）：
+
+- **有 job 失敗且本次非重試** → 自動重觸發自身一次（`retry=1`）
+- **重試後仍失敗** → 不再重試（防循環），發 `::warning::` 交人工檢查
+- **資料類失敗**（QA 擋下）：重試後仍會被同一關卡擋下、同樣只重試一次——
+  行為安全，不會重複推送壞資料（推送前一律過 QA 閘門）
+- 業務結果告警仍由 telegram-notify 監聽器負責（不重複通知）

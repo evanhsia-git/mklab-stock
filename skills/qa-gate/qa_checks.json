@@ -17,5 +17,22 @@
   "結構健康檢查",
   "內部連結 HTTP 200 (本地)"
  ],
- "conditional_check_slack": 3
+ "conditional_check_slack": 3,
+ "conditional_checks": [
+  {
+   "name": "TWSE_T_MINUS_1",
+   "出現條件": "TWSE 最新日期較 TPEX 落後 1 個交易日（STOCK_DAY_ALL 只發 T-1）",
+   "等級": "WARNING"
+  },
+  {
+   "name": "US_RETURNS_MISSING",
+   "出現條件": "美股個股/ETF 月漲跌缺漏 >30%（fetch_us_returns 未涵蓋新標的）",
+   "等級": "WARNING"
+  },
+  {
+   "name": "[CODE] 動態名（資料品質規則）",
+   "出現條件": "data_rules 有問題時聚合名拆多條動態名（通過時為單一聚合項）",
+   "等級": "視規則而定"
+  }
+ ]
 }

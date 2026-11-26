@@ -25,10 +25,17 @@ on:
     - cron: "0 10 20 * *"    # official-fundamentals：每月 20 日 18:00
     - cron: "0 10 * * 0"     # etf-meta：每週日 18:00
     - cron: "0 9 * * 1"      # etf-qa：每週一 17:00（台灣）
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      retry:
+        description: '自動重試旗標（retry-or-report job 失敗後重觸發時=1；=1 時不再重試，防循環）'
+        required: false
+        default: '0'
+        type: string
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   # 每日：收盤行情 → 本地計算（指標、K 線、產業、官方公司資訊）→ 市場摘要與 RSS
@@ -340,3 +347,35 @@ jobs:
         run: bash scripts/ci_qa_gate.sh
       - name: 推送（QA 不改資料時為 no-op；推送一律走共用腳本）
         run: 'bash scripts/ci_commit_push.sh "qa: ETF QA 自動化 $(date +%F)" data/'
+
+  # P2 失敗班自動重試（2026-11-26）：等全部 job 結束後判定——
+  # 有失敗且本次不是重試（inputs.retry != '1'）→重觸發自身一次（重跑全部 job）。
+  # 防循環：重試的 run 帶 retry=1，再失敗不再重觸發。
+  # 資料類失敗（QA 擋下）重試後仍會被同一關卡擋下、同樣只重試一次，行為安全。
+  # 業務結果告警由 telegram-notify 監聽器負責（本 job 不重複通知）。
+  retry-or-report:
+    needs: [daily, weekly-roe, indices, us-market, sec-edgar, global-history,
+            index-holdings, official-fundamentals, etf-meta, etf-qa]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: 判定失敗並決定是否自動重試
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RETRY_FLAG: ${{ github.event.inputs.retry || '0' }}
+        run: |
+          FAILED=$(gh api "repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs" \
+            --jq '[.jobs[] | select(.conclusion=="failure") | .name] | join(", ")')
+          if [[ -z "$FAILED" ]]; then
+            echo "所有 job 成功，無需處理"
+            exit 0
+          fi
+          echo "失敗 job: $FAILED"
+          if [[ "$RETRY_FLAG" == "1" ]]; then
+            echo "::warning::重試後仍失敗，不再自動重試（防循環）——請人工檢查 $FAILED"
+            exit 0
+          fi
+          echo "自動重試一次（P2 分級重試：網路/暫時性錯誤多半一次重試即恢復；資料類失敗重試後仍會被 QA 擋下，僅多一次確認）"
+          gh workflow run daily-update.yml --ref "${{ github.ref_name }}" -f retry=1
+          echo "已觸發重試 run（retry=1）"
