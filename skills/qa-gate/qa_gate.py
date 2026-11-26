@@ -56,18 +56,167 @@ else:
 
 
 # ============================================================
-# 報告完整性契約（Data Protection v2.1）— 單一真相源
-# qa_checks.json：schema_version／expected_checks_total／min／required_checks
-# qa_gate（產生端）與 ci_qa_verdict（驗證端）都從此檔讀取，避免多處同步。
-# - required 只列「name 恆穩定」項（禁止含當日數據的動態 name）
-# - expected_checks_total 為精確總數：漏跑/湊數任何一項都會在兩端被攔
+# 報告完整性契約（Data Protection v2.1）— 2026-11-26 七檔併四檔：
+# 契約單一真相源移至 scripts/ci_qa_verdict.py 的模組級 _CONTRACT，
+# 本檔（產生端）匯入驗證端的常數，兩端永遠一致（原 qa_checks.json 刪除）。
+# verdict 模組頂部只有純常數定義（無 QA/Git 副作用），匯入安全、無循環。
 # ============================================================
-with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "qa_checks.json"), encoding="utf-8") as _cf:
-    _QA_CONTRACT = json.load(_cf)
-SCHEMA_VERSION = _QA_CONTRACT["schema_version"]
-EXPECTED_CHECKS_TOTAL = _QA_CONTRACT["expected_checks_total"]
-EXPECTED_CHECKS_MIN = _QA_CONTRACT["expected_checks_min"]
-REQUIRED_CHECKS = tuple(_QA_CONTRACT["required_checks"])
+_SCRIPTS_DIR = os.path.join(ROOT, "scripts")
+if _SCRIPTS_DIR not in sys.path:
+    sys.path.insert(0, _SCRIPTS_DIR)
+from ci_qa_verdict import (_CONTRACT as _QA_CONTRACT,        # noqa: E402
+                           SCHEMA_VERSION,                    # noqa: E402
+                           EXPECTED_CHECKS_TOTAL,             # noqa: E402
+                           EXPECTED_CHECKS_FLOOR as EXPECTED_CHECKS_MIN,   # noqa: E402
+                           REQUIRED_CHECKS,                   # noqa: E402
+                           CONDITIONAL_CHECK_SLACK)           # noqa: E402
+
+
+# ============================================================
+# 資料新鮮度守門（Data Protection v2.1，2026-11-26 七檔併四檔：
+# 自 scripts/ci_data_freshness.py 整合——函式原樣遷移，行為不變）
+# - 日期正規化／防回退：候選（working、HEAD@{1}、origin/main）取最新有效日期
+# - 兩階段恢復：plan_recovery 只讀預檢 → apply_recovery 寫入＋stage
+# - 唯讀模式（--freshness）不寫任何檔案；恢復模式（--recover）須明確授權呼叫
+# ============================================================
+DATE_FIELDS = ("as_of", "asof", "date", "last_updated", "updated", "updated_at")
+FRESHNESS_DEFAULT_PATHS = ("data/stocks.json", "data/industry.json")
+
+_COMPACT_DATE = re.compile(r"[0-9]{8}")
+_ISO_DATE = re.compile(r"([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})")
+_ISO_DATETIME = re.compile(
+    r"[0-9]{4}-[0-9]{2}-[0-9]{2}[T ][0-9]{2}:[0-9]{2}"
+    r"(?::[0-9]{2}(?:\.(?:[0-9]{3}|[0-9]{6}))?)?"
+    r"(?:Z|[+-][0-9]{2}:[0-9]{2})?"
+)
+
+
+def normalize_date(value):
+    """Return an ISO calendar date (YYYY-MM-DD) for a valid date string, else None."""
+    from datetime import date as _date, datetime as _datetime
+    if not isinstance(value, str):
+        return None
+    text = value.strip()
+    try:
+        if _COMPACT_DATE.fullmatch(text):
+            return _date(int(text[:4]), int(text[4:6]), int(text[6:])).isoformat()
+        match = _ISO_DATE.fullmatch(text)
+        if match:
+            return _date(*map(int, match.groups())).isoformat()
+        if _ISO_DATETIME.fullmatch(text):
+            return _datetime.fromisoformat(text.replace("Z", "+00:00")).date().isoformat()
+    except ValueError:
+        return None
+    return None
+
+
+def extract_date(raw):
+    """Return the authoritative ISO date of a JSON document (bytes), or None.
+
+    meta.<field> is preferred over top-level <field>. If the first matching field
+    is invalid, the result is None: a later field must not hide a bad date.
+    """
+    try:
+        doc = json.loads(raw.decode("utf-8"))
+    except (UnicodeDecodeError, ValueError, RecursionError):
+        return None
+    if not isinstance(doc, dict):
+        return None
+    for container in (doc.get("meta"), doc):
+        if not isinstance(container, dict):
+            continue
+        for key in DATE_FIELDS:
+            if key in container:
+                return normalize_date(container[key])
+    return None
+
+
+def _git_bytes(*args):
+    import subprocess as _sp
+    return _sp.run(["git", *args], capture_output=True)
+
+
+def _resolve_commit(ref, optional=False):
+    result = _git_bytes("rev-parse", "--verify", "--quiet", ref + "^{commit}")
+    if result.returncode == 0:
+        return result.stdout.decode("utf-8").strip()
+    if optional:
+        print(f"[freshness] WARNING: unavailable optional ref {ref}", file=sys.stderr)
+        return None
+    raise RuntimeError(f"Cannot resolve {ref}: {result.stderr.decode('utf-8', errors='replace').strip()}")
+
+
+def _read_blob(ref, path):
+    """Return the exact bytes of path at ref, or None if ref is None or path is absent."""
+    if ref is None:
+        return None
+    listing = _git_bytes("ls-tree", "-z", ref, "--", path)
+    if listing.returncode != 0:
+        raise RuntimeError(f"ls-tree {ref}:{path} failed")
+    if not listing.stdout:
+        return None
+    blob = _git_bytes("show", f"{ref}:{path}")
+    if blob.returncode != 0:
+        raise RuntimeError(f"show {ref}:{path} failed")
+    return blob.stdout
+
+
+def _check_path(path):
+    from pathlib import Path as _Path
+    parts = _Path(path).parts
+    if not path or _Path(path).is_absolute() or ".." in parts or path.startswith("-"):
+        raise RuntimeError(f"Invalid repository path: {path}")
+
+
+def plan_recovery(paths):
+    """Phase 1 (read-only): decide every path and validate every replacement. Writes nothing."""
+    from pathlib import Path as _Path
+    remote = _resolve_commit("origin/main")
+    previous = _resolve_commit("HEAD@{1}", optional=True)
+    refs = {"HEAD@{1}": previous, "origin/main": remote}
+
+    restores = []  # (path, exact bytes to write, validated date)
+    for path in dict.fromkeys(paths):
+        _check_path(path)
+        try:
+            working = _Path(path).read_bytes()
+        except OSError as exc:
+            raise RuntimeError(f"Cannot read {path}: {exc}") from exc
+
+        candidates = {"working": working}
+        for label, ref in refs.items():
+            blob = _read_blob(ref, path)
+            if blob is not None:
+                candidates[label] = blob
+
+        dates = {label: extract_date(raw) for label, raw in candidates.items()}
+        for label, value in dates.items():
+            if value is None:
+                print(f"[freshness] WARNING: {path}: invalid date/JSON in {label}", file=sys.stderr)
+
+        valid = {label: value for label, value in dates.items() if value is not None}
+        if not valid:
+            raise RuntimeError(f"{path}: no valid dated candidate")
+
+        # max() returns the first maximal key, so the working copy wins ties.
+        best = max(valid, key=valid.get)
+        print(f"[freshness] {path}: {dates}; selected {best}")
+        if best != "working":
+            restores.append((path, candidates[best], valid[best]))
+    return restores
+
+
+def apply_recovery(restores):
+    """Phase 2: write and stage the already-validated replacements."""
+    from pathlib import Path as _Path
+    for path, raw, expected in restores:
+        if extract_date(raw) != expected:  # defensive; cheap and catches logic drift
+            raise RuntimeError(f"Recovery verification failed: {path}")
+    for path, raw, _ in restores:
+        _Path(path).write_bytes(raw)
+        staged = _git_bytes("add", "--", path)
+        if staged.returncode != 0:
+            raise RuntimeError(f"git add {path} failed")
 
 
 @dataclass
@@ -977,5 +1126,70 @@ def run():
     return 1 if block else 0
 
 
+# ============================================================
+# CLI 入口（2026-11-26 七檔併四檔：統一執行入口）
+#   --json <path>      唯讀品質掃描（原行為；qa-gate.yml 使用）
+#   --gate             完整品質閘門（原 scripts/ci_qa_gate.sh 編排：
+#                      清舊報告→scan→verdict→回歸測試，任一失敗即阻擋）
+#   --freshness [p..]  唯讀日期防回退判定（不寫任何檔案）
+#   --recover  [p..]   兩階段資料恢復（寫入＋stage；須由授權流程呼叫，如 ci_commit_push.sh）
+# ============================================================
+def _run_gate():
+    """原 ci_qa_gate.sh 的編排邏輯——fail closed。
+
+    Scanner 以子進程 self-invoke（--json），與原 shell 版行為等價：
+    子進程崩潰時報告缺失即擋（不會把部分狀態當成功）。
+    """
+    print("[qa-gate] 1/3 Generate QA report")
+    report = "qa-result.json"
+    try:
+        os.remove(report)
+    except OSError:
+        pass
+    scan = subprocess.run([sys.executable, os.path.abspath(__file__), "--json", report], cwd=ROOT)
+    scan_rc = scan.returncode
+    if not os.path.isfile(report) or os.path.getsize(report) == 0:
+        print(f"[qa-gate] ERROR: Missing, empty or unsafe QA report (scanner exit {scan_rc})", file=sys.stderr)
+        return 1
+    print("[qa-gate] 2/3 Evaluate QA verdict")
+    v = subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "ci_qa_verdict.py"), report])
+    if v.returncode != 0:
+        print(f"[qa-gate] BLOCK: verdict exit {v.returncode}", file=sys.stderr)
+        return v.returncode
+    if scan_rc != 0:
+        print(f"[qa-gate] ERROR: Scanner exited {scan_rc} despite a passing verdict; refusing publication", file=sys.stderr)
+        return scan_rc
+    print("[qa-gate] 3/3 Run known-error regression tests")
+    r = subprocess.run([sys.executable, os.path.join(ROOT, "tests", "test_known_errors.py")])
+    if r.returncode != 0:
+        print(f"[qa-gate] BLOCK: regression tests exit {r.returncode}", file=sys.stderr)
+        return r.returncode
+    print("[qa-gate] QA gate passed")
+    return 0
+
+
+def main(argv=None):
+    args = list(sys.argv[1:] if argv is None else argv)
+    if "--json" in args:
+        return run()  # 報告由 run() 內部依 sys.argv 寫入（相容原行為）
+    if "--gate" in args:
+        return _run_gate()
+    if "--recover" in args or "--freshness" in args:
+        write = "--recover" in args
+        i = args.index("--recover" if write else "--freshness")
+        paths = [a for a in args[i + 1:] if not a.startswith("--")] or list(FRESHNESS_DEFAULT_PATHS)
+        try:
+            restores = plan_recovery(paths)
+            if write:
+                apply_recovery(restores)
+        except (OSError, UnicodeError, RuntimeError, ValueError) as exc:
+            print(f"[freshness] ERROR: {exc}", file=sys.stderr)
+            return 1
+        print(f"[freshness] OK: {len(restores)} correction(s){' staged; caller must run QA' if write else ' (read-only plan)'}")
+        return 0
+    print("Usage: qa_gate.py --json <path> | --gate | --recover [paths..] | --freshness [paths..]", file=sys.stderr)
+    return 2
+
+
 if __name__ == "__main__":
-    sys.exit(run())
+    sys.exit(main())

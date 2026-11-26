@@ -64,7 +64,7 @@ def selfheal():
         if r.returncode != 0:
             return (f"🛑 自癒中止：{cmd} 失敗（exit {r.returncode}）——需人工檢查\n"
                     f"最後輸出：{(r.stdout or r.stderr).strip().splitlines()[-1][:160]}")
-    gate = subprocess.run(["bash", "scripts/ci_qa_gate.sh"], cwd=REPO,
+    gate = subprocess.run(["python3", "skills/qa-gate/qa_gate.py", "--gate"], cwd=REPO,
                           capture_output=True, text=True, timeout=900)
     if gate.returncode != 0:
         errs = [l for l in (gate.stdout or "").splitlines()

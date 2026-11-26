@@ -23,10 +23,11 @@ shift
 ROOT=$(git rev-parse --show-toplevel)
 [[ "$(pwd -P)" == "$(cd "$ROOT" && pwd -P)" ]] || die 'Run from repository root'
 
-FRESH=scripts/ci_data_freshness.py
-QA=scripts/ci_qa_gate.sh
-[[ -f "$FRESH" ]] || die "Missing freshness guard: $FRESH"
-[[ -f "$QA" ]] || die "Missing QA gate: $QA"
+# 2026-11-26 七檔併四檔：freshness 與 QA 編排整合進 skills/qa-gate/qa_gate.py
+#（--recover 兩階段恢復／--gate 完整閘門），原 scripts/ci_data_freshness.py 與
+# scripts/ci_qa_gate.sh 已移除。
+QA_CORE=skills/qa-gate/qa_gate.py
+[[ -f "$QA_CORE" ]] || die "Missing QA core: $QA_CORE"
 
 git diff --cached --quiet || die 'Pre-existing staged changes; refusing mixed commit'
 [[ -z $(git ls-files -u) ]] || die 'Unmerged paths exist'
@@ -62,10 +63,10 @@ fetch_main() {
 }
 
 validate() {
-    [[ -f "$FRESH" && -f "$QA" ]] || die 'Required guard missing after merge'
+    [[ -f "$QA_CORE" ]] || die 'Required guard missing after merge'
 
     # The freshness guard may stage corrections (restoring a newer valid copy).
-    python3 "$FRESH" data/stocks.json data/industry.json || die 'Freshness guard failed'
+    python3 "$QA_CORE" --recover data/stocks.json data/industry.json || die 'Freshness guard failed'
     git diff --quiet || die 'Freshness guard left unstaged tracked changes'
     if ! git diff --cached --quiet; then
         # Separate commit keeps the audit trail for automatic corrections.
@@ -74,7 +75,7 @@ validate() {
 
     local checked
     checked=$(git rev-parse HEAD)
-    bash "$QA" || die 'Post-merge QA failed'
+    python3 "$QA_CORE" --gate || die 'Post-merge QA failed'
     [[ $(git rev-parse HEAD) == "$checked" ]] || die 'QA changed HEAD'
     git diff --quiet && git diff --cached --quiet || die 'QA modified tracked files'
     [[ -z $(git ls-files -u) ]] || die 'Unmerged paths after QA'

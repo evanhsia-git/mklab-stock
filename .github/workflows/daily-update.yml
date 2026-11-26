@@ -106,7 +106,7 @@ jobs:
       - name: 每日市場摘要與 RSS（本地計算）
         run: python skills/data/build_digest.py
       - name: QA 閘門（提交前，錯誤即中止，不推送）
-        run: bash scripts/ci_qa_gate.sh
+        run: python skills/qa-gate/qa_gate.py --gate
       - name: 推送
         run: 'bash scripts/ci_commit_push.sh "data: 每日更新 $(date +%Y-%m-%d)" data/ rss.xml'
 
@@ -131,7 +131,7 @@ jobs:
       - name: 補 ROE/ROA（yfinance，每檔間隔 3 秒）
         run: python skills/data/fetch_data.py weekly
       - name: QA 閘門（提交前，錯誤即中止，不推送）
-        run: bash scripts/ci_qa_gate.sh
+        run: python skills/qa-gate/qa_gate.py --gate
       - name: 推送
         run: 'bash scripts/ci_commit_push.sh "data: ROE/ROA 補充 $(date +%Y-%m-%d)" data/'
 
@@ -158,7 +158,7 @@ jobs:
       - name: 台股加權指數 K 線（yfinance ^TWII）
         run: python skills/data/fetch_data.py twii
       - name: QA 閘門（提交前，錯誤即中止，不推送）
-        run: bash scripts/ci_qa_gate.sh
+        run: python skills/qa-gate/qa_gate.py --gate
       - name: 推送
         run: 'bash scripts/ci_commit_push.sh "data: 全球指數／ETF／TWII K 線 $(date +%Y-%m-%d)" data/'
 
@@ -185,7 +185,7 @@ jobs:
       - name: 美股月／年漲跌（yfinance 調整後歷史價，失敗保留前次值）
         run: python skills/data/fetch_us_returns.py
       - name: QA 閘門（提交前，錯誤即中止，不推送）
-        run: bash scripts/ci_qa_gate.sh
+        run: python skills/qa-gate/qa_gate.py --gate
       - name: 推送
         run: 'bash scripts/ci_commit_push.sh "data: 美股前 30 大 $(date +%Y-%m-%d)" data/us/'
 
@@ -210,7 +210,7 @@ jobs:
       - name: 抓取 SEC EDGAR Company Facts 並更新 us-stocks.json
         run: python skills/data/fetch_sec_edgar.py
       - name: QA 閘門（提交前，錯誤即中止，不推送）
-        run: bash scripts/ci_qa_gate.sh
+        run: python skills/qa-gate/qa_gate.py --gate
       - name: 推送
         run: 'bash scripts/ci_commit_push.sh "data: SEC EDGAR $(date +%Y-%m-%d)" data/us/'
 
@@ -235,7 +235,7 @@ jobs:
       - name: 美股／全球／情緒每日收盤（yfinance）
         run: python skills/data/fetch_global_history.py
       - name: QA 閘門（提交前，錯誤即中止，不推送）
-        run: bash scripts/ci_qa_gate.sh
+        run: python skills/qa-gate/qa_gate.py --gate
       - name: 推送
         run: 'bash scripts/ci_commit_push.sh "data: 美股／全球月檔 $(date +%Y-%m-%d)" data/us-history-* data/global-history-*'
 
@@ -260,7 +260,7 @@ jobs:
       - name: 四大指數替代 ETF 持股
         run: python skills/data/fetch_index_holdings.py
       - name: QA 閘門（提交前，錯誤即中止，不推送）
-        run: bash scripts/ci_qa_gate.sh
+        run: python skills/qa-gate/qa_gate.py --gate
       - name: 推送
         run: 'bash scripts/ci_commit_push.sh "data: 指數替代 ETF 持股 $(date +%Y-%m)" data/index-holdings/'
 
@@ -289,7 +289,7 @@ jobs:
       - name: 公司基本資料（產業、上市日）
         run: python skills/data/integrate_official_company.py
       - name: QA 閘門（提交前，錯誤即中止，不推送）
-        run: bash scripts/ci_qa_gate.sh
+        run: python skills/qa-gate/qa_gate.py --gate
       - name: 推送
         run: 'bash scripts/ci_commit_push.sh "data: 官方財報月更新 $(date +%Y-%m)" data/ data/raw/official/'
 
@@ -320,7 +320,7 @@ jobs:
       - name: ETF 週邊整合（保管費／持股基準日／持股總數）
         run: python skills/data/integrate_etf_extras.py
       - name: QA 閘門（提交前，錯誤即中止，不推送）
-        run: bash scripts/ci_qa_gate.sh
+        run: python skills/qa-gate/qa_gate.py --gate
       - name: 推送
         run: 'bash scripts/ci_commit_push.sh "data: ETF 補充資料與分類 $(date +%Y-%m-%d)" data/etf-meta.json data/etf-classified.json data/stocks.json data/raw/twse_etf.csv'
 
@@ -344,7 +344,7 @@ jobs:
       - name: Phase 4 QA Automation
         run: python scripts/qa_phase4.py
       - name: QA Gate
-        run: bash scripts/ci_qa_gate.sh
+        run: python skills/qa-gate/qa_gate.py --gate
       - name: 推送（QA 不改資料時為 no-op；推送一律走共用腳本）
         run: 'bash scripts/ci_commit_push.sh "qa: ETF QA 自動化 $(date +%F)" data/'
 

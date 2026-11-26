@@ -103,6 +103,49 @@ for f in glob.glob('assets/js/*.js'):
     if r.returncode: errs.append(f)
 check("JavaScript 語法（所有頁面與 assets/js）", not errs, ",".join(errs))
 
+# ── Git 故障注入測試共用：QA 核心測試替身 ──
+# 2026-11-26 七檔併四檔：push 腳本改呼叫 skills/qa-gate/qa_gate.py（--recover/--gate）。
+# seed repo 的替身 = --recover 委託「正式 qa_gate.py 的真實 freshness 邏輯」
+#（驗證恢復行為本身）＋ --gate mock PASS（本組測試驗 Git/freshness 行為，QA 內容由
+# --gate 正式流程把關）。替身只存在於 seed repo，正式流程一律用正式檔（不可繞過）。
+_REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+_REAL_SKILLS = os.path.join(_REPO_ROOT, "skills")
+_QA_CORE_STUB = '''#!/usr/bin/env python3
+"""測試替身：--recover 委託正式 qa_gate.py 的 freshness 實作；--gate mock PASS。"""
+import os, sys
+sys.path.insert(0, r"{real_skills}")
+sys.path.insert(0, r"{real_scripts}")
+import qa_gate as real
+args = sys.argv[1:]
+if "--recover" in args or "--freshness" in args:
+    write = "--recover" in args
+    i = args.index("--recover" if write else "--freshness")
+    paths = [a for a in args[i + 1:] if not a.startswith("--")] or list(real.FRESHNESS_DEFAULT_PATHS)
+    try:
+        restores = real.plan_recovery(paths)
+        if write:
+            real.apply_recovery(restores)
+    except Exception as e:
+        print(f"[freshness] ERROR: {{e}}", file=sys.stderr)
+        sys.exit(1)
+    print(f"[freshness] OK: {{len(restores)}} correction(s)")
+    sys.exit(0)
+print("[mock-qa] PASS")
+sys.exit(0)
+'''.format(real_skills=os.path.join(_REAL_SKILLS, "qa-gate"),
+           real_scripts=os.path.join(os.path.dirname(_REAL_SKILLS), "scripts"))
+
+
+def _seed_qa_core(seed):
+    """在 seed repo 佈署 QA 核心測試替身（skills/qa-gate/qa_gate.py）。"""
+    qd = os.path.join(seed, "skills", "qa-gate")
+    os.makedirs(qd, exist_ok=True)
+    q = os.path.join(qd, "qa_gate.py")
+    with open(q, "w") as f:
+        f.write(_QA_CORE_STUB)
+    os.chmod(q, 0o755)
+
+
 # GitHub Actions 手動執行不得被 schedule 條件跳過
 # 2026-11-26：語意精確化——只有「含 github.event.schedule 條件」的 if 行才可能
 # 在手動 dispatch 時跳過 job（retry-or-report 的 if: always() 不跳任何東西，不適用）
@@ -667,13 +710,11 @@ def _freshness_guard_ok():
             f.write('{"meta":{"as_of":"2026-10-30"},"industries":{}}')
         git("init", "-q", "-b", "main", cwd=seed)
         # 2026-11-25：v2.0 push 腳本要求 QA gate 存在（合併後必跑）——fixture 以 stub
-        # 覆寫 seed 副本的 ci_qa_gate.sh（本測試驗的是 freshness 行為，QA 內容由其他層把關）。
+        # 佈署 QA 核心測試替身（--recover 委託正式 freshness 實作、--gate mock PASS）。
         # （2026-11-25 整合 ChatGPT 版：stub 直接覆寫副本比 QA_GATE_PATH 間接層更簡潔。）
-        for fn in ("ci_commit_push.sh", "ci_data_freshness.py", "ci_qa_gate.sh"):
+        for fn in ("ci_commit_push.sh",):
             _sh.copy(os.path.join("scripts", fn), os.path.join(seed, "scripts", fn))
-        with open(os.path.join(seed, "scripts/ci_qa_gate.sh"), "w") as f:
-            f.write("#!/usr/bin/env bash\necho '[mock-qa] PASS'; exit 0\n")
-        os.chmod(os.path.join(seed, "scripts/ci_qa_gate.sh"), 0o755)
+        _seed_qa_core(seed)
         idn = ["-c", "user.email=t@t", "-c", "user.name=t"]
         git(*idn, "add", "-A", cwd=seed); git(*idn, "commit", "-q", "-m", "seed", cwd=seed)
         git("remote", "add", "origin", os.path.join(t, "origin.git"), cwd=seed)
@@ -723,11 +764,11 @@ def _push_retry_ok():
                         ("data/industry.json", '{"meta":{"as_of":"2026-10-30"},"industries":{}}')):
             with open(os.path.join(seed, fn), "w") as f:
                 f.write(txt)
-        for fn in ("ci_commit_push.sh", "ci_data_freshness.py"):
+        for fn in ("ci_commit_push.sh",):
+
             _sh.copy(os.path.join("scripts", fn), os.path.join(seed, "scripts", fn))
-        with open(os.path.join(seed, "scripts/ci_qa_gate.sh"), "w") as f:
-            f.write("#!/usr/bin/env bash\necho '[stub-qa] PASS'; exit 0\n")
-        os.chmod(os.path.join(seed, "scripts/ci_qa_gate.sh"), 0o755)
+
+        _seed_qa_core(seed)
         git("init", "-q", "-b", "main", cwd=seed)
         git(*idn, "add", "-A", cwd=seed); git(*idn, "commit", "-q", "-m", "seed", cwd=seed)
         git("remote", "add", "origin", os.path.join(t, "origin.git"), cwd=seed)
@@ -745,8 +786,11 @@ def _push_retry_ok():
         d = json.load(open(p, encoding="utf-8")); d["stocks"][0]["price"] = 2370
         json.dump(d, open(p, "w", encoding="utf-8"))
         os.makedirs(os.path.join(w, "scripts"), exist_ok=True)
-        for fn in ("ci_commit_push.sh", "ci_data_freshness.py", "ci_qa_gate.sh"):
+        for fn in ("ci_commit_push.sh",):
+
             _sh.copy(os.path.join(seed, "scripts", fn), os.path.join(w, "scripts", fn))
+
+        _seed_qa_core(w)
         r = subprocess.run(["bash", "scripts/ci_commit_push.sh", "retry test", "data/stocks.json"],
                            cwd=w, capture_output=True, text=True, timeout=300)
         final = json.loads(git("show", "main:data/stocks.json", cwd=os.path.join(t, "origin.git")).stdout)
@@ -781,11 +825,11 @@ def _conflict_abort_ok():
                         ("data/industry.json", '{"meta":{"as_of":"2026-10-30"},"industries":{}}')):
             with open(os.path.join(seed, fn), "w") as f:
                 f.write(txt)
-        for fn in ("ci_commit_push.sh", "ci_data_freshness.py"):
+        for fn in ("ci_commit_push.sh",):
+
             _sh.copy(os.path.join("scripts", fn), os.path.join(seed, "scripts", fn))
-        with open(os.path.join(seed, "scripts/ci_qa_gate.sh"), "w") as f:
-            f.write("#!/usr/bin/env bash\necho '[stub-qa] PASS'; exit 0\n")
-        os.chmod(os.path.join(seed, "scripts/ci_qa_gate.sh"), 0o755)
+
+        _seed_qa_core(seed)
         git("init", "-q", "-b", "main", cwd=seed)
         git(*idn, "add", "-A", cwd=seed); git(*idn, "commit", "-q", "-m", "seed", cwd=seed)
         git("remote", "add", "origin", os.path.join(t, "origin.git"), cwd=seed)
@@ -804,8 +848,11 @@ def _conflict_abort_ok():
         d = json.load(open(os.path.join(w, "data/stocks.json"), encoding="utf-8")); d["stocks"][0]["price"] = 2370
         json.dump(d, open(os.path.join(w, "data/stocks.json"), "w", encoding="utf-8"))
         os.makedirs(os.path.join(w, "scripts"), exist_ok=True)
-        for fn in ("ci_commit_push.sh", "ci_data_freshness.py", "ci_qa_gate.sh"):
+        for fn in ("ci_commit_push.sh",):
+
             _sh.copy(os.path.join(seed, "scripts", fn), os.path.join(w, "scripts", fn))
+
+        _seed_qa_core(w)
         r = subprocess.run(["bash", "scripts/ci_commit_push.sh", "conflict test", "data/stocks.json"],
                            cwd=w, capture_output=True, text=True, timeout=300)
         remote_after = git("rev-parse", "main", cwd=os.path.join(t, "origin.git")).stdout.strip()

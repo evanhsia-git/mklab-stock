@@ -28,16 +28,52 @@ def reject_constant(value):
     raise ValueError(f"非法 JSON 常數: {value}")
 
 
-# 報告完整性契約（Data Protection v2.1）— 與 qa_gate.py 共用單一真相源
-# qa_checks.json：verdict 的 required/門檻/總數全部來自設定檔（獨立可信來源），
-# 報告自報的 required_checks 僅資訊性，且必須與設定檔一致（防縮減宣告）。
-_THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-with open(os.path.join(_THIS_DIR, os.pardir, "skills", "qa-gate", "qa_checks.json"), encoding="utf-8") as _cf:
-    _CONTRACT = json.load(_cf)
+# 報告完整性契約（Data Protection v2.1）— 單一真相源（2026-11-26 七檔併四檔：
+# qa_checks.json 移入本檔，qa_gate.py 匯入本模組的常數；verdict 不 import qa_gate，無循環）。
+# 新增/移除檢查時更新 EXPECTED_CHECKS_TOTAL 與 REQUIRED_CHECKS；條件式項
+#（TWSE_T_MINUS_1/US_RETURNS_MISSING 等）只在特定資料條件出現，執行數允許浮動：
+# 下限 TOTAL-CONDITIONAL_CHECK_SLACK 檢查漏跑，上限不設（資料品質規則有問題時
+# 拆多條動態名屬合法增加，交由 verdict 判定）。required 只列 name 恆穩定項
+#（禁止動態/條件式 name——通過時為聚合名，有問題時以 [CODE] 動態名呈現，故不列入；
+# 其保護由 expected_checks_total 總數涵蓋——漏跑任何一項都會被攔）。
+# 報告自報的 required_checks 僅資訊性，且必須與此契約一致（防縮減宣告）。
+_CONTRACT = {
+    "schema_version": "2.0",
+    "expected_checks_total": 69,
+    "expected_checks_min": 60,
+    "conditional_check_slack": 3,
+    "required_checks": [
+        "股票代號唯一",
+        "無髒值 (NaN/null/undefined/Infinity/空字串/非法'-')",
+        "OHLC 合理性 (L<=O,C<=H, H>=L, 價格>0, 成交量>=0, 市值>0)",
+        "異常漲跌檢查 (>10.5% 警示 / >30% 阻擋)",
+        "meta 統計與實際陣列一致",
+        "行情日期合理（非未來日期）、stale 資料明示",
+        "stocks.json Schema",
+        "industry.json Schema",
+        "Python 第三方依賴全部登記於 requirements.txt",
+        "資料檔案大小預算（膨脹監控）",
+        "結構健康檢查",
+        "內部連結 HTTP 200 (本地)",
+    ],
+    # 條件式檢查項登記（P1 制度化 2026-11-26）：新增條件式項必須登記於此
+    "conditional_checks": [
+        {"name": "TWSE_T_MINUS_1",
+         "出現條件": "TWSE 最新日期較 TPEX 落後 1 個交易日（STOCK_DAY_ALL 只發 T-1）",
+         "等級": "WARNING"},
+        {"name": "US_RETURNS_MISSING",
+         "出現條件": "美股個股/ETF 月漲跌缺漏 >30%（fetch_us_returns 未涵蓋新標的）",
+         "等級": "WARNING"},
+        {"name": "[CODE] 動態名（資料品質規則）",
+         "出現條件": "data_rules 有問題時聚合名拆多條動態名（通過時為單一聚合項）",
+         "等級": "視規則而定"},
+    ],
+}
 SCHEMA_VERSION = _CONTRACT["schema_version"]
 EXPECTED_CHECKS_TOTAL = _CONTRACT["expected_checks_total"]
 EXPECTED_CHECKS_FLOOR = _CONTRACT["expected_checks_min"]
 REQUIRED_CHECKS = tuple(_CONTRACT["required_checks"])
+CONDITIONAL_CHECK_SLACK = _CONTRACT["conditional_check_slack"]
 
 
 # 2026-11-25 整合 ChatGPT v2.1：status 枚舉常數化（產生端 qa_gate.py 的四值對應）
@@ -65,7 +101,7 @@ def validate(report):
         raise ValueError(f"expected_checks({report['expected_checks']}) != len(checks)({len(checks)})")
     # 2026-11-26：與 qa_gate 同步範圍化——條件式項（TWSE_T_MINUS_1/US_RETURNS_MISSING/
     # 品質規則動態名）讓執行數合法浮動，只驗下限（防漏跑 fail closed），上限不設
-    _slack = _CONTRACT.get("conditional_check_slack", 3)
+    _slack = CONDITIONAL_CHECK_SLACK
     if len(checks) < EXPECTED_CHECKS_TOTAL - _slack:
         raise ValueError(
             f"檢查總數 {len(checks)} < 契約下限 {EXPECTED_CHECKS_TOTAL - _slack}（漏跑）")
