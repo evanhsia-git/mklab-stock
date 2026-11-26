@@ -1,7 +1,8 @@
-# WORKFLOW_CONSOLIDATION_ANALYSIS — GitHub Actions Jobs 五組整合：Phase 1 盤點＋Phase 2 方案
+# WORKFLOW_CONSOLIDATION_ANALYSIS — GitHub Actions Jobs 五組整合
 
-> 2026-11-26。**本報告僅為分析，未經確認不重構、不 push。**
+> 2026-11-26。**Phase 1＋2 分析**（本檔）→ **Phase 3/4 已實作完成（本地，未 push）**——見文末「Phase 3/4 實作記錄」。
 > 基準：commit `b7124a5c`（v2.2 四檔 QA 架構已上線，qa-gate workflow 首跑 success）。
+> **等待 Ivan 確認後才 push main、部署新排程**；回退＝revert 一個 commit。
 
 ---
 
@@ -234,4 +235,85 @@ job 的 if 條件（手動）：`inputs.group == 'all' || inputs.group == '<組�
 | D4 | 新增 composite action（`.github/actions/setup/`）統一 checkout+python+pip 三步？ | 可選：YAML 再省 ~60 行，但多一個檔案——**傾向不加**（維持「不新增檔案」原則） |
 | D5 | us-etf 每日 06:30 跑 etfs（現 us-market 一起跑）——維持每日頻率？ | ✓ 建議維持（Ivan 規劃 us-etf 每日行情+規模） |
 
-**確認後進入 Phase 3/4 實作**（改 daily-update.yml＋本地測試＋report 更新），未經確認不 push。
+**Phase 3/4 實作（Ivan 審核版已套用）——見下節。本節 D1~D5 決策結果：D1 ✓ 兩時段合併、D2 ✓ 併入、D3 依審核規範「未完成測試不得解除」暫緩（workflow 層 concurrency 保留，列後續議題）、D4 不加 composite action、D5 ✓ us-etf 每日。**
+
+---
+
+## 八、Phase 3/4 實作記錄（2026-11-26 完成，本地 commit 未 push）
+
+### 8.1 實際變更檔案（新增 2、修改 1）
+
+| 檔案 | 變更 | 原因 |
+|---|---|---|
+| `.github/workflows/daily-update.yml` | 重寫（381→約 480 行） | 11 jobs→6（5 組＋retry-or-report）、10 crons→4、workflow_dispatch 增 group/mode |
+| `scripts/update_state.py` | **新增** | 狀態紀錄＋到期判斷（精確到子任務）＋投信持股半月制（審核規範三、四的核心實作） |
+| `tests/test_workflow_consolidation.py` | **新增** | 審核規範八的驗收測試（57 項，固化可重複執行） |
+| 其餘 30+ 支爬蟲/QA/push 腳本 | **零變更** | 全部沿用 |
+
+### 8.2 最終 Cron 表（4 條，全部 UTC）
+
+| Cron | 台北 | 服務 job |
+|---|---|---|
+| `30 22 * * 1-5` | 週二~六 06:30 | us-stock（stocks+returns+edgar）、us-etf（etfs＋指數持股到期判斷）、global-market（歷史月檔） |
+| `30 9 * * 1-5` | 一~五 17:30 | tw-stock（每日）、tw-etf（nav+holdings；週一加 QA）、global-market（indices+twii） |
+| `30 10 * * 6,0` | 六/日 18:30 | tw-stock（ROE，週六）、tw-etf（Meta，週日） |
+| `0 13 * * *` | 每日 21:00 | 補跑班：全部 5 job 觸發，due-only 判斷（資料落後/本期未完成/上次失敗）才跑 |
+
+**月度任務處理**：index-holdings（原 45 22 2 * *，實為台北 3 日——時區錯誤）與 official-fundamentals（原 0 10 20 * *）**改為到期判斷**（本月資料未更新→每日班/補跑班執行），月 2 日/20 日起生效、遇週末後續補跑——舊月度 cron 刪除。SEC EDGAR 維持每日（隨 us-stock 班）。
+
+### 8.3 投信持股半月制（審核規範三）
+
+- 週期：1-15 日＝H1、16-月底＝H2（`_holdings_period`）——週末不影響週期
+- per-source 狀態：cathay/usitc/uobam/ftft/active 各記本週期 status
+- 本期已成功→跳過（不重複抓取）；失敗/未跑→補跑；部分失敗不擋 job（failed_sources 記錄，21:00 補跑班補齊）；全部失敗才 exit 1 觸發 retry
+- force 模式可 `--force` 全部重抓；dry-run `--dry-run` 不寫任何狀態
+
+### 8.4 狀態紀錄（審核規範四）
+
+- **擴充 `data/fetch-log.json`**：新增頂層 `update_state` 鍵（向下相容 daily 班 fetch_data.py 既有欄位，一律不動）
+- 欄位：`last_attempt`／`last_success`／`data_as_of`／`period`／`status`／`failed_sources`
+- **data_as_of 由 record --status succeeded 時直接讀資料檔取得**（stocks.json meta.as_of 等），不假設資料日期＝成功日期
+- 狀態隨 data/ push 進 main → 下一個 run checkout 讀到（跨 run 共享的唯一通道，正確且必要）
+- 到期精確到 12 個子任務（12 task keys，與 YAML 引用一一對應，已自動化校驗）
+
+### 8.5 驗收測試結果（tests/test_workflow_consolidation.py，57 項全 PASS）
+
+涵蓋審核規範八的關鍵場景：
+- 半月制 H1/H2（含 **2027-05-01 週六／05-16 週日**——週期成立、補跑正常）
+- 月 2 日 UTC↔台北（原 cron 落台北 3 日的錯誤已由到期判斷消除；台北 2 日 06:30 班到期）
+- **月 20 日遇週末**：21 日補跑班到期（2027-11-21 週日實證）
+- 週末休市：tw-stock-daily/us-stock-daily/us-etf-daily 不補跑；週期任務照補
+- 冪等：同日重複 check → not-due（重複觸發全 skip、QA/push 跳過、job 綠）
+- per-source 補跑：cathay 已成功跳過、只實跑 usitc/uobam/ftft/active（mock subprocess 實證）
+- record：data_as_of 直接讀 etf-nav.json（非自報）、failed_sources 正確記錄
+- YAML：6 jobs／4 crons／舊月度 cron 全數移除／group+mode 選項／每 job 有 mklab-git-push 序列化＋QA Gate＋dry-run push 保護／**QA 不受 force 影響**
+- 回歸：test_known_errors **188/188 PASS**（含 Git 故障注入 5 組）＋ `qa_gate.py --gate` 全鏈 passed
+
+### 8.6 Concurrency 重評估結論（審核規範五）
+
+- **job 層 mklab-git-push（queue: max）保留**——鎖定範圍：job 從排隊取得執行權**後才 checkout**，涵蓋 checkout→讀取→更新→QA→commit→push 完整流程，不靠「日期不同」避免 stocks.json 衝突
+- **workflow 層 data-update 保留**（cancel-in-progress: false、queue 預設 single）——依審核規範「未完成測試前不得解除」；queue:max 支援與行為（取消 pending 不取消 running）、多 workflow 鎖共享、移除後的一致性，列為**部署後觀察議題**（本報告 D3）
+- 誤殺影響評估：single 取代的是「等待中」run；21:00 補跑班因 due-only 冪等（已更新子任務全 skip），即使取代排隊中 run，資料仍由補跑班補齊
+
+### 8.7 us-stock／us-etf 合併評估（審核規範九第 6 步）
+
+**結論：不合併**。us-stock（stocks 子命令＋returns＋edgar，~15 分）與 us-etf（etfs 子命令＋月度指數持股，~3 分）兩 job 不同資料檔、不同白名單、無重複 yfinance 請求；並行時長＝max(15,3)＋push 序列化等待 ≈ 20 分，合併順序執行 ≈ 18 分——收益 <1 分鐘，卻失去「us-etf 組別獨立手動觸發」能力（Ivan 明確要求六個 group 選項）。
+
+### 8.8 前後比較（預估欄位待部署後以 Actions 實測更新）
+
+| 指標 | 重構前 | 重構後 |
+|---|---|---|
+| Job 定義 | 11 | **6** |
+| Cron | 10 | **4** |
+| Workflow 檔案 | 5 | 5（不變） |
+| Python/Shell 新增/修改 | — | +2 檔（update_state.py、測試檔）、爬蟲 0 變更 |
+| pip install 輪數 | 10/日 | **5~7/日** |
+| QA Gate 輪數 | 10/日 | **5~7/日** |
+| git push 班次 | 10 job × 每次觸發 | 5 job（序列化不變） |
+| Runner 初始化 | 10/日 | 6/日 |
+| 資料欄位/Schema/路徑 | — | **完全不變** |
+| Telegram 告警相容 | job 名 daily/indices/... | 新 job 名（tw-stock/tw-etf/...）——telegram-notify 監聽器按 conclusion 通知，job 名變更不影響其邏輯（已檢視 workflow 檔） |
+
+**已知風險與回退**：回退＝`git revert` 重構 commit（腳本層僅新增檔案，revert 後 update_state.py 不被任何 workflow 引用，無殘留影響）；首日部署風險由 telegram-notify 即時告警＋retry-or-report 一次自動重試兜底；新月度補跑機制若失效，資料檔日期檢查（本報告 8.4）提供人工 dry-run 驗證途徑。
+
+**待確認事項**：本節實作尚未 push；Ivan 確認後 push main，並觀察：① 17:30 台股晚班首跑 ② 次日 06:30 美股早班首跑 ③ 21:00 補跑班（應全 skip）④ 週六 ROE／週日 Meta／週一 QA 的 cron 分流。

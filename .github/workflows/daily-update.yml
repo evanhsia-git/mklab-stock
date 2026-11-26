@@ -1,34 +1,55 @@
 name: daily-update
 
-# 併發控制分兩層，用途不同、不可互相取代：
-#   1. workflow（run）層級：group: data-update，同一時間只允許一個 run，
-#      新的 run 取代「等待中」的舊 run（排程重疊時希望跳過被取代的那個，故刻意保持 queue 預設值 single）。
-#   2. job 層級：group: mklab-git-push，讓資料 job 依序執行、序列化 git push，避免同時推送互相衝突。
-#      ⚠️ job 層級 concurrency 的 queue 預設是 single：同一個 group 只能有「1 個執行中 + 1 個 pending」，
-#      新的 pending 會直接取消上一個 pending。workflow_dispatch 一次觸發全部 job 時，只有 2 個能存活，
-#      其餘在 2 秒內被自己人取消（run #234 的 6 個 error 就是這個，不是真的失敗）
-#      → 因此每個 job 都必須加 `queue: max`（最多 100 個排隊）。
-#      注意：queue: max 不可與 cancel-in-progress: true 併用（會 validation error）。
-#   3. 推送一律透過 scripts/ci_commit_push.sh（先 fetch、衝突取遠端較新版本、被插隊時重試 5 次）
-#      → 因此每個 checkout 都必須 fetch-depth: 0。淺層 checkout 的歷史是斷的，
-#        git merge 遠端分岔歷史會直接失敗，推送腳本救不回來。
+# 2026-11-26 五組整合（Ivan 審核版，詳見 WORKFLOW_CONSOLIDATION_ANALYSIS.md）：
+#   10 個資料 job → 5 個（tw-stock／tw-etf／us-stock／us-etf／global-market）＋ retry-or-report。
+#   10 條 cron → 4 條（美股早班／台股晚班／週末班／每日補跑班）。
+#   腳本全部沿用現有；新增 scripts/update_state.py（狀態紀錄＋到期判斷＋投信持股半月制）。
+#
+# 分組依據：fetch_etf_nav 走 TWSE MIS 獨立請求（all_etf.txt）、fetch_us_data 有 stocks/etfs
+# 子命令——拆組不重複任何行情請求；stocks.json 各寫入者跨班，靠 job 層序列化保護。
+#
+# 併發控制（兩層，用途不同）：
+#   1. workflow 層：data-update，queue 預設 single——排程重疊時新 run 取代「等待中」的舊 run。
+#      （取消的是 pending run，running run 不受影響；21:00 補跑班因 due-only 到期判斷天然冪等，
+#       補跑時資料已更新的子任務會全部 skip，誤殺影響有限——原報告 D3 的解除議題留待測試）
+#   2. job 層：mklab-git-push，queue: max——所有 git push 序列化。
+#      job 從排隊獲得執行權後才 checkout（拿到的就是當下最新 main）→ 鎖定範圍涵蓋
+#      checkout→讀取→更新→QA→commit→push 完整流程，不靠「日期不同」避免 stocks.json 衝突。
+#      queue: max 不可與 cancel-in-progress: true 併用（validation error）。
+#   3. 推送一律透過 scripts/ci_commit_push.sh v2.2（白名單、衝突中止、重試 5 次、ls-remote 驗證）
+#      → 每個 checkout 都必須 fetch-depth: 0。
+#
+# 到期判斷（scripts/update_state.py）：狀態寫在 data/fetch-log.json 的 update_state 區塊
+#（向下相容 daily 班 fetch_data.py 既有欄位），欄位：last_attempt／last_success／data_as_of／
+# period／status／failed_sources。data_as_of 由 record --status succeeded 時直接讀資料檔取得，
+# 不假設資料日期等於任務成功日期。到期精確到子任務；行情類任務週末休市不補跑（MARKET_CLOSED_TASKS），
+# 週期任務（ROE／Meta／QA／月度財報／指數持股）不受週末限制，延遲至下一個補跑班執行。
+#
+# force 不得繞過 QA Gate／push 白名單／衝突中止（這些在腳本層強制，與 mode 無關）；
+# dry-run 跑全部腳本＋QA（唯讀驗證）但不 commit、不 push、不 record 狀態。
 
 on:
   schedule:
-    - cron: "0 9 * * 1-5"    # daily：週一至週五 17:00（台灣）
-    - cron: "0 13 * * 1-5"   # daily-retry：週一至週五 21:00（台灣）——09:00 cron 被 GitHub 延遲或失敗時的當日重試
-    - cron: "0 10 * * 6"     # weekly-roe：每週六 18:00
-    - cron: "30 9 * * 1-5"   # indices：週一至週五 17:30
-    - cron: "0 22 * * 1-5"   # us-market：週一至週五 隔日 06:00
-    - cron: "30 22 * * 1-5"  # global-history：週一至週五 隔日 06:30
-    - cron: "45 22 2 * *"    # index-holdings：每月 2 日 隔日 06:45
-    - cron: "0 10 20 * *"    # official-fundamentals：每月 20 日 18:00
-    - cron: "0 10 * * 0"     # etf-meta：每週日 18:00
-    - cron: "0 9 * * 1"      # etf-qa：每週一 17:00（台灣）
+    - cron: "30 22 * * 1-5"   # 美股早班：台北週二~六 06:30（us-stock、us-etf、global-market 歷史月檔）
+    - cron: "30 9 * * 1-5"    # 台股晚班：台北一~五 17:30（tw-stock、tw-etf、global-market 指數；週一含 ETF QA）
+    - cron: "30 10 * * 6,0"   # 週末班：台北週六 18:30（tw-stock ROE）／週日 18:30（tw-etf Meta）
+    - cron: "0 13 * * *"      # 每日 21:00 到期補跑班：只跑「資料日期落後／本期未完成／上次失敗」的子任務
   workflow_dispatch:
     inputs:
+      group:
+        description: '觸發組別'
+        required: false
+        default: 'all'
+        type: choice
+        options: [all, tw-stock, tw-etf, us-stock, us-etf, global-market]
+      mode:
+        description: '執行模式'
+        required: false
+        default: 'due-only'
+        type: choice
+        options: [due-only, force, retry-failed, dry-run]
       retry:
-        description: '自動重試旗標（retry-or-report job 失敗後重觸發時=1；=1 時不再重試，防循環）'
+        description: 'retry-or-report 失敗重觸發旗標（=1 時不再重試，防循環）'
         required: false
         default: '0'
         type: string
@@ -37,14 +58,27 @@ permissions:
   contents: write
   actions: write
 
+# Workflow 層併發保護（Ivan 審核規範五：未完成排隊/重試/一致性測試前，不得解除既有保護）：
+# 同 group 同時僅一個 run；queue 預設 single（新 run 取代「等待中」的舊 run，running 不受影響）。
+# 21:00 補跑班因 due-only 到期判斷冪等（資料已更新的子任務全部 skip），誤殺影響有限。
+# D3（移除 workflow 層限制）列為後續議題，待本報告第九節測試完成後另行評估。
+concurrency:
+  group: data-update
+  cancel-in-progress: false
+
 jobs:
-  # 每日：收盤行情 → 本地計算（指標、K 線、產業、官方公司資訊）→ 市場摘要與 RSS
-  daily:
+  # ════════════════════════════════════════════════════════════
+  # tw-stock：台股個股＋共用行情／指標／K 線／產業／財報月更／ROE 週六
+  # 子任務：tw-stock-daily（17:30 班）、tw-stock-roe（週六）、tw-stock-fundamentals（月 20 日起）
+  # ════════════════════════════════════════════════════════════
+  tw-stock:
     concurrency:
       group: mklab-git-push
       queue: max
       cancel-in-progress: false
-    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 9 * * 1-5' || github.event.schedule == '0 13 * * 1-5'
+    if: >-
+      (github.event_name == 'workflow_dispatch' && (inputs.group == 'all' || inputs.group == 'tw-stock'))
+      || (github.event_name == 'schedule' && (github.event.schedule == '30 9 * * 1-5' || github.event.schedule == '30 10 * * 6,0' || github.event.schedule == '0 13 * * *'))
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -53,70 +87,124 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
-          cache: 'pip' 
-      - name: 安裝依賴（runner 預裝會隨映像更新變動，顯式安裝不靠運氣；pandas/openpyxl 供持股 adapter——#313 映像再度縮預裝）
+          cache: 'pip'
+      - name: 安裝依賴（runner 預裝會隨映像更新變動，顯式安裝不靠運氣）
         run: pip install -r requirements.txt
-      - name: 抓取當日收盤（TWSE/TPEx）
-        run: python skills/data/fetch_data.py daily
-      - name: 快照確定性修正（單位／EPS-PE／股本缺口，冪等）
-        run: python skills/data/sanitize_snapshot.py
-      - name: 修復歷史快照死值列與公司行為偵測
-        run: python skills/data/repair_history.py && python skills/data/detect_corporate_actions.py
-      - name: 技術指標與 ETF 分類
-        run: python skills/data/compute_indicators.py
-      - name: 官方公司資訊（產業、上市日）
-        run: python skills/data/integrate_official_company.py
-      - name: 官方加值資料抓取（月營收／融資融券／營益分析／暫停交易／開休市）
-        run: python skills/data/fetch_market_extras.py
-      - name: 官方加值資料併入快照（冪等）
-        run: python skills/data/integrate_market_extras.py
-      - name: 官方公司行為預告（ETF 分割／減資 → 自動登錄 planned，不含比率）
-        run: python skills/data/fetch_split_schedule.py --register
-      - name: 個股 K 線檔
-        run: python skills/data/build_kline.py
-      - name: 產業統計
-        run: python skills/data/compute_industry.py
-      - name: 全市場 ETF 每日淨值／折溢價（TWSE MIS 反向 API，歷史月檔累積）
-        run: python skills/data/fetch_etf_nav.py
-      # 2026-11-25：投信持股 15 天更新一次（每月 1/16 日）——耗時 98% 是等待 13 家投信
-      # 網站回應（實測 2m19s 中 user CPU 僅 1.6s），每日跑的邊際價值低；人工觸發不受限制。
-      # 2026-11-25：投信持股 15 天更新一次（每月 1/16 日）——耗時 98% 是等待 13 家投信
-      # 網站回應（實測 2m19s 中 user CPU 僅 1.6s），每日跑的邊際價值低；人工觸發不受限制。
-      - name: 官方持股更新（國泰／聯邦／大華銀 PCF＋富蘭克林華美月報；每月 1/16＋人工觸發）
+      - name: 台北星期與執行模式
+        id: ctx
         run: |
-          if [[ "$(date +%-d)" =~ ^(1|16)$ ]] || [[ "${GITHUB_EVENT_NAME:-}" == "workflow_dispatch" ]]; then
-            python skills/data/fetch_etf_holdings_cathay.py || echo "[warn] 國泰持股更新失敗"
-            python skills/data/fetch_etf_holdings_usitc.py || echo "[warn] 聯邦持股更新失敗"
-            python skills/data/fetch_etf_holdings_uobam.py || echo "[warn] 大華銀持股更新失敗"
-            pip install -r requirements.txt -q && python skills/data/fetch_etf_holdings_ftft_monthly.py || echo "[warn] FTFT 月報層更新失敗"
-          else
-            echo "[skip] 投信持股 15 天制（每月 1/16 更新）"
-          fi
-      - name: 主動式 ETF 官方持股（13 家投信破解；每月 1/16＋人工觸發；單檔失敗標 stale 不中斷）
+          echo "dow=$(TZ=Asia/Taipei date +%u)" >> "$GITHUB_OUTPUT"
+          echo "mode=${{ inputs.mode || 'scheduled' }}" >> "$GITHUB_OUTPUT"
+          echo "sched=${{ github.event.schedule || 'manual' }}" >> "$GITHUB_OUTPUT"
+      # ── 子任務 1：每日行情（晚班一律跑；補跑班/手動 due-only 先查到期；force/dry-run 直接跑）──
+      - name: 每日行情與指標
+        id: daily
+        if: >-
+          (github.event_name == 'schedule' && (github.event.schedule == '30 9 * * 1-5' || github.event.schedule == '0 13 * * *'))
+          || github.event_name == 'workflow_dispatch'
         run: |
-          if [[ "$(date +%-d)" =~ ^(1|16)$ ]] || [[ "${GITHUB_EVENT_NAME:-}" == "workflow_dispatch" ]]; then
-            python skills/data/fetch_etf_holdings_active.py
-          else
-            echo "[skip] 主動式持股 15 天制（每月 1/16 更新）"
+          MODE="${{ steps.ctx.outputs.mode }}"
+          SCHED="${{ steps.ctx.outputs.sched }}"
+          if [[ "$SCHED" == "0 13 * * *" ]] || ([[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]] && [[ "$MODE" == "due-only" || "$MODE" == "retry-failed" ]]); then
+            if ! python scripts/update_state.py check tw-stock-daily; then
+              echo "ran=false" >> "$GITHUB_OUTPUT"; exit 0
+            fi
           fi
-      - name: ETF 持股歷史累積（冪等，供換股比對）
-        run: python skills/data/accumulate_etf_holdings_history.py
-      - name: PCF 淨值 vs TWSE MIS 獨立交叉核對（資料誠信報告，不擋 job）
-        run: python scripts/verify_pcf_nav.py
-      - name: 每日市場摘要與 RSS（本地計算）
-        run: python skills/data/build_digest.py
+          python skills/data/fetch_data.py daily
+          python skills/data/sanitize_snapshot.py
+          python skills/data/repair_history.py && python skills/data/detect_corporate_actions.py
+          python skills/data/compute_indicators.py
+          python skills/data/integrate_official_company.py
+          python skills/data/fetch_market_extras.py
+          python skills/data/integrate_market_extras.py
+          python skills/data/fetch_split_schedule.py --register
+          python skills/data/build_kline.py
+          python skills/data/compute_industry.py
+          python scripts/update_state.py record tw-stock-daily --status attempted
+          echo "ran=true" >> "$GITHUB_OUTPUT"
+      - name: 市場摘要與 RSS
+        id: digest
+        if: steps.daily.outputs.ran == 'true'
+        run: |
+          python skills/data/build_digest.py
+          echo "ran=true" >> "$GITHUB_OUTPUT"
+      # ── 子任務 2：ROE/ROA 週六備援（週六班；補跑班到期；週日/平日晚班 skip）──
+      - name: ROE/ROA 補充（yfinance，每檔間隔 3 秒）
+        id: roe
+        if: >-
+          (github.event_name == 'schedule' && github.event.schedule == '30 10 * * 6,0')
+          || (github.event_name == 'schedule' && github.event.schedule == '0 13 * * *')
+          || github.event_name == 'workflow_dispatch'
+        run: |
+          MODE="${{ steps.ctx.outputs.mode }}"
+          SCHED="${{ steps.ctx.outputs.sched }}"
+          if [[ "$SCHED" == "30 10 * * 6,0" && "${{ steps.ctx.outputs.dow }}" != "6" ]]; then
+            echo "ran=false" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          if [[ "$SCHED" == "0 13 * * *" ]] || ([[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]] && [[ "$MODE" == "due-only" || "$MODE" == "retry-failed" ]]); then
+            if ! python scripts/update_state.py check tw-stock-roe; then
+              echo "ran=false" >> "$GITHUB_OUTPUT"; exit 0
+            fi
+          fi
+          python skills/data/fetch_data.py weekly
+          python scripts/update_state.py record tw-stock-roe --status attempted
+          echo "ran=true" >> "$GITHUB_OUTPUT"
+      # ── 子任務 3：官方財報月更（每月 20 日起，本月未完成即補跑；20 日前每天 check 都 skip）──
+      - name: 官方財報月更（TWSE 官方下載→匯入）
+        id: fundamentals
+        if: >-
+          (github.event_name == 'schedule' && (github.event.schedule == '30 9 * * 1-5' || github.event.schedule == '0 13 * * *'))
+          || github.event_name == 'workflow_dispatch'
+        run: |
+          MODE="${{ steps.ctx.outputs.mode }}"
+          SCHED="${{ steps.ctx.outputs.sched }}"
+          if [[ "$SCHED" == "0 13 * * *" ]] || ([[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]] && [[ "$MODE" == "due-only" || "$MODE" == "retry-failed" ]]); then
+            if ! python scripts/update_state.py check tw-stock-fundamentals; then
+              echo "ran=false" >> "$GITHUB_OUTPUT"; exit 0
+            fi
+          fi
+          python skills/data/fetch_official_fundamentals.py
+          python skills/data/import_official_fundamentals.py
+          python skills/data/integrate_official_company.py
+          python scripts/update_state.py record tw-stock-fundamentals --status attempted
+          echo "ran=true" >> "$GITHUB_OUTPUT"
+      # ── 彙整本 run 實際執行的子任務（供 QA/push/record 判斷；digest 附屬 daily 不重複記）──
+      - name: 彙整執行清單
+        if: always()
+        run: |
+          T=""
+          [[ "${{ steps.daily.outputs.ran }}" == "true" ]] && T="$T tw-stock-daily"
+          [[ "${{ steps.roe.outputs.ran }}" == "true" ]] && T="$T tw-stock-roe"
+          [[ "${{ steps.fundamentals.outputs.ran }}" == "true" ]] && T="$T tw-stock-fundamentals"
+          echo "RAN_TASKS=$(echo $T | xargs)" >> "$GITHUB_ENV"
       - name: QA 閘門（提交前，錯誤即中止，不推送）
+        if: env.RAN_TASKS != ''
         run: python skills/qa-gate/qa_gate.py --gate
       - name: 推送
-        run: 'bash scripts/ci_commit_push.sh "data: 每日更新 $(date +%Y-%m-%d)" data/ rss.xml'
+        id: push
+        if: env.RAN_TASKS != '' && steps.ctx.outputs.mode != 'dry-run'
+        run: 'bash scripts/ci_commit_push.sh "data: 台股更新 $(TZ=Asia/Taipei date +%Y-%m-%d)" data/ rss.xml'
+      - name: 記錄成功狀態
+        if: steps.push.outcome == 'success' && env.RAN_TASKS != ''
+        run: |
+          for t in ${{ env.RAN_TASKS }}; do python scripts/update_state.py record "$t" --status succeeded; done
+      - name: 記錄失敗狀態
+        if: failure() && env.RAN_TASKS != ''
+        run: |
+          for t in ${{ env.RAN_TASKS }}; do python scripts/update_state.py record "$t" --status failed; done
 
-  # 每週六：補 ROE/ROA（只抓沒有官方財報的一般股票）
-  weekly-roe:
+  # ════════════════════════════════════════════════════════════
+  # tw-etf：ETF 淨值（每日）／投信持股（半月制 per-source 補跑）／
+  #         ETF Meta（週日）／ETF QA 稽核（週一）
+  # ════════════════════════════════════════════════════════════
+  tw-etf:
     concurrency:
       group: mklab-git-push
       queue: max
       cancel-in-progress: false
-    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 10 * * 6'
+    if: >-
+      (github.event_name == 'workflow_dispatch' && (inputs.group == 'all' || inputs.group == 'tw-etf'))
+      || (github.event_name == 'schedule' && (github.event.schedule == '30 9 * * 1-5' || github.event.schedule == '30 10 * * 6,0' || github.event.schedule == '0 13 * * *'))
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -125,23 +213,140 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
-          cache: 'pip' 
-      - name: 安裝 yfinance
+          cache: 'pip'
+      - name: 安裝依賴
         run: pip install -r requirements.txt
-      - name: 補 ROE/ROA（yfinance，每檔間隔 3 秒）
-        run: python skills/data/fetch_data.py weekly
+      - name: 台北星期與執行模式
+        id: ctx
+        run: |
+          echo "dow=$(TZ=Asia/Taipei date +%u)" >> "$GITHUB_OUTPUT"
+          echo "mode=${{ inputs.mode || 'scheduled' }}" >> "$GITHUB_OUTPUT"
+          echo "sched=${{ github.event.schedule || 'manual' }}" >> "$GITHUB_OUTPUT"
+      # ── 子任務 1：ETF 每日淨值／折溢價（TWSE MIS all_etf.txt 單一請求，與台股行情不同來源）──
+      - name: ETF 每日淨值與折溢價
+        id: nav
+        if: >-
+          (github.event_name == 'schedule' && (github.event.schedule == '30 9 * * 1-5' || github.event.schedule == '0 13 * * *'))
+          || github.event_name == 'workflow_dispatch'
+        run: |
+          MODE="${{ steps.ctx.outputs.mode }}"
+          SCHED="${{ steps.ctx.outputs.sched }}"
+          if [[ "$SCHED" == "0 13 * * *" ]] || ([[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]] && [[ "$MODE" == "due-only" || "$MODE" == "retry-failed" ]]); then
+            if ! python scripts/update_state.py check tw-etf-nav; then
+              echo "ran=false" >> "$GITHUB_OUTPUT"; exit 0
+            fi
+          fi
+          python skills/data/fetch_etf_nav.py
+          python scripts/update_state.py record tw-etf-nav --status attempted
+          echo "ran=true" >> "$GITHUB_OUTPUT"
+      # ── 子任務 2：投信持股半月制（上半月 1-15／下半月 16-月底；per-source 補跑；
+      #    單一來源失敗不中斷——狀態記 failed_sources，21:00 補跑班補齊；全部失敗才擋 job）──
+      - name: 投信持股半月制（國泰/聯邦/大華銀/富蘭克林華美/主動式破解）
+        id: holdings
+        if: >-
+          (github.event_name == 'schedule' && (github.event.schedule == '30 9 * * 1-5' || github.event.schedule == '0 13 * * *'))
+          || github.event_name == 'workflow_dispatch'
+        run: |
+          MODE="${{ steps.ctx.outputs.mode }}"
+          SCHED="${{ steps.ctx.outputs.sched }}"
+          EXTRA=""
+          if [[ "$MODE" == "force" ]]; then EXTRA="--force"; fi
+          if [[ "$MODE" == "dry-run" ]]; then EXTRA="--dry-run"; fi
+          if [[ "$SCHED" == "0 13 * * *" ]] || ([[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]] && [[ "$MODE" == "due-only" || "$MODE" == "retry-failed" ]]); then
+            if ! python scripts/update_state.py check tw-etf-holdings; then
+              echo "ran=false" >> "$GITHUB_OUTPUT"; exit 0
+            fi
+          fi
+          python scripts/update_state.py holdings-run $EXTRA
+          HSRC=$(python -c "import json;d=json.load(open('data/fetch-log.json'));print(','.join((d.get('update_state',{}).get('tw-etf-holdings') or {}).get('failed_sources') or []))")
+          python scripts/update_state.py record tw-etf-holdings --status attempted --failed-sources "$HSRC"
+          echo "ran=true" >> "$GITHUB_OUTPUT"
+      - name: 持股歷史累積與 PCF 淨值交叉核對
+        if: steps.holdings.outputs.ran == 'true'
+        run: |
+          python skills/data/accumulate_etf_holdings_history.py
+          python scripts/verify_pcf_nav.py
+      # ── 子任務 3：ETF Meta（週日班；手動/補跑到期）──
+      - name: ETF 補充資料與分類（規模／受益人數／分類／保管費）
+        id: meta
+        if: >-
+          (github.event_name == 'schedule' && github.event.schedule == '30 10 * * 6,0')
+          || (github.event_name == 'schedule' && github.event.schedule == '0 13 * * *')
+          || github.event_name == 'workflow_dispatch'
+        run: |
+          MODE="${{ steps.ctx.outputs.mode }}"
+          SCHED="${{ steps.ctx.outputs.sched }}"
+          if [[ "$SCHED" == "30 10 * * 6,0" && "${{ steps.ctx.outputs.dow }}" != "7" ]]; then
+            echo "ran=false" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          if [[ "$SCHED" == "0 13 * * *" ]] || ([[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]] && [[ "$MODE" == "due-only" || "$MODE" == "retry-failed" ]]); then
+            if ! python scripts/update_state.py check tw-etf-meta; then
+              echo "ran=false" >> "$GITHUB_OUTPUT"; exit 0
+            fi
+          fi
+          python skills/data/fetch_etf_meta.py
+          python skills/data/classify_etf.py
+          python skills/data/compute_indicators.py
+          python skills/data/integrate_etf_extras.py
+          python scripts/update_state.py record tw-etf-meta --status attempted
+          echo "ran=true" >> "$GITHUB_OUTPUT"
+      # ── 子任務 4：ETF QA 稽核（每週一 17:30；qa_phase4 唯讀不改資料）──
+      - name: ETF QA 稽核（Phase 4，週一）
+        id: etfqa
+        if: >-
+          (github.event_name == 'schedule' && github.event.schedule == '30 9 * * 1-5')
+          || (github.event_name == 'schedule' && github.event.schedule == '0 13 * * *')
+          || github.event_name == 'workflow_dispatch'
+        run: |
+          MODE="${{ steps.ctx.outputs.mode }}"
+          SCHED="${{ steps.ctx.outputs.sched }}"
+          if [[ "$SCHED" == "30 9 * * 1-5" && "${{ steps.ctx.outputs.dow }}" != "1" ]]; then
+            echo "ran=false" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          if [[ "$SCHED" == "0 13 * * *" ]] || ([[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]] && [[ "$MODE" == "due-only" || "$MODE" == "retry-failed" ]]); then
+            if ! python scripts/update_state.py check tw-etf-qa; then
+              echo "ran=false" >> "$GITHUB_OUTPUT"; exit 0
+            fi
+          fi
+          python scripts/qa_phase4.py
+          python scripts/update_state.py record tw-etf-qa --status attempted
+          echo "ran=true" >> "$GITHUB_OUTPUT"
+      - name: 彙整執行清單
+        if: always()
+        run: |
+          T=""
+          [[ "${{ steps.nav.outputs.ran }}" == "true" ]] && T="$T tw-etf-nav"
+          [[ "${{ steps.holdings.outputs.ran }}" == "true" ]] && T="$T tw-etf-holdings"
+          [[ "${{ steps.meta.outputs.ran }}" == "true" ]] && T="$T tw-etf-meta"
+          [[ "${{ steps.etfqa.outputs.ran }}" == "true" ]] && T="$T tw-etf-qa"
+          echo "RAN_TASKS=$(echo $T | xargs)" >> "$GITHUB_ENV"
       - name: QA 閘門（提交前，錯誤即中止，不推送）
+        if: env.RAN_TASKS != ''
         run: python skills/qa-gate/qa_gate.py --gate
       - name: 推送
-        run: 'bash scripts/ci_commit_push.sh "data: ROE/ROA 補充 $(date +%Y-%m-%d)" data/'
+        id: push
+        if: env.RAN_TASKS != '' && steps.ctx.outputs.mode != 'dry-run'
+        run: 'bash scripts/ci_commit_push.sh "data: 台股 ETF 更新 $(TZ=Asia/Taipei date +%Y-%m-%d)" data/'
+      - name: 記錄成功狀態
+        if: steps.push.outcome == 'success' && env.RAN_TASKS != ''
+        run: |
+          for t in ${{ env.RAN_TASKS }}; do python scripts/update_state.py record "$t" --status succeeded; done
+      - name: 記錄失敗狀態
+        if: failure() && env.RAN_TASKS != ''
+        run: |
+          for t in ${{ env.RAN_TASKS }}; do python scripts/update_state.py record "$t" --status failed; done
 
-  # 每日：全球指數、全球 ETF、總經指標、台股加權指數 K 線（合併原 twii-kline）
-  indices:
+  # ════════════════════════════════════════════════════════════
+  # us-stock：美股個股行情（stocks 子命令）／月年漲跌／SEC EDGAR（不動 us-stocks.json）
+  # ════════════════════════════════════════════════════════════
+  us-stock:
     concurrency:
       group: mklab-git-push
       queue: max
       cancel-in-progress: false
-    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '30 9 * * 1-5'
+    if: >-
+      (github.event_name == 'workflow_dispatch' && (inputs.group == 'all' || inputs.group == 'us-stock'))
+      || (github.event_name == 'schedule' && (github.event.schedule == '30 22 * * 1-5' || github.event.schedule == '0 13 * * *'))
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -150,25 +355,71 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
-          cache: 'pip' 
-      - name: 安裝 yfinance
+          cache: 'pip'
+      - name: 安裝依賴
         run: pip install -r requirements.txt
-      - name: 全球指數與 ETF（yfinance）
-        run: python skills/data/fetch_data.py indices
-      - name: 台股加權指數 K 線（yfinance ^TWII）
-        run: python skills/data/fetch_data.py twii
+      - name: 執行模式
+        id: ctx
+        run: echo "mode=${{ inputs.mode || 'scheduled' }}" >> "$GITHUB_OUTPUT"
+      - name: 美股個股行情與漲跌
+        id: daily
+        if: >-
+          (github.event_name == 'schedule' && (github.event.schedule == '30 22 * * 1-5' || github.event.schedule == '0 13 * * *'))
+          || github.event_name == 'workflow_dispatch'
+        run: |
+          MODE="${{ steps.ctx.outputs.mode }}"
+          SCHED="${{ github.event.schedule || 'manual' }}"
+          if [[ "$SCHED" == "0 13 * * *" ]] || ([[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]] && [[ "$MODE" == "due-only" || "$MODE" == "retry-failed" ]]); then
+            if ! python scripts/update_state.py check us-stock-daily; then
+              echo "ran=false" >> "$GITHUB_OUTPUT"; exit 0
+            fi
+          fi
+          python skills/data/fetch_us_data.py stocks
+          python skills/data/fetch_us_returns.py
+          python scripts/update_state.py record us-stock-daily --status attempted
+          echo "ran=true" >> "$GITHUB_OUTPUT"
+      - name: SEC EDGAR Company Facts（隨個股班執行）
+        id: edgar
+        if: steps.daily.outputs.ran == 'true' || github.event_name == 'workflow_dispatch'
+        run: |
+          python skills/data/fetch_sec_edgar.py
+          echo "ran=true" >> "$GITHUB_OUTPUT"
+      - name: 彙整執行清單
+        if: always()
+        run: |
+          T=""
+          [[ "${{ steps.daily.outputs.ran }}" == "true" ]] && T="$T us-stock-daily"
+          [[ "${{ steps.edgar.outputs.ran }}" == "true" ]] && T="$T us-stock-edgar"
+          echo "RAN_TASKS=$(echo $T | xargs)" >> "$GITHUB_ENV"
       - name: QA 閘門（提交前，錯誤即中止，不推送）
+        if: env.RAN_TASKS != ''
         run: python skills/qa-gate/qa_gate.py --gate
       - name: 推送
-        run: 'bash scripts/ci_commit_push.sh "data: 全球指數／ETF／TWII K 線 $(date +%Y-%m-%d)" data/'
+        id: push
+        if: env.RAN_TASKS != '' && steps.ctx.outputs.mode != 'dry-run'
+        run: 'bash scripts/ci_commit_push.sh "data: 美股個股更新 $(TZ=Asia/Taipei date +%Y-%m-%d)" data/us/'
+      - name: 記錄成功狀態
+        if: steps.push.outcome == 'success' && env.RAN_TASKS != ''
+        run: |
+          for t in ${{ env.RAN_TASKS }}; do python scripts/update_state.py record "$t" --status succeeded; done
+      - name: 記錄失敗狀態
+        if: failure() && env.RAN_TASKS != ''
+        run: |
+          for t in ${{ env.RAN_TASKS }}; do python scripts/update_state.py record "$t" --status failed; done
 
-  # 每日：美股市值前 30 大個股、ETF 規模前 30 大
-  us-market:
+  # ════════════════════════════════════════════════════════════
+  # us-etf：美股 ETF 行情（etfs 子命令，與個股不同 ticker 集無重複）／
+  #         指數替代 ETF 持股（每月 2 日起到期補跑，取代原 45 22 2 * * 月度 cron——
+  #         原 cron 實際落台北每月 3 日，屬時區錯誤，已修正為到期判斷）
+  # ════════════════════════════════════════════════════════════
+  us-etf:
     concurrency:
       group: mklab-git-push
       queue: max
       cancel-in-progress: false
-    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 22 * * 1-5'
+    if: >-
+      (github.event_name == 'workflow_dispatch' && (inputs.group == 'all' || inputs.group == 'us-etf'))
+      || (github.event_name == 'schedule' && (github.event.schedule == '30 22 * * 1-5' || github.event.schedule == '0 13 * * *'))
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -177,25 +428,79 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
-          cache: 'pip' 
-      - name: 安裝 yfinance
+          cache: 'pip'
+      - name: 安裝依賴
         run: pip install -r requirements.txt
-      - name: 美股個股與 ETF 前 30 大（yfinance）
-        run: python skills/data/fetch_us_data.py all
-      - name: 美股月／年漲跌（yfinance 調整後歷史價，失敗保留前次值）
-        run: python skills/data/fetch_us_returns.py
+      - name: 執行模式
+        id: ctx
+        run: echo "mode=${{ inputs.mode || 'scheduled' }}" >> "$GITHUB_OUTPUT"
+      - name: 美股 ETF 行情與規模
+        id: daily
+        if: >-
+          (github.event_name == 'schedule' && (github.event.schedule == '30 22 * * 1-5' || github.event.schedule == '0 13 * * *'))
+          || github.event_name == 'workflow_dispatch'
+        run: |
+          MODE="${{ steps.ctx.outputs.mode }}"
+          SCHED="${{ github.event.schedule || 'manual' }}"
+          if [[ "$SCHED" == "0 13 * * *" ]] || ([[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]] && [[ "$MODE" == "due-only" || "$MODE" == "retry-failed" ]]); then
+            if ! python scripts/update_state.py check us-etf-daily; then
+              echo "ran=false" >> "$GITHUB_OUTPUT"; exit 0
+            fi
+          fi
+          python skills/data/fetch_us_data.py etfs
+          python scripts/update_state.py record us-etf-daily --status attempted
+          echo "ran=true" >> "$GITHUB_OUTPUT"
+      - name: 指數替代 ETF 持股（DIA/QQQ/SOXX/VOO，每月 2 日起）
+        id: idxhold
+        if: >-
+          (github.event_name == 'schedule' && (github.event.schedule == '30 22 * * 1-5' || github.event.schedule == '0 13 * * *'))
+          || github.event_name == 'workflow_dispatch'
+        run: |
+          MODE="${{ steps.ctx.outputs.mode }}"
+          SCHED="${{ github.event.schedule || 'manual' }}"
+          if [[ "$SCHED" == "0 13 * * *" ]] || ([[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]] && [[ "$MODE" == "due-only" || "$MODE" == "retry-failed" ]]); then
+            if ! python scripts/update_state.py check us-etf-holdings; then
+              echo "ran=false" >> "$GITHUB_OUTPUT"; exit 0
+            fi
+          fi
+          python skills/data/fetch_index_holdings.py
+          python scripts/update_state.py record us-etf-holdings --status attempted
+          echo "ran=true" >> "$GITHUB_OUTPUT"
+      - name: 彙整執行清單
+        if: always()
+        run: |
+          T=""
+          [[ "${{ steps.daily.outputs.ran }}" == "true" ]] && T="$T us-etf-daily"
+          [[ "${{ steps.idxhold.outputs.ran }}" == "true" ]] && T="$T us-etf-holdings"
+          echo "RAN_TASKS=$(echo $T | xargs)" >> "$GITHUB_ENV"
       - name: QA 閘門（提交前，錯誤即中止，不推送）
+        if: env.RAN_TASKS != ''
         run: python skills/qa-gate/qa_gate.py --gate
       - name: 推送
-        run: 'bash scripts/ci_commit_push.sh "data: 美股前 30 大 $(date +%Y-%m-%d)" data/us/'
+        id: push
+        if: env.RAN_TASKS != '' && steps.ctx.outputs.mode != 'dry-run'
+        run: 'bash scripts/ci_commit_push.sh "data: 美股 ETF 更新 $(TZ=Asia/Taipei date +%Y-%m-%d)" data/us/ data/index-holdings/'
+      - name: 記錄成功狀態
+        if: steps.push.outcome == 'success' && env.RAN_TASKS != ''
+        run: |
+          for t in ${{ env.RAN_TASKS }}; do python scripts/update_state.py record "$t" --status succeeded; done
+      - name: 記錄失敗狀態
+        if: failure() && env.RAN_TASKS != ''
+        run: |
+          for t in ${{ env.RAN_TASKS }}; do python scripts/update_state.py record "$t" --status failed; done
 
-  # 每日：SEC EDGAR Company Facts（美股完整財報：Revenue、Gross Profit、Operating Income、Net Income、OCF、CapEx）
-  sec-edgar:
+  # ════════════════════════════════════════════════════════════
+  # global-market：全球指數／總經／情緒＋TWII K 線（台股晚班）／
+  #                美股與全球歷史月檔（美股早班）——一個 job 兩時段，按 cron 分流
+  # ════════════════════════════════════════════════════════════
+  global-market:
     concurrency:
       group: mklab-git-push
       queue: max
       cancel-in-progress: false
-    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 22 * * 1-5'
+    if: >-
+      (github.event_name == 'workflow_dispatch' && (inputs.group == 'all' || inputs.group == 'global-market'))
+      || (github.event_name == 'schedule' && (github.event.schedule == '30 9 * * 1-5' || github.event.schedule == '30 22 * * 1-5' || github.event.schedule == '0 13 * * *'))
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -204,158 +509,77 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
-          cache: 'pip' 
-      - name: 安裝依賴（yfinance 供輔助、requests 已內建）
+          cache: 'pip'
+      - name: 安裝依賴
         run: pip install -r requirements.txt
-      - name: 抓取 SEC EDGAR Company Facts 並更新 us-stocks.json
-        run: python skills/data/fetch_sec_edgar.py
+      - name: 執行模式
+        id: ctx
+        run: |
+          echo "mode=${{ inputs.mode || 'scheduled' }}" >> "$GITHUB_OUTPUT"
+          echo "sched=${{ github.event.schedule || 'manual' }}" >> "$GITHUB_OUTPUT"
+      - name: 全球指數、ETF 與總經指標（台股晚班）
+        id: indices
+        if: >-
+          (github.event_name == 'schedule' && (github.event.schedule == '30 9 * * 1-5' || github.event.schedule == '0 13 * * *'))
+          || github.event_name == 'workflow_dispatch'
+        run: |
+          MODE="${{ steps.ctx.outputs.mode }}"
+          SCHED="${{ steps.ctx.outputs.sched }}"
+          if [[ "$SCHED" == "0 13 * * *" ]] || ([[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]] && [[ "$MODE" == "due-only" || "$MODE" == "retry-failed" ]]); then
+            if ! python scripts/update_state.py check global-indices; then
+              echo "ran=false" >> "$GITHUB_OUTPUT"; exit 0
+            fi
+          fi
+          python skills/data/fetch_data.py indices
+          python skills/data/fetch_data.py twii
+          python scripts/update_state.py record global-indices --status attempted
+          echo "ran=true" >> "$GITHUB_OUTPUT"
+      - name: 美股／全球／情緒歷史月檔（美股早班）
+        id: history
+        if: >-
+          (github.event_name == 'schedule' && (github.event.schedule == '30 22 * * 1-5' || github.event.schedule == '0 13 * * *'))
+          || github.event_name == 'workflow_dispatch'
+        run: |
+          MODE="${{ steps.ctx.outputs.mode }}"
+          SCHED="${{ steps.ctx.outputs.sched }}"
+          if [[ "$SCHED" == "0 13 * * *" ]] || ([[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]] && [[ "$MODE" == "due-only" || "$MODE" == "retry-failed" ]]); then
+            if ! python scripts/update_state.py check global-history; then
+              echo "ran=false" >> "$GITHUB_OUTPUT"; exit 0
+            fi
+          fi
+          python skills/data/fetch_global_history.py
+          python scripts/update_state.py record global-history --status attempted
+          echo "ran=true" >> "$GITHUB_OUTPUT"
+      - name: 彙整執行清單
+        if: always()
+        run: |
+          T=""
+          [[ "${{ steps.indices.outputs.ran }}" == "true" ]] && T="$T global-indices"
+          [[ "${{ steps.history.outputs.ran }}" == "true" ]] && T="$T global-history"
+          echo "RAN_TASKS=$(echo $T | xargs)" >> "$GITHUB_ENV"
       - name: QA 閘門（提交前，錯誤即中止，不推送）
+        if: env.RAN_TASKS != ''
         run: python skills/qa-gate/qa_gate.py --gate
       - name: 推送
-        run: 'bash scripts/ci_commit_push.sh "data: SEC EDGAR $(date +%Y-%m-%d)" data/us/'
+        id: push
+        if: env.RAN_TASKS != '' && steps.ctx.outputs.mode != 'dry-run'
+        run: 'bash scripts/ci_commit_push.sh "data: 全球市場更新 $(TZ=Asia/Taipei date +%Y-%m-%d)" data/ data/us-history-* data/global-history-*'
+      - name: 記錄成功狀態
+        if: steps.push.outcome == 'success' && env.RAN_TASKS != ''
+        run: |
+          for t in ${{ env.RAN_TASKS }}; do python scripts/update_state.py record "$t" --status succeeded; done
+      - name: 記錄失敗狀態
+        if: failure() && env.RAN_TASKS != ''
+        run: |
+          for t in ${{ env.RAN_TASKS }}; do python scripts/update_state.py record "$t" --status failed; done
 
-  # 每日：美股指數、全球指數與市場情緒的收盤，累積為月檔
-  global-history:
-    concurrency:
-      group: mklab-git-push
-      queue: max
-      cancel-in-progress: false
-    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '30 22 * * 1-5'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-python@v6
-        with:
-          python-version: "3.11"
-          cache: 'pip' 
-      - name: 安裝 yfinance
-        run: pip install -r requirements.txt
-      - name: 美股／全球／情緒每日收盤（yfinance）
-        run: python skills/data/fetch_global_history.py
-      - name: QA 閘門（提交前，錯誤即中止，不推送）
-        run: python skills/qa-gate/qa_gate.py --gate
-      - name: 推送
-        run: 'bash scripts/ci_commit_push.sh "data: 美股／全球月檔 $(date +%Y-%m-%d)" data/us-history-* data/global-history-*'
-
-  # 每月 2 日：DIA、QQQ、SOXX、VOO 的替代 ETF 持股（VOO 來源失敗時用手動檔）
-  index-holdings:
-    concurrency:
-      group: mklab-git-push
-      queue: max
-      cancel-in-progress: false
-    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '45 22 2 * *'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-python@v6
-        with:
-          python-version: "3.11"
-          cache: 'pip' 
-      - name: 安裝解析套件
-        run: pip install -r requirements.txt
-      - name: 四大指數替代 ETF 持股
-        run: python skills/data/fetch_index_holdings.py
-      - name: QA 閘門（提交前，錯誤即中止，不推送）
-        run: python skills/qa-gate/qa_gate.py --gate
-      - name: 推送
-        run: 'bash scripts/ci_commit_push.sh "data: 指數替代 ETF 持股 $(date +%Y-%m)" data/index-holdings/'
-
-  # 每月 20 日：TWSE 官方財報（損益、資產負債表、股利、基金、公司基本資料）自動下載並匯入
-  official-fundamentals:
-    concurrency:
-      group: mklab-git-push
-      queue: max
-      cancel-in-progress: false
-    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 10 20 * *'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-python@v6
-        with:
-          python-version: "3.11"
-          cache: 'pip' 
-      - name: 安裝依賴（pandas/openpyxl 供國泰持股 Excel）
-        run: pip install -r requirements.txt
-      - name: 下載 TWSE 官方財報與公司資料
-        run: python skills/data/fetch_official_fundamentals.py
-      - name: 匯入財報（ROE/ROA/EPS、股利）
-        run: python skills/data/import_official_fundamentals.py
-      - name: 公司基本資料（產業、上市日）
-        run: python skills/data/integrate_official_company.py
-      - name: QA 閘門（提交前，錯誤即中止，不推送）
-        run: python skills/qa-gate/qa_gate.py --gate
-      - name: 推送
-        run: 'bash scripts/ci_commit_push.sh "data: 官方財報月更新 $(date +%Y-%m)" data/ data/raw/official/'
-
-  # 每週日：ETF 補充資料（資產規模、受益人數、發行人、標的指數）
-  #   官方自動化優先：TWSE ETF篩選器 CSV 端點 ＋ TPEx api/etfFilter；失敗才由人工 CSV 備援
-  #   （Ivan 2026-11-15 決策；來源細節見 skills/data/fetch_etf_meta.py 檔頭）
-  etf-meta:
-    concurrency:
-      group: mklab-git-push
-      queue: max
-      cancel-in-progress: false
-    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 10 * * 0'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-python@v6
-        with:
-          python-version: "3.11"
-          cache: 'pip' 
-      - name: ETF 補充資料（規模／受益人數，官方自動化）
-        run: python skills/data/fetch_etf_meta.py
-      - name: ETF 分類（讀剛更新的官方清單；新上市 ETF 才不會停在 unverified）
-        run: python skills/data/classify_etf.py
-      - name: 套用分類與技術指標
-        run: python skills/data/compute_indicators.py
-      - name: ETF 週邊整合（保管費／持股基準日／持股總數）
-        run: python skills/data/integrate_etf_extras.py
-      - name: QA 閘門（提交前，錯誤即中止，不推送）
-        run: python skills/qa-gate/qa_gate.py --gate
-      - name: 推送
-        run: 'bash scripts/ci_commit_push.sh "data: ETF 補充資料與分類 $(date +%Y-%m-%d)" data/etf-meta.json data/etf-classified.json data/stocks.json data/raw/twse_etf.csv'
-
-
-  # ETF QA 自動化排程（A1）：每週一 17:00（台灣），跑 qa_phase4.py + ci_qa_gate.sh
-  etf-qa:
-    concurrency:
-      group: mklab-git-push
-      queue: max
-      cancel-in-progress: false
-    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 9 * * 1'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-python@v6
-        with:
-          python-version: "3.11"
-          cache: 'pip' 
-      - name: Phase 4 QA Automation
-        run: python scripts/qa_phase4.py
-      - name: QA Gate
-        run: python skills/qa-gate/qa_gate.py --gate
-      - name: 推送（QA 不改資料時為 no-op；推送一律走共用腳本）
-        run: 'bash scripts/ci_commit_push.sh "qa: ETF QA 自動化 $(date +%F)" data/'
-
-  # P2 失敗班自動重試（2026-11-26）：等全部 job 結束後判定——
-  # 有失敗且本次不是重試（inputs.retry != '1'）→重觸發自身一次（重跑全部 job）。
+  # P2 失敗班自動重試：等全部 job 結束後判定（skipped 不算 failure）。
+  # 有失敗且本次不是重試（inputs.retry != '1'）→ 重觸發自身一次。
   # 防循環：重試的 run 帶 retry=1，再失敗不再重觸發。
   # 資料類失敗（QA 擋下）重試後仍會被同一關卡擋下、同樣只重試一次，行為安全。
   # 業務結果告警由 telegram-notify 監聽器負責（本 job 不重複通知）。
   retry-or-report:
-    needs: [daily, weekly-roe, indices, us-market, sec-edgar, global-history,
-            index-holdings, official-fundamentals, etf-meta, etf-qa]
+    needs: [tw-stock, tw-etf, us-stock, us-etf, global-market]
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -368,7 +592,7 @@ jobs:
           FAILED=$(gh api "repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs" \
             --jq '[.jobs[] | select(.conclusion=="failure") | .name] | join(", ")')
           if [[ -z "$FAILED" ]]; then
-            echo "所有 job 成功，無需處理"
+            echo "所有 job 成功（skipped 不計為失敗），無需處理"
             exit 0
           fi
           echo "失敗 job: $FAILED"
@@ -376,6 +600,6 @@ jobs:
             echo "::warning::重試後仍失敗，不再自動重試（防循環）——請人工檢查 $FAILED"
             exit 0
           fi
-          echo "自動重試一次（P2 分級重試：網路/暫時性錯誤多半一次重試即恢復；資料類失敗重試後仍會被 QA 擋下，僅多一次確認）"
+          echo "自動重試一次（網路/暫時性錯誤多半一次即恢復；資料類失敗重試後仍會被 QA 擋下）"
           gh workflow run daily-update.yml --ref "${{ github.ref_name }}" -f retry=1
           echo "已觸發重試 run（retry=1）"
