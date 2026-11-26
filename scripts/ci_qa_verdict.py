@@ -1,6 +1,13 @@
 #!/usr/bin/env python3
-"""QA verdict v2.0: validate report and fail closed.
+"""QA verdict v2.2 — validate the QA report structure and contract, fail closed.
+
 Usage: python3 scripts/ci_qa_verdict.py [qa-result.json]
+Exit 0: report is structurally valid, complete against the contract, and allow_deploy is true.
+Exit 1: report is missing, malformed, inconsistent with the contract, or blocked.
+
+Scope（誠實界線）：本模組驗證「結構、契約、統計一致性、完整性」，**不能**驗證個別檢查
+結果是否屬實——status 的正確性來自產生端 qa_gate.py。它是防止「報告被縮減、湊數、
+損壞、統計不符」的第二道守門，不是對掃描結果的獨立重算。
 """
 import json
 import math
@@ -40,7 +47,6 @@ def reject_constant(value):
 _CONTRACT = {
     "schema_version": "2.0",
     "expected_checks_total": 69,
-    "expected_checks_min": 60,
     "conditional_check_slack": 3,
     "required_checks": [
         "股票代號唯一",
@@ -71,9 +77,10 @@ _CONTRACT = {
 }
 SCHEMA_VERSION = _CONTRACT["schema_version"]
 EXPECTED_CHECKS_TOTAL = _CONTRACT["expected_checks_total"]
-EXPECTED_CHECKS_FLOOR = _CONTRACT["expected_checks_min"]
-REQUIRED_CHECKS = tuple(_CONTRACT["required_checks"])
 CONDITIONAL_CHECK_SLACK = _CONTRACT["conditional_check_slack"]
+# 單一下限：總數減條件式容許量（v2.2 移除與之並存、從不生效的第二個下限 60）
+EXPECTED_CHECKS_FLOOR = EXPECTED_CHECKS_TOTAL - CONDITIONAL_CHECK_SLACK
+REQUIRED_CHECKS = tuple(_CONTRACT["required_checks"])
 
 
 # 2026-11-25 整合 ChatGPT v2.1：status 枚舉常數化（產生端 qa_gate.py 的四值對應）
@@ -92,19 +99,15 @@ def validate(report):
     for key in ("errors", "warnings", "expected_checks"):
         if type(report.get(key)) is not int or report[key] < 0:
             raise ValueError(f"{key} 必須為非負整數")
-    if report["expected_checks"] < EXPECTED_CHECKS_FLOOR:
-        raise ValueError(f"檢查數量 {report['expected_checks']} 低於門檻 {EXPECTED_CHECKS_FLOOR}")
     checks = report.get("checks")
     if not isinstance(checks, list) or not checks:
         raise ValueError("checks 必須為非空 list")
     if report["expected_checks"] != len(checks):
         raise ValueError(f"expected_checks({report['expected_checks']}) != len(checks)({len(checks)})")
-    # 2026-11-26：與 qa_gate 同步範圍化——條件式項（TWSE_T_MINUS_1/US_RETURNS_MISSING/
-    # 品質規則動態名）讓執行數合法浮動，只驗下限（防漏跑 fail closed），上限不設
-    _slack = CONDITIONAL_CHECK_SLACK
-    if len(checks) < EXPECTED_CHECKS_TOTAL - _slack:
-        raise ValueError(
-            f"檢查總數 {len(checks)} < 契約下限 {EXPECTED_CHECKS_TOTAL - _slack}（漏跑）")
+    # 條件式項（TWSE_T_MINUS_1／US_RETURNS_MISSING／品質規則動態名）讓執行數合法浮動：
+    # 只驗下限（防漏跑 fail closed），上限不設（資料問題拆多條動態名屬合法，交由 allow_deploy 判定）
+    if len(checks) < EXPECTED_CHECKS_FLOOR:
+        raise ValueError(f"檢查總數 {len(checks)} < 契約下限 {EXPECTED_CHECKS_FLOOR}（漏跑）")
     names = [c.get("name") if isinstance(c, dict) else None for c in checks]
     if len(names) != len(set(names)):
         raise ValueError("存在重複檢查名稱（湊數）")

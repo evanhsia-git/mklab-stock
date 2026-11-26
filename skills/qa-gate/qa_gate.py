@@ -67,7 +67,7 @@ if _SCRIPTS_DIR not in sys.path:
 from ci_qa_verdict import (_CONTRACT as _QA_CONTRACT,        # noqa: E402
                            SCHEMA_VERSION,                    # noqa: E402
                            EXPECTED_CHECKS_TOTAL,             # noqa: E402
-                           EXPECTED_CHECKS_FLOOR as EXPECTED_CHECKS_MIN,   # noqa: E402
+                           EXPECTED_CHECKS_FLOOR,             # noqa: E402
                            REQUIRED_CHECKS,                   # noqa: E402
                            CONDITIONAL_CHECK_SLACK)           # noqa: E402
 
@@ -273,6 +273,26 @@ warnings = 0
 executed_names = []
 
 
+def _ca_explains_move(ca, chg):
+    """登記的公司行為能否解釋這筆 >30% 的單日漲跌（唯一豁免判準，純函式、可單元測試）。
+
+    ratio 語意為「新股／舊股」（skills/data/corporate_actions.py）：
+    事件後價格的理論倍數 = 1 / ratio（分割 4 → ×0.25；反分割 0.25 → ×4）。
+    有現金退還（減資）時理論值需扣掉退還款，無法精確驗證，不予豁免，須人工確認。
+    容許誤差 ±10%（漲跌停、復牌當日行情造成的偏離）。
+    """
+    if not isinstance(ca, dict) or ca.get("cash_refund"):
+        return False
+    try:
+        ratio = float(ca["ratio"])
+        factor = 1.0 + float(chg) / 100.0
+    except (KeyError, TypeError, ValueError):
+        return False
+    if ratio <= 0 or factor <= 0:
+        return False
+    return abs(factor * ratio - 1.0) <= 0.10
+
+
 def add(c: Check):
     global errors, warnings
     # 重複 name 視為湊數（報告完整性契約）：立即失敗，不產出報告。
@@ -286,7 +306,12 @@ def add(c: Check):
         warnings += 1
 
 
-def run():
+def run(json_path=None):
+    global errors, warnings
+    checks.clear()
+    executed_names.clear()
+    errors = 0
+    warnings = 0
     # ============================================================
     # 一、Python 語法/匯入
     # ============================================================
@@ -327,6 +352,13 @@ def run():
     # ============================================================
     stocks_path = os.path.join(ROOT, "data", "stocks.json")
     ind_path = os.path.join(ROOT, "data", "industry.json")
+
+    try:
+        with open(stocks_path, encoding="utf-8") as f:
+            json.load(f)
+    except (OSError, ValueError) as e:
+        # 無法解析時不產出報告（main 會捕捉並以非零退出）；避免後段 NameError 造成無訊息崩潰。
+        raise RuntimeError(f"無法讀取 data/stocks.json: {e}")
 
     c = Check("Data", "股票代號唯一")
     try:
@@ -455,12 +487,25 @@ def run():
             # ——那會掩蓋真實異常（2026-11-15 收緊）。
             ca = s_.get("corporate_action") or {}
             quantified = bool(ca.get("ratio")) and ca.get("status") in ("done", "pending")
+            if abs(chg) > 30:
+                # >30% 只有「與登記比率吻合」的公司行為能解釋；其餘一律 ERROR（不得豁免）。
+                if quantified and _ca_explains_move(ca, chg):
+                    ca_list.append(f"{s_.get('sym')}={chg}%({ca.get('type')} {ca.get('ratio')})")
+                    continue
+                if quantified and ca.get("cash_refund"):
+                    reason = "現金減資無法自動驗證，需人工確認"
+                elif quantified:
+                    reason = "公司行為比率與漲跌不符"
+                elif ca:
+                    reason = "公司行為尚未量化（無 ratio）"
+                else:
+                    reason = "無公司行為登記"
+                err_list.append(f"{s_.get('sym')}={chg}%（{reason}）")
+                continue
             if quantified:
                 ca_list.append(f"{s_.get('sym')}={chg}%({ca.get('type')} {ca.get('ratio')})")
                 continue
-            if abs(chg) > 30:
-                (err_list if not ca else planned_list).append(f"{s_.get('sym')}={chg}%")
-            elif abs(chg) > 10.5:
+            if abs(chg) > 10.5:
                 (warn_list if not ca else planned_list).append(f"{s_.get('sym')}={chg}%")
         if err_list:
             c.error(f"漲跌幅超過 30% {len(err_list)} 檔: {err_list[:10]}", "核對來源收盤與前收價", stocks_path)
@@ -1095,16 +1140,14 @@ def run():
     os.makedirs(os.path.dirname(out_md), exist_ok=True)
     open(out_md, "w", encoding="utf-8").write(report)
     print(report)
-    if "--json" in sys.argv:
-        jp = sys.argv[sys.argv.index("--json") + 1]
+    if json_path:
+        jp = json_path
         # ============================================================
         # 報告完整性門檻（fail closed：不足即不產出報告）
         # ============================================================
         missing_required = [n for n in REQUIRED_CHECKS if n not in executed_names]
         if missing_required:
             raise RuntimeError(f"required checks missing: {missing_required}")
-        if len(checks) < EXPECTED_CHECKS_MIN:
-            raise RuntimeError(f"check count {len(checks)} below floor {EXPECTED_CHECKS_MIN}")
         # 2026-11-26：精確總數改為範圍契約——TWSE_T_MINUS_1／US_RETURNS_MISSING 等
         # 條件式檢查只在特定資料條件出現，executed 會在 [TOTAL-N, TOTAL] 浮動；
         # 精確等號會誤攔正常資料差異（2026-11-25 daily 班 67!=69 實證）。
@@ -1116,13 +1159,14 @@ def run():
             # 下限對照（漏跑→不產出報告，fail closed）
             raise RuntimeError(
                 f"executed {len(executed_names)} < floor {EXPECTED_CHECKS_TOTAL - _COND_SLACK} (expected_checks_total {EXPECTED_CHECKS_TOTAL})")
-        json.dump({"schema_version": SCHEMA_VERSION,
-                   "allow_deploy": not block, "errors": errors, "warnings": warnings,
-                   "expected_checks": len(executed_names),
-                   "scan_completed": True,
-                   "required_checks": list(REQUIRED_CHECKS),
-                   "checks": [{k: getattr(c, k) for k in ("cat", "name", "status", "detail")} for c in checks]},
-                  open(jp, "w"), ensure_ascii=False, indent=2)
+        with open(jp, "w", encoding="utf-8") as fh:
+            json.dump({"schema_version": SCHEMA_VERSION,
+                       "allow_deploy": not block, "errors": errors, "warnings": warnings,
+                       "expected_checks": len(executed_names),
+                       "scan_completed": True,
+                       "required_checks": list(REQUIRED_CHECKS),
+                       "checks": [{k: getattr(c, k) for k in ("cat", "name", "status", "detail")} for c in checks]},
+                      fh, ensure_ascii=False, indent=2)
     return 1 if block else 0
 
 
@@ -1141,14 +1185,17 @@ def _run_gate():
     子進程崩潰時報告缺失即擋（不會把部分狀態當成功）。
     """
     print("[qa-gate] 1/3 Generate QA report")
-    report = "qa-result.json"
-    try:
-        os.remove(report)
-    except OSError:
-        pass
+    report = os.path.join(ROOT, "qa-result.json")
+    # 舊報告若無法刪除（權限／鎖定），掃描器失敗時會被當成有效報告放行（fail-open）→ 必須拒絕。
+    if os.path.lexists(report):
+        try:
+            os.remove(report)
+        except OSError as exc:
+            print(f"[qa-gate] ERROR: cannot remove stale QA report: {exc}", file=sys.stderr)
+            return 1
     scan = subprocess.run([sys.executable, os.path.abspath(__file__), "--json", report], cwd=ROOT)
     scan_rc = scan.returncode
-    if not os.path.isfile(report) or os.path.getsize(report) == 0:
+    if os.path.islink(report) or not os.path.isfile(report) or os.path.getsize(report) == 0:
         print(f"[qa-gate] ERROR: Missing, empty or unsafe QA report (scanner exit {scan_rc})", file=sys.stderr)
         return 1
     print("[qa-gate] 2/3 Evaluate QA verdict")
@@ -1171,7 +1218,15 @@ def _run_gate():
 def main(argv=None):
     args = list(sys.argv[1:] if argv is None else argv)
     if "--json" in args:
-        return run()  # 報告由 run() 內部依 sys.argv 寫入（相容原行為）
+        i = args.index("--json")
+        if i + 1 >= len(args):
+            print("Usage: qa_gate.py --json <path>", file=sys.stderr)
+            return 2
+        try:
+            return run(args[i + 1])
+        except RuntimeError as exc:  # 完整性門檻不足：不產出報告，給清楚訊息（fail closed）
+            print(f"[qa-gate] ERROR: 掃描不完整，未產出報告: {exc}", file=sys.stderr)
+            return 1
     if "--gate" in args:
         return _run_gate()
     if "--recover" in args or "--freshness" in args:

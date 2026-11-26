@@ -2,6 +2,10 @@
 
 > 2026-11-26 完成。本地 commit `0400ac43`＋`7e22f1e5`，**未 push**（待人工驗收）。
 > 基準 commit：`84b04ef9`。本輪授權範圍：盤點/整合/隔離測試/本地 commit。
+>
+> **v2.2 強化（2026-11-26 第二輪，人工審查後的強化版）**：Ivan 提供人工審查後的
+> 四檔強化版為基準，本地驗證通過並追加修正一項環境相依 Bug——回歸 **188/188 PASS**、
+> `--gate` 全鏈 passed、`--freshness` 唯讀判定正常。詳見第 12 節。
 
 ## 1. 六（七）檔現行架構（整合前）
 
@@ -91,3 +95,25 @@ BLOCK 類 12（ERROR 報告／偽造縮減 required／偽造 expected_checks／�
 2. 授權 push →觀察 CI qa-gate run（新入口首跑）
 3. 觀察 17:00 daily 班（10 job 全走 --gate）
 4. 綠燈 24h 後本報告轉為正式架構記錄
+
+## 12. v2.2 強化記錄（第二輪：人工審查版＋本地驗證修正）
+
+Ivan 人工審查後回傳四檔強化版（v2.2），以此為基準覆寫並驗證：
+
+### 12.1 v2.2 新增防護（人工版提供）
+
+- **ci_commit_push.sh（112→130 行）**：發布路徑白名單（`data/`、`rss.xml`；拒絕絕對路徑、`..` 跳脫、`-` 選項式參數、不存在路徑）；無新變更時仍發布先前失敗遺留的本機 commit（原版靜默 exit 0）；push 後以 `ls-remote` 驗證遠端 main=本機 HEAD；`GIT_TERMINAL_PROMPT=0`；Git 進行中狀態五重檢查（MERGE_HEAD/CHERRY_PICK_HEAD/REVERT_HEAD/rebase-*）
+- **ci_qa_verdict.py（175→178 行）**：重複 JSON key 拒絕（`object_pairs_hook`）；NaN/Infinity 常數拒絕（`parse_constant`/`parse_float`）；契約下限單一化（`EXPECTED_CHECKS_FLOOR = TOTAL − SLACK`，移除從不生效的第二下限 60）；status 枚舉常數化（PASS/WARNING/ERROR/MANUAL）；cat/name 非空字串、detail 必填；統計交叉重算（errors/warnings/allow_deploy 逐一對帳）
+- **qa_gate.py（1194→1249 行）**：`run(json_path)` 參數化＋`main()` 捕 RuntimeError 給乾淨錯誤訊息（掃描不完整→非零退出、不產出報告，無 traceback）；重複檢查名→立即 RuntimeError（湊數防護）；損壞 stocks.json→乾淨失敗（修 NameError 崩潰）；`--gate` 舊報告不可刪除→拒絕（修 fail-open：掃描失敗時舊報告曾被當有效放行）＋`islink` 防護；公司行為豁免判準 `_ca_explains_move`（僅比率吻合 ±10% 才豁免；planned 無比率／減資現金退還／比率 0 一律不豁免）；資料檔案大小預算 7 檔分級（WARN/ERROR）
+- **test_known_errors.py（1116→1369 行）**：新增 24 項 v2.2 測試——豁免判準矩陣 8 情境、端到端掃描 2（planned+35%→ERROR 且 allow_deploy=false；合法 1拆4 −75%→不誤擋）、損壞檔案乾淨失敗、舊報告不可刪除拒絕（nobody 降權實測）、白名單 2（`secret/new.txt` 與 `data/../secret/x.txt` 拒絕、遠端不變）、遺留 commit 仍發布
+
+### 12.2 本地追加修正（本輪 Agent 修正）
+
+- **環境相依 Bug（test_known_errors.py）**：`tempfile.mkdtemp()` 受 `TMPDIR=/root/.hermes/cache/scratch`（root-only）影響，nobody 降權後無法穿越路徑，連腳本都讀不到（python `can't open file` rc=2）——實測重現後改為 `dir="/tmp"`（nobody 可穿越），並留註解固化教訓
+
+### 12.3 v2.2 驗證證據
+
+- 回歸：**188/188 PASS**（v2.1 的 181＋v2.2 新增 24−重複計數調整）
+- `--gate` 全鏈：掃描→verdict→回歸全綠，exit 0
+- `--freshness`：唯讀判定正常（三候選日期比對、0 修正）
+- 四檔行數：130＋178＋1249＋1369＝**2926 行**（vs v2.1 四檔 2598：+328，全數為防護與測試）

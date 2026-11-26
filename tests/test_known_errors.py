@@ -1188,6 +1188,180 @@ check("官方財報：混季時仍完整涵蓋所有公司並回報季別分布"
       len(_fin) == 2 and _info["periods"] == {"2026Q2": 1, "2026Q3": 1}, f"{_info.get('periods')}")
 
 
+# ============================================================
+# v2.2 防回歸測試（2026-11-26 整合版遺失的修正＋新增防護）
+# 原則：行為測試優先（實際執行腳本／掃描器）；純函式用矩陣直接驗。
+# ============================================================
+import shutil as _shu
+
+def _git(*a, cwd):
+    return subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@t", *a],
+                          cwd=cwd, capture_output=True, text=True)
+
+def _copy_repo(dst):
+    _shu.copytree(ROOT, dst, dirs_exist_ok=True,
+                  ignore=_shu.ignore_patterns(".git", "__pycache__", "raw", "qa-result.json"))
+
+def _set_sym(d, sym, **kw):
+    for s_ in d["stocks"]:
+        if s_["sym"] == sym:
+            s_.update(kw)
+            return
+    raise KeyError(sym)
+
+def _scan_copy_with(mutate):
+    """在暫存副本上修改 stocks.json 後執行掃描器，回傳 (報告或None, 行程結果)。"""
+    tmp = tempfile.mkdtemp(prefix="qa_v22_")
+    try:
+        dst = os.path.join(tmp, "repo")
+        _copy_repo(dst)
+        sp = os.path.join(dst, "data", "stocks.json")
+        d = json.load(open(sp, encoding="utf-8"))
+        mutate(d)
+        json.dump(d, open(sp, "w", encoding="utf-8"), ensure_ascii=False)
+        rp = os.path.join(tmp, "r.json")
+        r = subprocess.run([sys.executable, os.path.join(dst, "skills", "qa-gate", "qa_gate.py"),
+                            "--json", rp], cwd=dst, capture_output=True, text=True, timeout=900)
+        if not os.path.isfile(rp):
+            return None, r
+        return json.load(open(rp, encoding="utf-8")), r
+    finally:
+        _shu.rmtree(tmp, ignore_errors=True)
+
+# 1) 公司行為豁免判準（純函式矩陣）：只有比率吻合才豁免
+_ca_cases = [
+    ("1拆4 -75%（事件日）→ 豁免",           {"status": "done", "type": "split", "ratio": 4.0}, -75.0, True),
+    ("1拆4 +300% → 不豁免（與比率不符）",   {"status": "done", "type": "split", "ratio": 4.0}, 300.0, False),
+    ("反分割0.25 +300% → 豁免",             {"status": "done", "type": "reverse_split", "ratio": 0.25}, 300.0, True),
+    ("反分割0.25 -75% → 不豁免",            {"status": "done", "type": "reverse_split", "ratio": 0.25}, -75.0, False),
+    ("pending 亦核對比率（1拆2 -50%）→ 豁免", {"status": "pending", "type": "split", "ratio": 2.0}, -50.0, True),
+    ("減資有現金退還 → 不豁免（無法精確驗證）", {"status": "done", "type": "capital_reduction", "ratio": 0.7, "cash_refund": 3.0}, 40.0, False),
+    ("planned 無比率 → 不豁免",             {"status": "planned", "type": "split"}, 35.0, False),
+    ("比率為 0 → 不豁免",                   {"status": "done", "type": "split", "ratio": 0}, -75.0, False),
+]
+_ca_fn = getattr(_qg, "_ca_explains_move", None)
+if _ca_fn is None:
+    check("v2.2 公司行為豁免判準：只有比率吻合才豁免（planned／減資退還／比率 0 不豁免）",
+          False, "缺少 _ca_explains_move")
+else:
+    _ca_bad = [n for n, ca, chg, want in _ca_cases if bool(_ca_fn(ca, chg)) != want]
+    check("v2.2 公司行為豁免判準：只有比率吻合才豁免（planned／減資退還／比率 0 不豁免）",
+          not _ca_bad, f"不符: {_ca_bad}" if _ca_bad else f"{len(_ca_cases)} 情境全符")
+
+# 2) 端到端：planned 無比率的 >30% 必須 ERROR（原整合版只 WARNING，會 ALLOW DEPLOY）
+_rep_planned, _ = _scan_copy_with(lambda d: _set_sym(
+    d, "2454", corporate_action={"status": "planned", "type": "split", "source": "test"}, chg=35.0))
+_anom = [c for c in (_rep_planned or {}).get("checks", []) if "異常漲跌" in c["name"]]
+check("v2.2 端到端：planned（無比率）+35% → ERROR 且 allow_deploy=false",
+      bool(_rep_planned) and _rep_planned["allow_deploy"] is False and any(c["status"] == "ERROR" for c in _anom),
+      f"allow={(_rep_planned or {}).get('allow_deploy')} 異常漲跌={[c['status'] for c in _anom]}")
+
+# 3) 端到端：比率吻合的合法 1 拆 4（-75%）必須放行，不得誤擋正確資料
+_rep_legit, _ = _scan_copy_with(lambda d: _set_sym(
+    d, "2454", corporate_action={"status": "done", "type": "split", "ratio": 4.0,
+                                 "source": "test", "resume_date": "2026-01-01"}, chg=-75.0))
+check("v2.2 端到端：比率吻合的 1 拆 4（-75%）→ allow_deploy=true（不誤擋）",
+      bool(_rep_legit) and _rep_legit["allow_deploy"] is True,
+      f"allow={(_rep_legit or {}).get('allow_deploy')}")
+
+# 4) 損壞的 stocks.json：必須乾淨失敗（非零退出、不產出報告、清楚訊息），不得 NameError 崩潰
+_tmp4 = tempfile.mkdtemp(prefix="qa_v22_corrupt_")
+try:
+    _dst4 = os.path.join(_tmp4, "repo")
+    _copy_repo(_dst4)
+    open(os.path.join(_dst4, "data", "stocks.json"), "w", encoding="utf-8").write('{"meta":{"as_of":')
+    _rp4 = os.path.join(_tmp4, "r.json")
+    _r4 = subprocess.run([sys.executable, os.path.join(_dst4, "skills", "qa-gate", "qa_gate.py"), "--json", _rp4],
+                         cwd=_dst4, capture_output=True, text=True, timeout=900)
+    check("v2.2 損壞 stocks.json：非零退出、不產出報告、訊息清楚（無 Traceback）",
+          _r4.returncode != 0 and not os.path.exists(_rp4) and "Traceback" not in _r4.stderr
+          and "無法讀取 data/stocks.json" in _r4.stderr,
+          f"rc={_r4.returncode} 報告存在={os.path.exists(_rp4)}")
+finally:
+    _shu.rmtree(_tmp4, ignore_errors=True)
+
+# 5) 舊報告無法刪除時，--gate 必須拒絕（原版忽略刪除失敗 → 掃描失敗時舊報告被當成有效而放行）
+#    root 執行時以 nobody 身分跑 --gate，使不可寫目錄真實生效（非 root 則以當前身分）。
+# nobody（65534）必須能穿越此路徑：TMPDIR 可能指向 root-only 目錄（如 Hermes scratch），
+# 會讓降權行程連腳本都讀不到（python「can't open file」rc=2，2026-11-26 實測）——明確用 /tmp。
+_tmp5 = tempfile.mkdtemp(prefix="qa_v22_stale_", dir="/tmp")
+try:
+    _as_root = hasattr(os, "geteuid") and os.geteuid() == 0
+    _drop = (lambda: (os.setgid(65534), os.setuid(65534))) if _as_root else None
+    _dst5 = os.path.join(_tmp5, "repo")
+    _copy_repo(_dst5)
+    os.chmod(_tmp5, 0o755)  # 讓降權後的行程可穿越暫存目錄
+    _rp5 = os.path.join(_dst5, "qa-result.json")
+    subprocess.run([sys.executable, os.path.join(_dst5, "skills", "qa-gate", "qa_gate.py"), "--json", _rp5],
+                   cwd=_dst5, capture_output=True, text=True, timeout=900)
+    if not os.path.isfile(_rp5):
+        check("v2.2 舊報告不可刪除時 --gate 拒絕（前置：產生舊報告失敗）", False, "fixture")
+    else:
+        open(os.path.join(_dst5, "data", "stocks.json"), "w", encoding="utf-8").write('{"meta":{"as_of":')
+        os.chmod(_dst5, 0o555)  # 目錄不可寫 → 無法刪除舊報告；掃描器也寫不進 data/
+        _r5 = subprocess.run([sys.executable, os.path.join(_dst5, "skills", "qa-gate", "qa_gate.py"), "--gate"],
+                             cwd=_dst5, capture_output=True, text=True, timeout=900, preexec_fn=_drop)
+        check("v2.2 舊報告不可刪除時 --gate 拒絕（不得以舊報告放行）",
+              _r5.returncode != 0 and "cannot remove stale QA report" in _r5.stdout + _r5.stderr,
+              f"rc={_r5.returncode} 身分={'nobody' if _as_root else '當前使用者'}")
+finally:
+    try:
+        os.chmod(os.path.join(_tmp5, "repo"), 0o755)
+    except OSError:
+        pass
+    _shu.rmtree(_tmp5, ignore_errors=True)
+
+# 6) 發布路徑白名單：只允許 data/ 與 rss.xml（與 daily-update.yml 呼叫端一致）
+def _publish_fixture(t):
+    origin = os.path.join(t, "origin.git")
+    seed = os.path.join(t, "seed")
+    work = os.path.join(t, "W")
+    _git("init", "-q", "--bare", "--initial-branch=main", origin, cwd=t)
+    for sub in ("data", "scripts", os.path.join("skills", "qa-gate"), "secret"):
+        os.makedirs(os.path.join(seed, sub), exist_ok=True)
+    open(os.path.join(seed, "data", "a.json"), "w").write('{"v":1}\n')
+    open(os.path.join(seed, "secret", "x.txt"), "w").write("x\n")
+    open(os.path.join(seed, "skills", "qa-gate", "qa_gate.py"), "w").write("import sys\nsys.exit(0)\n")  # stub 閘門
+    _shu.copy(os.path.join(ROOT, "scripts", "ci_commit_push.sh"), os.path.join(seed, "scripts", "ci_commit_push.sh"))
+    _git("init", "-q", "-b", "main", cwd=seed)
+    _git("add", "-A", cwd=seed)
+    _git("commit", "-q", "-m", "seed", cwd=seed)
+    _git("remote", "add", "origin", origin, cwd=seed)
+    _git("push", "-q", "origin", "main", cwd=seed)
+    _git("clone", "-q", origin, work, cwd=t)
+    return origin, work
+
+_tmp6 = tempfile.mkdtemp(prefix="qa_v22_wl_")
+try:
+    _origin6, _work6 = _publish_fixture(_tmp6)
+    _before6 = _git("rev-parse", "main", cwd=_origin6).stdout.strip()
+    open(os.path.join(_work6, "secret", "new.txt"), "w").write("leak\n")
+    _rw = subprocess.run(["bash", "scripts/ci_commit_push.sh", "wl", "secret/new.txt"], cwd=_work6,
+                         capture_output=True, text=True, timeout=300)
+    _rt = subprocess.run(["bash", "scripts/ci_commit_push.sh", "wl", "data/../secret/x.txt"], cwd=_work6,
+                         capture_output=True, text=True, timeout=300)
+    _after6 = _git("rev-parse", "main", cwd=_origin6).stdout.strip()
+    check("v2.2 發布白名單：白名單外路徑（含 ../ 跳脫）拒絕且遠端不變",
+          _rw.returncode != 0 and _rt.returncode != 0 and "whitelist" in _rw.stderr
+          and _before6 == _after6,
+          f"rc={_rw.returncode}/{_rt.returncode} 遠端未變={_before6 == _after6}")
+
+    # 7) 無新變更但本機有遺留 commit（先前失敗）：必須發布，不得靜默 exit 0
+    _work7 = os.path.join(_tmp6, "W7")
+    _git("clone", "-q", _origin6, _work7, cwd=_tmp6)
+    open(os.path.join(_work7, "data", "a.json"), "w").write('{"v":2}\n')
+    _git("commit", "-qam", "pending local", cwd=_work7)
+    _local7 = _git("rev-parse", "HEAD", cwd=_work7).stdout.strip()
+    _r7 = subprocess.run(["bash", "scripts/ci_commit_push.sh", "pending", "data/a.json"], cwd=_work7,
+                         capture_output=True, text=True, timeout=300)
+    _remote7 = _git("rev-parse", "main", cwd=_origin6).stdout.strip()
+    check("v2.2 無新變更時仍發布本機遺留 commit（不靜默 exit 0）",
+          _r7.returncode == 0 and _remote7 == _local7,
+          f"rc={_r7.returncode} 遠端={_remote7[:8]} 本機={_local7[:8]}")
+finally:
+    _shu.rmtree(_tmp6, ignore_errors=True)
+
+
 # 輸出
 w = max(len(n) for n, _, _ in results)
 for n, st, d in results:
