@@ -1,8 +1,8 @@
 {
   "meta": {
     "note": "官方公司行為預告（TWSE TWTBAU1／TWTBAU2、TPEx tpex_intraday_trading_pre）。這裡的區間是**暫停先賣後買當日沖銷**的範圍，用來提前得知事件；**不含比率**，比率一律等事件發生後由官方公告補登到 corporate-actions.json。",
-    "as_of": "2026-11-20",
-    "count": 1,
+    "as_of": "2026-11-26",
+    "count": 3,
     "sources": {
       "TWSE_PRE": "https://openapi.twse.com.tw/v1/exchangeReport/TWTBAU1",
       "TWSE_HIS": "https://openapi.twse.com.tw/v1/exchangeReport/TWTBAU2",
@@ -20,6 +20,32 @@
       "day_trade_suspend_to": "2026-12-03",
       "roc_from": "1151127",
       "roc_to": "1151203",
+      "source": "https://openapi.twse.com.tw/v1/exchangeReport/TWTBAU1",
+      "when": "upcoming"
+    },
+    {
+      "sym": "2431",
+      "name": "聯昌",
+      "market": "TWSE",
+      "kind": "capital_reduction",
+      "reason": "減資",
+      "day_trade_suspend_from": "2026-11-30",
+      "day_trade_suspend_to": "2026-12-04",
+      "roc_from": "1151130",
+      "roc_to": "1151204",
+      "source": "https://openapi.twse.com.tw/v1/exchangeReport/TWTBAU1",
+      "when": "upcoming"
+    },
+    {
+      "sym": "6108",
+      "name": "競國",
+      "market": "TWSE",
+      "kind": "capital_reduction",
+      "reason": "減資",
+      "day_trade_suspend_from": "2026-12-07",
+      "day_trade_suspend_to": "2026-12-11",
+      "roc_from": "1151207",
+      "roc_to": "1151211",
       "source": "https://openapi.twse.com.tw/v1/exchangeReport/TWTBAU1",
       "when": "upcoming"
     }

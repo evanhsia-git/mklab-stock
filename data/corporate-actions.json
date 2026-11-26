@@ -1,7 +1,7 @@
 {
   "meta": {
     "note": "公司行為登記表（分割／反分割／減資）。**每一筆都必須有來源**；未經來源確認不得寫入。本檔由 sanitize_snapshot.py 套用到 data/stocks.json，供技術指標還原與前端標註。",
-    "updated": "2026-11-15",
+    "updated": "2026-11-26",
     "fields": {
       "type": "split＝分割（面額變更）、reverse_split＝反分割、capital_reduction＝減資（彌補虧損或現金退還）",
       "ratio": "新股／舊股：分割 7（1拆7）、反分割 0.25（4併1）、減資 0.75（25%減資）",
@@ -455,6 +455,18 @@
       "evidence": "本站 K 線至 2026-11-13 尚無跳空（事件未發生）",
       "source": "使用者 Ivan 提供（2026-11-15）：2026-11 中下旬進行分割投票（預估 1 拆 7），若 2026-12-03 受益人會議通過將正式執行",
       "source_note": "倍數為預估（estimated=true），未正式表決，倍數仍可變。"
+    },
+    {
+      "sym": "2431",
+      "name": "聯昌",
+      "type": "capital_reduction",
+      "ratio": null,
+      "cash_refund": null,
+      "halt_from": null,
+      "resume_date": null,
+      "status": "planned",
+      "source": "https://openapi.twse.com.tw/v1/exchangeReport/TWTBAU1（TWSE 暫停先賣後買當日沖銷交易標的預告表）",
+      "source_note": "官方預告：減資，暫停當沖區間 1151130~1151204（民國，＝2026-11-30~2026-12-04）。**尚未有官方比率**；事件完成後補登 ratio／cash_refund 與停牌日，才會套用還原價。"
     },
     {
       "sym": "6108",
