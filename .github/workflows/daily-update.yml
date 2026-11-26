@@ -79,6 +79,11 @@ jobs:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
+      - name: 同步至最新 origin/main（取得鎖後的最新；Phase 5 補充 P0-2）
+        run: |
+          git fetch --no-tags origin refs/heads/main:refs/remotes/origin/main
+          git checkout -B main refs/remotes/origin/main
+          echo "HEAD=$(git rev-parse HEAD) | origin/main=$(git rev-parse refs/remotes/origin/main) | 一致=$(git rev-parse HEAD == refs/remotes/origin/main && echo yes || echo no)"
       - name: 台北星期／班別／模式
         id: ctx
         run: |
@@ -116,7 +121,7 @@ jobs:
       - name: 安裝依賴
         if: env.RAN_TASKS != ''
         run: pip install -r requirements.txt
-      # ── 子任務執行（由 due-gate 決定；此處純執行＋attempted 紀錄）──
+      # ── 子任務執行（由 due-gate 決定；record succeeded 在 push 前寫入 workspace，隨同一次 commit 發布）──
       - name: 每日行情與指標＋市場摘要
         if: contains(env.RAN_TASKS, 'tw-stock-daily')
         run: |
@@ -131,19 +136,19 @@ jobs:
           python skills/data/build_kline.py
           python skills/data/compute_industry.py
           python skills/data/build_digest.py
-          python scripts/update_state.py record tw-stock-daily --status attempted
+          python scripts/update_state.py record tw-stock-daily --status succeeded
       - name: ROE/ROA 補充（yfinance，每檔間隔 3 秒）
         if: contains(env.RAN_TASKS, 'tw-stock-roe')
         run: |
           python skills/data/fetch_data.py weekly
-          python scripts/update_state.py record tw-stock-roe --status attempted
+          python scripts/update_state.py record tw-stock-roe --status succeeded
       - name: 官方財報月更（TWSE 官方下載→匯入）
         if: contains(env.RAN_TASKS, 'tw-stock-fundamentals')
         run: |
           python skills/data/fetch_official_fundamentals.py
           python skills/data/import_official_fundamentals.py
           python skills/data/integrate_official_company.py
-          python scripts/update_state.py record tw-stock-fundamentals --status attempted
+          python scripts/update_state.py record tw-stock-fundamentals --status succeeded
       - name: QA 閘門（提交前，錯誤即中止，不推送）
         if: env.RAN_TASKS != ''
         run: python skills/qa-gate/qa_gate.py --gate
@@ -155,7 +160,7 @@ jobs:
         if: steps.push.outcome == 'success' && env.RAN_TASKS != ''
         run: |
           for t in ${{ env.RAN_TASKS }}; do python scripts/update_state.py record "$t" --status succeeded; done
-      - name: 記錄失敗狀態
+      - name: 記錄失敗狀態（僅 workspace 日誌——不 push，遠端維持原狀態；下個 run 由 due 判斷自癒）
         if: (failure() || cancelled()) && env.RAN_TASKS != ''
         run: |
           for t in ${{ env.RAN_TASKS }}; do python scripts/update_state.py record "$t" --status failed; done
@@ -176,6 +181,11 @@ jobs:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
+      - name: 同步至最新 origin/main（取得鎖後的最新；Phase 5 補充 P0-2）
+        run: |
+          git fetch --no-tags origin refs/heads/main:refs/remotes/origin/main
+          git checkout -B main refs/remotes/origin/main
+          echo "HEAD=$(git rev-parse HEAD) | origin/main=$(git rev-parse refs/remotes/origin/main) | 一致=$(git rev-parse HEAD == refs/remotes/origin/main && echo yes || echo no)"
       - name: 台北星期／班別／模式
         id: ctx
         run: |
@@ -217,7 +227,7 @@ jobs:
         if: contains(env.RAN_TASKS, 'tw-etf-nav')
         run: |
           python skills/data/fetch_etf_nav.py
-          python scripts/update_state.py record tw-etf-nav --status attempted
+          python scripts/update_state.py record tw-etf-nav --status succeeded
       - name: 投信持股半月制（本期已成功來源跳過；只補失敗與未跑；全部失敗才擋 job）
         if: contains(env.RAN_TASKS, 'tw-etf-holdings')
         run: |
@@ -226,7 +236,7 @@ jobs:
           if [[ "${{ steps.ctx.outputs.mode }}" == "dry-run" ]]; then EXTRA="--dry-run"; fi
           python scripts/update_state.py holdings-run $EXTRA
           HSRC=$(python -c "import json;d=json.load(open('data/fetch-log.json'));print(','.join((d.get('update_state',{}).get('tw-etf-holdings') or {}).get('failed_sources') or []))")
-          python scripts/update_state.py record tw-etf-holdings --status attempted --failed-sources "$HSRC"
+          python scripts/update_state.py record tw-etf-holdings --status succeeded --failed-sources "$HSRC"
           python skills/data/accumulate_etf_holdings_history.py
           python scripts/verify_pcf_nav.py
       - name: ETF 補充資料與分類（規模／受益人數／分類／保管費）
@@ -236,12 +246,12 @@ jobs:
           python skills/data/classify_etf.py
           python skills/data/compute_indicators.py
           python skills/data/integrate_etf_extras.py
-          python scripts/update_state.py record tw-etf-meta --status attempted
+          python scripts/update_state.py record tw-etf-meta --status succeeded
       - name: ETF QA 稽核（Phase 4，唯讀不改資料）
         if: contains(env.RAN_TASKS, 'tw-etf-qa')
         run: |
           python scripts/qa_phase4.py
-          python scripts/update_state.py record tw-etf-qa --status attempted
+          python scripts/update_state.py record tw-etf-qa --status succeeded
       - name: QA 閘門（提交前，錯誤即中止，不推送）
         if: env.RAN_TASKS != ''
         run: python skills/qa-gate/qa_gate.py --gate
@@ -253,7 +263,7 @@ jobs:
         if: steps.push.outcome == 'success' && env.RAN_TASKS != ''
         run: |
           for t in ${{ env.RAN_TASKS }}; do python scripts/update_state.py record "$t" --status succeeded; done
-      - name: 記錄失敗狀態
+      - name: 記錄失敗狀態（僅 workspace 日誌——不 push，遠端維持原狀態；下個 run 由 due 判斷自癒）
         if: (failure() || cancelled()) && env.RAN_TASKS != ''
         run: |
           for t in ${{ env.RAN_TASKS }}; do python scripts/update_state.py record "$t" --status failed; done
@@ -275,6 +285,11 @@ jobs:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
+      - name: 同步至最新 origin/main（取得鎖後的最新；Phase 5 補充 P0-2）
+        run: |
+          git fetch --no-tags origin refs/heads/main:refs/remotes/origin/main
+          git checkout -B main refs/remotes/origin/main
+          echo "HEAD=$(git rev-parse HEAD) | origin/main=$(git rev-parse refs/remotes/origin/main) | 一致=$(git rev-parse HEAD == refs/remotes/origin/main && echo yes || echo no)"
       - name: 執行模式
         id: ctx
         run: |
@@ -312,7 +327,7 @@ jobs:
           python skills/data/fetch_us_data.py stocks
           python skills/data/fetch_us_returns.py
           python skills/data/fetch_sec_edgar.py
-          python scripts/update_state.py record us-stock-daily --status attempted
+          python scripts/update_state.py record us-stock-daily --status succeeded
       - name: QA 閘門（提交前，錯誤即中止，不推送）
         if: env.RAN_TASKS != ''
         run: python skills/qa-gate/qa_gate.py --gate
@@ -324,7 +339,7 @@ jobs:
         if: steps.push.outcome == 'success' && env.RAN_TASKS != ''
         run: |
           for t in ${{ env.RAN_TASKS }}; do python scripts/update_state.py record "$t" --status succeeded; done
-      - name: 記錄失敗狀態
+      - name: 記錄失敗狀態（僅 workspace 日誌——不 push，遠端維持原狀態；下個 run 由 due 判斷自癒）
         if: (failure() || cancelled()) && env.RAN_TASKS != ''
         run: |
           for t in ${{ env.RAN_TASKS }}; do python scripts/update_state.py record "$t" --status failed; done
@@ -346,6 +361,11 @@ jobs:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
+      - name: 同步至最新 origin/main（取得鎖後的最新；Phase 5 補充 P0-2）
+        run: |
+          git fetch --no-tags origin refs/heads/main:refs/remotes/origin/main
+          git checkout -B main refs/remotes/origin/main
+          echo "HEAD=$(git rev-parse HEAD) | origin/main=$(git rev-parse refs/remotes/origin/main) | 一致=$(git rev-parse HEAD == refs/remotes/origin/main && echo yes || echo no)"
       - name: 執行模式
         id: ctx
         run: |
@@ -382,12 +402,12 @@ jobs:
         if: contains(env.RAN_TASKS, 'us-etf-daily')
         run: |
           python skills/data/fetch_us_data.py etfs
-          python scripts/update_state.py record us-etf-daily --status attempted
+          python scripts/update_state.py record us-etf-daily --status succeeded
       - name: 指數替代 ETF 持股（DIA/QQQ/SOXX/VOO，每月 2 日起）
         if: contains(env.RAN_TASKS, 'us-etf-holdings')
         run: |
           python skills/data/fetch_index_holdings.py
-          python scripts/update_state.py record us-etf-holdings --status attempted
+          python scripts/update_state.py record us-etf-holdings --status succeeded
       - name: QA 閘門（提交前，錯誤即中止，不推送）
         if: env.RAN_TASKS != ''
         run: python skills/qa-gate/qa_gate.py --gate
@@ -399,7 +419,7 @@ jobs:
         if: steps.push.outcome == 'success' && env.RAN_TASKS != ''
         run: |
           for t in ${{ env.RAN_TASKS }}; do python scripts/update_state.py record "$t" --status succeeded; done
-      - name: 記錄失敗狀態
+      - name: 記錄失敗狀態（僅 workspace 日誌——不 push，遠端維持原狀態；下個 run 由 due 判斷自癒）
         if: (failure() || cancelled()) && env.RAN_TASKS != ''
         run: |
           for t in ${{ env.RAN_TASKS }}; do python scripts/update_state.py record "$t" --status failed; done
@@ -421,6 +441,11 @@ jobs:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
+      - name: 同步至最新 origin/main（取得鎖後的最新；Phase 5 補充 P0-2）
+        run: |
+          git fetch --no-tags origin refs/heads/main:refs/remotes/origin/main
+          git checkout -B main refs/remotes/origin/main
+          echo "HEAD=$(git rev-parse HEAD) | origin/main=$(git rev-parse refs/remotes/origin/main) | 一致=$(git rev-parse HEAD == refs/remotes/origin/main && echo yes || echo no)"
       - name: 執行模式
         id: ctx
         run: |
@@ -459,12 +484,12 @@ jobs:
         run: |
           python skills/data/fetch_data.py indices
           python skills/data/fetch_data.py twii
-          python scripts/update_state.py record global-indices --status attempted
+          python scripts/update_state.py record global-indices --status succeeded
       - name: 美股／全球／情緒歷史月檔
         if: contains(env.RAN_TASKS, 'global-history')
         run: |
           python skills/data/fetch_global_history.py
-          python scripts/update_state.py record global-history --status attempted
+          python scripts/update_state.py record global-history --status succeeded
       - name: QA 閘門（提交前，錯誤即中止，不推送）
         if: env.RAN_TASKS != ''
         run: python skills/qa-gate/qa_gate.py --gate
@@ -476,7 +501,7 @@ jobs:
         if: steps.push.outcome == 'success' && env.RAN_TASKS != ''
         run: |
           for t in ${{ env.RAN_TASKS }}; do python scripts/update_state.py record "$t" --status succeeded; done
-      - name: 記錄失敗狀態
+      - name: 記錄失敗狀態（僅 workspace 日誌——不 push，遠端維持原狀態；下個 run 由 due 判斷自癒）
         if: (failure() || cancelled()) && env.RAN_TASKS != ''
         run: |
           for t in ${{ env.RAN_TASKS }}; do python scripts/update_state.py record "$t" --status failed; done

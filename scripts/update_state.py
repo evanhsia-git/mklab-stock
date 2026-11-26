@@ -125,14 +125,25 @@ DAILY_TASK_MARKET = {
 
 
 def _last_workday(market, now=None):
-    """最近一個工作日（含今天，若今天是工作日）。tw=台北曆；us=美東曆（zoneinfo 自動夏令）。
-    now 可注入（測試用），需為 aware datetime。"""
+    """最近一個「已完成交易」的工作日（Phase 5 補充 P0-3：含收盤時間判斷）。
+
+    tw=台北曆（13:30 收盤）；us=美東曆（16:00 收盤，zoneinfo 自動夏令/冬令）。
+    收盤前的當日**不算**已完成交易日（未完成的盤中資料不得視為收盤資料）；
+    美東夏令/冬令由 zoneinfo 自動換算（台北 06:30 = 美東 17:30/18:30，皆已過 16:00）。
+    交易所休市日曆暫不處理（已知限制：假日誤判到期→冪等白跑，不覆蓋有效資料）。
+    """
     try:
         from zoneinfo import ZoneInfo
         tz = _TPEI if market == "tw" else ZoneInfo("America/New_York")
     except ImportError:
         tz = _TPEI
-    d = (now.astimezone(tz) if now else datetime.now(tz)).date()
+    local = (now.astimezone(tz) if now else datetime.now(tz))
+    d = local.date()
+    hourf = local.hour + local.minute / 60
+    if market == "tw" and hourf < 13.5:       # 台股 13:30 收盤
+        d -= timedelta(days=1)
+    elif market == "us" and hourf < 16:       # 美股 16:00 美東收盤
+        d -= timedelta(days=1)
     while d.weekday() >= 5:
         d -= timedelta(days=1)
     return d.isoformat()
@@ -189,10 +200,12 @@ def check_due(task, state):
             return True, f"資料日期 {data_date} < 今天 {today}"
         return False, f"資料已是最新（{data_date}）"
     if task == "tw-etf-holdings":
-        # 半月制：本期（H1/H2）未全數成功 → due（per-source 由 holdings-run 判斷）
+        # 半月制：本期（H1/H2）全數成功且無 failed_sources → not-due；
+        # 部分失敗（succeeded 但 failed_sources 非空）→ due（21:00 補跑班補失敗來源）
         period = _holdings_period(today)
-        hrec = rec.get("period") == period and rec.get("status") == "succeeded"
-        return (not hrec), f"本期 {period} " + ("已完成" if hrec else "未完成")
+        hrec_ok = (rec.get("period") == period and rec.get("status") == "succeeded"
+                   and not rec.get("failed_sources"))
+        return (not hrec_ok), f"本期 {period} " + ("已完成" if hrec_ok else "未完成或有失敗來源")
     # 無資料檔的週期任務（roe/qa/history）：今天沒成功即到期
     return True, f"今天尚未執行（last_success={last_success or '無'}）"
 

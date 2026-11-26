@@ -261,6 +261,117 @@ check("新舊架構等價性：12 子任務引用的全部爬蟲腳本與舊架�
       not _missing_scripts, f"缺失 {_missing_scripts[:3]}")
 # 每個子任務呼叫的腳本都必須存在於 repo（舊架構同一批檔案）
 
+# ── P0-1 端到端：成功狀態持久化（bare git repo 實測——不只字串斷言）──
+def _bare_e2e(push_should_fail=False):
+    """模擬 job 核心鏈：record succeeded → git add fetch-log → commit → push（bare）→ 驗證遠端。
+    push_should_fail=True 時 pre-receive hook 拒絕（模擬 push 失敗）。回傳 dict 結果。"""
+    import shutil as _sh
+    t = tempfile.mkdtemp(prefix="ws_p0_")
+    out = {}
+    idn = ["-c", "user.email=t@t", "-c", "user.name=t"]
+
+    def git(*a, cwd):
+        return subprocess.run(["git", *a], cwd=cwd, capture_output=True, text=True)
+
+    try:
+        origin = os.path.join(t, "origin.git")
+        git("init", "-q", "--bare", "--initial-branch=main", origin, cwd=t)
+        work = os.path.join(t, "W")
+        git("clone", "-q", origin, "W", cwd=t)
+        git(*idn, "config", "user.name", "t", cwd=work)
+        git(*idn, "config", "user.email", "t@t", cwd=work)
+        os.makedirs(os.path.join(work, "data"))
+        json.dump({"meta": {"as_of": "2027-05-03"}, "stocks": []},
+                  open(os.path.join(work, "data", "stocks.json"), "w"), ensure_ascii=False)
+        git("add", "-A", cwd=work)
+        git(*idn, "commit", "-q", "-m", "seed", cwd=work)
+        git("push", "-q", "origin", "main", cwd=work)
+        if push_should_fail:  # pre-receive 拒絕一次（模擬 push 失敗）
+            hook = os.path.join(origin, "hooks", "pre-receive")
+            open(hook, "w").write('#!/bin/sh\nexit 1\n')
+            os.chmod(hook, 0o755)
+
+        env_state = dict(os.environ)
+        os.environ["UPDATE_STATE_PATH"] = os.path.join(work, "data", "fetch-log.json")
+        us.STATE_PATH = os.environ["UPDATE_STATE_PATH"]
+        try:
+            # 模擬 job 的狀態寫入（push 之前——隨同一次 commit 發布）
+            us.cmd_record(mock.Mock(task="tw-stock-daily", status="succeeded", failed_sources=""))
+            us.cmd_record(mock.Mock(task="tw-etf-holdings", status="succeeded",
+                                    failed_sources="usitc"))  # 部分成功
+            git("add", "data/fetch-log.json", cwd=work)
+            r_commit = git(*idn, "commit", "-q", "-m", "data+state", cwd=work)
+            r_push = git("push", "origin", "main", cwd=work)
+        finally:
+            os.environ.update(env_state)
+            us.STATE_PATH = env_state.get("UPDATE_STATE_PATH") or os.path.join(ROOT, "data", "fetch-log.json")
+        out["push_rc"] = r_push.returncode
+        # 重新從遠端讀取（模擬下個 run checkout；push 失敗時遠端 fetch-log 不存在＝維持原狀）
+        c2 = os.path.join(t, "C")
+        git("clone", "-q", origin, "C", cwd=t)
+        _remote_fl = os.path.join(c2, "data", "fetch-log.json")
+        out["remote_state"] = (json.load(open(_remote_fl, encoding="utf-8")).get("update_state", {})
+                               if os.path.exists(_remote_fl) else {})
+        out["remote_stocks_asof"] = json.load(
+            open(os.path.join(c2, "data", "stocks.json"), encoding="utf-8"))["meta"]["as_of"]
+        return out
+    finally:
+        _sh.rmtree(t, ignore_errors=True)
+
+
+_e2e_ok = _bare_e2e(push_should_fail=False)
+check("P0-1 E2E：push 成功後重新 checkout 可取得 succeeded 狀態（資料+狀態同一次發布）",
+      _e2e_ok["push_rc"] == 0
+      and _e2e_ok["remote_state"].get("tw-stock-daily", {}).get("status") == "succeeded",
+      f"push_rc={_e2e_ok['push_rc']}")
+check("P0-1 E2E：部分成功 failed_sources 跨 run 保存（usitc）",
+      _e2e_ok["remote_state"].get("tw-etf-holdings", {}).get("failed_sources") == ["usitc"])
+_e2e_fail = _bare_e2e(push_should_fail=True)
+check("P0-1 E2E：push 失敗 → 遠端資料與狀態均維持原狀（不錯誤更新）",
+      _e2e_fail["push_rc"] != 0 and _e2e_fail["remote_state"] == {} and _e2e_fail["remote_stocks_asof"] == "2027-05-03",
+      f"push_rc={_e2e_fail['push_rc']} remote_state={_e2e_fail['remote_state']} asof={_e2e_fail['remote_stocks_asof']}")
+# 下個 run 冪等：main 上已有 succeeded → check not-due（不重複抓取）
+with _State({"update_state": {"tw-stock-daily": {"status": "succeeded",
+                                                 "last_success": "2027-05-03T21:00:00+08:00"}}}):
+    with mock.patch.object(us, "_now", lambda: _fake_now(2027, 5, 3, 23)):
+        due, _ = us.check_due("tw-stock-daily", us._load_state()[1])
+    check("P0-1 E2E：下個 run（同日）讀到 succeeded → 不重複抓取", not due)
+
+# ── P0-3 收盤時間判斷：最近「已完成交易」的交易日 ──
+# 台北週二 06:30（美股早班）＝美東週一 17:30/18:30 → 最近已完成交易日 = 美東週一
+_et_morning = datetime(2027, 5, 4, 6, 30, tzinfo=_TPEI)      # 台北週二 06:30
+_et_night = datetime(2027, 5, 4, 21, 0, tzinfo=_TPEI)        # 台北週二 21:00（補跑班）
+check("P0-3 台北週二 06:30：美股最近已完成交易日 = 美東週一（已收盤）",
+      us._last_workday("us", _et_morning) == "2027-05-03",
+      us._last_workday("us", _et_morning))
+check("P0-3 台北週二 21:00：美股週二未收盤 → 不要求週二收盤（仍 = 週一）",
+      us._last_workday("us", _et_night) == "2027-05-03",
+      us._last_workday("us", _et_night))
+check("P0-3 台北週三 06:30：美股最近已完成交易日 = 美東週二",
+      us._last_workday("us", datetime(2027, 5, 5, 6, 30, tzinfo=_TPEI)) == "2027-05-04",
+      us._last_workday("us", datetime(2027, 5, 5, 6, 30, tzinfo=_TPEI)))
+check("P0-3 台北週六：美股最近已完成交易日 = 週五",
+      us._last_workday("us", datetime(2027, 5, 1, 21, 0, tzinfo=_TPEI)) == "2027-04-30",
+      us._last_workday("us", datetime(2027, 5, 1, 21, 0, tzinfo=_TPEI)))
+check("P0-3 台股：台北 06:30（13:30 未收盤）→ 不算當日（回推上一工作日）",
+      us._last_workday("tw", datetime(2027, 5, 4, 6, 30, tzinfo=_TPEI)) == "2027-05-03",
+      us._last_workday("tw", datetime(2027, 5, 4, 6, 30, tzinfo=_TPEI)))
+check("P0-3 台股：台北 17:30（已收盤）→ 含當日",
+      us._last_workday("tw", datetime(2027, 5, 4, 17, 30, tzinfo=_TPEI)) == "2027-05-04",
+      us._last_workday("tw", datetime(2027, 5, 4, 17, 30, tzinfo=_TPEI)))
+check("P0-3 美東夏令（7 月）：台北 06:30 = 美東 18:30（已過 16:00）→ 含美東當日",
+      us._last_workday("us", datetime(2027, 7, 6, 6, 30, tzinfo=_TPEI)) == "2027-07-05",
+      f"{us._last_workday('us', datetime(2027, 7, 6, 6, 30, tzinfo=_TPEI))}（台北 7/6=美東 7/5 週一）")
+check("P0-3 美東冬令（12 月）：台北 06:30 = 美東 17:30（已過 16:00）→ 含美東當日",
+      us._last_workday("us", datetime(2027, 12, 7, 6, 30, tzinfo=_TPEI)) == "2027-12-06",
+      f"{us._last_workday('us', datetime(2027, 12, 7, 6, 30, tzinfo=_TPEI))}（台北 12/7=美東 12/6 週一）")
+# 台股週五資料未取得 → 台北週六 21:00 仍補跑（workday 判斷，非星期幾擋）
+with _State({}):
+    with mock.patch.object(us, "_now", lambda: _fake_now(2027, 5, 1)):
+        with mock.patch.object(us, "_read_meta_date", lambda rel, keys=("as_of", "date", "last_updated"): "2027-04-29"):
+            due, why = us.check_due("tw-stock-daily", us._load_state()[1])
+    check("P0-3 台北週六 21:00：台股週五資料未取得 → 仍補跑（最近已完成交易日=週五）", due, why)
+
 # ── 每月 2 日：us-etf-holdings（原月度 cron 時區錯誤已消除）──
 with _State({}):
     with mock.patch.object(us, "_now", lambda: _fake_now(2027, 5, 1)):  # 1 日（台北）
