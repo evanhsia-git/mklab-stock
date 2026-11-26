@@ -543,10 +543,12 @@ check("評分公式缺欄位不計分（不補 0）",
 import os as _os
 # 2026-11-25：尚未上市的標的（listing_date 晚於今天）沒有行情→不應要求 K 線檔
 # （實證 00419A 主動施羅德AI台股：官方清單已登錄、11-26 掛牌）
+# 2026-11-26：掛牌日「當天」收盤前也沒有 K 線（第一根要收盤後才有）→豁免條件
+# 收緊為「昨天以前掛牌才要求」；當天掛牌的明天 kline 班自然納入
 import datetime as _dt_mod
 _today = _dt_mod.date.today().isoformat()
 kl_missing=[x['sym'] for x in S
-            if str(x.get('listing_date') or '9999-99-99')[:10] <= _today
+            if str(x.get('listing_date') or '9999-99-99')[:10] < _today
             and not _os.path.exists(f"data/kline/{x['sym']}.json")]
 check("個股 K 線檔覆蓋所有已上市股票（未上市豁免）", len(kl_missing)==0, f"缺 {len(kl_missing)} 檔")
 bad_last=[]

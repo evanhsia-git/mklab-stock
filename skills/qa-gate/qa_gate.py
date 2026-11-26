@@ -956,10 +956,15 @@ def run():
             raise RuntimeError(f"required checks missing: {missing_required}")
         if len(checks) < EXPECTED_CHECKS_MIN:
             raise RuntimeError(f"check count {len(checks)} below floor {EXPECTED_CHECKS_MIN}")
-        if len(executed_names) != EXPECTED_CHECKS_TOTAL:
-            # 精確總數對照（漏跑/湊數任何一項→不產出報告，fail closed）
+        # 2026-11-26：精確總數改為範圍契約——TWSE_T_MINUS_1／US_RETURNS_MISSING 等
+        # 條件式檢查只在特定資料條件出現，executed 會在 [TOTAL-N, TOTAL] 浮動；
+        # 精確等號會誤攔正常資料差異（2026-11-25 daily 班 67!=69 實證）。
+        # 防漏跑保護：低於 TOTAL-COND_SLACK 視同漏跑（fail closed），高於 TOTAL 視同湊數。
+        _COND_SLACK = _QA_CONTRACT.get("conditional_check_slack", 3)
+        if len(executed_names) < EXPECTED_CHECKS_TOTAL - _COND_SLACK or len(executed_names) > EXPECTED_CHECKS_TOTAL:
+            # 範圍對照（漏跑/湊數→不產出報告，fail closed）
             raise RuntimeError(
-                f"executed {len(executed_names)} != expected_checks_total {EXPECTED_CHECKS_TOTAL}")
+                f"executed {len(executed_names)} outside [{EXPECTED_CHECKS_TOTAL - _COND_SLACK}, {EXPECTED_CHECKS_TOTAL}] (expected_checks_total)")
         json.dump({"schema_version": SCHEMA_VERSION,
                    "allow_deploy": not block, "errors": errors, "warnings": warnings,
                    "expected_checks": len(executed_names),
