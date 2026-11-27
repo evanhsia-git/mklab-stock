@@ -104,9 +104,18 @@ def build_daily_report(run, token: str | None) -> str:
     stocks = _fetch_json_or_none("data/stocks.json") or {}
     us = _fetch_json_or_none("data/us/us-stocks.json") or {}
     flog = _fetch_json_or_none("data/fetch-log.json") or {}
+    emeta_doc = _fetch_json_or_none("data/etf-meta.json") or {}
+    usetf = _fetch_json_or_none("data/us/us-etfs.json") or {}
+    idxdoc = _fetch_json_or_none("data/indices.json") or {}
     smeta = stocks.get("meta", {}) if isinstance(stocks, dict) else {}
     umeta = us.get("meta", {}) if isinstance(us, dict) else {}
     det = flog.get("details", {}) if isinstance(flog, dict) else {}
+    # 台股 ETF 上市／上櫃計數（etf-meta.json 的 market 欄：TWSE=上市、TPEx=上櫃）
+    emarkets = {}
+    for _e in (emeta_doc.get("etfs") or []):
+        emarkets[_e.get("market")] = emarkets.get(_e.get("market"), 0) + 1
+    usetf_meta = usetf.get("meta", {}) if isinstance(usetf, dict) else {}
+    idx_meta = idxdoc.get("meta", {}) if isinstance(idxdoc, dict) else {}
 
     # QA：最近的 qa-gate run（jobs API）——只在有結果時顯示真實狀態
     qa_line = "NOT_RUN（近 24h 無 qa-gate 執行）"
@@ -119,16 +128,15 @@ def build_daily_report(run, token: str | None) -> str:
     except Exception as exc:
         qa_line = f"UNKNOWN（{mask_secret(str(exc))[:60]}）"
 
-    # Pages：最近的 pages 部署 run
-    pages_line = "UNKNOWN"
+    # Pages：官方 Pages builds API（pages-build-deployment 是 GitHub 內建 dynamic workflow，
+    # 不是 repo 檔案——以 workflows/<name>.yml 查會 404）。
+    # status：built=正常；errored/其他/查無=不正常（保守呈現，只有二值）
+    pages_line = "不正常（無法確認部署狀態）"
     try:
-        runs = _get(f"{API}/actions/workflows/pages-build-deployment.yml/runs?per_page=5", token)
-        for r in runs.get("workflow_runs", []):
-            if r.get("conclusion") in ("success", "failure", "cancelled"):
-                pages_line = {"success": "部署成功", "failure": "部署失敗", "cancelled": "已取消"}[r["conclusion"]]
-                break
+        b = _get(f"{API}/pages/builds/latest", token)
+        pages_line = "正常" if (b.get("status") == "built") else "不正常"
     except Exception as exc:
-        pages_line = f"UNKNOWN（{mask_secret(str(exc))[:60]}）"
+        pages_line = f"不正常（{mask_secret(str(exc))[:60]}）"
 
     # 容量：線上檔案的實際位元組（HEAD Content-Length）
     def _size(path):
@@ -157,15 +165,14 @@ def build_daily_report(run, token: str | None) -> str:
         f"日期：{dt.datetime.now(TAIPEI).strftime('%Y-%m-%d')}",
         f"執行時間：{_fmt_dt(run.get('run_started_at'))}",
         f"總耗時：{_duration(run.get('run_started_at'), run.get('updated_at'))}",
-        f"Git commit：{str(run.get('head_sha'))[:8]}",
-        f"Workflow Run ID：{run.get('id')}",
         "",
         "【資料更新】",
         f"台股：{smeta.get('as_of', 'N/A')}（{smeta.get('count', 'N/A')} 檔）",
         f"美股：{umeta.get('returns_as_of', 'N/A')}（{umeta.get('count', 'N/A')} 檔）",
-        f"台股 ETF：{smeta.get('as_of', 'N/A')}（同一 stocks.json，未單獨標記→N/A）",
-        f"美股 ETF：N/A（未單獨維護檔案）",
-        f"全球指數：{det.get('trade_date', 'N/A')} 班次依排程；本檔未記錄→N/A",
+        f"台股 ETF：{smeta.get('as_of', 'N/A')} 上市（{emarkets.get('TWSE', 0)} 檔）",
+        f"台股 ETF：{smeta.get('as_of', 'N/A')} 上櫃（{emarkets.get('TPEx', 0)} 檔）",
+        f"美股 ETF：{str(usetf_meta.get('returns_as_of', 'N/A'))}（{usetf_meta.get('count', 'N/A')} 檔）",
+        f"全球指數：{idx_meta.get('as_of', 'N/A')}（指數 {idx_meta.get('index_count', 'N/A')}／ETF {idx_meta.get('etf_count', 'N/A')}／總經 {idx_meta.get('macro_count', 'N/A')}）",
         f"歷史資料：{det.get('history_file', 'N/A')}",
         "",
         "【資料品質】",
@@ -188,7 +195,7 @@ def build_daily_report(run, token: str | None) -> str:
         "",
         "【部署狀態】",
         f"GitHub Pages：{pages_line}",
-        f"發布結果：{'成功' if pages_line == '部署成功' else pages_line}",
+        f"發布結果：{pages_line}",
         f"LKG 狀態：未啟用（依專案規劃，P3 保留介面）",
         "",
         "【相關連結】",
