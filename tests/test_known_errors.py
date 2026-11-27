@@ -20,14 +20,28 @@ def _test_us_etf_nav_fallback():
         import fetch_us_data as fu
     except Exception:
         return check("US_ETF_NAV_FALLBACK：模組無法載入（缺 yfinance）→ SKIP", True, "SKIP")
-    # 模擬 yfinance：currentPrice==navPrice（盤後 iNAV）＋ history 回真實收盤
+    # 模擬 yfinance：currentPrice==navPrice（盤後 iNAV）＋ history 回真實收盤。
+    # 注意：不使用 pandas——CI 的 qa-gate runner 無 pandas，mock 必須 duck-typing
+    # 模擬 fetch 程式實際用到的最小 DataFrame/Series 介面（empty、dropna、["Close"]、len、iloc[-1]）。
+    class _FakeSeries:
+        def __init__(self, vals): self._v = list(vals)
+        def __len__(self): return len(self._v)
+        @property
+        def iloc(self):
+            _v = self._v
+            class _I:
+                def __getitem__(self, i): return _v[i]
+            return _I()
+    class _FakeHist:
+        def __init__(self, vals): self._s = _FakeSeries(vals); self.empty = False
+        def dropna(self, subset=None): return self
+        def __getitem__(self, k): return self._s
     class _T:
         def __init__(self, info, closes):
             self._info, self._closes = info, closes
         info = property(lambda self: self._info)
         def history(self, period=None, interval=None):
-            import pandas as pd
-            return pd.DataFrame({"Close": self._closes})
+            return _FakeHist(self._closes)
     fu._yf_ticker_factory = getattr(fu, "_yf_ticker_factory", None)
     orig = fu.yf.Ticker if hasattr(fu, "yf") and fu.yf else None
     try:
