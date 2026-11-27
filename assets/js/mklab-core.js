@@ -1099,38 +1099,58 @@
     { id: 'total_fee', label: '合計費率%', fmt: _feeFmt('total_fee') },
   ];
 
+  // 台股 ETF 匯出——Ivan 2026-11-28 簡化版格式（以其手動簡化檔為原則）：
+  // 1) 單一區塊寬表：每檔 ETF 一行，成份股 1~30 直列（排名/代號/名稱/權重），
+  //    移除原本「ETF 成份股明細」第二區塊（長表）。
+  // 2) B 尾債券型 ETF（代號以 B 結尾，數據使用不到）：保留基本資料與原始成份股總數，
+  //    前 10 大摘要、成份股明細、資料來源與持股資料日一律留白。
+  // 3) 其他 ETF 最多保留前 30 筆成份股；成份股總數保留 h.n 原值（null→空，不編「未提供」）。
+  const TW_ETF_HOLD_N = 30;
+  const isBondEtf = s => /B$/.test(String(s));
+  const TW_ETF_HOLD_COLS = (() => {
+    const c = [];
+    for (let i = 1; i <= TW_ETF_HOLD_N; i++) c.push(
+      { id: `h${i}_rank`, label: `成份股${i}_排名`, fmt: r => r[`h${i}_rank`] == null ? '' : r[`h${i}_rank`] },
+      { id: `h${i}_code`, label: `成份股${i}_代號`, fmt: r => r[`h${i}_code`] || '' },
+      { id: `h${i}_name`, label: `成份股${i}_名稱`, fmt: r => r[`h${i}_name`] || '' },
+      { id: `h${i}_w`, label: `成份股${i}_權重(%)`, fmt: r => r[`h${i}_w`] == null ? '' : r[`h${i}_w`] },
+    );
+    return c;
+  })();
+
   MKLAB.registerExport('下載台股 CSV（ETF）', async function(){
     const t = await twLoad();
     const hold = await MKLAB.data.json('etf-holdings').catch(() => null);
     const H = (hold && hold.holdings) || {};
-    // ETF 區塊：每檔加上前 10 大成份股摘要與來源
     const etfRows = t.etf.map(e => {
       const h = H[e.sym];
       const items = (h && h.items) || [];
-      const summary = items.slice(0, 10).map(it => it[0] + ' ' + it[1] + '(' + (it[2] == null ? '-' : it[2]) + '%)').join('；');
-      return Object.assign({}, e, { holdings10: summary || '-', holdings_src: h ? (h.src || '') : '', official_url: (h && h.official_url) || '' });
+      const bond = isBondEtf(e.sym);
+      const summary = bond ? '' : items.slice(0, 10).map(it => it[0] + ' ' + it[1] + '(' + (it[2] == null ? '-' : it[2]) + '%)').join('；');
+      const row = Object.assign({}, e, {
+        holdings10: bond ? '' : (summary || '-'),
+        holdings_src: bond ? '' : (h ? (h.src || '') : ''),
+        hold_asof: bond ? '' : (h ? (h.asof || '') : ''),
+        hold_total: (h && h.n != null) ? h.n : '',
+        official_url: (h && h.official_url) || '',
+      });
+      for (let i = 0; i < TW_ETF_HOLD_N; i++) {
+        const it = (!bond && items[i]) || null;
+        row[`h${i + 1}_rank`] = it ? (i + 1) : '';
+        row[`h${i + 1}_code`] = it ? it[0] : '';
+        row[`h${i + 1}_name`] = it ? it[1] : '';
+        row[`h${i + 1}_w`] = it ? (it[2] == null ? '' : it[2]) : '';
+      }
+      return row;
     });
-    // 成份股明細區塊：每檔 ETF 的全部已存成份股（官方直出者可達 50 檔）
-    const detail = [];
-    t.etf.forEach(e => {
-      const h = H[e.sym];
-      if (!h || !h.items) return;
-      h.items.forEach((it, i) => detail.push({
-        etf: e.sym, etf_name: e.name, rank: i + 1, code: it[0], stock_name: it[1],
-        weight: it[2], src: h.src || '', asof: h.asof || '',
-        // n 為 null 表示只取得權重前 10 大、無法證實成份股總數 → 顯示「未提供」，不可顯示 10
-        total_n: (h.n == null ? '未提供' : h.n),
-      }));
-    });
-    const holdCount = etfRows.filter(r => r.holdings_src).length;
     exportSections([
-      { title: 'ETF', rows: etfRows, cols: colsFrom(TW_ETF_IDS).concat(TW_ETF_FEE_COLS).concat(colsFrom(['holdings10'])).concat([{ id: 'holdings_src', label: '成份股來源' }, { id: 'official_url', label: '官方網頁網址' }]) },
-      { title: 'ETF 成份股明細', rows: detail, cols: [
-        { id: 'etf', label: 'ETF代號' }, { id: 'etf_name', label: 'ETF名稱' }, { id: 'rank', label: '排名' },
-        { id: 'code', label: '成份股代號' }, { id: 'stock_name', label: '成份股名稱' }, { id: 'weight', label: '權重(%)' },
-        { id: 'src', label: '資料來源' }, { id: 'asof', label: '持股資料日' }, { id: 'total_n', label: '成份股總數' },
-      ] },
-    ], twOpts('ETF', etfRows.length, t, '；含成份股的 ETF ' + holdCount + ' 檔，成份股明細 ' + detail.length + ' 筆'));
+      { title: `ETF（${etfRows.length} 檔）`, rows: etfRows,
+        cols: colsFrom(TW_ETF_IDS).concat(TW_ETF_FEE_COLS).concat(colsFrom(['holdings10']))
+          .concat([{ id: 'official_url', label: '官方網頁網址' }, { id: 'hold_total', label: '成份股總數' }])
+          .concat(TW_ETF_HOLD_COLS)
+          .concat([{ id: 'holdings_src', label: '成份股資料來源' }, { id: 'hold_asof', label: '持股資料日' }]) },
+    ], twOpts('ETF', etfRows.length, t,
+      `；B 尾債券 ETF 保留基本資料及原始成份股總數，成份股明細留白；其他 ETF 最多保留前${TW_ETF_HOLD_N}筆成份股`));
   });
 
   // 美股：個股與 ETF 各自獨立匯出
