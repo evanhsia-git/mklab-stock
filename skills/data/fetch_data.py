@@ -1107,10 +1107,15 @@ def run_indices():
                 close = float(last["Close"])
                 prev_close = float(prev["Close"])
                 chg_pct = round((close - prev_close) / prev_close * 100, 2) if prev_close else None
+                # 20D（月漲跌）：以最近第 21 個交易日收盤為基準；1mo 內不足 21 個交易日則 None
+                chg_20d = None
+                if len(valid) >= 21 and float(valid.iloc[-21]["Close"]):
+                    chg_20d = round((close - float(valid.iloc[-21]["Close"])) / float(valid.iloc[-21]["Close"]) * 100, 2)
                 return {
                     "close": round(close, 2),
                     "prev_close": round(prev_close, 2),
                     "chg_pct": chg_pct,
+                    "chg_20d": chg_20d,
                     "as_of": str(last.name.date()),
                 }
             except Exception as e:

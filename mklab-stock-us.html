@@ -31,11 +31,11 @@
 <div class="drawer-mask" onclick="MKLAB.Drawer.close()" aria-hidden="true"></div>
 <main class="wrap">
 
-<div class="section-title">美股市值前 30 大</div>
+<div class="section-title">美國個股 <span id="usStockCount">—</span> 檔</div>
 <div class="table-wrap"><table id="usStockTable"></table></div>
 <div class="pager" id="usStockPager"></div>
 
-<div class="section-title">美股 ETF 市值前 30 大</div>
+<div class="section-title">美股ETF <span id="usEtfCount">—</span> 檔</div>
 <div class="table-wrap"><table id="usEtfTable"></table></div>
 <div class="pager" id="usEtfPager"></div>
 
@@ -94,6 +94,12 @@ let usStockTable = null;
         rows: extendedStocks, pageSize: 10, pagerId: 'usStockPager',
         defaultSort: 'cap_fmt', fieldMap: { cap_fmt: 'market_cap' },
       });
+      // 標題動態檔數（Phase 5 前端需求 #3：美國個股 N 檔）
+      const _sc = document.getElementById('usStockCount');
+      if (_sc && stockDoc) {
+        const _n = (stockDoc.stocks || []).length;
+        _sc.textContent = _n || (stockDoc.meta && stockDoc.meta.count) || '—';
+      }
       MKLAB.applyFreshness(stockDoc);
     } catch (e) {
       console.warn('[us] stocks load failed:', e);
@@ -137,10 +143,16 @@ let usStockTable = null;
         };
       });
       usEtfTable = MKLAB.DataTable('usEtfTable', {
-        cols: ['sym', 'name', 'price', 'chg', 'chg_1m', 'chg_1y', 'pos52', 'pe', 'pb', 'roe', 'div', 'expense_ratio', 'yield', 'assets_fmt'],
+        cols: ['sym', 'name', 'price', 'chg', 'chg_1m', 'chg_1y', 'pos52', 'div', 'yield', 'expense_ratio', 'assets_fmt'],
         rows: extendedEtfs, pageSize: 10, pagerId: 'usEtfPager',
         defaultSort: 'assets_fmt', fieldMap: { assets_fmt: 'net_assets' },
       });
+      // 標題動態檔數（Phase 5 前端需求 #4：美股ETF N 檔）
+      const _ec = document.getElementById('usEtfCount');
+      if (_ec && etfDoc) {
+        const _n = (etfDoc.etfs || []).length;
+        _ec.textContent = _n || '—';
+      }
     } catch (e) {
       console.warn('[us] etfs load failed:', e);
       const t = document.getElementById('usEtfTable');

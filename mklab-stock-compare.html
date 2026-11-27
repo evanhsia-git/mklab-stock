@@ -242,10 +242,19 @@
     const union = a.items.length + b.items.length - inter;
     return { inter: inter, union: union, jac: union ? (inter / union) * 100 : 0, wOver: wInter };
   }
-  function industryAlloc(h) {
+  // 前 N 大權重直和（Phase 5 修正：合計權重欄改用此值——
+  // 原 industryAlloc(h).tot 是全部 items 的總和且未切前 N 大，導致合計顯示錯誤）
+  function topNWeight(h, n) {
+    return (h.items || []).filter(x => !isNoise(x[0], x[1])).slice(0, n)
+      .reduce((a, x) => a + (x[2] || 0), 0);
+  }
+
+  function industryAlloc(h, n) {
     const m = new Map();
     let tot = 0;
-    h.items.forEach(x => { const k = indOf(x.c); const w = x.w || 0; m.set(k, (m.get(k) || 0) + w); tot += w; });
+    // 佔前 N 大權重%（與標題一致）：n 為 null 時用全部 items
+    (h.items || []).filter(x => !isNoise(x[0], x[1])).slice(0, n || undefined)
+      .forEach(x => { const k = indOf(x[0]); const w = x[2] || 0; m.set(k, (m.get(k) || 0) + w); tot += w; });
     return { map: m, tot: tot };
   }
 
@@ -272,7 +281,7 @@
     html += '<div class="table-wrap"><table><thead><tr><th>ETF</th><th>名稱</th><th>成份股總數</th><th>前 ' + holdN + ' 大合計權重</th><th>資料來源</th></tr></thead><tbody>';
     picks.forEach(p => {
       html += '<tr><td>' + p.s + '</td><td>' + (p.h.name || ALL.find(r => r.sym === p.s)?.name || '') + '</td><td>' + (p.h.n == null ? '—' : p.h.n + ' 檔') + '</td><td>' +
-        industryAlloc(p.h).tot.toFixed(2) + '%</td><td>' + (p.h.src || '-') + '</td></tr>';
+        topNWeight(p.h, holdN).toFixed(2) + '%</td><td>' + (p.h.src || '-') + (p.h.asof ? '（' + p.h.asof + '）' : '') + '</td></tr>';
     });
     html += '</tbody></table></div>';
 
@@ -315,7 +324,7 @@
 
     // 4) 產業別比率
     const allInd = new Map();
-    const allocs = picks.map(p => industryAlloc(p.h));
+    const allocs = picks.map(p => industryAlloc(p.h, holdN));
     allocs.forEach(a => a.map.forEach((v, k) => allInd.set(k, Math.max(allInd.get(k) || 0, v))));
     const indRows = Array.from(allInd.keys()).sort((a, b) => allInd.get(b) - allInd.get(a));
     html += '<div class="section-title" style="margin-top:20px;">產業別比率（占前 ' + holdN + ' 大權重%）</div>';

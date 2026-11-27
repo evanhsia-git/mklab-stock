@@ -144,8 +144,13 @@
               const hasPct = typeof v.chg_pct === 'number' && !Number.isNaN(v.chg_pct);
               el.className = 'card-val' + (hasPct ? (v.chg_pct >= 0 ? ' up' : ' down') : '');
               if (chgEl) {
-                chgEl.textContent = hasPct ? ((v.chg_pct > 0 ? '+' : '') + v.chg_pct.toFixed(2) + '%') : '-';
-                chgEl.className = 'card-sub' + (hasPct ? (v.chg_pct >= 0 ? ' up' : ' down') : '');
+                // 1D（日漲跌）＋20D（月漲跌，20 個交易日）——缺值顯示 '-' 不補 0
+                const has20 = typeof v.chg_20d === 'number' && !Number.isNaN(v.chg_20d);
+                const d1 = hasPct ? ((v.chg_pct > 0 ? '+' : '') + v.chg_pct.toFixed(2) + '%') : '-';
+                const d20 = has20 ? ((v.chg_20d > 0 ? '+' : '') + v.chg_20d.toFixed(2) + '%') : '-';
+                chgEl.textContent = '1D ' + d1 + ' · 20D ' + d20;
+                const cls = hasPct ? (v.chg_pct >= 0 ? ' up' : ' down') : '';
+                chgEl.className = 'card-sub' + cls;
               }
             }
           });
@@ -177,11 +182,13 @@
               const val = (v && typeof v === 'object' && v.value != null) ? v.value : v;
               el.textContent = typeof val === 'number' ? val.toLocaleString() : (val ?? '—');
               el.className = 'card-val';
-              // 顯示漲跌幅
+              // 顯示漲跌幅（1D＋20D，與全球股市卡片一致）
               const chgEl = document.getElementById(`m-chg-${d.id}`);
               if (chgEl && v && typeof v === 'object' && v.chg_pct != null) {
                 const pct = Number(v.chg_pct);
-                chgEl.textContent = (pct > 0 ? '+' : '') + pct.toFixed(2) + '%';
+                const has20 = v.chg_20d != null && !Number.isNaN(Number(v.chg_20d));
+                const d20 = has20 ? ((Number(v.chg_20d) > 0 ? '+' : '') + Number(v.chg_20d).toFixed(2) + '%') : '-';
+                chgEl.textContent = '1D ' + ((pct > 0 ? '+' : '') + pct.toFixed(2) + '%') + ' · 20D ' + d20;
                 chgEl.className = 'card-sub ' + (pct >= 0 ? 'up' : 'down');
               }
             } else if (el) {
