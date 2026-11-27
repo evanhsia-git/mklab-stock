@@ -1044,9 +1044,21 @@
     const etfSet = new Set(((cls && cls.etfs) || []).map(e => e.sym));
     const meta = await MKLAB.data.json('stocks').catch(() => null);
     const isEtf = r => r.security_type ? r.security_type === 'etf' : etfSet.has(String(r.sym));
+    // ETF 費率（經理費/保管費/合計）在 etf-meta.json（官方公告口徑），stocks.json 為守住
+    // 單檔體積預算未收錄 → CSV 匯出時在此 merge（Ivan 2026-11-28 需求：依現況填入）。
+    const em = await MKLAB.data.json('etf-meta').catch(() => null);
+    const feeMap = {};
+    ((em && em.etfs) || []).forEach(m => { feeMap[m.sym] = m; });
     return {
       stock: rows.filter(r => !isEtf(r)),
-      etf: rows.filter(isEtf),
+      etf: rows.filter(isEtf).map(r => {
+        const f = feeMap[r.sym] || {};
+        return Object.assign({}, r, {
+          management_fee: f.management_fee != null ? f.management_fee : null,
+          custody_fee: f.custody_fee != null ? f.custody_fee : null,
+          total_fee: f.total_fee != null ? f.total_fee : null,
+        });
+      }),
       asof: (meta && meta.meta && meta.meta.as_of) || '未知',
       total: rows.length,
     };
@@ -1071,6 +1083,21 @@
       { title: '個股', rows: t.stock, ids: TW_IDS },
     ], twOpts('個股', t.stock.length, t));
   });
+
+  // 台股 ETF 匯出專屬欄集（Ivan 2026-11-28 需求 1/3：ETF 無 PB/ROE/ROA 數據、移除發行人欄）——
+  // 從 TW_IDS 排除 pe/pb/roe/roa（ETF 列全為 '-'），不動個股匯出與表格欄位。
+  const TW_ETF_IDS = TW_IDS.filter(id => !['pe', 'pb', 'roe', 'roa'].includes(id));
+  // 費率欄 CSV 專屬 fmt：有值填入（etf-meta 官方公告口徑），缺值顯示「待確認」（需求 2）
+  const _feeFmt = key => r => {
+    if (r.security_type === 'etf' || r.management_fee != null || r.custody_fee != null || r.total_fee != null)
+      return r[key] != null ? Number(r[key]).toFixed(2) + '%' : '待確認';
+    return '-';
+  };
+  const TW_ETF_FEE_COLS = [
+    { id: 'management_fee', label: '經理費%', fmt: _feeFmt('management_fee') },
+    { id: 'custody_fee', label: '保管費%', fmt: _feeFmt('custody_fee') },
+    { id: 'total_fee', label: '合計費率%', fmt: _feeFmt('total_fee') },
+  ];
 
   MKLAB.registerExport('下載台股 CSV（ETF）', async function(){
     const t = await twLoad();
@@ -1097,7 +1124,7 @@
     });
     const holdCount = etfRows.filter(r => r.holdings_src).length;
     exportSections([
-      { title: 'ETF', rows: etfRows, cols: colsFrom(TW_IDS).concat(colsFrom(TW_ETF_EXTRA)).concat([{ id: 'holdings_src', label: '成份股來源' }, { id: 'official_url', label: '官方網頁網址' }]) },
+      { title: 'ETF', rows: etfRows, cols: colsFrom(TW_ETF_IDS).concat(TW_ETF_FEE_COLS).concat(colsFrom(['holdings10'])).concat([{ id: 'holdings_src', label: '成份股來源' }, { id: 'official_url', label: '官方網頁網址' }]) },
       { title: 'ETF 成份股明細', rows: detail, cols: [
         { id: 'etf', label: 'ETF代號' }, { id: 'etf_name', label: 'ETF名稱' }, { id: 'rank', label: '排名' },
         { id: 'code', label: '成份股代號' }, { id: 'stock_name', label: '成份股名稱' }, { id: 'weight', label: '權重(%)' },
