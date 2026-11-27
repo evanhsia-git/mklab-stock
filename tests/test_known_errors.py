@@ -12,6 +12,41 @@ etf_official = {e['sym'] for e in json.load(open('data/etf-meta.json', encoding=
 if os.path.exists('data/etf-supplement.json'):
     etf_official |= {e['sym'] for e in json.load(open('data/etf-supplement.json', encoding='utf-8'))['etfs']}
 
+# ── 2026-11-27 事故回歸：美股 ETF info 價格等於淨值 → 日 K 收盤備援（run 45940073429）──
+def _test_us_etf_nav_fallback():
+    import types
+    try:
+        sys.path.insert(0, os.path.join(ROOT, "skills", "data"))
+        import fetch_us_data as fu
+    except Exception:
+        return check("US_ETF_NAV_FALLBACK：模組無法載入（缺 yfinance）→ SKIP", True, "SKIP")
+    # 模擬 yfinance：currentPrice==navPrice（盤後 iNAV）＋ history 回真實收盤
+    class _T:
+        def __init__(self, info, closes):
+            self._info, self._closes = info, closes
+        info = property(lambda self: self._info)
+        def history(self, period=None, interval=None):
+            import pandas as pd
+            return pd.DataFrame({"Close": self._closes})
+    fu._yf_ticker_factory = getattr(fu, "_yf_ticker_factory", None)
+    orig = fu.yf.Ticker if hasattr(fu, "yf") and fu.yf else None
+    try:
+        class _YF:
+            def Ticker(self, sym):
+                return _T({"currentPrice": 27.61, "navPrice": 27.61, "previousClose": 27.66},
+                          [27.9, 27.66, 27.610000610351562])
+        fu.yf = types.SimpleNamespace(Ticker=lambda s: _YF().Ticker(s))
+        r = fu._fetch_one_etf(_YF(), "SCHB")
+        check("US_ETF_NAV_FALLBACK：info price==nav 時改用日 K 收盤（QA 不再攔截）",
+              r is not None and r["price"] is not None and r["nav"] is not None
+              and abs(r["price"] - r["nav"]) >= 1e-9,
+              f"price={r['price'] if r else None} nav={r['nav'] if r else None}")
+    finally:
+        if orig is not None:
+            fu.yf = types.SimpleNamespace(Ticker=orig)
+
+_test_us_etf_nav_fallback()
+
 # P0-1 ETF 分類
 types = collections.Counter(s.get('security_type') for s in S)
 check("P0-1 每檔都有 security_type", all(s.get('security_type') for s in S), str(dict(types)))

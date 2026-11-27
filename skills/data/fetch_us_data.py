@@ -167,6 +167,22 @@ def _fetch_one_etf(yf, sym):
         # previousClose 算的，價格與漲跌幅口徑不一致。淨值改存 nav 欄位供參考。
         price = info.get("currentPrice") or info.get("regularMarketPrice")
         prev_close = info.get("previousClose") or info.get("regularMarketPreviousClose")
+        # 2026-11-27 修正（daily-update run 45940073429 事故）：Schwab/SPDR 等 ETF 在
+        # 盤後／iNAV 換算時段，yfinance 的 currentPrice／regularMarketPrice 會回傳與
+        # navPrice 位元級相同的值 → price 欄實際上是淨值（QA US_ETF_PRICE_IS_NAV 攔截）。
+        # 此時改用近 5 日日 K 的最後收盤（真實成交價）作為市價；僅對異常標的多打一次
+        # history API，正常標的零額外成本。
+        if price is not None and info.get("navPrice") is not None \
+                and abs(float(price) - float(info["navPrice"])) < 1e-9:
+            try:
+                h5 = t.history(period="5d", interval="1d")
+                if h5 is not None and not h5.empty:
+                    closes = h5.dropna(subset=["Close"])["Close"]
+                    if len(closes):
+                        price = float(closes.iloc[-1])
+                        _log(f"ℹ️ {sym} info 價格等於淨值，改用日 K 收盤 {price}")
+            except Exception as e:
+                _log(f"⚠️ {sym} 日 K 收盤備援失敗：{e}")
         chg = None
         if price is not None and prev_close:
             chg = round((price - prev_close) / prev_close * 100, 2)
