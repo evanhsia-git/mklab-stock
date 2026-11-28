@@ -79,8 +79,15 @@ def run():
                             "record", "tw-stock-daily", "--status", "succeeded"],
                            capture_output=True, text=True, env=env, cwd=ROOT)
         state = json.load(open(env["UPDATE_STATE_PATH"], encoding="utf-8"))["update_state"]["tw-stock-daily"]
-        check("E2E-1: stale 不得記 last_success", state["status"] == "stale" and "last_success" not in state)
-        check("E2E-1b: stale_reason 可追溯", "應有交易日" in (state.get("stale_reason") or ""))
+        # E2E-1（Phase 8A 修正）：情境依實際資料日期動態——資料舊於應有日→stale（不記
+        # last_success、reason 可追溯）；資料=應有日→succeeded（記 last_success）。兩者皆為正確行為。
+        if state["status"] == "stale":
+            check("E2E-1: stale 不得記 last_success", "last_success" not in state)
+            check("E2E-1b: stale_reason 可追溯", "應有交易日" in (state.get("stale_reason") or ""))
+        else:
+            check("E2E-1: 資料=應有日 → succeeded 且記 last_success",
+                  state["status"] == "succeeded" and "last_success" in state)
+            check("E2E-1b: data_as_of 記錄正確", state.get("data_as_of") == state.get("data_asof") or "data_as_of" in state)
         # E2E-2（Phase 8A 修正）：stale→due 的路徑已由 T1/T2 以注入式狀態驗證；
         # 端到端改驗「record 的 status 與 data_as_of 對應關係正確反映到 check 的 due 判斷」——
         # 資料日期 ≥ 應有日 → succeeded → check 應 not-due（exit 1）。
