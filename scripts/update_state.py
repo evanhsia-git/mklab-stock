@@ -235,13 +235,30 @@ def cmd_record(args):
     else:
         rec.pop("failed_sources", None)
     if args.status == "succeeded":
-        rec["last_success"] = now
-        rec["period"] = _current_period(args.task)
         data_as_of = _auto_data_as_of(args.task)
-        if data_as_of:
+        market = DAILY_TASK_MARKET.get(args.task)
+        # P0（2026-11-28 稽核）：行情類任務必須驗證 requested_date == actual_data_date。
+        # 資料日期早於應有交易日（例：週六凌晨跑，來源回前一交易日）→ 不得記 SUCCESS，
+        # 降級為 stale：check_due 視為未成功（次日/補跑班自動重試），且不擋本次 push
+        # （歷史缺口不得無條件阻止最新有效資料發布——Ivan 審核規範七）。
+        expected = _last_workday(market, _now()) if market else None
+        if expected and data_as_of and str(data_as_of)[:10] < expected:
+            rec["status"] = "stale"
+            rec["stale_reason"] = (
+                f"資料日期 {data_as_of} < 應有交易日 {expected}（行情來源未提供該日資料；"
+                "舊資料不得冒充新資料）"
+            )
             rec["data_as_of"] = data_as_of
+        else:
+            rec["status"] = "succeeded"
+            rec["last_success"] = now
+            rec["period"] = _current_period(args.task)
+            if data_as_of:
+                rec["data_as_of"] = data_as_of
+            rec.pop("stale_reason", None)
     _save_state(doc)
-    print(f"[update-state] {args.task}: status={args.status} recorded")
+    print(f"[update-state] {args.task}: status={rec.get('status')} recorded"
+          + (f"（{rec['stale_reason']}）" if rec.get("stale_reason") else ""))
     return 0
 
 

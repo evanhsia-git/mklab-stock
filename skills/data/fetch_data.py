@@ -975,8 +975,27 @@ def run_daily():
     # 不可寫入 history（否則回測與指標會讀到錯誤收盤值）。
     miss_hl = sum(1 for s in stocks if s.get("high") is None)
     hpath = None  # 休市/來源不完整時不會寫入 history，下方記錄需容忍 None
+    # P0（2026-11-28 稽核）：快照寫入前分類別完整性驗證——只驗總筆數不夠，
+    # 整個標的類別缺失（例：TWSE MIS ETF 端點間歇失敗導致 15 天快照缺全部 ETF 行情）
+    # 時不得將該次快照寫入（不得標記完整）。前日筆數 ±3% 僅供警告，不作為通過/阻擋條件。
+    _cats = {"上市個股": 0, "上市ETF": 0, "上櫃ETF": 0}
+    for _s in stocks:
+        if _s.get("price_asof") != trade_date:
+            continue
+        _key = ("上市" if _s.get("source") == "TWSE" else "上櫃") + (
+            "ETF" if _s.get("security_type") in ("etf", "unverified") else "個股")
+        if _key in _cats:
+            _cats[_key] += 1
+    LOG.stats["details"]["snapshot_categories"] = _cats
+    _blocked_cats = [k for k in ("上市個股", "上市ETF") if _cats[k] == 0]
+    _warn_cats = [k for k, v in _cats.items() if v == 0 and k not in _blocked_cats]
+    if _warn_cats:
+        LOG.warn(f"{trade_date} 快照分類缺 {('、'.join(_warn_cats))}（沿用機制或來源特性，標記 partial，不阻擋）")
     if stocks and miss_hl / len(stocks) > 0.5:
         LOG.warn(f"{trade_date} 高低價缺失 {miss_hl}/{len(stocks)}，疑似休市或來源不完整，不寫入 history 切片")
+    elif _blocked_cats:
+        LOG.error(f"{trade_date} 快照整類缺失（{'、'.join(_blocked_cats)} 為 0），整個資料來源或類別缺失不得標記完整，不寫入 history 切片；缺口留待指定日期回補")
+        LOG.stats["details"]["snapshot_blocked_categories"] = _blocked_cats
     else:
         hpath = os.path.join(OUT, "history", f"{trade_date.replace('-', '')}.json")
         if os.path.exists(hpath):
