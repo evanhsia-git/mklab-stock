@@ -35,10 +35,61 @@
   <h2>📋 開發日誌（除錯記憶 × 待辦 × Handoff）</h2>
   <p class="text-muted">只保留未來開發會用到的東西：踩過的坑、必須注意的事件、未完成／待開發清單、接手指引。歷史版本演進紀錄已移除（詳 git log）。</p>
   <div class="kv"><span>專案狀態</span><b>生產部署中（main → GitHub Pages）</b></div>
-  <div class="kv"><span>測試／閘門</span><b>test_known_errors 161-162 項＋qa_gate（2026-11-23 起排程 job 內建全套）</b></div>
-  <div class="kv"><span>主動式 ETF 官方持股</span><b>37 檔中 34 檔官方直出（13 家投信破解）</b></div>
+  <div class="kv"><span>測試／閘門</span><b>test_known_errors 189 項＋qa_gate（排程 job 內建全套）</b></div>
+  <div class="kv"><span>ETF 官方持股覆蓋</span><b>146/365 檔（40%）官方直出</b></div>
   <div class="kv"><span>資料同步日</span><b id="logSyncDate">載入中…</b></div>
-  <div class="kv"><span>本頁整理日</span><b>2026-11-23</b></div>
+  <div class="kv"><span>本頁整理日</span><b>2026-11-28</b></div>
+</div>
+
+<div class="card">
+  <h2>📊 資料庫覆蓋率盤點（2026-11-28）</h2>
+  <h3>台股核心</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>資料檔</th><th>覆蓋</th><th>說明</th></tr></thead>
+    <tbody>
+      <tr><td>stocks.json</td><td>1,450 檔（個股 1,088＋ETF 362）</td><td>1,144KB（預算 1,300KB 內）</td></tr>
+      <tr><td>history 每日快照</td><td><b>320 個交易日</b>（2025-08-01~11-26）</td><td>連續無缺日，最新快照 1,450 筆全檔</td></tr>
+      <tr><td>kline K 棒</td><td>1,450 檔</td><td>深度 57~534 根（平均 271，隱上市日）</td></tr>
+      <tr><td>official-fundamentals</td><td>financial 1,052／dividend 1,088</td><td>2026Q2 財報期</td></tr>
+      <tr><td>market-extras</td><td>月營收 1,089／融資融券 1,305</td><td>官方加值</td></tr>
+      <tr><td>industry</td><td>32 產業組</td><td>全覆蓋</td></tr>
+    </tbody>
+  </table></div>
+  <h3>欄位完整率（個股 1,088 檔為分母——ETF 無這些數值不計入）</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>欄位</th><th>完整率</th><th>備註</th></tr></thead>
+    <tbody>
+      <tr><td>price</td><td>100%（1,446/1,450 全檔）</td><td>ETF 適用，維持全檔口徑</td></tr>
+      <tr><td>PB</td><td><b>100%</b>（1,088/1,088 個股）</td><td></td></tr>
+      <tr><td>ROE</td><td><b>91%</b>（986/1,088 個股）</td><td></td></tr>
+      <tr><td>PE</td><td><b>80%</b>（866/1,088 個股）</td><td>新股/虧損無 PE 屬正常</td></tr>
+      <tr><td>殖利率 div</td><td>78%（851/1,088 個股）</td><td></td></tr>
+      <tr><td>market_cap</td><td>92%（1,339/1,450 全檔）</td><td></td></tr>
+    </tbody>
+  </table></div>
+  <h3>台股 ETF 專區</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>資料檔</th><th>覆蓋</th><th>說明</th></tr></thead>
+    <tbody>
+      <tr><td>etf-meta</td><td>368 檔，費率 368/368（100%）</td><td>經理費/保管費/合計</td></tr>
+      <tr><td>etf-holdings</td><td>365 檔（含 supplement）</td><td>官方/PCF 混合；40% 官方直出</td></tr>
+      <tr><td>etf-nav</td><td>365 檔＋月歷史</td><td>折溢價計算源</td></tr>
+      <tr><td>holdings 歷史快照</td><td>4 個月度快照</td><td>換股比對用</td></tr>
+      <tr><td>etf-fees.csv</td><td>359 筆費率比較</td><td>fee_verified=pending</td></tr>
+    </tbody>
+  </table></div>
+  <h3>美股／全球</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>資料檔</th><th>覆蓋</th><th>說明</th></tr></thead>
+    <tbody>
+      <tr><td>us-stocks</td><td>531 檔（as_of=11-27）</td><td>SEC EDGAR 評分 529 檔</td></tr>
+      <tr><td>us-etfs</td><td>120 檔</td><td>yield 120/120（100%）</td></tr>
+      <tr><td>indices.json</td><td>指數 21＋ETF 19＋總經 8</td><td>as_of=11-27，含 1D/20D</td></tr>
+      <tr><td>twii-long</td><td>7,192 根長期 K 棒</td><td>台股加權歷史</td></tr>
+      <tr><td>index-holdings</td><td>QQQ/DIA/SOXX/VOO 4 檔</td><td>美股 ETF 成分</td></tr>
+    </tbody>
+  </table></div>
+  <p class="muted-small-top">交易日數據：每日快照 320 天連續無缺日；K 線最深 534 根（約 2.2 年）；台股加權長期 7,192 根。11-27 台股快照因 17:30 班漏觸發未抓，由 21:00 補跑班自癒（update_state 2→11 鍵實證）。</p>
 </div>
 
 <div class="card">
