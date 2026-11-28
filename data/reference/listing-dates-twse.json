@@ -1,0 +1,5498 @@
+{
+ "schema_version": "1.0.0",
+ "generated_at": "2026-11-28",
+ "source": "TWSE OpenAPI t187ap03_L",
+ "note": "ETF 上市日另見 etf-meta.json；上櫃 ETF 上市日 UNKNOWN",
+ "stocks": {
+  "1101": {
+   "listing_date": "1962-02-09",
+   "name": "台泥",
+   "source": "TWSE t187ap03_L"
+  },
+  "1102": {
+   "listing_date": "1962-06-08",
+   "name": "亞泥",
+   "source": "TWSE t187ap03_L"
+  },
+  "1103": {
+   "listing_date": "1969-11-14",
+   "name": "嘉泥",
+   "source": "TWSE t187ap03_L"
+  },
+  "1104": {
+   "listing_date": "1971-02-01",
+   "name": "環泥",
+   "source": "TWSE t187ap03_L"
+  },
+  "1108": {
+   "listing_date": "1990-06-06",
+   "name": "幸福",
+   "source": "TWSE t187ap03_L"
+  },
+  "1109": {
+   "listing_date": "1991-12-05",
+   "name": "信大",
+   "source": "TWSE t187ap03_L"
+  },
+  "1110": {
+   "listing_date": "1994-10-22",
+   "name": "東泥",
+   "source": "TWSE t187ap03_L"
+  },
+  "1201": {
+   "listing_date": "1962-02-09",
+   "name": "味全",
+   "source": "TWSE t187ap03_L"
+  },
+  "1203": {
+   "listing_date": "1964-08-24",
+   "name": "味王",
+   "source": "TWSE t187ap03_L"
+  },
+  "1210": {
+   "listing_date": "1978-05-20",
+   "name": "大成",
+   "source": "TWSE t187ap03_L"
+  },
+  "1213": {
+   "listing_date": "1981-04-10",
+   "name": "大飲",
+   "source": "TWSE t187ap03_L"
+  },
+  "1215": {
+   "listing_date": "1987-07-27",
+   "name": "卜蜂",
+   "source": "TWSE t187ap03_L"
+  },
+  "1216": {
+   "listing_date": "1987-12-28",
+   "name": "統一",
+   "source": "TWSE t187ap03_L"
+  },
+  "1217": {
+   "listing_date": "1989-10-28",
+   "name": "愛之味",
+   "source": "TWSE t187ap03_L"
+  },
+  "1218": {
+   "listing_date": "1989-11-11",
+   "name": "泰山",
+   "source": "TWSE t187ap03_L"
+  },
+  "1219": {
+   "listing_date": "1990-12-01",
+   "name": "福壽",
+   "source": "TWSE t187ap03_L"
+  },
+  "1220": {
+   "listing_date": "1991-11-20",
+   "name": "台榮",
+   "source": "TWSE t187ap03_L"
+  },
+  "1225": {
+   "listing_date": "1993-09-27",
+   "name": "福懋油",
+   "source": "TWSE t187ap03_L"
+  },
+  "1227": {
+   "listing_date": "1994-04-09",
+   "name": "佳格",
+   "source": "TWSE t187ap03_L"
+  },
+  "1229": {
+   "listing_date": "1976-07-19",
+   "name": "聯華",
+   "source": "TWSE t187ap03_L"
+  },
+  "1231": {
+   "listing_date": "1995-11-02",
+   "name": "聯華食",
+   "source": "TWSE t187ap03_L"
+  },
+  "1232": {
+   "listing_date": "1996-02-09",
+   "name": "大統益",
+   "source": "TWSE t187ap03_L"
+  },
+  "1233": {
+   "listing_date": "1999-01-20",
+   "name": "天仁",
+   "source": "TWSE t187ap03_L"
+  },
+  "1234": {
+   "listing_date": "1999-03-12",
+   "name": "黑松",
+   "source": "TWSE t187ap03_L"
+  },
+  "1235": {
+   "listing_date": "2000-09-11",
+   "name": "興泰",
+   "source": "TWSE t187ap03_L"
+  },
+  "1236": {
+   "listing_date": "2001-09-17",
+   "name": "宏亞",
+   "source": "TWSE t187ap03_L"
+  },
+  "1256": {
+   "listing_date": "2016-03-17",
+   "name": "鮮活果汁-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "1301": {
+   "listing_date": "1964-07-27",
+   "name": "台塑",
+   "source": "TWSE t187ap03_L"
+  },
+  "1303": {
+   "listing_date": "1967-11-15",
+   "name": "南亞",
+   "source": "TWSE t187ap03_L"
+  },
+  "1304": {
+   "listing_date": "1972-05-20",
+   "name": "台聚",
+   "source": "TWSE t187ap03_L"
+  },
+  "1305": {
+   "listing_date": "1973-03-05",
+   "name": "華夏",
+   "source": "TWSE t187ap03_L"
+  },
+  "1307": {
+   "listing_date": "1985-11-23",
+   "name": "三芳",
+   "source": "TWSE t187ap03_L"
+  },
+  "1308": {
+   "listing_date": "1986-06-20",
+   "name": "亞聚",
+   "source": "TWSE t187ap03_L"
+  },
+  "1309": {
+   "listing_date": "1986-06-27",
+   "name": "台達化",
+   "source": "TWSE t187ap03_L"
+  },
+  "1310": {
+   "listing_date": "1987-08-06",
+   "name": "台苯",
+   "source": "TWSE t187ap03_L"
+  },
+  "1312": {
+   "listing_date": "1988-12-21",
+   "name": "國喬",
+   "source": "TWSE t187ap03_L"
+  },
+  "1313": {
+   "listing_date": "1989-03-27",
+   "name": "聯成",
+   "source": "TWSE t187ap03_L"
+  },
+  "1314": {
+   "listing_date": "1991-07-12",
+   "name": "中石化",
+   "source": "TWSE t187ap03_L"
+  },
+  "1315": {
+   "listing_date": "1992-05-09",
+   "name": "達新",
+   "source": "TWSE t187ap03_L"
+  },
+  "1316": {
+   "listing_date": "1992-10-15",
+   "name": "上曜",
+   "source": "TWSE t187ap03_L"
+  },
+  "1319": {
+   "listing_date": "1994-12-12",
+   "name": "東陽",
+   "source": "TWSE t187ap03_L"
+  },
+  "1321": {
+   "listing_date": "1999-01-26",
+   "name": "大洋",
+   "source": "TWSE t187ap03_L"
+  },
+  "1323": {
+   "listing_date": "2000-09-11",
+   "name": "永裕",
+   "source": "TWSE t187ap03_L"
+  },
+  "1324": {
+   "listing_date": "2000-09-11",
+   "name": "地球",
+   "source": "TWSE t187ap03_L"
+  },
+  "1325": {
+   "listing_date": "2000-09-11",
+   "name": "恆大",
+   "source": "TWSE t187ap03_L"
+  },
+  "1326": {
+   "listing_date": "1984-12-20",
+   "name": "台化",
+   "source": "TWSE t187ap03_L"
+  },
+  "1337": {
+   "listing_date": "2011-08-17",
+   "name": "再生-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "1338": {
+   "listing_date": "2012-12-19",
+   "name": "廣華-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "1339": {
+   "listing_date": "2012-04-24",
+   "name": "昭輝",
+   "source": "TWSE t187ap03_L"
+  },
+  "1340": {
+   "listing_date": "2014-01-14",
+   "name": "勝悅-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "1341": {
+   "listing_date": "2018-12-24",
+   "name": "富林-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "1342": {
+   "listing_date": "2020-11-24",
+   "name": "八貫",
+   "source": "TWSE t187ap03_L"
+  },
+  "1402": {
+   "listing_date": "1967-04-14",
+   "name": "遠東新",
+   "source": "TWSE t187ap03_L"
+  },
+  "1409": {
+   "listing_date": "1973-08-31",
+   "name": "新纖",
+   "source": "TWSE t187ap03_L"
+  },
+  "1410": {
+   "listing_date": "1973-10-18",
+   "name": "南染",
+   "source": "TWSE t187ap03_L"
+  },
+  "1413": {
+   "listing_date": "1975-12-23",
+   "name": "宏洲",
+   "source": "TWSE t187ap03_L"
+  },
+  "1414": {
+   "listing_date": "1976-02-02",
+   "name": "東和",
+   "source": "TWSE t187ap03_L"
+  },
+  "1416": {
+   "listing_date": "1976-04-20",
+   "name": "廣豐",
+   "source": "TWSE t187ap03_L"
+  },
+  "1417": {
+   "listing_date": "1976-12-28",
+   "name": "嘉裕",
+   "source": "TWSE t187ap03_L"
+  },
+  "1418": {
+   "listing_date": "1977-02-14",
+   "name": "東華",
+   "source": "TWSE t187ap03_L"
+  },
+  "1419": {
+   "listing_date": "1977-03-14",
+   "name": "新紡",
+   "source": "TWSE t187ap03_L"
+  },
+  "1423": {
+   "listing_date": "1979-04-02",
+   "name": "利華",
+   "source": "TWSE t187ap03_L"
+  },
+  "1432": {
+   "listing_date": "1982-07-26",
+   "name": "大魯閣",
+   "source": "TWSE t187ap03_L"
+  },
+  "1434": {
+   "listing_date": "1985-12-24",
+   "name": "福懋",
+   "source": "TWSE t187ap03_L"
+  },
+  "1435": {
+   "listing_date": "1987-12-28",
+   "name": "中福",
+   "source": "TWSE t187ap03_L"
+  },
+  "1436": {
+   "listing_date": "1988-04-11",
+   "name": "華友聯",
+   "source": "TWSE t187ap03_L"
+  },
+  "1437": {
+   "listing_date": "1988-11-10",
+   "name": "勤益控",
+   "source": "TWSE t187ap03_L"
+  },
+  "1438": {
+   "listing_date": "1988-12-15",
+   "name": "三地開發",
+   "source": "TWSE t187ap03_L"
+  },
+  "1439": {
+   "listing_date": "1989-05-22",
+   "name": "雋揚",
+   "source": "TWSE t187ap03_L"
+  },
+  "1440": {
+   "listing_date": "1989-10-03",
+   "name": "南紡",
+   "source": "TWSE t187ap03_L"
+  },
+  "1441": {
+   "listing_date": "1989-10-27",
+   "name": "大東",
+   "source": "TWSE t187ap03_L"
+  },
+  "1442": {
+   "listing_date": "1989-11-16",
+   "name": "名軒",
+   "source": "TWSE t187ap03_L"
+  },
+  "1443": {
+   "listing_date": "1990-04-21",
+   "name": "立益物流",
+   "source": "TWSE t187ap03_L"
+  },
+  "1444": {
+   "listing_date": "1990-08-08",
+   "name": "力麗",
+   "source": "TWSE t187ap03_L"
+  },
+  "1445": {
+   "listing_date": "1991-02-05",
+   "name": "大宇",
+   "source": "TWSE t187ap03_L"
+  },
+  "1446": {
+   "listing_date": "1991-10-15",
+   "name": "宏和",
+   "source": "TWSE t187ap03_L"
+  },
+  "1447": {
+   "listing_date": "1992-01-28",
+   "name": "力鵬",
+   "source": "TWSE t187ap03_L"
+  },
+  "1449": {
+   "listing_date": "1992-05-06",
+   "name": "佳和",
+   "source": "TWSE t187ap03_L"
+  },
+  "1451": {
+   "listing_date": "1992-12-21",
+   "name": "年興",
+   "source": "TWSE t187ap03_L"
+  },
+  "1452": {
+   "listing_date": "1992-12-28",
+   "name": "宏益",
+   "source": "TWSE t187ap03_L"
+  },
+  "1453": {
+   "listing_date": "1993-04-19",
+   "name": "大將",
+   "source": "TWSE t187ap03_L"
+  },
+  "1454": {
+   "listing_date": "1993-05-07",
+   "name": "台富",
+   "source": "TWSE t187ap03_L"
+  },
+  "1455": {
+   "listing_date": "1993-10-07",
+   "name": "集盛",
+   "source": "TWSE t187ap03_L"
+  },
+  "1456": {
+   "listing_date": "1993-12-09",
+   "name": "怡華",
+   "source": "TWSE t187ap03_L"
+  },
+  "1457": {
+   "listing_date": "1994-10-20",
+   "name": "宜進",
+   "source": "TWSE t187ap03_L"
+  },
+  "1459": {
+   "listing_date": "1994-10-26",
+   "name": "聯發",
+   "source": "TWSE t187ap03_L"
+  },
+  "1460": {
+   "listing_date": "1995-04-28",
+   "name": "宏遠",
+   "source": "TWSE t187ap03_L"
+  },
+  "1463": {
+   "listing_date": "1996-12-05",
+   "name": "強盛新",
+   "source": "TWSE t187ap03_L"
+  },
+  "1464": {
+   "listing_date": "1997-01-18",
+   "name": "得力",
+   "source": "TWSE t187ap03_L"
+  },
+  "1465": {
+   "listing_date": "1997-09-08",
+   "name": "偉全",
+   "source": "TWSE t187ap03_L"
+  },
+  "1466": {
+   "listing_date": "1998-04-04",
+   "name": "聚隆",
+   "source": "TWSE t187ap03_L"
+  },
+  "1467": {
+   "listing_date": "1998-12-21",
+   "name": "南緯",
+   "source": "TWSE t187ap03_L"
+  },
+  "1468": {
+   "listing_date": "1999-01-21",
+   "name": "昶和",
+   "source": "TWSE t187ap03_L"
+  },
+  "1470": {
+   "listing_date": "1999-05-21",
+   "name": "大統新創",
+   "source": "TWSE t187ap03_L"
+  },
+  "1471": {
+   "listing_date": "2000-03-06",
+   "name": "首利",
+   "source": "TWSE t187ap03_L"
+  },
+  "1472": {
+   "listing_date": "2000-09-11",
+   "name": "三洋實業",
+   "source": "TWSE t187ap03_L"
+  },
+  "1473": {
+   "listing_date": "2000-09-11",
+   "name": "台南",
+   "source": "TWSE t187ap03_L"
+  },
+  "1474": {
+   "listing_date": "2000-10-31",
+   "name": "弘裕",
+   "source": "TWSE t187ap03_L"
+  },
+  "1475": {
+   "listing_date": "2000-10-27",
+   "name": "業旺",
+   "source": "TWSE t187ap03_L"
+  },
+  "1476": {
+   "listing_date": "2001-04-18",
+   "name": "儒鴻",
+   "source": "TWSE t187ap03_L"
+  },
+  "1477": {
+   "listing_date": "2003-01-21",
+   "name": "聚陽",
+   "source": "TWSE t187ap03_L"
+  },
+  "1503": {
+   "listing_date": "1969-12-15",
+   "name": "士電",
+   "source": "TWSE t187ap03_L"
+  },
+  "1504": {
+   "listing_date": "1973-11-05",
+   "name": "東元",
+   "source": "TWSE t187ap03_L"
+  },
+  "1506": {
+   "listing_date": "1980-08-11",
+   "name": "正道",
+   "source": "TWSE t187ap03_L"
+  },
+  "1512": {
+   "listing_date": "1994-01-28",
+   "name": "瑞利",
+   "source": "TWSE t187ap03_L"
+  },
+  "1513": {
+   "listing_date": "1994-03-08",
+   "name": "中興電",
+   "source": "TWSE t187ap03_L"
+  },
+  "1514": {
+   "listing_date": "1994-03-26",
+   "name": "亞力",
+   "source": "TWSE t187ap03_L"
+  },
+  "1515": {
+   "listing_date": "1995-02-04",
+   "name": "力山",
+   "source": "TWSE t187ap03_L"
+  },
+  "1516": {
+   "listing_date": "1995-04-01",
+   "name": "川飛",
+   "source": "TWSE t187ap03_L"
+  },
+  "1517": {
+   "listing_date": "1995-11-14",
+   "name": "利奇",
+   "source": "TWSE t187ap03_L"
+  },
+  "1519": {
+   "listing_date": "1997-04-16",
+   "name": "華城",
+   "source": "TWSE t187ap03_L"
+  },
+  "1521": {
+   "listing_date": "1997-10-06",
+   "name": "大億",
+   "source": "TWSE t187ap03_L"
+  },
+  "1522": {
+   "listing_date": "1997-10-06",
+   "name": "堤維西",
+   "source": "TWSE t187ap03_L"
+  },
+  "1524": {
+   "listing_date": "1998-10-30",
+   "name": "耿鼎",
+   "source": "TWSE t187ap03_L"
+  },
+  "1525": {
+   "listing_date": "1999-05-15",
+   "name": "江申",
+   "source": "TWSE t187ap03_L"
+  },
+  "1526": {
+   "listing_date": "2000-03-27",
+   "name": "日馳",
+   "source": "TWSE t187ap03_L"
+  },
+  "1527": {
+   "listing_date": "2000-06-21",
+   "name": "鑽全",
+   "source": "TWSE t187ap03_L"
+  },
+  "1528": {
+   "listing_date": "2000-09-11",
+   "name": "恩德",
+   "source": "TWSE t187ap03_L"
+  },
+  "1529": {
+   "listing_date": "2000-09-11",
+   "name": "樂事綠能",
+   "source": "TWSE t187ap03_L"
+  },
+  "1530": {
+   "listing_date": "2000-09-11",
+   "name": "亞崴",
+   "source": "TWSE t187ap03_L"
+  },
+  "1531": {
+   "listing_date": "2000-09-11",
+   "name": "高林股",
+   "source": "TWSE t187ap03_L"
+  },
+  "1532": {
+   "listing_date": "2000-09-11",
+   "name": "勤美",
+   "source": "TWSE t187ap03_L"
+  },
+  "1533": {
+   "listing_date": "2001-04-06",
+   "name": "車王電",
+   "source": "TWSE t187ap03_L"
+  },
+  "1535": {
+   "listing_date": "2001-09-17",
+   "name": "中宇",
+   "source": "TWSE t187ap03_L"
+  },
+  "1536": {
+   "listing_date": "2001-09-17",
+   "name": "和大",
+   "source": "TWSE t187ap03_L"
+  },
+  "1537": {
+   "listing_date": "2002-01-22",
+   "name": "廣隆",
+   "source": "TWSE t187ap03_L"
+  },
+  "1538": {
+   "listing_date": "2002-08-26",
+   "name": "正峰",
+   "source": "TWSE t187ap03_L"
+  },
+  "1539": {
+   "listing_date": "2002-10-29",
+   "name": "巨庭",
+   "source": "TWSE t187ap03_L"
+  },
+  "1540": {
+   "listing_date": "2002-08-26",
+   "name": "喬福",
+   "source": "TWSE t187ap03_L"
+  },
+  "1541": {
+   "listing_date": "2003-03-19",
+   "name": "錩泰",
+   "source": "TWSE t187ap03_L"
+  },
+  "1558": {
+   "listing_date": "2014-12-23",
+   "name": "伸興",
+   "source": "TWSE t187ap03_L"
+  },
+  "1560": {
+   "listing_date": "2005-01-31",
+   "name": "中砂",
+   "source": "TWSE t187ap03_L"
+  },
+  "1563": {
+   "listing_date": "2024-05-13",
+   "name": "巧新",
+   "source": "TWSE t187ap03_L"
+  },
+  "1568": {
+   "listing_date": "2014-05-14",
+   "name": "倉佑",
+   "source": "TWSE t187ap03_L"
+  },
+  "1582": {
+   "listing_date": "2009-12-17",
+   "name": "信錦",
+   "source": "TWSE t187ap03_L"
+  },
+  "1583": {
+   "listing_date": "2008-01-24",
+   "name": "程泰",
+   "source": "TWSE t187ap03_L"
+  },
+  "1587": {
+   "listing_date": "2018-04-16",
+   "name": "吉茂",
+   "source": "TWSE t187ap03_L"
+  },
+  "1590": {
+   "listing_date": "2010-12-13",
+   "name": "亞德客-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "1597": {
+   "listing_date": "2020-12-23",
+   "name": "直得",
+   "source": "TWSE t187ap03_L"
+  },
+  "1598": {
+   "listing_date": "2016-09-20",
+   "name": "岱宇",
+   "source": "TWSE t187ap03_L"
+  },
+  "1603": {
+   "listing_date": "1968-06-03",
+   "name": "華電",
+   "source": "TWSE t187ap03_L"
+  },
+  "1604": {
+   "listing_date": "1970-12-14",
+   "name": "聲寶",
+   "source": "TWSE t187ap03_L"
+  },
+  "1605": {
+   "listing_date": "1972-11-03",
+   "name": "華新",
+   "source": "TWSE t187ap03_L"
+  },
+  "1608": {
+   "listing_date": "1988-07-11",
+   "name": "華榮",
+   "source": "TWSE t187ap03_L"
+  },
+  "1609": {
+   "listing_date": "1988-12-12",
+   "name": "大亞",
+   "source": "TWSE t187ap03_L"
+  },
+  "1611": {
+   "listing_date": "1990-01-16",
+   "name": "中電",
+   "source": "TWSE t187ap03_L"
+  },
+  "1612": {
+   "listing_date": "1993-05-08",
+   "name": "宏泰",
+   "source": "TWSE t187ap03_L"
+  },
+  "1614": {
+   "listing_date": "1997-09-18",
+   "name": "三洋電",
+   "source": "TWSE t187ap03_L"
+  },
+  "1615": {
+   "listing_date": "2000-03-30",
+   "name": "大山",
+   "source": "TWSE t187ap03_L"
+  },
+  "1616": {
+   "listing_date": "2000-09-11",
+   "name": "億泰",
+   "source": "TWSE t187ap03_L"
+  },
+  "1617": {
+   "listing_date": "2000-09-11",
+   "name": "榮星",
+   "source": "TWSE t187ap03_L"
+  },
+  "1618": {
+   "listing_date": "2000-09-11",
+   "name": "合機",
+   "source": "TWSE t187ap03_L"
+  },
+  "1623": {
+   "listing_date": "2026-01-22",
+   "name": "大東電",
+   "source": "TWSE t187ap03_L"
+  },
+  "1626": {
+   "listing_date": "2013-03-21",
+   "name": "艾美特-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "1702": {
+   "listing_date": "1973-05-30",
+   "name": "南僑",
+   "source": "TWSE t187ap03_L"
+  },
+  "1707": {
+   "listing_date": "1982-12-20",
+   "name": "葡萄王",
+   "source": "TWSE t187ap03_L"
+  },
+  "1708": {
+   "listing_date": "1986-06-16",
+   "name": "東鹼",
+   "source": "TWSE t187ap03_L"
+  },
+  "1709": {
+   "listing_date": "1986-07-03",
+   "name": "和益",
+   "source": "TWSE t187ap03_L"
+  },
+  "1710": {
+   "listing_date": "1987-10-21",
+   "name": "東聯",
+   "source": "TWSE t187ap03_L"
+  },
+  "1711": {
+   "listing_date": "1988-12-27",
+   "name": "永光",
+   "source": "TWSE t187ap03_L"
+  },
+  "1712": {
+   "listing_date": "1989-12-14",
+   "name": "興農",
+   "source": "TWSE t187ap03_L"
+  },
+  "1713": {
+   "listing_date": "1990-01-31",
+   "name": "國化",
+   "source": "TWSE t187ap03_L"
+  },
+  "1714": {
+   "listing_date": "1991-08-30",
+   "name": "和桐",
+   "source": "TWSE t187ap03_L"
+  },
+  "1717": {
+   "listing_date": "1994-03-31",
+   "name": "長興",
+   "source": "TWSE t187ap03_L"
+  },
+  "1718": {
+   "listing_date": "1963-12-02",
+   "name": "中纖",
+   "source": "TWSE t187ap03_L"
+  },
+  "1720": {
+   "listing_date": "1995-12-12",
+   "name": "生達",
+   "source": "TWSE t187ap03_L"
+  },
+  "1721": {
+   "listing_date": "1996-05-16",
+   "name": "國慶科技",
+   "source": "TWSE t187ap03_L"
+  },
+  "1722": {
+   "listing_date": "1998-03-24",
+   "name": "台肥",
+   "source": "TWSE t187ap03_L"
+  },
+  "1723": {
+   "listing_date": "1998-11-27",
+   "name": "中碳",
+   "source": "TWSE t187ap03_L"
+  },
+  "1725": {
+   "listing_date": "2000-09-11",
+   "name": "元禎",
+   "source": "TWSE t187ap03_L"
+  },
+  "1726": {
+   "listing_date": "2000-09-11",
+   "name": "永記",
+   "source": "TWSE t187ap03_L"
+  },
+  "1727": {
+   "listing_date": "2000-09-11",
+   "name": "中華化",
+   "source": "TWSE t187ap03_L"
+  },
+  "1730": {
+   "listing_date": "2001-09-17",
+   "name": "花仙子",
+   "source": "TWSE t187ap03_L"
+  },
+  "1731": {
+   "listing_date": "2001-09-17",
+   "name": "美吾華",
+   "source": "TWSE t187ap03_L"
+  },
+  "1732": {
+   "listing_date": "2001-09-17",
+   "name": "毛寶",
+   "source": "TWSE t187ap03_L"
+  },
+  "1733": {
+   "listing_date": "2001-09-17",
+   "name": "五鼎",
+   "source": "TWSE t187ap03_L"
+  },
+  "1734": {
+   "listing_date": "2002-08-26",
+   "name": "杏輝",
+   "source": "TWSE t187ap03_L"
+  },
+  "1735": {
+   "listing_date": "2002-08-26",
+   "name": "日勝化",
+   "source": "TWSE t187ap03_L"
+  },
+  "1736": {
+   "listing_date": "2003-01-09",
+   "name": "喬山",
+   "source": "TWSE t187ap03_L"
+  },
+  "1737": {
+   "listing_date": "2003-11-18",
+   "name": "臺鹽",
+   "source": "TWSE t187ap03_L"
+  },
+  "1752": {
+   "listing_date": "2022-01-19",
+   "name": "南光",
+   "source": "TWSE t187ap03_L"
+  },
+  "1760": {
+   "listing_date": "2018-01-23",
+   "name": "寶齡富錦",
+   "source": "TWSE t187ap03_L"
+  },
+  "1762": {
+   "listing_date": "2010-12-20",
+   "name": "中化生",
+   "source": "TWSE t187ap03_L"
+  },
+  "1773": {
+   "listing_date": "2009-02-27",
+   "name": "勝一",
+   "source": "TWSE t187ap03_L"
+  },
+  "1776": {
+   "listing_date": "2016-05-09",
+   "name": "展宇",
+   "source": "TWSE t187ap03_L"
+  },
+  "1783": {
+   "listing_date": "2013-12-20",
+   "name": "和康生",
+   "source": "TWSE t187ap03_L"
+  },
+  "1786": {
+   "listing_date": "2013-11-12",
+   "name": "科妍",
+   "source": "TWSE t187ap03_L"
+  },
+  "1789": {
+   "listing_date": "2011-09-29",
+   "name": "神隆",
+   "source": "TWSE t187ap03_L"
+  },
+  "1795": {
+   "listing_date": "2019-12-16",
+   "name": "美時",
+   "source": "TWSE t187ap03_L"
+  },
+  "1802": {
+   "listing_date": "1973-07-20",
+   "name": "台玻",
+   "source": "TWSE t187ap03_L"
+  },
+  "1805": {
+   "listing_date": "1989-10-20",
+   "name": "寶徠",
+   "source": "TWSE t187ap03_L"
+  },
+  "1806": {
+   "listing_date": "1992-09-29",
+   "name": "冠軍",
+   "source": "TWSE t187ap03_L"
+  },
+  "1808": {
+   "listing_date": "1994-10-26",
+   "name": "潤隆",
+   "source": "TWSE t187ap03_L"
+  },
+  "1809": {
+   "listing_date": "1996-04-30",
+   "name": "中釉",
+   "source": "TWSE t187ap03_L"
+  },
+  "1810": {
+   "listing_date": "1991-10-14",
+   "name": "和成",
+   "source": "TWSE t187ap03_L"
+  },
+  "1817": {
+   "listing_date": "2013-10-24",
+   "name": "凱撒衛",
+   "source": "TWSE t187ap03_L"
+  },
+  "1903": {
+   "listing_date": "1963-12-09",
+   "name": "士紙",
+   "source": "TWSE t187ap03_L"
+  },
+  "1904": {
+   "listing_date": "1971-09-10",
+   "name": "正隆",
+   "source": "TWSE t187ap03_L"
+  },
+  "1905": {
+   "listing_date": "1975-02-07",
+   "name": "華紙",
+   "source": "TWSE t187ap03_L"
+  },
+  "1906": {
+   "listing_date": "1976-04-26",
+   "name": "寶隆",
+   "source": "TWSE t187ap03_L"
+  },
+  "1907": {
+   "listing_date": "1977-02-22",
+   "name": "永豐餘",
+   "source": "TWSE t187ap03_L"
+  },
+  "1909": {
+   "listing_date": "1985-11-19",
+   "name": "榮成",
+   "source": "TWSE t187ap03_L"
+  },
+  "2002": {
+   "listing_date": "1974-12-26",
+   "name": "中鋼",
+   "source": "TWSE t187ap03_L"
+  },
+  "2006": {
+   "listing_date": "1988-07-13",
+   "name": "東和鋼鐵",
+   "source": "TWSE t187ap03_L"
+  },
+  "2007": {
+   "listing_date": "1988-10-04",
+   "name": "燁興",
+   "source": "TWSE t187ap03_L"
+  },
+  "2008": {
+   "listing_date": "1988-12-28",
+   "name": "高興昌",
+   "source": "TWSE t187ap03_L"
+  },
+  "2009": {
+   "listing_date": "1989-10-20",
+   "name": "第一銅",
+   "source": "TWSE t187ap03_L"
+  },
+  "2010": {
+   "listing_date": "1989-12-22",
+   "name": "春源",
+   "source": "TWSE t187ap03_L"
+  },
+  "2012": {
+   "listing_date": "1991-10-17",
+   "name": "春雨",
+   "source": "TWSE t187ap03_L"
+  },
+  "2013": {
+   "listing_date": "1992-01-21",
+   "name": "中鋼構",
+   "source": "TWSE t187ap03_L"
+  },
+  "2014": {
+   "listing_date": "1992-02-20",
+   "name": "中鴻",
+   "source": "TWSE t187ap03_L"
+  },
+  "2015": {
+   "listing_date": "1992-05-25",
+   "name": "豐興",
+   "source": "TWSE t187ap03_L"
+  },
+  "2017": {
+   "listing_date": "1992-11-02",
+   "name": "官田鋼",
+   "source": "TWSE t187ap03_L"
+  },
+  "2020": {
+   "listing_date": "1993-04-27",
+   "name": "美亞",
+   "source": "TWSE t187ap03_L"
+  },
+  "2022": {
+   "listing_date": "1995-03-27",
+   "name": "聚亨",
+   "source": "TWSE t187ap03_L"
+  },
+  "2023": {
+   "listing_date": "1995-07-28",
+   "name": "燁輝",
+   "source": "TWSE t187ap03_L"
+  },
+  "2024": {
+   "listing_date": "1995-12-30",
+   "name": "志聯",
+   "source": "TWSE t187ap03_L"
+  },
+  "2025": {
+   "listing_date": "1996-02-08",
+   "name": "千興",
+   "source": "TWSE t187ap03_L"
+  },
+  "2027": {
+   "listing_date": "1996-10-24",
+   "name": "大成鋼",
+   "source": "TWSE t187ap03_L"
+  },
+  "2028": {
+   "listing_date": "1996-12-13",
+   "name": "威致",
+   "source": "TWSE t187ap03_L"
+  },
+  "2029": {
+   "listing_date": "1997-01-11",
+   "name": "盛餘",
+   "source": "TWSE t187ap03_L"
+  },
+  "2030": {
+   "listing_date": "1998-12-24",
+   "name": "彰源",
+   "source": "TWSE t187ap03_L"
+  },
+  "2031": {
+   "listing_date": "2000-09-11",
+   "name": "新光鋼",
+   "source": "TWSE t187ap03_L"
+  },
+  "2032": {
+   "listing_date": "2000-09-11",
+   "name": "新鋼",
+   "source": "TWSE t187ap03_L"
+  },
+  "2033": {
+   "listing_date": "2000-09-11",
+   "name": "佳大",
+   "source": "TWSE t187ap03_L"
+  },
+  "2034": {
+   "listing_date": "2001-09-17",
+   "name": "允強",
+   "source": "TWSE t187ap03_L"
+  },
+  "2038": {
+   "listing_date": "2008-12-30",
+   "name": "海光",
+   "source": "TWSE t187ap03_L"
+  },
+  "2049": {
+   "listing_date": "2009-06-26",
+   "name": "上銀",
+   "source": "TWSE t187ap03_L"
+  },
+  "2059": {
+   "listing_date": "2008-06-25",
+   "name": "川湖",
+   "source": "TWSE t187ap03_L"
+  },
+  "2062": {
+   "listing_date": "2007-11-16",
+   "name": "橋椿",
+   "source": "TWSE t187ap03_L"
+  },
+  "2069": {
+   "listing_date": "2016-03-22",
+   "name": "運錩",
+   "source": "TWSE t187ap03_L"
+  },
+  "2072": {
+   "listing_date": "2026-03-26",
+   "name": "世紀能源",
+   "source": "TWSE t187ap03_L"
+  },
+  "2101": {
+   "listing_date": "1963-11-01",
+   "name": "南港",
+   "source": "TWSE t187ap03_L"
+  },
+  "2102": {
+   "listing_date": "1979-07-16",
+   "name": "泰豐",
+   "source": "TWSE t187ap03_L"
+  },
+  "2103": {
+   "listing_date": "1982-09-25",
+   "name": "台橡",
+   "source": "TWSE t187ap03_L"
+  },
+  "2104": {
+   "listing_date": "1986-07-15",
+   "name": "國際中橡",
+   "source": "TWSE t187ap03_L"
+  },
+  "2105": {
+   "listing_date": "1987-12-07",
+   "name": "正新",
+   "source": "TWSE t187ap03_L"
+  },
+  "2106": {
+   "listing_date": "1990-12-20",
+   "name": "建大",
+   "source": "TWSE t187ap03_L"
+  },
+  "2107": {
+   "listing_date": "1992-03-03",
+   "name": "厚生",
+   "source": "TWSE t187ap03_L"
+  },
+  "2108": {
+   "listing_date": "1992-10-27",
+   "name": "南帝",
+   "source": "TWSE t187ap03_L"
+  },
+  "2109": {
+   "listing_date": "2000-05-08",
+   "name": "華豐",
+   "source": "TWSE t187ap03_L"
+  },
+  "2114": {
+   "listing_date": "2010-12-29",
+   "name": "鑫永銓",
+   "source": "TWSE t187ap03_L"
+  },
+  "2115": {
+   "listing_date": "2013-12-25",
+   "name": "六暉-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "2201": {
+   "listing_date": "1976-07-08",
+   "name": "裕隆",
+   "source": "TWSE t187ap03_L"
+  },
+  "2204": {
+   "listing_date": "1991-03-12",
+   "name": "中華",
+   "source": "TWSE t187ap03_L"
+  },
+  "2206": {
+   "listing_date": "1996-07-29",
+   "name": "三陽工業",
+   "source": "TWSE t187ap03_L"
+  },
+  "2207": {
+   "listing_date": "1997-02-25",
+   "name": "和泰車",
+   "source": "TWSE t187ap03_L"
+  },
+  "2208": {
+   "listing_date": "2008-12-22",
+   "name": "台船",
+   "source": "TWSE t187ap03_L"
+  },
+  "2211": {
+   "listing_date": "2021-04-12",
+   "name": "長榮鋼",
+   "source": "TWSE t187ap03_L"
+  },
+  "2227": {
+   "listing_date": "2004-12-21",
+   "name": "裕日車",
+   "source": "TWSE t187ap03_L"
+  },
+  "2228": {
+   "listing_date": "2013-11-25",
+   "name": "劍麟",
+   "source": "TWSE t187ap03_L"
+  },
+  "2231": {
+   "listing_date": "2010-11-19",
+   "name": "為升",
+   "source": "TWSE t187ap03_L"
+  },
+  "2233": {
+   "listing_date": "2019-09-17",
+   "name": "宇隆",
+   "source": "TWSE t187ap03_L"
+  },
+  "2236": {
+   "listing_date": "2015-06-03",
+   "name": "百達-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "2237": {
+   "listing_date": "2026-08-10",
+   "name": "華德動能-創",
+   "source": "TWSE t187ap03_L"
+  },
+  "2239": {
+   "listing_date": "2016-01-27",
+   "name": "英利-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "2241": {
+   "listing_date": "2020-08-26",
+   "name": "艾姆勒",
+   "source": "TWSE t187ap03_L"
+  },
+  "2243": {
+   "listing_date": "2017-09-27",
+   "name": "宏旭-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "2247": {
+   "listing_date": "2020-10-12",
+   "name": "汎德永業",
+   "source": "TWSE t187ap03_L"
+  },
+  "2248": {
+   "listing_date": "2025-03-13",
+   "name": "華勝-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "2250": {
+   "listing_date": "2021-05-31",
+   "name": "IKKA-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "2254": {
+   "listing_date": "2023-10-20",
+   "name": "巨鎧精密-創",
+   "source": "TWSE t187ap03_L"
+  },
+  "2258": {
+   "listing_date": "2023-11-20",
+   "name": "鴻華先進-創",
+   "source": "TWSE t187ap03_L"
+  },
+  "2301": {
+   "listing_date": "1995-11-17",
+   "name": "光寶科",
+   "source": "TWSE t187ap03_L"
+  },
+  "2302": {
+   "listing_date": "1985-01-15",
+   "name": "麗正",
+   "source": "TWSE t187ap03_L"
+  },
+  "2303": {
+   "listing_date": "1985-07-16",
+   "name": "聯電",
+   "source": "TWSE t187ap03_L"
+  },
+  "2305": {
+   "listing_date": "1988-10-21",
+   "name": "全友",
+   "source": "TWSE t187ap03_L"
+  },
+  "2308": {
+   "listing_date": "1988-12-19",
+   "name": "台達電",
+   "source": "TWSE t187ap03_L"
+  },
+  "2312": {
+   "listing_date": "1989-11-07",
+   "name": "金寶",
+   "source": "TWSE t187ap03_L"
+  },
+  "2313": {
+   "listing_date": "1990-07-24",
+   "name": "華通",
+   "source": "TWSE t187ap03_L"
+  },
+  "2314": {
+   "listing_date": "1990-08-08",
+   "name": "台揚",
+   "source": "TWSE t187ap03_L"
+  },
+  "2316": {
+   "listing_date": "1991-02-05",
+   "name": "楠梓電",
+   "source": "TWSE t187ap03_L"
+  },
+  "2317": {
+   "listing_date": "1991-06-18",
+   "name": "鴻海",
+   "source": "TWSE t187ap03_L"
+  },
+  "2321": {
+   "listing_date": "1991-11-08",
+   "name": "東訊",
+   "source": "TWSE t187ap03_L"
+  },
+  "2323": {
+   "listing_date": "1992-02-17",
+   "name": "中環",
+   "source": "TWSE t187ap03_L"
+  },
+  "2324": {
+   "listing_date": "1992-02-18",
+   "name": "仁寶",
+   "source": "TWSE t187ap03_L"
+  },
+  "2327": {
+   "listing_date": "1993-10-22",
+   "name": "國巨*",
+   "source": "TWSE t187ap03_L"
+  },
+  "2328": {
+   "listing_date": "1993-11-09",
+   "name": "廣宇",
+   "source": "TWSE t187ap03_L"
+  },
+  "2329": {
+   "listing_date": "1994-04-20",
+   "name": "華泰",
+   "source": "TWSE t187ap03_L"
+  },
+  "2330": {
+   "listing_date": "1994-09-05",
+   "name": "台積電",
+   "source": "TWSE t187ap03_L"
+  },
+  "2331": {
+   "listing_date": "1994-09-21",
+   "name": "精英",
+   "source": "TWSE t187ap03_L"
+  },
+  "2332": {
+   "listing_date": "1994-10-17",
+   "name": "友訊",
+   "source": "TWSE t187ap03_L"
+  },
+  "2337": {
+   "listing_date": "1995-03-15",
+   "name": "旺宏",
+   "source": "TWSE t187ap03_L"
+  },
+  "2338": {
+   "listing_date": "1995-04-17",
+   "name": "光罩",
+   "source": "TWSE t187ap03_L"
+  },
+  "2340": {
+   "listing_date": "1995-05-02",
+   "name": "台亞",
+   "source": "TWSE t187ap03_L"
+  },
+  "2342": {
+   "listing_date": "1995-09-19",
+   "name": "茂矽",
+   "source": "TWSE t187ap03_L"
+  },
+  "2344": {
+   "listing_date": "1995-10-18",
+   "name": "華邦電",
+   "source": "TWSE t187ap03_L"
+  },
+  "2345": {
+   "listing_date": "1995-11-15",
+   "name": "智邦",
+   "source": "TWSE t187ap03_L"
+  },
+  "2347": {
+   "listing_date": "1995-12-13",
+   "name": "聯強",
+   "source": "TWSE t187ap03_L"
+  },
+  "2348": {
+   "listing_date": "1996-01-05",
+   "name": "海悅",
+   "source": "TWSE t187ap03_L"
+  },
+  "2349": {
+   "listing_date": "1996-04-23",
+   "name": "錸德",
+   "source": "TWSE t187ap03_L"
+  },
+  "2351": {
+   "listing_date": "1996-04-25",
+   "name": "順德",
+   "source": "TWSE t187ap03_L"
+  },
+  "2352": {
+   "listing_date": "1996-07-22",
+   "name": "佳世達",
+   "source": "TWSE t187ap03_L"
+  },
+  "2353": {
+   "listing_date": "1996-09-18",
+   "name": "宏碁",
+   "source": "TWSE t187ap03_L"
+  },
+  "2354": {
+   "listing_date": "1996-10-08",
+   "name": "鴻準",
+   "source": "TWSE t187ap03_L"
+  },
+  "2355": {
+   "listing_date": "1996-10-14",
+   "name": "敬鵬",
+   "source": "TWSE t187ap03_L"
+  },
+  "2356": {
+   "listing_date": "1996-11-13",
+   "name": "英業達",
+   "source": "TWSE t187ap03_L"
+  },
+  "2357": {
+   "listing_date": "1996-11-14",
+   "name": "華碩",
+   "source": "TWSE t187ap03_L"
+  },
+  "2359": {
+   "listing_date": "1996-12-19",
+   "name": "所羅門",
+   "source": "TWSE t187ap03_L"
+  },
+  "2360": {
+   "listing_date": "1996-12-21",
+   "name": "致茂",
+   "source": "TWSE t187ap03_L"
+  },
+  "2362": {
+   "listing_date": "1997-04-02",
+   "name": "藍天",
+   "source": "TWSE t187ap03_L"
+  },
+  "2363": {
+   "listing_date": "1997-08-01",
+   "name": "矽統",
+   "source": "TWSE t187ap03_L"
+  },
+  "2364": {
+   "listing_date": "1997-08-11",
+   "name": "倫飛",
+   "source": "TWSE t187ap03_L"
+  },
+  "2365": {
+   "listing_date": "1997-11-03",
+   "name": "昆盈",
+   "source": "TWSE t187ap03_L"
+  },
+  "2367": {
+   "listing_date": "1997-12-13",
+   "name": "燿華",
+   "source": "TWSE t187ap03_L"
+  },
+  "2368": {
+   "listing_date": "1998-03-09",
+   "name": "金像電",
+   "source": "TWSE t187ap03_L"
+  },
+  "2369": {
+   "listing_date": "1998-04-10",
+   "name": "菱生",
+   "source": "TWSE t187ap03_L"
+  },
+  "2371": {
+   "listing_date": "1962-02-09",
+   "name": "大同",
+   "source": "TWSE t187ap03_L"
+  },
+  "2373": {
+   "listing_date": "1991-08-01",
+   "name": "震旦行",
+   "source": "TWSE t187ap03_L"
+  },
+  "2374": {
+   "listing_date": "1995-01-16",
+   "name": "佳能",
+   "source": "TWSE t187ap03_L"
+  },
+  "2375": {
+   "listing_date": "1998-08-29",
+   "name": "凱美",
+   "source": "TWSE t187ap03_L"
+  },
+  "2376": {
+   "listing_date": "1998-09-24",
+   "name": "技嘉",
+   "source": "TWSE t187ap03_L"
+  },
+  "2377": {
+   "listing_date": "1998-10-31",
+   "name": "微星",
+   "source": "TWSE t187ap03_L"
+  },
+  "2379": {
+   "listing_date": "1998-10-26",
+   "name": "瑞昱",
+   "source": "TWSE t187ap03_L"
+  },
+  "2380": {
+   "listing_date": "1998-12-03",
+   "name": "虹光",
+   "source": "TWSE t187ap03_L"
+  },
+  "2382": {
+   "listing_date": "1999-01-08",
+   "name": "廣達",
+   "source": "TWSE t187ap03_L"
+  },
+  "2383": {
+   "listing_date": "1998-11-27",
+   "name": "台光電",
+   "source": "TWSE t187ap03_L"
+  },
+  "2385": {
+   "listing_date": "1999-01-05",
+   "name": "群光",
+   "source": "TWSE t187ap03_L"
+  },
+  "2387": {
+   "listing_date": "1999-01-25",
+   "name": "精元",
+   "source": "TWSE t187ap03_L"
+  },
+  "2388": {
+   "listing_date": "1999-03-05",
+   "name": "威盛",
+   "source": "TWSE t187ap03_L"
+  },
+  "2390": {
+   "listing_date": "1999-06-15",
+   "name": "云辰",
+   "source": "TWSE t187ap03_L"
+  },
+  "2392": {
+   "listing_date": "1999-09-20",
+   "name": "正崴",
+   "source": "TWSE t187ap03_L"
+  },
+  "2393": {
+   "listing_date": "1999-11-04",
+   "name": "億光",
+   "source": "TWSE t187ap03_L"
+  },
+  "2395": {
+   "listing_date": "1999-12-13",
+   "name": "研華",
+   "source": "TWSE t187ap03_L"
+  },
+  "2397": {
+   "listing_date": "2000-01-15",
+   "name": "友通",
+   "source": "TWSE t187ap03_L"
+  },
+  "2399": {
+   "listing_date": "1999-12-16",
+   "name": "映泰",
+   "source": "TWSE t187ap03_L"
+  },
+  "2401": {
+   "listing_date": "2000-01-27",
+   "name": "凌陽",
+   "source": "TWSE t187ap03_L"
+  },
+  "2402": {
+   "listing_date": "2000-01-14",
+   "name": "毅嘉",
+   "source": "TWSE t187ap03_L"
+  },
+  "2404": {
+   "listing_date": "2000-03-14",
+   "name": "漢唐",
+   "source": "TWSE t187ap03_L"
+  },
+  "2405": {
+   "listing_date": "2000-03-17",
+   "name": "輔信",
+   "source": "TWSE t187ap03_L"
+  },
+  "2406": {
+   "listing_date": "2000-04-29",
+   "name": "國碩",
+   "source": "TWSE t187ap03_L"
+  },
+  "2408": {
+   "listing_date": "2000-08-17",
+   "name": "南亞科",
+   "source": "TWSE t187ap03_L"
+  },
+  "2409": {
+   "listing_date": "2000-09-08",
+   "name": "友達",
+   "source": "TWSE t187ap03_L"
+  },
+  "2412": {
+   "listing_date": "2000-10-27",
+   "name": "中華電",
+   "source": "TWSE t187ap03_L"
+  },
+  "2413": {
+   "listing_date": "2000-09-11",
+   "name": "環科",
+   "source": "TWSE t187ap03_L"
+  },
+  "2414": {
+   "listing_date": "2000-09-11",
+   "name": "精技",
+   "source": "TWSE t187ap03_L"
+  },
+  "2415": {
+   "listing_date": "2000-09-11",
+   "name": "錩新",
+   "source": "TWSE t187ap03_L"
+  },
+  "2417": {
+   "listing_date": "2000-09-11",
+   "name": "圓剛",
+   "source": "TWSE t187ap03_L"
+  },
+  "2419": {
+   "listing_date": "2000-09-11",
+   "name": "仲琦",
+   "source": "TWSE t187ap03_L"
+  },
+  "2420": {
+   "listing_date": "2000-09-11",
+   "name": "新巨",
+   "source": "TWSE t187ap03_L"
+  },
+  "2421": {
+   "listing_date": "2000-09-11",
+   "name": "建準",
+   "source": "TWSE t187ap03_L"
+  },
+  "2423": {
+   "listing_date": "2000-09-11",
+   "name": "固緯",
+   "source": "TWSE t187ap03_L"
+  },
+  "2424": {
+   "listing_date": "2000-09-11",
+   "name": "隴華",
+   "source": "TWSE t187ap03_L"
+  },
+  "2425": {
+   "listing_date": "2000-09-11",
+   "name": "承啟",
+   "source": "TWSE t187ap03_L"
+  },
+  "2426": {
+   "listing_date": "2000-09-11",
+   "name": "鼎元",
+   "source": "TWSE t187ap03_L"
+  },
+  "2427": {
+   "listing_date": "2000-09-11",
+   "name": "三商電",
+   "source": "TWSE t187ap03_L"
+  },
+  "2428": {
+   "listing_date": "2000-09-11",
+   "name": "興勤",
+   "source": "TWSE t187ap03_L"
+  },
+  "2429": {
+   "listing_date": "2000-09-11",
+   "name": "銘旺科",
+   "source": "TWSE t187ap03_L"
+  },
+  "2430": {
+   "listing_date": "2000-09-11",
+   "name": "燦坤",
+   "source": "TWSE t187ap03_L"
+  },
+  "2431": {
+   "listing_date": "2000-09-11",
+   "name": "聯昌",
+   "source": "TWSE t187ap03_L"
+  },
+  "2432": {
+   "listing_date": "2023-05-31",
+   "name": "倚天酷碁-創",
+   "source": "TWSE t187ap03_L"
+  },
+  "2433": {
+   "listing_date": "2000-09-11",
+   "name": "互盛電",
+   "source": "TWSE t187ap03_L"
+  },
+  "2434": {
+   "listing_date": "2000-09-11",
+   "name": "統懋",
+   "source": "TWSE t187ap03_L"
+  },
+  "2436": {
+   "listing_date": "2000-09-11",
+   "name": "偉詮電",
+   "source": "TWSE t187ap03_L"
+  },
+  "2438": {
+   "listing_date": "2000-09-11",
+   "name": "翔耀",
+   "source": "TWSE t187ap03_L"
+  },
+  "2439": {
+   "listing_date": "2000-09-11",
+   "name": "美律",
+   "source": "TWSE t187ap03_L"
+  },
+  "2440": {
+   "listing_date": "2000-11-10",
+   "name": "太空梭",
+   "source": "TWSE t187ap03_L"
+  },
+  "2441": {
+   "listing_date": "2000-10-26",
+   "name": "超豐",
+   "source": "TWSE t187ap03_L"
+  },
+  "2442": {
+   "listing_date": "2000-11-22",
+   "name": "新美齊",
+   "source": "TWSE t187ap03_L"
+  },
+  "2444": {
+   "listing_date": "2000-12-08",
+   "name": "兆勁",
+   "source": "TWSE t187ap03_L"
+  },
+  "2449": {
+   "listing_date": "2001-05-09",
+   "name": "京元電子",
+   "source": "TWSE t187ap03_L"
+  },
+  "2450": {
+   "listing_date": "2001-05-24",
+   "name": "神腦",
+   "source": "TWSE t187ap03_L"
+  },
+  "2451": {
+   "listing_date": "2001-05-03",
+   "name": "創見",
+   "source": "TWSE t187ap03_L"
+  },
+  "2453": {
+   "listing_date": "2001-05-22",
+   "name": "凌群",
+   "source": "TWSE t187ap03_L"
+  },
+  "2454": {
+   "listing_date": "2001-07-23",
+   "name": "聯發科",
+   "source": "TWSE t187ap03_L"
+  },
+  "2455": {
+   "listing_date": "2002-01-24",
+   "name": "全新",
+   "source": "TWSE t187ap03_L"
+  },
+  "2457": {
+   "listing_date": "2001-09-17",
+   "name": "飛宏",
+   "source": "TWSE t187ap03_L"
+  },
+  "2458": {
+   "listing_date": "2001-09-17",
+   "name": "義隆",
+   "source": "TWSE t187ap03_L"
+  },
+  "2459": {
+   "listing_date": "2001-09-17",
+   "name": "敦吉",
+   "source": "TWSE t187ap03_L"
+  },
+  "2460": {
+   "listing_date": "2001-09-17",
+   "name": "建通",
+   "source": "TWSE t187ap03_L"
+  },
+  "2461": {
+   "listing_date": "2001-09-17",
+   "name": "光群雷",
+   "source": "TWSE t187ap03_L"
+  },
+  "2462": {
+   "listing_date": "2001-09-17",
+   "name": "良得電",
+   "source": "TWSE t187ap03_L"
+  },
+  "2464": {
+   "listing_date": "2001-09-17",
+   "name": "盟立",
+   "source": "TWSE t187ap03_L"
+  },
+  "2465": {
+   "listing_date": "2001-09-19",
+   "name": "麗臺",
+   "source": "TWSE t187ap03_L"
+  },
+  "2466": {
+   "listing_date": "2001-09-17",
+   "name": "冠西電",
+   "source": "TWSE t187ap03_L"
+  },
+  "2467": {
+   "listing_date": "2001-09-17",
+   "name": "志聖",
+   "source": "TWSE t187ap03_L"
+  },
+  "2468": {
+   "listing_date": "2001-09-17",
+   "name": "華經",
+   "source": "TWSE t187ap03_L"
+  },
+  "2471": {
+   "listing_date": "2001-09-17",
+   "name": "資通",
+   "source": "TWSE t187ap03_L"
+  },
+  "2472": {
+   "listing_date": "2001-09-17",
+   "name": "立隆電",
+   "source": "TWSE t187ap03_L"
+  },
+  "2474": {
+   "listing_date": "2001-09-17",
+   "name": "可成",
+   "source": "TWSE t187ap03_L"
+  },
+  "2476": {
+   "listing_date": "2001-09-17",
+   "name": "鉅祥",
+   "source": "TWSE t187ap03_L"
+  },
+  "2477": {
+   "listing_date": "2001-09-17",
+   "name": "美隆電",
+   "source": "TWSE t187ap03_L"
+  },
+  "2478": {
+   "listing_date": "2001-09-17",
+   "name": "大毅",
+   "source": "TWSE t187ap03_L"
+  },
+  "2480": {
+   "listing_date": "2001-09-17",
+   "name": "敦陽科",
+   "source": "TWSE t187ap03_L"
+  },
+  "2481": {
+   "listing_date": "2001-09-17",
+   "name": "強茂",
+   "source": "TWSE t187ap03_L"
+  },
+  "2482": {
+   "listing_date": "2001-09-17",
+   "name": "連宇",
+   "source": "TWSE t187ap03_L"
+  },
+  "2483": {
+   "listing_date": "2001-09-17",
+   "name": "百容",
+   "source": "TWSE t187ap03_L"
+  },
+  "2484": {
+   "listing_date": "2001-09-17",
+   "name": "希華",
+   "source": "TWSE t187ap03_L"
+  },
+  "2485": {
+   "listing_date": "2001-09-17",
+   "name": "兆赫",
+   "source": "TWSE t187ap03_L"
+  },
+  "2486": {
+   "listing_date": "2001-09-19",
+   "name": "一詮",
+   "source": "TWSE t187ap03_L"
+  },
+  "2488": {
+   "listing_date": "2001-09-17",
+   "name": "漢平",
+   "source": "TWSE t187ap03_L"
+  },
+  "2489": {
+   "listing_date": "2001-09-17",
+   "name": "瑞軒",
+   "source": "TWSE t187ap03_L"
+  },
+  "2491": {
+   "listing_date": "2001-09-19",
+   "name": "吉祥全",
+   "source": "TWSE t187ap03_L"
+  },
+  "2492": {
+   "listing_date": "2001-09-17",
+   "name": "華新科",
+   "source": "TWSE t187ap03_L"
+  },
+  "2493": {
+   "listing_date": "2002-01-23",
+   "name": "揚博",
+   "source": "TWSE t187ap03_L"
+  },
+  "2495": {
+   "listing_date": "2002-03-25",
+   "name": "普安",
+   "source": "TWSE t187ap03_L"
+  },
+  "2496": {
+   "listing_date": "2002-03-08",
+   "name": "卓越",
+   "source": "TWSE t187ap03_L"
+  },
+  "2497": {
+   "listing_date": "2002-02-04",
+   "name": "怡利電",
+   "source": "TWSE t187ap03_L"
+  },
+  "2498": {
+   "listing_date": "2002-03-26",
+   "name": "宏達電",
+   "source": "TWSE t187ap03_L"
+  },
+  "2501": {
+   "listing_date": "1967-10-28",
+   "name": "國建",
+   "source": "TWSE t187ap03_L"
+  },
+  "2504": {
+   "listing_date": "1978-03-14",
+   "name": "國產",
+   "source": "TWSE t187ap03_L"
+  },
+  "2505": {
+   "listing_date": "1979-11-14",
+   "name": "國揚",
+   "source": "TWSE t187ap03_L"
+  },
+  "2506": {
+   "listing_date": "1980-02-02",
+   "name": "太設",
+   "source": "TWSE t187ap03_L"
+  },
+  "2509": {
+   "listing_date": "1988-05-20",
+   "name": "全坤建",
+   "source": "TWSE t187ap03_L"
+  },
+  "2511": {
+   "listing_date": "1991-04-24",
+   "name": "太子",
+   "source": "TWSE t187ap03_L"
+  },
+  "2514": {
+   "listing_date": "1992-09-26",
+   "name": "龍邦",
+   "source": "TWSE t187ap03_L"
+  },
+  "2515": {
+   "listing_date": "1993-03-02",
+   "name": "中工",
+   "source": "TWSE t187ap03_L"
+  },
+  "2516": {
+   "listing_date": "1993-05-25",
+   "name": "新建",
+   "source": "TWSE t187ap03_L"
+  },
+  "2520": {
+   "listing_date": "1993-10-27",
+   "name": "冠德",
+   "source": "TWSE t187ap03_L"
+  },
+  "2524": {
+   "listing_date": "1994-10-18",
+   "name": "京城",
+   "source": "TWSE t187ap03_L"
+  },
+  "2527": {
+   "listing_date": "1995-03-06",
+   "name": "宏璟",
+   "source": "TWSE t187ap03_L"
+  },
+  "2528": {
+   "listing_date": "1995-03-10",
+   "name": "皇普",
+   "source": "TWSE t187ap03_L"
+  },
+  "2530": {
+   "listing_date": "1995-10-12",
+   "name": "華建",
+   "source": "TWSE t187ap03_L"
+  },
+  "2534": {
+   "listing_date": "1996-02-12",
+   "name": "宏盛",
+   "source": "TWSE t187ap03_L"
+  },
+  "2535": {
+   "listing_date": "1996-03-11",
+   "name": "達欣工",
+   "source": "TWSE t187ap03_L"
+  },
+  "2536": {
+   "listing_date": "1996-03-14",
+   "name": "宏普",
+   "source": "TWSE t187ap03_L"
+  },
+  "2537": {
+   "listing_date": "1996-09-06",
+   "name": "聯上發",
+   "source": "TWSE t187ap03_L"
+  },
+  "2538": {
+   "listing_date": "1996-11-01",
+   "name": "基泰",
+   "source": "TWSE t187ap03_L"
+  },
+  "2539": {
+   "listing_date": "1997-07-16",
+   "name": "櫻花建",
+   "source": "TWSE t187ap03_L"
+  },
+  "2540": {
+   "listing_date": "1989-12-26",
+   "name": "愛山林",
+   "source": "TWSE t187ap03_L"
+  },
+  "2542": {
+   "listing_date": "1999-05-03",
+   "name": "興富發",
+   "source": "TWSE t187ap03_L"
+  },
+  "2543": {
+   "listing_date": "1999-10-15",
+   "name": "皇昌",
+   "source": "TWSE t187ap03_L"
+  },
+  "2545": {
+   "listing_date": "2000-09-11",
+   "name": "皇翔",
+   "source": "TWSE t187ap03_L"
+  },
+  "2546": {
+   "listing_date": "2000-09-11",
+   "name": "根基",
+   "source": "TWSE t187ap03_L"
+  },
+  "2547": {
+   "listing_date": "2000-12-22",
+   "name": "日勝生",
+   "source": "TWSE t187ap03_L"
+  },
+  "2548": {
+   "listing_date": "2002-08-26",
+   "name": "華固",
+   "source": "TWSE t187ap03_L"
+  },
+  "2597": {
+   "listing_date": "2010-03-26",
+   "name": "潤弘",
+   "source": "TWSE t187ap03_L"
+  },
+  "2601": {
+   "listing_date": "1965-11-04",
+   "name": "益航",
+   "source": "TWSE t187ap03_L"
+  },
+  "2603": {
+   "listing_date": "1987-09-21",
+   "name": "長榮",
+   "source": "TWSE t187ap03_L"
+  },
+  "2605": {
+   "listing_date": "1989-12-08",
+   "name": "新興",
+   "source": "TWSE t187ap03_L"
+  },
+  "2606": {
+   "listing_date": "1990-12-08",
+   "name": "裕民",
+   "source": "TWSE t187ap03_L"
+  },
+  "2607": {
+   "listing_date": "1990-12-14",
+   "name": "榮運",
+   "source": "TWSE t187ap03_L"
+  },
+  "2608": {
+   "listing_date": "1990-12-20",
+   "name": "嘉里大榮",
+   "source": "TWSE t187ap03_L"
+  },
+  "2609": {
+   "listing_date": "1992-04-20",
+   "name": "陽明",
+   "source": "TWSE t187ap03_L"
+  },
+  "2610": {
+   "listing_date": "1993-02-26",
+   "name": "華航",
+   "source": "TWSE t187ap03_L"
+  },
+  "2611": {
+   "listing_date": "1993-10-28",
+   "name": "志信",
+   "source": "TWSE t187ap03_L"
+  },
+  "2612": {
+   "listing_date": "1994-10-20",
+   "name": "中航",
+   "source": "TWSE t187ap03_L"
+  },
+  "2613": {
+   "listing_date": "1995-01-20",
+   "name": "中櫃",
+   "source": "TWSE t187ap03_L"
+  },
+  "2614": {
+   "listing_date": "1995-09-23",
+   "name": "東森",
+   "source": "TWSE t187ap03_L"
+  },
+  "2615": {
+   "listing_date": "1996-05-16",
+   "name": "萬海",
+   "source": "TWSE t187ap03_L"
+  },
+  "2616": {
+   "listing_date": "1997-11-08",
+   "name": "山隆",
+   "source": "TWSE t187ap03_L"
+  },
+  "2617": {
+   "listing_date": "1998-06-24",
+   "name": "台航",
+   "source": "TWSE t187ap03_L"
+  },
+  "2618": {
+   "listing_date": "2001-09-17",
+   "name": "長榮航",
+   "source": "TWSE t187ap03_L"
+  },
+  "2630": {
+   "listing_date": "2018-02-22",
+   "name": "亞航",
+   "source": "TWSE t187ap03_L"
+  },
+  "2633": {
+   "listing_date": "2016-10-27",
+   "name": "台灣高鐵",
+   "source": "TWSE t187ap03_L"
+  },
+  "2634": {
+   "listing_date": "2014-08-25",
+   "name": "漢翔",
+   "source": "TWSE t187ap03_L"
+  },
+  "2636": {
+   "listing_date": "2016-12-22",
+   "name": "台驊控股",
+   "source": "TWSE t187ap03_L"
+  },
+  "2637": {
+   "listing_date": "2010-12-01",
+   "name": "慧洋-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "2642": {
+   "listing_date": "2013-12-12",
+   "name": "宅配通",
+   "source": "TWSE t187ap03_L"
+  },
+  "2645": {
+   "listing_date": "2023-03-14",
+   "name": "長榮航太",
+   "source": "TWSE t187ap03_L"
+  },
+  "2646": {
+   "listing_date": "2024-10-25",
+   "name": "星宇航空",
+   "source": "TWSE t187ap03_L"
+  },
+  "2701": {
+   "listing_date": "1965-03-22",
+   "name": "萬企",
+   "source": "TWSE t187ap03_L"
+  },
+  "2702": {
+   "listing_date": "1965-02-14",
+   "name": "華園",
+   "source": "TWSE t187ap03_L"
+  },
+  "2704": {
+   "listing_date": "1982-11-10",
+   "name": "國賓",
+   "source": "TWSE t187ap03_L"
+  },
+  "2705": {
+   "listing_date": "1988-12-24",
+   "name": "六福",
+   "source": "TWSE t187ap03_L"
+  },
+  "2706": {
+   "listing_date": "1991-06-25",
+   "name": "第一店",
+   "source": "TWSE t187ap03_L"
+  },
+  "2707": {
+   "listing_date": "1998-03-09",
+   "name": "晶華",
+   "source": "TWSE t187ap03_L"
+  },
+  "2712": {
+   "listing_date": "2013-12-03",
+   "name": "遠雄來",
+   "source": "TWSE t187ap03_L"
+  },
+  "2722": {
+   "listing_date": "2012-03-14",
+   "name": "夏都",
+   "source": "TWSE t187ap03_L"
+  },
+  "2723": {
+   "listing_date": "2010-11-22",
+   "name": "美食-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "2727": {
+   "listing_date": "2012-03-06",
+   "name": "王品",
+   "source": "TWSE t187ap03_L"
+  },
+  "2731": {
+   "listing_date": "2013-09-24",
+   "name": "雄獅",
+   "source": "TWSE t187ap03_L"
+  },
+  "2739": {
+   "listing_date": "2016-05-19",
+   "name": "寒舍",
+   "source": "TWSE t187ap03_L"
+  },
+  "2748": {
+   "listing_date": "2016-11-23",
+   "name": "雲品",
+   "source": "TWSE t187ap03_L"
+  },
+  "2753": {
+   "listing_date": "2021-09-09",
+   "name": "八方雲集",
+   "source": "TWSE t187ap03_L"
+  },
+  "2762": {
+   "listing_date": "2024-01-24",
+   "name": "世界健身-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "2801": {
+   "listing_date": "1962-02-15",
+   "name": "彰銀",
+   "source": "TWSE t187ap03_L"
+  },
+  "2812": {
+   "listing_date": "1984-05-15",
+   "name": "台中銀",
+   "source": "TWSE t187ap03_L"
+  },
+  "2816": {
+   "listing_date": "1992-05-05",
+   "name": "旺旺保",
+   "source": "TWSE t187ap03_L"
+  },
+  "2820": {
+   "listing_date": "1994-10-26",
+   "name": "華票",
+   "source": "TWSE t187ap03_L"
+  },
+  "2832": {
+   "listing_date": "1997-09-30",
+   "name": "台產",
+   "source": "TWSE t187ap03_L"
+  },
+  "2834": {
+   "listing_date": "1998-01-03",
+   "name": "臺企銀",
+   "source": "TWSE t187ap03_L"
+  },
+  "2836": {
+   "listing_date": "1998-05-18",
+   "name": "高雄銀",
+   "source": "TWSE t187ap03_L"
+  },
+  "2838": {
+   "listing_date": "1998-06-29",
+   "name": "聯邦銀",
+   "source": "TWSE t187ap03_L"
+  },
+  "2845": {
+   "listing_date": "1998-11-27",
+   "name": "遠東銀",
+   "source": "TWSE t187ap03_L"
+  },
+  "2849": {
+   "listing_date": "1999-09-27",
+   "name": "安泰銀",
+   "source": "TWSE t187ap03_L"
+  },
+  "2850": {
+   "listing_date": "2000-05-22",
+   "name": "新產",
+   "source": "TWSE t187ap03_L"
+  },
+  "2851": {
+   "listing_date": "2000-07-06",
+   "name": "中再保",
+   "source": "TWSE t187ap03_L"
+  },
+  "2852": {
+   "listing_date": "2000-11-28",
+   "name": "第一保",
+   "source": "TWSE t187ap03_L"
+  },
+  "2855": {
+   "listing_date": "2002-09-16",
+   "name": "統一證",
+   "source": "TWSE t187ap03_L"
+  },
+  "2880": {
+   "listing_date": "2001-12-19",
+   "name": "華南金",
+   "source": "TWSE t187ap03_L"
+  },
+  "2881": {
+   "listing_date": "2001-12-19",
+   "name": "富邦金",
+   "source": "TWSE t187ap03_L"
+  },
+  "2882": {
+   "listing_date": "2001-12-31",
+   "name": "國泰金",
+   "source": "TWSE t187ap03_L"
+  },
+  "2883": {
+   "listing_date": "2001-12-28",
+   "name": "凱基金",
+   "source": "TWSE t187ap03_L"
+  },
+  "2884": {
+   "listing_date": "2002-01-28",
+   "name": "玉山金",
+   "source": "TWSE t187ap03_L"
+  },
+  "2885": {
+   "listing_date": "2002-02-04",
+   "name": "元大金",
+   "source": "TWSE t187ap03_L"
+  },
+  "2886": {
+   "listing_date": "2002-02-04",
+   "name": "兆豐金",
+   "source": "TWSE t187ap03_L"
+  },
+  "2887": {
+   "listing_date": "2002-02-18",
+   "name": "台新新光金",
+   "source": "TWSE t187ap03_L"
+  },
+  "2889": {
+   "listing_date": "2002-03-26",
+   "name": "國票金",
+   "source": "TWSE t187ap03_L"
+  },
+  "2890": {
+   "listing_date": "2002-05-09",
+   "name": "永豐金",
+   "source": "TWSE t187ap03_L"
+  },
+  "2891": {
+   "listing_date": "2002-05-17",
+   "name": "中信金",
+   "source": "TWSE t187ap03_L"
+  },
+  "2892": {
+   "listing_date": "2003-01-02",
+   "name": "第一金",
+   "source": "TWSE t187ap03_L"
+  },
+  "2897": {
+   "listing_date": "2017-05-05",
+   "name": "王道銀行",
+   "source": "TWSE t187ap03_L"
+  },
+  "2901": {
+   "listing_date": "1976-05-07",
+   "name": "欣欣",
+   "source": "TWSE t187ap03_L"
+  },
+  "2903": {
+   "listing_date": "1978-10-11",
+   "name": "遠百",
+   "source": "TWSE t187ap03_L"
+  },
+  "2904": {
+   "listing_date": "1983-01-05",
+   "name": "匯僑",
+   "source": "TWSE t187ap03_L"
+  },
+  "2905": {
+   "listing_date": "1988-09-19",
+   "name": "三商",
+   "source": "TWSE t187ap03_L"
+  },
+  "2906": {
+   "listing_date": "1989-12-26",
+   "name": "高林",
+   "source": "TWSE t187ap03_L"
+  },
+  "2908": {
+   "listing_date": "1993-02-18",
+   "name": "特力",
+   "source": "TWSE t187ap03_L"
+  },
+  "2910": {
+   "listing_date": "1996-12-30",
+   "name": "統領",
+   "source": "TWSE t187ap03_L"
+  },
+  "2911": {
+   "listing_date": "1997-01-18",
+   "name": "麗嬰房",
+   "source": "TWSE t187ap03_L"
+  },
+  "2912": {
+   "listing_date": "1997-08-22",
+   "name": "統一超",
+   "source": "TWSE t187ap03_L"
+  },
+  "2913": {
+   "listing_date": "1962-02-09",
+   "name": "農林",
+   "source": "TWSE t187ap03_L"
+  },
+  "2915": {
+   "listing_date": "1977-07-20",
+   "name": "潤泰全",
+   "source": "TWSE t187ap03_L"
+  },
+  "2923": {
+   "listing_date": "2012-12-07",
+   "name": "鼎固-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "2929": {
+   "listing_date": "2013-12-30",
+   "name": "淘帝-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "2939": {
+   "listing_date": "2018-01-11",
+   "name": "永邑-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "2945": {
+   "listing_date": "2021-11-30",
+   "name": "三商家購",
+   "source": "TWSE t187ap03_L"
+  },
+  "3002": {
+   "listing_date": "2002-01-23",
+   "name": "歐格",
+   "source": "TWSE t187ap03_L"
+  },
+  "3003": {
+   "listing_date": "2002-02-19",
+   "name": "健和興",
+   "source": "TWSE t187ap03_L"
+  },
+  "3004": {
+   "listing_date": "2002-02-25",
+   "name": "豐達科",
+   "source": "TWSE t187ap03_L"
+  },
+  "3005": {
+   "listing_date": "2002-02-25",
+   "name": "神基",
+   "source": "TWSE t187ap03_L"
+  },
+  "3006": {
+   "listing_date": "2002-03-04",
+   "name": "晶豪科",
+   "source": "TWSE t187ap03_L"
+  },
+  "3008": {
+   "listing_date": "2002-03-11",
+   "name": "大立光",
+   "source": "TWSE t187ap03_L"
+  },
+  "3010": {
+   "listing_date": "2002-07-22",
+   "name": "華立",
+   "source": "TWSE t187ap03_L"
+  },
+  "3011": {
+   "listing_date": "2002-07-22",
+   "name": "今皓",
+   "source": "TWSE t187ap03_L"
+  },
+  "3013": {
+   "listing_date": "2002-09-16",
+   "name": "晟銘電",
+   "source": "TWSE t187ap03_L"
+  },
+  "3014": {
+   "listing_date": "2002-10-29",
+   "name": "聯陽",
+   "source": "TWSE t187ap03_L"
+  },
+  "3015": {
+   "listing_date": "2002-10-16",
+   "name": "全漢",
+   "source": "TWSE t187ap03_L"
+  },
+  "3016": {
+   "listing_date": "2002-12-24",
+   "name": "嘉晶",
+   "source": "TWSE t187ap03_L"
+  },
+  "3017": {
+   "listing_date": "2002-09-27",
+   "name": "奇鋐",
+   "source": "TWSE t187ap03_L"
+  },
+  "3018": {
+   "listing_date": "2002-08-26",
+   "name": "隆銘綠能",
+   "source": "TWSE t187ap03_L"
+  },
+  "3019": {
+   "listing_date": "2002-08-26",
+   "name": "亞光",
+   "source": "TWSE t187ap03_L"
+  },
+  "3021": {
+   "listing_date": "2002-08-26",
+   "name": "鴻名",
+   "source": "TWSE t187ap03_L"
+  },
+  "3022": {
+   "listing_date": "2002-08-26",
+   "name": "威強電",
+   "source": "TWSE t187ap03_L"
+  },
+  "3023": {
+   "listing_date": "2002-08-26",
+   "name": "信邦",
+   "source": "TWSE t187ap03_L"
+  },
+  "3024": {
+   "listing_date": "2002-08-26",
+   "name": "憶聲",
+   "source": "TWSE t187ap03_L"
+  },
+  "3025": {
+   "listing_date": "2002-08-26",
+   "name": "星通",
+   "source": "TWSE t187ap03_L"
+  },
+  "3026": {
+   "listing_date": "2002-08-26",
+   "name": "禾伸堂",
+   "source": "TWSE t187ap03_L"
+  },
+  "3027": {
+   "listing_date": "2002-08-26",
+   "name": "盛達",
+   "source": "TWSE t187ap03_L"
+  },
+  "3028": {
+   "listing_date": "2002-08-26",
+   "name": "增你強",
+   "source": "TWSE t187ap03_L"
+  },
+  "3029": {
+   "listing_date": "2002-08-26",
+   "name": "零壹",
+   "source": "TWSE t187ap03_L"
+  },
+  "3030": {
+   "listing_date": "2002-10-29",
+   "name": "德律",
+   "source": "TWSE t187ap03_L"
+  },
+  "3031": {
+   "listing_date": "2002-08-26",
+   "name": "佰鴻",
+   "source": "TWSE t187ap03_L"
+  },
+  "3032": {
+   "listing_date": "2002-08-26",
+   "name": "偉訓",
+   "source": "TWSE t187ap03_L"
+  },
+  "3033": {
+   "listing_date": "2002-08-26",
+   "name": "威健",
+   "source": "TWSE t187ap03_L"
+  },
+  "3034": {
+   "listing_date": "2002-08-26",
+   "name": "聯詠",
+   "source": "TWSE t187ap03_L"
+  },
+  "3035": {
+   "listing_date": "2002-08-26",
+   "name": "智原",
+   "source": "TWSE t187ap03_L"
+  },
+  "3036": {
+   "listing_date": "2002-08-26",
+   "name": "文曄",
+   "source": "TWSE t187ap03_L"
+  },
+  "3037": {
+   "listing_date": "2002-08-26",
+   "name": "欣興",
+   "source": "TWSE t187ap03_L"
+  },
+  "3038": {
+   "listing_date": "2002-08-26",
+   "name": "全台",
+   "source": "TWSE t187ap03_L"
+  },
+  "3040": {
+   "listing_date": "2002-08-26",
+   "name": "遠見",
+   "source": "TWSE t187ap03_L"
+  },
+  "3041": {
+   "listing_date": "2002-08-26",
+   "name": "揚智",
+   "source": "TWSE t187ap03_L"
+  },
+  "3042": {
+   "listing_date": "2002-08-26",
+   "name": "晶技",
+   "source": "TWSE t187ap03_L"
+  },
+  "3043": {
+   "listing_date": "2002-08-26",
+   "name": "科風",
+   "source": "TWSE t187ap03_L"
+  },
+  "3044": {
+   "listing_date": "2002-08-26",
+   "name": "健鼎",
+   "source": "TWSE t187ap03_L"
+  },
+  "3045": {
+   "listing_date": "2002-08-26",
+   "name": "台灣大",
+   "source": "TWSE t187ap03_L"
+  },
+  "3046": {
+   "listing_date": "2002-08-26",
+   "name": "建碁",
+   "source": "TWSE t187ap03_L"
+  },
+  "3047": {
+   "listing_date": "2002-08-26",
+   "name": "訊舟",
+   "source": "TWSE t187ap03_L"
+  },
+  "3048": {
+   "listing_date": "2002-10-01",
+   "name": "益登",
+   "source": "TWSE t187ap03_L"
+  },
+  "3049": {
+   "listing_date": "2002-09-27",
+   "name": "精金",
+   "source": "TWSE t187ap03_L"
+  },
+  "3050": {
+   "listing_date": "2002-10-29",
+   "name": "鈺德",
+   "source": "TWSE t187ap03_L"
+  },
+  "3051": {
+   "listing_date": "2002-10-28",
+   "name": "力特",
+   "source": "TWSE t187ap03_L"
+  },
+  "3052": {
+   "listing_date": "1995-11-25",
+   "name": "夆典",
+   "source": "TWSE t187ap03_L"
+  },
+  "3054": {
+   "listing_date": "2002-11-18",
+   "name": "立萬利",
+   "source": "TWSE t187ap03_L"
+  },
+  "3055": {
+   "listing_date": "2002-12-12",
+   "name": "蔚華科",
+   "source": "TWSE t187ap03_L"
+  },
+  "3056": {
+   "listing_date": "2003-03-03",
+   "name": "富華新",
+   "source": "TWSE t187ap03_L"
+  },
+  "3057": {
+   "listing_date": "2002-12-18",
+   "name": "喬鼎",
+   "source": "TWSE t187ap03_L"
+  },
+  "3058": {
+   "listing_date": "2002-12-09",
+   "name": "立德",
+   "source": "TWSE t187ap03_L"
+  },
+  "3059": {
+   "listing_date": "2002-12-24",
+   "name": "華晶科",
+   "source": "TWSE t187ap03_L"
+  },
+  "3060": {
+   "listing_date": "2003-04-21",
+   "name": "銘異",
+   "source": "TWSE t187ap03_L"
+  },
+  "3062": {
+   "listing_date": "2003-07-28",
+   "name": "建漢",
+   "source": "TWSE t187ap03_L"
+  },
+  "3090": {
+   "listing_date": "2007-12-31",
+   "name": "日電貿",
+   "source": "TWSE t187ap03_L"
+  },
+  "3092": {
+   "listing_date": "2021-05-13",
+   "name": "鴻碩",
+   "source": "TWSE t187ap03_L"
+  },
+  "3094": {
+   "listing_date": "2007-08-06",
+   "name": "聯傑",
+   "source": "TWSE t187ap03_L"
+  },
+  "3130": {
+   "listing_date": "2006-02-17",
+   "name": "一零四",
+   "source": "TWSE t187ap03_L"
+  },
+  "3135": {
+   "listing_date": "2025-08-06",
+   "name": "凌航",
+   "source": "TWSE t187ap03_L"
+  },
+  "3138": {
+   "listing_date": "2020-12-11",
+   "name": "耀登",
+   "source": "TWSE t187ap03_L"
+  },
+  "3149": {
+   "listing_date": "2011-11-23",
+   "name": "正達",
+   "source": "TWSE t187ap03_L"
+  },
+  "3150": {
+   "listing_date": "2024-06-27",
+   "name": "鈺寶-創",
+   "source": "TWSE t187ap03_L"
+  },
+  "3164": {
+   "listing_date": "2010-03-22",
+   "name": "景岳",
+   "source": "TWSE t187ap03_L"
+  },
+  "3167": {
+   "listing_date": "2013-10-21",
+   "name": "大量",
+   "source": "TWSE t187ap03_L"
+  },
+  "3168": {
+   "listing_date": "2024-03-26",
+   "name": "眾福科",
+   "source": "TWSE t187ap03_L"
+  },
+  "3189": {
+   "listing_date": "2004-11-01",
+   "name": "景碩",
+   "source": "TWSE t187ap03_L"
+  },
+  "3209": {
+   "listing_date": "2008-11-26",
+   "name": "全科",
+   "source": "TWSE t187ap03_L"
+  },
+  "3229": {
+   "listing_date": "2009-12-31",
+   "name": "晟鈦",
+   "source": "TWSE t187ap03_L"
+  },
+  "3231": {
+   "listing_date": "2003-08-19",
+   "name": "緯創",
+   "source": "TWSE t187ap03_L"
+  },
+  "3257": {
+   "listing_date": "2011-03-21",
+   "name": "虹冠電",
+   "source": "TWSE t187ap03_L"
+  },
+  "3266": {
+   "listing_date": "2014-12-24",
+   "name": "昇陽",
+   "source": "TWSE t187ap03_L"
+  },
+  "3296": {
+   "listing_date": "2007-12-31",
+   "name": "勝德",
+   "source": "TWSE t187ap03_L"
+  },
+  "3305": {
+   "listing_date": "2008-07-10",
+   "name": "昇貿",
+   "source": "TWSE t187ap03_L"
+  },
+  "3308": {
+   "listing_date": "2008-03-12",
+   "name": "聯德",
+   "source": "TWSE t187ap03_L"
+  },
+  "3311": {
+   "listing_date": "2004-03-08",
+   "name": "閎暉",
+   "source": "TWSE t187ap03_L"
+  },
+  "3312": {
+   "listing_date": "2010-12-29",
+   "name": "弘憶股",
+   "source": "TWSE t187ap03_L"
+  },
+  "3321": {
+   "listing_date": "2015-12-15",
+   "name": "同泰",
+   "source": "TWSE t187ap03_L"
+  },
+  "3338": {
+   "listing_date": "2013-12-13",
+   "name": "泰碩",
+   "source": "TWSE t187ap03_L"
+  },
+  "3346": {
+   "listing_date": "2016-12-19",
+   "name": "麗清",
+   "source": "TWSE t187ap03_L"
+  },
+  "3356": {
+   "listing_date": "2005-03-28",
+   "name": "奇偶",
+   "source": "TWSE t187ap03_L"
+  },
+  "3376": {
+   "listing_date": "2007-12-31",
+   "name": "新日興",
+   "source": "TWSE t187ap03_L"
+  },
+  "3380": {
+   "listing_date": "2004-12-20",
+   "name": "明泰",
+   "source": "TWSE t187ap03_L"
+  },
+  "3406": {
+   "listing_date": "2005-12-20",
+   "name": "玉晶光",
+   "source": "TWSE t187ap03_L"
+  },
+  "3413": {
+   "listing_date": "2015-07-28",
+   "name": "京鼎",
+   "source": "TWSE t187ap03_L"
+  },
+  "3416": {
+   "listing_date": "2015-01-23",
+   "name": "融程電",
+   "source": "TWSE t187ap03_L"
+  },
+  "3419": {
+   "listing_date": "2008-01-21",
+   "name": "譁裕",
+   "source": "TWSE t187ap03_L"
+  },
+  "3432": {
+   "listing_date": "2010-12-30",
+   "name": "台端",
+   "source": "TWSE t187ap03_L"
+  },
+  "3437": {
+   "listing_date": "2014-07-09",
+   "name": "榮創",
+   "source": "TWSE t187ap03_L"
+  },
+  "3443": {
+   "listing_date": "2006-11-03",
+   "name": "創意",
+   "source": "TWSE t187ap03_L"
+  },
+  "3447": {
+   "listing_date": "2022-12-15",
+   "name": "展達",
+   "source": "TWSE t187ap03_L"
+  },
+  "3450": {
+   "listing_date": "2006-04-12",
+   "name": "聯鈞",
+   "source": "TWSE t187ap03_L"
+  },
+  "3481": {
+   "listing_date": "2006-10-24",
+   "name": "群創",
+   "source": "TWSE t187ap03_L"
+  },
+  "3494": {
+   "listing_date": "2007-12-13",
+   "name": "誠研",
+   "source": "TWSE t187ap03_L"
+  },
+  "3501": {
+   "listing_date": "2007-09-20",
+   "name": "維熹",
+   "source": "TWSE t187ap03_L"
+  },
+  "3504": {
+   "listing_date": "2007-01-26",
+   "name": "揚明光",
+   "source": "TWSE t187ap03_L"
+  },
+  "3515": {
+   "listing_date": "2007-11-08",
+   "name": "華擎",
+   "source": "TWSE t187ap03_L"
+  },
+  "3518": {
+   "listing_date": "2007-11-28",
+   "name": "柏騰",
+   "source": "TWSE t187ap03_L"
+  },
+  "3528": {
+   "listing_date": "2016-05-18",
+   "name": "安馳",
+   "source": "TWSE t187ap03_L"
+  },
+  "3530": {
+   "listing_date": "2018-07-16",
+   "name": "晶相光",
+   "source": "TWSE t187ap03_L"
+  },
+  "3532": {
+   "listing_date": "2007-12-10",
+   "name": "台勝科",
+   "source": "TWSE t187ap03_L"
+  },
+  "3533": {
+   "listing_date": "2007-12-10",
+   "name": "嘉澤",
+   "source": "TWSE t187ap03_L"
+  },
+  "3535": {
+   "listing_date": "2008-01-31",
+   "name": "晶彩科",
+   "source": "TWSE t187ap03_L"
+  },
+  "3543": {
+   "listing_date": "2020-04-15",
+   "name": "州巧",
+   "source": "TWSE t187ap03_L"
+  },
+  "3545": {
+   "listing_date": "2007-07-03",
+   "name": "敦泰",
+   "source": "TWSE t187ap03_L"
+  },
+  "3550": {
+   "listing_date": "2010-11-10",
+   "name": "聯穎",
+   "source": "TWSE t187ap03_L"
+  },
+  "3557": {
+   "listing_date": "2008-02-27",
+   "name": "嘉威",
+   "source": "TWSE t187ap03_L"
+  },
+  "3563": {
+   "listing_date": "2019-04-02",
+   "name": "牧德",
+   "source": "TWSE t187ap03_L"
+  },
+  "3576": {
+   "listing_date": "2009-01-12",
+   "name": "聯合再生",
+   "source": "TWSE t187ap03_L"
+  },
+  "3583": {
+   "listing_date": "2013-03-12",
+   "name": "辛耘",
+   "source": "TWSE t187ap03_L"
+  },
+  "3588": {
+   "listing_date": "2009-08-14",
+   "name": "通嘉",
+   "source": "TWSE t187ap03_L"
+  },
+  "3591": {
+   "listing_date": "2010-11-12",
+   "name": "艾笛森",
+   "source": "TWSE t187ap03_L"
+  },
+  "3592": {
+   "listing_date": "2022-01-07",
+   "name": "瑞鼎",
+   "source": "TWSE t187ap03_L"
+  },
+  "3593": {
+   "listing_date": "2009-03-16",
+   "name": "力銘",
+   "source": "TWSE t187ap03_L"
+  },
+  "3596": {
+   "listing_date": "2009-03-11",
+   "name": "智易",
+   "source": "TWSE t187ap03_L"
+  },
+  "3605": {
+   "listing_date": "2009-03-26",
+   "name": "宏致",
+   "source": "TWSE t187ap03_L"
+  },
+  "3607": {
+   "listing_date": "2009-10-28",
+   "name": "谷崧",
+   "source": "TWSE t187ap03_L"
+  },
+  "3617": {
+   "listing_date": "2009-12-23",
+   "name": "碩天",
+   "source": "TWSE t187ap03_L"
+  },
+  "3622": {
+   "listing_date": "2009-03-25",
+   "name": "洋華",
+   "source": "TWSE t187ap03_L"
+  },
+  "3645": {
+   "listing_date": "2011-10-05",
+   "name": "達邁",
+   "source": "TWSE t187ap03_L"
+  },
+  "3652": {
+   "listing_date": "2022-09-21",
+   "name": "精聯",
+   "source": "TWSE t187ap03_L"
+  },
+  "3653": {
+   "listing_date": "2009-11-18",
+   "name": "健策",
+   "source": "TWSE t187ap03_L"
+  },
+  "3661": {
+   "listing_date": "2014-10-28",
+   "name": "世芯-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "3665": {
+   "listing_date": "2011-04-21",
+   "name": "貿聯-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "3669": {
+   "listing_date": "2011-08-25",
+   "name": "圓展",
+   "source": "TWSE t187ap03_L"
+  },
+  "3673": {
+   "listing_date": "2010-10-29",
+   "name": "TPK-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "3679": {
+   "listing_date": "2011-10-05",
+   "name": "新至陞",
+   "source": "TWSE t187ap03_L"
+  },
+  "3686": {
+   "listing_date": "2010-07-20",
+   "name": "達能",
+   "source": "TWSE t187ap03_L"
+  },
+  "3694": {
+   "listing_date": "2011-05-03",
+   "name": "海華",
+   "source": "TWSE t187ap03_L"
+  },
+  "3701": {
+   "listing_date": "2004-08-30",
+   "name": "大眾控",
+   "source": "TWSE t187ap03_L"
+  },
+  "3702": {
+   "listing_date": "2005-11-09",
+   "name": "大聯大",
+   "source": "TWSE t187ap03_L"
+  },
+  "3703": {
+   "listing_date": "2010-04-08",
+   "name": "欣陸",
+   "source": "TWSE t187ap03_L"
+  },
+  "3704": {
+   "listing_date": "2010-08-16",
+   "name": "合勤控",
+   "source": "TWSE t187ap03_L"
+  },
+  "3705": {
+   "listing_date": "2011-01-03",
+   "name": "永信",
+   "source": "TWSE t187ap03_L"
+  },
+  "3706": {
+   "listing_date": "2013-09-12",
+   "name": "神達",
+   "source": "TWSE t187ap03_L"
+  },
+  "3708": {
+   "listing_date": "2016-08-31",
+   "name": "上緯投控",
+   "source": "TWSE t187ap03_L"
+  },
+  "3711": {
+   "listing_date": "2018-04-30",
+   "name": "日月光投控",
+   "source": "TWSE t187ap03_L"
+  },
+  "3712": {
+   "listing_date": "2018-10-01",
+   "name": "永崴投控",
+   "source": "TWSE t187ap03_L"
+  },
+  "3714": {
+   "listing_date": "2021-01-06",
+   "name": "富采",
+   "source": "TWSE t187ap03_L"
+  },
+  "3715": {
+   "listing_date": "2022-08-25",
+   "name": "定穎投控",
+   "source": "TWSE t187ap03_L"
+  },
+  "3716": {
+   "listing_date": "2024-09-02",
+   "name": "中化控股",
+   "source": "TWSE t187ap03_L"
+  },
+  "3717": {
+   "listing_date": "2025-08-15",
+   "name": "聯嘉投控",
+   "source": "TWSE t187ap03_L"
+  },
+  "4104": {
+   "listing_date": "2007-12-31",
+   "name": "佳醫",
+   "source": "TWSE t187ap03_L"
+  },
+  "4106": {
+   "listing_date": "2004-11-08",
+   "name": "雃博",
+   "source": "TWSE t187ap03_L"
+  },
+  "4108": {
+   "listing_date": "2008-07-16",
+   "name": "懷特",
+   "source": "TWSE t187ap03_L"
+  },
+  "4119": {
+   "listing_date": "2004-01-07",
+   "name": "旭富",
+   "source": "TWSE t187ap03_L"
+  },
+  "4133": {
+   "listing_date": "2009-12-28",
+   "name": "亞諾法",
+   "source": "TWSE t187ap03_L"
+  },
+  "4137": {
+   "listing_date": "2013-11-27",
+   "name": "麗豐-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "4142": {
+   "listing_date": "2012-05-03",
+   "name": "國光生",
+   "source": "TWSE t187ap03_L"
+  },
+  "4148": {
+   "listing_date": "2017-06-08",
+   "name": "全宇生技-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "4155": {
+   "listing_date": "2017-12-05",
+   "name": "訊映",
+   "source": "TWSE t187ap03_L"
+  },
+  "4164": {
+   "listing_date": "2012-10-24",
+   "name": "承業醫",
+   "source": "TWSE t187ap03_L"
+  },
+  "4169": {
+   "listing_date": "2026-04-08",
+   "name": "泰宗",
+   "source": "TWSE t187ap03_L"
+  },
+  "4178": {
+   "listing_date": "2026-04-30",
+   "name": "永笙-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "4190": {
+   "listing_date": "2015-10-21",
+   "name": "佐登-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "4195": {
+   "listing_date": "2026-05-11",
+   "name": "基米-創",
+   "source": "TWSE t187ap03_L"
+  },
+  "4306": {
+   "listing_date": "2008-01-21",
+   "name": "炎洲",
+   "source": "TWSE t187ap03_L"
+  },
+  "4414": {
+   "listing_date": "2004-09-06",
+   "name": "如興",
+   "source": "TWSE t187ap03_L"
+  },
+  "4426": {
+   "listing_date": "2011-12-16",
+   "name": "利勤",
+   "source": "TWSE t187ap03_L"
+  },
+  "4438": {
+   "listing_date": "2016-10-18",
+   "name": "廣越",
+   "source": "TWSE t187ap03_L"
+  },
+  "4439": {
+   "listing_date": "2019-12-05",
+   "name": "冠星-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "4440": {
+   "listing_date": "2021-10-25",
+   "name": "宜新實業",
+   "source": "TWSE t187ap03_L"
+  },
+  "4441": {
+   "listing_date": "2025-09-09",
+   "name": "振大環球",
+   "source": "TWSE t187ap03_L"
+  },
+  "4526": {
+   "listing_date": "2003-09-15",
+   "name": "東台",
+   "source": "TWSE t187ap03_L"
+  },
+  "4532": {
+   "listing_date": "2003-08-04",
+   "name": "瑞智",
+   "source": "TWSE t187ap03_L"
+  },
+  "4536": {
+   "listing_date": "2013-10-09",
+   "name": "拓凱",
+   "source": "TWSE t187ap03_L"
+  },
+  "4540": {
+   "listing_date": "2018-08-15",
+   "name": "全球傳動",
+   "source": "TWSE t187ap03_L"
+  },
+  "4545": {
+   "listing_date": "2016-01-06",
+   "name": "銘鈺",
+   "source": "TWSE t187ap03_L"
+  },
+  "4551": {
+   "listing_date": "2015-08-10",
+   "name": "智伸科",
+   "source": "TWSE t187ap03_L"
+  },
+  "4552": {
+   "listing_date": "2016-07-20",
+   "name": "力達-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "4555": {
+   "listing_date": "2015-10-27",
+   "name": "氣立",
+   "source": "TWSE t187ap03_L"
+  },
+  "4557": {
+   "listing_date": "2015-10-12",
+   "name": "永新-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "4560": {
+   "listing_date": "2017-05-26",
+   "name": "強信-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "4562": {
+   "listing_date": "2017-08-21",
+   "name": "穎漢",
+   "source": "TWSE t187ap03_L"
+  },
+  "4564": {
+   "listing_date": "2019-03-07",
+   "name": "元翎",
+   "source": "TWSE t187ap03_L"
+  },
+  "4566": {
+   "listing_date": "2018-02-05",
+   "name": "時碩工業",
+   "source": "TWSE t187ap03_L"
+  },
+  "4569": {
+   "listing_date": "2023-07-31",
+   "name": "六方科-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "4571": {
+   "listing_date": "2019-09-17",
+   "name": "鈞興-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "4572": {
+   "listing_date": "2019-09-10",
+   "name": "駐龍",
+   "source": "TWSE t187ap03_L"
+  },
+  "4576": {
+   "listing_date": "2019-09-04",
+   "name": "大銀微系統",
+   "source": "TWSE t187ap03_L"
+  },
+  "4581": {
+   "listing_date": "2020-03-09",
+   "name": "光隆精密-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "4582": {
+   "listing_date": "2026-05-22",
+   "name": "聚恆-創",
+   "source": "TWSE t187ap03_L"
+  },
+  "4583": {
+   "listing_date": "2022-05-09",
+   "name": "台灣精銳",
+   "source": "TWSE t187ap03_L"
+  },
+  "4585": {
+   "listing_date": "2025-09-26",
+   "name": "達明",
+   "source": "TWSE t187ap03_L"
+  },
+  "4588": {
+   "listing_date": "2024-01-29",
+   "name": "玖鼎電力",
+   "source": "TWSE t187ap03_L"
+  },
+  "4590": {
+   "listing_date": "2026-01-29",
+   "name": "富田-創",
+   "source": "TWSE t187ap03_L"
+  },
+  "4720": {
+   "listing_date": "2015-06-24",
+   "name": "德淵",
+   "source": "TWSE t187ap03_L"
+  },
+  "4722": {
+   "listing_date": "2012-08-15",
+   "name": "國精化",
+   "source": "TWSE t187ap03_L"
+  },
+  "4736": {
+   "listing_date": "2023-12-22",
+   "name": "泰博",
+   "source": "TWSE t187ap03_L"
+  },
+  "4737": {
+   "listing_date": "2010-12-23",
+   "name": "華廣",
+   "source": "TWSE t187ap03_L"
+  },
+  "4739": {
+   "listing_date": "2017-09-08",
+   "name": "康普",
+   "source": "TWSE t187ap03_L"
+  },
+  "4746": {
+   "listing_date": "2011-03-01",
+   "name": "台耀",
+   "source": "TWSE t187ap03_L"
+  },
+  "4755": {
+   "listing_date": "2013-11-27",
+   "name": "三福化",
+   "source": "TWSE t187ap03_L"
+  },
+  "4763": {
+   "listing_date": "2015-11-09",
+   "name": "材料*-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "4764": {
+   "listing_date": "2018-01-04",
+   "name": "雙鍵",
+   "source": "TWSE t187ap03_L"
+  },
+  "4766": {
+   "listing_date": "2018-11-28",
+   "name": "南寶",
+   "source": "TWSE t187ap03_L"
+  },
+  "4770": {
+   "listing_date": "2021-12-22",
+   "name": "上品",
+   "source": "TWSE t187ap03_L"
+  },
+  "4771": {
+   "listing_date": "2024-03-18",
+   "name": "望隼",
+   "source": "TWSE t187ap03_L"
+  },
+  "4807": {
+   "listing_date": "2017-06-26",
+   "name": "日成-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "4904": {
+   "listing_date": "2005-08-24",
+   "name": "遠傳",
+   "source": "TWSE t187ap03_L"
+  },
+  "4906": {
+   "listing_date": "2003-06-30",
+   "name": "正文",
+   "source": "TWSE t187ap03_L"
+  },
+  "4912": {
+   "listing_date": "2015-05-21",
+   "name": "聯德控股-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "4915": {
+   "listing_date": "2012-10-05",
+   "name": "致伸",
+   "source": "TWSE t187ap03_L"
+  },
+  "4916": {
+   "listing_date": "2013-11-21",
+   "name": "事欣科",
+   "source": "TWSE t187ap03_L"
+  },
+  "4919": {
+   "listing_date": "2010-09-27",
+   "name": "新唐",
+   "source": "TWSE t187ap03_L"
+  },
+  "4927": {
+   "listing_date": "2015-09-08",
+   "name": "泰鼎-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "4930": {
+   "listing_date": "2010-06-21",
+   "name": "燦星網",
+   "source": "TWSE t187ap03_L"
+  },
+  "4934": {
+   "listing_date": "2011-08-16",
+   "name": "太極",
+   "source": "TWSE t187ap03_L"
+  },
+  "4935": {
+   "listing_date": "2011-07-28",
+   "name": "茂林-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "4938": {
+   "listing_date": "2010-06-24",
+   "name": "和碩",
+   "source": "TWSE t187ap03_L"
+  },
+  "4942": {
+   "listing_date": "2011-06-27",
+   "name": "嘉彰",
+   "source": "TWSE t187ap03_L"
+  },
+  "4943": {
+   "listing_date": "2016-11-11",
+   "name": "康控-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "4949": {
+   "listing_date": "2024-05-09",
+   "name": "有成精密",
+   "source": "TWSE t187ap03_L"
+  },
+  "4952": {
+   "listing_date": "2011-11-01",
+   "name": "凌通",
+   "source": "TWSE t187ap03_L"
+  },
+  "4956": {
+   "listing_date": "2011-10-24",
+   "name": "光鋐",
+   "source": "TWSE t187ap03_L"
+  },
+  "4958": {
+   "listing_date": "2011-12-26",
+   "name": "臻鼎-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "4960": {
+   "listing_date": "2011-10-24",
+   "name": "誠美材",
+   "source": "TWSE t187ap03_L"
+  },
+  "4961": {
+   "listing_date": "2018-10-17",
+   "name": "天鈺",
+   "source": "TWSE t187ap03_L"
+  },
+  "4967": {
+   "listing_date": "2019-01-14",
+   "name": "十銓",
+   "source": "TWSE t187ap03_L"
+  },
+  "4968": {
+   "listing_date": "2015-11-13",
+   "name": "立積",
+   "source": "TWSE t187ap03_L"
+  },
+  "4976": {
+   "listing_date": "2012-11-20",
+   "name": "佳凌",
+   "source": "TWSE t187ap03_L"
+  },
+  "4977": {
+   "listing_date": "2013-11-20",
+   "name": "眾達-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "4989": {
+   "listing_date": "2018-06-28",
+   "name": "榮科",
+   "source": "TWSE t187ap03_L"
+  },
+  "4994": {
+   "listing_date": "2013-12-25",
+   "name": "傳奇",
+   "source": "TWSE t187ap03_L"
+  },
+  "4999": {
+   "listing_date": "2013-06-03",
+   "name": "鑫禾",
+   "source": "TWSE t187ap03_L"
+  },
+  "5007": {
+   "listing_date": "2011-09-16",
+   "name": "三星",
+   "source": "TWSE t187ap03_L"
+  },
+  "5203": {
+   "listing_date": "2004-09-27",
+   "name": "訊連",
+   "source": "TWSE t187ap03_L"
+  },
+  "5215": {
+   "listing_date": "2011-12-26",
+   "name": "科嘉-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "5222": {
+   "listing_date": "2021-10-25",
+   "name": "全訊",
+   "source": "TWSE t187ap03_L"
+  },
+  "5225": {
+   "listing_date": "2012-11-05",
+   "name": "東科-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "5234": {
+   "listing_date": "2012-07-16",
+   "name": "達興材料",
+   "source": "TWSE t187ap03_L"
+  },
+  "5236": {
+   "listing_date": "2026-07-16",
+   "name": "凌陽創新",
+   "source": "TWSE t187ap03_L"
+  },
+  "5243": {
+   "listing_date": "2013-11-25",
+   "name": "乙盛-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "5244": {
+   "listing_date": "2022-01-19",
+   "name": "弘凱",
+   "source": "TWSE t187ap03_L"
+  },
+  "5258": {
+   "listing_date": "2016-12-30",
+   "name": "虹堡",
+   "source": "TWSE t187ap03_L"
+  },
+  "5269": {
+   "listing_date": "2012-12-12",
+   "name": "祥碩",
+   "source": "TWSE t187ap03_L"
+  },
+  "5283": {
+   "listing_date": "2019-05-24",
+   "name": "禾聯碩",
+   "source": "TWSE t187ap03_L"
+  },
+  "5284": {
+   "listing_date": "2017-03-09",
+   "name": "jpp-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "5285": {
+   "listing_date": "2014-02-25",
+   "name": "界霖",
+   "source": "TWSE t187ap03_L"
+  },
+  "5288": {
+   "listing_date": "2014-09-25",
+   "name": "豐祥-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "5292": {
+   "listing_date": "2023-11-21",
+   "name": "華懋",
+   "source": "TWSE t187ap03_L"
+  },
+  "5306": {
+   "listing_date": "2022-03-08",
+   "name": "桂盟",
+   "source": "TWSE t187ap03_L"
+  },
+  "5388": {
+   "listing_date": "2007-12-03",
+   "name": "中磊",
+   "source": "TWSE t187ap03_L"
+  },
+  "5434": {
+   "listing_date": "2003-08-25",
+   "name": "崇越",
+   "source": "TWSE t187ap03_L"
+  },
+  "5469": {
+   "listing_date": "2003-08-25",
+   "name": "瀚宇博",
+   "source": "TWSE t187ap03_L"
+  },
+  "5471": {
+   "listing_date": "2003-08-25",
+   "name": "松翰",
+   "source": "TWSE t187ap03_L"
+  },
+  "5484": {
+   "listing_date": "2003-08-25",
+   "name": "慧友",
+   "source": "TWSE t187ap03_L"
+  },
+  "5515": {
+   "listing_date": "2003-10-06",
+   "name": "建國",
+   "source": "TWSE t187ap03_L"
+  },
+  "5519": {
+   "listing_date": "2014-02-10",
+   "name": "隆大",
+   "source": "TWSE t187ap03_L"
+  },
+  "5521": {
+   "listing_date": "2012-12-18",
+   "name": "工信",
+   "source": "TWSE t187ap03_L"
+  },
+  "5522": {
+   "listing_date": "2007-08-06",
+   "name": "遠雄",
+   "source": "TWSE t187ap03_L"
+  },
+  "5525": {
+   "listing_date": "2004-11-26",
+   "name": "順天",
+   "source": "TWSE t187ap03_L"
+  },
+  "5531": {
+   "listing_date": "2005-01-31",
+   "name": "鄉林",
+   "source": "TWSE t187ap03_L"
+  },
+  "5533": {
+   "listing_date": "2008-04-30",
+   "name": "皇鼎",
+   "source": "TWSE t187ap03_L"
+  },
+  "5534": {
+   "listing_date": "2004-05-24",
+   "name": "長虹",
+   "source": "TWSE t187ap03_L"
+  },
+  "5538": {
+   "listing_date": "2013-12-16",
+   "name": "東明-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "5546": {
+   "listing_date": "2020-05-20",
+   "name": "永固-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "5607": {
+   "listing_date": "2004-12-02",
+   "name": "遠雄港",
+   "source": "TWSE t187ap03_L"
+  },
+  "5608": {
+   "listing_date": "2003-08-25",
+   "name": "四維航",
+   "source": "TWSE t187ap03_L"
+  },
+  "5706": {
+   "listing_date": "2011-10-21",
+   "name": "鳳凰",
+   "source": "TWSE t187ap03_L"
+  },
+  "5871": {
+   "listing_date": "2011-12-13",
+   "name": "中租-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "5876": {
+   "listing_date": "2018-10-19",
+   "name": "上海商銀",
+   "source": "TWSE t187ap03_L"
+  },
+  "5880": {
+   "listing_date": "2011-12-01",
+   "name": "合庫金",
+   "source": "TWSE t187ap03_L"
+  },
+  "5906": {
+   "listing_date": "2011-10-24",
+   "name": "台南-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "5907": {
+   "listing_date": "2012-06-06",
+   "name": "大洋-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "6005": {
+   "listing_date": "2005-11-21",
+   "name": "群益證",
+   "source": "TWSE t187ap03_L"
+  },
+  "6024": {
+   "listing_date": "2017-10-16",
+   "name": "群益期",
+   "source": "TWSE t187ap03_L"
+  },
+  "6108": {
+   "listing_date": "2008-12-30",
+   "name": "競國",
+   "source": "TWSE t187ap03_L"
+  },
+  "6112": {
+   "listing_date": "2003-08-04",
+   "name": "邁達特",
+   "source": "TWSE t187ap03_L"
+  },
+  "6115": {
+   "listing_date": "2004-07-19",
+   "name": "鎰勝",
+   "source": "TWSE t187ap03_L"
+  },
+  "6116": {
+   "listing_date": "2004-09-06",
+   "name": "彩晶",
+   "source": "TWSE t187ap03_L"
+  },
+  "6117": {
+   "listing_date": "2003-08-25",
+   "name": "迎廣",
+   "source": "TWSE t187ap03_L"
+  },
+  "6120": {
+   "listing_date": "2006-09-13",
+   "name": "達運",
+   "source": "TWSE t187ap03_L"
+  },
+  "6128": {
+   "listing_date": "2003-06-16",
+   "name": "上福",
+   "source": "TWSE t187ap03_L"
+  },
+  "6133": {
+   "listing_date": "2003-08-25",
+   "name": "金橋",
+   "source": "TWSE t187ap03_L"
+  },
+  "6136": {
+   "listing_date": "2003-08-25",
+   "name": "富爾特",
+   "source": "TWSE t187ap03_L"
+  },
+  "6139": {
+   "listing_date": "2003-08-25",
+   "name": "亞翔",
+   "source": "TWSE t187ap03_L"
+  },
+  "6141": {
+   "listing_date": "2003-10-22",
+   "name": "柏承",
+   "source": "TWSE t187ap03_L"
+  },
+  "6142": {
+   "listing_date": "2003-08-04",
+   "name": "友勁",
+   "source": "TWSE t187ap03_L"
+  },
+  "6152": {
+   "listing_date": "2009-12-08",
+   "name": "百一",
+   "source": "TWSE t187ap03_L"
+  },
+  "6153": {
+   "listing_date": "2008-01-21",
+   "name": "嘉聯益",
+   "source": "TWSE t187ap03_L"
+  },
+  "6155": {
+   "listing_date": "2006-08-18",
+   "name": "鈞寶",
+   "source": "TWSE t187ap03_L"
+  },
+  "6164": {
+   "listing_date": "2008-10-21",
+   "name": "華興",
+   "source": "TWSE t187ap03_L"
+  },
+  "6165": {
+   "listing_date": "2003-08-04",
+   "name": "浪凡",
+   "source": "TWSE t187ap03_L"
+  },
+  "6166": {
+   "listing_date": "2004-11-08",
+   "name": "凌華",
+   "source": "TWSE t187ap03_L"
+  },
+  "6168": {
+   "listing_date": "2003-08-25",
+   "name": "宏齊",
+   "source": "TWSE t187ap03_L"
+  },
+  "6176": {
+   "listing_date": "2007-05-15",
+   "name": "瑞儀",
+   "source": "TWSE t187ap03_L"
+  },
+  "6177": {
+   "listing_date": "2013-08-01",
+   "name": "達麗",
+   "source": "TWSE t187ap03_L"
+  },
+  "6183": {
+   "listing_date": "2011-12-01",
+   "name": "關貿",
+   "source": "TWSE t187ap03_L"
+  },
+  "6184": {
+   "listing_date": "2005-02-15",
+   "name": "大豐電",
+   "source": "TWSE t187ap03_L"
+  },
+  "6189": {
+   "listing_date": "2004-05-24",
+   "name": "豐藝",
+   "source": "TWSE t187ap03_L"
+  },
+  "6191": {
+   "listing_date": "2007-10-19",
+   "name": "精成科",
+   "source": "TWSE t187ap03_L"
+  },
+  "6192": {
+   "listing_date": "2004-09-27",
+   "name": "巨路",
+   "source": "TWSE t187ap03_L"
+  },
+  "6196": {
+   "listing_date": "2004-05-24",
+   "name": "帆宣",
+   "source": "TWSE t187ap03_L"
+  },
+  "6197": {
+   "listing_date": "2004-11-08",
+   "name": "佳必琪",
+   "source": "TWSE t187ap03_L"
+  },
+  "6201": {
+   "listing_date": "2004-09-27",
+   "name": "亞弘電",
+   "source": "TWSE t187ap03_L"
+  },
+  "6202": {
+   "listing_date": "2004-09-27",
+   "name": "盛群",
+   "source": "TWSE t187ap03_L"
+  },
+  "6205": {
+   "listing_date": "2008-01-21",
+   "name": "詮欣",
+   "source": "TWSE t187ap03_L"
+  },
+  "6206": {
+   "listing_date": "2004-08-03",
+   "name": "飛捷",
+   "source": "TWSE t187ap03_L"
+  },
+  "6209": {
+   "listing_date": "2004-11-08",
+   "name": "今國光",
+   "source": "TWSE t187ap03_L"
+  },
+  "6213": {
+   "listing_date": "2008-01-21",
+   "name": "聯茂",
+   "source": "TWSE t187ap03_L"
+  },
+  "6214": {
+   "listing_date": "2010-12-30",
+   "name": "精誠",
+   "source": "TWSE t187ap03_L"
+  },
+  "6215": {
+   "listing_date": "2007-12-31",
+   "name": "和椿",
+   "source": "TWSE t187ap03_L"
+  },
+  "6216": {
+   "listing_date": "2004-09-27",
+   "name": "居易",
+   "source": "TWSE t187ap03_L"
+  },
+  "6224": {
+   "listing_date": "2009-09-17",
+   "name": "聚鼎",
+   "source": "TWSE t187ap03_L"
+  },
+  "6225": {
+   "listing_date": "2004-09-27",
+   "name": "天瀚",
+   "source": "TWSE t187ap03_L"
+  },
+  "6226": {
+   "listing_date": "2008-11-10",
+   "name": "光鼎",
+   "source": "TWSE t187ap03_L"
+  },
+  "6230": {
+   "listing_date": "2010-09-16",
+   "name": "尼得科超眾",
+   "source": "TWSE t187ap03_L"
+  },
+  "6235": {
+   "listing_date": "2004-08-23",
+   "name": "華孚",
+   "source": "TWSE t187ap03_L"
+  },
+  "6239": {
+   "listing_date": "2004-11-08",
+   "name": "力成",
+   "source": "TWSE t187ap03_L"
+  },
+  "6243": {
+   "listing_date": "2009-12-17",
+   "name": "迅杰",
+   "source": "TWSE t187ap03_L"
+  },
+  "6257": {
+   "listing_date": "2003-08-25",
+   "name": "矽格",
+   "source": "TWSE t187ap03_L"
+  },
+  "6269": {
+   "listing_date": "2003-09-23",
+   "name": "台郡",
+   "source": "TWSE t187ap03_L"
+  },
+  "6271": {
+   "listing_date": "2007-11-16",
+   "name": "同欣電",
+   "source": "TWSE t187ap03_L"
+  },
+  "6272": {
+   "listing_date": "2025-12-22",
+   "name": "驊陞",
+   "source": "TWSE t187ap03_L"
+  },
+  "6277": {
+   "listing_date": "2003-10-30",
+   "name": "宏正",
+   "source": "TWSE t187ap03_L"
+  },
+  "6278": {
+   "listing_date": "2010-08-24",
+   "name": "台表科",
+   "source": "TWSE t187ap03_L"
+  },
+  "6281": {
+   "listing_date": "2005-12-08",
+   "name": "全國電",
+   "source": "TWSE t187ap03_L"
+  },
+  "6282": {
+   "listing_date": "2003-09-08",
+   "name": "康舒",
+   "source": "TWSE t187ap03_L"
+  },
+  "6283": {
+   "listing_date": "2008-01-21",
+   "name": "淳安",
+   "source": "TWSE t187ap03_L"
+  },
+  "6285": {
+   "listing_date": "2003-09-22",
+   "name": "啟碁",
+   "source": "TWSE t187ap03_L"
+  },
+  "6405": {
+   "listing_date": "2013-11-28",
+   "name": "悅城",
+   "source": "TWSE t187ap03_L"
+  },
+  "6409": {
+   "listing_date": "2014-03-31",
+   "name": "旭隼",
+   "source": "TWSE t187ap03_L"
+  },
+  "6412": {
+   "listing_date": "2013-11-08",
+   "name": "群電",
+   "source": "TWSE t187ap03_L"
+  },
+  "6414": {
+   "listing_date": "2014-03-28",
+   "name": "樺漢",
+   "source": "TWSE t187ap03_L"
+  },
+  "6415": {
+   "listing_date": "2013-12-12",
+   "name": "矽力*-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "6416": {
+   "listing_date": "2018-04-16",
+   "name": "瑞祺電通",
+   "source": "TWSE t187ap03_L"
+  },
+  "6426": {
+   "listing_date": "2021-03-24",
+   "name": "統新",
+   "source": "TWSE t187ap03_L"
+  },
+  "6431": {
+   "listing_date": "2014-12-04",
+   "name": "光麗-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "6438": {
+   "listing_date": "2021-01-19",
+   "name": "迅得",
+   "source": "TWSE t187ap03_L"
+  },
+  "6442": {
+   "listing_date": "2015-07-14",
+   "name": "光聖",
+   "source": "TWSE t187ap03_L"
+  },
+  "6443": {
+   "listing_date": "2015-10-01",
+   "name": "元晶",
+   "source": "TWSE t187ap03_L"
+  },
+  "6446": {
+   "listing_date": "2024-01-25",
+   "name": "藥華藥",
+   "source": "TWSE t187ap03_L"
+  },
+  "6449": {
+   "listing_date": "2014-12-09",
+   "name": "鈺邦",
+   "source": "TWSE t187ap03_L"
+  },
+  "6451": {
+   "listing_date": "2015-01-26",
+   "name": "訊芯-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "6456": {
+   "listing_date": "2015-06-12",
+   "name": "GIS-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "6464": {
+   "listing_date": "2015-12-16",
+   "name": "台數科",
+   "source": "TWSE t187ap03_L"
+  },
+  "6467": {
+   "listing_date": "2026-10-20",
+   "name": "泰合",
+   "source": "TWSE t187ap03_L"
+  },
+  "6472": {
+   "listing_date": "2023-12-19",
+   "name": "保瑞",
+   "source": "TWSE t187ap03_L"
+  },
+  "6477": {
+   "listing_date": "2016-06-21",
+   "name": "安集",
+   "source": "TWSE t187ap03_L"
+  },
+  "6491": {
+   "listing_date": "2019-10-07",
+   "name": "晶碩",
+   "source": "TWSE t187ap03_L"
+  },
+  "6504": {
+   "listing_date": "2013-05-07",
+   "name": "南六",
+   "source": "TWSE t187ap03_L"
+  },
+  "6505": {
+   "listing_date": "2003-12-26",
+   "name": "台塑化",
+   "source": "TWSE t187ap03_L"
+  },
+  "6515": {
+   "listing_date": "2021-01-20",
+   "name": "穎崴",
+   "source": "TWSE t187ap03_L"
+  },
+  "6525": {
+   "listing_date": "2016-04-12",
+   "name": "捷敏-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "6526": {
+   "listing_date": "2023-10-19",
+   "name": "達發",
+   "source": "TWSE t187ap03_L"
+  },
+  "6531": {
+   "listing_date": "2016-05-31",
+   "name": "愛普*",
+   "source": "TWSE t187ap03_L"
+  },
+  "6533": {
+   "listing_date": "2017-03-14",
+   "name": "晶心科",
+   "source": "TWSE t187ap03_L"
+  },
+  "6534": {
+   "listing_date": "2023-12-21",
+   "name": "正瀚-創",
+   "source": "TWSE t187ap03_L"
+  },
+  "6541": {
+   "listing_date": "2017-10-26",
+   "name": "泰福-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "6550": {
+   "listing_date": "2022-06-06",
+   "name": "北極星藥業-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "6552": {
+   "listing_date": "2017-01-10",
+   "name": "易華電",
+   "source": "TWSE t187ap03_L"
+  },
+  "6558": {
+   "listing_date": "2018-12-05",
+   "name": "興能高",
+   "source": "TWSE t187ap03_L"
+  },
+  "6573": {
+   "listing_date": "2017-09-26",
+   "name": "虹揚-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "6579": {
+   "listing_date": "2017-08-21",
+   "name": "研揚",
+   "source": "TWSE t187ap03_L"
+  },
+  "6581": {
+   "listing_date": "2018-01-30",
+   "name": "鋼聯",
+   "source": "TWSE t187ap03_L"
+  },
+  "6582": {
+   "listing_date": "2017-06-14",
+   "name": "申豐",
+   "source": "TWSE t187ap03_L"
+  },
+  "6585": {
+   "listing_date": "2022-05-20",
+   "name": "鼎基",
+   "source": "TWSE t187ap03_L"
+  },
+  "6589": {
+   "listing_date": "2025-07-21",
+   "name": "台康生技",
+   "source": "TWSE t187ap03_L"
+  },
+  "6591": {
+   "listing_date": "2017-12-28",
+   "name": "動力-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "6592": {
+   "listing_date": "2019-12-09",
+   "name": "和潤企業",
+   "source": "TWSE t187ap03_L"
+  },
+  "6598": {
+   "listing_date": "2020-06-09",
+   "name": "ABC-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "6605": {
+   "listing_date": "2004-03-17",
+   "name": "帝寶",
+   "source": "TWSE t187ap03_L"
+  },
+  "6606": {
+   "listing_date": "2023-03-24",
+   "name": "建德工業",
+   "source": "TWSE t187ap03_L"
+  },
+  "6614": {
+   "listing_date": "2025-11-25",
+   "name": "資拓宏宇",
+   "source": "TWSE t187ap03_L"
+  },
+  "6625": {
+   "listing_date": "2018-02-07",
+   "name": "必應",
+   "source": "TWSE t187ap03_L"
+  },
+  "6641": {
+   "listing_date": "2018-09-21",
+   "name": "基士德-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "6645": {
+   "listing_date": "2023-12-21",
+   "name": "金萬林-創",
+   "source": "TWSE t187ap03_L"
+  },
+  "6655": {
+   "listing_date": "2018-11-28",
+   "name": "科定",
+   "source": "TWSE t187ap03_L"
+  },
+  "6657": {
+   "listing_date": "2023-06-12",
+   "name": "華安",
+   "source": "TWSE t187ap03_L"
+  },
+  "6658": {
+   "listing_date": "2023-11-02",
+   "name": "聯策",
+   "source": "TWSE t187ap03_L"
+  },
+  "6666": {
+   "listing_date": "2018-11-19",
+   "name": "羅麗芬-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "6668": {
+   "listing_date": "2018-12-12",
+   "name": "中揚光",
+   "source": "TWSE t187ap03_L"
+  },
+  "6669": {
+   "listing_date": "2019-03-27",
+   "name": "緯穎",
+   "source": "TWSE t187ap03_L"
+  },
+  "6670": {
+   "listing_date": "2018-12-18",
+   "name": "復盛應用",
+   "source": "TWSE t187ap03_L"
+  },
+  "6671": {
+   "listing_date": "2018-12-11",
+   "name": "三能-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "6672": {
+   "listing_date": "2019-04-17",
+   "name": "騰輝電子-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "6674": {
+   "listing_date": "2018-11-28",
+   "name": "鋐寶科技",
+   "source": "TWSE t187ap03_L"
+  },
+  "6689": {
+   "listing_date": "2022-09-13",
+   "name": "伊雲谷",
+   "source": "TWSE t187ap03_L"
+  },
+  "6691": {
+   "listing_date": "2022-01-03",
+   "name": "洋基工程",
+   "source": "TWSE t187ap03_L"
+  },
+  "6695": {
+   "listing_date": "2022-11-04",
+   "name": "芯鼎",
+   "source": "TWSE t187ap03_L"
+  },
+  "6698": {
+   "listing_date": "2019-11-25",
+   "name": "旭暉應材",
+   "source": "TWSE t187ap03_L"
+  },
+  "6706": {
+   "listing_date": "2019-12-19",
+   "name": "惠特",
+   "source": "TWSE t187ap03_L"
+  },
+  "6715": {
+   "listing_date": "2019-12-12",
+   "name": "嘉基",
+   "source": "TWSE t187ap03_L"
+  },
+  "6719": {
+   "listing_date": "2022-01-13",
+   "name": "力智",
+   "source": "TWSE t187ap03_L"
+  },
+  "6722": {
+   "listing_date": "2026-01-16",
+   "name": "輝創",
+   "source": "TWSE t187ap03_L"
+  },
+  "6742": {
+   "listing_date": "2023-12-05",
+   "name": "澤米",
+   "source": "TWSE t187ap03_L"
+  },
+  "6743": {
+   "listing_date": "2020-12-14",
+   "name": "安普新",
+   "source": "TWSE t187ap03_L"
+  },
+  "6753": {
+   "listing_date": "2023-03-10",
+   "name": "龍德造船",
+   "source": "TWSE t187ap03_L"
+  },
+  "6754": {
+   "listing_date": "2020-08-25",
+   "name": "匯僑設計",
+   "source": "TWSE t187ap03_L"
+  },
+  "6756": {
+   "listing_date": "2020-12-24",
+   "name": "威鋒電子",
+   "source": "TWSE t187ap03_L"
+  },
+  "6757": {
+   "listing_date": "2023-08-15",
+   "name": "台灣虎航",
+   "source": "TWSE t187ap03_L"
+  },
+  "6768": {
+   "listing_date": "2021-04-22",
+   "name": "志強-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "6770": {
+   "listing_date": "2021-12-06",
+   "name": "力積電",
+   "source": "TWSE t187ap03_L"
+  },
+  "6771": {
+   "listing_date": "2024-05-17",
+   "name": "平和環保-創",
+   "source": "TWSE t187ap03_L"
+  },
+  "6776": {
+   "listing_date": "2021-03-31",
+   "name": "展碁國際",
+   "source": "TWSE t187ap03_L"
+  },
+  "6781": {
+   "listing_date": "2021-03-22",
+   "name": "AES-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "6782": {
+   "listing_date": "2022-11-28",
+   "name": "視陽",
+   "source": "TWSE t187ap03_L"
+  },
+  "6789": {
+   "listing_date": "2022-06-30",
+   "name": "采鈺",
+   "source": "TWSE t187ap03_L"
+  },
+  "6790": {
+   "listing_date": "2021-09-29",
+   "name": "永豐實",
+   "source": "TWSE t187ap03_L"
+  },
+  "6792": {
+   "listing_date": "2021-12-08",
+   "name": "詠業",
+   "source": "TWSE t187ap03_L"
+  },
+  "6794": {
+   "listing_date": "2024-05-21",
+   "name": "向榮生技",
+   "source": "TWSE t187ap03_L"
+  },
+  "6796": {
+   "listing_date": "2022-06-01",
+   "name": "晉弘",
+   "source": "TWSE t187ap03_L"
+  },
+  "6799": {
+   "listing_date": "2022-05-12",
+   "name": "來頡",
+   "source": "TWSE t187ap03_L"
+  },
+  "6805": {
+   "listing_date": "2023-11-09",
+   "name": "富世達",
+   "source": "TWSE t187ap03_L"
+  },
+  "6807": {
+   "listing_date": "2022-04-25",
+   "name": "峰源-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "6830": {
+   "listing_date": "2022-08-31",
+   "name": "汎銓",
+   "source": "TWSE t187ap03_L"
+  },
+  "6831": {
+   "listing_date": "2025-11-25",
+   "name": "邁科",
+   "source": "TWSE t187ap03_L"
+  },
+  "6834": {
+   "listing_date": "2022-09-01",
+   "name": "天二科技",
+   "source": "TWSE t187ap03_L"
+  },
+  "6835": {
+   "listing_date": "2022-11-10",
+   "name": "圓裕",
+   "source": "TWSE t187ap03_L"
+  },
+  "6838": {
+   "listing_date": "2024-08-13",
+   "name": "台新藥",
+   "source": "TWSE t187ap03_L"
+  },
+  "6854": {
+   "listing_date": "2022-08-18",
+   "name": "錼創科技-KY創",
+   "source": "TWSE t187ap03_L"
+  },
+  "6861": {
+   "listing_date": "2023-03-27",
+   "name": "睿生光電",
+   "source": "TWSE t187ap03_L"
+  },
+  "6862": {
+   "listing_date": "2024-10-23",
+   "name": "三集瑞-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "6863": {
+   "listing_date": "2023-03-21",
+   "name": "永道-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "6869": {
+   "listing_date": "2023-03-14",
+   "name": "雲豹能源",
+   "source": "TWSE t187ap03_L"
+  },
+  "6873": {
+   "listing_date": "2024-09-26",
+   "name": "泓德能源",
+   "source": "TWSE t187ap03_L"
+  },
+  "6885": {
+   "listing_date": "2024-12-16",
+   "name": "全福生技",
+   "source": "TWSE t187ap03_L"
+  },
+  "6887": {
+   "listing_date": "2025-03-10",
+   "name": "寶綠特-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "6890": {
+   "listing_date": "2024-06-12",
+   "name": "來億-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "6901": {
+   "listing_date": "2023-09-19",
+   "name": "鑽石投資",
+   "source": "TWSE t187ap03_L"
+  },
+  "6902": {
+   "listing_date": "2023-07-13",
+   "name": "GOGOLOOK",
+   "source": "TWSE t187ap03_L"
+  },
+  "6906": {
+   "listing_date": "2024-01-15",
+   "name": "現觀科",
+   "source": "TWSE t187ap03_L"
+  },
+  "6908": {
+   "listing_date": "2026-03-25",
+   "name": "宏碁遊戲-創",
+   "source": "TWSE t187ap03_L"
+  },
+  "6909": {
+   "listing_date": "2025-05-21",
+   "name": "創控",
+   "source": "TWSE t187ap03_L"
+  },
+  "6914": {
+   "listing_date": "2024-05-03",
+   "name": "阜爾運通",
+   "source": "TWSE t187ap03_L"
+  },
+  "6916": {
+   "listing_date": "2023-12-05",
+   "name": "華凌",
+   "source": "TWSE t187ap03_L"
+  },
+  "6918": {
+   "listing_date": "2025-06-10",
+   "name": "愛派司",
+   "source": "TWSE t187ap03_L"
+  },
+  "6919": {
+   "listing_date": "2024-10-02",
+   "name": "康霈*",
+   "source": "TWSE t187ap03_L"
+  },
+  "6921": {
+   "listing_date": "2025-12-23",
+   "name": "嘉雨思-創",
+   "source": "TWSE t187ap03_L"
+  },
+  "6923": {
+   "listing_date": "2024-09-25",
+   "name": "中台",
+   "source": "TWSE t187ap03_L"
+  },
+  "6924": {
+   "listing_date": "2024-12-03",
+   "name": "榮惠-KY創",
+   "source": "TWSE t187ap03_L"
+  },
+  "6928": {
+   "listing_date": "2024-05-16",
+   "name": "攸泰科技",
+   "source": "TWSE t187ap03_L"
+  },
+  "6931": {
+   "listing_date": "2025-01-15",
+   "name": "青松健康",
+   "source": "TWSE t187ap03_L"
+  },
+  "6933": {
+   "listing_date": "2023-11-08",
+   "name": "AMAX-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "6934": {
+   "listing_date": "2026-02-02",
+   "name": "心誠鎂",
+   "source": "TWSE t187ap03_L"
+  },
+  "6936": {
+   "listing_date": "2025-04-28",
+   "name": "永鴻生技",
+   "source": "TWSE t187ap03_L"
+  },
+  "6937": {
+   "listing_date": "2023-12-12",
+   "name": "天虹",
+   "source": "TWSE t187ap03_L"
+  },
+  "6944": {
+   "listing_date": "2025-05-28",
+   "name": "兆聯實業",
+   "source": "TWSE t187ap03_L"
+  },
+  "6947": {
+   "listing_date": "2026-07-23",
+   "name": "台鎔科技",
+   "source": "TWSE t187ap03_L"
+  },
+  "6949": {
+   "listing_date": "2024-03-08",
+   "name": "沛爾*-創",
+   "source": "TWSE t187ap03_L"
+  },
+  "6951": {
+   "listing_date": "2024-06-18",
+   "name": "青新-創",
+   "source": "TWSE t187ap03_L"
+  },
+  "6952": {
+   "listing_date": "2024-06-13",
+   "name": "大武山",
+   "source": "TWSE t187ap03_L"
+  },
+  "6955": {
+   "listing_date": "2024-12-06",
+   "name": "邦睿生技-創",
+   "source": "TWSE t187ap03_L"
+  },
+  "6957": {
+   "listing_date": "2024-06-25",
+   "name": "裕慶-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "6958": {
+   "listing_date": "2024-08-20",
+   "name": "日盛台駿",
+   "source": "TWSE t187ap03_L"
+  },
+  "6962": {
+   "listing_date": "2024-11-26",
+   "name": "奕力-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "6965": {
+   "listing_date": "2025-03-07",
+   "name": "中傑-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "6969": {
+   "listing_date": "2024-09-09",
+   "name": "成信實業*-創",
+   "source": "TWSE t187ap03_L"
+  },
+  "6988": {
+   "listing_date": "2024-10-23",
+   "name": "威力暘-創",
+   "source": "TWSE t187ap03_L"
+  },
+  "6994": {
+   "listing_date": "2025-01-15",
+   "name": "富威電力",
+   "source": "TWSE t187ap03_L"
+  },
+  "7610": {
+   "listing_date": "2025-09-09",
+   "name": "聯友金屬-創",
+   "source": "TWSE t187ap03_L"
+  },
+  "7631": {
+   "listing_date": "2025-03-13",
+   "name": "聚賢研發-創",
+   "source": "TWSE t187ap03_L"
+  },
+  "7689": {
+   "listing_date": "2026-07-28",
+   "name": "大鵬科CLMX",
+   "source": "TWSE t187ap03_L"
+  },
+  "7705": {
+   "listing_date": "2024-11-26",
+   "name": "三商餐飲",
+   "source": "TWSE t187ap03_L"
+  },
+  "7710": {
+   "listing_date": "2026-10-27",
+   "name": "東擎科技",
+   "source": "TWSE t187ap03_L"
+  },
+  "7711": {
+   "listing_date": "2025-11-19",
+   "name": "永擎",
+   "source": "TWSE t187ap03_L"
+  },
+  "7721": {
+   "listing_date": "2025-07-29",
+   "name": "微程式",
+   "source": "TWSE t187ap03_L"
+  },
+  "7722": {
+   "listing_date": "2024-12-05",
+   "name": "LINEPAY",
+   "source": "TWSE t187ap03_L"
+  },
+  "7730": {
+   "listing_date": "2025-11-04",
+   "name": "暉盛-創",
+   "source": "TWSE t187ap03_L"
+  },
+  "7732": {
+   "listing_date": "2025-01-14",
+   "name": "金興精密",
+   "source": "TWSE t187ap03_L"
+  },
+  "7736": {
+   "listing_date": "2025-03-18",
+   "name": "虎山",
+   "source": "TWSE t187ap03_L"
+  },
+  "7740": {
+   "listing_date": "2025-06-16",
+   "name": "熙特爾-創",
+   "source": "TWSE t187ap03_L"
+  },
+  "7749": {
+   "listing_date": "2025-06-13",
+   "name": "意騰-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "7750": {
+   "listing_date": "2025-09-17",
+   "name": "新代",
+   "source": "TWSE t187ap03_L"
+  },
+  "7760": {
+   "listing_date": "2026-04-28",
+   "name": "享溫馨",
+   "source": "TWSE t187ap03_L"
+  },
+  "7765": {
+   "listing_date": "2025-09-08",
+   "name": "中華資安",
+   "source": "TWSE t187ap03_L"
+  },
+  "7768": {
+   "listing_date": "2026-05-07",
+   "name": "頌勝科技",
+   "source": "TWSE t187ap03_L"
+  },
+  "7769": {
+   "listing_date": "2025-11-27",
+   "name": "鴻勁",
+   "source": "TWSE t187ap03_L"
+  },
+  "7780": {
+   "listing_date": "2025-09-09",
+   "name": "大研生醫*",
+   "source": "TWSE t187ap03_L"
+  },
+  "7786": {
+   "listing_date": "2025-11-18",
+   "name": "東方風能",
+   "source": "TWSE t187ap03_L"
+  },
+  "7788": {
+   "listing_date": "2025-10-16",
+   "name": "松川精密",
+   "source": "TWSE t187ap03_L"
+  },
+  "7791": {
+   "listing_date": "2025-10-28",
+   "name": "皇家可口",
+   "source": "TWSE t187ap03_L"
+  },
+  "7795": {
+   "listing_date": "2026-01-16",
+   "name": "長廣",
+   "source": "TWSE t187ap03_L"
+  },
+  "7799": {
+   "listing_date": "2025-09-15",
+   "name": "禾榮科",
+   "source": "TWSE t187ap03_L"
+  },
+  "7803": {
+   "listing_date": "2026-05-20",
+   "name": "雲象科技-創",
+   "source": "TWSE t187ap03_L"
+  },
+  "7812": {
+   "listing_date": "2026-09-22",
+   "name": "稜研科技*-創",
+   "source": "TWSE t187ap03_L"
+  },
+  "7818": {
+   "listing_date": "2026-05-18",
+   "name": "溢泰實業",
+   "source": "TWSE t187ap03_L"
+  },
+  "7821": {
+   "listing_date": "2026-04-20",
+   "name": "神數",
+   "source": "TWSE t187ap03_L"
+  },
+  "7822": {
+   "listing_date": "2026-03-30",
+   "name": "倍利科",
+   "source": "TWSE t187ap03_L"
+  },
+  "7823": {
+   "listing_date": "2026-02-05",
+   "name": "奧義賽博-KY創",
+   "source": "TWSE t187ap03_L"
+  },
+  "7827": {
+   "listing_date": "2026-05-29",
+   "name": "漢康-KY創",
+   "source": "TWSE t187ap03_L"
+  },
+  "7835": {
+   "listing_date": "2026-07-24",
+   "name": "永悅健康-創",
+   "source": "TWSE t187ap03_L"
+  },
+  "7855": {
+   "listing_date": "2026-08-11",
+   "name": "和運租車",
+   "source": "TWSE t187ap03_L"
+  },
+  "7867": {
+   "listing_date": "2026-10-30",
+   "name": "特力屋",
+   "source": "TWSE t187ap03_L"
+  },
+  "8011": {
+   "listing_date": "2011-09-19",
+   "name": "台通",
+   "source": "TWSE t187ap03_L"
+  },
+  "8016": {
+   "listing_date": "2003-12-25",
+   "name": "矽創",
+   "source": "TWSE t187ap03_L"
+  },
+  "8021": {
+   "listing_date": "2008-01-21",
+   "name": "尖點",
+   "source": "TWSE t187ap03_L"
+  },
+  "8028": {
+   "listing_date": "2018-07-10",
+   "name": "昇陽半導體",
+   "source": "TWSE t187ap03_L"
+  },
+  "8033": {
+   "listing_date": "2007-06-21",
+   "name": "雷虎",
+   "source": "TWSE t187ap03_L"
+  },
+  "8039": {
+   "listing_date": "2009-12-17",
+   "name": "台虹",
+   "source": "TWSE t187ap03_L"
+  },
+  "8045": {
+   "listing_date": "2024-12-11",
+   "name": "達運光電",
+   "source": "TWSE t187ap03_L"
+  },
+  "8046": {
+   "listing_date": "2006-04-07",
+   "name": "南電",
+   "source": "TWSE t187ap03_L"
+  },
+  "8070": {
+   "listing_date": "2007-12-31",
+   "name": "長華*",
+   "source": "TWSE t187ap03_L"
+  },
+  "8072": {
+   "listing_date": "2005-08-19",
+   "name": "陞泰",
+   "source": "TWSE t187ap03_L"
+  },
+  "8081": {
+   "listing_date": "2008-12-30",
+   "name": "致新",
+   "source": "TWSE t187ap03_L"
+  },
+  "8101": {
+   "listing_date": "2004-07-01",
+   "name": "華冠",
+   "source": "TWSE t187ap03_L"
+  },
+  "8103": {
+   "listing_date": "2009-09-29",
+   "name": "瀚荃",
+   "source": "TWSE t187ap03_L"
+  },
+  "8104": {
+   "listing_date": "2019-01-17",
+   "name": "錸寶",
+   "source": "TWSE t187ap03_L"
+  },
+  "8105": {
+   "listing_date": "2006-12-27",
+   "name": "凌巨",
+   "source": "TWSE t187ap03_L"
+  },
+  "8110": {
+   "listing_date": "2007-10-31",
+   "name": "華東",
+   "source": "TWSE t187ap03_L"
+  },
+  "8112": {
+   "listing_date": "2007-12-31",
+   "name": "至上",
+   "source": "TWSE t187ap03_L"
+  },
+  "8114": {
+   "listing_date": "2012-11-26",
+   "name": "振樺電",
+   "source": "TWSE t187ap03_L"
+  },
+  "8131": {
+   "listing_date": "2007-11-29",
+   "name": "福懋科",
+   "source": "TWSE t187ap03_L"
+  },
+  "8150": {
+   "listing_date": "2014-04-11",
+   "name": "南茂",
+   "source": "TWSE t187ap03_L"
+  },
+  "8162": {
+   "listing_date": "2024-03-07",
+   "name": "微矽電子-創",
+   "source": "TWSE t187ap03_L"
+  },
+  "8163": {
+   "listing_date": "2007-11-28",
+   "name": "達方",
+   "source": "TWSE t187ap03_L"
+  },
+  "8201": {
+   "listing_date": "2007-10-29",
+   "name": "無敵",
+   "source": "TWSE t187ap03_L"
+  },
+  "8210": {
+   "listing_date": "2011-12-01",
+   "name": "勤誠",
+   "source": "TWSE t187ap03_L"
+  },
+  "8213": {
+   "listing_date": "2009-12-25",
+   "name": "志超",
+   "source": "TWSE t187ap03_L"
+  },
+  "8215": {
+   "listing_date": "2010-11-12",
+   "name": "明基材",
+   "source": "TWSE t187ap03_L"
+  },
+  "8222": {
+   "listing_date": "2015-01-27",
+   "name": "寶一",
+   "source": "TWSE t187ap03_L"
+  },
+  "8249": {
+   "listing_date": "2005-05-17",
+   "name": "菱光",
+   "source": "TWSE t187ap03_L"
+  },
+  "8261": {
+   "listing_date": "2009-12-11",
+   "name": "富鼎",
+   "source": "TWSE t187ap03_L"
+  },
+  "8271": {
+   "listing_date": "2010-12-29",
+   "name": "宇瞻",
+   "source": "TWSE t187ap03_L"
+  },
+  "8341": {
+   "listing_date": "2015-03-23",
+   "name": "日友",
+   "source": "TWSE t187ap03_L"
+  },
+  "8367": {
+   "listing_date": "2018-09-12",
+   "name": "建新國際",
+   "source": "TWSE t187ap03_L"
+  },
+  "8374": {
+   "listing_date": "2008-12-25",
+   "name": "羅昇",
+   "source": "TWSE t187ap03_L"
+  },
+  "8404": {
+   "listing_date": "2011-05-18",
+   "name": "百和興業-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "8411": {
+   "listing_date": "2011-11-01",
+   "name": "福貞-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "8422": {
+   "listing_date": "2011-10-05",
+   "name": "可寧衛*",
+   "source": "TWSE t187ap03_L"
+  },
+  "8429": {
+   "listing_date": "2012-12-20",
+   "name": "金麗-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "8438": {
+   "listing_date": "2022-03-11",
+   "name": "昶昕",
+   "source": "TWSE t187ap03_L"
+  },
+  "8442": {
+   "listing_date": "2016-11-08",
+   "name": "威宏-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "8443": {
+   "listing_date": "2014-09-15",
+   "name": "阿瘦",
+   "source": "TWSE t187ap03_L"
+  },
+  "8454": {
+   "listing_date": "2014-12-19",
+   "name": "富邦媒",
+   "source": "TWSE t187ap03_L"
+  },
+  "8462": {
+   "listing_date": "2019-03-15",
+   "name": "柏文",
+   "source": "TWSE t187ap03_L"
+  },
+  "8463": {
+   "listing_date": "2015-07-13",
+   "name": "潤泰材",
+   "source": "TWSE t187ap03_L"
+  },
+  "8464": {
+   "listing_date": "2015-12-22",
+   "name": "億豐",
+   "source": "TWSE t187ap03_L"
+  },
+  "8466": {
+   "listing_date": "2016-11-01",
+   "name": "美吉吉-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "8467": {
+   "listing_date": "2015-12-15",
+   "name": "波力-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "8473": {
+   "listing_date": "2016-09-08",
+   "name": "山林水",
+   "source": "TWSE t187ap03_L"
+  },
+  "8476": {
+   "listing_date": "2023-10-31",
+   "name": "台境*",
+   "source": "TWSE t187ap03_L"
+  },
+  "8478": {
+   "listing_date": "2017-12-11",
+   "name": "東哥遊艇",
+   "source": "TWSE t187ap03_L"
+  },
+  "8481": {
+   "listing_date": "2017-02-24",
+   "name": "政伸",
+   "source": "TWSE t187ap03_L"
+  },
+  "8482": {
+   "listing_date": "2018-08-15",
+   "name": "商億-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "8487": {
+   "listing_date": "2024-03-26",
+   "name": "愛爾達-創",
+   "source": "TWSE t187ap03_L"
+  },
+  "8488": {
+   "listing_date": "2016-12-13",
+   "name": "吉源-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "8499": {
+   "listing_date": "2017-11-24",
+   "name": "鼎炫-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "8908": {
+   "listing_date": "2026-10-16",
+   "name": "欣雄",
+   "source": "TWSE t187ap03_L"
+  },
+  "8926": {
+   "listing_date": "2003-08-25",
+   "name": "台汽電",
+   "source": "TWSE t187ap03_L"
+  },
+  "8940": {
+   "listing_date": "2009-05-15",
+   "name": "新天地",
+   "source": "TWSE t187ap03_L"
+  },
+  "8996": {
+   "listing_date": "2014-02-14",
+   "name": "高力",
+   "source": "TWSE t187ap03_L"
+  },
+  "9103": {
+   "listing_date": "2002-12-13",
+   "name": "美德醫療-DR",
+   "source": "TWSE t187ap03_L"
+  },
+  "910322": {
+   "listing_date": "2009-12-16",
+   "name": "康師傅-DR",
+   "source": "TWSE t187ap03_L"
+  },
+  "9105": {
+   "listing_date": "2003-09-22",
+   "name": "泰金寶-DR",
+   "source": "TWSE t187ap03_L"
+  },
+  "910861": {
+   "listing_date": "2010-11-24",
+   "name": "神州-DR",
+   "source": "TWSE t187ap03_L"
+  },
+  "9110": {
+   "listing_date": "2009-12-03",
+   "name": "越南控-DR",
+   "source": "TWSE t187ap03_L"
+  },
+  "911608": {
+   "listing_date": "2010-10-20",
+   "name": "明輝-DR",
+   "source": "TWSE t187ap03_L"
+  },
+  "911622": {
+   "listing_date": "2011-09-29",
+   "name": "泰聚亨-DR",
+   "source": "TWSE t187ap03_L"
+  },
+  "911868": {
+   "listing_date": "2009-12-22",
+   "name": "同方友友-DR",
+   "source": "TWSE t187ap03_L"
+  },
+  "912000": {
+   "listing_date": "2011-04-25",
+   "name": "晨訊科-DR",
+   "source": "TWSE t187ap03_L"
+  },
+  "9136": {
+   "listing_date": "2009-05-25",
+   "name": "巨騰-DR",
+   "source": "TWSE t187ap03_L"
+  },
+  "9802": {
+   "listing_date": "2012-10-18",
+   "name": "鈺齊-KY",
+   "source": "TWSE t187ap03_L"
+  },
+  "9902": {
+   "listing_date": "1964-07-14",
+   "name": "台火",
+   "source": "TWSE t187ap03_L"
+  },
+  "9904": {
+   "listing_date": "1990-01-19",
+   "name": "寶成",
+   "source": "TWSE t187ap03_L"
+  },
+  "9905": {
+   "listing_date": "1990-08-08",
+   "name": "大華",
+   "source": "TWSE t187ap03_L"
+  },
+  "9906": {
+   "listing_date": "1990-12-15",
+   "name": "欣巴巴",
+   "source": "TWSE t187ap03_L"
+  },
+  "9907": {
+   "listing_date": "1991-01-29",
+   "name": "統一實",
+   "source": "TWSE t187ap03_L"
+  },
+  "9908": {
+   "listing_date": "1991-02-06",
+   "name": "大台北",
+   "source": "TWSE t187ap03_L"
+  },
+  "9910": {
+   "listing_date": "1992-02-18",
+   "name": "豐泰",
+   "source": "TWSE t187ap03_L"
+  },
+  "9911": {
+   "listing_date": "1992-07-16",
+   "name": "櫻花",
+   "source": "TWSE t187ap03_L"
+  },
+  "9912": {
+   "listing_date": "1992-08-08",
+   "name": "偉聯",
+   "source": "TWSE t187ap03_L"
+  },
+  "9914": {
+   "listing_date": "1992-09-30",
+   "name": "美利達",
+   "source": "TWSE t187ap03_L"
+  },
+  "9917": {
+   "listing_date": "1993-12-08",
+   "name": "中保科",
+   "source": "TWSE t187ap03_L"
+  },
+  "9918": {
+   "listing_date": "1994-04-26",
+   "name": "欣天然",
+   "source": "TWSE t187ap03_L"
+  },
+  "9919": {
+   "listing_date": "1994-11-04",
+   "name": "康那香",
+   "source": "TWSE t187ap03_L"
+  },
+  "9921": {
+   "listing_date": "1994-12-29",
+   "name": "巨大",
+   "source": "TWSE t187ap03_L"
+  },
+  "9924": {
+   "listing_date": "1995-03-15",
+   "name": "福興",
+   "source": "TWSE t187ap03_L"
+  },
+  "9925": {
+   "listing_date": "1995-12-09",
+   "name": "新保",
+   "source": "TWSE t187ap03_L"
+  },
+  "9926": {
+   "listing_date": "1998-04-08",
+   "name": "新海",
+   "source": "TWSE t187ap03_L"
+  },
+  "9927": {
+   "listing_date": "1999-03-12",
+   "name": "泰銘",
+   "source": "TWSE t187ap03_L"
+  },
+  "9928": {
+   "listing_date": "1999-08-09",
+   "name": "中視",
+   "source": "TWSE t187ap03_L"
+  },
+  "9929": {
+   "listing_date": "1999-06-28",
+   "name": "秋雨",
+   "source": "TWSE t187ap03_L"
+  },
+  "9930": {
+   "listing_date": "1999-11-22",
+   "name": "中聯資源",
+   "source": "TWSE t187ap03_L"
+  },
+  "9931": {
+   "listing_date": "2000-03-21",
+   "name": "欣高",
+   "source": "TWSE t187ap03_L"
+  },
+  "9933": {
+   "listing_date": "1993-05-28",
+   "name": "中鼎",
+   "source": "TWSE t187ap03_L"
+  },
+  "9934": {
+   "listing_date": "2000-09-11",
+   "name": "成霖",
+   "source": "TWSE t187ap03_L"
+  },
+  "9935": {
+   "listing_date": "2000-09-11",
+   "name": "慶豐富",
+   "source": "TWSE t187ap03_L"
+  },
+  "9937": {
+   "listing_date": "2000-09-11",
+   "name": "全國",
+   "source": "TWSE t187ap03_L"
+  },
+  "9938": {
+   "listing_date": "2001-01-12",
+   "name": "百和",
+   "source": "TWSE t187ap03_L"
+  },
+  "9939": {
+   "listing_date": "2001-03-02",
+   "name": "宏全",
+   "source": "TWSE t187ap03_L"
+  },
+  "9940": {
+   "listing_date": "2001-09-17",
+   "name": "信義",
+   "source": "TWSE t187ap03_L"
+  },
+  "9941": {
+   "listing_date": "2001-09-17",
+   "name": "裕融",
+   "source": "TWSE t187ap03_L"
+  },
+  "9942": {
+   "listing_date": "2002-01-28",
+   "name": "茂順",
+   "source": "TWSE t187ap03_L"
+  },
+  "9943": {
+   "listing_date": "2002-08-26",
+   "name": "好樂迪",
+   "source": "TWSE t187ap03_L"
+  },
+  "9944": {
+   "listing_date": "2002-08-26",
+   "name": "新麗",
+   "source": "TWSE t187ap03_L"
+  },
+  "9945": {
+   "listing_date": "1992-04-30",
+   "name": "潤泰新",
+   "source": "TWSE t187ap03_L"
+  },
+  "9946": {
+   "listing_date": "2013-09-17",
+   "name": "三發地產",
+   "source": "TWSE t187ap03_L"
+  },
+  "9955": {
+   "listing_date": "2008-01-21",
+   "name": "佳龍",
+   "source": "TWSE t187ap03_L"
+  },
+  "9958": {
+   "listing_date": "2008-03-12",
+   "name": "世紀鋼",
+   "source": "TWSE t187ap03_L"
+  }
+ }
+}

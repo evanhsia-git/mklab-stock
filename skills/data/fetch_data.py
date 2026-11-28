@@ -439,6 +439,63 @@ def _strip_nulls(obj):
     return obj
 
 
+def snapshot_completeness(stocks, trade_date, prev_syms=None, source_status=None):
+    """快照完整性多層驗證（2026-11-28 Phase 7A.2 稽核強化）。
+
+    回傳 dict: {ok, blocked, warnings, categories, issues}
+    - categories: 上市個股/上市ETF/上櫃ETF/上櫃個股 筆數（本站設計只收前三類＋上櫃個股不收）
+    - blocked: 不得寫入快照的原因（整類缺失／來源全失敗／資料日期錯誤）
+    - warnings: 部分缺失警告（不阻擋，記錄供稽核）
+    - prev_syms: 前日快照代號集合（比對 missing/extra，僅供警告——標的池有成長/下市屬正常）
+    - source_status: {'TWSE': bool, 'TPEX': bool} 來源成功與否（TPEX 失敗走沿用機制，不阻擋）
+    """
+    cats = {"上市個股": 0, "上市ETF": 0, "上櫃ETF": 0, "上櫃個股": 0}
+    issues = []
+    fresh = [s for s in stocks if s.get("price_asof") == trade_date]
+    for s in fresh:
+        key = ("上市" if s.get("source") == "TWSE" else "上櫃") + (
+            "ETF" if s.get("security_type") in ("etf", "unverified") else "個股")
+        if key in cats:
+            cats[key] += 1
+    # 1) 資料日期正確性：當日價格的標的必須存在
+    if not fresh:
+        issues.append(f"無任何 price_asof={trade_date} 的記錄（資料日期錯誤或全部沿用舊資料）")
+    # 2) 重複/無效紀錄
+    syms = [s.get("sym") for s in fresh]
+    dups = len(syms) - len(set(syms))
+    if dups:
+        issues.append(f"重複代號 {dups} 筆")
+    invalid = sum(1 for s in fresh if s.get("sym") is None or s.get("name") is None)
+    if invalid:
+        issues.append(f"無效紀錄（缺 sym/name）{invalid} 筆")
+    # 3) 來源狀態
+    source_status = source_status or {}
+    if source_status.get("TWSE") is False:
+        issues.append("TWSE 來源失敗（主源）")
+    # 4) 分類別阻擋/警告
+    blocked = []
+    warnings = []
+    if cats["上市個股"] == 0:
+        blocked.append("上市個股")
+    if cats["上市ETF"] == 0:
+        blocked.append("上市ETF")
+    if cats["上櫃ETF"] == 0:
+        warnings.append("上櫃ETF 為 0（沿用機制或來源特性，標記 PARTIAL 不阻擋）")
+    # 5) 代號集合差異（輔助警告，不作為通過/阻擋條件——標的池有成長/下市屬正常）
+    if prev_syms:
+        cur = set(syms)
+        gone = prev_syms - cur
+        added = cur - prev_syms
+        if len(gone) > max(20, len(prev_syms) * 0.05):
+            warnings.append(f"較前日減少 {len(gone)} 檔（例 {sorted(gone)[:5]}）——確認為下市/停牌或來源缺失")
+        if len(added) > max(20, len(prev_syms) * 0.05):
+            warnings.append(f"較前日新增 {len(added)} 檔（例 {sorted(added)[:5]}）——新上市或母體擴充")
+    ok = not blocked and not issues
+    return {"ok": ok, "blocked": blocked, "warnings": warnings,
+            "categories": cats, "issues": issues,
+            "verification_status": "COMPLETE" if ok and not warnings else ("PARTIAL" if ok else "INCOMPLETE")}
+
+
 def _strip_row_nulls(rows):
     """對 stocks 陣列逐筆套用省略 null，但保留 QA gate 要求的必備欄位。
     QA gate（skills/qa-gate/qa_gate.py）對每筆 row 強制要求
@@ -975,27 +1032,30 @@ def run_daily():
     # 不可寫入 history（否則回測與指標會讀到錯誤收盤值）。
     miss_hl = sum(1 for s in stocks if s.get("high") is None)
     hpath = None  # 休市/來源不完整時不會寫入 history，下方記錄需容忍 None
-    # P0（2026-11-28 稽核）：快照寫入前分類別完整性驗證——只驗總筆數不夠，
-    # 整個標的類別缺失（例：TWSE MIS ETF 端點間歇失敗導致 15 天快照缺全部 ETF 行情）
-    # 時不得將該次快照寫入（不得標記完整）。前日筆數 ±3% 僅供警告，不作為通過/阻擋條件。
-    _cats = {"上市個股": 0, "上市ETF": 0, "上櫃ETF": 0}
-    for _s in stocks:
-        if _s.get("price_asof") != trade_date:
-            continue
-        _key = ("上市" if _s.get("source") == "TWSE" else "上櫃") + (
-            "ETF" if _s.get("security_type") in ("etf", "unverified") else "個股")
-        if _key in _cats:
-            _cats[_key] += 1
-    LOG.stats["details"]["snapshot_categories"] = _cats
-    _blocked_cats = [k for k in ("上市個股", "上市ETF") if _cats[k] == 0]
-    _warn_cats = [k for k, v in _cats.items() if v == 0 and k not in _blocked_cats]
-    if _warn_cats:
-        LOG.warn(f"{trade_date} 快照分類缺 {('、'.join(_warn_cats))}（沿用機制或來源特性，標記 partial，不阻擋）")
+    # P0（2026-11-28 稽核）：快照寫入前多層完整性驗證（snapshot_completeness）——
+    # 類別完整/資料日期/重複無效/來源狀態/代號集合差異，整類缺失不得標記完整。
+    _prev_syms = None
+    try:
+        _prev_d = (dt.date.fromisoformat(trade_date) - dt.timedelta(days=1)).strftime("%Y%m%d")
+        for _back in range(4):
+            _pp = os.path.join(OUT, "history", f"{(dt.date.fromisoformat(trade_date) - dt.timedelta(days=1+_back)).strftime('%Y%m%d')}.json")
+            if os.path.exists(_pp):
+                _prev_syms = {r.get("stock_id") for r in json.load(open(_pp, encoding="utf-8")).get("stocks", [])}
+                break
+    except Exception:
+        _prev_syms = None
+    _comp = snapshot_completeness(stocks, trade_date, prev_syms=_prev_syms)
+    LOG.stats["details"]["snapshot_categories"] = _comp["categories"]
+    LOG.stats["details"]["snapshot_verification"] = _comp["verification_status"]
+    for _w in _comp["warnings"]:
+        LOG.warn(f"{trade_date} 快照警告：{_w}")
+    for _iss in _comp["issues"]:
+        LOG.warn(f"{trade_date} 快照問題：{_iss}")
     if stocks and miss_hl / len(stocks) > 0.5:
         LOG.warn(f"{trade_date} 高低價缺失 {miss_hl}/{len(stocks)}，疑似休市或來源不完整，不寫入 history 切片")
-    elif _blocked_cats:
-        LOG.error(f"{trade_date} 快照整類缺失（{'、'.join(_blocked_cats)} 為 0），整個資料來源或類別缺失不得標記完整，不寫入 history 切片；缺口留待指定日期回補")
-        LOG.stats["details"]["snapshot_blocked_categories"] = _blocked_cats
+    elif _comp["blocked"]:
+        LOG.error(f"{trade_date} 快照整類缺失（{'、'.join(_comp['blocked'])} 為 0），整個資料來源或類別缺失不得標記完整，不寫入 history 切片；缺口留待指定日期回補")
+        LOG.stats["details"]["snapshot_blocked_categories"] = _comp["blocked"]
     else:
         hpath = os.path.join(OUT, "history", f"{trade_date.replace('-', '')}.json")
         if os.path.exists(hpath):
