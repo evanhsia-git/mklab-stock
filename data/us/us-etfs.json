@@ -1,13 +1,10 @@
 {
   "meta": {
-    "as_of": "2026-11-27 21:56:00 UTC",
+    "as_of": "2026-11-28 04:54:11 UTC",
     "source": "Yahoo Finance (yfinance)",
     "note": "候選池=規模前 130 大美國 ETF 清單（含債券/商品/國際型），抓 net_assets 後本機排序取前 120 大；非官方交易所資料，僅供研究參考，非投資建議。",
     "candidate_pool_size": 135,
-    "count": 120,
-    "returns_as_of": "2026-11-28",
-    "returns_source": "yfinance history(auto_adjust=True)",
-    "returns_failed": []
+    "count": 120
   },
   "etfs": [
     {
