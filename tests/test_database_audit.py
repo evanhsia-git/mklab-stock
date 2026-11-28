@@ -30,7 +30,7 @@ def base_market():
     # 每檔唯一 sym（重複代號檢測會把同 sym 乘法當異常——函式行為正確，mock 需符合實際）
     return ([mk(f"2{i:04d}", f"股{i}") for i in range(900)]
             + [mk(f"00{i:04d}", f"ETF{i}", st="etf") for i in range(200)]
-            + [mk(f"0{i:05d}", f"上櫃ETF{i}", src="TPEX", st="etf") for i in range(60)])
+            + [mk(f"0{i:05d}", f"上櫃ETF{i}", src="TPEX", st="etf") for i in range(500, 560)])
 
 
 def run():
@@ -60,12 +60,15 @@ def run():
     check("情境5: 正常下市（-1 檔）→ 不阻擋", not r["blocked"])
     r = snapshot_completeness(base_market()[:1459], "2026-11-27")
     check("情境6: 合法停牌/無成交（-1 ETF）→ 不阻擋（suspended 沿用不進切片）", not r["blocked"])
-    r = snapshot_completeness(base_market(), "2026-11-27",
+    # 情境7 修正：上櫃來源失敗時，沿用記錄 price_asof 為舊日（不入 fresh）→ 上櫃 ETF=0 → 警告不阻擋
+    stocks_no_tpex = [s for s in base_market() if s["source"] == "TWSE"]
+    r = snapshot_completeness(stocks_no_tpex, "2026-11-27",
                               source_status={"TWSE": True, "TPEX": False})
-    check("情境7: 上櫃來源失敗 → 警告不阻擋（沿用機制）", not r["blocked"] and r["warnings"])
+    check("情境7: 上櫃來源失敗 → 上櫃ETF=0 警告不阻擋（沿用機制）", not r["blocked"] and r["warnings"])
     r = snapshot_completeness([mk("2330", "台積電", date="2026-11-26")], "2026-11-27")
     check("情境8: 資料日期錯誤（無當日記錄）→ 拒寫", r["issues"] and not r["ok"])
-    r = snapshot_completeness(base_market() + [mk("2330", "台積電")], "2026-11-27")
+    bm = base_market()
+    r = snapshot_completeness(bm + [dict(bm[0])], "2026-11-27")
     check("情境9: 重複代號 → issues 記錄", any("重複" in i for i in r["issues"]))
 
     # ── 3. stale 降級端到端（真跑 update_state.py）──
