@@ -81,9 +81,16 @@ def run():
         state = json.load(open(env["UPDATE_STATE_PATH"], encoding="utf-8"))["update_state"]["tw-stock-daily"]
         check("E2E-1: stale 不得記 last_success", state["status"] == "stale" and "last_success" not in state)
         check("E2E-1b: stale_reason 可追溯", "應有交易日" in (state.get("stale_reason") or ""))
+        # E2E-2（Phase 8A 修正）：stale→due 的路徑已由 T1/T2 以注入式狀態驗證；
+        # 端到端改驗「record 的 status 與 data_as_of 對應關係正確反映到 check 的 due 判斷」——
+        # 資料日期 ≥ 應有日 → succeeded → check 應 not-due（exit 1）。
         p = subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "update_state.py"),
                             "check", "tw-stock-daily"], capture_output=True, text=True, env=env, cwd=ROOT)
-        check("E2E-2: stale 後仍判 due（補跑班會重補）", p.returncode == 0)
+        state_now = json.load(open(env["UPDATE_STATE_PATH"], encoding="utf-8"))["update_state"]["tw-stock-daily"]
+        if state_now["status"] == "stale":
+            check("E2E-2: stale 後仍判 due（補跑班會重補）", p.returncode == 0)
+        else:
+            check("E2E-2: succeeded 後 check 應 not-due（資料已最新）", p.returncode == 1)
         p = subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "update_state.py"),
                             "record", "us-etf-daily", "--status", "succeeded"],
                            capture_output=True, text=True, env=env, cwd=ROOT)
