@@ -1,6 +1,6 @@
 {
  "schema_version": "1.1.0",
- "audited_at": "2026-11-29T03:06:12+08:00",
+ "audited_at": "2026-11-29T03:55:53+08:00",
  "audit_cutoff": "2026-11-27",
  "calendar_source": "reference/trade-calendar-2025-2026.json（PROXY_CROSSCHECKED）",
  "coverage": [
@@ -9,17 +9,17 @@
    "market": "TW",
    "scope": "history 每日快照（建置範圍 2025-08-01 起）",
    "start_date": "2025-08-01",
-   "end_date": "2026-11-26",
-   "expected_count": 321,
-   "actual_count": 321,
-   "valid_count": 321,
+   "end_date": "2026-11-27",
+   "expected_count": 322,
+   "actual_count": 322,
+   "valid_count": 322,
    "missing_count": 0,
    "invalid_count": 0,
    "duplicate_count": 0,
    "coverage_pct": 100.0,
    "denominator_source": "reference trade-calendar（PROXY_CROSSCHECKED）",
    "verification_status": "VERIFIED",
-   "audited_at": "2026-11-29T03:06:12+08:00",
+   "audited_at": "2026-11-29T03:55:53+08:00",
    "missing_dates": []
   },
   {
@@ -29,47 +29,47 @@
    "start_date": "2025-08-01",
    "end_date": "2026-11-27",
    "expected_count": 447387,
-   "actual_count": 418552,
-   "valid_count": 418552,
-   "missing_count": 28835,
+   "actual_count": 419882,
+   "valid_count": 419882,
+   "missing_count": 27505,
    "invalid_count": 0,
    "duplicate_count": 0,
-   "coverage_pct": 93.55,
+   "coverage_pct": 93.85,
    "denominator_source": "listing-dates-twse（官方上市日）＋建置起點 2025-08-01",
    "verification_status": "VERIFIED",
-   "audited_at": "2026-11-29T03:06:12+08:00",
+   "audited_at": "2026-11-29T03:55:53+08:00",
    "gaps_by_category": {
     "HEAD": 21431,
-    "MIDDLE": 5943,
-    "TAIL": 1461,
+    "MIDDLE": 5948,
+    "TAIL": 126,
     "FULL_MISSING": 0
    },
    "unknown_listing_count": 0,
-   "reconciliation": "missing 28,835 ＝ HEAD 21,431 ＋ MIDDLE 5,943 ＋ TAIL 1,461 ＋ FULL_MISSING 0"
+   "reconciliation": "missing 27,505 ＝ HEAD 21,431 ＋ MIDDLE 5,948 ＋ TAIL 126 ＋ FULL_MISSING 0"
   },
   {
    "dataset": "tw-stocks-field:price",
    "market": "TW",
    "scope": "欄位完整率（全檔口徑）",
    "start_date": null,
-   "end_date": "2026-11-26",
+   "end_date": "2026-11-27",
    "expected_count": 1450,
    "actual_count": 1450,
-   "valid_count": 1445,
-   "missing_count": 5,
+   "valid_count": 1447,
+   "missing_count": 3,
    "invalid_count": 0,
    "duplicate_count": 0,
-   "coverage_pct": 99.66,
+   "coverage_pct": 99.79,
    "denominator_source": "stocks.json 全檔",
    "verification_status": "VERIFIED",
-   "audited_at": "2026-11-29T03:06:12+08:00"
+   "audited_at": "2026-11-29T03:55:53+08:00"
   },
   {
    "dataset": "tw-stocks-field:market_cap",
    "market": "TW",
    "scope": "欄位完整率（全檔口徑）",
    "start_date": null,
-   "end_date": "2026-11-26",
+   "end_date": "2026-11-27",
    "expected_count": 1450,
    "actual_count": 1450,
    "valid_count": 1339,
@@ -79,14 +79,14 @@
    "coverage_pct": 92.34,
    "denominator_source": "stocks.json 全檔",
    "verification_status": "VERIFIED",
-   "audited_at": "2026-11-29T03:06:12+08:00"
+   "audited_at": "2026-11-29T03:55:53+08:00"
   },
   {
    "dataset": "tw-stocks-field:pe",
    "market": "TW",
    "scope": "欄位完整率（個股口徑）",
    "start_date": null,
-   "end_date": "2026-11-26",
+   "end_date": "2026-11-27",
    "expected_count": 1088,
    "actual_count": 1088,
    "valid_count": 870,
@@ -96,14 +96,14 @@
    "coverage_pct": 79.96,
    "denominator_source": "個股總數（ETF 無此數值不計入）",
    "verification_status": "VERIFIED",
-   "audited_at": "2026-11-29T03:06:12+08:00"
+   "audited_at": "2026-11-29T03:55:53+08:00"
   },
   {
    "dataset": "tw-stocks-field:pb",
    "market": "TW",
    "scope": "欄位完整率（個股口徑）",
    "start_date": null,
-   "end_date": "2026-11-26",
+   "end_date": "2026-11-27",
    "expected_count": 1088,
    "actual_count": 1088,
    "valid_count": 1088,
@@ -113,14 +113,14 @@
    "coverage_pct": 100.0,
    "denominator_source": "個股總數（ETF 無此數值不計入）",
    "verification_status": "VERIFIED",
-   "audited_at": "2026-11-29T03:06:12+08:00"
+   "audited_at": "2026-11-29T03:55:53+08:00"
   },
   {
    "dataset": "tw-stocks-field:roe",
    "market": "TW",
    "scope": "欄位完整率（個股口徑）",
    "start_date": null,
-   "end_date": "2026-11-26",
+   "end_date": "2026-11-27",
    "expected_count": 1088,
    "actual_count": 1088,
    "valid_count": 1026,
@@ -130,14 +130,14 @@
    "coverage_pct": 94.3,
    "denominator_source": "個股總數（ETF 無此數值不計入）",
    "verification_status": "VERIFIED",
-   "audited_at": "2026-11-29T03:06:12+08:00"
+   "audited_at": "2026-11-29T03:55:53+08:00"
   },
   {
    "dataset": "tw-stocks-field:div",
    "market": "TW",
    "scope": "欄位完整率（個股口徑）",
    "start_date": null,
-   "end_date": "2026-11-26",
+   "end_date": "2026-11-27",
    "expected_count": 1088,
    "actual_count": 1088,
    "valid_count": 851,
@@ -147,7 +147,7 @@
    "coverage_pct": 78.22,
    "denominator_source": "個股總數（ETF 無此數值不計入）",
    "verification_status": "VERIFIED",
-   "audited_at": "2026-11-29T03:06:12+08:00"
+   "audited_at": "2026-11-29T03:55:53+08:00"
   },
   {
    "dataset": "tw-etf-meta",
@@ -164,7 +164,7 @@
    "coverage_pct": 100.0,
    "denominator_source": "stocks.json security_type=etf",
    "verification_status": "VERIFIED",
-   "audited_at": "2026-11-29T03:06:12+08:00",
+   "audited_at": "2026-11-29T03:55:53+08:00",
    "missing_codes": [],
    "extra_codes": [
     "00635U",
@@ -192,7 +192,7 @@
    "coverage_pct": 99.17,
    "denominator_source": "stocks.json security_type=etf",
    "verification_status": "VERIFIED",
-   "audited_at": "2026-11-29T03:06:12+08:00",
+   "audited_at": "2026-11-29T03:55:53+08:00",
    "missing_codes": [
     "00419A",
     "00420A",
@@ -222,7 +222,7 @@
    "coverage_pct": 97.51,
    "denominator_source": "stocks.json security_type=etf",
    "verification_status": "VERIFIED",
-   "audited_at": "2026-11-29T03:06:12+08:00",
+   "audited_at": "2026-11-29T03:55:53+08:00",
    "missing_codes": [
     "00690",
     "00911",
@@ -258,7 +258,7 @@
    "coverage_pct": 99.17,
    "denominator_source": "stocks.json security_type=etf",
    "verification_status": "VERIFIED",
-   "audited_at": "2026-11-29T03:06:12+08:00",
+   "audited_at": "2026-11-29T03:55:53+08:00",
    "missing_codes": [
     "00419A",
     "00420A",
@@ -281,7 +281,7 @@
    "coverage_pct": 100.0,
    "denominator_source": "etf-nav.json record_date",
    "verification_status": "VERIFIED",
-   "audited_at": "2026-11-29T03:06:12+08:00",
+   "audited_at": "2026-11-29T03:55:53+08:00",
    "record_date_top": [
     [
      "2026-11-27",
@@ -304,7 +304,7 @@
    "coverage_pct": 99.72,
    "denominator_source": "stocks.json 個股母體",
    "verification_status": "PARTIALLY_VERIFIED",
-   "audited_at": "2026-11-29T03:06:12+08:00",
+   "audited_at": "2026-11-29T03:55:53+08:00",
    "missing_codes": [
     "2881",
     "2882",
@@ -326,7 +326,7 @@
    "coverage_pct": 100.0,
    "denominator_source": "us-stocks.json",
    "verification_status": "VERIFIED",
-   "audited_at": "2026-11-29T03:06:12+08:00"
+   "audited_at": "2026-11-29T03:55:53+08:00"
   },
   {
    "dataset": "us-etfs",
@@ -343,7 +343,7 @@
    "coverage_pct": 100.0,
    "denominator_source": "us-etfs.json",
    "verification_status": "VERIFIED",
-   "audited_at": "2026-11-29T03:06:12+08:00"
+   "audited_at": "2026-11-29T03:55:53+08:00"
   },
   {
    "dataset": "us-edgar",
@@ -360,7 +360,7 @@
    "coverage_pct": 99.62,
    "denominator_source": "us-stocks.json 母體",
    "verification_status": "VERIFIED",
-   "audited_at": "2026-11-29T03:06:12+08:00"
+   "audited_at": "2026-11-29T03:55:53+08:00"
   },
   {
    "dataset": "global-indices",
@@ -377,7 +377,7 @@
    "coverage_pct": 76.19,
    "denominator_source": "indices-config.json",
    "verification_status": "PARTIAL",
-   "audited_at": "2026-11-29T03:06:12+08:00",
+   "audited_at": "2026-11-29T03:55:53+08:00",
    "missing_symbols": [
     "^TWIIE",
     "^TWIIF",

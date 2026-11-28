@@ -1,6 +1,6 @@
 {
  "schema_version": "1.1.0",
- "generated_at": "2026-11-29T03:06:12+08:00",
+ "generated_at": "2026-11-29T03:55:53+08:00",
  "audit_cutoff": "2026-11-27",
  "note": "candidate=待確認（停牌/無成交/待官方對照）；confirmed=已確認缺失；回補後須重新驗證才能標 resolved",
  "gaps": [
@@ -35,7 +35,7 @@
    "retry_count": 0,
    "last_attempt": null,
    "resolved_at": null,
-   "missing_records": 5943,
+   "missing_records": 5948,
    "note": null
   },
   {
@@ -52,7 +52,7 @@
    "retry_count": 0,
    "last_attempt": null,
    "resolved_at": null,
-   "missing_records": 1461,
+   "missing_records": 126,
    "note": null
   },
   {

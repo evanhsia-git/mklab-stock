@@ -149,6 +149,39 @@ def merge_kline(sym, target_date, rec):
     return "added", len(rows), doc
 
 
+def sync_stocks_current(target_date, records):
+    """回補日若晚於 stocks.json 現值 → 同步 price/OHLCV/market_cap/price_asof（Phase 8A 教訓：
+    回補 history/kline 而不同步現值，會造成「K 線最新根 vs stocks.json price」不一致，
+    觸發 QA 的 MARKET_CAP_MISMATCH 與 P0-3）。market_cap 一律用 QA 公式 close×shares 重算
+    （比率外推會保留既有偏差）；無成交標的不動現值；PE/PB 等基本面不動。"""
+    path = os.path.join(DATA, "stocks.json")
+    doc = load_json(path, {}) or {}
+    smap = {s.get("sym"): s for s in doc.get("stocks", [])}
+    updated = 0
+    for sym, rec in records.items():
+        s = smap.get(sym)
+        if not s or rec.get("close") is None:
+            continue
+        old_p = s.get("price")
+        if str(s.get("price_asof") or "")[:10] >= target_date:
+            continue  # 現值已不舊於回補日，不回寫
+        s["price"] = rec["close"]
+        s["open"] = rec.get("open"); s["high"] = rec.get("high"); s["low"] = rec.get("low")
+        s["volume"] = rec.get("volume")
+        s["price_asof"] = target_date
+        sh = s.get("shares")
+        if sh and sh > 0:
+            s["market_cap"] = round(rec["close"] * sh, 1)
+        updated += 1
+    if updated:
+        from collections import Counter
+        doc.setdefault("meta", {})["as_of"] = target_date
+        doc["meta"]["price_asof_counts"] = dict(Counter(
+            str(s.get("price_asof"))[:10] for s in doc.get("stocks", [])))
+        atomic_write(path, doc)
+    return updated
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description="安全歷史回補（指定日期快照＋K 線）")
     ap.add_argument("--date", required=True, help="目標日期 YYYY-MM-DD（必須為已公告收盤的交易日）")
@@ -210,6 +243,9 @@ def main(argv=None):
         if st == "added":
             atomic_write(os.path.join(DATA, "kline", f"{sym}.json"), doc)
     print(f"[backfill] K 線：新增 {ka}／已存在保留 {ke}／無成交跳過 {ks}")
+    # 同步 stocks.json 現值（回補日 > 現值日期時）——避免 K 線與現值不一致觸發 QA 阻擋
+    nsync = sync_stocks_current(target, records)
+    print(f"[backfill] stocks.json 現值同步: {nsync} 檔（僅 price_asof 早於回補日者）")
     json.dump({"target": target, "snapshot_added": added, "kline_added": ka,
                "no_official_row": {k: v for k, v in list(evidence.items())[:50]},
                "performed_at": NOW_STAMP()}, open(os.path.join(DATA, "digest", f"backfill-{target}.json"), "w"), ensure_ascii=False, indent=1)
