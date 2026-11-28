@@ -1,6 +1,7 @@
 {
- "schema_version": "1.0.0",
- "audited_at": "2026-11-29T02:03:40+08:00",
+ "schema_version": "1.1.0",
+ "audited_at": "2026-11-29T03:06:12+08:00",
+ "audit_cutoff": "2026-11-27",
  "calendar_source": "reference/trade-calendar-2025-2026.json（PROXY_CROSSCHECKED）",
  "coverage": [
   {
@@ -10,42 +11,41 @@
    "start_date": "2025-08-01",
    "end_date": "2026-11-26",
    "expected_count": 321,
-   "actual_count": 320,
-   "valid_count": 320,
-   "missing_count": 1,
+   "actual_count": 321,
+   "valid_count": 321,
+   "missing_count": 0,
    "invalid_count": 0,
    "duplicate_count": 0,
-   "coverage_pct": 99.69,
+   "coverage_pct": 100.0,
    "denominator_source": "reference trade-calendar（PROXY_CROSSCHECKED）",
    "verification_status": "VERIFIED",
-   "audited_at": "2026-11-29T02:03:40+08:00",
-   "missing_dates": [
-    "2026-11-20"
-   ]
+   "audited_at": "2026-11-29T03:06:12+08:00",
+   "missing_dates": []
   },
   {
    "dataset": "tw-kline",
    "market": "TW",
-   "scope": "kline 1450 檔（HEAD/MIDDLE/TAIL 分類）",
+   "scope": "kline 1450 檔（HEAD/MIDDLE/TAIL 分類，valid 只數目標區間內）",
    "start_date": "2025-08-01",
    "end_date": "2026-11-27",
    "expected_count": 447387,
-   "actual_count": 427419,
-   "valid_count": 427419,
-   "missing_count": 30161,
+   "actual_count": 418552,
+   "valid_count": 418552,
+   "missing_count": 28835,
    "invalid_count": 0,
    "duplicate_count": 0,
-   "coverage_pct": 95.54,
+   "coverage_pct": 93.55,
    "denominator_source": "listing-dates-twse（官方上市日）＋建置起點 2025-08-01",
    "verification_status": "VERIFIED",
-   "audited_at": "2026-11-29T02:03:40+08:00",
+   "audited_at": "2026-11-29T03:06:12+08:00",
    "gaps_by_category": {
     "HEAD": 21431,
-    "MIDDLE": 7269,
+    "MIDDLE": 5943,
     "TAIL": 1461,
     "FULL_MISSING": 0
    },
-   "unknown_listing_count": 0
+   "unknown_listing_count": 0,
+   "reconciliation": "missing 28,835 ＝ HEAD 21,431 ＋ MIDDLE 5,943 ＋ TAIL 1,461 ＋ FULL_MISSING 0"
   },
   {
    "dataset": "tw-stocks-field:price",
@@ -62,7 +62,7 @@
    "coverage_pct": 99.66,
    "denominator_source": "stocks.json 全檔",
    "verification_status": "VERIFIED",
-   "audited_at": "2026-11-29T02:03:40+08:00"
+   "audited_at": "2026-11-29T03:06:12+08:00"
   },
   {
    "dataset": "tw-stocks-field:market_cap",
@@ -79,7 +79,7 @@
    "coverage_pct": 92.34,
    "denominator_source": "stocks.json 全檔",
    "verification_status": "VERIFIED",
-   "audited_at": "2026-11-29T02:03:40+08:00"
+   "audited_at": "2026-11-29T03:06:12+08:00"
   },
   {
    "dataset": "tw-stocks-field:pe",
@@ -96,7 +96,7 @@
    "coverage_pct": 79.96,
    "denominator_source": "個股總數（ETF 無此數值不計入）",
    "verification_status": "VERIFIED",
-   "audited_at": "2026-11-29T02:03:40+08:00"
+   "audited_at": "2026-11-29T03:06:12+08:00"
   },
   {
    "dataset": "tw-stocks-field:pb",
@@ -113,7 +113,7 @@
    "coverage_pct": 100.0,
    "denominator_source": "個股總數（ETF 無此數值不計入）",
    "verification_status": "VERIFIED",
-   "audited_at": "2026-11-29T02:03:40+08:00"
+   "audited_at": "2026-11-29T03:06:12+08:00"
   },
   {
    "dataset": "tw-stocks-field:roe",
@@ -130,7 +130,7 @@
    "coverage_pct": 94.3,
    "denominator_source": "個股總數（ETF 無此數值不計入）",
    "verification_status": "VERIFIED",
-   "audited_at": "2026-11-29T02:03:40+08:00"
+   "audited_at": "2026-11-29T03:06:12+08:00"
   },
   {
    "dataset": "tw-stocks-field:div",
@@ -147,7 +147,7 @@
    "coverage_pct": 78.22,
    "denominator_source": "個股總數（ETF 無此數值不計入）",
    "verification_status": "VERIFIED",
-   "audited_at": "2026-11-29T02:03:40+08:00"
+   "audited_at": "2026-11-29T03:06:12+08:00"
   },
   {
    "dataset": "tw-etf-meta",
@@ -164,7 +164,7 @@
    "coverage_pct": 100.0,
    "denominator_source": "stocks.json security_type=etf",
    "verification_status": "VERIFIED",
-   "audited_at": "2026-11-29T02:03:40+08:00",
+   "audited_at": "2026-11-29T03:06:12+08:00",
    "missing_codes": [],
    "extra_codes": [
     "00635U",
@@ -192,7 +192,7 @@
    "coverage_pct": 99.17,
    "denominator_source": "stocks.json security_type=etf",
    "verification_status": "VERIFIED",
-   "audited_at": "2026-11-29T02:03:40+08:00",
+   "audited_at": "2026-11-29T03:06:12+08:00",
    "missing_codes": [
     "00419A",
     "00420A",
@@ -222,7 +222,7 @@
    "coverage_pct": 97.51,
    "denominator_source": "stocks.json security_type=etf",
    "verification_status": "VERIFIED",
-   "audited_at": "2026-11-29T02:03:40+08:00",
+   "audited_at": "2026-11-29T03:06:12+08:00",
    "missing_codes": [
     "00690",
     "00911",
@@ -258,7 +258,7 @@
    "coverage_pct": 99.17,
    "denominator_source": "stocks.json security_type=etf",
    "verification_status": "VERIFIED",
-   "audited_at": "2026-11-29T02:03:40+08:00",
+   "audited_at": "2026-11-29T03:06:12+08:00",
    "missing_codes": [
     "00419A",
     "00420A",
@@ -281,12 +281,34 @@
    "coverage_pct": 100.0,
    "denominator_source": "etf-nav.json record_date",
    "verification_status": "VERIFIED",
-   "audited_at": "2026-11-29T02:03:40+08:00",
+   "audited_at": "2026-11-29T03:06:12+08:00",
    "record_date_top": [
     [
      "2026-11-27",
      359
     ]
+   ]
+  },
+  {
+   "dataset": "tw-official-fundamentals:financial",
+   "market": "TW",
+   "scope": "官方財報（2026Q3，MOPS 彙總表）",
+   "start_date": null,
+   "end_date": "2026Q3",
+   "expected_count": 1088,
+   "actual_count": 1085,
+   "valid_count": 1085,
+   "missing_count": 3,
+   "invalid_count": 0,
+   "duplicate_count": 0,
+   "coverage_pct": 99.72,
+   "denominator_source": "stocks.json 個股母體",
+   "verification_status": "PARTIALLY_VERIFIED",
+   "audited_at": "2026-11-29T03:06:12+08:00",
+   "missing_codes": [
+    "2881",
+    "2882",
+    "2887"
    ]
   },
   {
@@ -304,7 +326,7 @@
    "coverage_pct": 100.0,
    "denominator_source": "us-stocks.json",
    "verification_status": "VERIFIED",
-   "audited_at": "2026-11-29T02:03:40+08:00"
+   "audited_at": "2026-11-29T03:06:12+08:00"
   },
   {
    "dataset": "us-etfs",
@@ -321,7 +343,7 @@
    "coverage_pct": 100.0,
    "denominator_source": "us-etfs.json",
    "verification_status": "VERIFIED",
-   "audited_at": "2026-11-29T02:03:40+08:00"
+   "audited_at": "2026-11-29T03:06:12+08:00"
   },
   {
    "dataset": "us-edgar",
@@ -338,7 +360,7 @@
    "coverage_pct": 99.62,
    "denominator_source": "us-stocks.json 母體",
    "verification_status": "VERIFIED",
-   "audited_at": "2026-11-29T02:03:40+08:00"
+   "audited_at": "2026-11-29T03:06:12+08:00"
   },
   {
    "dataset": "global-indices",
@@ -355,7 +377,7 @@
    "coverage_pct": 76.19,
    "denominator_source": "indices-config.json",
    "verification_status": "PARTIAL",
-   "audited_at": "2026-11-29T02:03:40+08:00",
+   "audited_at": "2026-11-29T03:06:12+08:00",
    "missing_symbols": [
     "^TWIIE",
     "^TWIIF",

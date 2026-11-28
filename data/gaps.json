@@ -1,23 +1,9 @@
 {
- "schema_version": "1.0.0",
- "generated_at": "2026-11-29T02:03:40+08:00",
+ "schema_version": "1.1.0",
+ "generated_at": "2026-11-29T03:06:12+08:00",
+ "audit_cutoff": "2026-11-27",
  "note": "candidate=待確認（停牌/無成交/待官方對照）；confirmed=已確認缺失；回補後須重新驗證才能標 resolved",
  "gaps": [
-  {
-   "dataset": "tw-snapshot",
-   "market": "TW",
-   "symbol": null,
-   "missing_date": "2026-11-20",
-   "field": "daily_snapshot",
-   "gap_type": "MIDDLE_OR_TAIL",
-   "verification_status": "confirmed",
-   "priority": "P0",
-   "source": "TWSE STOCK_DAY 逐檔月表（實測可行）",
-   "status": "open",
-   "retry_count": 0,
-   "last_attempt": null,
-   "resolved_at": null
-  },
   {
    "dataset": "tw-kline",
    "market": "TW",
@@ -32,6 +18,7 @@
    "retry_count": 0,
    "last_attempt": null,
    "resolved_at": null,
+   "missing_records": 21431,
    "note": "backfill-candidate（目標期建置前缺）"
   },
   {
@@ -48,6 +35,7 @@
    "retry_count": 0,
    "last_attempt": null,
    "resolved_at": null,
+   "missing_records": 5943,
    "note": null
   },
   {
@@ -64,6 +52,7 @@
    "retry_count": 0,
    "last_attempt": null,
    "resolved_at": null,
+   "missing_records": 1461,
    "note": null
   },
   {
@@ -286,6 +275,51 @@
    "verification_status": "confirmed",
    "priority": "P2",
    "source": "官方發行商或既有管線重跑",
+   "status": "open",
+   "retry_count": 0,
+   "last_attempt": null,
+   "resolved_at": null
+  },
+  {
+   "dataset": "official-fundamentals",
+   "market": "TW",
+   "symbol": "2881",
+   "missing_date": null,
+   "field": "financial",
+   "gap_type": "MISSING",
+   "verification_status": "confirmed",
+   "priority": "P1",
+   "source": "MOPS 金融業彙總表（t163sb05/06/07 皆不含金控母公司且舊 API 被 WAF 擋——來源待定位：公開資訊觀測站金融業下載檔）",
+   "status": "open",
+   "retry_count": 0,
+   "last_attempt": null,
+   "resolved_at": null
+  },
+  {
+   "dataset": "official-fundamentals",
+   "market": "TW",
+   "symbol": "2882",
+   "missing_date": null,
+   "field": "financial",
+   "gap_type": "MISSING",
+   "verification_status": "confirmed",
+   "priority": "P1",
+   "source": "MOPS 金融業彙總表（t163sb05/06/07 皆不含金控母公司且舊 API 被 WAF 擋——來源待定位：公開資訊觀測站金融業下載檔）",
+   "status": "open",
+   "retry_count": 0,
+   "last_attempt": null,
+   "resolved_at": null
+  },
+  {
+   "dataset": "official-fundamentals",
+   "market": "TW",
+   "symbol": "2887",
+   "missing_date": null,
+   "field": "financial",
+   "gap_type": "MISSING",
+   "verification_status": "confirmed",
+   "priority": "P1",
+   "source": "MOPS 金融業彙總表（t163sb05/06/07 皆不含金控母公司且舊 API 被 WAF 擋——來源待定位：公開資訊觀測站金融業下載檔）",
    "status": "open",
    "retry_count": 0,
    "last_attempt": null,

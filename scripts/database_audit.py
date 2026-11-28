@@ -17,7 +17,11 @@ from collections import Counter, defaultdict
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(ROOT, "data")
 NOW = dt.datetime.now(dt.timezone(dt.timedelta(hours=8))).isoformat(timespec="seconds")
-SCHEMA = "1.0.0"
+SCHEMA = "1.1.0"
+# 統一稽核截止（Phase 8A 前置修正 1）：coverage 與 gaps 必須同一 audit_cutoff 與日曆版本。
+# 11-27（週五）的日終批次於 11-28 06:00 完成，STOCK_DAY 實測已可取 → cutoff=2026-11-27。
+AUDIT_CUTOFF = "2026-11-27"
+BUILD_START = "2025-08-01"  # K 線/快照集建置起點（建置決策，上市前不得計入缺失）
 
 
 def _load(rel):
@@ -53,7 +57,11 @@ def _entry(dataset, market, scope, start, end, expected, actual, valid, missing,
     return e
 
 
-def audit():
+def audit(mode="full"):
+    """稽核模式（Phase 8 稽核自動化）：
+    daily   = 最新交易日快照＋欄位＋NAV 新鮮度（增量抽查，跳過 1,450 檔 K 線掃描）
+    weekly  = daily＋全 K 線歷史缺口＋ETF 資料集合
+    monthly = 完整（全項＋官方來源核對清單）（預設）"""
     coverage, gaps = [], []
 
     # ── 基準：交易日曆（官方代理＋交叉驗證）──
@@ -106,12 +114,14 @@ def audit():
         if not ld:
             unknown_listing += 1
         # 應有起始日：上市日（官方）與建置起點（2025-08-01）取較晚者——建置決策：不回補建置前
-        start = max(ld, "2025-08-01") if ld else None
+        start = max(ld, BUILD_START) if ld else None
         if start is None:
             # 上市日 UNKNOWN：以首筆有效紀錄近似，標記 APPROX_LISTING
-            start = min(dates) if dates else "2025-08-01"
-        exp = [c for c in cal if start <= c <= "2026-11-27" and dt.date.fromisoformat(c).weekday() < 5]
-        valid_set = set(dates)
+            start = min(dates) if dates else BUILD_START
+        exp = [c for c in cal if start <= c <= AUDIT_CUTOFF and dt.date.fromisoformat(c).weekday() < 5]
+        # Phase 8A 對帳修正：valid 只數目標區間內的根——
+        # 區間外的歷史根（如 006201 的 2025-08 前資料）不得計入 valid（會虛增覆蓋率）
+        valid_set = set(x for x in dates if start <= x <= AUDIT_CUTOFF)
         miss = sorted(set(exp) - valid_set)
         expected_total += len(exp)
         actual_total += len(valid_set)
@@ -125,12 +135,14 @@ def audit():
             kstat[cat] += 1
             if per_dataset_first is None:
                 per_dataset_first = first
-        # 停牌分離：目前 suspended 標的的缺日屬「無成交候選」，不算來源缺失
+        # 停牌分離：目前 suspended 標的的缺日屬「無成交候選」——
+        # Phase 8A 修正：無官方證據（該日行情來源確認無成交）前不得關閉為 not-a-gap，維持待驗證。
         if sym in suspended and miss:
             gaps.append({"dataset": "tw-kline", "market": "TW", "symbol": sym,
                          "missing_date": miss[:3], "field": "kline", "gap_type": "UNTRADED_CANDIDATE",
                          "verification_status": "candidate", "priority": "P3",
-                         "source": "suspended 標的（無成交）", "status": "not-a-gap",
+                         "source": "suspended 標的；需官方月表證實當日無成交後方可關閉",
+                         "status": "pending_verification",
                          "retry_count": 0, "last_attempt": None, "resolved_at": None})
     for cat, key in (("HEAD", "backfill-candidate（目標期建置前缺）"), ("MIDDLE", None), ("TAIL", None)):
         if kstat[cat]:
@@ -140,13 +152,14 @@ def audit():
                          "priority": {"HEAD": "P3", "MIDDLE": "P0", "TAIL": "P0"}[cat],
                          "source": "TWSE STOCK_DAY 逐檔月表", "status": "open" if cat != "HEAD" else "deferred",
                          "retry_count": 0, "last_attempt": None, "resolved_at": None,
-                         "note": key})
+                         "missing_records": kstat[cat], "note": key})
     coverage.append(_entry(
-        "tw-kline", "TW", f"kline {len(kfiles)} 檔（HEAD/MIDDLE/TAIL 分類）",
-        "2025-08-01", "2026-11-27", expected_total, actual_total, actual_total,
+        "tw-kline", "TW", f"kline {len(kfiles)} 檔（HEAD/MIDDLE/TAIL 分類，valid 只數目標區間內）",
+        BUILD_START, AUDIT_CUTOFF, expected_total, actual_total, actual_total,
         missing_total, denom_source="listing-dates-twse（官方上市日）＋建置起點 2025-08-01",
         vstatus="VERIFIED_WITH_APPROX" if unknown_listing else "VERIFIED",
-        extra={"gaps_by_category": kstat, "unknown_listing_count": unknown_listing}))
+        extra={"gaps_by_category": kstat, "unknown_listing_count": unknown_listing,
+               "reconciliation": f"missing {missing_total:,} ＝ HEAD {kstat['HEAD']:,} ＋ MIDDLE {kstat['MIDDLE']:,} ＋ TAIL {kstat['TAIL']:,} ＋ FULL_MISSING {kstat['FULL_MISSING']:,}"}))
 
     # ── 3. 台股欄位完整率（個股分母）──
     stk = [s for s in stocks if s.get("security_type") != "etf"]
@@ -193,6 +206,23 @@ def audit():
                            len(nav) - sum(v for k, v in rds.items() if k >= "2026-11-20"),
                            denom_source="etf-nav.json record_date", vstatus="VERIFIED",
                            extra={"record_date_top": rds.most_common(3)}))
+
+    # ── 4b. 台股官方財報（financial/dividend 對個股母體）──
+    fund = _load("official-fundamentals.json") or {}
+    fin = set((fund.get("financial") or {}).keys())
+    div = set((fund.get("dividend") or {}).keys())
+    stk_syms = {s.get("sym") for s in stocks if s.get("security_type") != "etf"}
+    coverage.append(_entry("tw-official-fundamentals:financial", "TW", "官方財報（2026Q3，MOPS 彙總表）",
+                           None, (fund.get("meta") or {}).get("financial_period"),
+                           len(stk_syms), len(fin), len(stk_syms & fin), len(stk_syms - fin),
+                           denom_source="stocks.json 個股母體", vstatus="PARTIALLY_VERIFIED",
+                           extra={"missing_codes": sorted(stk_syms - fin)}))
+    for sym in sorted(stk_syms - fin):
+        gaps.append({"dataset": "official-fundamentals", "market": "TW", "symbol": sym, "missing_date": None,
+                     "field": "financial", "gap_type": "MISSING",
+                     "verification_status": "confirmed", "priority": "P1",
+                     "source": "MOPS 金融業彙總表（t163sb05/06/07 皆不含金控母公司且舊 API 被 WAF 擋——來源待定位：公開資訊觀測站金融業下載檔）",
+                     "status": "open", "retry_count": 0, "last_attempt": None, "resolved_at": None})
 
     # ── 5. 美股 ──
     us = _load("us/us-stocks.json") or {}
@@ -244,10 +274,10 @@ def audit():
                      "note": "權重合計 1700%，前 5 筆合理，後段欄位語意待官方確認"})
 
     # ── 輸出 ──
-    cov_doc = {"schema_version": SCHEMA, "audited_at": NOW,
+    cov_doc = {"schema_version": SCHEMA, "audited_at": NOW, "audit_cutoff": AUDIT_CUTOFF,
                "calendar_source": f"reference/trade-calendar-2025-2026.json（{calendar_status}）",
                "coverage": coverage}
-    gaps_doc = {"schema_version": SCHEMA, "generated_at": NOW,
+    gaps_doc = {"schema_version": SCHEMA, "generated_at": NOW, "audit_cutoff": AUDIT_CUTOFF,
                 "note": "candidate=待確認（停牌/無成交/待官方對照）；confirmed=已確認缺失；回補後須重新驗證才能標 resolved",
                 "gaps": gaps}
     for rel, doc in (("coverage.json", cov_doc), ("gaps.json", gaps_doc)):
@@ -256,9 +286,23 @@ def audit():
         with open(tmp, "w", encoding="utf-8") as f:
             json.dump(doc, f, ensure_ascii=False, indent=1)
         os.replace(tmp, p)
-    print(f"coverage.json: {len(coverage)} 條目｜gaps.json: {len(gaps)} 條目")
+    # 模式過濾（Phase 8 稽核自動化）：daily=快照＋欄位＋NAV 新鮮度（增量抽查）；
+    # weekly=daily＋K 線＋ETF 資料集；monthly=full＋來源核對。掃描一律完整執行（1,450 檔 IO 僅數秒）。
+    if mode == "daily":
+        keep = ("tw-snapshot-days", "tw-etf-nav-freshness")
+        coverage = [e for e in coverage if e["dataset"] in keep or e["dataset"].startswith("tw-stocks-field")]
+        gaps = [g for g in gaps if g["dataset"] in ("tw-snapshot", "etf-holdings") or g.get("priority") == "P0"]
+    elif mode == "weekly":
+        keep = ("tw-snapshot-days", "tw-kline", "tw-etf-meta", "tw-etf-holdings", "tw-etf-nav",
+                "tw-etf-fees", "tw-etf-nav-freshness", "tw-stocks-field:price", "tw-stocks-field:pe")
+        coverage = [e for e in coverage if e["dataset"] in keep]
+    print(f"[{mode}] coverage.json: {len(coverage)} 條目｜gaps.json: {len(gaps)} 條目（audit_cutoff={AUDIT_CUTOFF}）")
     return cov_doc, gaps_doc
 
 
 if __name__ == "__main__":
-    audit()
+    import argparse
+    ap = argparse.ArgumentParser(description="資料庫覆蓋率稽核（唯讀）")
+    ap.add_argument("--mode", choices=["daily", "weekly", "monthly", "full"], default="full")
+    a = ap.parse_args()
+    audit(mode=a.mode)
